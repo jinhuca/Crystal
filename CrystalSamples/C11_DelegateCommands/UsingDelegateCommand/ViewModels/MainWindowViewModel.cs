@@ -37,11 +37,8 @@ namespace UsingDelegateCommand.ViewModels
     public MainWindowViewModel()
     {
       ExecuteDelegateCommand = new DelegateCommand(Execute, CanExecute);
-
       DelegateCommandObservesProperty = new DelegateCommand(Execute, CanExecute).ObservesProperty(() => IsEnabled);
-
       DelegateCommandObservesCanExecute = new DelegateCommand(Execute).ObservesCanExecute(() => IsEnabled);
-
       ExecuteGenericDelegateCommand = new DelegateCommand<string>(ExecuteGeneric).ObservesCanExecute(() => IsEnabled);
     }
 
