@@ -23,12 +23,12 @@ namespace Crystal.Regions
             }
             set
             {
-                if (this.IsAttached)
+                if (IsAttached)
                 {
                     throw new InvalidOperationException(Resources.RegionBehaviorRegionCannotBeSetAfterAttach);
                 }
 
-                this.region = value;
+                region = value;
             }
         }
 
@@ -42,7 +42,7 @@ namespace Crystal.Regions
         /// </summary>
         public void Attach()
         {
-            if (this.region == null)
+            if (region == null)
             {
                 throw new InvalidOperationException(Resources.RegionBehaviorAttachCannotBeCallWithNullRegion);
             }

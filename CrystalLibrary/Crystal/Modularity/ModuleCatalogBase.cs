@@ -105,9 +105,9 @@ namespace Crystal.Modularity
         /// <returns>An enumeration of <see cref="IModuleInfo"/> that <paramref name="moduleInfo"/> depends on.</returns>
         public virtual IEnumerable<IModuleInfo> GetDependentModules(IModuleInfo moduleInfo)
         {
-            this.EnsureCatalogValidated();
+            EnsureCatalogValidated();
 
-            return this.GetDependentModulesInner(moduleInfo);
+            return GetDependentModulesInner(moduleInfo);
         }
 
         /// <summary>

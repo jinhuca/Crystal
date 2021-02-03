@@ -78,7 +78,7 @@ namespace Crystal.Modularity
             List<string> skip = new List<string>();
             while (skip.Count < dependencyMatrix.Count)
             {
-                List<string> leaves = this.FindLeaves(skip);
+                List<string> leaves = FindLeaves(skip);
                 if (leaves.Count == 0 && skip.Count < dependencyMatrix.Count)
                 {
                     throw new CyclicDependencyFoundException(Resources.CyclicDependencyFound);
@@ -89,7 +89,7 @@ namespace Crystal.Modularity
 
             if (skip.Count > knownModules.Count)
             {
-                string moduleNames = this.FindMissingModules(skip);
+                string moduleNames = FindMissingModules(skip);
                 throw new ModularityException(moduleNames, string.Format(CultureInfo.CurrentCulture,
                                                             Resources.DependencyOnMissingModule,
                                                             moduleNames));

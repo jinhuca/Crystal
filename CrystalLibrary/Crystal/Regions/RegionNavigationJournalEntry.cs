@@ -29,9 +29,9 @@ namespace Crystal.Regions
         /// </returns>
         public override string ToString()
         {
-            if (this.Uri != null)
+            if (Uri != null)
             {
-                return string.Format(CultureInfo.CurrentCulture, "RegionNavigationJournalEntry:'{0}'", this.Uri.ToString());
+                return string.Format(CultureInfo.CurrentCulture, "RegionNavigationJournalEntry:'{0}'", Uri.ToString());
             }
 
             return base.ToString();

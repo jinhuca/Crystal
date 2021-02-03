@@ -18,7 +18,7 @@ namespace Crystal.Regions
             if (navigationContext == null)
                 throw new ArgumentNullException(nameof(navigationContext));
 
-            this.NavigationContext = navigationContext;
+            NavigationContext = navigationContext;
         }
 
         /// <summary>
@@ -38,9 +38,9 @@ namespace Crystal.Regions
         {
             get
             {
-                if (this.NavigationContext != null)
+                if (NavigationContext != null)
                 {
-                    return this.NavigationContext.Uri;
+                    return NavigationContext.Uri;
                 }
 
                 return null;

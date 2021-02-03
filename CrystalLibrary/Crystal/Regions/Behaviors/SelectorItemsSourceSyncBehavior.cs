@@ -49,12 +49,12 @@ namespace Crystal.Regions.Behaviors
         {
             get
             {
-                return this.hostControl;
+                return hostControl;
             }
 
             set
             {
-                this.hostControl = value as Selector;
+                hostControl = value as Selector;
             }
         }
 
@@ -63,19 +63,19 @@ namespace Crystal.Regions.Behaviors
         /// </summary>
         protected override void OnAttach()
         {
-            bool itemsSourceIsSet = this.hostControl.ItemsSource != null;
-            itemsSourceIsSet = itemsSourceIsSet || this.hostControl.HasBinding(ItemsControl.ItemsSourceProperty);
+            bool itemsSourceIsSet = hostControl.ItemsSource != null;
+            itemsSourceIsSet = itemsSourceIsSet || hostControl.HasBinding(ItemsControl.ItemsSourceProperty);
 
             if (itemsSourceIsSet)
             {
                 throw new InvalidOperationException(Resources.ItemsControlHasItemsSourceException);
             }
 
-            this.SynchronizeItems();
+            SynchronizeItems();
 
-            this.hostControl.SelectionChanged += this.HostControlSelectionChanged;
-            this.Region.ActiveViews.CollectionChanged += this.ActiveViews_CollectionChanged;
-            this.Region.Views.CollectionChanged += this.Views_CollectionChanged;
+            hostControl.SelectionChanged += HostControlSelectionChanged;
+            Region.ActiveViews.CollectionChanged += ActiveViews_CollectionChanged;
+            Region.Views.CollectionChanged += Views_CollectionChanged;
         }
 
         private void Views_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -85,14 +85,14 @@ namespace Crystal.Regions.Behaviors
                 int startIndex = e.NewStartingIndex;
                 foreach (object newItem in e.NewItems)
                 {
-                    this.hostControl.Items.Insert(startIndex++, newItem);
+                    hostControl.Items.Insert(startIndex++, newItem);
                 }
             }
             else if (e.Action == NotifyCollectionChangedAction.Remove)
             {
                 foreach (object oldItem in e.OldItems)
                 {
-                    this.hostControl.Items.Remove(oldItem);
+                    hostControl.Items.Remove(oldItem);
                 }
             }
         }
@@ -102,26 +102,26 @@ namespace Crystal.Regions.Behaviors
             List<object> existingItems = new List<object>();
 
             // Control must be empty before "Binding" to a region
-            foreach (object childItem in this.hostControl.Items)
+            foreach (object childItem in hostControl.Items)
             {
                 existingItems.Add(childItem);
             }
 
-            foreach (object view in this.Region.Views)
+            foreach (object view in Region.Views)
             {
-                this.hostControl.Items.Add(view);
+                hostControl.Items.Add(view);
             }
 
             foreach (object existingItem in existingItems)
             {
-                this.Region.Add(existingItem);
+                Region.Add(existingItem);
             }
         }
 
 
         private void ActiveViews_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (this.updatingActiveViewsInHostControlSelectionChanged)
+            if (updatingActiveViewsInHostControlSelectionChanged)
             {
                 // If we are updating the ActiveViews collection in the HostControlSelectionChanged, that 
                 // means the user has set the SelectedItem or SelectedItems himself and we don't need to do that here now
@@ -130,19 +130,19 @@ namespace Crystal.Regions.Behaviors
 
             if (e.Action == NotifyCollectionChangedAction.Add)
             {
-                if (this.hostControl.SelectedItem != null
-                    && this.hostControl.SelectedItem != e.NewItems[0]
-                    && this.Region.ActiveViews.Contains(this.hostControl.SelectedItem))
+                if (hostControl.SelectedItem != null
+                    && hostControl.SelectedItem != e.NewItems[0]
+                    && Region.ActiveViews.Contains(hostControl.SelectedItem))
                 {
-                    this.Region.Deactivate(this.hostControl.SelectedItem);
+                    Region.Deactivate(hostControl.SelectedItem);
                 }
 
-                this.hostControl.SelectedItem = e.NewItems[0];
+                hostControl.SelectedItem = e.NewItems[0];
             }
             else if (e.Action == NotifyCollectionChangedAction.Remove &&
-                     e.OldItems.Contains(this.hostControl.SelectedItem))
+                     e.OldItems.Contains(hostControl.SelectedItem))
             {
-                this.hostControl.SelectedItem = null;
+                hostControl.SelectedItem = null;
             }
         }
 
@@ -152,7 +152,7 @@ namespace Crystal.Regions.Behaviors
             {
                 // Record the fact that we are now updating active views in the HostControlSelectionChanged method. 
                 // This is needed to prevent the ActiveViews_CollectionChanged() method from firing. 
-                this.updatingActiveViewsInHostControlSelectionChanged = true;
+                updatingActiveViewsInHostControlSelectionChanged = true;
 
                 object source;
                 source = e.OriginalSource;
@@ -162,24 +162,24 @@ namespace Crystal.Regions.Behaviors
                     foreach (object item in e.RemovedItems)
                     {
                         // check if the view is in both Views and ActiveViews collections (there may be out of sync)
-                        if (this.Region.Views.Contains(item) && this.Region.ActiveViews.Contains(item))
+                        if (Region.Views.Contains(item) && Region.ActiveViews.Contains(item))
                         {
-                            this.Region.Deactivate(item);
+                            Region.Deactivate(item);
                         }
                     }
 
                     foreach (object item in e.AddedItems)
                     {
-                        if (this.Region.Views.Contains(item) && !this.Region.ActiveViews.Contains(item))
+                        if (Region.Views.Contains(item) && !Region.ActiveViews.Contains(item))
                         {
-                            this.Region.Activate(item);
+                            Region.Activate(item);
                         }
                     }
                 }
             }
             finally
             {
-                this.updatingActiveViewsInHostControlSelectionChanged = false;
+                updatingActiveViewsInHostControlSelectionChanged = false;
             }
         }
     }

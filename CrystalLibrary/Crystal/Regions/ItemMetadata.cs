@@ -34,7 +34,7 @@ namespace Crystal.Regions
         public ItemMetadata(object item)
         {
             // check for null
-            this.Item = item;
+            Item = item;
         }
 
         /// <summary>

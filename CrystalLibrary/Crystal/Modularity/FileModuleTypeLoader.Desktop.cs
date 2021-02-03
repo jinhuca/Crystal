@@ -41,7 +41,7 @@ namespace Crystal.Modularity
 
         private void RaiseModuleDownloadProgressChanged(IModuleInfo moduleInfo, long bytesReceived, long totalBytesToReceive)
         {
-            this.RaiseModuleDownloadProgressChanged(new ModuleDownloadProgressChangedEventArgs(moduleInfo, bytesReceived, totalBytesToReceive));
+            RaiseModuleDownloadProgressChanged(new ModuleDownloadProgressChangedEventArgs(moduleInfo, bytesReceived, totalBytesToReceive));
         }
 
         private void RaiseModuleDownloadProgressChanged(ModuleDownloadProgressChangedEventArgs e)
@@ -56,12 +56,12 @@ namespace Crystal.Modularity
 
         private void RaiseLoadModuleCompleted(IModuleInfo moduleInfo, Exception error)
         {
-            this.RaiseLoadModuleCompleted(new LoadModuleCompletedEventArgs(moduleInfo, error));
+            RaiseLoadModuleCompleted(new LoadModuleCompletedEventArgs(moduleInfo, error));
         }
 
         private void RaiseLoadModuleCompleted(LoadModuleCompletedEventArgs e)
         {
-            this.LoadModuleCompleted?.Invoke(this, e);
+            LoadModuleCompleted?.Invoke(this, e);
         }
 
         /// <summary>
@@ -102,9 +102,9 @@ namespace Crystal.Modularity
                 Uri uri = new Uri(moduleInfo.Ref, UriKind.RelativeOrAbsolute);
 
                 // If this module has already been downloaded, I fire the completed event.
-                if (this.IsSuccessfullyDownloaded(uri))
+                if (IsSuccessfullyDownloaded(uri))
                 {
-                    this.RaiseLoadModuleCompleted(moduleInfo, null);
+                    RaiseLoadModuleCompleted(moduleInfo, null);
                 }
                 else
                 {
@@ -118,38 +118,38 @@ namespace Crystal.Modularity
                     }
 
                     // Although this isn't asynchronous, nor expected to take very long, I raise progress changed for consistency.
-                    this.RaiseModuleDownloadProgressChanged(moduleInfo, 0, fileSize);
+                    RaiseModuleDownloadProgressChanged(moduleInfo, 0, fileSize);
 
-                    this.assemblyResolver.LoadAssemblyFrom(moduleInfo.Ref);
+                    assemblyResolver.LoadAssemblyFrom(moduleInfo.Ref);
 
                     // Although this isn't asynchronous, nor expected to take very long, I raise progress changed for consistency.
-                    this.RaiseModuleDownloadProgressChanged(moduleInfo, fileSize, fileSize);
+                    RaiseModuleDownloadProgressChanged(moduleInfo, fileSize, fileSize);
 
                     // I remember the downloaded URI.
-                    this.RecordDownloadSuccess(uri);
+                    RecordDownloadSuccess(uri);
 
-                    this.RaiseLoadModuleCompleted(moduleInfo, null);
+                    RaiseLoadModuleCompleted(moduleInfo, null);
                 }
             }
             catch (Exception ex)
             {
-                this.RaiseLoadModuleCompleted(moduleInfo, ex);
+                RaiseLoadModuleCompleted(moduleInfo, ex);
             }
         }
 
         private bool IsSuccessfullyDownloaded(Uri uri)
         {
-            lock (this.downloadedUris)
+            lock (downloadedUris)
             {
-                return this.downloadedUris.Contains(uri);
+                return downloadedUris.Contains(uri);
             }
         }
 
         private void RecordDownloadSuccess(Uri uri)
         {
-            lock (this.downloadedUris)
+            lock (downloadedUris)
             {
-                this.downloadedUris.Add(uri);
+                downloadedUris.Add(uri);
             }
         }
 
@@ -162,7 +162,7 @@ namespace Crystal.Modularity
         /// <filterpriority>2</filterpriority>
         public void Dispose()
         {
-            this.Dispose(true);
+            Dispose(true);
             GC.SuppressFinalize(this);
         }
 
@@ -172,7 +172,7 @@ namespace Crystal.Modularity
         /// <param name="disposing">When <see langword="true"/>, it is being called from the Dispose method.</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (this.assemblyResolver is IDisposable disposableResolver)
+            if (assemblyResolver is IDisposable disposableResolver)
             {
                 disposableResolver.Dispose();
             }

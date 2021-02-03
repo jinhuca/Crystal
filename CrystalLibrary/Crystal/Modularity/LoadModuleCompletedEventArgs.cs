@@ -21,8 +21,8 @@ namespace Crystal.Modularity
                 throw new ArgumentNullException(nameof(moduleInfo));
             }
 
-            this.ModuleInfo = moduleInfo;
-            this.Error = error;
+            ModuleInfo = moduleInfo;
+            Error = error;
         }
 
         /// <summary>

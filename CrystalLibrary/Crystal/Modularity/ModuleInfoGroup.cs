@@ -156,7 +156,7 @@ namespace Crystal.Modularity
         /// <returns>
         /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
         /// </returns>
-        IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         /// <summary>
         /// Adds an item to the <see cref="ModuleInfoGroup"/>.
@@ -170,7 +170,7 @@ namespace Crystal.Modularity
         /// </returns>
         int IList.Add(object value)
         {
-            this.Add((IModuleInfo)value);
+            Add((IModuleInfo)value);
             return 1;
         }
 

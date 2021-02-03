@@ -35,7 +35,7 @@ namespace Crystal.Mvvm
             }
 
             this.raiseErrorsChanged = raiseErrorsChanged;
-            this.validationResults = new Dictionary<string, List<T>>();
+            validationResults = new Dictionary<string, List<T>>();
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace Crystal.Mvvm
         {
             get
             {
-                return this.validationResults.Count != 0;
+                return validationResults.Count != 0;
             }
         }
 
@@ -67,7 +67,7 @@ namespace Crystal.Mvvm
         {
             var localPropertyName = propertyName ?? string.Empty;
             List<T> currentValidationResults = null;
-            if (this.validationResults.TryGetValue(localPropertyName, out currentValidationResults))
+            if (validationResults.TryGetValue(localPropertyName, out currentValidationResults))
             {
                 return currentValidationResults;
             }
@@ -82,7 +82,7 @@ namespace Crystal.Mvvm
         /// </summary>
         public void ClearErrors()
         {
-            foreach (var key in this.validationResults.Keys.ToArray())
+            foreach (var key in validationResults.Keys.ToArray())
             {
                 ClearErrors(key);
             }
@@ -100,7 +100,7 @@ namespace Crystal.Mvvm
         public void ClearErrors<TProperty>(Expression<Func<TProperty>> propertyExpression)
         {
             var propertyName = PropertySupport.ExtractPropertyName(propertyExpression);
-            this.ClearErrors(propertyName);
+            ClearErrors(propertyName);
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace Crystal.Mvvm
         /// </example>
         public void ClearErrors(string propertyName)
         {
-            this.SetErrors(propertyName, new List<T>());
+            SetErrors(propertyName, new List<T>());
         }
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace Crystal.Mvvm
         public void SetErrors<TProperty>(Expression<Func<TProperty>> propertyExpression, IEnumerable<T> propertyErrors)
         {
             var propertyName = PropertySupport.ExtractPropertyName(propertyExpression);
-            this.SetErrors(propertyName, propertyErrors);
+            SetErrors(propertyName, propertyErrors);
         }
 
         /// <summary>
@@ -139,20 +139,20 @@ namespace Crystal.Mvvm
         public void SetErrors(string propertyName, IEnumerable<T> newValidationResults)
         {
             var localPropertyName = propertyName ?? string.Empty;
-            var hasCurrentValidationResults = this.validationResults.ContainsKey(localPropertyName);
+            var hasCurrentValidationResults = validationResults.ContainsKey(localPropertyName);
             var hasNewValidationResults = newValidationResults != null && newValidationResults.Count() > 0;
 
             if (hasCurrentValidationResults || hasNewValidationResults)
             {
                 if (hasNewValidationResults)
                 {
-                    this.validationResults[localPropertyName] = new List<T>(newValidationResults);
-                    this.raiseErrorsChanged(localPropertyName);
+                    validationResults[localPropertyName] = new List<T>(newValidationResults);
+                    raiseErrorsChanged(localPropertyName);
                 }
                 else
                 {
-                    this.validationResults.Remove(localPropertyName);
-                    this.raiseErrorsChanged(localPropertyName);
+                    validationResults.Remove(localPropertyName);
+                    raiseErrorsChanged(localPropertyName);
                 }
             }
         }

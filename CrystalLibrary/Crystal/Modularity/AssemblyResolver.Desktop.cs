@@ -27,10 +27,10 @@ namespace Crystal.Modularity
         /// declared in the assembly.</remarks>
         public void LoadAssemblyFrom(string assemblyFilePath)
         {
-            if (!this.handlesAssemblyResolve)
+            if (!handlesAssemblyResolve)
             {
-                AppDomain.CurrentDomain.AssemblyResolve += this.CurrentDomain_AssemblyResolve;
-                this.handlesAssemblyResolve = true;
+                AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+                handlesAssemblyResolve = true;
             }
 
             Uri assemblyUri = GetFileUri(assemblyFilePath);
@@ -46,7 +46,7 @@ namespace Crystal.Modularity
             }
 
             AssemblyName assemblyName = AssemblyName.GetAssemblyName(assemblyUri.LocalPath);
-            AssemblyInfo assemblyInfo = this.registeredAssemblies.FirstOrDefault(a => assemblyName == a.AssemblyName);
+            AssemblyInfo assemblyInfo = registeredAssemblies.FirstOrDefault(a => assemblyName == a.AssemblyName);
 
             if (assemblyInfo != null)
             {
@@ -54,7 +54,7 @@ namespace Crystal.Modularity
             }
 
             assemblyInfo = new AssemblyInfo() { AssemblyName = assemblyName, AssemblyUri = assemblyUri };
-            this.registeredAssemblies.Add(assemblyInfo);
+            registeredAssemblies.Add(assemblyInfo);
         }
 
         private static Uri GetFileUri(string filePath)
@@ -83,7 +83,7 @@ namespace Crystal.Modularity
         {
             AssemblyName assemblyName = new AssemblyName(args.Name);
 
-            AssemblyInfo assemblyInfo = this.registeredAssemblies.FirstOrDefault(a => AssemblyName.ReferenceMatchesDefinition(assemblyName, a.AssemblyName));
+            AssemblyInfo assemblyInfo = registeredAssemblies.FirstOrDefault(a => AssemblyName.ReferenceMatchesDefinition(assemblyName, a.AssemblyName));
 
             if (assemblyInfo != null)
             {
@@ -116,7 +116,7 @@ namespace Crystal.Modularity
         /// <filterpriority>2</filterpriority>
         public void Dispose()
         {
-            this.Dispose(true);
+            Dispose(true);
             GC.SuppressFinalize(this);
         }
 
@@ -126,10 +126,10 @@ namespace Crystal.Modularity
         /// <param name="disposing">When <see langword="true"/>, it is being called from the Dispose method.</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (this.handlesAssemblyResolve)
+            if (handlesAssemblyResolve)
             {
-                AppDomain.CurrentDomain.AssemblyResolve -= this.CurrentDomain_AssemblyResolve;
-                this.handlesAssemblyResolve = false;
+                AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
+                handlesAssemblyResolve = false;
             }
         }
 

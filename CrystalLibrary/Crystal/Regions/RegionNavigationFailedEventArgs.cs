@@ -18,7 +18,7 @@ namespace Crystal.Regions
             if (navigationContext == null)
                 throw new ArgumentNullException(nameof(navigationContext));
 
-            this.NavigationContext = navigationContext;
+            NavigationContext = navigationContext;
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace Crystal.Regions
         public RegionNavigationFailedEventArgs(NavigationContext navigationContext, Exception error)
             : this(navigationContext)
         {
-            this.Error = error;
+            Error = error;
         }
 
         /// <summary>
@@ -55,9 +55,9 @@ namespace Crystal.Regions
         {
             get
             {
-                if (this.NavigationContext != null)
+                if (NavigationContext != null)
                 {
-                    return this.NavigationContext.Uri;
+                    return NavigationContext.Uri;
                 }
 
                 return null;

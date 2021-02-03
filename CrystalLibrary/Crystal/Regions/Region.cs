@@ -233,7 +233,7 @@ namespace Crystal.Regions
         /// <returns>The <see cref="IRegionManager"/> that is set on the view if it is a <see cref="DependencyObject"/>. It will be the current region manager when using this overload.</returns>
         public IRegionManager Add(object view)
         {
-            return this.Add(view, null, false);
+            return Add(view, null, false);
         }
 
         /// <summary>
@@ -249,7 +249,7 @@ namespace Crystal.Regions
                 throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.StringCannotBeNullOrEmpty, "viewName"));
             }
 
-            return this.Add(view, viewName, false);
+            return Add(view, viewName, false);
         }
 
         /// <summary>
@@ -261,8 +261,8 @@ namespace Crystal.Regions
         /// <returns>The <see cref="IRegionManager"/> that is set on the view if it is a <see cref="DependencyObject"/>.</returns>
         public virtual IRegionManager Add(object view, string viewName, bool createRegionManagerScope)
         {
-            IRegionManager manager = createRegionManagerScope ? this.RegionManager.CreateRegionManager() : this.RegionManager;
-            this.InnerAdd(view, viewName, manager);
+            IRegionManager manager = createRegionManagerScope ? RegionManager.CreateRegionManager() : RegionManager;
+            InnerAdd(view, viewName, manager);
             return manager;
         }
 
@@ -272,11 +272,11 @@ namespace Crystal.Regions
         /// <param name="view">The view to remove.</param>
         public virtual void Remove(object view)
         {
-            ItemMetadata itemMetadata = this.GetItemMetadataOrThrow(view);
+            ItemMetadata itemMetadata = GetItemMetadataOrThrow(view);
 
             ItemMetadataCollection.Remove(itemMetadata);
 
-            if (view is DependencyObject dependencyObject && Regions.RegionManager.GetRegionManager(dependencyObject) == this.RegionManager)
+            if (view is DependencyObject dependencyObject && Regions.RegionManager.GetRegionManager(dependencyObject) == RegionManager)
             {
                 dependencyObject.ClearValue(Regions.RegionManager.RegionManagerProperty);
             }
@@ -299,7 +299,7 @@ namespace Crystal.Regions
         /// <param name="view">The view to activate.</param>
         public virtual void Activate(object view)
         {
-            ItemMetadata itemMetadata = this.GetItemMetadataOrThrow(view);
+            ItemMetadata itemMetadata = GetItemMetadataOrThrow(view);
 
             if (!itemMetadata.IsActive)
             {
@@ -313,7 +313,7 @@ namespace Crystal.Regions
         /// <param name="view">The view to deactivate.</param>
         public virtual void Deactivate(object view)
         {
-            ItemMetadata itemMetadata = this.GetItemMetadataOrThrow(view);
+            ItemMetadata itemMetadata = GetItemMetadataOrThrow(view);
 
             if (itemMetadata.IsActive)
             {
@@ -333,7 +333,7 @@ namespace Crystal.Regions
                 throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.StringCannotBeNullOrEmpty, "viewName"));
             }
 
-            ItemMetadata metadata = this.ItemMetadataCollection.FirstOrDefault(x => x.Name == viewName);
+            ItemMetadata metadata = ItemMetadataCollection.FirstOrDefault(x => x.Name == viewName);
 
             if (metadata != null)
             {
@@ -350,7 +350,7 @@ namespace Crystal.Regions
         /// <param name="navigationCallback">A callback to execute when the navigation request is completed.</param>
         public void RequestNavigate(Uri target, Action<NavigationResult> navigationCallback)
         {
-            this.RequestNavigate(target, navigationCallback, null);
+            RequestNavigate(target, navigationCallback, null);
         }
 
         /// <summary>
@@ -361,12 +361,12 @@ namespace Crystal.Regions
         /// <param name="navigationParameters">The navigation parameters specific to the navigation request.</param>
         public void RequestNavigate(Uri target, Action<NavigationResult> navigationCallback, NavigationParameters navigationParameters)
         {
-            this.NavigationService.RequestNavigate(target, navigationCallback, navigationParameters);
+            NavigationService.RequestNavigate(target, navigationCallback, navigationParameters);
         }
 
         private void InnerAdd(object view, string viewName, IRegionManager scopedRegionManager)
         {
-            if (this.ItemMetadataCollection.FirstOrDefault(x => x.Item == view) != null)
+            if (ItemMetadataCollection.FirstOrDefault(x => x.Item == view) != null)
             {
                 throw new InvalidOperationException(Resources.RegionViewExistsException);
             }
@@ -374,7 +374,7 @@ namespace Crystal.Regions
             ItemMetadata itemMetadata = new ItemMetadata(view);
             if (!string.IsNullOrEmpty(viewName))
             {
-                if (this.ItemMetadataCollection.FirstOrDefault(x => x.Name == viewName) != null)
+                if (ItemMetadataCollection.FirstOrDefault(x => x.Name == viewName) != null)
                 {
                     throw new InvalidOperationException(String.Format(CultureInfo.InvariantCulture, Resources.RegionViewNameExistsException, viewName));
                 }
@@ -387,7 +387,7 @@ namespace Crystal.Regions
                 Regions.RegionManager.SetRegionManager(dependencyObject, scopedRegionManager);
             }
 
-            this.ItemMetadataCollection.Add(itemMetadata);
+            ItemMetadataCollection.Add(itemMetadata);
         }
 
         private ItemMetadata GetItemMetadataOrThrow(object view)
@@ -395,7 +395,7 @@ namespace Crystal.Regions
             if (view == null)
                 throw new ArgumentNullException(nameof(view));
 
-            ItemMetadata itemMetadata = this.ItemMetadataCollection.FirstOrDefault(x => x.Item == view);
+            ItemMetadata itemMetadata = ItemMetadataCollection.FirstOrDefault(x => x.Item == view);
 
             if (itemMetadata == null)
                 throw new ArgumentException(Resources.ViewNotInRegionException, nameof(view));

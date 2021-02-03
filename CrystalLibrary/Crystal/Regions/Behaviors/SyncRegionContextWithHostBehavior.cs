@@ -33,7 +33,7 @@ namespace Crystal.Regions.Behaviors
         {
             get
             {
-                return RegionContext.GetObservableContext(this.hostControl);
+                return RegionContext.GetObservableContext(hostControl);
             }
         }
 
@@ -56,7 +56,7 @@ namespace Crystal.Regions.Behaviors
                 {
                     throw new InvalidOperationException(Resources.HostControlCannotBeSetAfterAttach);
                 }
-                this.hostControl = value;
+                hostControl = value;
             }
         }
 
@@ -65,14 +65,14 @@ namespace Crystal.Regions.Behaviors
         /// </summary>
         protected override void OnAttach()
         {
-            if (this.HostControl != null)
+            if (HostControl != null)
             {
                 // Sync values initially. 
                 SynchronizeRegionContext();
 
                 // Now register for events to keep them in sync
-                this.HostControlRegionContext.PropertyChanged += this.RegionContextObservableObject_PropertyChanged;
-                this.Region.PropertyChanged += this.Region_PropertyChanged;
+                HostControlRegionContext.PropertyChanged += RegionContextObservableObject_PropertyChanged;
+                Region.PropertyChanged += Region_PropertyChanged;
             }
         }
 
@@ -80,11 +80,11 @@ namespace Crystal.Regions.Behaviors
         {
             if (e.PropertyName == RegionContextPropertyName)
             {
-                if (RegionManager.GetRegionContext(this.HostControl) != this.Region.Context)
+                if (RegionManager.GetRegionContext(HostControl) != Region.Context)
                 {
                     // Setting this Dependency Property will automatically also change the HostControlRegionContext.Value
                     // (see RegionManager.OnRegionContextChanged())
-                    RegionManager.SetRegionContext(this.hostControl, this.Region.Context);
+                    RegionManager.SetRegionContext(hostControl, Region.Context);
                 }
             }
         }
@@ -100,16 +100,16 @@ namespace Crystal.Regions.Behaviors
         private void SynchronizeRegionContext()
         {
             // Forward this value to the Region
-            if (this.Region.Context != this.HostControlRegionContext.Value)
+            if (Region.Context != HostControlRegionContext.Value)
             {
-                this.Region.Context = this.HostControlRegionContext.Value;
+                Region.Context = HostControlRegionContext.Value;
             }
 
             // Also make sure the region's DependencyProperty was changed (this can occur if the value
             // was changed only on the HostControlRegionContext)
-            if (RegionManager.GetRegionContext(this.HostControl) != this.HostControlRegionContext.Value)
+            if (RegionManager.GetRegionContext(HostControl) != HostControlRegionContext.Value)
             {
-                RegionManager.SetRegionContext(this.HostControl, this.HostControlRegionContext.Value);
+                RegionManager.SetRegionContext(HostControl, HostControlRegionContext.Value);
             }
         }
     }

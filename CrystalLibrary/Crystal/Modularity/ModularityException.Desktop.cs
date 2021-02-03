@@ -17,7 +17,7 @@ namespace Crystal.Modularity
         protected ModularityException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-            this.ModuleName = info.GetValue("ModuleName", typeof(string)) as string;
+            ModuleName = info.GetValue("ModuleName", typeof(string)) as string;
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace Crystal.Modularity
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
-            info.AddValue("ModuleName", this.ModuleName);
+            info.AddValue("ModuleName", ModuleName);
         }
     }
 }

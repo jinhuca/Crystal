@@ -38,7 +38,7 @@ namespace Crystal.Regions
         {
             get
             {
-                return this.backStack.Count > 0;
+                return backStack.Count > 0;
             }
         }
 
@@ -52,7 +52,7 @@ namespace Crystal.Regions
         {
             get
             {
-                return this.forwardStack.Count > 0;
+                return forwardStack.Count > 0;
             }
         }
 
@@ -61,22 +61,22 @@ namespace Crystal.Regions
         /// </summary>
         public void GoBack()
         {
-            if (this.CanGoBack)
+            if (CanGoBack)
             {
-                IRegionNavigationJournalEntry entry = this.backStack.Peek();
-                this.InternalNavigate(
+                IRegionNavigationJournalEntry entry = backStack.Peek();
+                InternalNavigate(
                     entry,
                     result =>
                     {
                         if (result)
                         {
-                            if (this.CurrentEntry != null)
+                            if (CurrentEntry != null)
                             {
-                                this.forwardStack.Push(this.CurrentEntry);
+                                forwardStack.Push(CurrentEntry);
                             }
 
-                            this.backStack.Pop();
-                            this.CurrentEntry = entry;
+                            backStack.Pop();
+                            CurrentEntry = entry;
                         }
                     });
             }
@@ -87,22 +87,22 @@ namespace Crystal.Regions
         /// </summary>
         public void GoForward()
         {
-            if (this.CanGoForward)
+            if (CanGoForward)
             {
-                IRegionNavigationJournalEntry entry = this.forwardStack.Peek();
-                this.InternalNavigate(
+                IRegionNavigationJournalEntry entry = forwardStack.Peek();
+                InternalNavigate(
                     entry,
                     result =>
                     {
                         if (result)
                         {
-                            if (this.CurrentEntry != null)
+                            if (CurrentEntry != null)
                             {
-                                this.backStack.Push(this.CurrentEntry);
+                                backStack.Push(CurrentEntry);
                             }
 
-                            this.forwardStack.Pop();
-                            this.CurrentEntry = entry;
+                            forwardStack.Pop();
+                            CurrentEntry = entry;
                         }
                     });
             }
@@ -115,14 +115,14 @@ namespace Crystal.Regions
         /// <param name="persistInHistory">Determine if the view is added to the back stack or excluded from the history.</param>
         public void RecordNavigation(IRegionNavigationJournalEntry entry, bool persistInHistory)
         {
-            if (!this.isNavigatingInternal)
+            if (!isNavigatingInternal)
             {
-                if (this.CurrentEntry != null)
+                if (CurrentEntry != null)
                 {
-                    this.backStack.Push(this.CurrentEntry);
+                    backStack.Push(CurrentEntry);
                 }
 
-                this.forwardStack.Clear();
+                forwardStack.Clear();
 
                 if (persistInHistory)
                     CurrentEntry = entry;
@@ -136,19 +136,19 @@ namespace Crystal.Regions
         /// </summary>
         public void Clear()
         {
-            this.CurrentEntry = null;
-            this.backStack.Clear();
-            this.forwardStack.Clear();
+            CurrentEntry = null;
+            backStack.Clear();
+            forwardStack.Clear();
         }
 
         private void InternalNavigate(IRegionNavigationJournalEntry entry, Action<bool> callback)
         {
-            this.isNavigatingInternal = true;
-            this.NavigationTarget.RequestNavigate(
+            isNavigatingInternal = true;
+            NavigationTarget.RequestNavigate(
                 entry.Uri,
                 nr =>
                 {
-                    this.isNavigatingInternal = false;
+                    isNavigatingInternal = false;
 
                     if (nr.Result.HasValue)
                     {

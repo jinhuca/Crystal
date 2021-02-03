@@ -64,7 +64,7 @@ namespace Crystal.Regions
             {
                 foreach (KeyValuePair<string, object> navigationParameter in navigationParameters)
                 {
-                    this.Parameters.Add(navigationParameter.Key, navigationParameter.Value);
+                    Parameters.Add(navigationParameter.Key, navigationParameter.Value);
                 }
             }
         }

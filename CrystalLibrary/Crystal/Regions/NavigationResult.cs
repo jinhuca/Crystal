@@ -16,8 +16,8 @@ namespace Crystal.Regions
         /// <param name="result">The result.</param>
         public NavigationResult(NavigationContext context, bool? result)
         {
-            this.Context = context;
-            this.Result = result;
+            Context = context;
+            Result = result;
         }
 
         /// <summary>
@@ -27,9 +27,9 @@ namespace Crystal.Regions
         /// <param name="error">The error.</param>
         public NavigationResult(NavigationContext context, Exception error)
         {
-            this.Context = context;
-            this.Error = error;
-            this.Result = false;
+            Context = context;
+            Error = error;
+            Result = false;
         }
 
         /// <summary>

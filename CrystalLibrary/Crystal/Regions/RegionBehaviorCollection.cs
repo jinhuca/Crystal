@@ -29,7 +29,7 @@ namespace Crystal.Regions
         /// <value>The RegionBehavior that's registered with the key.</value>
         public IRegionBehavior this[string key]
         {
-            get { return this.behaviors[key]; }
+            get { return behaviors[key]; }
         }
 
         /// <summary>
@@ -50,11 +50,11 @@ namespace Crystal.Regions
             if (regionBehavior == null)
                 throw new ArgumentNullException(nameof(regionBehavior));
 
-            if (this.behaviors.ContainsKey(key))
+            if (behaviors.ContainsKey(key))
                 throw new ArgumentException("Could not add duplicate behavior with same key.", nameof(key));
 
-            this.behaviors.Add(key, regionBehavior);
-            regionBehavior.Region = this.region;
+            behaviors.Add(key, regionBehavior);
+            regionBehavior.Region = region;
 
             regionBehavior.Attach();
         }
@@ -66,7 +66,7 @@ namespace Crystal.Regions
         /// <returns></returns>
         public bool ContainsKey(string key)
         {
-            return this.behaviors.ContainsKey(key);
+            return behaviors.ContainsKey(key);
         }
 
         /// <summary>

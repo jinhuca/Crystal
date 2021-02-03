@@ -18,20 +18,20 @@ namespace Crystal.Modularity
         {
             get
             {
-                if (this.typeLoaders == null)
+                if (typeLoaders == null)
                 {
-                    this.typeLoaders = new List<IModuleTypeLoader>
+                    typeLoaders = new List<IModuleTypeLoader>
                                           {
                                               new FileModuleTypeLoader()
                                           };
                 }
 
-                return this.typeLoaders;
+                return typeLoaders;
             }
 
             set
             {
-                this.typeLoaders = value;
+                typeLoaders = value;
             }
         }
 

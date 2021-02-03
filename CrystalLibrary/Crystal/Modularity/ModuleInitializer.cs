@@ -17,7 +17,7 @@ namespace Crystal.Modularity
         /// <param name="containerExtension">The container that will be used to resolve the modules by specifying its type.</param>
         public ModuleInitializer(IContainerExtension containerExtension)
         {
-            this._containerExtension = containerExtension ?? throw new ArgumentNullException(nameof(containerExtension));
+            _containerExtension = containerExtension ?? throw new ArgumentNullException(nameof(containerExtension));
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace Crystal.Modularity
             IModule moduleInstance = null;
             try
             {
-                moduleInstance = this.CreateModule(moduleInfo);
+                moduleInstance = CreateModule(moduleInfo);
                 if (moduleInstance != null)
                 {
                     moduleInstance.RegisterTypes(_containerExtension);
@@ -42,7 +42,7 @@ namespace Crystal.Modularity
             }
             catch (Exception ex)
             {
-                this.HandleModuleInitializationError(
+                HandleModuleInitializationError(
                     moduleInfo,
                     moduleInstance?.GetType().Assembly.FullName,
                     ex);
@@ -96,7 +96,7 @@ namespace Crystal.Modularity
             if (moduleInfo == null)
                 throw new ArgumentNullException(nameof(moduleInfo));
 
-            return this.CreateModule(moduleInfo.ModuleType);
+            return CreateModule(moduleInfo.ModuleType);
         }
 
         /// <summary>

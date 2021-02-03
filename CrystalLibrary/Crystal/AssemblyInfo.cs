@@ -10,4 +10,3 @@ using System.Windows;
 [assembly: XmlnsDefinition("http://schemas.crystal.com/0.9", "Crystal.Mvvm")]
 [assembly: XmlnsDefinition("http://schemas.crystal.com/0.9", "Crystal.Interactivity")]
 [assembly: XmlnsDefinition("http://schemas.crystal.com/0.9", "Crystal.Ioc")]
-[assembly: XmlnsDefinition("http://schemas.crystal.com/0.9", "Crystal.Ioc")]

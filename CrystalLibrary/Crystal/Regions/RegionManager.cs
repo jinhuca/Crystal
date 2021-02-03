@@ -455,7 +455,7 @@ namespace Crystal.Regions
             public RegionCollection(IRegionManager regionManager)
             {
                 this.regionManager = regionManager;
-                this.regions = new List<IRegion>();
+                regions = new List<IRegion>();
             }
 
             public event NotifyCollectionChangedEventHandler CollectionChanged;
@@ -464,7 +464,7 @@ namespace Crystal.Regions
             {
                 UpdateRegions();
 
-                return this.regions.GetEnumerator();
+                return regions.GetEnumerator();
             }
 
             IEnumerator IEnumerable.GetEnumerator()
@@ -500,16 +500,16 @@ namespace Crystal.Regions
                     throw new InvalidOperationException(Resources.RegionNameCannotBeEmptyException);
                 }
 
-                if (this.GetRegionByName(region.Name) != null)
+                if (GetRegionByName(region.Name) != null)
                 {
                     throw new ArgumentException(string.Format(CultureInfo.InvariantCulture,
                                                               Resources.RegionNameExistsException, region.Name));
                 }
 
-                this.regions.Add(region);
-                region.RegionManager = this.regionManager;
+                regions.Add(region);
+                region.RegionManager = regionManager;
 
-                this.OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, region, 0));
+                OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, region, 0));
             }
 
             public bool Remove(string regionName)
@@ -522,10 +522,10 @@ namespace Crystal.Regions
                 if (region != null)
                 {
                     removed = true;
-                    this.regions.Remove(region);
+                    regions.Remove(region);
                     region.RegionManager = null;
 
-                    this.OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, region, 0));
+                    OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, region, 0));
                 }
 
                 return removed;
@@ -561,12 +561,12 @@ namespace Crystal.Regions
 
             private IRegion GetRegionByName(string regionName)
             {
-                return this.regions.FirstOrDefault(r => r.Name == regionName);
+                return regions.FirstOrDefault(r => r.Name == regionName);
             }
 
             private void OnCollectionChanged(NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
             {
-                var handler = this.CollectionChanged;
+                var handler = CollectionChanged;
 
                 if (handler != null)
                 {

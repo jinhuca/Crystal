@@ -34,10 +34,10 @@ namespace Crystal.Regions.Behaviors
         /// </summary>
         public void Attach()
         {
-            this.Region.Views.CollectionChanged += this.Views_CollectionChanged;
-            this.Region.PropertyChanged += this.Region_PropertyChanged;
-            SetContextToViews(this.Region.Views, this.Region.Context);
-            this.AttachNotifyChangeEvent(this.Region.Views);
+            Region.Views.CollectionChanged += Views_CollectionChanged;
+            Region.PropertyChanged += Region_PropertyChanged;
+            SetContextToViews(Region.Views, Region.Context);
+            AttachNotifyChangeEvent(Region.Views);
         }
 
         private static void SetContextToViews(IEnumerable views, object context)
@@ -61,7 +61,7 @@ namespace Crystal.Regions.Behaviors
                 if (dependencyObject != null)
                 {
                     ObservableObject<object> viewRegionContext = RegionContext.GetObservableContext(dependencyObject);
-                    viewRegionContext.PropertyChanged += this.ViewRegionContext_OnPropertyChangedEvent;
+                    viewRegionContext.PropertyChanged += ViewRegionContext_OnPropertyChangedEvent;
                 }
             }
         }
@@ -74,7 +74,7 @@ namespace Crystal.Regions.Behaviors
                 if (dependencyObject != null)
                 {
                     ObservableObject<object> viewRegionContext = RegionContext.GetObservableContext(dependencyObject);
-                    viewRegionContext.PropertyChanged -= this.ViewRegionContext_OnPropertyChangedEvent;
+                    viewRegionContext.PropertyChanged -= ViewRegionContext_OnPropertyChangedEvent;
                 }
             }
         }
@@ -84,7 +84,7 @@ namespace Crystal.Regions.Behaviors
             if (args.PropertyName == "Value")
             {
                 var context = (ObservableObject<object>)sender;
-                this.Region.Context = context.Value;
+                Region.Context = context.Value;
             }
         }
 
@@ -92,12 +92,12 @@ namespace Crystal.Regions.Behaviors
         {
             if (e.Action == NotifyCollectionChangedAction.Add)
             {
-                SetContextToViews(e.NewItems, this.Region.Context);
-                this.AttachNotifyChangeEvent(e.NewItems);
+                SetContextToViews(e.NewItems, Region.Context);
+                AttachNotifyChangeEvent(e.NewItems);
             }
-            else if (e.Action == NotifyCollectionChangedAction.Remove && this.Region.Context != null)
+            else if (e.Action == NotifyCollectionChangedAction.Remove && Region.Context != null)
             {
-                this.DetachNotifyChangeEvent(e.OldItems);
+                DetachNotifyChangeEvent(e.OldItems);
                 SetContextToViews(e.OldItems, null);
 
             }
@@ -107,7 +107,7 @@ namespace Crystal.Regions.Behaviors
         {
             if (e.PropertyName == "Context")
             {
-                SetContextToViews(this.Region.Views, this.Region.Context);
+                SetContextToViews(Region.Views, Region.Context);
             }
         }
     }

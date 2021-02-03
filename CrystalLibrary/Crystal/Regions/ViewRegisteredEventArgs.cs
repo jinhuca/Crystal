@@ -16,8 +16,8 @@ namespace Crystal.Regions
         /// <param name="getViewDelegate">The content which was registered.</param>
         public ViewRegisteredEventArgs(string regionName, Func<object> getViewDelegate)
         {
-            this.GetView = getViewDelegate;
-            this.RegionName = regionName;
+            GetView = getViewDelegate;
+            RegionName = regionName;
         }
 
         /// <summary>

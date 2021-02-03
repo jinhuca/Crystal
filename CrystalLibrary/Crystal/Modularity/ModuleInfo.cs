@@ -28,12 +28,12 @@ namespace Crystal.Modularity
             if (dependsOn == null)
                 throw new ArgumentNullException(nameof(dependsOn));
 
-            this.ModuleName = name;
-            this.ModuleType = type;
-            this.DependsOn = new Collection<string>();
+            ModuleName = name;
+            ModuleType = type;
+            DependsOn = new Collection<string>();
             foreach (string dependency in dependsOn)
             {
-                this.DependsOn.Add(dependency);
+                DependsOn.Add(dependency);
             }
         }
 

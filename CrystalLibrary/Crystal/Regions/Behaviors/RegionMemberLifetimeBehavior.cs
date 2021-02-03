@@ -49,7 +49,7 @@ namespace Crystal.Regions.Behaviors
         /// </summary>
         protected override void OnAttach()
         {
-            this.Region.ActiveViews.CollectionChanged += this.OnActiveViewsChanged;
+            Region.ActiveViews.CollectionChanged += OnActiveViewsChanged;
         }
 
         private void OnActiveViewsChanged(object sender, NotifyCollectionChangedEventArgs e)

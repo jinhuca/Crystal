@@ -53,12 +53,12 @@ namespace Crystal.Modularity
 
         private void RaiseLoadModuleCompleted(IModuleInfo moduleInfo, Exception error)
         {
-            this.RaiseLoadModuleCompleted(new LoadModuleCompletedEventArgs(moduleInfo, error));
+            RaiseLoadModuleCompleted(new LoadModuleCompletedEventArgs(moduleInfo, error));
         }
 
         private void RaiseLoadModuleCompleted(LoadModuleCompletedEventArgs e)
         {
-            this.LoadModuleCompleted?.Invoke(this, e);
+            LoadModuleCompleted?.Invoke(this, e);
         }
 
         /// <summary>
@@ -66,9 +66,9 @@ namespace Crystal.Modularity
         /// </summary>
         public void Run()
         {
-            this.ModuleCatalog.Initialize();
+            ModuleCatalog.Initialize();
 
-            this.LoadModulesWhenAvailable();
+            LoadModulesWhenAvailable();
         }
 
 
@@ -78,15 +78,15 @@ namespace Crystal.Modularity
         /// <param name="moduleName">Name of the module requested for initialization.</param>
         public void LoadModule(string moduleName)
         {
-            var module = this.ModuleCatalog.Modules.Where(m => m.ModuleName == moduleName);
+            var module = ModuleCatalog.Modules.Where(m => m.ModuleName == moduleName);
             if (module == null || module.Count() != 1)
             {
                 throw new ModuleNotFoundException(moduleName, string.Format(CultureInfo.CurrentCulture, Resources.ModuleNotFound, moduleName));
             }
 
-            var modulesToLoad = this.ModuleCatalog.CompleteListWithDependencies(module);
+            var modulesToLoad = ModuleCatalog.CompleteListWithDependencies(module);
 
-            this.LoadModuleTypes(modulesToLoad);
+            LoadModuleTypes(modulesToLoad);
         }
 
         /// <summary>
@@ -117,11 +117,11 @@ namespace Crystal.Modularity
 
         private void LoadModulesWhenAvailable()
         {
-            var whenAvailableModules = this.ModuleCatalog.Modules.Where(m => m.InitializationMode == InitializationMode.WhenAvailable);
-            var modulesToLoadTypes = this.ModuleCatalog.CompleteListWithDependencies(whenAvailableModules);
+            var whenAvailableModules = ModuleCatalog.Modules.Where(m => m.InitializationMode == InitializationMode.WhenAvailable);
+            var modulesToLoadTypes = ModuleCatalog.CompleteListWithDependencies(whenAvailableModules);
             if (modulesToLoadTypes != null)
             {
-                this.LoadModuleTypes(modulesToLoadTypes);
+                LoadModuleTypes(modulesToLoadTypes);
             }
         }
 
@@ -136,9 +136,9 @@ namespace Crystal.Modularity
             {
                 if (moduleInfo.State == ModuleState.NotStarted)
                 {
-                    if (this.ModuleNeedsRetrieval(moduleInfo))
+                    if (ModuleNeedsRetrieval(moduleInfo))
                     {
-                        this.BeginRetrievingModule(moduleInfo);
+                        BeginRetrievingModule(moduleInfo);
                     }
                     else
                     {
@@ -147,7 +147,7 @@ namespace Crystal.Modularity
                 }
             }
 
-            this.LoadModulesThatAreReadyForLoad();
+            LoadModulesThatAreReadyForLoad();
         }
 
         /// <summary>
@@ -159,14 +159,14 @@ namespace Crystal.Modularity
             while (keepLoading)
             {
                 keepLoading = false;
-                var availableModules = this.ModuleCatalog.Modules.Where(m => m.State == ModuleState.ReadyForInitialization);
+                var availableModules = ModuleCatalog.Modules.Where(m => m.State == ModuleState.ReadyForInitialization);
 
                 foreach (var moduleInfo in availableModules)
                 {
-                    if ((moduleInfo.State != ModuleState.Initialized) && (this.AreDependenciesLoaded(moduleInfo)))
+                    if ((moduleInfo.State != ModuleState.Initialized) && (AreDependenciesLoaded(moduleInfo)))
                     {
                         moduleInfo.State = ModuleState.Initializing;
-                        this.InitializeModule(moduleInfo);
+                        InitializeModule(moduleInfo);
                         keepLoading = true;
                         break;
                     }
@@ -177,16 +177,16 @@ namespace Crystal.Modularity
         private void BeginRetrievingModule(IModuleInfo moduleInfo)
         {
             var moduleInfoToLoadType = moduleInfo;
-            IModuleTypeLoader moduleTypeLoader = this.GetTypeLoaderForModule(moduleInfoToLoadType);
+            IModuleTypeLoader moduleTypeLoader = GetTypeLoaderForModule(moduleInfoToLoadType);
             moduleInfoToLoadType.State = ModuleState.LoadingTypes;
 
             // Delegate += works differently betweem SL and WPF.
             // We only want to subscribe to each instance once.
-            if (!this.subscribedToModuleTypeLoaders.Contains(moduleTypeLoader))
+            if (!subscribedToModuleTypeLoaders.Contains(moduleTypeLoader))
             {
-                moduleTypeLoader.ModuleDownloadProgressChanged += this.IModuleTypeLoader_ModuleDownloadProgressChanged;
-                moduleTypeLoader.LoadModuleCompleted += this.IModuleTypeLoader_LoadModuleCompleted;
-                this.subscribedToModuleTypeLoaders.Add(moduleTypeLoader);
+                moduleTypeLoader.ModuleDownloadProgressChanged += IModuleTypeLoader_ModuleDownloadProgressChanged;
+                moduleTypeLoader.LoadModuleCompleted += IModuleTypeLoader_LoadModuleCompleted;
+                subscribedToModuleTypeLoaders.Add(moduleTypeLoader);
             }
 
             moduleTypeLoader.LoadModuleType(moduleInfo);
@@ -194,7 +194,7 @@ namespace Crystal.Modularity
 
         private void IModuleTypeLoader_ModuleDownloadProgressChanged(object sender, ModuleDownloadProgressChangedEventArgs e)
         {
-            this.RaiseModuleDownloadProgressChanged(e);
+            RaiseModuleDownloadProgressChanged(e);
         }
 
         private void IModuleTypeLoader_LoadModuleCompleted(object sender, LoadModuleCompletedEventArgs e)
@@ -209,16 +209,16 @@ namespace Crystal.Modularity
                 // This callback may call back on the UI thread, but we are not guaranteeing it.
                 // If you were to add a custom retriever that retrieved in the background, you
                 // would need to consider dispatching to the UI thread.
-                this.LoadModulesThatAreReadyForLoad();
+                LoadModulesThatAreReadyForLoad();
             }
             else
             {
-                this.RaiseLoadModuleCompleted(e);
+                RaiseLoadModuleCompleted(e);
 
                 // If the error is not handled then I log it and raise an exception.
                 if (!e.IsErrorHandled)
                 {
-                    this.HandleModuleTypeLoadingError(e.ModuleInfo, e.Error);
+                    HandleModuleTypeLoadingError(e.ModuleInfo, e.Error);
                 }
             }
         }
@@ -248,7 +248,7 @@ namespace Crystal.Modularity
 
         private bool AreDependenciesLoaded(IModuleInfo moduleInfo)
         {
-            var requiredModules = this.ModuleCatalog.GetDependentModules(moduleInfo);
+            var requiredModules = ModuleCatalog.GetDependentModules(moduleInfo);
             if (requiredModules == null)
             {
                 return true;
@@ -262,7 +262,7 @@ namespace Crystal.Modularity
 
         private IModuleTypeLoader GetTypeLoaderForModule(IModuleInfo moduleInfo)
         {
-            foreach (IModuleTypeLoader typeLoader in this.ModuleTypeLoaders)
+            foreach (IModuleTypeLoader typeLoader in ModuleTypeLoaders)
             {
                 if (typeLoader.CanLoadModuleType(moduleInfo))
                 {
@@ -277,9 +277,9 @@ namespace Crystal.Modularity
         {
             if (moduleInfo.State == ModuleState.Initializing)
             {
-                this.moduleInitializer.Initialize(moduleInfo);
+                moduleInitializer.Initialize(moduleInfo);
                 moduleInfo.State = ModuleState.Initialized;
-                this.RaiseLoadModuleCompleted(moduleInfo, null);
+                RaiseLoadModuleCompleted(moduleInfo, null);
             }
         }
 
@@ -292,7 +292,7 @@ namespace Crystal.Modularity
         /// <filterpriority>2</filterpriority>
         public void Dispose()
         {
-            this.Dispose(true);
+            Dispose(true);
             GC.SuppressFinalize(this);
         }
 
@@ -302,7 +302,7 @@ namespace Crystal.Modularity
         /// <param name="disposing">When <see langword="true"/>, it is being called from the Dispose method.</param>
         protected virtual void Dispose(bool disposing)
         {
-            foreach (IModuleTypeLoader typeLoader in this.ModuleTypeLoaders)
+            foreach (IModuleTypeLoader typeLoader in ModuleTypeLoaders)
             {
                 if (typeLoader is IDisposable disposableTypeLoader)
                 {

@@ -56,7 +56,7 @@ namespace Crystal.Modularity
         public ModularityException(string moduleName, string message, Exception innerException)
             : base(message, innerException)
         {
-            this.ModuleName = moduleName;
+            ModuleName = moduleName;
         }
 
         /// <summary>
