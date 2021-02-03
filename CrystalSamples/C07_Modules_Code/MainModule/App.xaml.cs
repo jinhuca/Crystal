@@ -1,17 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Crystal.Ioc;
+using Crystal.Modularity;
+using Crystal.Unity;
+using MainModule.Views;
 using System.Windows;
 
-namespace MainModuleA
+namespace MainModule
 {
 	/// <summary>
 	/// Interaction logic for App.xaml
 	/// </summary>
-	public partial class App : Application
+	public partial class App : CrystalApplication
 	{
+		protected override Window CreateShell()
+		{
+			return Container.Resolve<MainWindow>();
+		}
+
+		protected override void RegisterTypes(IContainerRegistry containerRegistry)
+		{
+		}
+
+		protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
+		{
+			_ = moduleCatalog.AddModule<ModuleA.ModuleAModule>();
+		}
 	}
 }

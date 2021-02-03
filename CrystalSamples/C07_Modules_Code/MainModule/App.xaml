@@ -1,9 +1,8 @@
-﻿<Application x:Class="MainModuleA.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:MainModuleA"
-             StartupUri="MainWindow.xaml">
-    <Application.Resources>
-         
-    </Application.Resources>
-</Application>
+﻿<crystal:CrystalApplication x:Class="MainModule.App"
+                            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                            xmlns:crystal="http://schemas.crystal.com/0.9">
+  <Application.Resources>
+
+  </Application.Resources>
+</crystal:CrystalApplication>
