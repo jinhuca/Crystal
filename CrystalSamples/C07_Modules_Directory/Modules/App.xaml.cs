@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Crystal.Unity;
+using Crystal.Modularity;
+using Crystal.Ioc;
+using Modules.Views;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -11,7 +15,20 @@ namespace Modules
 	/// <summary>
 	/// Interaction logic for App.xaml
 	/// </summary>
-	public partial class App : Application
+	public partial class App : CrystalApplication
 	{
+		protected override Window CreateShell()
+		{
+			return Container.Resolve<MainWindow>();
+		}
+
+		protected override void RegisterTypes(IContainerRegistry containerRegistry)
+		{
+		}
+
+		protected override IModuleCatalog CreateModuleCatalog()
+		{
+			return new DirectoryModuleCatalog { ModulePath = @".\Modules" };
+		}
 	}
 }
