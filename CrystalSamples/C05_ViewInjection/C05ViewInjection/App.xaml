@@ -1,0 +1,9 @@
+﻿<crystal:CrystalApplication x:Class="C05ViewInjection.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:crystal="http://schemas.crystal.com/0.9"
+             xmlns:local="clr-namespace:C05ViewInjection">
+  <Application.Resources>
+
+  </Application.Resources>
+</crystal:CrystalApplication>
