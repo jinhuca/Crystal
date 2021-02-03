@@ -9,8 +9,4 @@
     <ProjectReference Include="..\..\..\CrystalLibrary\DIContainerExtensions\Crystal.Unity\Crystal.Unity.csproj" />
   </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy &quot;$(TargetDir)*.*&quot; &quot;$(SolutionDir)\$(SolutionName)\bin\Debug\net5.0-windows\&quot; /Y" />
-  </Target>
-
 </Project>

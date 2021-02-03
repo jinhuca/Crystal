@@ -9,6 +9,7 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>C:\Users\jinhu\source\repos\Crystal2021\CrystalLibrary\Crystal\Crystal.xml</DocumentationFile>
+    <OutputPath>obj\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
