@@ -5,20 +5,20 @@
         crystal:ViewModelLocator.AutoWireViewModel="True"
         Title="{Binding Title}" Height="350" Width="525">
 
-    <Window.Resources>
-        <Style TargetType="TabItem">
-            <Setter Property="Header" Value="{Binding DataContext.Title}" />
-        </Style>
-    </Window.Resources>
-    
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+  <Window.Resources>
+    <Style TargetType="TabItem">
+      <Setter Property="Header" Value="{Binding DataContext.Title}" />
+    </Style>
+  </Window.Resources>
 
-        <Button Content="Save" Margin="10" Command="{Binding ApplicationCommands.SaveCommand}"/>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
 
-        <TabControl Grid.Row="1" Margin="10" crystal:RegionManager.RegionName="ContentRegion" />
-    </Grid>
+    <Button Content="Save" Margin="10" Command="{Binding ApplicationCommands.SaveCommand}"/>
+
+    <TabControl Grid.Row="1" Margin="10" crystal:RegionManager.RegionName="ContentRegion" />
+  </Grid>
 </Window>
