@@ -21,10 +21,7 @@ namespace Crystal.Events
 		/// Gets the list of current subscriptions.
 		/// </summary>
 		/// <value>The current subscribers.</value>
-		protected ICollection<IEventSubscription> Subscriptions
-		{
-			get { return _subscriptions; }
-		}
+		protected ICollection<IEventSubscription> Subscriptions => _subscriptions;
 
 		/// <summary>
 		/// Adds the specified <see cref="IEventSubscription"/> to the subscribers' collection.
@@ -37,9 +34,7 @@ namespace Crystal.Events
 		protected virtual SubscriptionToken InternalSubscribe(IEventSubscription eventSubscription)
 		{
 			if (eventSubscription == null) throw new ArgumentNullException(nameof(eventSubscription));
-
 			eventSubscription.SubscriptionToken = new SubscriptionToken(Unsubscribe);
-
 			lock (Subscriptions)
 			{
 				Subscriptions.Add(eventSubscription);
@@ -96,7 +91,6 @@ namespace Crystal.Events
 		private List<Action<object[]>> PruneAndReturnStrategies()
 		{
 			List<Action<object[]>> returnList = new List<Action<object[]>>();
-
 			lock (Subscriptions)
 			{
 				for (var i = Subscriptions.Count - 1; i >= 0; i--)
@@ -115,7 +109,6 @@ namespace Crystal.Events
 					}
 				}
 			}
-
 			return returnList;
 		}
 

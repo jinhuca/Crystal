@@ -19,7 +19,7 @@ namespace Crystal.Events
 		///<exception cref="ArgumentNullException">When <paramref name="actionReference"/> or <see paramref="filterReference"/> are <see langword="null" />.</exception>
 		///<exception cref="ArgumentException">When the target of <paramref name="actionReference"/> is not of type <see cref="System.Action{TPayload}"/>.</exception>
 		public DispatcherEventSubscription(IDelegateReference actionReference, SynchronizationContext context)
-				: base(actionReference)
+			: base(actionReference)
 		{
 			syncContext = context;
 		}

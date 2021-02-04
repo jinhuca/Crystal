@@ -38,12 +38,12 @@ namespace Crystal.Common
 				if (string.Compare(kvp.Key, key, StringComparison.Ordinal) == 0)
 				{
 					if (TryGetValueInternal(kvp, type, out var value))
+					{
 						return value;
-
+					}
 					throw new InvalidCastException($"Unable to convert the value of Type '{kvp.Value.GetType().FullName}' to '{type.FullName}' for the key '{key}' ");
 				}
 			}
-
 			return GetDefault(type);
 		}
 
@@ -59,7 +59,6 @@ namespace Crystal.Common
 		public static bool TryGetValue<T>(this IEnumerable<KeyValuePair<string, object>> parameters, string key, out T value)
 		{
 			var type = typeof(T);
-
 			foreach (var kvp in parameters)
 			{
 				if (string.Compare(kvp.Key, key, StringComparison.Ordinal) == 0)
@@ -69,7 +68,6 @@ namespace Crystal.Common
 					return success;
 				}
 			}
-
 			value = default;
 			return false;
 		}
@@ -86,7 +84,6 @@ namespace Crystal.Common
 		{
 			List<T> values = new List<T>();
 			var type = typeof(T);
-
 			foreach (var kvp in parameters)
 			{
 				if (string.Compare(kvp.Key, key, StringComparison.Ordinal) == 0)
@@ -95,7 +92,6 @@ namespace Crystal.Common
 					values.Add((T)value);
 				}
 			}
-
 			return values.AsEnumerable();
 		}
 
@@ -137,7 +133,6 @@ namespace Crystal.Common
 				success = true;
 				value = Convert.ChangeType(kvp.Value, type);
 			}
-
 			return success;
 		}
 

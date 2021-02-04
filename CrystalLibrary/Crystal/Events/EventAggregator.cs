@@ -1,5 +1,3 @@
-
-
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -33,7 +31,6 @@ namespace Crystal.Events
 					TEventType newEvent = new TEventType();
 					newEvent.SynchronizationContext = syncContext;
 					events[typeof(TEventType)] = newEvent;
-
 					return newEvent;
 				}
 				else

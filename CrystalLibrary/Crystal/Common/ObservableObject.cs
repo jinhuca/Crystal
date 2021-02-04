@@ -1,12 +1,5 @@
-
-
 using System.ComponentModel;
-
-#if HAS_WINUI
-using Windows.UI.Xaml;
-#else
 using System.Windows;
-#endif
 
 namespace Crystal.Common
 {
@@ -35,7 +28,6 @@ namespace Crystal.Common
 		/// <summary>
 		/// The value that's wrapped inside the ObservableObject.
 		/// </summary>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1721:PropertyNamesShouldNotMatchGetMethods")]
 		public T Value
 		{
 			get { return (T)GetValue(ValueProperty); }

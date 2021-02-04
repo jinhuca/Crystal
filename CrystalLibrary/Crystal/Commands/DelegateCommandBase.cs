@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Windows.Input;
@@ -13,7 +12,6 @@ namespace Crystal.Commands
 	public abstract class DelegateCommandBase : ICommand, IActiveAware
 	{
 		private bool _isActive;
-
 		private SynchronizationContext _synchronizationContext;
 		private readonly HashSet<string> _observedPropertiesExpressions = new HashSet<string>();
 
@@ -31,8 +29,7 @@ namespace Crystal.Commands
 		public virtual event EventHandler CanExecuteChanged;
 
 		/// <summary>
-		/// Raises <see cref="ICommand.CanExecuteChanged"/> so every 
-		/// command invoker can requery <see cref="ICommand.CanExecute"/>.
+		/// Raises <see cref="ICommand.CanExecuteChanged"/> so every command invoker can requery <see cref="ICommand.CanExecute"/>.
 		/// </summary>
 		protected virtual void OnCanExecuteChanged()
 		{
@@ -47,11 +44,9 @@ namespace Crystal.Commands
 		}
 
 		/// <summary>
-		/// Raises <see cref="CanExecuteChanged"/> so every command invoker
-		/// can requery to check if the command can execute.
+		/// Raises <see cref="CanExecuteChanged"/> so every command invoker can requery to check if the command can execute.
 		/// </summary>
 		/// <remarks>Note that this will trigger the execution of <see cref="CanExecuteChanged"/> once for each invoker.</remarks>
-		[SuppressMessage("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")]
 		public void RaiseCanExecuteChanged()
 		{
 			OnCanExecuteChanged();

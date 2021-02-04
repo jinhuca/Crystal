@@ -30,9 +30,10 @@ namespace Crystal.Commands
 			}
 
 			if (!(propertyExpression is ConstantExpression constantExpression))
+			{
 				throw new NotSupportedException("Operation not supported for the given expression type. " +
 																				"Only MemberExpression and ConstantExpression are currently supported.");
-
+			}
 			var propObserverNodeRoot = new PropertyObserverNode(propNameStack.Pop(), _action);
 			PropertyObserverNode previousNode = propObserverNodeRoot;
 			foreach (var propName in propNameStack) // Create a node chain that corresponds to the property chain.
@@ -45,9 +46,10 @@ namespace Crystal.Commands
 			object propOwnerObject = constantExpression.Value;
 
 			if (!(propOwnerObject is INotifyPropertyChanged inpcObject))
+			{
 				throw new InvalidOperationException("Trying to subscribe PropertyChanged listener in object that " +
 																						$"owns '{propObserverNodeRoot.PropertyInfo.Name}' property, but the object does not implements INotifyPropertyChanged.");
-
+			}
 			propObserverNodeRoot.SubscribeListenerFor(inpcObject);
 		}
 

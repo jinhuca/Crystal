@@ -21,10 +21,13 @@ namespace Crystal.Events
 		public EventSubscription(IDelegateReference actionReference)
 		{
 			if (actionReference == null)
+			{
 				throw new ArgumentNullException(nameof(actionReference));
+			}
 			if (!(actionReference.Target is Action))
+			{
 				throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.InvalidDelegateRerefenceTypeException, typeof(Action).FullName), nameof(actionReference));
-
+			}
 			_actionReference = actionReference;
 		}
 
@@ -32,10 +35,7 @@ namespace Crystal.Events
 		/// Gets the target <see cref="System.Action"/> that is referenced by the <see cref="IDelegateReference"/>.
 		/// </summary>
 		/// <value>An <see cref="System.Action"/> or <see langword="null" /> if the referenced target is not alive.</value>
-		public Action Action
-		{
-			get { return (Action)_actionReference.Target; }
-		}
+		public Action Action => (Action)_actionReference.Target;
 
 		/// <summary>
 		/// Gets or sets a <see cref="SubscriptionToken"/> that identifies this <see cref="IEventSubscription"/>.
@@ -77,7 +77,6 @@ namespace Crystal.Events
 		public virtual void InvokeAction(Action action)
 		{
 			if (action == null) throw new ArgumentNullException(nameof(action));
-
 			action();
 		}
 	}
@@ -184,7 +183,6 @@ namespace Crystal.Events
 		public virtual void InvokeAction(Action<TPayload> action, TPayload argument)
 		{
 			if (action == null) throw new ArgumentNullException(nameof(action));
-
 			action(argument);
 		}
 	}

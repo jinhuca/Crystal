@@ -30,8 +30,7 @@ namespace Crystal.Commands
 		/// Initializes a new instance of <see cref="CompositeCommand"/>.
 		/// </summary>
 		/// <param name="monitorCommandActivity">Indicates when the command activity is going to be monitored.</param>
-		public CompositeCommand(bool monitorCommandActivity)
-				: this()
+		public CompositeCommand(bool monitorCommandActivity) : this()
 		{
 			_monitorCommandActivity = monitorCommandActivity;
 		}
@@ -121,7 +120,6 @@ namespace Crystal.Commands
 		public virtual bool CanExecute(object parameter)
 		{
 			bool hasEnabledCommandsThatShouldBeExecuted = false;
-
 			ICommand[] commandList;
 			lock (_registeredCommands)
 			{
@@ -139,7 +137,6 @@ namespace Crystal.Commands
 					hasEnabledCommandsThatShouldBeExecuted = true;
 				}
 			}
-
 			return hasEnabledCommandsThatShouldBeExecuted;
 		}
 
@@ -183,12 +180,10 @@ namespace Crystal.Commands
 		protected virtual bool ShouldExecute(ICommand command)
 		{
 			var activeAwareCommand = command as IActiveAware;
-
 			if (_monitorCommandActivity && activeAwareCommand != null)
 			{
 				return activeAwareCommand.IsActive;
 			}
-
 			return true;
 		}
 
@@ -206,7 +201,6 @@ namespace Crystal.Commands
 				{
 					commandList = _registeredCommands.ToList();
 				}
-
 				return commandList;
 			}
 		}
@@ -222,9 +216,13 @@ namespace Crystal.Commands
 			if (handler != null)
 			{
 				if (_synchronizationContext != null && _synchronizationContext != SynchronizationContext.Current)
+				{
 					_synchronizationContext.Post((o) => handler.Invoke(this, EventArgs.Empty), null);
+				}
 				else
+				{
 					handler.Invoke(this, EventArgs.Empty);
+				}
 			}
 		}
 

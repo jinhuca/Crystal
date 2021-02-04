@@ -1,5 +1,3 @@
-
-
 using System;
 using Crystal.Regions;
 
@@ -35,7 +33,6 @@ namespace Crystal.Common
 		public static NavigationParameters ParseQuery(Uri uri)
 		{
 			var query = GetQuery(uri);
-
 			return new NavigationParameters(query);
 		}
 

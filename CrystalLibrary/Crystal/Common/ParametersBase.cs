@@ -192,7 +192,6 @@ namespace Crystal.Common
 		/// </summary>
 		/// <param name="parameters">An IEnumerable of KeyValuePairs to add to the current parameter list.</param>
 		[EditorBrowsable(EditorBrowsableState.Never)]
-		public void FromParameters(IEnumerable<KeyValuePair<string, object>> parameters) =>
-				_entries.AddRange(parameters);
+		public void FromParameters(IEnumerable<KeyValuePair<string, object>> parameters) => _entries.AddRange(parameters);
 	}
 }

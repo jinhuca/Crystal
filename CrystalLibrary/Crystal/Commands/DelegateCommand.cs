@@ -19,10 +19,8 @@ namespace Crystal.Commands
 		/// Creates a new instance of <see cref="DelegateCommand"/> with the <see cref="Action"/> to invoke on execution.
 		/// </summary>
 		/// <param name="executeMethod">The <see cref="Action"/> to invoke when <see cref="ICommand.Execute(object)"/> is called.</param>
-		public DelegateCommand(Action executeMethod)
-				: this(executeMethod, () => true)
+		public DelegateCommand(Action executeMethod) : this(executeMethod, () => true)
 		{
-
 		}
 
 		/// <summary>
@@ -31,12 +29,12 @@ namespace Crystal.Commands
 		/// </summary>
 		/// <param name="executeMethod">The <see cref="Action"/> to invoke when <see cref="ICommand.Execute"/> is called.</param>
 		/// <param name="canExecuteMethod">The <see cref="Func{TResult}"/> to invoke when <see cref="ICommand.CanExecute"/> is called</param>
-		public DelegateCommand(Action executeMethod, Func<bool> canExecuteMethod)
-				: base()
+		public DelegateCommand(Action executeMethod, Func<bool> canExecuteMethod)	: base()
 		{
 			if (executeMethod == null || canExecuteMethod == null)
+			{
 				throw new ArgumentNullException(nameof(executeMethod), Resources.DelegateCommandDelegatesCannotBeNull);
-
+			}
 			_executeMethod = executeMethod;
 			_canExecuteMethod = canExecuteMethod;
 		}

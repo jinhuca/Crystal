@@ -40,8 +40,7 @@ namespace Crystal.Commands
 		/// </summary>
 		/// <param name="executeMethod">Delegate to execute when Execute is called on the command. This can be null to just hook up a CanExecute delegate.</param>
 		/// <remarks><see cref="CanExecute(T)"/> will always return true.</remarks>
-		public DelegateCommand(Action<T> executeMethod)
-				: this(executeMethod, (o) => true)
+		public DelegateCommand(Action<T> executeMethod)	: this(executeMethod, (o) => true)
 		{
 		}
 
@@ -51,11 +50,12 @@ namespace Crystal.Commands
 		/// <param name="executeMethod">Delegate to execute when Execute is called on the command. This can be null to just hook up a CanExecute delegate.</param>
 		/// <param name="canExecuteMethod">Delegate to execute when CanExecute is called on the command. This can be null.</param>
 		/// <exception cref="ArgumentNullException">When both <paramref name="executeMethod"/> and <paramref name="canExecuteMethod"/> are <see langword="null" />.</exception>
-		public DelegateCommand(Action<T> executeMethod, Func<T, bool> canExecuteMethod)
-				: base()
+		public DelegateCommand(Action<T> executeMethod, Func<T, bool> canExecuteMethod)	: base()
 		{
 			if (executeMethod == null || canExecuteMethod == null)
+			{
 				throw new ArgumentNullException(nameof(executeMethod), Resources.DelegateCommandDelegatesCannotBeNull);
+			}
 
 			TypeInfo genericTypeInfo = typeof(T).GetTypeInfo();
 
@@ -73,22 +73,22 @@ namespace Crystal.Commands
 			_canExecuteMethod = canExecuteMethod;
 		}
 
-		///<summary>
-		///Executes the command and invokes the <see cref="Action{T}"/> provided during construction.
-		///</summary>
-		///<param name="parameter">Data used by the command.</param>
+		/// <summary>
+		/// Executes the command and invokes the <see cref="Action{T}"/> provided during construction.
+		/// </summary>
+		/// <param name="parameter">Data used by the command.</param>
 		public void Execute(T parameter)
 		{
 			_executeMethod(parameter);
 		}
 
-		///<summary>
-		///Determines if the command can execute by invoked the <see cref="Func{T,Bool}"/> provided during construction.
-		///</summary>
-		///<param name="parameter">Data used by the command to determine if it can execute.</param>
-		///<returns>
-		///<see langword="true" /> if this command can be executed; otherwise, <see langword="false" />.
-		///</returns>
+		/// <summary>
+		/// Determines if the command can execute by invoked the <see cref="Func{T,Bool}"/> provided during construction.
+		/// </summary>
+		/// <param name="parameter">Data used by the command to determine if it can execute.</param>
+		/// <returns>
+		/// <see langword="true" /> if this command can be executed; otherwise, <see langword="false" />.
+		/// </returns>
 		public bool CanExecute(T parameter)
 		{
 			return _canExecuteMethod(parameter);
@@ -114,7 +114,8 @@ namespace Crystal.Commands
 		}
 
 		/// <summary>
-		/// Observes a property that implements INotifyPropertyChanged, and automatically calls DelegateCommandBase.RaiseCanExecuteChanged on property changed notifications.
+		/// Observes a property that implements INotifyPropertyChanged, and automatically calls DelegateCommandBase.RaiseCanExecuteChanged on property 
+		/// changed notifications.
 		/// </summary>
 		/// <typeparam name="TType">The type of the return value of the method that this delegate encapulates</typeparam>
 		/// <param name="propertyExpression">The property expression. Example: ObservesProperty(() => PropertyName).</param>
@@ -126,7 +127,8 @@ namespace Crystal.Commands
 		}
 
 		/// <summary>
-		/// Observes a property that is used to determine if this command can execute, and if it implements INotifyPropertyChanged it will automatically call DelegateCommandBase.RaiseCanExecuteChanged on property changed notifications.
+		/// Observes a property that is used to determine if this command can execute, and if it implements INotifyPropertyChanged it will automatically call
+		/// DelegateCommandBase.RaiseCanExecuteChanged on property changed notifications.
 		/// </summary>
 		/// <param name="canExecuteExpression">The property expression. Example: ObservesCanExecute(() => PropertyName).</param>
 		/// <returns>The current instance of DelegateCommand</returns>

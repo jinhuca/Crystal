@@ -25,8 +25,8 @@ namespace Crystal.Interactivity
 		/// </summary>
 		public bool AutoEnable
 		{
-			get { return (bool)GetValue(AutoEnableProperty); }
-			set { SetValue(AutoEnableProperty, value); }
+			get => (bool)GetValue(AutoEnableProperty);
+			set => SetValue(AutoEnableProperty, value);
 		}
 
 		private void OnAllowDisableChanged(bool newValue)

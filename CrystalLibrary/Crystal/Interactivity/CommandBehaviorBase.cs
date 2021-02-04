@@ -1,13 +1,7 @@
 using System;
 using System.Windows.Input;
-
-#if HAS_WINUI
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-#else
 using System.Windows;
 using System.Windows.Controls;
-#endif
 
 namespace Crystal.Interactivity
 {
@@ -113,13 +107,8 @@ namespace Crystal.Interactivity
 			}
 			else if (Command != null)
 			{
-#if HAS_WINUI
-                if (AutoEnable && TargetObject is Control control)
-                    control.IsEnabled = Command.CanExecute(CommandParameter);
-#else
 				if (AutoEnable)
 					TargetObject.IsEnabled = Command.CanExecute(CommandParameter);
-#endif
 			}
 		}
 

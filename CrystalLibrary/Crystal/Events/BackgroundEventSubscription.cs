@@ -14,8 +14,7 @@ namespace Crystal.Events
 		/// <param name="actionReference">A reference to a delegate of type <see cref="System.Action"/>.</param>
 		/// <exception cref="ArgumentNullException">When <paramref name="actionReference"/> or <see paramref="filterReference"/> are <see langword="null" />.</exception>
 		/// <exception cref="ArgumentException">When the target of <paramref name="actionReference"/> is not of type <see cref="System.Action"/>.</exception>
-		public BackgroundEventSubscription(IDelegateReference actionReference)
-				: base(actionReference)
+		public BackgroundEventSubscription(IDelegateReference actionReference) : base(actionReference)
 		{
 		}
 
@@ -43,8 +42,7 @@ namespace Crystal.Events
 		/// <exception cref="ArgumentNullException">When <paramref name="actionReference"/> or <see paramref="filterReference"/> are <see langword="null" />.</exception>
 		/// <exception cref="ArgumentException">When the target of <paramref name="actionReference"/> is not of type <see cref="System.Action{TPayload}"/>,
 		/// or the target of <paramref name="filterReference"/> is not of type <see cref="Predicate{TPayload}"/>.</exception>
-		public BackgroundEventSubscription(IDelegateReference actionReference, IDelegateReference filterReference)
-				: base(actionReference, filterReference)
+		public BackgroundEventSubscription(IDelegateReference actionReference, IDelegateReference filterReference) : base(actionReference, filterReference)
 		{
 		}
 

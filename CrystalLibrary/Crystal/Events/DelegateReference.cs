@@ -1,14 +1,10 @@
-
-
-
 using System;
 using System.Reflection;
 
 namespace Crystal.Events
 {
 	/// <summary>
-	/// Represents a reference to a <see cref="Delegate"/> that may contain a
-	/// <see cref="WeakReference"/> to the target. This class is used
+	/// Represents a reference to a <see cref="Delegate"/> that may contain a <see cref="WeakReference"/> to the target. This class is used
 	/// internally by the Crystal Library.
 	/// </summary>
 	public class DelegateReference : IDelegateReference
@@ -22,13 +18,15 @@ namespace Crystal.Events
 		/// Initializes a new instance of <see cref="DelegateReference"/>.
 		/// </summary>
 		/// <param name="delegate">The original <see cref="Delegate"/> to create a reference for.</param>
-		/// <param name="keepReferenceAlive">If <see langword="false" /> the class will create a weak reference to the delegate, allowing it to be garbage collected. Otherwise it will keep a strong reference to the target.</param>
+		/// <param name="keepReferenceAlive">If <see langword="false" /> the class will create a weak reference to the delegate, allowing it to 
+		/// be garbage collected. Otherwise it will keep a strong reference to the target.</param>
 		/// <exception cref="ArgumentNullException">If the passed <paramref name="delegate"/> is not assignable to <see cref="Delegate"/>.</exception>
 		public DelegateReference(Delegate @delegate, bool keepReferenceAlive)
 		{
 			if (@delegate == null)
+			{
 				throw new ArgumentNullException("delegate");
-
+			}
 			if (keepReferenceAlive)
 			{
 				_delegate = @delegate;

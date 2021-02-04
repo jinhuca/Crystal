@@ -41,17 +41,19 @@ namespace Crystal.Commands
 			var nextProperty = PropertyInfo.GetValue(_inpcObject);
 			if (nextProperty == null) return;
 			if (!(nextProperty is INotifyPropertyChanged nextInpcObject))
+			{
 				throw new InvalidOperationException("Trying to subscribe PropertyChanged listener in object that " +
 																						$"owns '{Next.PropertyInfo.Name}' property, but the object does not implements INotifyPropertyChanged.");
-
+			}
 			Next.SubscribeListenerFor(nextInpcObject);
 		}
 
 		private void UnsubscribeListener()
 		{
 			if (_inpcObject != null)
+			{
 				_inpcObject.PropertyChanged -= OnPropertyChanged;
-
+			}
 			Next?.UnsubscribeListener();
 		}
 
