@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DIContainerExtensions", "DIContainerExtensions", "{0DF3E43B-E0BA-4126-A905-DA8F081FA904}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CrystalLibrary", "CrystalLibrary", "{A360DF81-B6DD-4551-BAC5-1C99669588C6}"
+	ProjectSection(SolutionItems) = preProject
+		CrystalLibrary\LICENSE = CrystalLibrary\LICENSE
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CrystalSamples", "CrystalSamples", "{72FAC40B-E937-44E7-94EE-8C1C84F62FBD}"
 EndProject
