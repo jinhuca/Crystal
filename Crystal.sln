@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CrystalLibrary", "CrystalLibrary", "{A360DF81-B6DD-4551-BAC5-1C99669588C6}"
 	ProjectSection(SolutionItems) = preProject
 		CrystalLibrary\LICENSE = CrystalLibrary\LICENSE
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CrystalSamples", "CrystalSamples", "{72FAC40B-E937-44E7-94EE-8C1C84F62FBD}"
