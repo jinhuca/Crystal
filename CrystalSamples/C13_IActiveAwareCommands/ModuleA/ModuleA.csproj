@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <AssemblyName>ModuleA</AssemblyName>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\CrystalLibrary\DIContainerExtensions\Crystal.Unity\Crystal.Unity.csproj" />
+    <ProjectReference Include="..\UsingIActiveAwareCommands.Core\UsingIActiveAwareCommands.Core.csproj" />
+  </ItemGroup>
+</Project>
