@@ -2,9 +2,17 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
-    <AssemblyName>RegionMemberLifetime</AssemblyName>
+    <AssemblyName>Modules</AssemblyName>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
+  <ItemGroup>
+    <Page Remove="ModuleCatalog.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ModuleCatalog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\CrystalLibrary\DIContainerExtensions\Crystal.Unity\Crystal.Unity.csproj" />
     <ProjectReference Include="..\ModuleA\ModuleA.csproj" />

@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace RegionMemberLifetime.Views
+namespace Modules.Views
 {
 	public partial class MainWindow : Window
 	{

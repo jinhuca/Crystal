@@ -1,14 +1,12 @@
-﻿using Crystal.Ioc;
+﻿using System.Windows;
+using Crystal.Ioc;
 using Crystal.Modularity;
 using Crystal.Unity;
-using RegionMemberLifetime.Views;
-using System.Windows;
+using ModuleA;
+using Modules.Views;
 
-namespace RegionMemberLifetime
+namespace Modules
 {
-	/// <summary>
-	/// Interaction logic for App.xaml
-	/// </summary>
 	public partial class App : CrystalApplication
 	{
 		protected override Window CreateShell()
@@ -23,7 +21,13 @@ namespace RegionMemberLifetime
 
 		protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
 		{
-			moduleCatalog.AddModule<ModuleA.ModuleAModule>();
+			var moduleAType = typeof(ModuleAModule);
+			moduleCatalog.AddModule(new ModuleInfo()
+			{
+				ModuleName = moduleAType.Name,
+				ModuleType = moduleAType.AssemblyQualifiedName,
+				InitializationMode = InitializationMode.OnDemand
+			});
 		}
 	}
 }

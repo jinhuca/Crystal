@@ -1,10 +1,11 @@
-﻿using Crystal.Ioc;
+﻿using Modules.Views;
+using System.Windows;
+using System;
+using Crystal.Ioc;
 using Crystal.Modularity;
 using Crystal.Unity;
-using RegionMemberLifetime.Views;
-using System.Windows;
 
-namespace RegionMemberLifetime
+namespace Modules
 {
 	/// <summary>
 	/// Interaction logic for App.xaml
@@ -21,9 +22,9 @@ namespace RegionMemberLifetime
 
 		}
 
-		protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
+		protected override IModuleCatalog CreateModuleCatalog()
 		{
-			moduleCatalog.AddModule<ModuleA.ModuleAModule>();
+			return new XamlModuleCatalog(new Uri("/Modules;component/ModuleCatalog.xaml", UriKind.Relative));
 		}
 	}
 }

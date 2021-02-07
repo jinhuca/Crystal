@@ -1,9 +1,8 @@
-﻿<prism:PrismApplication x:Class="RegionMemberLifetime.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                         xmlns:prism="http://prismlibrary.com/"
-             xmlns:local="clr-namespace:RegionMemberLifetime">
-    <Application.Resources>
-         
-    </Application.Resources>
-</prism:PrismApplication>
+﻿<crystal:CrystalApplication x:Class="RegionMemberLifetime.App"
+                            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                            xmlns:crystal="http://schemas.crystal.com/0.9">
+  <Application.Resources>
+
+  </Application.Resources>
+</crystal:CrystalApplication>
