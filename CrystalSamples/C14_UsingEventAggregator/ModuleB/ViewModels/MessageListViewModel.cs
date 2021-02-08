@@ -20,7 +20,6 @@ namespace ModuleB.ViewModels
 		{
 			_ea = ea;
 			Messages = new ObservableCollection<string>();
-
 			_ea.GetEvent<MessageSentEvent>().Subscribe(MessageReceived);
 		}
 
