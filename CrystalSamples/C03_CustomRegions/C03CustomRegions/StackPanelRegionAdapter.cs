@@ -15,9 +15,9 @@ namespace C03CustomRegions
 		{
 			region.Views.CollectionChanged += (s, e) =>
 				{
-					if(e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+					if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
 					{
-						foreach(FrameworkElement element in e.NewItems)
+						foreach (FrameworkElement element in e.NewItems)
 						{
 							regionTarget.Children.Add(element);
 						}

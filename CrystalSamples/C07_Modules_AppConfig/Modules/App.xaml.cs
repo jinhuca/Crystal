@@ -1,10 +1,10 @@
-﻿using Crystal.Unity;
-using Crystal.Modularity;
-using Crystal.Ioc;
+﻿using Modules.Views;
 using System.Windows;
-using MainModule.Views;
+using Crystal.Unity;
+using Crystal.Ioc;
+using Crystal.Modularity;
 
-namespace MainModule
+namespace Modules
 {
 	/// <summary>
 	/// Interaction logic for App.xaml

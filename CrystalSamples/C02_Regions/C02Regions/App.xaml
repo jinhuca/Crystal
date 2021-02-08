@@ -1,8 +1,7 @@
 ﻿<crystal:CrystalApplication x:Class="C02Regions.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:crystal="http://schemas.crystal.com/0.9">
+                            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                            xmlns:crystal="http://schemas.crystal.com/0.9">
   <Application.Resources>
-
   </Application.Resources>
 </crystal:CrystalApplication>

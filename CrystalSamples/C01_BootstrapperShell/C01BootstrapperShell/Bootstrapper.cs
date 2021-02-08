@@ -1,11 +1,6 @@
 ﻿using C01BootstrapperShell.Views;
 using Crystal.Ioc;
 using Crystal.Unity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace C01BootstrapperShell

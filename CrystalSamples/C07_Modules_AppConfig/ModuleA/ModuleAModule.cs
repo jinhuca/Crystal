@@ -15,6 +15,7 @@ namespace ModuleA
 
 		public void RegisterTypes(IContainerRegistry containerRegistry)
 		{
+
 		}
 	}
 }

@@ -6,9 +6,6 @@ using UsingEventAggregator.Views;
 
 namespace UsingEventAggregator
 {
-	/// <summary>
-	/// Interaction logic for App.xaml
-	/// </summary>
 	public partial class App : CrystalApplication
 	{
 		protected override Window CreateShell()
@@ -18,7 +15,6 @@ namespace UsingEventAggregator
 
 		protected override void RegisterTypes(IContainerRegistry containerRegistry)
 		{
-
 		}
 
 		protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)

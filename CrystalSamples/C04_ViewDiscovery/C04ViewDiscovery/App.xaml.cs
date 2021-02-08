@@ -5,9 +5,6 @@ using System.Windows;
 
 namespace C04ViewDiscovery
 {
-	/// <summary>
-	/// Interaction logic for App.xaml
-	/// </summary>
 	public partial class App : CrystalApplication
 	{
 		protected override Window CreateShell()
