@@ -4,15 +4,11 @@ namespace UsingCompositeCommands.Core
 {
 	public interface IApplicationCommands
 	{
-		CompositeCommand SaveCommand { get; }
+		CompositeCommand SaveAllCommand { get; }
 	}
 
 	public class ApplicationCommands : IApplicationCommands
 	{
-		private CompositeCommand _saveCommand = new CompositeCommand();
-		public CompositeCommand SaveCommand
-		{
-			get { return _saveCommand; }
-		}
+		public CompositeCommand SaveAllCommand { get; } = new CompositeCommand();
 	}
 }
