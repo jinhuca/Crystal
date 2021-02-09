@@ -6,10 +6,10 @@
         Title="{Binding Title}" Height="350" Width="525">
   <Grid>
     <Grid.ColumnDefinitions>
-      <ColumnDefinition />
-      <ColumnDefinition />
+      <ColumnDefinition/>
+      <ColumnDefinition/>
     </Grid.ColumnDefinitions>
-    <ContentControl crystal:RegionManager.RegionName="LeftRegion" />
-    <ContentControl Grid.Column="1" crystal:RegionManager.RegionName="RightRegion" />
+    <ContentControl crystal:RegionManager.RegionName="LeftRegion"/>
+    <ContentControl crystal:RegionManager.RegionName="RightRegion" Grid.Column="1"/>
   </Grid>
 </Window>

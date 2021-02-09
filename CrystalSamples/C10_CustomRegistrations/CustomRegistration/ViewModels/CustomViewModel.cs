@@ -4,7 +4,7 @@ namespace CustomRegistration.ViewModels
 {
 	public class CustomViewModel : BindableBase
 	{
-		private string _title = "Custom ViewModel Application";
+		private string _title = "Custom ViewModel";
 		public string Title
 		{
 			get { return _title; }

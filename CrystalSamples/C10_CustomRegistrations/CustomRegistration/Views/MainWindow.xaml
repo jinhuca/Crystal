@@ -8,7 +8,7 @@
         xmlns:local="clr-namespace:CustomRegistration"
         mc:Ignorable="d"
         Title="{Binding Title}" Height="250" Width="425">
-    <Grid>
+  <Grid>
 
-    </Grid>
+  </Grid>
 </Window>
