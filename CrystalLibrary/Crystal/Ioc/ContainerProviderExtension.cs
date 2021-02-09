@@ -12,7 +12,7 @@ namespace Crystal.Ioc
 	///   <TextBlock
 	///     Text="{Binding
 	///       Path=Foo,
-	///       Converter={prism:ContainerProvider {x:Type local:MyConverter}}}" />
+	///       Converter={crystal:ContainerProvider {x:Type local:MyConverter}}}" />
 	/// ]]>
 	/// </para>
 	/// <para>
@@ -20,7 +20,7 @@ namespace Crystal.Ioc
 	/// <![CDATA[
 	///   <Window>
 	///     <Window.DataContext>
-	///       <prism:ContainerProvider Type="{x:Type local:MyViewModel}" />
+	///       <crystal:ContainerProvider Type="{x:Type local:MyViewModel}" />
 	///     </Window.DataContext>
 	///   </Window>
 	/// ]]>

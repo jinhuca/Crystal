@@ -7,7 +7,7 @@ namespace Crystal.Unity
 	public abstract class CrystalApplication : CrystalApplicationBase
 	{
     /// <summary>
-    /// Create a new <see cref="UnityContainerExtension"/> used by Prism.
+    /// Create a new <see cref="UnityContainerExtension"/> used by Crystal.
     /// </summary>
     /// <returns>A new <see cref="UnityContainerExtension"/>.</returns>
     protected override IContainerExtension CreateContainerExtension()
