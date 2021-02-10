@@ -1,4 +1,4 @@
-## Welcome to Crystal Library for Building WPF Applications
+## Crystal Library for Building WPF Applications
 
 You can use the [editor on GitHub](https://github.com/jinhuca/Crystal/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
 
