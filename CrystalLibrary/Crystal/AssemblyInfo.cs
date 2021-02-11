@@ -1,5 +1,3 @@
-using System;
-using System.Runtime.InteropServices;
 using System.Windows.Markup;
 using System.Windows;
 

@@ -7,15 +7,13 @@ using System.Linq;
 using Crystal.Properties;
 using Crystal.Ioc;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
 
 namespace Crystal.Regions
 {
-    /// <summary>
-    /// Implementation of <see cref="IRegion"/> that allows multiple active views.
-    /// </summary>
-    public class Region : IRegion
+	/// <summary>
+	/// Implementation of <see cref="IRegion"/> that allows multiple active views.
+	/// </summary>
+	public class Region : IRegion
     {
         private ObservableCollection<ItemMetadata> _itemMetadataCollection;
         private string _name;

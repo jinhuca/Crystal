@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Crystal.Mvvm;
-#if HAS_WINUI
-using Windows.UI.Xaml;
-#else
 using System.Windows;
-#endif
 
 namespace Crystal.Common
 {
@@ -35,7 +29,9 @@ namespace Crystal.Common
 		public static void ViewAndViewModelAction<T>(object view, Action<T> action) where T : class
 		{
 			if (view is T viewAsT)
+			{
 				action(viewAsT);
+			}
 
 			if (view is FrameworkElement element && element.DataContext is T viewModelAsT)
 			{

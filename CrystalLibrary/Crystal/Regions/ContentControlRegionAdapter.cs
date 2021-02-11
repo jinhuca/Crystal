@@ -3,7 +3,6 @@ using System;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Windows.Controls;
-using System.Windows.Data;
 
 namespace Crystal.Regions
 {

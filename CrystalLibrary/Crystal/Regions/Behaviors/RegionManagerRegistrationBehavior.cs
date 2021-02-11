@@ -1,7 +1,6 @@
 using System;
 using System.ComponentModel;
 using Crystal.Properties;
-using System.Globalization;
 using System.Windows;
 
 namespace Crystal.Regions.Behaviors

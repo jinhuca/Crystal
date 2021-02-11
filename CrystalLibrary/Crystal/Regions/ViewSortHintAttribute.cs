@@ -1,12 +1,11 @@
 using System;
-using System.Net;
 
 namespace Crystal.Regions
 {
-    /// <summary>
-    /// Provides a hint from a view to a region on how to sort the view.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+	/// <summary>
+	/// Provides a hint from a view to a region on how to sort the view.
+	/// </summary>
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
     public sealed class ViewSortHintAttribute : Attribute
     {
         /// <summary>
