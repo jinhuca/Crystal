@@ -7,10 +7,8 @@
         xmlns:local="clr-namespace:C03CustomRegions"
         mc:Ignorable="d"
         Title="MainWindow" Height="150" Width="400">
-  <Grid>
-    <StackPanel crystal:RegionManager.RegionName="ContentRegion" Background="Beige">
-      <TextBlock Text="TextBlock" FontSize="20" FontWeight="Black" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-      <Button Content="Button" FontSize="18" Width="100" Height="25" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-    </StackPanel>
-  </Grid>
+  <StackPanel crystal:RegionManager.RegionName="ContentRegion" Background="Beige">
+    <TextBlock Text="TextBlock" FontSize="20" FontWeight="Black" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+    <Button Content="Button" FontSize="18" Width="100" Height="25" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+  </StackPanel>
 </Window>

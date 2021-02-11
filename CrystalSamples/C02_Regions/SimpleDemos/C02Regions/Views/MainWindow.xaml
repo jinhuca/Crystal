@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         Title="Shell" Height="250" Width="400">
   <Grid>
-    <ContentControl Content="View in Region" FontSize="30" FontWeight="Black" Foreground="DarkOrange" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+    <ContentControl Content="View in Region" FontSize="30" FontWeight="Black" Foreground="DarkOrange" 
+                    VerticalAlignment="Center" HorizontalAlignment="Center"/>
   </Grid>
 </Window>

@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RegionDemoInfra\RegionDemoInfra.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Crystal">
+      <HintPath>..\..\..\Libs\Crystal.dll</HintPath>
+    </Reference>
+    <Reference Include="Crystal.Unity">
+      <HintPath>..\..\..\Libs\Crystal.Unity.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
