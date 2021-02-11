@@ -19,8 +19,8 @@ namespace ModuleA
 
 		public void OnInitialized(IContainerProvider containerProvider)
 		{
-			IRegion region = _regionManager.Regions[RegionNames.ToolbarRegion];
-			region.Add(_container.Resolve<ToolbarView>());
+			//IRegion region = _regionManager.Regions[RegionNames.ToolbarRegion];
+			//region.Add(_container.Resolve<ToolbarView>());
 
 			_regionManager.RegisterViewWithRegion(RegionNames.ToolbarRegion, typeof(ToolbarView));
 			_regionManager.RegisterViewWithRegion(RegionNames.ContentRegion, typeof(ContentView));

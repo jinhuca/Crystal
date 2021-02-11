@@ -6,16 +6,9 @@ using System.Globalization;
 using System.Linq;
 using Crystal.Properties;
 using Crystal.Ioc;
-
-#if HAS_WINUI
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Data;
-#else
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-#endif
 
 namespace Crystal.Regions
 {

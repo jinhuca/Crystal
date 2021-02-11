@@ -5,14 +5,8 @@ using Crystal.Mvvm;
 using Crystal.Regions;
 using Crystal.Regions.Behaviors;
 using Crystal.Services.Dialogs;
-
-#if HAS_WINUI
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-#else
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-#endif
 
 namespace Crystal
 {

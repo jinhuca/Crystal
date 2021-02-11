@@ -15,15 +15,6 @@ namespace Crystal.Common
 	/// </summary>
 	public static class MvvmHelpers
 	{
-#if HAS_WINUI
-        internal static void AutowireViewModel(object viewOrViewModel)
-        {
-            if (viewOrViewModel is FrameworkElement view && view.DataContext is null && ViewModelLocator.GetAutowireViewModel(view) is null)
-            {
-                ViewModelLocator.SetAutowireViewModel(view, true);
-            }
-        }
-#else
 		internal static void AutowireViewModel(object viewOrViewModel)
 		{
 			if (viewOrViewModel is FrameworkElement view && view.DataContext is null && ViewModelLocator.GetAutoWireViewModel(view) is null)
@@ -31,7 +22,6 @@ namespace Crystal.Common
 				ViewModelLocator.SetAutoWireViewModel(view, true);
 			}
 		}
-#endif
 
 		/// <summary>
 		/// Perform an <see cref="Action{T}"/> on a view and viewmodel.
