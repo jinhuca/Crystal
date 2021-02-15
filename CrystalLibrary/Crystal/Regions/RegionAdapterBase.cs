@@ -35,7 +35,9 @@ namespace Crystal.Regions
 		public IRegion Initialize(T regionTarget, string regionName)
 		{
 			if (regionName == null)
+			{
 				throw new ArgumentNullException(nameof(regionName));
+			}
 
 			IRegion region = CreateRegion();
 			region.Name = regionName;
@@ -71,10 +73,14 @@ namespace Crystal.Regions
 		protected virtual void AttachDefaultBehaviors(IRegion region, T regionTarget)
 		{
 			if (region == null)
+			{
 				throw new ArgumentNullException(nameof(region));
+			}
 
 			if (regionTarget == null)
+			{
 				throw new ArgumentNullException(nameof(regionTarget));
+			}
 
 			IRegionBehaviorFactory behaviorFactory = RegionBehaviorFactory;
 			if (behaviorFactory != null)
@@ -128,12 +134,16 @@ namespace Crystal.Regions
 		private static T GetCastedObject(object regionTarget)
 		{
 			if (regionTarget == null)
+			{
 				throw new ArgumentNullException(nameof(regionTarget));
+			}
 
 			T castedObject = regionTarget as T;
 
 			if (castedObject == null)
+			{
 				throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, Resources.AdapterInvalidTypeException, typeof(T).Name));
+			}
 
 			return castedObject;
 		}

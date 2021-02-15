@@ -29,13 +29,17 @@ namespace Crystal.Regions
 		protected override void Adapt(IRegion region, ContentControl regionTarget)
 		{
 			if (regionTarget == null)
+			{
 				throw new ArgumentNullException(nameof(regionTarget));
+			}
 
 			bool contentIsSet = regionTarget.Content != null;
 			contentIsSet = contentIsSet || regionTarget.HasBinding(ContentControl.ContentProperty);
 
 			if (contentIsSet)
+			{
 				throw new InvalidOperationException(Resources.ContentControlHasContentException);
+			}
 
 			region.ActiveViews.CollectionChanged += delegate
 			{

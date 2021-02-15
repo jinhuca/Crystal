@@ -53,7 +53,9 @@ namespace Crystal.Regions
 		public static void SetRegionName(DependencyObject regionTarget, string regionName)
 		{
 			if (regionTarget == null)
+			{
 				throw new ArgumentNullException(nameof(regionTarget));
+			}
 
 			regionTarget.SetValue(RegionNameProperty, regionName);
 		}
@@ -66,14 +68,16 @@ namespace Crystal.Regions
 		/// <see cref="RegionManagerProperty"/> is also set in this element.</returns>
 		public static string GetRegionName(DependencyObject regionTarget)
 		{
-			if (regionTarget == null)
-				throw new ArgumentNullException(nameof(regionTarget));
-
-			return regionTarget.GetValue(RegionNameProperty) as string;
+			return regionTarget == null
+				? throw new ArgumentNullException(nameof(regionTarget))
+				: regionTarget.GetValue(RegionNameProperty) as string;
 		}
 
-		private static readonly DependencyProperty ObservableRegionProperty =
-				DependencyProperty.RegisterAttached("ObservableRegion", typeof(ObservableObject<IRegion>), typeof(RegionManager), null);
+		private static readonly DependencyProperty ObservableRegionProperty = DependencyProperty.RegisterAttached(
+			"ObservableRegion",
+			typeof(ObservableObject<IRegion>),
+			typeof(RegionManager),
+			null);
 
 
 		/// <summary>
@@ -128,8 +132,11 @@ namespace Crystal.Regions
 		/// will create and adapt a new region for that control, and register it
 		/// in the <see cref="IRegionManager"/> with the specified region name.
 		/// </remarks>
-		public static readonly DependencyProperty RegionManagerProperty =
-				DependencyProperty.RegisterAttached("RegionManager", typeof(IRegionManager), typeof(RegionManager), null);
+		public static readonly DependencyProperty RegionManagerProperty = DependencyProperty.RegisterAttached(
+			"RegionManager",
+			typeof(IRegionManager),
+			typeof(RegionManager),
+			null);
 
 		/// <summary>
 		/// Gets the value of the <see cref="RegionNameProperty"/> attached property.
@@ -138,10 +145,9 @@ namespace Crystal.Regions
 		/// <returns>The <see cref="IRegionManager"/> attached to the <paramref name="target"/> element.</returns>
 		public static IRegionManager GetRegionManager(DependencyObject target)
 		{
-			if (target == null)
-				throw new ArgumentNullException(nameof(target));
-
-			return (IRegionManager)target.GetValue(RegionManagerProperty);
+			return target == null
+				? throw new ArgumentNullException(nameof(target))
+				: (IRegionManager)target.GetValue(RegionManagerProperty);
 		}
 
 		/// <summary>
@@ -152,7 +158,9 @@ namespace Crystal.Regions
 		public static void SetRegionManager(DependencyObject target, IRegionManager value)
 		{
 			if (target == null)
+			{
 				throw new ArgumentNullException(nameof(target));
+			}
 
 			target.SetValue(RegionManagerProperty, value);
 		}
@@ -160,8 +168,11 @@ namespace Crystal.Regions
 		/// <summary>
 		/// Identifies the RegionContext attached property.
 		/// </summary>
-		public static readonly DependencyProperty RegionContextProperty =
-				DependencyProperty.RegisterAttached("RegionContext", typeof(object), typeof(RegionManager), new PropertyMetadata(defaultValue: null, propertyChangedCallback: OnRegionContextChanged));
+		public static readonly DependencyProperty RegionContextProperty = DependencyProperty.RegisterAttached(
+			"RegionContext",
+			typeof(object),
+			typeof(RegionManager),
+			new PropertyMetadata(defaultValue: null, propertyChangedCallback: OnRegionContextChanged));
 
 		private static void OnRegionContextChanged(DependencyObject depObj, DependencyPropertyChangedEventArgs e)
 		{
@@ -178,10 +189,9 @@ namespace Crystal.Regions
 		/// <returns>The region context to pass to the contained views.</returns>
 		public static object GetRegionContext(DependencyObject target)
 		{
-			if (target == null)
-				throw new ArgumentNullException(nameof(target));
-
-			return target.GetValue(RegionContextProperty);
+			return target == null
+				? throw new ArgumentNullException(nameof(target))
+				: target.GetValue(RegionContextProperty);
 		}
 
 		/// <summary>
@@ -192,7 +202,9 @@ namespace Crystal.Regions
 		public static void SetRegionContext(DependencyObject target, object value)
 		{
 			if (target == null)
+			{
 				throw new ArgumentNullException(nameof(target));
+			}
 
 			target.SetValue(RegionContextProperty, value);
 		}
@@ -216,7 +228,6 @@ namespace Crystal.Regions
 		/// </remarks>
 		public static void UpdateRegions()
 		{
-
 			try
 			{
 				updatingRegionsListeners.Raise(null, EventArgs.Empty);
@@ -251,19 +262,13 @@ namespace Crystal.Regions
 		/// Gets a collection of <see cref="IRegion"/> that identify each region by name. You can use this collection to add or remove regions to the current region manager.
 		/// </summary>
 		/// <value>A <see cref="IRegionCollection"/> with all the registered regions.</value>
-		public IRegionCollection Regions
-		{
-			get { return regionCollection; }
-		}
+		public IRegionCollection Regions => regionCollection;
 
 		/// <summary>
 		/// Creates a new region manager.
 		/// </summary>
 		/// <returns>A new region manager that can be used as a different scope from the current region manager.</returns>
-		public IRegionManager CreateRegionManager()
-		{
-			return new RegionManager();
-		}
+		public IRegionManager CreateRegionManager() => new RegionManager();
 
 		/// <summary>
 		///     Add a view to the Views collection of a Region. Note that the region must already exist in this regionmanager.
@@ -273,10 +278,9 @@ namespace Crystal.Regions
 		/// <returns>The RegionManager, to easily add several views. </returns>
 		public IRegionManager AddToRegion(string regionName, object view)
 		{
-			if (!Regions.ContainsRegionWithName(regionName))
-				throw new ArgumentException(string.Format(Thread.CurrentThread.CurrentCulture, Resources.RegionNotFound, regionName), nameof(regionName));
-
-			return Regions[regionName].Add(view);
+			return !Regions.ContainsRegionWithName(regionName)
+				? throw new ArgumentException(string.Format(Thread.CurrentThread.CurrentCulture, Resources.RegionNotFound, regionName), nameof(regionName))
+				: Regions[regionName].Add(view);
 		}
 
 		/// <summary>
@@ -287,10 +291,7 @@ namespace Crystal.Regions
 		/// <param name="regionName">The name of the region to associate the view with.</param>
 		/// <typeparam name="T">The type of the view to register</typeparam>
 		/// <returns>The regionmanager, for adding several views easily</returns>
-		public IRegionManager RegisterViewWithRegion<T>(string regionName)
-		{
-			return RegisterViewWithRegion(regionName, typeof(T));
-		}
+		public IRegionManager RegisterViewWithRegion<T>(string regionName) => RegisterViewWithRegion(regionName, typeof(T));
 
 		/// <summary>
 		/// Associate a view with a region, by registering a type. When the region get's displayed
@@ -303,9 +304,7 @@ namespace Crystal.Regions
 		public IRegionManager RegisterViewWithRegion(string regionName, Type viewType)
 		{
 			var regionViewRegistry = ContainerLocator.Container.Resolve<IRegionViewRegistry>();
-
 			regionViewRegistry.RegisterViewWithRegion(regionName, viewType);
-
 			return this;
 		}
 
@@ -320,9 +319,7 @@ namespace Crystal.Regions
 		public IRegionManager RegisterViewWithRegion(string regionName, Func<object> getContentDelegate)
 		{
 			var regionViewRegistry = ContainerLocator.Container.Resolve<IRegionViewRegistry>();
-
 			regionViewRegistry.RegisterViewWithRegion(regionName, getContentDelegate);
-
 			return this;
 		}
 
@@ -335,7 +332,9 @@ namespace Crystal.Regions
 		public void RequestNavigate(string regionName, Uri source, Action<NavigationResult> navigationCallback)
 		{
 			if (navigationCallback == null)
+			{
 				throw new ArgumentNullException(nameof(navigationCallback));
+			}
 
 			if (Regions.ContainsRegionWithName(regionName))
 			{
@@ -352,10 +351,7 @@ namespace Crystal.Regions
 		/// </summary>
 		/// <param name="regionName">The name of the region to call Navigate on.</param>
 		/// <param name="source">The URI of the content to display.</param>
-		public void RequestNavigate(string regionName, Uri source)
-		{
-			RequestNavigate(regionName, source, nr => { });
-		}
+		public void RequestNavigate(string regionName, Uri source) => RequestNavigate(regionName, source, nr => { });
 
 		/// <summary>
 		/// Navigates the specified region manager.
@@ -366,8 +362,9 @@ namespace Crystal.Regions
 		public void RequestNavigate(string regionName, string source, Action<NavigationResult> navigationCallback)
 		{
 			if (source == null)
+			{
 				throw new ArgumentNullException(nameof(source));
-
+			}
 			RequestNavigate(regionName, new Uri(source, UriKind.RelativeOrAbsolute), navigationCallback);
 		}
 
@@ -376,10 +373,7 @@ namespace Crystal.Regions
 		/// </summary>
 		/// <param name="regionName">The name of the region to call Navigate on.</param>
 		/// <param name="source">The URI of the content to display.</param>
-		public void RequestNavigate(string regionName, string source)
-		{
-			RequestNavigate(regionName, source, nr => { });
-		}
+		public void RequestNavigate(string regionName, string source) => RequestNavigate(regionName, source, nr => { });
 
 		/// <summary>
 		/// This method allows an IRegionManager to locate a specified region and navigate in it to the specified target Uri, passing a navigation callback and an instance of NavigationParameters, which holds a collection of object parameters.
@@ -391,7 +385,9 @@ namespace Crystal.Regions
 		public void RequestNavigate(string regionName, Uri target, Action<NavigationResult> navigationCallback, NavigationParameters navigationParameters)
 		{
 			if (navigationCallback == null)
+			{
 				throw new ArgumentNullException(nameof(navigationCallback));
+			}
 
 			if (Regions.ContainsRegionWithName(regionName))
 			{
@@ -410,10 +406,8 @@ namespace Crystal.Regions
 		/// <param name="target">A string that represents the target where the region will navigate.</param>
 		/// <param name="navigationCallback">The navigation callback that will be executed after the navigation is completed.</param>
 		/// <param name="navigationParameters">An instance of NavigationParameters, which holds a collection of object parameters.</param>
-		public void RequestNavigate(string regionName, string target, Action<NavigationResult> navigationCallback, NavigationParameters navigationParameters)
-		{
-			RequestNavigate(regionName, new Uri(target, UriKind.RelativeOrAbsolute), navigationCallback, navigationParameters);
-		}
+		public void RequestNavigate(string regionName, string target, Action<NavigationResult> navigationCallback, NavigationParameters navigationParameters) 
+			=> RequestNavigate(regionName, new Uri(target, UriKind.RelativeOrAbsolute), navigationCallback, navigationParameters);
 
 		/// <summary>
 		/// This method allows an IRegionManager to locate a specified region and navigate in it to the specified target Uri, passing an instance of NavigationParameters, which holds a collection of object parameters.
@@ -421,10 +415,8 @@ namespace Crystal.Regions
 		/// <param name="regionName">The name of the region where the navigation will occur.</param>
 		/// <param name="target">A Uri that represents the target where the region will navigate.</param>
 		/// <param name="navigationParameters">An instance of NavigationParameters, which holds a collection of object parameters.</param>
-		public void RequestNavigate(string regionName, Uri target, NavigationParameters navigationParameters)
-		{
-			RequestNavigate(regionName, target, nr => { }, navigationParameters);
-		}
+		public void RequestNavigate(string regionName, Uri target, NavigationParameters navigationParameters) 
+			=> RequestNavigate(regionName, target, nr => { }, navigationParameters);
 
 		/// <summary>
 		/// This method allows an IRegionManager to locate a specified region and navigate in it to the specified target string, passing an instance of NavigationParameters, which holds a collection of object parameters.
@@ -432,10 +424,8 @@ namespace Crystal.Regions
 		/// <param name="regionName">The name of the region where the navigation will occur.</param>
 		/// <param name="target">A string that represents the target where the region will navigate.</param>
 		/// <param name="navigationParameters">An instance of NavigationParameters, which holds a collection of object parameters.</param>
-		public void RequestNavigate(string regionName, string target, NavigationParameters navigationParameters)
-		{
-			RequestNavigate(regionName, new Uri(target, UriKind.RelativeOrAbsolute), nr => { }, navigationParameters);
-		}
+		public void RequestNavigate(string regionName, string target, NavigationParameters navigationParameters) 
+			=> RequestNavigate(regionName, new Uri(target, UriKind.RelativeOrAbsolute), nr => { }, navigationParameters);
 
 		private class RegionCollection : IRegionCollection
 		{
@@ -453,14 +443,10 @@ namespace Crystal.Regions
 			public IEnumerator<IRegion> GetEnumerator()
 			{
 				UpdateRegions();
-
 				return regions.GetEnumerator();
 			}
 
-			IEnumerator IEnumerable.GetEnumerator()
-			{
-				return GetEnumerator();
-			}
+			IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
 			public IRegion this[string regionName]
 			{
@@ -481,7 +467,9 @@ namespace Crystal.Regions
 			public void Add(IRegion region)
 			{
 				if (region == null)
+				{
 					throw new ArgumentNullException(nameof(region));
+				}
 
 				UpdateRegions();
 
@@ -524,7 +512,6 @@ namespace Crystal.Regions
 			public bool ContainsRegionWithName(string regionName)
 			{
 				UpdateRegions();
-
 				return GetRegionByName(regionName) != null;
 			}
 
@@ -538,31 +525,27 @@ namespace Crystal.Regions
 			public void Add(string regionName, IRegion region)
 			{
 				if (region == null)
+				{
 					throw new ArgumentNullException(nameof(region));
+				}
 
 				if (region.Name != null && region.Name != regionName)
+				{
 					throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.RegionManagerWithDifferentNameException, region.Name, regionName), nameof(regionName));
+				}
 
 				if (region.Name == null)
+				{
 					region.Name = regionName;
+				}
 
 				Add(region);
 			}
 
-			private IRegion GetRegionByName(string regionName)
-			{
-				return regions.FirstOrDefault(r => r.Name == regionName);
-			}
+			private IRegion GetRegionByName(string regionName) => regions.FirstOrDefault(r => r.Name == regionName);
 
-			private void OnCollectionChanged(NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
-			{
-				var handler = CollectionChanged;
-
-				if (handler != null)
-				{
-					handler(this, notifyCollectionChangedEventArgs);
-				}
-			}
+			private void OnCollectionChanged(NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs) 
+				=> CollectionChanged?.Invoke(this, notifyCollectionChangedEventArgs);
 		}
 	}
 }

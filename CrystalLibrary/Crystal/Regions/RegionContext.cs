@@ -12,8 +12,11 @@ namespace Crystal.Regions
 	/// </summary>
 	public static class RegionContext
 	{
-		private static readonly DependencyProperty ObservableRegionContextProperty =
-				DependencyProperty.RegisterAttached("ObservableRegionContext", typeof(ObservableObject<object>), typeof(RegionContext), null);
+		private static readonly DependencyProperty ObservableRegionContextProperty = DependencyProperty.RegisterAttached(
+			"ObservableRegionContext", 
+			typeof(ObservableObject<object>), 
+			typeof(RegionContext), 
+			null);
 
 		/// <summary>
 		/// Returns an <see cref="ObservableObject{T}"/> wrapper around the RegionContext value. The RegionContext
@@ -29,7 +32,9 @@ namespace Crystal.Regions
 		public static ObservableObject<object> GetObservableContext(DependencyObject view)
 		{
 			if (view == null)
+			{
 				throw new ArgumentNullException(nameof(view));
+			}
 
 			ObservableObject<object> context = view.GetValue(ObservableRegionContextProperty) as ObservableObject<object>;
 

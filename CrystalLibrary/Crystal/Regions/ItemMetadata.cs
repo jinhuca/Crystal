@@ -11,14 +11,20 @@ namespace Crystal.Regions
 		/// <summary>
 		/// The name of the wrapped item.
 		/// </summary>
-		public static readonly DependencyProperty NameProperty =
-				DependencyProperty.Register("Name", typeof(string), typeof(ItemMetadata), null);
+		public static readonly DependencyProperty NameProperty = DependencyProperty.Register(
+			"Name",
+			typeof(string),
+			typeof(ItemMetadata),
+			null);
 
 		/// <summary>
 		/// Value indicating whether the wrapped item is considered active.
 		/// </summary>
-		public static readonly DependencyProperty IsActiveProperty =
-				DependencyProperty.Register("IsActive", typeof(bool), typeof(ItemMetadata), new PropertyMetadata(defaultValue: false, propertyChangedCallback: DependencyPropertyChanged));
+		public static readonly DependencyProperty IsActiveProperty = DependencyProperty.Register(
+			"IsActive", 
+			typeof(bool), 
+			typeof(ItemMetadata), 
+			new PropertyMetadata(defaultValue: false, propertyChangedCallback: DependencyPropertyChanged));
 
 		/// <summary>
 		/// Initializes a new instance of <see cref="ItemMetadata"/>.
