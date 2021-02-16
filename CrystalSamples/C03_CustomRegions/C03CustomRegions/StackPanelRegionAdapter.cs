@@ -8,21 +8,20 @@ namespace C03CustomRegions
 	{
 		public StackPanelRegionAdapter(IRegionBehaviorFactory regionBehaviorFactory) : base(regionBehaviorFactory)
 		{
-
 		}
 
 		protected override void Adapt(IRegion region, StackPanel regionTarget)
 		{
 			region.Views.CollectionChanged += (s, e) =>
+			{
+				if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
 				{
-					if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+					foreach (FrameworkElement element in e.NewItems)
 					{
-						foreach (FrameworkElement element in e.NewItems)
-						{
-							regionTarget.Children.Add(element);
-						}
+						regionTarget.Children.Add(element);
 					}
-				};
+				}
+			};
 		}
 
 		protected override IRegion CreateRegion()

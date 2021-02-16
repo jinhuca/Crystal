@@ -7,9 +7,6 @@ using Crystal.Unity;
 
 namespace Modules
 {
-	/// <summary>
-	/// Interaction logic for App.xaml
-	/// </summary>
 	public partial class App : CrystalApplication
 	{
 		protected override Window CreateShell()

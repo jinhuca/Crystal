@@ -8,8 +8,7 @@ using Crystal.Regions;
 namespace Crystal
 {
 	/// <summary>
-	/// Base class that provides a basic bootstrapping sequence and hooks
-	/// that specific implementations can override
+	/// Base class that provides a basic bootstrapping sequence and hooks that specific implementations can override.
 	/// </summary>
 	/// <remarks>
 	/// This class must be overridden to provide application specific configuration.
@@ -106,8 +105,9 @@ namespace Crystal
 		protected virtual void RegisterRequiredTypes(IContainerRegistry containerRegistry)
 		{
 			if (_moduleCatalog == null)
+			{
 				throw new InvalidOperationException("IModuleCatalog");
-
+			}
 			containerRegistry.RegisterRequiredTypes(_moduleCatalog);
 		}
 
@@ -164,7 +164,9 @@ namespace Crystal
 		protected virtual void OnInitialized()
 		{
 			if (Shell is Window window)
+			{
 				window.Show();
+			}
 		}
 
 		/// <summary>
