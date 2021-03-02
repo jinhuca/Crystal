@@ -1,11 +1,6 @@
 ﻿using Crystal.Commands;
 using Crystal.Mvvm;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace SimpleDelegateCommand.ViewModels
 {
@@ -15,10 +10,7 @@ namespace SimpleDelegateCommand.ViewModels
 		public bool IsEnabled
 		{
 			get { return _isEnabled; }
-			set
-			{
-				SetProperty(ref _isEnabled, value);
-			}
+			set { SetProperty(ref _isEnabled, value); }
 		}
 
 		private string _updateText;

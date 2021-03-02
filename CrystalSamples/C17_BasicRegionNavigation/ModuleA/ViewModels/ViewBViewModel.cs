@@ -6,7 +6,6 @@ namespace ModuleA.ViewModels
 	{
 		public ViewBViewModel()
 		{
-
 		}
 	}
 }

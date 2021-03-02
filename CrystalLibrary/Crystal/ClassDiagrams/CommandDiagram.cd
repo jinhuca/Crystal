@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="Crystal.Commands.DelegateCommandBase">
+  <Class Name="Crystal.Commands.DelegateCommandBase" Collapsed="true">
     <Position X="2.5" Y="1" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAQAACAAQAEMQAAAAEAAAgEABAAAgAAAAAAEA=</HashCode>
@@ -8,18 +8,25 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="Crystal.Commands.DelegateCommand">
-    <Position X="6.25" Y="3.75" Width="2.5" />
+  <Class Name="Crystal.Commands.DelegateCommand" Collapsed="true">
+    <Position X="0.75" Y="3" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAQQAAEAAAAAAAAAAAAAACAAAAACAIAA=</HashCode>
       <FileName>Commands\DelegateCommand.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Crystal.Commands.DelegateCommand&lt;T&gt;">
-    <Position X="6.25" Y="0.5" Width="2.5" />
+  <Class Name="Crystal.Commands.DelegateCommand&lt;T&gt;" Collapsed="true">
+    <Position X="4.25" Y="3" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAQQAAEAAAAAAAAAAAAAACAAAAACAIAA=</HashCode>
       <FileName>Commands\DelegateCommand{T}.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Crystal.CrystalBootstrapperBase" Collapsed="true">
+    <Position X="8.5" Y="1" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>IAAABAQAAKAAEQgBIAAAAAAAAAEQgABFCAAAAAAAAQI=</HashCode>
+      <FileName>CrystalBootstrapperBase.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

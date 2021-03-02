@@ -4,6 +4,6 @@
              xmlns:crystal="http://schemas.crystal.com/0.9"
              crystal:ViewModelLocator.AutoWireViewModel="True">
   <Grid>
-    <TextBlock Text="ViewA" FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Center" />
+    <TextBlock Text="ViewA" FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Center"/>
   </Grid>
 </UserControl>

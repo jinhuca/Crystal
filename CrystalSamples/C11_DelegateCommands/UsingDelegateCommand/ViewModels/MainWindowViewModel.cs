@@ -24,7 +24,6 @@ namespace UsingDelegateCommand.ViewModels
       set { SetProperty(ref _updateText, value); }
     }
 
-
     public DelegateCommand ExecuteDelegateCommand { get; private set; }
 
     public DelegateCommand<string> ExecuteGenericDelegateCommand { get; private set; }

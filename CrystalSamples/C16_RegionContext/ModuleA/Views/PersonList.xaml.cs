@@ -2,14 +2,11 @@
 
 namespace ModuleA.Views
 {
-    /// <summary>
-    /// Interaction logic for PersonList
-    /// </summary>
-    public partial class PersonList : UserControl
-    {
-        public PersonList()
-        {
-            InitializeComponent();
-        }
-    }
+	public partial class PersonList : UserControl
+	{
+		public PersonList()
+		{
+			InitializeComponent();
+		}
+	}
 }
