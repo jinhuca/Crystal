@@ -117,6 +117,14 @@ namespace Crystal
 		protected abstract void RegisterTypes(IContainerRegistry containerRegistry);
 
 		/// <summary>
+		/// Registers the <see cref="Type"/>s of the Exceptions that are not considered 
+		/// root exceptions by the <see cref="ExceptionExtensions"/>.
+		/// </summary>
+		protected virtual void RegisterFrameworkExceptionTypes()
+		{
+		}
+
+		/// <summary>
 		/// Configures the <see cref="IRegionBehaviorFactory"/>. 
 		/// This will be the list of default behaviors that will be added to a region. 
 		/// </summary>
@@ -134,14 +142,6 @@ namespace Crystal
 		protected virtual void ConfigureRegionAdapterMappings(RegionAdapterMappings regionAdapterMappings)
 		{
 			regionAdapterMappings?.RegisterDefaultRegionAdapterMappings();
-		}
-
-		/// <summary>
-		/// Registers the <see cref="Type"/>s of the Exceptions that are not considered 
-		/// root exceptions by the <see cref="ExceptionExtensions"/>.
-		/// </summary>
-		protected virtual void RegisterFrameworkExceptionTypes()
-		{
 		}
 
 		/// <summary>
