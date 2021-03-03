@@ -24,10 +24,5 @@ namespace RegionWpfMainApp
 		{
 			base.ConfigureRegionAdapterMappings(regionAdapterMappings);
 		}
-
-		protected override void RegisterTypes(IContainerRegistry containerRegistry)
-		{
-			
-		}
 	}
 }

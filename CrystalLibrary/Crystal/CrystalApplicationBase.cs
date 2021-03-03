@@ -64,12 +64,8 @@ namespace Crystal
 			_containerExtension.FinalizeExtension();
 
 			ConfigureModuleCatalog(_moduleCatalog);
-
-			var regionAdapterMappins = _containerExtension.Resolve<RegionAdapterMappings>();
-			ConfigureRegionAdapterMappings(regionAdapterMappins);
-
-			var defaultRegionBehaviors = _containerExtension.Resolve<IRegionBehaviorFactory>();
-			ConfigureDefaultRegionBehaviors(defaultRegionBehaviors);
+			ConfigureRegionAdapterMappings(_containerExtension.Resolve<RegionAdapterMappings>());
+			ConfigureDefaultRegionBehaviors(_containerExtension.Resolve<IRegionBehaviorFactory>());
 
 			RegisterFrameworkExceptionTypes();
 
@@ -114,7 +110,13 @@ namespace Crystal
 		/// <summary>
 		/// Used to register types with the container that will be used by your application.
 		/// </summary>
-		protected abstract void RegisterTypes(IContainerRegistry containerRegistry);
+		protected virtual void RegisterTypes(IContainerRegistry containerRegistry) { }
+
+		/// <summary>
+		/// Registers the <see cref="Type"/>s of the Exceptions that are not considered 
+		/// root exceptions by the <see cref="ExceptionExtensions"/>.
+		/// </summary>
+		protected virtual void RegisterFrameworkExceptionTypes() { }
 
 		/// <summary>
 		/// Configures the <see cref="IRegionBehaviorFactory"/>. 
@@ -134,14 +136,6 @@ namespace Crystal
 		protected virtual void ConfigureRegionAdapterMappings(RegionAdapterMappings regionAdapterMappings)
 		{
 			regionAdapterMappings?.RegisterDefaultRegionAdapterMappings();
-		}
-
-		/// <summary>
-		/// Registers the <see cref="Type"/>s of the Exceptions that are not considered 
-		/// root exceptions by the <see cref="ExceptionExtensions"/>.
-		/// </summary>
-		protected virtual void RegisterFrameworkExceptionTypes()
-		{
 		}
 
 		/// <summary>

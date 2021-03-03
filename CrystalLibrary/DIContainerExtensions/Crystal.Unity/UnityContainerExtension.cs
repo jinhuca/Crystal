@@ -13,12 +13,7 @@ namespace Crystal.Unity
 	/// <summary>
 	/// The Unity implementation of the <see cref="IContainerExtension" />
 	/// </summary>
-#if ContainerExtensions
-    internal partial
-#else
-	public
-#endif
-		class UnityContainerExtension : IContainerExtension<IUnityContainer>, IContainerInfo
+	public class UnityContainerExtension : IContainerExtension<IUnityContainer>, IContainerInfo
 	{
 		private UnityScopedProvider _currentScope;
 
@@ -27,17 +22,15 @@ namespace Crystal.Unity
 		/// </summary>
 		public IUnityContainer Instance { get; }
 
-#if !ContainerExtensions
 		/// <summary>
-		/// Constructs a default <see cref="UnityContainerExtension" />
+		/// Constructs a default <see cref="UnityContainerExtension"/>
 		/// </summary>
-		public UnityContainerExtension()
-				: this(new UnityContainer())
+		public UnityContainerExtension() : this(new UnityContainer())
 		{
 		}
 
 		/// <summary>
-		/// Constructs a <see cref="UnityContainerExtension" /> with the specified <see cref="IUnityContainer" />
+		/// Constructs a <see cref="UnityContainerExtension"/> with the specified <see cref="IUnityContainer"/>
 		/// </summary>
 		/// <param name="container"></param>
 		public UnityContainerExtension(IUnityContainer container)
@@ -49,7 +42,6 @@ namespace Crystal.Unity
 			Instance.RegisterFactory(typeof(IContainerProvider), c => c.Resolve<UnityContainerExtension>(currentContainer));
 			ExceptionExtensions.RegisterFrameworkExceptionType(typeof(ResolutionFailedException));
 		}
-#endif
 
 		/// <summary>
 		/// Gets the current <see cref="IScopedProvider"/>
@@ -266,8 +258,7 @@ namespace Crystal.Unity
 		/// </summary>
 		/// <param name="type">The service <see cref="Type"/></param>
 		/// <returns>The resolved Service <see cref="Type"/></returns>
-		public object Resolve(Type type) =>
-				Resolve(type, Array.Empty<(Type, object)>());
+		public object Resolve(Type type) => Resolve(type, Array.Empty<(Type, object)>());
 
 		/// <summary>
 		/// Resolves a given <see cref="Type"/>
@@ -275,8 +266,7 @@ namespace Crystal.Unity
 		/// <param name="type">The service <see cref="Type"/></param>
 		/// <param name="name">The service name/key used when registering the <see cref="Type"/></param>
 		/// <returns>The resolved Service <see cref="Type"/></returns>
-		public object Resolve(Type type, string name) =>
-				Resolve(type, name, Array.Empty<(Type, object)>());
+		public object Resolve(Type type, string name) => Resolve(type, name, Array.Empty<(Type, object)>());
 
 		/// <summary>
 		/// Resolves a given <see cref="Type"/>
@@ -336,10 +326,7 @@ namespace Crystal.Unity
 		/// </summary>
 		/// <param name="type">The service <see cref="Type" /></param>
 		/// <returns><c>true</c> if the service is registered.</returns>
-		public bool IsRegistered(Type type)
-		{
-			return Instance.IsRegistered(type);
-		}
+		public bool IsRegistered(Type type) => Instance.IsRegistered(type);
 
 		/// <summary>
 		/// Determines if a given service is registered with the specified name
@@ -347,10 +334,7 @@ namespace Crystal.Unity
 		/// <param name="type">The service <see cref="Type" /></param>
 		/// <param name="name">The service name or key used</param>
 		/// <returns><c>true</c> if the service is registered.</returns>
-		public bool IsRegistered(Type type, string name)
-		{
-			return Instance.IsRegistered(type, name);
-		}
+		public bool IsRegistered(Type type, string name) => Instance.IsRegistered(type, name);
 
 		Type IContainerInfo.GetRegistrationType(string key)
 		{
@@ -373,8 +357,7 @@ namespace Crystal.Unity
 		/// <summary>
 		/// Creates a new Scope
 		/// </summary>
-		public virtual IScopedProvider CreateScope() =>
-				CreateScopeInternal();
+		public virtual IScopedProvider CreateScope() => CreateScopeInternal();
 
 		/// <summary>
 		/// Creates a new Scope and provides the updated ServiceProvider
@@ -409,11 +392,9 @@ namespace Crystal.Unity
 				Container = null;
 			}
 
-			public object Resolve(Type type) =>
-					Resolve(type, Array.Empty<(Type, object)>());
+			public object Resolve(Type type) => Resolve(type, Array.Empty<(Type, object)>());
 
-			public object Resolve(Type type, string name) =>
-					Resolve(type, name, Array.Empty<(Type, object)>());
+			public object Resolve(Type type, string name) => Resolve(type, name, Array.Empty<(Type, object)>());
 
 			public object Resolve(Type type, params (Type Type, object Instance)[] parameters)
 			{

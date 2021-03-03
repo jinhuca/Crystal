@@ -114,7 +114,7 @@ namespace Crystal
 		/// <summary>
 		/// Used to register types with the container that will be used by your application.
 		/// </summary>
-		protected abstract void RegisterTypes(IContainerRegistry containerRegistry);
+		protected virtual void RegisterTypes(IContainerRegistry containerRegistry) { }
 
 		/// <summary>
 		/// Registers the <see cref="Type"/>s of the Exceptions that are not considered 

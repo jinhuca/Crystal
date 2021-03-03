@@ -10,9 +10,5 @@ namespace C02ApplicationExtensions
 		{
 			return Container.Resolve<MainWindow>();
 		}
-
-		protected override void RegisterTypes(IContainerRegistry containerRegistry)
-		{
-		}
 	}
 }

@@ -14,10 +14,6 @@ namespace C03CustomRegions
 			return Container.Resolve<MainWindow>();
 		}
 
-		protected override void RegisterTypes(IContainerRegistry containerRegistry)
-		{
-		}
-
 		protected override void ConfigureRegionAdapterMappings(RegionAdapterMappings regionAdapterMappings)
 		{
 			base.ConfigureRegionAdapterMappings(regionAdapterMappings);

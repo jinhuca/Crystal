@@ -11,9 +11,5 @@ namespace C04ViewDiscovery
 		{
 			return Container.Resolve<MainWindow>();
 		}
-
-		protected override void RegisterTypes(IContainerRegistry containerRegistry)
-		{
-		}
 	}
 }

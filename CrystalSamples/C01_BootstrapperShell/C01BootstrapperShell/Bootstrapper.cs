@@ -11,9 +11,5 @@ namespace C01BootstrapperShell
 		{
 			return Container.Resolve<View1>();
 		}
-
-		protected override void RegisterTypes(IContainerRegistry containerRegistry)
-		{
-		}
 	}
 }
