@@ -51,20 +51,11 @@ namespace Crystal.Commands
 		/// Raises <see cref="CanExecuteChanged"/> so every command invoker can requery to check if the command can execute.
 		/// </summary>
 		/// <remarks>Note that this will trigger the execution of <see cref="CanExecuteChanged"/> once for each invoker.</remarks>
-		public void RaiseCanExecuteChanged()
-		{
-			OnCanExecuteChanged();
-		}
+		public void RaiseCanExecuteChanged() => OnCanExecuteChanged();
 
-		void ICommand.Execute(object parameter)
-		{
-			Execute(parameter);
-		}
+		void ICommand.Execute(object parameter) => Execute(parameter);
 
-		bool ICommand.CanExecute(object parameter)
-		{
-			return CanExecute(parameter);
-		}
+		bool ICommand.CanExecute(object parameter) => CanExecute(parameter);
 
 		/// <summary>
 		/// Handle the internal invocation of <see cref="ICommand.Execute(object)"/>

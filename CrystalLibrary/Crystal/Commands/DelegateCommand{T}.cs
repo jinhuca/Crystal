@@ -77,10 +77,7 @@ namespace Crystal.Commands
 		/// Executes the command and invokes the <see cref="Action{T}"/> provided during construction.
 		/// </summary>
 		/// <param name="parameter">Data used by the command.</param>
-		public void Execute(T parameter)
-		{
-			_executeMethod(parameter);
-		}
+		public void Execute(T parameter) => _executeMethod(parameter);
 
 		/// <summary>
 		/// Determines if the command can execute by invoked the <see cref="Func{T,Bool}"/> provided during construction.
@@ -89,29 +86,20 @@ namespace Crystal.Commands
 		/// <returns>
 		/// <see langword="true" /> if this command can be executed; otherwise, <see langword="false" />.
 		/// </returns>
-		public bool CanExecute(T parameter)
-		{
-			return _canExecuteMethod(parameter);
-		}
+		public bool CanExecute(T parameter) => _canExecuteMethod(parameter);
 
 		/// <summary>
 		/// Handle the internal invocation of <see cref="ICommand.Execute(object)"/>
 		/// </summary>
 		/// <param name="parameter">Command Parameter</param>
-		protected override void Execute(object parameter)
-		{
-			Execute((T)parameter);
-		}
+		protected override void Execute(object parameter) => Execute((T)parameter);
 
 		/// <summary>
 		/// Handle the internal invocation of <see cref="ICommand.CanExecute(object)"/>
 		/// </summary>
 		/// <param name="parameter"></param>
 		/// <returns><see langword="true"/> if the Command Can Execute, otherwise <see langword="false" /></returns>
-		protected override bool CanExecute(object parameter)
-		{
-			return CanExecute((T)parameter);
-		}
+		protected override bool CanExecute(object parameter) => CanExecute((T)parameter);
 
 		/// <summary>
 		/// Observes a property that implements INotifyPropertyChanged, and automatically calls DelegateCommandBase.RaiseCanExecuteChanged on property 

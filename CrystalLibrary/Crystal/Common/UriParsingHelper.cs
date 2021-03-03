@@ -12,29 +12,19 @@ namespace Crystal.Common
 		/// Gets the query part of <paramref name="uri"/>.
 		/// </summary>
 		/// <param name="uri">The Uri.</param>
-		public static string GetQuery(Uri uri)
-		{
-			return EnsureAbsolute(uri).Query;
-		}
+		public static string GetQuery(Uri uri) => EnsureAbsolute(uri).Query;
 
 		/// <summary>
 		/// Gets the AbsolutePath part of <paramref name="uri"/>.
 		/// </summary>
 		/// <param name="uri">The Uri.</param>
-		public static string GetAbsolutePath(Uri uri)
-		{
-			return EnsureAbsolute(uri).AbsolutePath;
-		}
+		public static string GetAbsolutePath(Uri uri) => EnsureAbsolute(uri).AbsolutePath;
 
 		/// <summary>
 		/// Parses the query of <paramref name="uri"/> into a dictionary.
 		/// </summary>
 		/// <param name="uri">The URI.</param>
-		public static NavigationParameters ParseQuery(Uri uri)
-		{
-			var query = GetQuery(uri);
-			return new NavigationParameters(query);
-		}
+		public static NavigationParameters ParseQuery(Uri uri) => new NavigationParameters(GetQuery(uri));
 
 		private static Uri EnsureAbsolute(Uri uri)
 		{

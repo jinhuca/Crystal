@@ -42,38 +42,26 @@ namespace Crystal.Commands
 		///<summary>
 		/// Executes the command.
 		///</summary>
-		public void Execute()
-		{
-			_executeMethod();
-		}
+		public void Execute() => _executeMethod();
 
 		/// <summary>
 		/// Determines if the command can be executed.
 		/// </summary>
 		/// <returns>Returns <see langword="true"/> if the command can execute,otherwise returns <see langword="false"/>.</returns>
-		public bool CanExecute()
-		{
-			return _canExecuteMethod();
-		}
+		public bool CanExecute() => _canExecuteMethod();
 
 		/// <summary>
 		/// Handle the internal invocation of <see cref="ICommand.Execute(object)"/>
 		/// </summary>
 		/// <param name="parameter">Command Parameter</param>
-		protected override void Execute(object parameter)
-		{
-			Execute();
-		}
+		protected override void Execute(object parameter) => Execute();
 
 		/// <summary>
 		/// Handle the internal invocation of <see cref="ICommand.CanExecute(object)"/>
 		/// </summary>
 		/// <param name="parameter"></param>
 		/// <returns><see langword="true"/> if the Command Can Execute, otherwise <see langword="false" /></returns>
-		protected override bool CanExecute(object parameter)
-		{
-			return CanExecute();
-		}
+		protected override bool CanExecute(object parameter) => CanExecute();
 
 		/// <summary>
 		/// Observes a property that implements INotifyPropertyChanged, and automatically calls DelegateCommandBase.RaiseCanExecuteChanged on property changed notifications.

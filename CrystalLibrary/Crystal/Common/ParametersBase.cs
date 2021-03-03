@@ -106,23 +106,20 @@ namespace Crystal.Common
 		/// </summary>
 		/// <param name="key">The key to reference this value in the parameters collection.</param>
 		/// <param name="value">The value of the parameter to store.</param>
-		public void Add(string key, object value) =>
-				_entries.Add(new KeyValuePair<string, object>(key, value));
+		public void Add(string key, object value) => _entries.Add(new KeyValuePair<string, object>(key, value));
 
 		/// <summary>
 		/// Checks collection for presence of key.
 		/// </summary>
 		/// <param name="key">The key to check in the collection.</param>
 		/// <returns><c>true</c> if key exists; else returns <c>false</c>.</returns>
-		public bool ContainsKey(string key) =>
-				_entries.ContainsKey(key);
+		public bool ContainsKey(string key) => _entries.ContainsKey(key);
 
 		/// <summary>
 		/// Gets an enumerator for the KeyValuePairs in parameter collection.
 		/// </summary>
 		/// <returns>Enumerator.</returns>
-		public IEnumerator<KeyValuePair<string, object>> GetEnumerator() =>
-				_entries.GetEnumerator();
+		public IEnumerator<KeyValuePair<string, object>> GetEnumerator() => _entries.GetEnumerator();
 
 		/// <summary>
 		/// Returns the value of the member referenced by key.
@@ -130,8 +127,7 @@ namespace Crystal.Common
 		/// <typeparam name="T">The type of object to be returned.</typeparam>
 		/// <param name="key">The key for the value to be returned.</param>
 		/// <returns>Returns a matching parameter of <typeparamref name="T"/> if one exists in the Collection.</returns>
-		public T GetValue<T>(string key) =>
-				_entries.GetValue<T>(key);
+		public T GetValue<T>(string key) => _entries.GetValue<T>(key);
 
 		/// <summary>
 		/// Returns an IEnumerable of all parameters.
@@ -139,8 +135,7 @@ namespace Crystal.Common
 		/// <typeparam name="T">The type for the values to be returned.</typeparam>
 		/// <param name="key">The key for the values to be returned.</param>
 		///<returns>Returns a IEnumerable of all the instances of type <typeparamref name="T"/>.</returns>
-		public IEnumerable<T> GetValues<T>(string key) =>
-				_entries.GetValues<T>(key);
+		public IEnumerable<T> GetValues<T>(string key) => _entries.GetValues<T>(key);
 
 		/// <summary>
 		/// Checks to see if the parameter collection contains the value.
@@ -148,11 +143,9 @@ namespace Crystal.Common
 		/// <typeparam name="T">The type for the values to be returned.</typeparam>
 		/// <param name="key">The key for the value to be returned.</param>
 		/// <param name="value">Value of the returned parameter if it exists.</param>
-		public bool TryGetValue<T>(string key, out T value) =>
-				_entries.TryGetValue(key, out value);
+		public bool TryGetValue<T>(string key, out T value) => _entries.TryGetValue(key, out value);
 
-		IEnumerator IEnumerable.GetEnumerator() =>
-				GetEnumerator();
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
 		/// <summary>
 		/// Converts parameter collection to a parameter string.
