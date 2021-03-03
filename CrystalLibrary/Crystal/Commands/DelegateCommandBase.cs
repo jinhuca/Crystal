@@ -37,9 +37,13 @@ namespace Crystal.Commands
 			if (handler != null)
 			{
 				if (_synchronizationContext != null && _synchronizationContext != SynchronizationContext.Current)
+				{
 					_synchronizationContext.Post((o) => handler.Invoke(this, EventArgs.Empty), null);
+				}
 				else
+				{
 					handler.Invoke(this, EventArgs.Empty);
+				}
 			}
 		}
 
