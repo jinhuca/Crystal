@@ -13,9 +13,7 @@ namespace Crystal.Regions
 		/// <param name="navigation">The navigation object.</param>
 		/// <param name="target">The navigation target</param>
 		public static void RequestNavigate(this INavigateAsync navigation, string target)
-		{
-			RequestNavigate(navigation, target, nr => { });
-		}
+			=> RequestNavigate(navigation, target, nr => { });
 
 		/// <summary>
 		/// Initiates navigation to the target specified by the <paramref name="target"/>.
@@ -26,10 +24,14 @@ namespace Crystal.Regions
 		public static void RequestNavigate(this INavigateAsync navigation, string target, Action<NavigationResult> navigationCallback)
 		{
 			if (navigation == null)
+			{
 				throw new ArgumentNullException(nameof(navigation));
+			}
 
 			if (target == null)
+			{
 				throw new ArgumentNullException(nameof(target));
+			}
 
 			var targetUri = new Uri(target, UriKind.RelativeOrAbsolute);
 
@@ -44,7 +46,9 @@ namespace Crystal.Regions
 		public static void RequestNavigate(this INavigateAsync navigation, Uri target)
 		{
 			if (navigation == null)
+			{
 				throw new ArgumentNullException(nameof(navigation));
+			}
 
 			navigation.RequestNavigate(target, nr => { });
 		}
@@ -59,10 +63,14 @@ namespace Crystal.Regions
 		public static void RequestNavigate(this INavigateAsync navigation, string target, Action<NavigationResult> navigationCallback, NavigationParameters navigationParameters)
 		{
 			if (navigation == null)
+			{
 				throw new ArgumentNullException(nameof(navigation));
+			}
 
 			if (target == null)
+			{
 				throw new ArgumentNullException(nameof(target));
+			}
 
 			var targetUri = new Uri(target, UriKind.RelativeOrAbsolute);
 
@@ -78,7 +86,9 @@ namespace Crystal.Regions
 		public static void RequestNavigate(this INavigateAsync navigation, Uri target, NavigationParameters navigationParameters)
 		{
 			if (navigation == null)
+			{
 				throw new ArgumentNullException(nameof(navigation));
+			}
 
 			navigation.RequestNavigate(target, nr => { }, navigationParameters);
 		}
@@ -92,10 +102,14 @@ namespace Crystal.Regions
 		public static void RequestNavigate(this INavigateAsync navigation, string target, NavigationParameters navigationParameters)
 		{
 			if (navigation == null)
+			{
 				throw new ArgumentNullException(nameof(navigation));
+			}
 
 			if (target == null)
+			{
 				throw new ArgumentNullException(nameof(target));
+			}
 
 			navigation.RequestNavigate(new Uri(target, UriKind.RelativeOrAbsolute), nr => { }, navigationParameters);
 		}

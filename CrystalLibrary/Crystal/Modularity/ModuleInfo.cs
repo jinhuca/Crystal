@@ -26,9 +26,11 @@ namespace Crystal.Modularity
         public ModuleInfo(string name, string type, params string[] dependsOn)
         {
             if (dependsOn == null)
-                throw new ArgumentNullException(nameof(dependsOn));
+			{
+				throw new ArgumentNullException(nameof(dependsOn));
+			}
 
-            ModuleName = name;
+			ModuleName = name;
             ModuleType = type;
             DependsOn = new Collection<string>();
             foreach (string dependency in dependsOn)

@@ -33,13 +33,17 @@ namespace Crystal.Modularity
         protected override void InnerLoad()
         {
             if (string.IsNullOrEmpty(ModulePath))
-                throw new InvalidOperationException(Resources.ModulePathCannotBeNullOrEmpty);
+			{
+				throw new InvalidOperationException(Resources.ModulePathCannotBeNullOrEmpty);
+			}
 
-            if (!Directory.Exists(ModulePath))
-                throw new InvalidOperationException(
+			if (!Directory.Exists(ModulePath))
+			{
+				throw new InvalidOperationException(
                     string.Format(CultureInfo.CurrentCulture, Resources.DirectoryNotFound, ModulePath));
+			}
 
-            AppDomain childDomain = AppDomain.CurrentDomain;
+			AppDomain childDomain = AppDomain.CurrentDomain;
 
             try
             {

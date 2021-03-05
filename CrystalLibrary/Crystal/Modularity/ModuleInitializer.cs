@@ -28,9 +28,11 @@ namespace Crystal.Modularity
         public void Initialize(IModuleInfo moduleInfo)
         {
             if (moduleInfo == null)
-                throw new ArgumentNullException(nameof(moduleInfo));
+			{
+				throw new ArgumentNullException(nameof(moduleInfo));
+			}
 
-            IModule moduleInstance = null;
+			IModule moduleInstance = null;
             try
             {
                 moduleInstance = CreateModule(moduleInfo);
@@ -60,12 +62,16 @@ namespace Crystal.Modularity
         public virtual void HandleModuleInitializationError(IModuleInfo moduleInfo, string assemblyName, Exception exception)
         {
             if (moduleInfo == null)
-                throw new ArgumentNullException(nameof(moduleInfo));
+			{
+				throw new ArgumentNullException(nameof(moduleInfo));
+			}
 
-            if (exception == null)
-                throw new ArgumentNullException(nameof(exception));
+			if (exception == null)
+			{
+				throw new ArgumentNullException(nameof(exception));
+			}
 
-            Exception moduleException;
+			Exception moduleException;
 
             if (exception is ModuleInitializeException)
             {
@@ -94,9 +100,11 @@ namespace Crystal.Modularity
         protected virtual IModule CreateModule(IModuleInfo moduleInfo)
         {
             if (moduleInfo == null)
-                throw new ArgumentNullException(nameof(moduleInfo));
+			{
+				throw new ArgumentNullException(nameof(moduleInfo));
+			}
 
-            return CreateModule(moduleInfo.ModuleType);
+			return CreateModule(moduleInfo.ModuleType);
         }
 
         /// <summary>

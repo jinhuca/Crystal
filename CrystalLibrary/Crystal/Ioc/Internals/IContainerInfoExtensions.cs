@@ -19,9 +19,11 @@ namespace Crystal.Ioc.Internals
         public static Type GetRegistrationType(this IContainerExtension container, string key)
         {
             if (container is IContainerInfo ci)
-                return ci.GetRegistrationType(key);
+			{
+				return ci.GetRegistrationType(key);
+			}
 
-            return null;
+			return null;
         }
 
         /// <summary>
@@ -35,9 +37,11 @@ namespace Crystal.Ioc.Internals
             type)
         {
             if (container is IContainerInfo ci)
-                return ci.GetRegistrationType(type);
+			{
+				return ci.GetRegistrationType(type);
+			}
 
-            return null;
+			return null;
         }
     }
 }

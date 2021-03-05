@@ -32,7 +32,6 @@ namespace Crystal.Services.Dialogs
 		/// <param name="callback">The action to perform when the dialog is closed.</param>
 		void ShowDialog(string name, IDialogParameters parameters, Action<IDialogResult> callback);
 
-
 		/// <summary>
 		/// Shows a modal dialog.
 		/// </summary>

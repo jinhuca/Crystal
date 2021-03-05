@@ -97,10 +97,14 @@ namespace Crystal.Mvvm
 
 				// fallback to convention based
 				if (viewModelType == null)
+				{
 					viewModelType = _defaultViewTypeToViewModelTypeResolver(view.GetType());
+				}
 
 				if (viewModelType == null)
+				{
 					return;
+				}
 
 				viewModel = _defaultViewModelFactoryWithViewParameter != null ? _defaultViewModelFactoryWithViewParameter(view, viewModelType) : _defaultViewModelFactory(viewModelType);
 			}
@@ -120,7 +124,9 @@ namespace Crystal.Mvvm
 
 			// Mapping of view models base on view type (or instance) goes here
 			if (_factories.ContainsKey(viewKey))
+			{
 				return _factories[viewKey]();
+			}
 
 			return null;
 		}
@@ -135,7 +141,9 @@ namespace Crystal.Mvvm
 			var viewKey = view.ToString();
 
 			if (_typeFactories.ContainsKey(viewKey))
+			{
 				return _typeFactories[viewKey];
+			}
 
 			return null;
 		}

@@ -26,9 +26,11 @@ namespace Crystal.Modularity
         public ModuleDependencyCollection(ModuleDependencyConfigurationElement[] dependencies)
         {
             if (dependencies == null)
-                throw new ArgumentNullException(nameof(dependencies));
+			{
+				throw new ArgumentNullException(nameof(dependencies));
+			}
 
-            foreach (ModuleDependencyConfigurationElement dependency in dependencies)
+			foreach (ModuleDependencyConfigurationElement dependency in dependencies)
             {
                 BaseAdd(dependency);
             }

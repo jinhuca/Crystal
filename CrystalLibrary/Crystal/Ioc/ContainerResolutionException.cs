@@ -187,7 +187,9 @@ namespace Crystal.Ioc
 					var defaultImplementingType = IsConcreteType(parameter.ParameterType) ? parameter.ParameterType : null;
 					var parameterImplementingType = container.GetRegistrationType(parameter.ParameterType);
 					if (parameterImplementingType is null)
+					{
 						throw new ContainerResolutionException(parameter.ParameterType, MissingRegistration);
+					}
 
 					var instance = container.Resolve(parameter.ParameterType);
 					parameterInstances.Add(instance);
@@ -208,7 +210,9 @@ namespace Crystal.Ioc
 
 			// Return if we had an error with any children
 			if (parameters.Length != parameterInstances.Count)
+			{
 				return;
+			}
 
 			try
 			{
@@ -225,7 +229,9 @@ namespace Crystal.Ioc
 				errors.Add(implementingType, tie);
 
 				if (tie.InnerException != null)
+				{
 					errors.Add(implementingType, tie.InnerException);
+				}
 			}
 			catch (Exception ex)
 			{
@@ -236,7 +242,9 @@ namespace Crystal.Ioc
 		private static bool IsConcreteType(Type type)
 		{
 			if (type.IsAbstract || type.IsEnum || type.IsPrimitive || type == typeof(object))
+			{
 				return false;
+			}
 
 			return true;
 		}
@@ -245,7 +253,9 @@ namespace Crystal.Ioc
 		{
 			var message = $"An unexpected error occurred while resolving '{type.FullName}'";
 			if (!string.IsNullOrEmpty(name))
+			{
 				message += $", with the service name '{name}'";
+			}
 
 			return message;
 		}

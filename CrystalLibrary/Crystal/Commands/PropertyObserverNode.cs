@@ -22,7 +22,11 @@ namespace Crystal.Commands
 			_action = () =>
 			{
 				action?.Invoke();
-				if (Next == null) return;
+				if (Next == null)
+				{
+					return;
+				}
+
 				Next.UnsubscribeListener();
 				GenerateNextNode();
 			};
@@ -33,13 +37,20 @@ namespace Crystal.Commands
 			_inpcObject = inpcObject;
 			_inpcObject.PropertyChanged += OnPropertyChanged;
 
-			if (Next != null) GenerateNextNode();
+			if (Next != null)
+			{
+				GenerateNextNode();
+			}
 		}
 
 		private void GenerateNextNode()
 		{
 			var nextProperty = PropertyInfo.GetValue(_inpcObject);
-			if (nextProperty == null) return;
+			if (nextProperty == null)
+			{
+				return;
+			}
+
 			if (!(nextProperty is INotifyPropertyChanged nextInpcObject))
 			{
 				throw new InvalidOperationException("Trying to subscribe PropertyChanged listener in object that " +

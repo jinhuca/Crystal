@@ -14,18 +14,12 @@ namespace Crystal.Events
 		/// Initializes the DataEventArgs class.
 		/// </summary>
 		/// <param name="value">Information related to the event.</param>
-		public DataEventArgs(TData value)
-		{
-			_value = value;
-		}
+		public DataEventArgs(TData value) => _value = value;
 
 		/// <summary>
 		/// Gets the information related to the event.
 		/// </summary>
 		/// <value>Information related to the event.</value>
-		public TData Value
-		{
-			get { return _value; }
-		}
+		public TData Value => _value;
 	}
 }

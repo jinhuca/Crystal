@@ -51,7 +51,10 @@ namespace Crystal.Regions.Behaviors
 			// Thus, we expect that any ICollectionView implementation would
 			// always raise a remove and we don't handle any resets
 			// unless we wanted to start tracking views that used to be active.
-			if (e.Action != NotifyCollectionChangedAction.Remove) return;
+			if (e.Action != NotifyCollectionChangedAction.Remove)
+			{
+				return;
+			}
 
 			var inactiveViews = e.OldItems;
 			foreach (var inactiveView in inactiveViews)
@@ -59,7 +62,9 @@ namespace Crystal.Regions.Behaviors
 				if (!ShouldKeepAlive(inactiveView))
 				{
 					if (Region.Views.Contains(inactiveView))
+					{
 						Region.Remove(inactiveView);
+					}
 				}
 			}
 		}

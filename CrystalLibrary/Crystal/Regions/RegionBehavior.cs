@@ -25,7 +25,6 @@ namespace Crystal.Regions
 				{
 					throw new InvalidOperationException(Resources.RegionBehaviorRegionCannotBeSetAfterAttach);
 				}
-
 				region = value;
 			}
 		}

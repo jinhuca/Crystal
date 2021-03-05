@@ -88,9 +88,11 @@ namespace Crystal.Regions.Behaviors
         public virtual void OnViewRegistered(object sender, ViewRegisteredEventArgs e)
         {
             if (e == null)
-                throw new ArgumentNullException(nameof(e));
+			{
+				throw new ArgumentNullException(nameof(e));
+			}
 
-            if (e.RegionName == Region.Name)
+			if (e.RegionName == Region.Name)
             {
                 AddViewIntoRegion(e.GetView());
             }

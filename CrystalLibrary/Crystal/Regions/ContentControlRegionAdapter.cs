@@ -60,9 +60,6 @@ namespace Crystal.Regions
 		/// Creates a new instance of <see cref="SingleActiveRegion"/>.
 		/// </summary>
 		/// <returns>A new instance of <see cref="SingleActiveRegion"/>.</returns>
-		protected override IRegion CreateRegion()
-		{
-			return new SingleActiveRegion();
-		}
+		protected override IRegion CreateRegion() => new SingleActiveRegion();
 	}
 }

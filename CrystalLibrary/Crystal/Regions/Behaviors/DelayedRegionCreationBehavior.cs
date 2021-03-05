@@ -119,7 +119,9 @@ namespace Crystal.Regions.Behaviors
 		protected virtual IRegion CreateRegion(DependencyObject targetElement, string regionName)
 		{
 			if (targetElement == null)
+			{
 				throw new ArgumentNullException(nameof(targetElement));
+			}
 
 			try
 			{

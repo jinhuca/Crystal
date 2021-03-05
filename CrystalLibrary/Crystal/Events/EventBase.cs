@@ -33,7 +33,11 @@ namespace Crystal.Events
 		/// </remarks>
 		protected virtual SubscriptionToken InternalSubscribe(IEventSubscription eventSubscription)
 		{
-			if (eventSubscription == null) throw new ArgumentNullException(nameof(eventSubscription));
+			if (eventSubscription == null)
+			{
+				throw new ArgumentNullException(nameof(eventSubscription));
+			}
+
 			eventSubscription.SubscriptionToken = new SubscriptionToken(Unsubscribe);
 			lock (Subscriptions)
 			{

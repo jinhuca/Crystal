@@ -390,7 +390,9 @@ namespace Crystal.Ioc
 		private static void RegisterForNavigationWithViewModel<TViewModel>(this IContainerRegistry containerRegistry, Type viewType, string name)
 		{
 			if (string.IsNullOrWhiteSpace(name))
+			{
 				name = viewType.Name;
+			}
 
 			ViewModelLocationProvider.Register(viewType.ToString(), typeof(TViewModel));
 			containerRegistry.RegisterForNavigation(viewType, name);

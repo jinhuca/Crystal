@@ -26,7 +26,6 @@ namespace Crystal.Interactivity
 		public CommandBehaviorBase(T targetObject)
 		{
 			_targetObject = new WeakReference(targetObject);
-
 			_commandCanExecuteChangedHandler = CommandCanExecuteChanged;
 		}
 
@@ -86,13 +85,7 @@ namespace Crystal.Interactivity
 		/// <summary>
 		/// Object to which this behavior is attached.
 		/// </summary>
-		protected T TargetObject
-		{
-			get
-			{
-				return _targetObject.Target as T;
-			}
-		}
+		protected T TargetObject => _targetObject.Target as T;
 
 
 		/// <summary>
@@ -108,22 +101,17 @@ namespace Crystal.Interactivity
 			else if (Command != null)
 			{
 				if (AutoEnable)
+				{
 					TargetObject.IsEnabled = Command.CanExecute(CommandParameter);
+				}
 			}
 		}
 
-		private void CommandCanExecuteChanged(object sender, EventArgs e)
-		{
-			UpdateEnabledState();
-		}
+		private void CommandCanExecuteChanged(object sender, EventArgs e) => UpdateEnabledState();
 
 		/// <summary>
 		/// Executes the command, if it's set, providing the <see cref="CommandParameter"/>.
 		/// </summary>
-		protected virtual void ExecuteCommand(object parameter)
-		{
-			if (Command != null)
-				Command.Execute(CommandParameter ?? parameter);
-		}
+		protected virtual void ExecuteCommand(object parameter) => Command?.Execute(CommandParameter ?? parameter);
 	}
 }

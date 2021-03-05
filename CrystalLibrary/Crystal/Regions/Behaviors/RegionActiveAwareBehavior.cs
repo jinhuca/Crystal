@@ -90,7 +90,10 @@ namespace Crystal.Regions.Behaviors
 
 				// If the view's RegionManager attached property is different from the region's RegionManager,
 				// then the view's region manager is a scoped region manager.
-				if (regionManager == null || regionManager == Region.RegionManager) return;
+				if (regionManager == null || regionManager == Region.RegionManager)
+				{
+					return;
+				}
 
 				var activeViews = regionManager.Regions.SelectMany(e => e.ActiveViews);
 

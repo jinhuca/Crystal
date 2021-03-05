@@ -94,7 +94,9 @@ namespace Crystal.Regions
 		public void RequestNavigate(Uri target, Action<NavigationResult> navigationCallback, NavigationParameters navigationParameters)
 		{
 			if (navigationCallback == null)
+			{
 				throw new ArgumentNullException(nameof(navigationCallback));
+			}
 
 			try
 			{
@@ -109,10 +111,14 @@ namespace Crystal.Regions
 		private void DoNavigate(Uri source, Action<NavigationResult> navigationCallback, NavigationParameters navigationParameters)
 		{
 			if (source == null)
+			{
 				throw new ArgumentNullException(nameof(source));
+			}
 
 			if (Region == null)
+			{
 				throw new InvalidOperationException(Resources.NavigationServiceHasNoRegion);
+			}
 
 			_currentNavigationContext = new NavigationContext(this, source, navigationParameters);
 

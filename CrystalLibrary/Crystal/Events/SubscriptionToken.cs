@@ -29,7 +29,11 @@ namespace Crystal.Events
 		///<param name="other">An object to compare with this object.</param>
 		public bool Equals(SubscriptionToken other)
 		{
-			if (other == null) return false;
+			if (other == null)
+			{
+				return false;
+			}
+
 			return Equals(_token, other._token);
 		}
 
@@ -43,7 +47,11 @@ namespace Crystal.Events
 		///<exception cref="T:System.NullReferenceException">The <paramref name="obj" /> parameter is null.</exception><filterpriority>2</filterpriority>
 		public override bool Equals(object obj)
 		{
-			if (ReferenceEquals(this, obj)) return true;
+			if (ReferenceEquals(this, obj))
+			{
+				return true;
+			}
+
 			return Equals(obj as SubscriptionToken);
 		}
 

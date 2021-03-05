@@ -18,10 +18,15 @@ namespace System
 		/// <param name="frameworkExceptionType">The type of exception to register.</param>
 		public static void RegisterFrameworkExceptionType(Type frameworkExceptionType)
 		{
-			if (frameworkExceptionType == null) throw new ArgumentNullException(nameof(frameworkExceptionType));
+			if (frameworkExceptionType == null)
+			{
+				throw new ArgumentNullException(nameof(frameworkExceptionType));
+			}
 
 			if (!frameworkExceptionTypes.Contains(frameworkExceptionType))
+			{
 				frameworkExceptionTypes.Add(frameworkExceptionType);
+			}
 		}
 
 
@@ -33,10 +38,8 @@ namespace System
 		/// <returns>
 		/// 	<c>true</c> if the exception type is already registered; otherwise, <c>false</c>.
 		/// </returns>
-		public static bool IsFrameworkExceptionRegistered(Type frameworkExceptionType)
-		{
-			return frameworkExceptionTypes.Contains(frameworkExceptionType);
-		}
+		public static bool IsFrameworkExceptionRegistered(Type frameworkExceptionType) 
+			=> frameworkExceptionTypes.Contains(frameworkExceptionType);
 
 		/// <summary>
 		/// Looks at all the inner exceptions of the <paramref name="exception"/> parameter to find the 
@@ -52,7 +55,6 @@ namespace System
 		/// The exception that most likely caused the exception to occur. If it can't find the root exception, it will return the 
 		/// <paramref name="exception"/> value itself.
 		/// </returns>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "We have to catch exception. This method is used in exception handling code, so it must not fail.")]
 		public static Exception GetRootException(this Exception exception)
 		{
 			Exception rootException = exception;

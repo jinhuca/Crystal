@@ -310,7 +310,9 @@ namespace Crystal.Unity
 
 				// Unity will simply return a new object() for unregistered Views
 				if (!c.IsRegistered(type, name))
+				{
 					throw new KeyNotFoundException($"No registered type {type.Name} with the key {name}.");
+				}
 
 				var overrides = parameters.Select(p => new DependencyOverride(p.Type, p.Instance)).ToArray();
 				return c.Resolve(type, name, overrides);
@@ -415,7 +417,9 @@ namespace Crystal.Unity
 				{
 					// Unity will simply return a new object() for unregistered Views
 					if (!Container.IsRegistered(type, name))
+					{
 						throw new KeyNotFoundException($"No registered type {type.Name} with the key {name}.");
+					}
 
 					var overrides = parameters.Select(p => new DependencyOverride(p.Type, p.Instance)).ToArray();
 					return Container.Resolve(type, name, overrides);

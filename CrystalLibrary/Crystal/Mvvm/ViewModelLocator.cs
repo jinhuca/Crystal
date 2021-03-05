@@ -53,7 +53,9 @@ namespace Crystal.Mvvm
 		static void Bind(object view, object viewModel)
 		{
 			if (view is FrameworkElement element)
+			{
 				element.DataContext = viewModel;
+			}
 		}
 	}
 }

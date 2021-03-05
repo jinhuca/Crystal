@@ -21,7 +21,9 @@ namespace Crystal.Common
 		public void Add(TKey key)
 		{
 			if (key == null)
+			{
 				throw new ArgumentNullException(nameof(key));
+			}
 
 			CreateNewList(key);
 		}
@@ -35,10 +37,14 @@ namespace Crystal.Common
 		public void Add(TKey key, TValue value)
 		{
 			if (key == null)
+			{
 				throw new ArgumentNullException(nameof(key));
+			}
 
 			if (value == null)
+			{
 				throw new ArgumentNullException(nameof(value));
+			}
 
 			if (innerValues.ContainsKey(key))
 			{
@@ -93,7 +99,9 @@ namespace Crystal.Common
 		public bool ContainsKey(TKey key)
 		{
 			if (key == null)
+			{
 				throw new ArgumentNullException(nameof(key));
+			}
 
 			return innerValues.ContainsKey(key);
 		}
@@ -145,7 +153,9 @@ namespace Crystal.Common
 		public bool Remove(TKey key)
 		{
 			if (key == null)
+			{
 				throw new ArgumentNullException(nameof(key));
+			}
 
 			return innerValues.Remove(key);
 		}
@@ -158,10 +168,14 @@ namespace Crystal.Common
 		public void RemoveValue(TKey key, TValue value)
 		{
 			if (key == null)
+			{
 				throw new ArgumentNullException(nameof(key));
+			}
 
 			if (value == null)
+			{
 				throw new ArgumentNullException(nameof(value));
+			}
 
 			if (innerValues.ContainsKey(key))
 			{
@@ -254,10 +268,14 @@ namespace Crystal.Common
 		void IDictionary<TKey, IList<TValue>>.Add(TKey key, IList<TValue> value)
 		{
 			if (key == null)
+			{
 				throw new ArgumentNullException(nameof(key));
+			}
 
 			if (value == null)
+			{
 				throw new ArgumentNullException(nameof(value));
+			}
 
 			innerValues.Add(key, value);
 		}

@@ -92,7 +92,10 @@ namespace Crystal.Regions
 		/// <returns>Wrapper that can hold an <see cref="IRegion"/> value and can notify when the <see cref="IRegion"/> value changes. </returns>
 		public static ObservableObject<IRegion> GetObservableRegion(DependencyObject view)
 		{
-			if (view == null) throw new ArgumentNullException(nameof(view));
+			if (view == null)
+			{
+				throw new ArgumentNullException(nameof(view));
+			}
 
 			ObservableObject<IRegion> regionWrapper = view.GetValue(ObservableRegionProperty) as ObservableObject<IRegion>;
 

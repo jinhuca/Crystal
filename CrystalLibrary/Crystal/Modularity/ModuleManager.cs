@@ -97,9 +97,11 @@ namespace Crystal.Modularity
         protected virtual bool ModuleNeedsRetrieval(IModuleInfo moduleInfo)
         {
             if (moduleInfo == null)
-                throw new ArgumentNullException(nameof(moduleInfo));
+			{
+				throw new ArgumentNullException(nameof(moduleInfo));
+			}
 
-            if (moduleInfo.State == ModuleState.NotStarted)
+			if (moduleInfo.State == ModuleState.NotStarted)
             {
                 // If we can instantiate the type, that means the module's assembly is already loaded into
                 // the AppDomain and we don't need to retrieve it.
@@ -235,10 +237,11 @@ namespace Crystal.Modularity
         protected virtual void HandleModuleTypeLoadingError(IModuleInfo moduleInfo, Exception exception)
         {
             if (moduleInfo == null)
-                throw new ArgumentNullException(nameof(moduleInfo));
+			{
+				throw new ArgumentNullException(nameof(moduleInfo));
+			}
 
-
-            if (!(exception is ModuleTypeLoadingException moduleTypeLoadingException))
+			if (!(exception is ModuleTypeLoadingException moduleTypeLoadingException))
             {
                 moduleTypeLoadingException = new ModuleTypeLoadingException(moduleInfo.ModuleName, exception.Message, exception);
             }

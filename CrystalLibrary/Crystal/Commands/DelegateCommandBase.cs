@@ -116,10 +116,7 @@ namespace Crystal.Commands
 		/// <summary>
 		/// This raises the <see cref="DelegateCommandBase.IsActiveChanged"/> event.
 		/// </summary>
-		protected virtual void OnIsActiveChanged()
-		{
-			IsActiveChanged?.Invoke(this, EventArgs.Empty);
-		}
+		protected virtual void OnIsActiveChanged() => IsActiveChanged?.Invoke(this, EventArgs.Empty);
 
 		#endregion
 	}

@@ -43,10 +43,14 @@ namespace Crystal.Regions
 		public object LoadContent(IRegion region, NavigationContext navigationContext)
 		{
 			if (region == null)
+			{
 				throw new ArgumentNullException(nameof(region));
+			}
 
 			if (navigationContext == null)
+			{
 				throw new ArgumentNullException(nameof(navigationContext));
+			}
 
 			string candidateTargetContract = GetContractFromNavigationContext(navigationContext);
 
@@ -124,7 +128,10 @@ namespace Crystal.Regions
 		/// <returns>The candidate contract to seek within the <see cref="IRegion"/> and to use, if not found, when resolving from the container.</returns>
 		protected virtual string GetContractFromNavigationContext(NavigationContext navigationContext)
 		{
-			if (navigationContext == null) throw new ArgumentNullException(nameof(navigationContext));
+			if (navigationContext == null)
+			{
+				throw new ArgumentNullException(nameof(navigationContext));
+			}
 
 			var candidateTargetContract = UriParsingHelper.GetAbsolutePath(navigationContext.Uri);
 			candidateTargetContract = candidateTargetContract.TrimStart('/');

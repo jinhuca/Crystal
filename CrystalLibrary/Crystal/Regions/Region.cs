@@ -384,12 +384,16 @@ namespace Crystal.Regions
 		private ItemMetadata GetItemMetadataOrThrow(object view)
 		{
 			if (view == null)
+			{
 				throw new ArgumentNullException(nameof(view));
+			}
 
 			ItemMetadata itemMetadata = ItemMetadataCollection.FirstOrDefault(x => x.Item == view);
 
 			if (itemMetadata == null)
+			{
 				throw new ArgumentException(Resources.ViewNotInRegionException, nameof(view));
+			}
 
 			return itemMetadata;
 		}

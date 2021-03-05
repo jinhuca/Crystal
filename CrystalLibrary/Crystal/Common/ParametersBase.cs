@@ -63,7 +63,9 @@ namespace Crystal.Common
 					}
 
 					if (key != null)
+					{
 						Add(Uri.UnescapeDataString(key), Uri.UnescapeDataString(value));
+					}
 				}
 			}
 		}

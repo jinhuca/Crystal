@@ -82,7 +82,11 @@ namespace Crystal.Events
 					subscription = new BackgroundEventSubscription(actionReference);
 					break;
 				case ThreadOption.UIThread:
-					if (SynchronizationContext == null) throw new InvalidOperationException(Resources.EventAggregatorNotConstructedOnUIThread);
+					if (SynchronizationContext == null)
+					{
+						throw new InvalidOperationException(Resources.EventAggregatorNotConstructedOnUIThread);
+					}
+
 					subscription = new DispatcherEventSubscription(actionReference, SynchronizationContext);
 					break;
 				default:
@@ -250,7 +254,11 @@ namespace Crystal.Events
 					subscription = new BackgroundEventSubscription<TPayload>(actionReference, filterReference);
 					break;
 				case ThreadOption.UIThread:
-					if (SynchronizationContext == null) throw new InvalidOperationException(Resources.EventAggregatorNotConstructedOnUIThread);
+					if (SynchronizationContext == null)
+					{
+						throw new InvalidOperationException(Resources.EventAggregatorNotConstructedOnUIThread);
+					}
+
 					subscription = new DispatcherEventSubscription<TPayload>(actionReference, filterReference, SynchronizationContext);
 					break;
 				default:

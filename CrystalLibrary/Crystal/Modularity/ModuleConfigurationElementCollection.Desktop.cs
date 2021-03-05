@@ -28,9 +28,11 @@ namespace Crystal.Modularity
         public ModuleConfigurationElementCollection(ModuleConfigurationElement[] modules)
         {
             if (modules == null)
-                throw new ArgumentNullException(nameof(modules));
+			{
+				throw new ArgumentNullException(nameof(modules));
+			}
 
-            foreach (ModuleConfigurationElement module in modules)
+			foreach (ModuleConfigurationElement module in modules)
             {
                 BaseAdd(module);
             }
@@ -106,9 +108,11 @@ namespace Crystal.Modularity
         public IList<ModuleConfigurationElement> FindAll(Predicate<ModuleConfigurationElement> match)
         {
             if (match == null)
-                throw new ArgumentNullException(nameof(match));
+			{
+				throw new ArgumentNullException(nameof(match));
+			}
 
-            IList<ModuleConfigurationElement> found = new List<ModuleConfigurationElement>();
+			IList<ModuleConfigurationElement> found = new List<ModuleConfigurationElement>();
             foreach (ModuleConfigurationElement moduleElement in this)
             {
                 if (match(moduleElement))

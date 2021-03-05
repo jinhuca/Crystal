@@ -47,8 +47,12 @@ namespace Crystal.Modularity
         public ModuleCatalogBase(IEnumerable<IModuleInfo> modules)
             : this()
         {
-            if (modules == null) throw new ArgumentNullException(nameof(modules));
-            foreach (IModuleInfo moduleInfo in modules)
+            if (modules == null)
+			{
+				throw new ArgumentNullException(nameof(modules));
+			}
+
+			foreach (IModuleInfo moduleInfo in modules)
             {
                 Items.Add(moduleInfo);
             }
@@ -122,9 +126,11 @@ namespace Crystal.Modularity
         public virtual IEnumerable<IModuleInfo> CompleteListWithDependencies(IEnumerable<IModuleInfo> modules)
         {
             if (modules == null)
-                throw new ArgumentNullException(nameof(modules));
+			{
+				throw new ArgumentNullException(nameof(modules));
+			}
 
-            EnsureCatalogValidated();
+			EnsureCatalogValidated();
 
             List<IModuleInfo> completeList = new List<IModuleInfo>();
             List<IModuleInfo> pendingList = modules.ToList();
@@ -195,9 +201,11 @@ namespace Crystal.Modularity
         protected static string[] SolveDependencies(IEnumerable<IModuleInfo> modules)
         {
             if (modules == null)
-                throw new ArgumentNullException(nameof(modules));
+			{
+				throw new ArgumentNullException(nameof(modules));
+			}
 
-            ModuleDependencySolver solver = new ModuleDependencySolver();
+			ModuleDependencySolver solver = new ModuleDependencySolver();
 
             foreach (var data in modules)
             {
@@ -233,9 +241,11 @@ namespace Crystal.Modularity
         protected static void ValidateDependencies(IEnumerable<IModuleInfo> modules)
         {
             if (modules == null)
-                throw new ArgumentNullException(nameof(modules));
+			{
+				throw new ArgumentNullException(nameof(modules));
+			}
 
-            var moduleNames = modules.Select(m => m.ModuleName).ToList();
+			var moduleNames = modules.Select(m => m.ModuleName).ToList();
             foreach (var moduleInfo in modules)
             {
                 if (moduleInfo.DependsOn != null && moduleInfo.DependsOn.Except(moduleNames).Any())

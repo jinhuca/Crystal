@@ -66,9 +66,11 @@ namespace Crystal.Modularity
         protected void ForwardValues(IModuleInfo moduleInfo)
         {
             if (moduleInfo == null)
-                throw new ArgumentNullException(nameof(moduleInfo));
+			{
+				throw new ArgumentNullException(nameof(moduleInfo));
+			}
 
-            if (moduleInfo.Ref == null)
+			if (moduleInfo.Ref == null)
             {
                 moduleInfo.Ref = Ref;
             }
@@ -187,13 +189,16 @@ namespace Crystal.Modularity
         bool IList.Contains(object value)
         {
             if (value == null)
-                throw new ArgumentNullException(nameof(value));
+			{
+				throw new ArgumentNullException(nameof(value));
+			}
 
+			if (!(value is IModuleInfo moduleInfo))
+			{
+				throw new ArgumentException(Resources.ValueMustBeOfTypeModuleInfo, nameof(value));
+			}
 
-            if (!(value is IModuleInfo moduleInfo))
-                throw new ArgumentException(Resources.ValueMustBeOfTypeModuleInfo, nameof(value));
-
-            return Contains(moduleInfo);
+			return Contains(moduleInfo);
         }
 
         /// <summary>
@@ -228,13 +233,16 @@ namespace Crystal.Modularity
         public void Insert(int index, object value)
         {
             if (value == null)
-                throw new ArgumentNullException(nameof(value));
+			{
+				throw new ArgumentNullException(nameof(value));
+			}
 
+			if (!(value is IModuleInfo moduleInfo))
+			{
+				throw new ArgumentException(Resources.ValueMustBeOfTypeModuleInfo, nameof(value));
+			}
 
-            if (!(value is IModuleInfo moduleInfo))
-                throw new ArgumentException(Resources.ValueMustBeOfTypeModuleInfo, nameof(value));
-
-            _modules.Insert(index, moduleInfo);
+			_modules.Insert(index, moduleInfo);
         }
 
         /// <summary>

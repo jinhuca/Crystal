@@ -76,7 +76,11 @@ namespace Crystal.Events
 		/// <exception cref="ArgumentNullException">An <see cref="ArgumentNullException"/> is thrown if <paramref name="action"/> is null.</exception>
 		public virtual void InvokeAction(Action action)
 		{
-			if (action == null) throw new ArgumentNullException(nameof(action));
+			if (action == null)
+			{
+				throw new ArgumentNullException(nameof(action));
+			}
+
 			action();
 		}
 	}
@@ -102,14 +106,24 @@ namespace Crystal.Events
 		public EventSubscription(IDelegateReference actionReference, IDelegateReference filterReference)
 		{
 			if (actionReference == null)
+			{
 				throw new ArgumentNullException(nameof(actionReference));
+			}
+
 			if (!(actionReference.Target is Action<TPayload>))
+			{
 				throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.InvalidDelegateRerefenceTypeException, typeof(Action<TPayload>).FullName), nameof(actionReference));
+			}
 
 			if (filterReference == null)
+			{
 				throw new ArgumentNullException(nameof(filterReference));
+			}
+
 			if (!(filterReference.Target is Predicate<TPayload>))
+			{
 				throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.InvalidDelegateRerefenceTypeException, typeof(Predicate<TPayload>).FullName), nameof(filterReference));
+			}
 
 			_actionReference = actionReference;
 			_filterReference = filterReference;
@@ -182,7 +196,11 @@ namespace Crystal.Events
 		/// <exception cref="ArgumentNullException">An <see cref="ArgumentNullException"/> is thrown if <paramref name="action"/> is null.</exception>
 		public virtual void InvokeAction(Action<TPayload> action, TPayload argument)
 		{
-			if (action == null) throw new ArgumentNullException(nameof(action));
+			if (action == null)
+			{
+				throw new ArgumentNullException(nameof(action));
+			}
+
 			action(argument);
 		}
 	}

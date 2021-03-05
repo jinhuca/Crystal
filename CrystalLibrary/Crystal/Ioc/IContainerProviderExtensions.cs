@@ -69,7 +69,10 @@ namespace Crystal.Ioc
 		internal static bool IsRegistered(this IContainerProvider containerProvider, Type type)
 		{
 			if (containerProvider is IContainerRegistry containerRegistry)
+			{
 				return containerRegistry.IsRegistered(type);
+			}
+
 			return false;
 		}
 
@@ -88,7 +91,10 @@ namespace Crystal.Ioc
 		internal static bool IsRegistered(this IContainerProvider containerProvider, Type type, string name)
 		{
 			if (containerProvider is IContainerRegistry containerRegistry)
+			{
 				return containerRegistry.IsRegistered(type, name);
+			}
+
 			return false;
 		}
 	}

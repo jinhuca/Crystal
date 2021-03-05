@@ -32,7 +32,9 @@ namespace Crystal.Regions.Behaviors
 		public static bool GetClearChildViews(DependencyObject target)
 		{
 			if (target == null)
+			{
 				throw new ArgumentNullException(nameof(target));
+			}
 
 			return (bool)target.GetValue(ClearChildViewsRegionBehavior.ClearChildViewsProperty);
 		}
@@ -45,7 +47,9 @@ namespace Crystal.Regions.Behaviors
 		public static void SetClearChildViews(DependencyObject target, bool value)
 		{
 			if (target == null)
+			{
 				throw new ArgumentNullException(nameof(target));
+			}
 
 			target.SetValue(ClearChildViewsRegionBehavior.ClearChildViewsProperty, value);
 		}

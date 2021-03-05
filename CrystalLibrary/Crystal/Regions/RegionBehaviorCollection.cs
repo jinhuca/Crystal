@@ -16,19 +16,13 @@ namespace Crystal.Regions
 		/// Initializes a new instance of the <see cref="RegionBehaviorCollection"/> class and associates it with a region.
 		/// </summary>
 		/// <param name="region">The region to associate the behavior collection with.</param>
-		public RegionBehaviorCollection(IRegion region)
-		{
-			this.region = region;
-		}
+		public RegionBehaviorCollection(IRegion region) => this.region = region;
 
 		/// <summary>
 		/// Gets the <see cref="IRegionBehavior"/> with the specified key.
 		/// </summary>
 		/// <value>The RegionBehavior that's registered with the key.</value>
-		public IRegionBehavior this[string key]
-		{
-			get { return behaviors[key]; }
-		}
+		public IRegionBehavior this[string key] => behaviors[key];
 
 		/// <summary>
 		/// Adds a <see cref="IRegionBehavior"/> to the collection, using the specified key as an indexer.
@@ -43,17 +37,19 @@ namespace Crystal.Regions
 		public void Add(string key, IRegionBehavior regionBehavior)
 		{
 			if (key == null)
+			{
 				throw new ArgumentNullException(nameof(key));
-
+			}
 			if (regionBehavior == null)
+			{
 				throw new ArgumentNullException(nameof(regionBehavior));
-
+			}
 			if (behaviors.ContainsKey(key))
+			{
 				throw new ArgumentException("Could not add duplicate behavior with same key.", nameof(key));
-
+			}
 			behaviors.Add(key, regionBehavior);
 			regionBehavior.Region = region;
-
 			regionBehavior.Attach();
 		}
 
@@ -62,10 +58,7 @@ namespace Crystal.Regions
 		/// </summary>
 		/// <param name="key">The key to use to find a particular <see cref="IRegionBehavior"/>.</param>
 		/// <returns></returns>
-		public bool ContainsKey(string key)
-		{
-			return behaviors.ContainsKey(key);
-		}
+		public bool ContainsKey(string key) => behaviors.ContainsKey(key);
 
 		/// <summary>
 		/// Returns an enumerator that iterates through the collection.
@@ -73,10 +66,7 @@ namespace Crystal.Regions
 		/// <returns>
 		/// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
 		/// </returns>
-		public IEnumerator<KeyValuePair<string, IRegionBehavior>> GetEnumerator()
-		{
-			return behaviors.GetEnumerator();
-		}
+		public IEnumerator<KeyValuePair<string, IRegionBehavior>> GetEnumerator() => behaviors.GetEnumerator();
 
 		/// <summary>
 		/// Returns an enumerator that iterates through a collection.
@@ -84,9 +74,6 @@ namespace Crystal.Regions
 		/// <returns>
 		/// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
 		/// </returns>
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return behaviors.GetEnumerator();
-		}
+		IEnumerator IEnumerable.GetEnumerator() => behaviors.GetEnumerator();
 	}
 }

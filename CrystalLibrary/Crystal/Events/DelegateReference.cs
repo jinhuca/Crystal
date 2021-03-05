@@ -43,20 +43,7 @@ namespace Crystal.Events
 		/// Gets the <see cref="Delegate" /> (the target) referenced by the current <see cref="DelegateReference"/> object.
 		/// </summary>
 		/// <value><see langword="null"/> if the object referenced by the current <see cref="DelegateReference"/> object has been garbage collected; otherwise, a reference to the <see cref="Delegate"/> referenced by the current <see cref="DelegateReference"/> object.</value>
-		public Delegate Target
-		{
-			get
-			{
-				if (_delegate != null)
-				{
-					return _delegate;
-				}
-				else
-				{
-					return TryGetDelegate();
-				}
-			}
-		}
+		public Delegate Target => _delegate ?? TryGetDelegate();
 
 		/// <summary>
 		/// Checks if the <see cref="Delegate" /> (the target) referenced by the current <see cref="DelegateReference"/> object are equal to another <see cref="Delegate" />.

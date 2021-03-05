@@ -60,9 +60,11 @@ namespace Crystal.Modularity
         public static IModuleCatalog AddModule(this IModuleCatalog catalog, Type moduleType, InitializationMode initializationMode, params string[] dependsOn)
         {
             if (moduleType == null)
-                throw new ArgumentNullException(nameof(moduleType));
+			{
+				throw new ArgumentNullException(nameof(moduleType));
+			}
 
-            return catalog.AddModule(moduleType.Name, moduleType.AssemblyQualifiedName, initializationMode, dependsOn);
+			return catalog.AddModule(moduleType.Name, moduleType.AssemblyQualifiedName, initializationMode, dependsOn);
         }
 
         /// <summary>
@@ -105,12 +107,16 @@ namespace Crystal.Modularity
         public static IModuleCatalog AddModule(this IModuleCatalog catalog, string moduleName, string moduleType, string refValue, InitializationMode initializationMode, params string[] dependsOn)
         {
             if (moduleName == null)
-                throw new ArgumentNullException(nameof(moduleName));
+			{
+				throw new ArgumentNullException(nameof(moduleName));
+			}
 
-            if (moduleType == null)
-                throw new ArgumentNullException(nameof(moduleType));
+			if (moduleType == null)
+			{
+				throw new ArgumentNullException(nameof(moduleType));
+			}
 
-            ModuleInfo moduleInfo = new ModuleInfo(moduleName, moduleType, dependsOn)
+			ModuleInfo moduleInfo = new ModuleInfo(moduleName, moduleType, dependsOn)
             {
                 InitializationMode = initializationMode,
                 Ref = refValue
@@ -163,12 +169,16 @@ namespace Crystal.Modularity
         public static IModuleCatalog AddGroup(this IModuleCatalog catalog, InitializationMode initializationMode, string refValue, params ModuleInfo[] moduleInfos)
         {
             if (!(catalog is IModuleGroupsCatalog groupSupport))
-                throw new NotSupportedException(Resources.MustBeModuleGroupCatalog);
+			{
+				throw new NotSupportedException(Resources.MustBeModuleGroupCatalog);
+			}
 
-            if (moduleInfos == null)
-                throw new ArgumentNullException(nameof(moduleInfos));
+			if (moduleInfos == null)
+			{
+				throw new ArgumentNullException(nameof(moduleInfos));
+			}
 
-            ModuleInfoGroup newGroup = new ModuleInfoGroup
+			ModuleInfoGroup newGroup = new ModuleInfoGroup
             {
                 InitializationMode = initializationMode,
                 Ref = refValue

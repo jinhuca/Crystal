@@ -22,9 +22,11 @@ namespace Crystal.Modularity
         public void AddModule(string name)
         {
             if (String.IsNullOrEmpty(name))
-                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.StringCannotBeNullOrEmpty, "name"));
+			{
+				throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.StringCannotBeNullOrEmpty, "name"));
+			}
 
-            AddToDependencyMatrix(name);
+			AddToDependencyMatrix(name);
             AddToKnownModules(name);
         }
 
@@ -38,15 +40,21 @@ namespace Crystal.Modularity
         public void AddDependency(string dependingModule, string dependentModule)
         {
             if (String.IsNullOrEmpty(dependingModule))
-                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.StringCannotBeNullOrEmpty, "dependingModule"));
+			{
+				throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.StringCannotBeNullOrEmpty, "dependingModule"));
+			}
 
-            if (String.IsNullOrEmpty(dependentModule))
-                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.StringCannotBeNullOrEmpty, "dependentModule"));
+			if (String.IsNullOrEmpty(dependentModule))
+			{
+				throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.StringCannotBeNullOrEmpty, "dependentModule"));
+			}
 
-            if (!knownModules.Contains(dependingModule))
-                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.DependencyForUnknownModule, dependingModule));
+			if (!knownModules.Contains(dependingModule))
+			{
+				throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.DependencyForUnknownModule, dependingModule));
+			}
 
-            AddToDependencyMatrix(dependentModule);
+			AddToDependencyMatrix(dependentModule);
             dependencyMatrix.Add(dependentModule, dependingModule);
         }
 

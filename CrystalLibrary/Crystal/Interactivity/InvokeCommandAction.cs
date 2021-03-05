@@ -33,7 +33,9 @@ namespace Crystal.Interactivity
 		{
 			var behavior = GetOrCreateBehavior();
 			if (behavior != null)
+			{
 				behavior.AutoEnable = newValue;
+			}
 		}
 
 		/// <summary>
@@ -56,7 +58,9 @@ namespace Crystal.Interactivity
 		{
 			var behavior = GetOrCreateBehavior();
 			if (behavior != null)
+			{
 				behavior.Command = newValue;
+			}
 		}
 
 		/// <summary>
@@ -79,7 +83,9 @@ namespace Crystal.Interactivity
 		{
 			var behavior = GetOrCreateBehavior();
 			if (behavior != null)
+			{
 				behavior.CommandParameter = newValue;
+			}
 		}
 
 		/// <summary>
@@ -162,10 +168,14 @@ namespace Crystal.Interactivity
 			behavior.AutoEnable = AutoEnable;
 
 			if (behavior.Command != Command)
+			{
 				behavior.Command = Command;
+			}
 
 			if (behavior.CommandParameter != CommandParameter)
+			{
 				behavior.CommandParameter = CommandParameter;
+			}
 		}
 
 		private ExecutableCommandBehavior GetOrCreateBehavior()

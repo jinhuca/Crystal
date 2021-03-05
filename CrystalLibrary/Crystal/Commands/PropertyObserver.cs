@@ -59,9 +59,7 @@ namespace Crystal.Commands
 		/// </summary>
 		/// <param name="propertyExpression">Expression representing property to be observed. Ex.: "() => Prop.NestedProp.PropToObserve".</param>
 		/// <param name="action">Action to be invoked when PropertyChanged event occours.</param>
-		internal static PropertyObserver Observes<T>(Expression<Func<T>> propertyExpression, Action action)
-		{
-			return new PropertyObserver(propertyExpression.Body, action);
-		}
+		internal static PropertyObserver Observes<T>(Expression<Func<T>> propertyExpression, Action action) 
+			=> new PropertyObserver(propertyExpression.Body, action);
 	}
 }

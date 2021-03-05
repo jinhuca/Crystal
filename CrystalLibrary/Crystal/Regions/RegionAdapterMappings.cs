@@ -23,15 +23,18 @@ namespace Crystal.Regions
 		public void RegisterMapping(Type controlType, IRegionAdapter adapter)
 		{
 			if (controlType == null)
+			{
 				throw new ArgumentNullException(nameof(controlType));
-
+			}
 			if (adapter == null)
+			{
 				throw new ArgumentNullException(nameof(adapter));
-
+			}
 			if (mappings.ContainsKey(controlType))
+			{
 				throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture,
 																													Resources.MappingExistsException, controlType.Name));
-
+			}
 			mappings.Add(controlType, adapter);
 		}
 
@@ -39,20 +42,15 @@ namespace Crystal.Regions
 		/// Registers the mapping between a type and an adapter.
 		/// </summary>
 		/// <typeparam name="TControl">The type of the control</typeparam>
-		public void RegisterMapping<TControl>(IRegionAdapter adapter)
-		{
-			RegisterMapping(typeof(TControl), adapter);
-		}
+		public void RegisterMapping<TControl>(IRegionAdapter adapter) => RegisterMapping(typeof(TControl), adapter);
 
 		/// <summary>
 		/// Registers the mapping between a type and an adapter.
 		/// </summary>
 		/// <typeparam name="TControl">The type of the control</typeparam>
 		/// <typeparam name="TAdapter">The type of the IRegionAdapter to use with the TControl</typeparam>
-		public void RegisterMapping<TControl, TAdapter>() where TAdapter : IRegionAdapter
-		{
-			RegisterMapping(typeof(TControl), ContainerLocator.Container.Resolve<TAdapter>());
-		}
+		public void RegisterMapping<TControl, TAdapter>() where TAdapter : IRegionAdapter 
+			=> RegisterMapping(typeof(TControl), ContainerLocator.Container.Resolve<TAdapter>());
 
 		/// <summary>
 		/// Returns the adapter associated with the type provided.
@@ -64,7 +62,6 @@ namespace Crystal.Regions
 		/// If there is no registered type for <paramref name="controlType"/> or any of its ancestors,
 		/// an exception will be thrown.</remarks>
 		/// <exception cref="KeyNotFoundException">When there is no registered type for <paramref name="controlType"/> or any of its ancestors.</exception>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "controlType")]
 		public IRegionAdapter GetMapping(Type controlType)
 		{
 			Type currentType = controlType;
@@ -90,9 +87,6 @@ namespace Crystal.Regions
 		/// If there is no registered type for <typeparamref name="T"/> or any of its ancestors,
 		/// an exception will be thrown.</remarks>
 		/// <exception cref="KeyNotFoundException">When there is no registered type for <typeparamref name="T"/> or any of its ancestors.</exception>
-		public IRegionAdapter GetMapping<T>()
-		{
-			return GetMapping(typeof(T));
-		}
+		public IRegionAdapter GetMapping<T>() => GetMapping(typeof(T));
 	}
 }

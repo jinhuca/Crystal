@@ -22,10 +22,7 @@ namespace Crystal.Events
 		/// Invokes the specified <see cref="System.Action"/> in an asynchronous thread by using a <see cref="Task"/>.
 		/// </summary>
 		/// <param name="action">The action to execute.</param>
-		public override void InvokeAction(Action action)
-		{
-			Task.Run(action);
-		}
+		public override void InvokeAction(Action action) => Task.Run(action);
 	}
 
 	/// <summary>

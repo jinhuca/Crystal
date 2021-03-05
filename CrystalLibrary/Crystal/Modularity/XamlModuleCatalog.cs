@@ -44,8 +44,10 @@ namespace Crystal.Modularity
                 if (item is ModuleInfo mi)
                 {
                     if (!string.IsNullOrWhiteSpace(mi.Ref))
-                        mi.Ref = GetFileAbsoluteUri(mi.Ref);
-                }
+					{
+						mi.Ref = GetFileAbsoluteUri(mi.Ref);
+					}
+				}
                 else if (item is ModuleInfoGroup mg)
                 {
                     if (!string.IsNullOrWhiteSpace(mg.Ref))

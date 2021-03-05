@@ -21,20 +21,16 @@ namespace Crystal.Regions
 		/// Value indicating whether the wrapped item is considered active.
 		/// </summary>
 		public static readonly DependencyProperty IsActiveProperty = DependencyProperty.Register(
-			"IsActive", 
-			typeof(bool), 
-			typeof(ItemMetadata), 
+			"IsActive",
+			typeof(bool),
+			typeof(ItemMetadata),
 			new PropertyMetadata(defaultValue: false, propertyChangedCallback: DependencyPropertyChanged));
 
 		/// <summary>
 		/// Initializes a new instance of <see cref="ItemMetadata"/>.
 		/// </summary>
 		/// <param name="item">The item to wrap.</param>
-		public ItemMetadata(object item)
-		{
-			// check for null
-			Item = item;
-		}
+		public ItemMetadata(object item) => Item = item;
 
 		/// <summary>
 		/// Gets the wrapped item.
@@ -48,8 +44,8 @@ namespace Crystal.Regions
 		/// <value>The name of the wrapped item.</value>
 		public string Name
 		{
-			get { return (string)GetValue(NameProperty); }
-			set { SetValue(NameProperty, value); }
+			get => (string)GetValue(NameProperty);
+			set => SetValue(NameProperty, value);
 		}
 
 		/// <summary>
@@ -58,8 +54,8 @@ namespace Crystal.Regions
 		/// <value><see langword="true" /> if the item should be considered active; otherwise <see langword="false" />.</value>
 		public bool IsActive
 		{
-			get { return (bool)GetValue(IsActiveProperty); }
-			set { SetValue(IsActiveProperty, value); }
+			get => (bool)GetValue(IsActiveProperty);
+			set => SetValue(IsActiveProperty, value);
 		}
 
 		/// <summary>
@@ -73,7 +69,10 @@ namespace Crystal.Regions
 		public void InvokeMetadataChanged()
 		{
 			EventHandler metadataChangedHandler = MetadataChanged;
-			if (metadataChangedHandler != null) metadataChangedHandler(this, EventArgs.Empty);
+			if (metadataChangedHandler != null)
+			{
+				metadataChangedHandler(this, EventArgs.Empty);
+			}
 		}
 
 		private static void DependencyPropertyChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs args)

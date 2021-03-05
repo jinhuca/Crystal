@@ -25,12 +25,16 @@ namespace Crystal.Modularity
                     params string[] dependsOn)
         {
             if (moduleType == null)
-                throw new ArgumentNullException(nameof(moduleType));
+			{
+				throw new ArgumentNullException(nameof(moduleType));
+			}
 
-            if (moduleInfoGroup == null)
-                throw new ArgumentNullException(nameof(moduleInfoGroup));
+			if (moduleInfoGroup == null)
+			{
+				throw new ArgumentNullException(nameof(moduleInfoGroup));
+			}
 
-            ModuleInfo moduleInfo = new ModuleInfo(moduleName, moduleType.AssemblyQualifiedName);
+			ModuleInfo moduleInfo = new ModuleInfo(moduleName, moduleType.AssemblyQualifiedName);
             moduleInfo.DependsOn.AddRange(dependsOn);
             moduleInfoGroup.Add(moduleInfo);
             return moduleInfoGroup;
@@ -50,9 +54,11 @@ namespace Crystal.Modularity
                     params string[] dependsOn)
         {
             if (moduleType == null)
-                throw new ArgumentNullException(nameof(moduleType));
+			{
+				throw new ArgumentNullException(nameof(moduleType));
+			}
 
-            return AddModule(moduleInfoGroup, moduleType.Name, moduleType, dependsOn);
+			return AddModule(moduleInfoGroup, moduleType.Name, moduleType, dependsOn);
         }
     }
 }

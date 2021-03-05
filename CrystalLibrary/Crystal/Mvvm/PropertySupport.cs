@@ -25,7 +25,9 @@ namespace Crystal.Mvvm
 		public static string ExtractPropertyName<T>(Expression<Func<T>> propertyExpression)
 		{
 			if (propertyExpression == null)
+			{
 				throw new ArgumentNullException(nameof(propertyExpression));
+			}
 
 			return ExtractPropertyNameFromLambda(propertyExpression);
 		}
@@ -43,19 +45,27 @@ namespace Crystal.Mvvm
 		internal static string ExtractPropertyNameFromLambda(LambdaExpression expression)
 		{
 			if (expression == null)
+			{
 				throw new ArgumentNullException(nameof(expression));
+			}
 
 			var memberExpression = expression.Body as MemberExpression;
 			if (memberExpression == null)
+			{
 				throw new ArgumentException(Resources.PropertySupport_NotMemberAccessExpression_Exception, nameof(expression));
+			}
 
 			var property = memberExpression.Member as PropertyInfo;
 			if (property == null)
+			{
 				throw new ArgumentException(Resources.PropertySupport_ExpressionNotProperty_Exception, nameof(expression));
+			}
 
 			var getMethod = property.GetMethod;
 			if (getMethod.IsStatic)
+			{
 				throw new ArgumentException(Resources.PropertySupport_StaticExpression_Exception, nameof(expression));
+			}
 
 			return memberExpression.Member.Name;
 		}
