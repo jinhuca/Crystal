@@ -21,7 +21,6 @@ namespace Crystal.Regions.Behaviors
 		private readonly RegionAdapterMappings regionAdapterMappings;
 		private WeakReference elementWeakReference;
 		private bool regionCreated;
-
 		private static ICollection<DelayedRegionCreationBehavior> _instanceTracker = new Collection<DelayedRegionCreationBehavior>();
 		private object _trackerLock = new object();
 

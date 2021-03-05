@@ -41,22 +41,13 @@ namespace Crystal.Mvvm
 		/// <summary>
 		/// Gets a value indicating whether the object has validation errors. 
 		/// </summary>
-		public bool HasErrors
-		{
-			get
-			{
-				return validationResults.Count != 0;
-			}
-		}
+		public bool HasErrors => validationResults.Count != 0;
 
 		/// <summary>
 		/// Returns all the errors in the container.
 		/// </summary>
 		/// <returns>The dictionary of errors per property.</returns>
-		public Dictionary<string, List<T>> GetErrors()
-		{
-			return validationResults;
-		}
+		public Dictionary<string, List<T>> GetErrors() => validationResults;
 
 		/// <summary>
 		/// Gets the validation errors for a specified property.
@@ -96,12 +87,8 @@ namespace Crystal.Mvvm
 		/// <example>
 		/// container.ClearErrors(()=>SomeProperty);
 		/// </example>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-		public void ClearErrors<TProperty>(Expression<Func<TProperty>> propertyExpression)
-		{
-			var propertyName = PropertySupport.ExtractPropertyName(propertyExpression);
-			ClearErrors(propertyName);
-		}
+		public void ClearErrors<TProperty>(Expression<Func<TProperty>> propertyExpression) 
+			=> ClearErrors(PropertySupport.ExtractPropertyName(propertyExpression));
 
 		/// <summary>
 		/// Clears the errors for a property.
@@ -110,10 +97,7 @@ namespace Crystal.Mvvm
 		/// <example>
 		/// container.ClearErrors("SomeProperty");
 		/// </example>
-		public void ClearErrors(string propertyName)
-		{
-			SetErrors(propertyName, new List<T>());
-		}
+		public void ClearErrors(string propertyName) => SetErrors(propertyName, new List<T>());
 
 		/// <summary>
 		/// Sets the validation errors for the specified property.

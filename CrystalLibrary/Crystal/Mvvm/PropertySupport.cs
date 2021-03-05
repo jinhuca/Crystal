@@ -28,7 +28,6 @@ namespace Crystal.Mvvm
 			{
 				throw new ArgumentNullException(nameof(propertyExpression));
 			}
-
 			return ExtractPropertyNameFromLambda(propertyExpression);
 		}
 

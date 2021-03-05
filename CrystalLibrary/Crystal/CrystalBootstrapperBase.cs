@@ -42,10 +42,7 @@ namespace Crystal
 		/// <summary>
 		/// Configures the <see cref="Crystal.Mvvm.ViewModelLocator"/> used by Crystal.
 		/// </summary>
-		protected virtual void ConfigureViewModelLocator()
-		{
-			CrystalInitializationExtensions.ConfigureViewModelLocator();
-		}
+		protected virtual void ConfigureViewModelLocator() => CrystalInitializationExtensions.ConfigureViewModelLocator();
 
 		/// <summary>
 		/// Runs the initialization sequence to configure the Crystal application.
@@ -58,7 +55,6 @@ namespace Crystal
 			RegisterRequiredTypes(_containerExtension);
 			RegisterTypes(_containerExtension);
 			_containerExtension.FinalizeExtension();
-
 			ConfigureModuleCatalog(_moduleCatalog);
 
 			var regionAdapterMappins = _containerExtension.Resolve<RegionAdapterMappings>();
@@ -66,7 +62,6 @@ namespace Crystal
 
 			var defaultRegionBehaviors = _containerExtension.Resolve<IRegionBehaviorFactory>();
 			ConfigureDefaultRegionBehaviors(defaultRegionBehaviors);
-
 			RegisterFrameworkExceptionTypes();
 
 			var shell = CreateShell();
@@ -93,10 +88,7 @@ namespace Crystal
 		///  <remarks>
 		/// The base implementation returns a new ModuleCatalog.
 		/// </remarks>
-		protected virtual IModuleCatalog CreateModuleCatalog()
-		{
-			return new ModuleCatalog();
-		}
+		protected virtual IModuleCatalog CreateModuleCatalog() => new ModuleCatalog();
 
 		/// <summary>
 		/// Registers all types that are required by Crystal to function with the container.
@@ -128,10 +120,8 @@ namespace Crystal
 		/// Configures the <see cref="IRegionBehaviorFactory"/>. 
 		/// This will be the list of default behaviors that will be added to a region. 
 		/// </summary>
-		protected virtual void ConfigureDefaultRegionBehaviors(IRegionBehaviorFactory regionBehaviors)
-		{
-			regionBehaviors?.RegisterDefaultRegionBehaviors();
-		}
+		protected virtual void ConfigureDefaultRegionBehaviors(IRegionBehaviorFactory regionBehaviors) 
+			=> regionBehaviors?.RegisterDefaultRegionBehaviors();
 
 		/// <summary>
 		/// Configures the default region adapter mappings to use in the application, in order
@@ -139,10 +129,8 @@ namespace Crystal
 		/// May be overwritten in a derived class to add specific mappings required by the application.
 		/// </summary>
 		/// <returns>The <see cref="RegionAdapterMappings"/> instance containing all the mappings.</returns>
-		protected virtual void ConfigureRegionAdapterMappings(RegionAdapterMappings regionAdapterMappings)
-		{
-			regionAdapterMappings?.RegisterDefaultRegionAdapterMappings();
-		}
+		protected virtual void ConfigureRegionAdapterMappings(RegionAdapterMappings regionAdapterMappings) 
+			=> regionAdapterMappings?.RegisterDefaultRegionAdapterMappings();
 
 		/// <summary>
 		/// Creates the shell or main window of the application.
@@ -153,10 +141,7 @@ namespace Crystal
 		/// <summary>
 		/// Initializes the shell.
 		/// </summary>
-		protected virtual void InitializeShell(DependencyObject shell)
-		{
-			Shell = shell;
-		}
+		protected virtual void InitializeShell(DependencyObject shell) => Shell = shell;
 
 		/// <summary>
 		/// Contains actions that should occur last.
@@ -177,9 +162,6 @@ namespace Crystal
 		/// <summary>
 		/// Initializes the modules.
 		/// </summary>
-		protected virtual void InitializeModules()
-		{
-			CrystalInitializationExtensions.RunModuleManager(Container);
-		}
+		protected virtual void InitializeModules() => CrystalInitializationExtensions.RunModuleManager(Container);
 	}
 }

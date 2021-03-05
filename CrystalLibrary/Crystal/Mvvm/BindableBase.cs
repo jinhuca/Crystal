@@ -33,10 +33,8 @@ namespace Crystal.Mvvm
 			{
 				return false;
 			}
-
 			storage = value;
 			RaisePropertyChanged(propertyName);
-
 			return true;
 		}
 
@@ -59,11 +57,9 @@ namespace Crystal.Mvvm
 			{
 				return false;
 			}
-
 			storage = value;
 			onChanged?.Invoke();
 			RaisePropertyChanged(propertyName);
-
 			return true;
 		}
 
@@ -73,18 +69,14 @@ namespace Crystal.Mvvm
 		/// <param name="propertyName">Name of the property used to notify listeners. This
 		/// value is optional and can be provided automatically when invoked from compilers
 		/// that support <see cref="CallerMemberNameAttribute"/>.</param>
-		protected void RaisePropertyChanged([CallerMemberName] string propertyName = null)
-		{
-			OnPropertyChanged(new PropertyChangedEventArgs(propertyName));
-		}
+		protected void RaisePropertyChanged([CallerMemberName] string propertyName = null) 
+			=> OnPropertyChanged(new PropertyChangedEventArgs(propertyName));
 
 		/// <summary>
 		/// Raises this object's PropertyChanged event.
 		/// </summary>
 		/// <param name="args">The PropertyChangedEventArgs</param>
-		protected virtual void OnPropertyChanged(PropertyChangedEventArgs args)
-		{
-			PropertyChanged?.Invoke(this, args);
-		}
+		protected virtual void OnPropertyChanged(PropertyChangedEventArgs args) 
+			=> PropertyChanged?.Invoke(this, args);
 	}
 }

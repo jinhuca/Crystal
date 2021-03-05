@@ -55,28 +55,22 @@ namespace Crystal.Mvvm
 		/// Sets the default view model factory.
 		/// </summary>
 		/// <param name="viewModelFactory">The view model factory which provides the ViewModel type as a parameter.</param>
-		public static void SetDefaultViewModelFactory(Func<Type, object> viewModelFactory)
-		{
-			_defaultViewModelFactory = viewModelFactory;
-		}
+		public static void SetDefaultViewModelFactory(Func<Type, object> viewModelFactory) 
+			=> _defaultViewModelFactory = viewModelFactory;
 
 		/// <summary>
 		/// Sets the default view model factory.
 		/// </summary>
 		/// <param name="viewModelFactory">The view model factory that provides the View instance and ViewModel type as parameters.</param>
-		public static void SetDefaultViewModelFactory(Func<object, Type, object> viewModelFactory)
-		{
-			_defaultViewModelFactoryWithViewParameter = viewModelFactory;
-		}
+		public static void SetDefaultViewModelFactory(Func<object, Type, object> viewModelFactory) 
+			=> _defaultViewModelFactoryWithViewParameter = viewModelFactory;
 
 		/// <summary>
 		/// Sets the default view type to view model type resolver.
 		/// </summary>
 		/// <param name="viewTypeToViewModelTypeResolver">The view type to view model type resolver.</param>
-		public static void SetDefaultViewTypeToViewModelTypeResolver(Func<Type, Type> viewTypeToViewModelTypeResolver)
-		{
-			_defaultViewTypeToViewModelTypeResolver = viewTypeToViewModelTypeResolver;
-		}
+		public static void SetDefaultViewTypeToViewModelTypeResolver(Func<Type, Type> viewTypeToViewModelTypeResolver) 
+			=> _defaultViewTypeToViewModelTypeResolver = viewTypeToViewModelTypeResolver;
 
 		/// <summary>
 		/// Automatically looks up the viewmodel that corresponds to the current view, using two strategies:
@@ -153,42 +147,27 @@ namespace Crystal.Mvvm
 		/// </summary>
 		/// <typeparam name="T">The View</typeparam>
 		/// <param name="factory">The ViewModel factory.</param>
-		public static void Register<T>(Func<object> factory)
-		{
-			Register(typeof(T).ToString(), factory);
-		}
+		public static void Register<T>(Func<object> factory) => Register(typeof(T).ToString(), factory);
 
 		/// <summary>
 		/// Registers the ViewModel factory for the specified view type name.
 		/// </summary>
 		/// <param name="viewTypeName">The name of the view type.</param>
 		/// <param name="factory">The ViewModel factory.</param>
-		public static void Register(string viewTypeName, Func<object> factory)
-		{
-			_factories[viewTypeName] = factory;
-		}
+		public static void Register(string viewTypeName, Func<object> factory) => _factories[viewTypeName] = factory;
 
 		/// <summary>
 		/// Registers a ViewModel type for the specified view type.
 		/// </summary>
 		/// <typeparam name="T">The View</typeparam>
 		/// <typeparam name="VM">The ViewModel</typeparam>
-		public static void Register<T, VM>()
-		{
-			var viewType = typeof(T);
-			var viewModelType = typeof(VM);
-
-			Register(viewType.ToString(), viewModelType);
-		}
+		public static void Register<T, VM>() => Register(typeof(T).ToString(), typeof(VM));
 
 		/// <summary>
 		/// Registers a ViewModel type for the specified view.
 		/// </summary>
 		/// <param name="viewTypeName">The View type name</param>
 		/// <param name="viewModelType">The ViewModel type</param>
-		public static void Register(string viewTypeName, Type viewModelType)
-		{
-			_typeFactories[viewTypeName] = viewModelType;
-		}
+		public static void Register(string viewTypeName, Type viewModelType) => _typeFactories[viewTypeName] = viewModelType;
 	}
 }

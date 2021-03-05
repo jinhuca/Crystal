@@ -21,8 +21,11 @@ namespace Crystal.Regions.Behaviors
 		/// <summary>
 		/// This attached property can be defined on a view to indicate that regions defined in it must be removed from the region manager when the parent view gets removed from a region.
 		/// </summary>
-		public static readonly DependencyProperty ClearChildViewsProperty =
-				DependencyProperty.RegisterAttached("ClearChildViews", typeof(bool), typeof(ClearChildViewsRegionBehavior), new PropertyMetadata(false));
+		public static readonly DependencyProperty ClearChildViewsProperty = DependencyProperty.RegisterAttached(
+			"ClearChildViews", 
+			typeof(bool), 
+			typeof(ClearChildViewsRegionBehavior), 
+			new PropertyMetadata(false));
 
 		/// <summary>
 		/// Gets the ClearChildViews attached property from a DependencyObject.
@@ -35,7 +38,6 @@ namespace Crystal.Regions.Behaviors
 			{
 				throw new ArgumentNullException(nameof(target));
 			}
-
 			return (bool)target.GetValue(ClearChildViewsRegionBehavior.ClearChildViewsProperty);
 		}
 
@@ -50,17 +52,13 @@ namespace Crystal.Regions.Behaviors
 			{
 				throw new ArgumentNullException(nameof(target));
 			}
-
 			target.SetValue(ClearChildViewsRegionBehavior.ClearChildViewsProperty, value);
 		}
 
 		/// <summary>
 		/// Subscribes to the <see cref="Region"/>'s PropertyChanged method to monitor its RegionManager property.
 		/// </summary>
-		protected override void OnAttach()
-		{
-			Region.PropertyChanged += Region_PropertyChanged;
-		}
+		protected override void OnAttach() => Region.PropertyChanged += Region_PropertyChanged;
 
 		private static void ClearChildViews(IRegion region)
 		{
