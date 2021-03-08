@@ -29,5 +29,17 @@
       <FileName>CrystalBootstrapperBase.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="Crystal.CrystalApplicationBase" Collapsed="true">
+    <Position X="9.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAABAQAACAAEwgBIAAAAAAAAAEQgABFCAAAAAAAAQA=</HashCode>
+      <FileName>CrystalApplicationBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.Windows.Application" Collapsed="true">
+    <Position X="7.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>
