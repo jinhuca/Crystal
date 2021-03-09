@@ -12,12 +12,6 @@ namespace BasicRegionNavigation
 		{
 			return Container.Resolve<MainWindow>();
 		}
-
-		protected override void RegisterTypes(IContainerRegistry containerRegistry)
-		{
-
-		}
-
 		protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
 		{
 			moduleCatalog.AddModule<ModuleA.ModuleAModule>();

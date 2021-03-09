@@ -6,20 +6,13 @@ namespace BasicRegionNavigation.ViewModels
 {
 	public class MainWindowViewModel : BindableBase
 	{
-		private readonly IRegionManager _regionManager;
-
-		private string _title = "Crystal Unity Application";
-		public string Title
-		{
-			get { return _title; }
-			set { SetProperty(ref _title, value); }
-		}
+		private readonly IRegionManager regionManager;
 
 		public DelegateCommand<string> NavigateCommand { get; private set; }
 
-		public MainWindowViewModel(IRegionManager regionManager)
+		public MainWindowViewModel(IRegionManager regionManagerInstance)
 		{
-			_regionManager = regionManager;
+			regionManager = regionManagerInstance;
 			NavigateCommand = new DelegateCommand<string>(Navigate);
 		}
 
@@ -27,7 +20,7 @@ namespace BasicRegionNavigation.ViewModels
 		{
 			if (navigatePath != null)
 			{
-				_regionManager.RequestNavigate("ContentRegion", navigatePath);
+				regionManager.RequestNavigate("ContentRegion", navigatePath);
 			}
 		}
 	}
