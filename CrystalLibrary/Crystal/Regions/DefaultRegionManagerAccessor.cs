@@ -1,7 +1,7 @@
 using System;
 using System.Windows;
 
-namespace Crystal.Regions
+namespace Crystal
 {
 	internal class DefaultRegionManagerAccessor : IRegionManagerAccessor
 	{

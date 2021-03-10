@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Crystal.Services.Dialogs
+namespace Crystal
 {
 	/// <summary>
 	/// Interface that provides dialog functions and events to ViewModels.

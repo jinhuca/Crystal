@@ -6,7 +6,7 @@ namespace C00ICommand.Commands
 {
 	public class MyAwesomeCommand : RoutedCommand
 	{
-		private MainWindowViewModel viewModel;
+		private readonly MainWindowViewModel viewModel;
 
 		public MyAwesomeCommand(MainWindowViewModel vm)
 		{
@@ -15,15 +15,8 @@ namespace C00ICommand.Commands
 
 		public event EventHandler CanExecuteChanged;
 
+		public bool CanExecute(object parameter) => viewModel.IsEnabled;
 
-		public bool CanExecute(object parameter)
-		{
-			return viewModel.IsEnabled;
-		}
-
-		public void Execute(object parameter)
-		{
-			viewModel.UpdateText = $"Update: {DateTime.Now}";
-		}
+		public void Execute(object parameter) => viewModel.UpdateText = $"Update: {DateTime.Now}";
 	}
 }

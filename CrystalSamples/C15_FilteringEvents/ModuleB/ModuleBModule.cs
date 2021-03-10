@@ -1,6 +1,4 @@
-﻿using Crystal.Ioc;
-using Crystal.Modularity;
-using Crystal.Regions;
+﻿using Crystal;
 using ModuleB.Views;
 
 namespace ModuleB

@@ -1,7 +1,7 @@
 using System;
 using System.Windows;
 
-namespace Crystal.Regions
+namespace Crystal
 {
 	/// <summary>
 	/// Provides an abstraction on top of the RegionManager static members.

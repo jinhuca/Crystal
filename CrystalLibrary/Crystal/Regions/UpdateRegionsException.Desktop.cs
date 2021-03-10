@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Crystal.Regions
+namespace Crystal
 {
 	/// <summary>
 	/// Represents errors that occured during the regions' update.

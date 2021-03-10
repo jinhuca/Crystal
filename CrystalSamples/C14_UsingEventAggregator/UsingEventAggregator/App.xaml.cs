@@ -1,6 +1,5 @@
 ﻿using System.Windows;
-using Crystal.Ioc;
-using Crystal.Modularity;
+using Crystal;
 using Crystal.Unity;
 using UsingEventAggregator.Views;
 

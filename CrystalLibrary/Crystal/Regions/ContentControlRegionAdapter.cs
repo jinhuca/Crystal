@@ -4,7 +4,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Windows.Controls;
 
-namespace Crystal.Regions
+namespace Crystal
 {
 	/// <summary>
 	/// Adapter that creates a new <see cref="SingleActiveRegion"/> and monitors its

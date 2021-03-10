@@ -1,6 +1,6 @@
 using System;
 
-namespace Crystal.Regions
+namespace Crystal
 {
 	/// <summary>
 	/// Represents errors that occured during the regions' update.

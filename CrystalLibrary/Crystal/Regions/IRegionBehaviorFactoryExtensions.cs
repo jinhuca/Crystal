@@ -1,4 +1,4 @@
-﻿namespace Crystal.Regions
+﻿namespace Crystal
 {
 	/// <summary>
 	/// Extention methods for the IRegionBehaviorFactory.

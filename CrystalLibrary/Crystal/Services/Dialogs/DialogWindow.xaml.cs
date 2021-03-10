@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Crystal.Services.Dialogs
+namespace Crystal
 {
 	/// <summary>
 	/// Crystal's default dialog host.

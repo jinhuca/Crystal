@@ -1,5 +1,4 @@
-﻿using Crystal.Mvvm;
-using Crystal.Regions;
+﻿using Crystal;
 using System;
 using System.Windows;
 

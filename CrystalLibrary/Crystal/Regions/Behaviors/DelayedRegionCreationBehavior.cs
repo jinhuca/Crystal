@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Windows;
 
-namespace Crystal.Regions.Behaviors
+namespace Crystal
 {
 	/// <summary>
 	/// Behavior that creates a new <see cref="IRegion"/>, when the control that will host the <see cref="IRegion"/> (see <see cref="TargetElement"/>)
@@ -81,7 +81,6 @@ namespace Crystal.Regions.Behaviors
 		/// </remarks>
 		/// <param name="sender">The <see cref="RegionManager"/>. </param>
 		/// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2109:ReviewVisibleEventHandlers", Justification = "This has to be public in order to work with weak references in partial trust or Silverlight environments.")]
 		public void OnUpdatingRegions(object sender, EventArgs e)
 		{
 			TryCreateRegion();

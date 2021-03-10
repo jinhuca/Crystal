@@ -1,4 +1,4 @@
-namespace Crystal.Events
+namespace Crystal
 {
 	/// <summary>
 	/// Specifies on which thread a <see cref="PubSubEvent{TPayload}"/> subscriber will be called.

@@ -1,6 +1,6 @@
 using System;
 
-namespace Crystal.Regions.Behaviors
+namespace Crystal
 {
 	/// <summary>
 	/// Represents errors that occured during region creation.

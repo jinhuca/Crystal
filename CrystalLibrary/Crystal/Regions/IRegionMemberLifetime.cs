@@ -1,6 +1,4 @@
-using Crystal.Regions.Behaviors;
-
-namespace Crystal.Regions
+namespace Crystal
 {
 	/// <summary>
 	/// When implemented, allows an instance placed in a <see cref="IRegion"/>

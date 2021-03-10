@@ -1,13 +1,11 @@
-﻿using Crystal.Commands;
-using Crystal.Events;
-using Crystal.Mvvm;
+﻿using Crystal;
 using UsingEventAggregator.Core;
 
 namespace ModuleA.ViewModels
 {
 	public class MessageViewModel : BindableBase
 	{
-		IEventAggregator _ea;
+		readonly IEventAggregator _ea;
 
 		private string _message = "Message to Send";
 		public string Message

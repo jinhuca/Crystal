@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Collections.Specialized;
-using Crystal.Common;
+using System.Linq;
 using System.Windows;
 
-namespace Crystal.Regions.Behaviors
+namespace Crystal
 {
 	/// <summary>
 	/// The RegionMemberLifetimeBehavior determines if items should be removed from the <see cref="IRegion"/>

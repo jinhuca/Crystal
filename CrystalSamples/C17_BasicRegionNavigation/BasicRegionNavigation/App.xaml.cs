@@ -1,7 +1,6 @@
 ﻿using System.Windows;
 using BasicRegionNavigation.Views;
-using Crystal.Ioc;
-using Crystal.Modularity;
+using Crystal;
 using Crystal.Unity;
 
 namespace BasicRegionNavigation

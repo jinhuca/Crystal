@@ -1,5 +1,4 @@
-﻿using Crystal.Mvvm;
-using Crystal.Regions;
+﻿using Crystal;
 
 namespace ModuleA.ViewModels
 {

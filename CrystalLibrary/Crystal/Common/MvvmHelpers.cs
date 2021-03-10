@@ -1,8 +1,7 @@
 ﻿using System;
-using Crystal.Mvvm;
 using System.Windows;
 
-namespace Crystal.Common
+namespace Crystal
 {
 	/// <summary>
 	/// Helper class for MVVM.

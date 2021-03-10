@@ -1,4 +1,4 @@
-namespace Crystal.Regions
+namespace Crystal
 {
 	/// <summary>
 	/// Interface for allowing extensible behavior on regions.

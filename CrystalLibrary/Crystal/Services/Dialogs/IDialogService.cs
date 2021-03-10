@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Crystal.Services.Dialogs
+namespace Crystal
 {
 	/// <summary>
 	/// Interface to show modal and non-modal dialogs.

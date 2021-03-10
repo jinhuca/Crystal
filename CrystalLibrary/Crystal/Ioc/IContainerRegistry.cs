@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Crystal.Ioc
+namespace Crystal
 {
 	/// <summary>
 	/// The registering container

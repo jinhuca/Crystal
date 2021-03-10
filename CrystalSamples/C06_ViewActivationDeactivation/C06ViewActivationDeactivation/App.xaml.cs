@@ -1,5 +1,5 @@
 ﻿using C06ViewActivationDeactivation.Views;
-using Crystal.Ioc;
+using Crystal;
 using Crystal.Unity;
 using System.Windows;
 

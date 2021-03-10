@@ -1,7 +1,7 @@
-using System;
 using Crystal.Properties;
+using System;
 
-namespace Crystal.Regions
+namespace Crystal
 {
 	/// <summary>
 	/// Provides a base class for region's behaviors.

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Crystal.Regions
+namespace Crystal
 {
 	/// <summary>
 	/// Defines the interface for a collection of <see cref="IRegionBehavior"/> classes on a Region.

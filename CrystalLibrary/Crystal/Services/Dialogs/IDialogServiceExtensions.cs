@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Crystal.Services.Dialogs
+namespace Crystal
 {
 	/// <summary>
 	/// Extensions for the IDialogService

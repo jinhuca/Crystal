@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Crystal.Properties;
+using System;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Windows.Input;
-using Crystal.Properties;
 
-namespace Crystal.Commands
+namespace Crystal
 {
 	/// <summary>
 	/// An <see cref="ICommand"/> whose delegates can be attached for <see cref="Execute(T)"/> and <see cref="CanExecute(T)"/>.
@@ -40,7 +40,7 @@ namespace Crystal.Commands
 		/// </summary>
 		/// <param name="executeMethod">Delegate to execute when Execute is called on the command. This can be null to just hook up a CanExecute delegate.</param>
 		/// <remarks><see cref="CanExecute(T)"/> will always return true.</remarks>
-		public DelegateCommand(Action<T> executeMethod)	: this(executeMethod, (o) => true)
+		public DelegateCommand(Action<T> executeMethod) : this(executeMethod, (o) => true)
 		{
 		}
 
@@ -50,7 +50,7 @@ namespace Crystal.Commands
 		/// <param name="executeMethod">Delegate to execute when Execute is called on the command. This can be null to just hook up a CanExecute delegate.</param>
 		/// <param name="canExecuteMethod">Delegate to execute when CanExecute is called on the command. This can be null.</param>
 		/// <exception cref="ArgumentNullException">When both <paramref name="executeMethod"/> and <paramref name="canExecuteMethod"/> are <see langword="null" />.</exception>
-		public DelegateCommand(Action<T> executeMethod, Func<T, bool> canExecuteMethod)	: base()
+		public DelegateCommand(Action<T> executeMethod, Func<T, bool> canExecuteMethod) : base()
 		{
 			if (executeMethod == null || canExecuteMethod == null)
 			{

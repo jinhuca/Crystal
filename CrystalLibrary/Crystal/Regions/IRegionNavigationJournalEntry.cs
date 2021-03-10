@@ -1,6 +1,6 @@
 using System;
 
-namespace Crystal.Regions
+namespace Crystal
 {
 	/// <summary>
 	/// An entry in an IRegionNavigationJournal representing the URI navigated to.

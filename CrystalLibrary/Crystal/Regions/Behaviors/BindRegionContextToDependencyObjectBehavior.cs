@@ -1,10 +1,9 @@
-using Crystal.Common;
 using System.Collections;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Windows;
 
-namespace Crystal.Regions.Behaviors
+namespace Crystal
 {
 	/// <summary>
 	/// Defines a behavior that forwards the <see cref="RegionManager.RegionContextProperty"/> 

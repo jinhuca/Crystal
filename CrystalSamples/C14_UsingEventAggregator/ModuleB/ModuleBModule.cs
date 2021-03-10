@@ -1,7 +1,5 @@
 ﻿using ModuleB.Views;
-using Crystal.Ioc;
-using Crystal.Modularity;
-using Crystal.Regions;
+using Crystal;
 
 namespace ModuleB
 {

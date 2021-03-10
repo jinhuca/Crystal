@@ -1,8 +1,8 @@
+using Crystal.Properties;
 using System;
 using System.Globalization;
-using Crystal.Properties;
 
-namespace Crystal.Events
+namespace Crystal
 {
 	/// <summary>
 	/// Provides a way to retrieve a <see cref="Delegate"/> to execute an action depending

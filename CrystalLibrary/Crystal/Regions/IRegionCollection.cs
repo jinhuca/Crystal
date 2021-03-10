@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 
-namespace Crystal.Regions
+namespace Crystal
 {
 	/// <summary>
 	/// Defines a collection of <see cref="IRegion"/> uniquely identified by their Name.

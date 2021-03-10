@@ -1,4 +1,4 @@
-﻿using Crystal.Modularity;
+﻿using Crystal;
 using System.Windows;
 
 namespace Modules.Views

@@ -1,15 +1,11 @@
-﻿using Crystal.Mvvm;
+﻿using Crystal;
 using ModuleA.Business;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ModuleA.ViewModels
 {
-  public class PersonListViewModel : BindableBase
+	public class PersonListViewModel : BindableBase
   {
     private ObservableCollection<Person> _people;
     public ObservableCollection<Person> People

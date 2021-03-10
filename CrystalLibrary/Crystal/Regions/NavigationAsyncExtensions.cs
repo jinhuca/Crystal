@@ -1,6 +1,6 @@
 using System;
 
-namespace Crystal.Regions
+namespace Crystal
 {
 	/// <summary>
 	/// Provides additional methods to the <see cref="INavigateAsync"/> interface.

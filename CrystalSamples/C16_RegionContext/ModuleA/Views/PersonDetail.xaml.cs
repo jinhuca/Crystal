@@ -1,5 +1,4 @@
-﻿using Crystal.Common;
-using Crystal.Regions;
+﻿using Crystal;
 using ModuleA.Business;
 using ModuleA.ViewModels;
 using System.Windows.Controls;

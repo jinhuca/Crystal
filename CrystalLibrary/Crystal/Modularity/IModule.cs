@@ -1,6 +1,4 @@
-using Crystal.Ioc;
-
-namespace Crystal.Modularity
+namespace Crystal
 {
 	/// <summary>
 	/// Defines the contract for the modules deployed in the application.

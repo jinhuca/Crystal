@@ -1,6 +1,6 @@
 using System;
 
-namespace Crystal.Regions
+namespace Crystal
 {
 	/// <summary>
 	/// EventArgs used with the Navigated event.

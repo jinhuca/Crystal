@@ -1,6 +1,6 @@
 using System;
 
-namespace Crystal.Regions
+namespace Crystal
 {
 	/// <summary>
 	/// Defines that a view is synchronized with its parent view's Active state.

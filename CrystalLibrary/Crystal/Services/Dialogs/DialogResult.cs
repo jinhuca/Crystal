@@ -1,4 +1,4 @@
-﻿namespace Crystal.Services.Dialogs
+﻿namespace Crystal
 {
 	/// <summary>
 	/// An <see cref="IDialogResult"/> that contains <see cref="IDialogParameters"/> from the dialog

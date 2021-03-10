@@ -1,4 +1,4 @@
-﻿using Crystal.Events;
+﻿using Crystal;
 
 namespace UsingEventAggregator.Core
 {

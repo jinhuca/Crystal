@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Crystal.Common
+namespace Crystal
 {
 	/// <summary>
 	/// Defines a contract for specifying values associated with a unique key.

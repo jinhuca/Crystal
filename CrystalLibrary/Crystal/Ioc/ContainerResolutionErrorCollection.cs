@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Crystal.Ioc
+namespace Crystal
 {
 	/// <summary>
 	/// A collection of Errors encountered by while attempting to resolve a given type.

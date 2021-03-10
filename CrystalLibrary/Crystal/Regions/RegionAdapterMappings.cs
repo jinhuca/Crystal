@@ -1,17 +1,16 @@
+using Crystal.Properties;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using Crystal.Ioc;
-using Crystal.Properties;
 
-namespace Crystal.Regions
+namespace Crystal
 {
 	/// <summary>
 	/// This class maps <see cref="Type"/> with <see cref="IRegionAdapter"/>.
 	/// </summary>
 	public class RegionAdapterMappings
 	{
-		private readonly Dictionary<Type, IRegionAdapter> mappings = new Dictionary<Type, IRegionAdapter>();
+		private readonly Dictionary<Type, IRegionAdapter> mappings = new();
 
 		/// <summary>
 		/// Registers the mapping between a type and an adapter.
@@ -49,7 +48,7 @@ namespace Crystal.Regions
 		/// </summary>
 		/// <typeparam name="TControl">The type of the control</typeparam>
 		/// <typeparam name="TAdapter">The type of the IRegionAdapter to use with the TControl</typeparam>
-		public void RegisterMapping<TControl, TAdapter>() where TAdapter : IRegionAdapter 
+		public void RegisterMapping<TControl, TAdapter>() where TAdapter : IRegionAdapter
 			=> RegisterMapping(typeof(TControl), ContainerLocator.Container.Resolve<TAdapter>());
 
 		/// <summary>

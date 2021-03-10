@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Windows;
 
-namespace Crystal.Regions
+namespace Crystal
 {
 	/// <summary>
 	/// Defines a model that can be used to compose views.
@@ -100,7 +100,7 @@ namespace Crystal.Regions
 		/// <value>The <see cref="IRegionManager"/> where this <see cref="IRegion"/> is registered.</value>
 		/// <remarks>This is usually used by implementations of <see cref="IRegionManager"/> and should not be
 		/// used by the developer explicitely.</remarks>
-		IRegionManager RegionManager { get; set; }
+		IRegionManager RManager { get; set; }
 
 		/// <summary>
 		/// Gets the collection of <see cref="IRegionBehavior"/>s that can extend the behavior of regions. 

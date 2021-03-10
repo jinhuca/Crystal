@@ -1,4 +1,4 @@
-﻿namespace Crystal.Services.Dialogs
+﻿namespace Crystal
 {
 	/// <summary>
 	/// <see cref="IDialogWindow"/> extensions.

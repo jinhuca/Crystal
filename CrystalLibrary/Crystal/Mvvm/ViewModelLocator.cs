@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using System.Windows;
 
-namespace Crystal.Mvvm
+namespace Crystal
 {
 	/// <summary>
 	/// This class defines the attached property and related change handler that calls the ViewModelLocator in Crystal.Mvvm.
@@ -12,9 +12,9 @@ namespace Crystal.Mvvm
 		/// The AutoWireViewModel attached property.
 		/// </summary>
 		public static DependencyProperty AutoWireViewModelProperty = DependencyProperty.RegisterAttached(
-			"AutoWireViewModel", 
-			typeof(bool?), 
-			typeof(ViewModelLocator), 
+			"AutoWireViewModel",
+			typeof(bool?),
+			typeof(ViewModelLocator),
 			new PropertyMetadata(defaultValue: null, propertyChangedCallback: AutoWireViewModelChanged));
 
 		/// <summary>

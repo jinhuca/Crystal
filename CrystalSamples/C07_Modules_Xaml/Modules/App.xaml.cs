@@ -1,8 +1,7 @@
 ﻿using Modules.Views;
 using System.Windows;
 using System;
-using Crystal.Ioc;
-using Crystal.Modularity;
+using Crystal;
 using Crystal.Unity;
 
 namespace Modules

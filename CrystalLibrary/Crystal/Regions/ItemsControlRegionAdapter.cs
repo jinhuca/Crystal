@@ -2,7 +2,7 @@ using Crystal.Properties;
 using System;
 using System.Windows.Controls;
 
-namespace Crystal.Regions
+namespace Crystal
 {
 	/// <summary>
 	/// Adapter that creates a new <see cref="AllActiveRegion"/> and binds all

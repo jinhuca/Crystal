@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace Crystal.Ioc
+namespace Crystal
 {
 	/// <summary>
 	/// The <see cref="ContainerLocator"/> tracks the current instance of the Container used by your Application.

@@ -1,10 +1,9 @@
-﻿using Crystal.Commands;
-using Crystal.Mvvm;
+﻿using Crystal;
 using System;
 
 namespace UsingDelegateCommand.ViewModels
 {
-  public class MainWindowViewModel : BindableBase
+	public class MainWindowViewModel : BindableBase
   {
     private bool _isEnabled;
     public bool IsEnabled

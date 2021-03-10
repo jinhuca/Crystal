@@ -1,21 +1,21 @@
+using Crystal.Properties;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Windows.Input;
-using Crystal.Properties;
 
-namespace Crystal.Commands
+namespace Crystal
 {
 	/// <summary>
 	/// The CompositeCommand composes one or more ICommands.
 	/// </summary>
 	public class CompositeCommand : ICommand
 	{
-		private readonly List<ICommand> _registeredCommands = new List<ICommand>();
+		private readonly List<ICommand> _registeredCommands = new();
 		private readonly bool _monitorCommandActivity;
 		private readonly EventHandler _onRegisteredCommandCanExecuteChangedHandler;
-		private SynchronizationContext _synchronizationContext;
+		private readonly SynchronizationContext _synchronizationContext;
 
 		/// <summary>
 		/// Initializes a new instance of <see cref="CompositeCommand"/>.
@@ -70,8 +70,7 @@ namespace Crystal.Commands
 
 			if (_monitorCommandActivity)
 			{
-				var activeAwareCommand = command as IActiveAware;
-				if (activeAwareCommand != null)
+				if (command is IActiveAware activeAwareCommand)
 				{
 					activeAwareCommand.IsActiveChanged += Command_IsActiveChanged;
 				}
@@ -102,8 +101,7 @@ namespace Crystal.Commands
 
 				if (_monitorCommandActivity)
 				{
-					var activeAwareCommand = command as IActiveAware;
-					if (activeAwareCommand != null)
+					if (command is IActiveAware activeAwareCommand)
 					{
 						activeAwareCommand.IsActiveChanged -= Command_IsActiveChanged;
 					}
@@ -151,7 +149,7 @@ namespace Crystal.Commands
 		/// <summary>
 		/// Occurs when any of the registered commands raise <see cref="ICommand.CanExecuteChanged"/>.
 		/// </summary>
-		public virtual event EventHandler CanExecuteChanged;
+		public event EventHandler CanExecuteChanged;
 
 		/// <summary>
 		/// Forwards <see cref="ICommand.Execute"/> to the registered commands.
@@ -187,12 +185,7 @@ namespace Crystal.Commands
 		/// property is <see langword="false" />; otherwise it always returns <see langword="true" />.</remarks>
 		protected virtual bool ShouldExecute(ICommand command)
 		{
-			var activeAwareCommand = command as IActiveAware;
-			if (_monitorCommandActivity && activeAwareCommand != null)
-			{
-				return activeAwareCommand.IsActive;
-			}
-			return true;
+			return !_monitorCommandActivity || command is not IActiveAware activeAwareCommand || activeAwareCommand.IsActive;
 		}
 
 		/// <summary>

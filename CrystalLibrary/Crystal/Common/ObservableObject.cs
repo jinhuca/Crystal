@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using System.Windows;
 
-namespace Crystal.Common
+namespace Crystal
 {
 	/// <summary>
 	/// Class that wraps an object, so that other classes can notify for Change events. Typically, this class is set as 
@@ -17,9 +17,9 @@ namespace Crystal.Common
 		/// Identifies the Value property of the ObservableObject
 		/// </summary>
 		public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-			"Value", 
-			typeof(T), 
-			typeof(ObservableObject<T>), 
+			"Value",
+			typeof(T),
+			typeof(ObservableObject<T>),
 			new PropertyMetadata(null, ValueChangedCallback));
 
 		/// <summary>
@@ -39,11 +39,7 @@ namespace Crystal.Common
 		private static void ValueChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			ObservableObject<T> thisInstance = ((ObservableObject<T>)d);
-			PropertyChangedEventHandler eventHandler = thisInstance.PropertyChanged;
-			if (eventHandler != null)
-			{
-				eventHandler(thisInstance, new PropertyChangedEventArgs("Value"));
-			}
+			thisInstance.PropertyChanged?.Invoke(thisInstance, new PropertyChangedEventArgs(nameof(Value)));
 		}
 	}
 }

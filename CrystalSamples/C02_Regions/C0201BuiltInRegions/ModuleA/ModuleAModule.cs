@@ -1,6 +1,4 @@
-﻿using Crystal.Ioc;
-using Crystal.Modularity;
-using Crystal.Regions;
+﻿using Crystal;
 using RegionDemoInfra;
 
 namespace ModuleA
@@ -8,8 +6,8 @@ namespace ModuleA
 	[Module(ModuleName = "Module A", OnDemand = true)]
 	public class ModuleAModule : IModule
 	{
-		IContainerProvider _container;
-		IRegionManager _regionManager;
+		readonly IContainerProvider _container;
+		readonly IRegionManager _regionManager;
 
 		public ModuleAModule(IContainerProvider containerProvider, IRegionManager regionManager)
 		{

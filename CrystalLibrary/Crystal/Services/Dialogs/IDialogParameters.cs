@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Crystal.Services.Dialogs
+namespace Crystal
 {
 	/// <summary>
 	/// Represents Dialog parameters.

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Markup;
 
-namespace Crystal.Ioc
+namespace Crystal
 {
 	/// <summary>
 	/// Provides Types and Services registered with the Container

@@ -1,6 +1,4 @@
-﻿using Crystal.Ioc;
-using Crystal.Modularity;
-using Crystal.Regions;
+﻿using Crystal;
 using Crystal.Unity;
 using ModuleA;
 using System.Windows;

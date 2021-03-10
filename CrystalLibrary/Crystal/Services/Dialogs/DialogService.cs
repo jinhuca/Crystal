@@ -2,10 +2,8 @@
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
-using Crystal.Common;
-using Crystal.Ioc;
 
-namespace Crystal.Services.Dialogs
+namespace Crystal
 {
 	/// <summary>
 	/// Implements <see cref="IDialogService"/> to show modal and non-modal dialogs.

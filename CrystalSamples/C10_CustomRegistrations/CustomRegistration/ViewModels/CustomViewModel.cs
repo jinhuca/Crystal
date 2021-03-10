@@ -1,4 +1,4 @@
-﻿using Crystal.Mvvm;
+﻿using Crystal;
 
 namespace CustomRegistration.ViewModels
 {

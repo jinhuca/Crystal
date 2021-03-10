@@ -1,5 +1,4 @@
-﻿using Crystal.Commands;
-using Crystal.Mvvm;
+﻿using Crystal;
 using System;
 
 namespace C01UseDelegateCommand.ViewModels

@@ -1,13 +1,10 @@
+using Crystal.Properties;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Crystal.Common;
-using Crystal.Properties;
-using Crystal.Ioc;
 using System.Windows;
 
-namespace Crystal.Regions
+namespace Crystal
 {
 	/// <summary>
 	/// Provides navigation for regions.
@@ -79,7 +76,6 @@ namespace Crystal.Regions
 		/// </summary>
 		/// <param name="target">The target.</param>
 		/// <param name="navigationCallback">A callback to execute when the navigation request is completed.</param>
-		[SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Exception is marshalled to callback")]
 		public void RequestNavigate(Uri target, Action<NavigationResult> navigationCallback)
 		{
 			RequestNavigate(target, navigationCallback, null);
@@ -216,7 +212,6 @@ namespace Crystal.Regions
 					currentViewIndex + 1);
 		}
 
-		[SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Exception is marshalled to callback")]
 		private void ExecuteNavigation(NavigationContext navigationContext, object[] activeViews, Action<NavigationResult> navigationCallback)
 		{
 			try

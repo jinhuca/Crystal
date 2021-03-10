@@ -1,12 +1,12 @@
+using Crystal.Properties;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using Crystal.Properties;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 
-namespace Crystal.Regions.Behaviors
+namespace Crystal
 {
 	/// <summary>
 	/// Defines the attached behavior that keeps the items of the <see cref="Selector"/> host control in synchronization with the <see cref="IRegion"/>.
@@ -88,7 +88,7 @@ namespace Crystal.Regions.Behaviors
 
 		private void SynchronizeItems()
 		{
-			List<object> existingItems = new List<object>();
+			List<object> existingItems = new();
 
 			// Control must be empty before "Binding" to a region
 			foreach (object childItem in hostControl.Items)

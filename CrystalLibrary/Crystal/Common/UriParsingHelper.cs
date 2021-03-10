@@ -1,7 +1,6 @@
 using System;
-using Crystal.Regions;
 
-namespace Crystal.Common
+namespace Crystal
 {
 	/// <summary>
 	/// Helper class for parsing <see cref="Uri"/> instances.
@@ -24,7 +23,7 @@ namespace Crystal.Common
 		/// Parses the query of <paramref name="uri"/> into a dictionary.
 		/// </summary>
 		/// <param name="uri">The URI.</param>
-		public static NavigationParameters ParseQuery(Uri uri) => new NavigationParameters(GetQuery(uri));
+		public static NavigationParameters ParseQuery(Uri uri) => new(GetQuery(uri));
 
 		private static Uri EnsureAbsolute(Uri uri)
 		{

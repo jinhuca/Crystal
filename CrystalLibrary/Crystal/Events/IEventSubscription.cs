@@ -1,6 +1,6 @@
 using System;
 
-namespace Crystal.Events
+namespace Crystal
 {
 	///<summary>
 	/// Defines a contract for an event subscription to be used by <see cref="EventBase"/>.

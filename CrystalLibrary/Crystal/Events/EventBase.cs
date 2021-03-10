@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
-namespace Crystal.Events
+namespace Crystal
 {
 	///<summary>
 	/// Defines a base class to publish and subscribe to events.
 	///</summary>
 	public abstract class EventBase
 	{
-		private readonly List<IEventSubscription> _subscriptions = new List<IEventSubscription>();
+		private readonly List<IEventSubscription> _subscriptions = new();
 
 		/// <summary>
 		/// Allows the SynchronizationContext to be set by the EventAggregator for UI Thread Dispatching
@@ -94,7 +94,7 @@ namespace Crystal.Events
 
 		private List<Action<object[]>> PruneAndReturnStrategies()
 		{
-			List<Action<object[]>> returnList = new List<Action<object[]>>();
+			List<Action<object[]>> returnList = new();
 			lock (Subscriptions)
 			{
 				for (var i = Subscriptions.Count - 1; i >= 0; i--)

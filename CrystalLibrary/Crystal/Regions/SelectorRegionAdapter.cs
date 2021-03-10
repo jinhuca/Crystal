@@ -1,8 +1,7 @@
-using Crystal.Regions.Behaviors;
 using System;
 using System.Windows.Controls.Primitives;
 
-namespace Crystal.Regions
+namespace Crystal
 {
 	/// <summary>
 	/// Adapter that creates a new <see cref="Region"/> and binds all

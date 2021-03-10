@@ -1,5 +1,5 @@
 ﻿using C01BootstrapperShell.Views;
-using Crystal.Ioc;
+using Crystal;
 using Crystal.Unity;
 using System.Windows;
 

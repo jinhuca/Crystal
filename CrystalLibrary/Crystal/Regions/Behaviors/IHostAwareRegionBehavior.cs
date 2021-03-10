@@ -1,6 +1,6 @@
 using System.Windows;
 
-namespace Crystal.Regions.Behaviors
+namespace Crystal
 {
 	/// <summary>
 	/// Defines a <see cref="IRegionBehavior"/> that not allows extensible behaviors on regions which also interact

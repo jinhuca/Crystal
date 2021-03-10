@@ -1,7 +1,7 @@
-using System;
 using Crystal.Properties;
+using System;
 
-namespace Crystal.Regions
+namespace Crystal
 {
 	/// <summary>
 	/// Region that keeps all the views in it as active. Deactivation of views is not allowed.

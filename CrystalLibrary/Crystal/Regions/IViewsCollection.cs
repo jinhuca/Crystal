@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 
-namespace Crystal.Regions
+namespace Crystal
 {
 	/// <summary>
 	/// Defines a view of a collection.

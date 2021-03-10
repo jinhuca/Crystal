@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 
-namespace Crystal.Events
+namespace Crystal
 {
 	///<summary>
 	/// Extends <see cref="EventSubscription"/> to invoke the <see cref="EventSubscription.Action"/> delegate

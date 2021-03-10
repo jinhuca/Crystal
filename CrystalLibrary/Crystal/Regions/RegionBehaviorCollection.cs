@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Crystal.Regions
+namespace Crystal
 {
 	/// <summary>
 	/// A collection of <see cref="IRegionBehavior"/> instances, that are stored and retrieved by Key.

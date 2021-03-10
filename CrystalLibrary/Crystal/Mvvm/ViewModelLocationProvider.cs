@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
 
-namespace Crystal.Mvvm
+namespace Crystal
 {
 	/// <summary>
 	/// The ViewModelLocationProvider class locates the view model for the view that has the AutoWireViewModelChanged attached property set to true.
@@ -20,12 +20,12 @@ namespace Crystal.Mvvm
 		/// <summary>
 		/// A dictionary that contains all the registered factories for the views.
 		/// </summary>
-		static Dictionary<string, Func<object>> _factories = new Dictionary<string, Func<object>>();
+		static readonly Dictionary<string, Func<object>> _factories = new();
 
 		/// <summary>
 		/// A dictionary that contains all the registered ViewModel types for the views.
 		/// </summary>
-		static Dictionary<string, Type> _typeFactories = new Dictionary<string, Type>();
+		static readonly Dictionary<string, Type> _typeFactories = new();
 
 		/// <summary>
 		/// The default view model factory which provides the ViewModel type as a parameter.
@@ -55,21 +55,21 @@ namespace Crystal.Mvvm
 		/// Sets the default view model factory.
 		/// </summary>
 		/// <param name="viewModelFactory">The view model factory which provides the ViewModel type as a parameter.</param>
-		public static void SetDefaultViewModelFactory(Func<Type, object> viewModelFactory) 
+		public static void SetDefaultViewModelFactory(Func<Type, object> viewModelFactory)
 			=> _defaultViewModelFactory = viewModelFactory;
 
 		/// <summary>
 		/// Sets the default view model factory.
 		/// </summary>
 		/// <param name="viewModelFactory">The view model factory that provides the View instance and ViewModel type as parameters.</param>
-		public static void SetDefaultViewModelFactory(Func<object, Type, object> viewModelFactory) 
+		public static void SetDefaultViewModelFactory(Func<object, Type, object> viewModelFactory)
 			=> _defaultViewModelFactoryWithViewParameter = viewModelFactory;
 
 		/// <summary>
 		/// Sets the default view type to view model type resolver.
 		/// </summary>
 		/// <param name="viewTypeToViewModelTypeResolver">The view type to view model type resolver.</param>
-		public static void SetDefaultViewTypeToViewModelTypeResolver(Func<Type, Type> viewTypeToViewModelTypeResolver) 
+		public static void SetDefaultViewTypeToViewModelTypeResolver(Func<Type, Type> viewTypeToViewModelTypeResolver)
 			=> _defaultViewTypeToViewModelTypeResolver = viewTypeToViewModelTypeResolver;
 
 		/// <summary>

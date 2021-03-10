@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Crystal.Commands
+namespace Crystal
 {
 	/// <summary>
 	/// Provide a way to observe property changes of INotifyPropertyChanged objects and invokes a 
@@ -29,7 +29,7 @@ namespace Crystal.Commands
 				propNameStack.Push(temp.Member as PropertyInfo); // Records the member info as property info
 			}
 
-			if (!(propertyExpression is ConstantExpression constantExpression))
+			if (propertyExpression is not ConstantExpression constantExpression)
 			{
 				throw new NotSupportedException("Operation not supported for the given expression type. " +
 																				"Only MemberExpression and ConstantExpression are currently supported.");
@@ -45,7 +45,7 @@ namespace Crystal.Commands
 
 			object propOwnerObject = constantExpression.Value;
 
-			if (!(propOwnerObject is INotifyPropertyChanged inpcObject))
+			if (propOwnerObject is not INotifyPropertyChanged inpcObject)
 			{
 				throw new InvalidOperationException("Trying to subscribe PropertyChanged listener in object that " +
 																						$"owns '{propObserverNodeRoot.PropertyInfo.Name}' property, but the object does not implements INotifyPropertyChanged.");
@@ -59,7 +59,7 @@ namespace Crystal.Commands
 		/// </summary>
 		/// <param name="propertyExpression">Expression representing property to be observed. Ex.: "() => Prop.NestedProp.PropToObserve".</param>
 		/// <param name="action">Action to be invoked when PropertyChanged event occours.</param>
-		internal static PropertyObserver Observes<T>(Expression<Func<T>> propertyExpression, Action action) 
-			=> new PropertyObserver(propertyExpression.Body, action);
+		internal static PropertyObserver Observes<T>(Expression<Func<T>> propertyExpression, Action action)
+			=> new(propertyExpression.Body, action);
 	}
 }

@@ -1,7 +1,6 @@
-﻿using Crystal.Mvvm;
-using System;
+﻿using System;
 
-namespace Crystal.Ioc
+namespace Crystal
 {
 	/// <summary>
 	/// Provides Generic Type extensions for the <see cref="IContainerRegistry" />
@@ -325,7 +324,7 @@ namespace Crystal.Ioc
 		/// <typeparam name="TViewModel">The ViewModel to use as the DataContext for the dialog</typeparam>
 		/// <param name="containerRegistry"></param>
 		/// <param name="name">The unique name to register with the dialog.</param>
-		public static void RegisterDialog<TView, TViewModel>(this IContainerRegistry containerRegistry, string name = null) where TViewModel : Services.Dialogs.IDialogAware
+		public static void RegisterDialog<TView, TViewModel>(this IContainerRegistry containerRegistry, string name = null) where TViewModel : IDialogAware
 		{
 			containerRegistry.RegisterForNavigation<TView, TViewModel>(name);
 		}
@@ -335,9 +334,9 @@ namespace Crystal.Ioc
 		/// </summary>
 		/// <typeparam name="TWindow">The Type of the Window class that will be used to host dialogs in the IDialogService</typeparam>
 		/// <param name="containerRegistry"></param>
-		public static void RegisterDialogWindow<TWindow>(this IContainerRegistry containerRegistry) where TWindow : Services.Dialogs.IDialogWindow
+		public static void RegisterDialogWindow<TWindow>(this IContainerRegistry containerRegistry) where TWindow : IDialogWindow
 		{
-			containerRegistry.Register(typeof(Services.Dialogs.IDialogWindow), typeof(TWindow));
+			containerRegistry.Register(typeof(IDialogWindow), typeof(TWindow));
 		}
 
 		/// <summary>
@@ -346,9 +345,9 @@ namespace Crystal.Ioc
 		/// <typeparam name="TWindow">The Type of the Window class that will be used to host dialogs in the IDialogService</typeparam>
 		/// <param name="containerRegistry"></param>
 		/// <param name="name">The name of the dialog window</param>
-		public static void RegisterDialogWindow<TWindow>(this IContainerRegistry containerRegistry, string name) where TWindow : Services.Dialogs.IDialogWindow
+		public static void RegisterDialogWindow<TWindow>(this IContainerRegistry containerRegistry, string name) where TWindow : IDialogWindow
 		{
-			containerRegistry.Register(typeof(Services.Dialogs.IDialogWindow), typeof(TWindow), name);
+			containerRegistry.Register(typeof(IDialogWindow), typeof(TWindow), name);
 		}
 
 		/// <summary>

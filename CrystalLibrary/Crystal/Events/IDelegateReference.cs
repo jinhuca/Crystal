@@ -1,6 +1,6 @@
 using System;
 
-namespace Crystal.Events
+namespace Crystal
 {
 	/// <summary>
 	/// Represents a reference to a <see cref="Delegate"/>.

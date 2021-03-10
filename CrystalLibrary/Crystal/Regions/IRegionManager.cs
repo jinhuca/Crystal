@@ -1,6 +1,6 @@
 using System;
 
-namespace Crystal.Regions
+namespace Crystal
 {
 	/// <summary>
 	/// Defines an interface to manage a set of <see cref="IRegion">regions</see> and to attach regions to objects (typically controls).

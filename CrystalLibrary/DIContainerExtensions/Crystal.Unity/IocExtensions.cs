@@ -1,5 +1,4 @@
-﻿using Crystal.Ioc;
-using Unity;
+﻿using Unity;
 
 namespace Crystal.Unity
 {

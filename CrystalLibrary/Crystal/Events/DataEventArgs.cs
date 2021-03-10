@@ -1,6 +1,6 @@
 using System;
 
-namespace Crystal.Events
+namespace Crystal
 {
 	/// <summary>
 	/// Generic arguments class to pass to event handlers that need to receive data.

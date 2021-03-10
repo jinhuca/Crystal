@@ -1,6 +1,4 @@
-﻿using Crystal.Commands;
-using Crystal.Mvvm;
-using Crystal.Regions;
+﻿using Crystal;
 using ModuleA.Business;
 
 namespace ModuleA.ViewModels

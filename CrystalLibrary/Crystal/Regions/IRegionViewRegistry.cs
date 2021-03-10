@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Crystal.Regions
+namespace Crystal
 {
 	/// <summary>
 	/// Defines the interface for the registry of region's content.

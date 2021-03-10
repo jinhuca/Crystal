@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Crystal.Mvvm
+namespace Crystal
 {
 	/// <summary>
 	/// Manages validation errors for an object, notifying when the error state changes.
@@ -87,7 +87,7 @@ namespace Crystal.Mvvm
 		/// <example>
 		/// container.ClearErrors(()=>SomeProperty);
 		/// </example>
-		public void ClearErrors<TProperty>(Expression<Func<TProperty>> propertyExpression) 
+		public void ClearErrors<TProperty>(Expression<Func<TProperty>> propertyExpression)
 			=> ClearErrors(PropertySupport.ExtractPropertyName(propertyExpression));
 
 		/// <summary>
@@ -105,7 +105,6 @@ namespace Crystal.Mvvm
 		/// <typeparam name="TProperty">The property type for which to set errors.</typeparam>
 		/// <param name="propertyExpression">The <see cref="Expression"/> indicating the property.</param>
 		/// <param name="propertyErrors">The list of errors to set for the property.</param>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
 		public void SetErrors<TProperty>(Expression<Func<TProperty>> propertyExpression, IEnumerable<T> propertyErrors)
 		{
 			var propertyName = PropertySupport.ExtractPropertyName(propertyExpression);

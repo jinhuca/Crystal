@@ -1,9 +1,9 @@
+using Crystal.Properties;
 using System;
 using System.ComponentModel;
-using Crystal.Properties;
 using System.Windows;
 
-namespace Crystal.Regions.Behaviors
+namespace Crystal
 {
 	/// <summary>
 	/// Subscribes to a static event from the <see cref="RegionManager"/> in order to register the target <see cref="IRegion"/>
@@ -118,7 +118,6 @@ namespace Crystal.Regions.Behaviors
 		/// </summary>
 		/// <param name="sender">The sender.</param>
 		/// <param name="e">The arguments.</param>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2109:ReviewVisibleEventHandlers", Justification = "This has to be public in order to work with weak references in partial trust or Silverlight environments.")]
 		public void OnUpdatingRegions(object sender, EventArgs e)
 		{
 			TryRegisterRegion();

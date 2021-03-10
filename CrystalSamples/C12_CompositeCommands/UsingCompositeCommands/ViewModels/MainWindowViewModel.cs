@@ -1,4 +1,4 @@
-﻿using Crystal.Mvvm;
+﻿using Crystal;
 using UsingCompositeCommands.Core;
 
 namespace UsingCompositeCommands.ViewModels

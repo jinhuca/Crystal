@@ -1,4 +1,4 @@
-namespace Crystal.Events
+namespace Crystal
 {
 	/// <summary>
 	/// Defines an interface to get instances of an event type.

@@ -1,8 +1,8 @@
+using Crystal.Properties;
 using System;
 using System.Linq;
-using Crystal.Properties;
 
-namespace Crystal.Events
+namespace Crystal
 {
 	/// <summary>
 	/// Defines a class that manages publication and subscription to events.

@@ -1,8 +1,6 @@
 ﻿using System;
-using Crystal.Mvvm;
 using Crystal;
 using UsingIActiveAwareCommands.Core;
-using Crystal.Commands;
 
 namespace ModuleA.ViewModels
 {

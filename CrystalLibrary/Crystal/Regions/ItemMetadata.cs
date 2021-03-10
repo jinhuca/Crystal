@@ -1,7 +1,7 @@
 using System;
 using System.Windows;
 
-namespace Crystal.Regions
+namespace Crystal
 {
 	/// <summary>
 	/// Defines a class that wraps an item and adds metadata for it.

@@ -1,14 +1,12 @@
+using Crystal.Properties;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
-using Crystal.Properties;
-using Crystal.Ioc;
 using System.Windows;
 
-namespace Crystal.Regions
+namespace Crystal
 {
 	/// <summary>
 	/// Implementation of <see cref="IRegion"/> that allows multiple active views.
@@ -22,7 +20,6 @@ namespace Crystal.Regions
 		private object _context;
 		private IRegionManager _regionManager;
 		private IRegionNavigationService _regionNavigationService;
-
 		private Comparison<object> _sort;
 
 		/// <summary>
@@ -31,7 +28,6 @@ namespace Crystal.Regions
 		public Region()
 		{
 			Behaviors = new RegionBehaviorCollection(this);
-
 			_sort = DefaultSortComparison;
 		}
 
@@ -165,7 +161,7 @@ namespace Crystal.Regions
 		/// <value>The <see cref="IRegionManager"/> where this <see cref="IRegion"/> is registered.</value>
 		/// <remarks>This is usually used by implementations of <see cref="IRegionManager"/> and should not be
 		/// used by the developer explicitely.</remarks>
-		public IRegionManager RegionManager
+		public IRegionManager RManager
 		{
 			get => _regionManager;
 
@@ -174,7 +170,7 @@ namespace Crystal.Regions
 				if (_regionManager != value)
 				{
 					_regionManager = value;
-					OnPropertyChanged(nameof(RegionManager));
+					OnPropertyChanged(nameof(RManager));
 				}
 			}
 		}
@@ -252,7 +248,7 @@ namespace Crystal.Regions
 		/// <returns>The <see cref="IRegionManager"/> that is set on the view if it is a <see cref="DependencyObject"/>.</returns>
 		public virtual IRegionManager Add(object view, string viewName, bool createRegionManagerScope)
 		{
-			IRegionManager manager = createRegionManagerScope ? RegionManager.CreateRegionManager() : RegionManager;
+			IRegionManager manager = createRegionManagerScope ? RManager.CreateRegionManager() : RManager;
 			InnerAdd(view, viewName, manager);
 			return manager;
 		}
@@ -267,9 +263,9 @@ namespace Crystal.Regions
 
 			ItemMetadataCollection.Remove(itemMetadata);
 
-			if (view is DependencyObject dependencyObject && Regions.RegionManager.GetRegionManager(dependencyObject) == RegionManager)
+			if (view is DependencyObject dependencyObject && RegionManager.GetRegionManager(dependencyObject) == RManager)
 			{
-				dependencyObject.ClearValue(Regions.RegionManager.RegionManagerProperty);
+				dependencyObject.ClearValue(RegionManager.RegionManagerProperty);
 			}
 		}
 
@@ -362,7 +358,7 @@ namespace Crystal.Regions
 				throw new InvalidOperationException(Resources.RegionViewExistsException);
 			}
 
-			ItemMetadata itemMetadata = new ItemMetadata(view);
+			ItemMetadata itemMetadata = new(view);
 			if (!string.IsNullOrEmpty(viewName))
 			{
 				if (ItemMetadataCollection.FirstOrDefault(x => x.Name == viewName) != null)
@@ -375,7 +371,7 @@ namespace Crystal.Regions
 
 			if (view is DependencyObject dependencyObject)
 			{
-				Regions.RegionManager.SetRegionManager(dependencyObject, scopedRegionManager);
+				RegionManager.SetRegionManager(dependencyObject, scopedRegionManager);
 			}
 
 			ItemMetadataCollection.Add(itemMetadata);
@@ -409,8 +405,6 @@ namespace Crystal.Regions
 		/// <param name="x">The first view to compare.</param>
 		/// <param name="y">The second view to compare.</param>
 		/// <returns></returns>
-		[SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "y")]
-		[SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "x")]
 		public static int DefaultSortComparison(object x, object y)
 		{
 			if (x == null)
@@ -447,25 +441,11 @@ namespace Crystal.Regions
 		{
 			if (x == null)
 			{
-				if (y == null)
-				{
-					return 0;
-				}
-				else
-				{
-					return -1;
-				}
+				return y == null ? 0 : -1;
 			}
 			else
 			{
-				if (y == null)
-				{
-					return 1;
-				}
-				else
-				{
-					return string.Compare(x.Hint, y.Hint, StringComparison.Ordinal);
-				}
+				return y == null ? 1 : string.Compare(x.Hint, y.Hint, StringComparison.Ordinal);
 			}
 		}
 	}

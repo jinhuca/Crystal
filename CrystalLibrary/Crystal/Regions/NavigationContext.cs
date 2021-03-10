@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using Crystal.Common;
 
-namespace Crystal.Regions
+namespace Crystal
 {
 	/// <summary>
 	/// Encapsulates information about a navigation request.

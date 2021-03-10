@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
-using Crystal.Ioc.Internals;
 
-namespace Crystal.Ioc
+namespace Crystal
 {
 	/// <summary>
 	/// Provides a common exception class to be used by <see cref="IContainerProvider"/> when encountering a resolution exception
@@ -161,7 +159,6 @@ namespace Crystal.Ioc
 			return container.GetRegistrationType(name);
 		}
 
-		[SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "This method is meant to collect any exception thrown.")]
 		private static void PopulateErrors(Type implementingType, ref ContainerResolutionErrorCollection errors)
 		{
 			var ctors = implementingType.GetConstructors();

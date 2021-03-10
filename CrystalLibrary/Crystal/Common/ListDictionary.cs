@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Crystal.Common
+namespace Crystal
 {
 	/// <summary>
 	/// A dictionary of lists.
@@ -10,7 +10,7 @@ namespace Crystal.Common
 	/// <typeparam name="TValue">The type of the value held by lists.</typeparam>
 	public sealed class ListDictionary<TKey, TValue> : IDictionary<TKey, IList<TValue>>
 	{
-		Dictionary<TKey, IList<TValue>> innerValues = new Dictionary<TKey, IList<TValue>>();
+		readonly Dictionary<TKey, IList<TValue>> innerValues = new();
 
 		#region Public Methods
 
@@ -59,9 +59,8 @@ namespace Crystal.Common
 
 		private List<TValue> CreateNewList(TKey key)
 		{
-			List<TValue> values = new List<TValue>();
+			List<TValue> values = new();
 			innerValues.Add(key, values);
-
 			return values;
 		}
 
@@ -211,12 +210,11 @@ namespace Crystal.Common
 		{
 			get
 			{
-				List<TValue> values = new List<TValue>();
+				List<TValue> values = new();
 				foreach (IEnumerable<TValue> list in innerValues.Values)
 				{
 					values.AddRange(list);
 				}
-
 				return values;
 			}
 		}

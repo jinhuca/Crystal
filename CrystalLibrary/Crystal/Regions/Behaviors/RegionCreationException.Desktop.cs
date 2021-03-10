@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Crystal.Regions.Behaviors
+namespace Crystal
 {
 	/// <summary>
 	/// 

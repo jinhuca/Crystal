@@ -1,11 +1,4 @@
-﻿using Crystal.Events;
-using Crystal.Ioc;
-using Crystal.Modularity;
-using Crystal.Mvvm;
-using Crystal.Regions;
-using Crystal.Regions.Behaviors;
-using Crystal.Services.Dialogs;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 
 namespace Crystal

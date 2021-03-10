@@ -1,14 +1,11 @@
+using Crystal.Properties;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Crystal.Common;
-using Crystal.Ioc;
-using Crystal.Ioc.Internals;
-using Crystal.Properties;
 using System.Windows;
 
-namespace Crystal.Regions
+namespace Crystal
 {
 	/// <summary>
 	/// Implementation of <see cref="IRegionNavigationContentLoader"/> that relies on a <see cref="IContainerProvider"/>

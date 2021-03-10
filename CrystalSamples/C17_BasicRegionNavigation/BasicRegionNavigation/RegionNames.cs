@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace BasicRegionNavigation
+﻿namespace BasicRegionNavigation
 {
 	public class RegionNames
 	{

@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Windows.Input;
 
-namespace Crystal.Commands
+namespace Crystal
 {
 	/// <summary>
 	/// An <see cref="ICommand"/> whose delegates can be attached for <see cref="Execute"/> and <see cref="CanExecute"/>.
@@ -12,8 +12,8 @@ namespace Crystal.Commands
 	public abstract class DelegateCommandBase : ICommand, IActiveAware
 	{
 		private bool _isActive;
-		private SynchronizationContext _synchronizationContext;
-		private readonly HashSet<string> _observedPropertiesExpressions = new HashSet<string>();
+		private readonly SynchronizationContext _synchronizationContext;
+		private readonly HashSet<string> _observedPropertiesExpressions = new();
 
 		/// <summary>
 		/// Creates a new instance of a <see cref="DelegateCommandBase"/>, specifying both the execute action and the can execute function.
@@ -26,7 +26,7 @@ namespace Crystal.Commands
 		/// <summary>
 		/// Occurs when changes occur that affect whether or not the command should execute.
 		/// </summary>
-		public virtual event EventHandler CanExecuteChanged;
+		public event EventHandler CanExecuteChanged;
 
 		/// <summary>
 		/// Raises <see cref="ICommand.CanExecuteChanged"/> so every command invoker can requery <see cref="ICommand.CanExecute"/>.
@@ -79,8 +79,7 @@ namespace Crystal.Commands
 		{
 			if (_observedPropertiesExpressions.Contains(propertyExpression.ToString()))
 			{
-				throw new ArgumentException($"{propertyExpression.ToString()} is already being observed.",
-						nameof(propertyExpression));
+				throw new ArgumentException($"{propertyExpression} is already being observed.", nameof(propertyExpression));
 			}
 			else
 			{
@@ -111,7 +110,7 @@ namespace Crystal.Commands
 		/// <summary>
 		/// Fired if the <see cref="IsActive"/> property changes.
 		/// </summary>
-		public virtual event EventHandler IsActiveChanged;
+		public event EventHandler IsActiveChanged;
 
 		/// <summary>
 		/// This raises the <see cref="DelegateCommandBase.IsActiveChanged"/> event.

@@ -1,4 +1,4 @@
-﻿using Crystal.Ioc;
+﻿using Crystal;
 using System.Windows;
 using UsingDelegateCommand.Views;
 

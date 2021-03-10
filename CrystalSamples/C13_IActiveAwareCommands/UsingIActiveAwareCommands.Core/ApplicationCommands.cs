@@ -1,4 +1,4 @@
-﻿using Crystal.Commands;
+﻿using Crystal;
 
 namespace UsingIActiveAwareCommands.Core
 {

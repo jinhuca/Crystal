@@ -1,9 +1,8 @@
-using System;
 using Crystal.Properties;
-using Crystal.Common;
+using System;
 using System.Windows;
 
-namespace Crystal.Regions.Behaviors
+namespace Crystal
 {
 	/// <summary>
 	/// Behavior that synchronizes the <see cref="IRegion.Context"/> property of a <see cref="IRegion"/> with 

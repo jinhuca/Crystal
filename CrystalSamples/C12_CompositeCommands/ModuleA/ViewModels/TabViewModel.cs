@@ -1,5 +1,4 @@
-﻿using Crystal.Commands;
-using Crystal.Mvvm;
+﻿using Crystal;
 using System;
 using UsingCompositeCommands.Core;
 

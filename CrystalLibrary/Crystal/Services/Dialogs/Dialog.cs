@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Crystal.Services.Dialogs
+namespace Crystal
 {
 	/// <summary>
 	/// This class contains <see cref="IDialogWindow"/> attached properties.
@@ -14,9 +14,9 @@ namespace Crystal.Services.Dialogs
 		/// This attached property is used to specify the style of a <see cref="IDialogWindow"/>.
 		/// </remarks>
 		public static readonly DependencyProperty WindowStyleProperty = DependencyProperty.RegisterAttached(
-			"WindowStyle", 
-			typeof(Style), 
-			typeof(Dialog), 
+			"WindowStyle",
+			typeof(Style),
+			typeof(Dialog),
 			new PropertyMetadata(null));
 
 		/// <summary>
@@ -40,9 +40,9 @@ namespace Crystal.Services.Dialogs
 		/// This attached property is used to specify the startup location of a <see cref="IDialogWindow"/>.
 		/// </remarks>
 		public static readonly DependencyProperty WindowStartupLocationProperty = DependencyProperty.RegisterAttached(
-			"WindowStartupLocation", 
-			typeof(WindowStartupLocation), 
-			typeof(Dialog), 
+			"WindowStartupLocation",
+			typeof(WindowStartupLocation),
+			typeof(Dialog),
 			new UIPropertyMetadata(OnWindowStartupLocationChanged));
 
 		/// <summary>
@@ -50,7 +50,7 @@ namespace Crystal.Services.Dialogs
 		/// </summary>
 		/// <param name="obj">The target element.</param>
 		/// <returns>The <see cref="WindowStartupLocationProperty"/> attached to the <paramref name="obj"/> element.</returns>
-		public static WindowStartupLocation GetWindowStartupLocation(DependencyObject obj) 
+		public static WindowStartupLocation GetWindowStartupLocation(DependencyObject obj)
 			=> (WindowStartupLocation)obj.GetValue(WindowStartupLocationProperty);
 
 		/// <summary>
@@ -58,7 +58,7 @@ namespace Crystal.Services.Dialogs
 		/// </summary>
 		/// <param name="obj">The target element.</param>
 		/// <param name="value">The WindowStartupLocation to attach.</param>
-		public static void SetWindowStartupLocation(DependencyObject obj, WindowStartupLocation value) 
+		public static void SetWindowStartupLocation(DependencyObject obj, WindowStartupLocation value)
 			=> obj.SetValue(WindowStartupLocationProperty, value);
 
 		private static void OnWindowStartupLocationChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)

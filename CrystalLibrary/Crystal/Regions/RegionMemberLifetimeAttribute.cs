@@ -1,7 +1,6 @@
 using System;
-using Crystal.Regions.Behaviors;
 
-namespace Crystal.Regions
+namespace Crystal
 {
 	/// <summary>
 	/// When <see cref="RegionMemberLifetimeAttribute"/> is applied to class provides data

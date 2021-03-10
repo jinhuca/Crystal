@@ -2,10 +2,10 @@
 
 using System;
 
-namespace Crystal.Modularity
+namespace Crystal
 {
-    [Serializable]
-    public partial class ModuleInfo
-    {
-    }
+	[Serializable]
+	public partial class ModuleInfo
+	{
+	}
 }

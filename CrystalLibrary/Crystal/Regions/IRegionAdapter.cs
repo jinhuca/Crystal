@@ -1,4 +1,4 @@
-namespace Crystal.Regions
+namespace Crystal
 {
 	/// <summary>
 	/// Defines an interfaces to adapt an object and bind it to a new <see cref="IRegion"/>.

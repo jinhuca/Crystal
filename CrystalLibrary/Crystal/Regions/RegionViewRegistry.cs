@@ -1,13 +1,10 @@
+using Crystal.Properties;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
-using Crystal.Common;
-using Crystal.Events;
-using Crystal.Ioc;
-using Crystal.Properties;
 
-namespace Crystal.Regions
+namespace Crystal
 {
 	/// <summary>
 	/// Defines a registry for the content of the regions used on View Discovery composition.

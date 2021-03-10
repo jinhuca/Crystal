@@ -1,4 +1,4 @@
-﻿namespace Crystal.Ioc
+﻿namespace Crystal
 {
 	/// <summary>
 	/// A strongly typed container extension

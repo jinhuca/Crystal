@@ -1,6 +1,4 @@
-﻿using Crystal.Common;
-
-namespace Crystal.Services.Dialogs
+﻿namespace Crystal
 {
 	/// <summary>
 	/// Represents Dialog parameters.

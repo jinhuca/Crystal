@@ -1,6 +1,6 @@
 using System;
 
-namespace Crystal.Regions
+namespace Crystal
 {
 	/// <summary>
 	/// Argument class used by the <see cref="IRegionViewRegistry.ContentRegistered"/> event when a new content is registered.

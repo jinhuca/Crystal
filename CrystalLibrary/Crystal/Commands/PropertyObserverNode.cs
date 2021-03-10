@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Reflection;
 
-namespace Crystal.Commands
+namespace Crystal
 {
 	/// <summary>
 	/// Represents each node of nested properties expression and takes care of 
@@ -51,7 +51,7 @@ namespace Crystal.Commands
 				return;
 			}
 
-			if (!(nextProperty is INotifyPropertyChanged nextInpcObject))
+			if (nextProperty is not INotifyPropertyChanged nextInpcObject)
 			{
 				throw new InvalidOperationException("Trying to subscribe PropertyChanged listener in object that " +
 																						$"owns '{Next.PropertyInfo.Name}' property, but the object does not implements INotifyPropertyChanged.");

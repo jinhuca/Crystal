@@ -1,7 +1,7 @@
 using System;
 using System.Reflection;
 
-namespace Crystal.Events
+namespace Crystal
 {
 	/// <summary>
 	/// Represents a reference to a <see cref="Delegate"/> that may contain a <see cref="WeakReference"/> to the target. This class is used

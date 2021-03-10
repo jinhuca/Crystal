@@ -1,5 +1,4 @@
-﻿using Crystal.Ioc;
-using Crystal.Regions;
+﻿using Crystal;
 using System.Windows;
 
 namespace C06ViewActivationDeactivation.Views

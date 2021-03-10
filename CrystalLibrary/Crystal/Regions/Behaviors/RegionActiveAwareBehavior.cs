@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Specialized;
 using System.Linq;
-using Crystal.Common;
 using System.Windows;
 
-namespace Crystal.Regions.Behaviors
+namespace Crystal
 {
+
+#pragma warning disable CS1574 // XML comment has cref attribute 'Add(object,string,bool)' that could not be resolved
 	/// <summary>
 	/// Behavior that monitors a <see cref="IRegion"/> object and 
 	/// changes the value for the <see cref="IActiveAware.IsActive"/> property when
@@ -17,6 +18,7 @@ namespace Crystal.Regions.Behaviors
 	/// If you use the <see cref="Crystal.Regions.Region.Add(object,string,bool)" /> method with the createRegionManagerScope option, the scoped manager will be attached to the view.
 	/// </remarks>
 	public class RegionActiveAwareBehavior : IRegionBehavior
+#pragma warning restore CS1574 // XML comment has cref attribute 'Add(object,string,bool)' that could not be resolved
 	{
 		/// <summary>
 		/// Name that identifies the <see cref="RegionActiveAwareBehavior"/> behavior in a collection of <see cref="IRegionBehavior"/>.
@@ -90,7 +92,7 @@ namespace Crystal.Regions.Behaviors
 
 				// If the view's RegionManager attached property is different from the region's RegionManager,
 				// then the view's region manager is a scoped region manager.
-				if (regionManager == null || regionManager == Region.RegionManager)
+				if (regionManager == null || regionManager == Region.RManager)
 				{
 					return;
 				}

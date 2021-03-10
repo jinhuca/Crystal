@@ -1,5 +1,4 @@
-﻿using Crystal.Ioc;
-using Crystal.Mvvm;
+﻿using Crystal;
 using Crystal.Unity;
 using CustomRegistration.ViewModels;
 using System.Windows;

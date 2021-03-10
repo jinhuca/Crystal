@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Crystal.Regions.Behaviors
+namespace Crystal
 {
 	/// <summary>
 	/// Populates the target region with the views registered to it in the <see cref="IRegionViewRegistry"/>.
@@ -84,7 +84,6 @@ namespace Crystal.Regions.Behaviors
 		/// <remarks>Although this is a public method to support Weak Delegates in Silverlight, it should not be called by the user.</remarks>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2109:ReviewVisibleEventHandlers", Justification = "This has to be public in order to work with weak references in partial trust or Silverlight environments.")]
 		public virtual void OnViewRegistered(object sender, ViewRegisteredEventArgs e)
 		{
 			if (e == null)

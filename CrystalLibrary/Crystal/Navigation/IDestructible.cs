@@ -1,4 +1,4 @@
-﻿namespace Crystal.Navigation
+﻿namespace Crystal
 {
 	/// <summary>
 	/// Interface for objects that require cleanup of resources prior to Disposal

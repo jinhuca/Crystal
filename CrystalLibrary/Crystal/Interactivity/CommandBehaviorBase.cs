@@ -1,9 +1,9 @@
 using System;
-using System.Windows.Input;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
-namespace Crystal.Interactivity
+namespace Crystal
 {
 	/// <summary>
 	/// Base behavior to handle connecting a <see cref="Control"/> to a Command.

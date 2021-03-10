@@ -1,6 +1,4 @@
-using Crystal.Common;
-
-namespace Crystal.Regions
+namespace Crystal
 {
 	/// <summary>
 	/// Represents Navigation parameters.

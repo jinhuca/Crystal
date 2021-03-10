@@ -1,11 +1,10 @@
 using System;
 
-namespace Crystal.Events
+namespace Crystal
 {
 	/// <summary>
 	/// Subscription token returned from <see cref="EventBase"/> on subscribe.
 	/// </summary>
-	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly", Justification = "Should never have a need for a finalizer, hence no need for Dispole(bool)")]
 	public class SubscriptionToken : IEquatable<SubscriptionToken>, IDisposable
 	{
 		private readonly Guid _token;
@@ -70,7 +69,6 @@ namespace Crystal.Events
 		/// <summary>
 		/// Disposes the SubscriptionToken, removing the subscription from the corresponding <see cref="EventBase"/>.
 		/// </summary>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly", Justification = "Should never have need for a finalizer, hence no need for Dispose(bool).")]
 		public virtual void Dispose()
 		{
 			// While the SubscriptionToken class implements IDisposable, in the case of weak subscriptions 

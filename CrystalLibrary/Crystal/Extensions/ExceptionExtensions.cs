@@ -38,7 +38,7 @@ namespace System
 		/// <returns>
 		/// 	<c>true</c> if the exception type is already registered; otherwise, <c>false</c>.
 		/// </returns>
-		public static bool IsFrameworkExceptionRegistered(Type frameworkExceptionType) 
+		public static bool IsFrameworkExceptionRegistered(Type frameworkExceptionType)
 			=> frameworkExceptionTypes.Contains(frameworkExceptionType);
 
 		/// <summary>

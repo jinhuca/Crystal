@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace Crystal.Regions
+namespace Crystal
 {
 	/// <summary>
 	/// Region that allows a maximum of one active view at a time.

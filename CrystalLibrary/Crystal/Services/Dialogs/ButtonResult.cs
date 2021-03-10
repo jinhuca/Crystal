@@ -1,4 +1,4 @@
-﻿namespace Crystal.Services.Dialogs
+﻿namespace Crystal
 {
 	/// <summary>
 	/// The result of the dialog.

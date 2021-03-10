@@ -1,6 +1,5 @@
 ﻿using C05ViewInjection.Views;
-using Crystal.Ioc;
-using Crystal.Regions;
+using Crystal;
 using System.Windows;
 
 namespace C05ViewInjection

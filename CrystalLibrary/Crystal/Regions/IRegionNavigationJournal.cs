@@ -1,4 +1,4 @@
-namespace Crystal.Regions
+namespace Crystal
 {
 	/// <summary>
 	/// Provides journaling of current, back, and forward navigation within regions.

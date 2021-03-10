@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Windows;
-using Crystal.Common;
-using Crystal.Ioc;
-using Crystal.Modularity;
-using Crystal.Regions;
 
 namespace Crystal
 {
@@ -43,10 +39,13 @@ namespace Crystal
 			OnInitialized();
 		}
 
+
+#pragma warning disable CS1574 // XML comment has cref attribute 'ViewModelLocator' that could not be resolved
 		/// <summary>
 		/// Configures the <see cref="Crystal.Mvvm.ViewModelLocator"/> used by Crystal.
 		/// </summary>
 		protected virtual void ConfigureViewModelLocator()
+#pragma warning restore CS1574 // XML comment has cref attribute 'ViewModelLocator' that could not be resolved
 		{
 			CrystalInitializationExtensions.ConfigureViewModelLocator();
 		}
@@ -116,7 +115,7 @@ namespace Crystal
 		/// Configures the <see cref="IRegionBehaviorFactory"/>. 
 		/// This will be the list of default behaviors that will be added to a region. 
 		/// </summary>
-		protected virtual void ConfigureDefaultRegionBehaviors(IRegionBehaviorFactory regionBehaviors) 
+		protected virtual void ConfigureDefaultRegionBehaviors(IRegionBehaviorFactory regionBehaviors)
 			=> regionBehaviors?.RegisterDefaultRegionBehaviors();
 
 		/// <summary>
@@ -125,7 +124,7 @@ namespace Crystal
 		/// May be overwritten in a derived class to add specific mappings required by the application.
 		/// </summary>
 		/// <returns>The <see cref="RegionAdapterMappings"/> instance containing all the mappings.</returns>
-		protected virtual void ConfigureRegionAdapterMappings(RegionAdapterMappings regionAdapterMappings) 
+		protected virtual void ConfigureRegionAdapterMappings(RegionAdapterMappings regionAdapterMappings)
 			=> regionAdapterMappings?.RegisterDefaultRegionAdapterMappings();
 
 		/// <summary>

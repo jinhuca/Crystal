@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 
-namespace Crystal.Common
+namespace Crystal
 {
 	/// <summary>
 	/// Extension methods for Navigation or Dialog parameters
@@ -58,7 +58,6 @@ namespace Crystal.Common
 		[EditorBrowsable(EditorBrowsableState.Never)]
 		public static bool TryGetValue<T>(this IEnumerable<KeyValuePair<string, object>> parameters, string key, out T value)
 		{
-			var type = typeof(T);
 			foreach (var kvp in parameters)
 			{
 				if (string.Compare(kvp.Key, key, StringComparison.Ordinal) == 0)
@@ -82,7 +81,7 @@ namespace Crystal.Common
 		[EditorBrowsable(EditorBrowsableState.Never)]
 		public static IEnumerable<T> GetValues<T>(this IEnumerable<KeyValuePair<string, object>> parameters, string key)
 		{
-			List<T> values = new List<T>();
+			List<T> values = new();
 			var type = typeof(T);
 			foreach (var kvp in parameters)
 			{

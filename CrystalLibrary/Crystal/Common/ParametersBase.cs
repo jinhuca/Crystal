@@ -5,14 +5,14 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
-namespace Crystal.Common
+namespace Crystal
 {
 	/// <summary>
 	/// This is a generic parameters base class used for Dialog Parameters and Navigation Parameters.
 	/// </summary>
 	public abstract class ParametersBase : IParameters, IEnumerable<KeyValuePair<string, object>>
 	{
-		private readonly List<KeyValuePair<string, object>> _entries = new List<KeyValuePair<string, object>>();
+		private readonly List<KeyValuePair<string, object>> _entries = new();
 
 		/// <summary>
 		/// Default constructor.
@@ -54,12 +54,12 @@ namespace Crystal.Common
 					string value;
 					if (num4 >= 0)
 					{
-						key = query.Substring(startIndex, num4 - startIndex);
+						key = query[startIndex..num4];
 						value = query.Substring(num4 + 1, (i - num4) - 1);
 					}
 					else
 					{
-						value = query.Substring(startIndex, i - startIndex);
+						value = query[startIndex..i];
 					}
 
 					if (key != null)

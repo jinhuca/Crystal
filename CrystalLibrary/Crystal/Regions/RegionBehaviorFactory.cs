@@ -1,11 +1,10 @@
+using Crystal.Properties;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
-using Crystal.Ioc;
-using Crystal.Properties;
 
-namespace Crystal.Regions
+namespace Crystal
 {
 	/// <summary>
 	/// Defines a factory that allows the registration of the default set of <see cref="IRegionBehavior"/>, that will

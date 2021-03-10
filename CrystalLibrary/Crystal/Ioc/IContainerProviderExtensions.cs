@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Crystal.Ioc
+namespace Crystal
 {
 	/// <summary>
 	/// Provides Generic Type extensions for the <see cref="IContainerProvider" />

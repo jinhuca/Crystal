@@ -1,10 +1,9 @@
 using Crystal.Properties;
-using Crystal.Regions.Behaviors;
 using System;
 using System.Globalization;
 using System.Windows;
 
-namespace Crystal.Regions
+namespace Crystal
 {
 	/// <summary>
 	/// Base class to facilitate the creation of <see cref="IRegionAdapter"/> implementations.

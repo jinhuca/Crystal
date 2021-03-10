@@ -1,6 +1,5 @@
 ﻿using Crystal.Unity;
-using Crystal.Modularity;
-using Crystal.Ioc;
+using Crystal;
 using Modules.Views;
 using System.Windows;
 

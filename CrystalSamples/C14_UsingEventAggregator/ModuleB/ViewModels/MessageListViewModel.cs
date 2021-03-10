@@ -1,5 +1,4 @@
-﻿using Crystal.Events;
-using Crystal.Mvvm;
+﻿using Crystal;
 using System.Collections.ObjectModel;
 using UsingEventAggregator.Core;
 
@@ -7,7 +6,7 @@ namespace ModuleB.ViewModels
 {
 	public class MessageListViewModel : BindableBase
 	{
-		IEventAggregator _ea;
+		readonly IEventAggregator _ea;
 
 		private ObservableCollection<string> _messages;
 		public ObservableCollection<string> Messages

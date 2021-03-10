@@ -1,7 +1,7 @@
 using System;
 using System.Windows;
 
-namespace Crystal.Regions.Behaviors
+namespace Crystal
 {
 	/// <summary>
 	/// Behavior that removes the RegionManager attached property of all the views in a region once the RegionManager property of a region becomes null.
@@ -22,9 +22,9 @@ namespace Crystal.Regions.Behaviors
 		/// This attached property can be defined on a view to indicate that regions defined in it must be removed from the region manager when the parent view gets removed from a region.
 		/// </summary>
 		public static readonly DependencyProperty ClearChildViewsProperty = DependencyProperty.RegisterAttached(
-			"ClearChildViews", 
-			typeof(bool), 
-			typeof(ClearChildViewsRegionBehavior), 
+			"ClearChildViews",
+			typeof(bool),
+			typeof(ClearChildViewsRegionBehavior),
 			new PropertyMetadata(false));
 
 		/// <summary>
@@ -79,7 +79,7 @@ namespace Crystal.Regions.Behaviors
 		{
 			if (e.PropertyName == "RegionManager")
 			{
-				if (Region.RegionManager == null)
+				if (Region.RManager == null)
 				{
 					ClearChildViews(Region);
 				}

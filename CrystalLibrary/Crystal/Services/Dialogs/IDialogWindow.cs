@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Windows;
 
-namespace Crystal.Services.Dialogs
+namespace Crystal
 {
 	/// <summary>
 	/// Interface for a dialog hosting window.

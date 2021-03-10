@@ -1,9 +1,9 @@
+using Crystal.Properties;
 using System;
 using System.Linq.Expressions;
 using System.Reflection;
-using Crystal.Properties;
 
-namespace Crystal.Mvvm
+namespace Crystal
 {
 	///<summary>
 	/// Provides support for extracting property information based on a property expression.

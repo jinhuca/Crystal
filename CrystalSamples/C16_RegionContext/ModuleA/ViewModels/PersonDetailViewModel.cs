@@ -1,4 +1,4 @@
-﻿using Crystal.Mvvm;
+﻿using Crystal;
 using ModuleA.Business;
 
 namespace ModuleA.ViewModels

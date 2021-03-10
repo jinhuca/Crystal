@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Specialized;
-using Crystal.Common;
-using Crystal.Navigation;
 
-namespace Crystal.Regions.Behaviors
+namespace Crystal
 {
 	/// <summary>
 	/// Calls <see cref="IDestructible.Destroy"/> on Views and ViewModels
@@ -33,8 +31,8 @@ namespace Crystal.Regions.Behaviors
 			{
 				foreach (var item in e.OldItems)
 				{
-					Action<IDestructible> invocation = destructible => destructible.Destroy();
-					MvvmHelpers.ViewAndViewModelAction(item, invocation);
+					static void invocation(IDestructible destructible) => destructible.Destroy();
+					MvvmHelpers.ViewAndViewModelAction(item, (Action<IDestructible>)invocation);
 				}
 			}
 		}

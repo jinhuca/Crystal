@@ -1,8 +1,7 @@
-using Crystal.Common;
 using System;
 using System.Windows;
 
-namespace Crystal.Regions
+namespace Crystal
 {
 	/// <summary>
 	/// Class that holds methods to Set and Get the RegionContext from a DependencyObject.
@@ -13,11 +12,13 @@ namespace Crystal.Regions
 	public static class RegionContext
 	{
 		private static readonly DependencyProperty ObservableRegionContextProperty = DependencyProperty.RegisterAttached(
-			"ObservableRegionContext", 
-			typeof(ObservableObject<object>), 
-			typeof(RegionContext), 
+			"ObservableRegionContext",
+			typeof(ObservableObject<object>),
+			typeof(RegionContext),
 			null);
 
+
+#pragma warning disable CS1574 // XML comment has cref attribute 'SyncRegionContextWithHostBehavior' that could not be resolved
 		/// <summary>
 		/// Returns an <see cref="ObservableObject{T}"/> wrapper around the RegionContext value. The RegionContext
 		/// will be set on any views (dependency objects) that are inside the <see cref="IRegion.Views"/> collection by
@@ -30,15 +31,14 @@ namespace Crystal.Regions
 		/// <param name="view">Any view that hold the RegionContext value. </param>
 		/// <returns>Wrapper around the Regioncontext value. </returns>
 		public static ObservableObject<object> GetObservableContext(DependencyObject view)
+#pragma warning restore CS1574 // XML comment has cref attribute 'SyncRegionContextWithHostBehavior' that could not be resolved
 		{
 			if (view == null)
 			{
 				throw new ArgumentNullException(nameof(view));
 			}
 
-			ObservableObject<object> context = view.GetValue(ObservableRegionContextProperty) as ObservableObject<object>;
-
-			if (context == null)
+			if (view.GetValue(ObservableRegionContextProperty) is not ObservableObject<object> context)
 			{
 				context = new ObservableObject<object>();
 				view.SetValue(ObservableRegionContextProperty, context);

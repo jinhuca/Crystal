@@ -1,3 +1,4 @@
+using Crystal.Properties;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,14 +8,9 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
-using Crystal.Common;
-using Crystal.Events;
-using Crystal.Ioc;
-using Crystal.Properties;
-using Crystal.Regions.Behaviors;
 using System.Windows;
 
-namespace Crystal.Regions
+namespace Crystal
 {
 	/// <summary>
 	/// This class is responsible for maintaining a collection of regions and attaching regions to controls.
@@ -26,7 +22,7 @@ namespace Crystal.Regions
 	{
 		#region Static members (for XAML support)
 
-		private static readonly WeakDelegatesManager updatingRegionsListeners = new WeakDelegatesManager();
+		private static readonly WeakDelegatesManager updatingRegionsListeners = new();
 
 		/// <summary>
 		/// Identifies the RegionName attached property.
@@ -97,9 +93,7 @@ namespace Crystal.Regions
 				throw new ArgumentNullException(nameof(view));
 			}
 
-			ObservableObject<IRegion> regionWrapper = view.GetValue(ObservableRegionProperty) as ObservableObject<IRegion>;
-
-			if (regionWrapper == null)
+			if (view.GetValue(ObservableRegionProperty) is not ObservableObject<IRegion> regionWrapper)
 			{
 				regionWrapper = new ObservableObject<IRegion>();
 				view.SetValue(ObservableRegionProperty, regionWrapper);
@@ -409,7 +403,7 @@ namespace Crystal.Regions
 		/// <param name="target">A string that represents the target where the region will navigate.</param>
 		/// <param name="navigationCallback">The navigation callback that will be executed after the navigation is completed.</param>
 		/// <param name="navigationParameters">An instance of NavigationParameters, which holds a collection of object parameters.</param>
-		public void RequestNavigate(string regionName, string target, Action<NavigationResult> navigationCallback, NavigationParameters navigationParameters) 
+		public void RequestNavigate(string regionName, string target, Action<NavigationResult> navigationCallback, NavigationParameters navigationParameters)
 			=> RequestNavigate(regionName, new Uri(target, UriKind.RelativeOrAbsolute), navigationCallback, navigationParameters);
 
 		/// <summary>
@@ -418,7 +412,7 @@ namespace Crystal.Regions
 		/// <param name="regionName">The name of the region where the navigation will occur.</param>
 		/// <param name="target">A Uri that represents the target where the region will navigate.</param>
 		/// <param name="navigationParameters">An instance of NavigationParameters, which holds a collection of object parameters.</param>
-		public void RequestNavigate(string regionName, Uri target, NavigationParameters navigationParameters) 
+		public void RequestNavigate(string regionName, Uri target, NavigationParameters navigationParameters)
 			=> RequestNavigate(regionName, target, nr => { }, navigationParameters);
 
 		/// <summary>
@@ -427,7 +421,7 @@ namespace Crystal.Regions
 		/// <param name="regionName">The name of the region where the navigation will occur.</param>
 		/// <param name="target">A string that represents the target where the region will navigate.</param>
 		/// <param name="navigationParameters">An instance of NavigationParameters, which holds a collection of object parameters.</param>
-		public void RequestNavigate(string regionName, string target, NavigationParameters navigationParameters) 
+		public void RequestNavigate(string regionName, string target, NavigationParameters navigationParameters)
 			=> RequestNavigate(regionName, new Uri(target, UriKind.RelativeOrAbsolute), nr => { }, navigationParameters);
 
 		private class RegionCollection : IRegionCollection
@@ -488,7 +482,7 @@ namespace Crystal.Regions
 				}
 
 				regions.Add(region);
-				region.RegionManager = regionManager;
+				region.RManager = regionManager;
 
 				OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, region, 0));
 			}
@@ -504,7 +498,7 @@ namespace Crystal.Regions
 				{
 					removed = true;
 					regions.Remove(region);
-					region.RegionManager = null;
+					region.RManager = null;
 
 					OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, region, 0));
 				}
@@ -547,7 +541,7 @@ namespace Crystal.Regions
 
 			private IRegion GetRegionByName(string regionName) => regions.FirstOrDefault(r => r.Name == regionName);
 
-			private void OnCollectionChanged(NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs) 
+			private void OnCollectionChanged(NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
 				=> CollectionChanged?.Invoke(this, notifyCollectionChangedEventArgs);
 		}
 	}

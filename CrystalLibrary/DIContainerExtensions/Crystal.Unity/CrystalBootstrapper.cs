@@ -1,6 +1,5 @@
 ﻿using System;
 using Unity;
-using Crystal.Ioc;
 
 namespace Crystal.Unity
 {
