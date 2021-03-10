@@ -20,7 +20,7 @@ namespace BasicRegionNavigation.ViewModels
 		{
 			if (navigatePath != null)
 			{
-				regionManager.RequestNavigate("ContentRegion", navigatePath);
+				regionManager.RequestNavigate(RegionNames.MainContentRegionName, navigatePath);
 			}
 		}
 	}

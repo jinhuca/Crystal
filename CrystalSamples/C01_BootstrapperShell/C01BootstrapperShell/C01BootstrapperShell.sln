@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31025.194
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "C01BootstrapperShell", "C01BootstrapperShell.csproj", "{0B2590BC-A2E6-4024-A646-F6D70F48652B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0B2590BC-A2E6-4024-A646-F6D70F48652B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B2590BC-A2E6-4024-A646-F6D70F48652B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B2590BC-A2E6-4024-A646-F6D70F48652B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B2590BC-A2E6-4024-A646-F6D70F48652B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E4A97684-9EAC-47DD-9C15-43D67632586C}
+	EndGlobalSection
+EndGlobal

@@ -8,7 +8,7 @@ namespace RegionDemoInfra
 {
 	public class RegionNames
 	{
-		public static string ToolbarRegion = "ToolbarRegion";
-		public static string ContentRegion = "ContentRegion";
+		public static string ToolbarRegion => "ToolbarRegion";
+		public static string ContentRegion => "ContentRegion";
 	}
 }
