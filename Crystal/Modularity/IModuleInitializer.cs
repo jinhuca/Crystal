@@ -1,5 +1,3 @@
-
-
 namespace Crystal
 {
 	/// <summary>
