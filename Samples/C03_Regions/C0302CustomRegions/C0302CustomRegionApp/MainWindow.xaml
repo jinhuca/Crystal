@@ -1,0 +1,15 @@
+﻿<Window x:Class="C0302CustomRegionApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+				xmlns:crystal="http://schemas.crystal.com/0.9"
+				xmlns:inf="clr-namespace:C0302RegionInfra;assembly=C0302RegionInfra"
+        xmlns:local="clr-namespace:C0302CustomRegionApp"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+	<DockPanel LastChildFill="True">
+		<StackPanel crystal:RegionManager.RegionName="{x:Static inf:RegionNames.ToolbarRegion}" Margin="10,1" DockPanel.Dock="Top" Orientation="Horizontal"/>
+		<ContentControl crystal:RegionManager.RegionName="{x:Static inf:RegionNames.ContentRegion}" Margin="10,1"/>
+	</DockPanel>
+</Window>
