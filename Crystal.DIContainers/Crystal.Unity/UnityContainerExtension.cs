@@ -376,10 +376,7 @@ namespace Crystal.Unity
 
 		private class UnityScopedProvider : IScopedProvider
 		{
-			public UnityScopedProvider(IUnityContainer container)
-			{
-				Container = container;
-			}
+			public UnityScopedProvider(IUnityContainer container) => Container = container;
 
 			public IUnityContainer Container { get; private set; }
 			public bool IsAttached { get; set; }

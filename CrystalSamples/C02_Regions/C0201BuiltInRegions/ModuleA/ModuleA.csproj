@@ -6,8 +6,28 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\CrystalLibrary\DIContainerExtensions\Crystal.Unity\Crystal.Unity.csproj" />
     <ProjectReference Include="..\RegionDemoInfra\RegionDemoInfra.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Crystal">
+      <HintPath>..\..\..\..\Samples\Libs\Crystal.dll</HintPath>
+    </Reference>
+    <Reference Include="Crystal.Unity">
+      <HintPath>..\..\..\..\Samples\Libs\Crystal.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Xaml.Behaviors">
+      <HintPath>..\..\..\..\Samples\Libs\Microsoft.Xaml.Behaviors.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Abstractions">
+      <HintPath>..\..\..\..\Samples\Libs\Unity.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Container">
+      <HintPath>..\..\..\..\Samples\Libs\Unity.Container.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Interception">
+      <HintPath>..\..\..\..\Samples\Libs\Unity.Interception.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

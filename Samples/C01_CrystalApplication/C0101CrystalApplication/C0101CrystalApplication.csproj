@@ -7,12 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="Crystal">
-      <HintPath>..\..\..\CrystalLibrary\DIContainerExtensions\Crystal.Unity\bin\Debug\net5.0-windows\Crystal.dll</HintPath>
-    </Reference>
-    <Reference Include="Crystal.Unity">
-      <HintPath>..\..\..\CrystalLibrary\DIContainerExtensions\Crystal.Unity\bin\Debug\net5.0-windows\Crystal.Unity.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\..\..\Crystal.DIContainers\Crystal.Unity\Crystal.Unity.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,5 @@
-﻿using Crystal.Unity;
-using Crystal.Ioc;
+﻿using Crystal;
+using Crystal.Unity;
 using System.Windows;
 
 namespace C0101CrystalApplication

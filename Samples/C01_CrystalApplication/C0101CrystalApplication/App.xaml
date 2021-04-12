@@ -1,6 +1,9 @@
-﻿<crystal:CrystalApplication 
-  x:Class="C0101CrystalApplication.App"
-  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-  xmlns:crystal="http://schemas.crystal.com/0.9"/>
+﻿<crystal:CrystalApplication x:Class="C0101CrystalApplication.App"
+														xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+														xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+														xmlns:crystal="http://schemas.crystal.com/0.9">
+	<crystal:CrystalApplication.Resources>
+		
+	</crystal:CrystalApplication.Resources>
+</crystal:CrystalApplication>
 
