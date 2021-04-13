@@ -1,17 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Crystal;
+using Crystal.Unity;
 using System.Windows;
 
 namespace C0403ModuleApp
 {
-	/// <summary>
-	/// Interaction logic for App.xaml
-	/// </summary>
-	public partial class App : Application
+	public partial class App : CrystalApplication
 	{
+		protected override Window CreateShell()
+		{
+			return Container.Resolve<MainWindow>();
+		}
+
+		protected override IModuleCatalog CreateModuleCatalog()
+		{
+			var temp = new DirectoryModuleCatalog() { ModulePath = @".\ModuleApp" };
+			return new DirectoryModuleCatalog() { ModulePath = @".\ModuleApp" };
+		}
+
+		protected override void RegisterTypes(IContainerRegistry containerRegistry)
+		{
+			base.RegisterTypes(containerRegistry);
+		}
 	}
 }

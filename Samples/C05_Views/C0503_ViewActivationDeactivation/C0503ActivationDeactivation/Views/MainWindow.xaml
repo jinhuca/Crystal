@@ -1,0 +1,19 @@
+﻿<Window x:Class="C0503ActivationDeactivation.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+				xmlns:crystal="http://schemas.crystal.com/0.9"
+        xmlns:local="clr-namespace:C0503ActivationDeactivation"
+        mc:Ignorable="d"
+        Title="Shell" Height="450" Width="800">
+	<DockPanel LastChildFill="True">
+		<StackPanel>
+			<Button Content="Activate ViewA" Click="Activate_ViewA_Click"/>
+			<Button Content="Deactivate ViewA" Click="Deactivate_ViewA_Click"/>
+			<Button Content="Activate ViewB" Click="Activate_ViewB_Click"/>
+			<Button Content="Deactivate ViewB" Click="Deactivate_ViewB_Click"/>
+		</StackPanel>
+		<ContentControl crystal:RegionManager.RegionName="ContentRegion" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+	</DockPanel>
+</Window>
