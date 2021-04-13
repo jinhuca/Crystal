@@ -1,7 +1,7 @@
-using C0403ModuleA.Views;
-using Crystal;
+﻿using Crystal;
+using ModuleA.Views;
 
-namespace C0403ModuleA
+namespace ModuleA
 {
 	public class ModuleAModule : IModule
 	{
@@ -13,6 +13,7 @@ namespace C0403ModuleA
 
 		public void RegisterTypes(IContainerRegistry containerRegistry)
 		{
+
 		}
 	}
 }

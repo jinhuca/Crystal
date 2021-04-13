@@ -1,14 +1,12 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
     <TargetFramework>net5.0-windows</TargetFramework>
+    <AssemblyName>ModuleA</AssemblyName>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\Crystal.DIContainers\Crystal.Unity\Crystal.Unity.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <Reference Include="Microsoft.Xaml.Behaviors">
       <HintPath>..\..\..\Libs\Microsoft.Xaml.Behaviors.dll</HintPath>
@@ -23,5 +21,4 @@
       <HintPath>..\..\..\Libs\Unity.Interception.dll</HintPath>
     </Reference>
   </ItemGroup>
-
 </Project>

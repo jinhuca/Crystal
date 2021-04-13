@@ -1,8 +1,9 @@
-﻿<crystal:CrystalApplication x:Class="C0403ModuleApp.App"
+﻿<crystal:CrystalApplication x:Class="C0505ChangeConvention.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 						 xmlns:crystal="http://schemas.crystal.com/0.9"
-             xmlns:local="clr-namespace:C0403ModuleApp">
+             xmlns:local="clr-namespace:C0505ChangeConvention">
 	<Application.Resources>
+
 	</Application.Resources>
 </crystal:CrystalApplication>
