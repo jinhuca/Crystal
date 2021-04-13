@@ -81,23 +81,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "C0405_Xaml", "C0405_Xaml", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "C0501_ViewDiscovery", "C0501_ViewDiscovery", "{111B61F5-10A6-4E28-9951-4F4597F4BA78}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "C0501ViewDiscovery", "Samples\C05_Views\C0501_ViewDiscovery\C0501ViewDiscovery\C0501ViewDiscovery.csproj", "{E03D0890-B22D-49DA-B82B-AE5B6474A2B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "C0501ViewDiscovery", "Samples\C05_Views\C0501_ViewDiscovery\C0501ViewDiscovery\C0501ViewDiscovery.csproj", "{E03D0890-B22D-49DA-B82B-AE5B6474A2B9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "C0502_ViewInjection", "C0502_ViewInjection", "{319C61AD-526F-4357-848C-2F073DC307B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "C0502ViewInjection", "Samples\C05_Views\C0502_ViewInjection\C0502ViewInjection\C0502ViewInjection.csproj", "{FECBF4B4-B824-4B56-AD5A-B153164D07B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "C0502ViewInjection", "Samples\C05_Views\C0502_ViewInjection\C0502ViewInjection\C0502ViewInjection.csproj", "{FECBF4B4-B824-4B56-AD5A-B153164D07B3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "C0503_ViewActivationDeactivation", "C0503_ViewActivationDeactivation", "{7903713F-E43D-4A22-AC7E-8B71335228DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "C0503ActivationDeactivation", "Samples\C05_Views\C0503_ViewActivationDeactivation\C0503ActivationDeactivation\C0503ActivationDeactivation.csproj", "{EE8CEB3E-1747-4D96-A432-86F771FF5E38}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "C0503ActivationDeactivation", "Samples\C05_Views\C0503_ViewActivationDeactivation\C0503ActivationDeactivation\C0503ActivationDeactivation.csproj", "{EE8CEB3E-1747-4D96-A432-86F771FF5E38}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "C0504_ViewModelLocator", "C0504_ViewModelLocator", "{1DA88648-3948-495F-9EE6-9435AAA96938}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "C0504ViewModelLocator", "Samples\C05_Views\C0504_ViewModelLocator\C0504ViewModelLocator\C0504ViewModelLocator.csproj", "{F6D24727-E8BA-4CA0-8EAD-89A805DAEEEB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "C0504ViewModelLocator", "Samples\C05_Views\C0504_ViewModelLocator\C0504ViewModelLocator\C0504ViewModelLocator.csproj", "{F6D24727-E8BA-4CA0-8EAD-89A805DAEEEB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "C0505_ChangeConvetion", "C0505_ChangeConvetion", "{52847519-E6DF-4635-9DB0-6355262EA6FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "C0505ChangeConvention", "Samples\C05_Views\C0505_ChangeConvetion\C0505ChangeConvention\C0505ChangeConvention.csproj", "{1C99205D-66E8-4500-BCF4-435E0892CDCF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "C0505ChangeConvention", "Samples\C05_Views\C0505_ChangeConvetion\C0505ChangeConvention\C0505ChangeConvention.csproj", "{1C99205D-66E8-4500-BCF4-435E0892CDCF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModuleA", "Samples\C04_Modules\C0405_Xaml\ModuleA\ModuleA.csproj", "{72309806-822A-4A68-B027-6E0DF20FA5C6}"
 EndProject
@@ -110,6 +110,14 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModuleA", "Samples\C04_Modules\C0403_Directory\ModuleA\ModuleA.csproj", "{5BEB9F0E-F3B8-4320-BE0C-3E6E166916C5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Modules", "Samples\C04_Modules\C0403_Directory\Modules\Modules.csproj", "{3A08E192-074F-484B-8260-BF98AE4B70A5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "C0506_CustomRegistration", "C0506_CustomRegistration", "{761DC7AD-0FEF-4219-9700-3A280EB26700}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewModelLocator", "Samples\C05_Views\C0506_CustomRegistration\ViewModelLocator\ViewModelLocator.csproj", "{32822D52-F38A-418F-B7D3-E1A66F64E5B6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "C0601_DelegateCommands", "C0601_DelegateCommands", "{362A3054-FA64-4679-88E3-3920628DD835}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "C0601UsingDelegateCommand", "Samples\C06_Commands\C0601_DelegateCommands\C0601UsingDelegateCommand\C0601UsingDelegateCommand.csproj", "{49404F07-7DCE-427D-91E5-F05ED6329F1B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -233,6 +241,14 @@ Global
 		{3A08E192-074F-484B-8260-BF98AE4B70A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A08E192-074F-484B-8260-BF98AE4B70A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A08E192-074F-484B-8260-BF98AE4B70A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32822D52-F38A-418F-B7D3-E1A66F64E5B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32822D52-F38A-418F-B7D3-E1A66F64E5B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32822D52-F38A-418F-B7D3-E1A66F64E5B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32822D52-F38A-418F-B7D3-E1A66F64E5B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49404F07-7DCE-427D-91E5-F05ED6329F1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49404F07-7DCE-427D-91E5-F05ED6329F1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49404F07-7DCE-427D-91E5-F05ED6329F1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49404F07-7DCE-427D-91E5-F05ED6329F1B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -286,6 +302,10 @@ Global
 		{CF8F7E9A-A972-4D37-A618-BA634ABF499A} = {1589F228-D656-4BEC-AC48-CEA5EAB79DC7}
 		{5BEB9F0E-F3B8-4320-BE0C-3E6E166916C5} = {9856E887-B5A8-4FE1-9854-0B2604EBF574}
 		{3A08E192-074F-484B-8260-BF98AE4B70A5} = {9856E887-B5A8-4FE1-9854-0B2604EBF574}
+		{761DC7AD-0FEF-4219-9700-3A280EB26700} = {F016E8F7-17B2-4C4E-ADD9-E405D1DB1047}
+		{32822D52-F38A-418F-B7D3-E1A66F64E5B6} = {761DC7AD-0FEF-4219-9700-3A280EB26700}
+		{362A3054-FA64-4679-88E3-3920628DD835} = {2F011758-E871-4AEF-9637-255F2B9B535C}
+		{49404F07-7DCE-427D-91E5-F05ED6329F1B} = {362A3054-FA64-4679-88E3-3920628DD835}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EB05221E-019C-41DA-97BD-B30D58036BF1}
