@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
 	<DockPanel LastChildFill="True">
-		<StackPanel crystal:RegionManager.RegionName="{x:Static inf:RegionNames.ToolbarRegion}" Margin="10,1" DockPanel.Dock="Top" Orientation="Horizontal"/>
-		<ContentControl crystal:RegionManager.RegionName="{x:Static inf:RegionNames.ContentRegion}" Margin="10,1"/>
+		<StackPanel crystal:RegionManager.RegionName="{x:Static inf:RegionNames.ToolbarRegion}" Margin="10, 1" DockPanel.Dock="Top" Orientation="Horizontal"/>
+		<ContentControl crystal:RegionManager.RegionName="{x:Static inf:RegionNames.ContentRegion}" Margin="10, 1"/>
 	</DockPanel>
 </Window>
