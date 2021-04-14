@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <AssemblyName>ModuleB</AssemblyName>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Crystal.DIContainers\Crystal.Unity\Crystal.Unity.csproj" />
+    <ProjectReference Include="..\UsingEventAggregator.Core\UsingEventAggregator.Core.csproj" />
+  </ItemGroup>
+</Project>

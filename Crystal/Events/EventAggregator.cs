@@ -23,16 +23,19 @@ namespace Crystal
 		{
 			lock (events)
 			{
-				if (!events.TryGetValue(typeof(TEventType), out EventBase existingEvent))
+				EventBase existingEvent = null;
+
+				if (!events.TryGetValue(typeof(TEventType), out existingEvent))
 				{
-					TEventType newEvent = new();
+					TEventType newEvent = new TEventType();
 					newEvent.SynchronizationContext = syncContext;
 					events[typeof(TEventType)] = newEvent;
+
 					return newEvent;
 				}
 				else
 				{
-					return (TEventType)(EventBase)null;
+					return (TEventType)existingEvent;
 				}
 			}
 		}
