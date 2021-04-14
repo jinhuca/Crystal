@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <AssemblyName>PassingParameters</AssemblyName>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ModuleA\ModuleA.csproj" />
+  </ItemGroup>
+</Project>
