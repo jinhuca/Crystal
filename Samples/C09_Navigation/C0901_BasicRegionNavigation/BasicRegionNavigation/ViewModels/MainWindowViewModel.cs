@@ -6,7 +6,7 @@ namespace BasicRegionNavigation.ViewModels
 	{
 		private readonly IRegionManager _regionManager;
 
-		private string _title = "Prism Unity Application";
+		private string _title = "Crystal Unity Application";
 		public string Title
 		{
 			get { return _title; }

@@ -2,6 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:crystal="http://schemas.crystal.com/0.9"
+				xmlns:infra="clr-namespace:UsingEventAggregator.Core;assembly=UsingEventAggregator.Core"
         crystal:ViewModelLocator.AutoWireViewModel="True"
         Title="{Binding Title}" Height="350" Width="525">
     <Grid>
@@ -9,7 +10,7 @@
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-		<ContentControl crystal:RegionManager.RegionName="LeftRegion" />
-		<ContentControl Grid.Column="1" crystal:RegionManager.RegionName="RightRegion" />
+		<ContentControl crystal:RegionManager.RegionName="{x:Static infra:RegionNames.LeftRegion}"/>
+		<ContentControl Grid.Column="1" crystal:RegionManager.RegionName="{x:Static infra:RegionNames.RightRegion}"/>
     </Grid>
 </Window>

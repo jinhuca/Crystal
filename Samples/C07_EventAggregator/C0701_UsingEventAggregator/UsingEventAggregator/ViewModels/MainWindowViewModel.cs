@@ -4,7 +4,7 @@ namespace UsingEventAggregator.ViewModels
 {
 	public class MainWindowViewModel : BindableBase
 	{
-		private string _title = "Prism Unity Application";
+		private string _title = "Crystal Unity Application";
 		public string Title
 		{
 			get { return _title; }
@@ -13,7 +13,6 @@ namespace UsingEventAggregator.ViewModels
 
 		public MainWindowViewModel()
 		{
-
 		}
 	}
 }

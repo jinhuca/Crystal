@@ -4,9 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 				xmlns:crystal="http://schemas.crystal.com/0.9"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:C0501ViewDiscovery"
-        mc:Ignorable="d"
-        Title="Shell" Height="450" Width="800">
+        mc:Ignorable="d" Title="Shell" Height="450" Width="800">
 	<Grid>
 		<ContentControl crystal:RegionManager.RegionName="ContentRegion"/>
 	</Grid>

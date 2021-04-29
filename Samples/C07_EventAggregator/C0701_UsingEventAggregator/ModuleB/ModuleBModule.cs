@@ -13,7 +13,6 @@ namespace ModuleB
 
 		public void RegisterTypes(IContainerRegistry containerRegistry)
 		{
-
 		}
 	}
 }
