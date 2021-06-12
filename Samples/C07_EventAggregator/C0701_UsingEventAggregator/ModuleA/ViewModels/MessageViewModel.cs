@@ -10,8 +10,8 @@ namespace ModuleA.ViewModels
 		private string _message = "Message to Send";
 		public string Message
 		{
-			get { return _message; }
-			set { SetProperty(ref _message, value); }
+			get => _message;
+			set => SetProperty(ref _message, value);
 		}
 
 		public DelegateCommand SendMessageCommand { get; private set; }

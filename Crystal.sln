@@ -213,6 +213,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "C0604_InvokeCommandAction",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UsingInvokeCommandAction", "Samples\C06_Commands\C0604_InvokeCommandAction\UsingInvokeCommandAction\UsingInvokeCommandAction.csproj", "{6804EC03-3E12-4A8F-891F-C31BFF079A4E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Crystal.Tests", "Crystal.Tests", "{5DA96E13-09C9-468D-816D-210EAE4C4219}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Crystal.DIContainers.Tests", "Crystal.DIContainers.Tests", "{98AC3531-D3CB-45F4-A644-DABBB099C497}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crystal.UnitTests", "Crystal.Tests\Crystal.UnitTests\Crystal.UnitTests.csproj", "{D3D17C24-634F-49E1-BDC1-0B17000C3C0E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -467,6 +473,10 @@ Global
 		{6804EC03-3E12-4A8F-891F-C31BFF079A4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6804EC03-3E12-4A8F-891F-C31BFF079A4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6804EC03-3E12-4A8F-891F-C31BFF079A4E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3D17C24-634F-49E1-BDC1-0B17000C3C0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3D17C24-634F-49E1-BDC1-0B17000C3C0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3D17C24-634F-49E1-BDC1-0B17000C3C0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3D17C24-634F-49E1-BDC1-0B17000C3C0E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -571,6 +581,8 @@ Global
 		{EEE22C7F-2FC7-45B2-A47C-B4AB46FFE24E} = {A608DDCD-B052-4777-81F5-A747E9C17F7B}
 		{DF378627-891C-48AD-9F2D-A2345D6082F4} = {2F011758-E871-4AEF-9637-255F2B9B535C}
 		{6804EC03-3E12-4A8F-891F-C31BFF079A4E} = {DF378627-891C-48AD-9F2D-A2345D6082F4}
+		{98AC3531-D3CB-45F4-A644-DABBB099C497} = {5DA96E13-09C9-468D-816D-210EAE4C4219}
+		{D3D17C24-634F-49E1-BDC1-0B17000C3C0E} = {5DA96E13-09C9-468D-816D-210EAE4C4219}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EB05221E-019C-41DA-97BD-B30D58036BF1}
