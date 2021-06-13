@@ -1,7 +1,7 @@
 using System;
 using Crystal;
 
-namespace Crystal.Tests.Events
+namespace Crystal.UnitTests.Events
 {
 	class MockDelegateReference : IDelegateReference
 	{

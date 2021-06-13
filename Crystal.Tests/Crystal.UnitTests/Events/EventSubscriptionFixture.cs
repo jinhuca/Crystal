@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Crystal;
 using Xunit;
 
-namespace Crystal.Tests.Events
+namespace Crystal.UnitTests.Events
 {
 	public class EventSubscriptionFixture
 	{

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Crystal;
 
-namespace Crystal.Tests.Mocks.ViewModels
+namespace Crystal.UnitTests.Mocks.ViewModels
 {
 	public class MockValidatingViewModel : BindableBase, INotifyDataErrorInfo
 	{

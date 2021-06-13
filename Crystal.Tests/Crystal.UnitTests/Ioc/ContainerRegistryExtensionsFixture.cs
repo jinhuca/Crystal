@@ -2,7 +2,7 @@
 using Moq;
 using Xunit;
 
-namespace Crystal.Tests.Ioc
+namespace Crystal.UnitTests.Ioc
 {
 	public class ContainerRegistryExtensionsFixture
 	{

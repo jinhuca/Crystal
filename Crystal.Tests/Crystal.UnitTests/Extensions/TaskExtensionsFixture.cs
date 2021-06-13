@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Crystal.Core.Tests.Extensions
+namespace Crystal.UnitTests.Extensions
 {
 	public class TaskExtensionsFixture
 	{

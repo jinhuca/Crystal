@@ -1,7 +1,7 @@
-using Crystal.Tests.Mocks.ViewModels;
+using Crystal.UnitTests.Mocks.ViewModels;
 using Xunit;
 
-namespace Crystal.Tests.Mvvm
+namespace Crystal.UnitTests.Mvvm
 {
 	public class BindableBaseFixture
 	{

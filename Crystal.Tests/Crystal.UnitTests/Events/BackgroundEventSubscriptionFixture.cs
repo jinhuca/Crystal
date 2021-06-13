@@ -3,7 +3,7 @@ using System.Threading;
 using Crystal;
 using Xunit;
 
-namespace Crystal.Tests.Events
+namespace Crystal.UnitTests.Events
 {
     public class BackgroundEventSubscriptionFixture
     {

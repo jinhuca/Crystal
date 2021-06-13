@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
-namespace Crystal.Tests.Mvvm
+namespace Crystal.UnitTests.Mvvm
 {
 	public class ErrorsContainerFixture
 	{

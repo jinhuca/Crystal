@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using Crystal;
 
-namespace Crystal.Tests.Mocks.ViewModels
+namespace Crystal.UnitTests.Mocks.ViewModels
 {
 	public class MockViewModel : BindableBase
 	{

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Reflection;
-using Crystal.Tests.Mocks.ViewModels;
-using Crystal.Tests.Mocks.Views;
+using Crystal.UnitTests.Mocks.ViewModels;
+using Crystal.UnitTests.Mocks.Views;
 using Xunit;
 
-namespace Crystal.Tests.Mvvm
+namespace Crystal.UnitTests.Mvvm
 {
 	public class ViewModelLocationProviderFixture
 	{
@@ -19,6 +19,7 @@ namespace Crystal.Tests.Mvvm
 			{
 				Assert.NotNull(v);
 				Assert.NotNull(vm);
+				var t = vm.GetType();
 				Assert.IsType<MockViewModel>(vm);
 			});
 		}

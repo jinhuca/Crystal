@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Crystal.Tests.Mocks.Views
+namespace Crystal.UnitTests.Mocks.Views
 {
 	public class Mock
 	{

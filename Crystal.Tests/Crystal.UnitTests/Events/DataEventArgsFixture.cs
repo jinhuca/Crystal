@@ -2,7 +2,7 @@ using System;
 using Crystal;
 using Xunit;
 
-namespace Crystal.Tests.Events
+namespace Crystal.UnitTests.Events
 {
 	public class DataEventArgsFixture
 	{

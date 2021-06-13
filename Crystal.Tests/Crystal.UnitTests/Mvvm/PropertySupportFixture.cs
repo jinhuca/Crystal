@@ -1,7 +1,7 @@
 using System;
 using Xunit;
 
-namespace Crystal.Tests.Mvvm
+namespace Crystal.UnitTests.Mvvm
 {
 	public class PropertySupportFixture
 	{

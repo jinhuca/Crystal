@@ -2,7 +2,7 @@
 using Xunit;
 using static Crystal.ContainerLocator;
 
-namespace Crystal.Tests.Ioc
+namespace Crystal.UnitTests.Ioc
 {
 	public class ContainerLocator { }
 
