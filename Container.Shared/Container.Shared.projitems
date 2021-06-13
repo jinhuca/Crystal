@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>4238e846-0da5-4093-8179-3e188257f97d</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Container.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Fixtures\Ioc\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Fixtures\Mvvm\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Fixtures\Application\CrystalApplicationFixture.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Fixtures\Bootstrapper\BootstrapperFixture.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mocks\NullModuleCatalogBootstrapper.cs" />
+  </ItemGroup>
+</Project>

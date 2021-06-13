@@ -217,9 +217,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Crystal.Tests", "Crystal.Te
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Crystal.DIContainers.Tests", "Crystal.DIContainers.Tests", "{98AC3531-D3CB-45F4-A644-DABBB099C497}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crystal.UnitTests", "Crystal.Tests\Crystal.UnitTests\Crystal.UnitTests.csproj", "{D3D17C24-634F-49E1-BDC1-0B17000C3C0E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crystal.UnitTests", "Crystal.Tests\Crystal.UnitTests\Crystal.UnitTests.csproj", "{D3D17C24-634F-49E1-BDC1-0B17000C3C0E}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Container.Shared", "Container.Shared\Container.Shared.shproj", "{4238E846-0DA5-4093-8179-3E188257F97D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3ACDE62C-84A7-4EA2-9BDC-1FB782148FA3}"
 EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Container.Shared\Container.Shared.projitems*{4238e846-0da5-4093-8179-3e188257f97d}*SharedItemsImports = 13
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -583,6 +590,7 @@ Global
 		{6804EC03-3E12-4A8F-891F-C31BFF079A4E} = {DF378627-891C-48AD-9F2D-A2345D6082F4}
 		{98AC3531-D3CB-45F4-A644-DABBB099C497} = {5DA96E13-09C9-468D-816D-210EAE4C4219}
 		{D3D17C24-634F-49E1-BDC1-0B17000C3C0E} = {5DA96E13-09C9-468D-816D-210EAE4C4219}
+		{4238E846-0DA5-4093-8179-3E188257F97D} = {5DA96E13-09C9-468D-816D-210EAE4C4219}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EB05221E-019C-41DA-97BD-B30D58036BF1}

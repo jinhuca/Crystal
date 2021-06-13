@@ -29,8 +29,4 @@
     <Folder Include="Ioc\" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
-  </ItemGroup>
-
 </Project>

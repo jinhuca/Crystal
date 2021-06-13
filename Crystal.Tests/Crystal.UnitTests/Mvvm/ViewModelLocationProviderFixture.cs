@@ -6,6 +6,7 @@ using Xunit;
 
 namespace Crystal.UnitTests.Mvvm
 {
+	[CollectionDefinition(nameof(ContainerLocator), DisableParallelization = true)]
 	public class ViewModelLocationProviderFixture
 	{
 		[Fact]
@@ -21,6 +22,23 @@ namespace Crystal.UnitTests.Mvvm
 				Assert.NotNull(vm);
 				var t = vm.GetType();
 				Assert.IsType<MockViewModel>(vm);
+			});
+		}
+
+		[Fact]
+		public void ShouldUseCustomTypeWhenSet_Generic()
+		{
+			ResetViewModelLocationProvider();
+
+			var view = new Mock();
+
+			ViewModelLocationProvider.Register<Mock, ViewModelLocationProviderFixture>();
+
+			ViewModelLocationProvider.AutoWireViewModelChanged(view, (v, vm) =>
+			{
+				Assert.NotNull(v);
+				Assert.NotNull(vm);
+				Assert.IsType<ViewModelLocationProviderFixture>(vm);
 			});
 		}
 
@@ -132,23 +150,6 @@ namespace Crystal.UnitTests.Mvvm
 			var view = new Mock();
 
 			ViewModelLocationProvider.Register(view.GetType().ToString(), typeof(ViewModelLocationProviderFixture));
-
-			ViewModelLocationProvider.AutoWireViewModelChanged(view, (v, vm) =>
-			{
-				Assert.NotNull(v);
-				Assert.NotNull(vm);
-				Assert.IsType<ViewModelLocationProviderFixture>(vm);
-			});
-		}
-
-		[Fact]
-		public void ShouldUseCustomTypeWhenSet_Generic()
-		{
-			ResetViewModelLocationProvider();
-
-			var view = new Mock();
-
-			ViewModelLocationProvider.Register<Mock, ViewModelLocationProviderFixture>();
 
 			ViewModelLocationProvider.AutoWireViewModelChanged(view, (v, vm) =>
 			{
