@@ -457,7 +457,7 @@ namespace Crystal.UnitTests.Commands
 
     public bool IsActive
     {
-      get { return _isActive; }
+      get => _isActive;
       set
       {
         if (_isActive != value)
@@ -506,8 +506,8 @@ namespace Crystal.UnitTests.Commands
 
     public TestableCompositeCommand()
     {
-      this.handler = ((sender, e) => CanExecuteChangedRaised = true);
-      CanExecuteChanged += this.handler;
+      handler = ((sender, e) => CanExecuteChangedRaised = true);
+      CanExecuteChanged += handler;
     }
   }
 

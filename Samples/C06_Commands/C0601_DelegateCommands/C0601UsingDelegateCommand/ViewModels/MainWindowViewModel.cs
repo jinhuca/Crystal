@@ -8,7 +8,7 @@ namespace C0601UsingDelegateCommand.ViewModels
     private bool _isEnabled;
     public bool IsEnabled
     {
-      get { return _isEnabled; }
+      get => _isEnabled;
       set
       {
         SetProperty(ref _isEnabled, value);
@@ -19,20 +19,18 @@ namespace C0601UsingDelegateCommand.ViewModels
     private string _updateText;
     public string UpdateText
     {
-      get { return _updateText; }
-      set { SetProperty(ref _updateText, value); }
+      get => _updateText;
+      set => SetProperty(ref _updateText, value);
     }
+    
+    public DelegateCommand ExecuteDelegateCommand { get; }
 
+    public DelegateCommand<string> ExecuteGenericDelegateCommand { get; }
 
-    public DelegateCommand ExecuteDelegateCommand { get; private set; }
+    public DelegateCommand DelegateCommandObservesProperty { get; }
 
-    public DelegateCommand<string> ExecuteGenericDelegateCommand { get; private set; }
-
-    public DelegateCommand DelegateCommandObservesProperty { get; private set; }
-
-    public DelegateCommand DelegateCommandObservesCanExecute { get; private set; }
-
-
+    public DelegateCommand DelegateCommandObservesCanExecute { get; }
+    
     public MainWindowViewModel()
     {
       ExecuteDelegateCommand = new DelegateCommand(Execute, CanExecute);
@@ -41,19 +39,10 @@ namespace C0601UsingDelegateCommand.ViewModels
       ExecuteGenericDelegateCommand = new DelegateCommand<string>(ExecuteGeneric).ObservesCanExecute(() => IsEnabled);
     }
 
-    private void Execute()
-    {
-      UpdateText = $"Updated: {DateTime.Now}";
-    }
+    private void Execute() => UpdateText = $"Updated: {DateTime.Now}";
 
-    private void ExecuteGeneric(string parameter)
-    {
-      UpdateText = parameter;
-    }
+    private void ExecuteGeneric(string parameter) => UpdateText = parameter;
 
-    private bool CanExecute()
-    {
-      return IsEnabled;
-    }
+    private bool CanExecute() => IsEnabled;
   }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
+using static System.String;
 
 namespace Crystal
 {
@@ -47,7 +48,7 @@ namespace Crystal
 					viewName = viewName.Replace(".Views.", ".ViewModels.");
 					var viewAssemblyName = viewType.GetTypeInfo().Assembly.FullName;
 					var suffix = viewName.EndsWith("View") ? "Model" : "ViewModel";
-					var viewModelName = String.Format(CultureInfo.InvariantCulture, "{0}{1}, {2}", viewName, suffix, viewAssemblyName);
+					var viewModelName = Format(CultureInfo.InvariantCulture, "{0}{1}, {2}", viewName, suffix, viewAssemblyName);
 					return Type.GetType(viewModelName);
 				};
 
@@ -115,14 +116,8 @@ namespace Crystal
 		private static object GetViewModelForView(object view)
 		{
 			var viewKey = view.GetType().ToString();
-
 			// Mapping of view models base on view type (or instance) goes here
-			if (_factories.ContainsKey(viewKey))
-			{
-				return _factories[viewKey]();
-			}
-
-			return null;
+			return _factories.ContainsKey(viewKey) ? _factories[viewKey]() : null;
 		}
 
 		/// <summary>
@@ -133,13 +128,7 @@ namespace Crystal
 		private static Type GetViewModelTypeForView(Type view)
 		{
 			var viewKey = view.ToString();
-
-			if (_typeFactories.ContainsKey(viewKey))
-			{
-				return _typeFactories[viewKey];
-			}
-
-			return null;
+			return _typeFactories.ContainsKey(viewKey) ? _typeFactories[viewKey] : null;
 		}
 
 		/// <summary>
