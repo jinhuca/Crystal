@@ -52,7 +52,7 @@ namespace Crystal.Tests.Mvvm
 			{
 				Assert.NotNull(v);
 				Assert.NotNull(vm);
-				//Assert.IsType(mockObject.GetType(), vm);
+				Assert.IsType(mockObject.GetType(), vm);
 			});
 		}
 
@@ -69,7 +69,7 @@ namespace Crystal.Tests.Mvvm
 			{
 				Assert.NotNull(v);
 				Assert.NotNull(vm);
-				//Assert.IsType<ViewModelLocationProviderFixture>(vm);
+				Assert.IsType<ViewModelLocationProviderFixture>(vm);
 			});
 		}
 
@@ -153,7 +153,7 @@ namespace Crystal.Tests.Mvvm
 			{
 				Assert.NotNull(v);
 				Assert.NotNull(vm);
-				//Assert.IsType<ViewModelLocationProviderFixture>(vm);
+				Assert.IsType<ViewModelLocationProviderFixture>(vm);
 			});
 		}
 
