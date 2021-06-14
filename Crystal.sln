@@ -69,7 +69,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModuleA", "Tutorials\C03_Re
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegionMemberLifetime", "Tutorials\C03_Regions\C0303RegionMemberLifetime\RegionMemberLifetime\RegionMemberLifetime.csproj", "{861DD49F-A8E5-4892-99B2-522E2461B3AE}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Container.Shared", "Tests\DIContainers.UnitTests\Container.Shared\Container.Shared.shproj", "{4238E846-0DA5-4093-8179-3E188257F97D}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UnitTests.Shared", "Tests\DIContainers.UnitTests\Container.Shared\UnitTests.Shared.shproj", "{4238E846-0DA5-4093-8179-3E188257F97D}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -169,7 +169,7 @@ Global
 		{5A2CC690-4E9C-4012-9481-5384E8292D5A} = {993A0C49-8C55-4E9B-943D-191BB4ECD6AB}
 		{D7F91F9C-2AB0-4C38-8539-83D3DBCA7B7E} = {5A2CC690-4E9C-4012-9481-5384E8292D5A}
 		{861DD49F-A8E5-4892-99B2-522E2461B3AE} = {5A2CC690-4E9C-4012-9481-5384E8292D5A}
-		{4238E846-0DA5-4093-8179-3E188257F97D} = {98AC3531-D3CB-45F4-A644-DABBB099C497}
+		{4238E846-0DA5-4093-8179-3E188257F97D} = {5DA96E13-09C9-468D-816D-210EAE4C4219}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EB05221E-019C-41DA-97BD-B30D58036BF1}
