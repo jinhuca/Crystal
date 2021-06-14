@@ -6,165 +6,165 @@ using Xunit;
 
 namespace Crystal.UnitTests.Mvvm
 {
-	[CollectionDefinition(nameof(ContainerLocator), DisableParallelization = true)]
-	public class ViewModelLocationProviderFixture
-	{
-		[Fact]
-		public void ShouldLocateViewModelWithDefaultSettings()
-		{
-			ResetViewModelLocationProvider();
+  public class ViewModelLocationProviderFixture
+  {
+    [Fact]
+    public void ShouldLocateViewModelWithDefaultSettings()
+    {
+      ResetViewModelLocationProvider();
 
-			var view = new Mock();
+      var view = new Mock();
 
-			ViewModelLocationProvider.AutoWireViewModelChanged(view, (v, vm) =>
-			{
-				Assert.NotNull(v);
-				Assert.NotNull(vm);
-				var t = vm.GetType();
-				Assert.IsType<MockViewModel>(vm);
-			});
-		}
+      ViewModelLocationProvider.AutoWireViewModelChanged(view, (v, vm) =>
+      {
+        Assert.NotNull(v);
+        Assert.NotNull(vm);
+        Assert.IsType<MockViewModel>(vm);
+      });
+    }
 
-		[Fact]
-		public void ShouldUseCustomTypeWhenSet_Generic()
-		{
-			ResetViewModelLocationProvider();
+    [Fact]
+    public void ShouldLocateViewModelWithDefaultSettingsForViewsThatEndWithView()
+    {
+      ResetViewModelLocationProvider();
 
-			var view = new Mock();
+      var view = new MockView();
 
-			ViewModelLocationProvider.Register<Mock, ViewModelLocationProviderFixture>();
+      ViewModelLocationProvider.AutoWireViewModelChanged(view, (v, vm) =>
+      {
+        Assert.NotNull(v);
+        Assert.NotNull(vm);
+        Assert.IsType<MockViewModel>(vm);
+      });
+    }
 
-			ViewModelLocationProvider.AutoWireViewModelChanged(view, (v, vm) =>
-			{
-				Assert.NotNull(v);
-				Assert.NotNull(vm);
-				Assert.IsType<ViewModelLocationProviderFixture>(vm);
-			});
-		}
+    [Fact]
+    public void ShouldUseCustomDefaultViewModelFactoryWhenSet()
+    {
+      ResetViewModelLocationProvider();
 
-		[Fact]
-		public void ShouldLocateViewModelWithDefaultSettingsForViewsThatEndWithView()
-		{
-			ResetViewModelLocationProvider();
+      var view = new Mock();
 
-			var view = new MockView();
+      object mockObject = new object();
+      ViewModelLocationProvider.SetDefaultViewModelFactory(viewType => mockObject);
 
-			ViewModelLocationProvider.AutoWireViewModelChanged(view, (v, vm) =>
-			{
-				Assert.NotNull(v);
-				Assert.NotNull(vm);
-				Assert.IsType<MockViewModel>(vm);
-			});
-		}
+      ViewModelLocationProvider.AutoWireViewModelChanged(view, (v, vm) =>
+      {
+        Assert.NotNull(v);
+        Assert.NotNull(vm);
+        Assert.IsType(mockObject.GetType(), vm);
+      });
+    }
 
-		[Fact]
-		public void ShouldUseCustomDefaultViewModelFactoryWhenSet()
-		{
-			ResetViewModelLocationProvider();
+    [Fact]
+    public void ShouldUseCustomDefaultViewTypeToViewModelTypeResolverWhenSet()
+    {
+      ResetViewModelLocationProvider();
 
-			var view = new Mock();
+      var view = new Mock();
 
-			object mockObject = new object();
-			ViewModelLocationProvider.SetDefaultViewModelFactory(viewType => mockObject);
+      ViewModelLocationProvider.SetDefaultViewTypeToViewModelTypeResolver(viewType => typeof(ViewModelLocationProviderFixture));
 
-			ViewModelLocationProvider.AutoWireViewModelChanged(view, (v, vm) =>
-			{
-				Assert.NotNull(v);
-				Assert.NotNull(vm);
-				Assert.IsType(mockObject.GetType(), vm);
-			});
-		}
+      ViewModelLocationProvider.AutoWireViewModelChanged(view, (v, vm) =>
+      {
+        Assert.NotNull(v);
+        Assert.NotNull(vm);
+        Assert.IsType<ViewModelLocationProviderFixture>(vm);
+      });
+    }
 
-		[Fact]
-		public void ShouldUseCustomDefaultViewTypeToViewModelTypeResolverWhenSet()
-		{
-			ResetViewModelLocationProvider();
+    [Fact]
+    public void ShouldFailWhenCustomDefaultViewTypeToViewModelTypeResolverIsNull()
+    {
+      ResetViewModelLocationProvider();
 
-			var view = new Mock();
+      var view = new Mock();
 
-			ViewModelLocationProvider.SetDefaultViewTypeToViewModelTypeResolver(viewType => typeof(ViewModelLocationProviderFixture));
+      ViewModelLocationProvider.SetDefaultViewTypeToViewModelTypeResolver(viewType => null);
 
-			ViewModelLocationProvider.AutoWireViewModelChanged(view, (v, vm) =>
-			{
-				Assert.NotNull(v);
-				Assert.NotNull(vm);
-				Assert.IsType<ViewModelLocationProviderFixture>(vm);
-			});
-		}
+      ViewModelLocationProvider.AutoWireViewModelChanged(view, (v, vm) =>
+      {
+        Assert.NotNull(v);
+        Assert.Null(vm);
+      });
+    }
 
-		[Fact]
-		public void ShouldFailWhenCustomDefaultViewTypeToViewModelTypeResolverIsNull()
-		{
-			ResetViewModelLocationProvider();
+    [Fact]
+    public void ShouldUseCustomFactoryWhenSet()
+    {
+      ResetViewModelLocationProvider();
 
-			var view = new Mock();
-			ViewModelLocationProvider.SetDefaultViewTypeToViewModelTypeResolver(viewType => null);
-			ViewModelLocationProvider.AutoWireViewModelChanged(view, (v, vm) =>
-			{
-				Assert.NotNull(v);
-				Assert.Null(vm);
-			});
-		}
+      var view = new Mock();
 
-		[Fact]
-		public void ShouldUseCustomFactoryWhenSet()
-		{
-			ResetViewModelLocationProvider();
+      string viewModel = "Test String";
+      ViewModelLocationProvider.Register(view.GetType().ToString(), () => viewModel);
 
-			var view = new Mock();
+      ViewModelLocationProvider.AutoWireViewModelChanged(view, (v, vm) =>
+      {
+        Assert.NotNull(v);
+        Assert.NotNull(vm);
+        Assert.Equal(viewModel, vm);
+      });
+    }
 
-			string viewModel = "Test String";
-			ViewModelLocationProvider.Register(view.GetType().ToString(), () => viewModel);
+    [Fact]
+    public void ShouldUseCustomFactoryWhenSet_Generic()
+    {
+      ResetViewModelLocationProvider();
 
-			ViewModelLocationProvider.AutoWireViewModelChanged(view, (v, vm) =>
-					{
-						Assert.NotNull(v);
-						Assert.NotNull(vm);
-						Assert.Equal(viewModel, vm);
-					});
-		}
+      var view = new Mock();
 
-		[Fact]
-		public void ShouldUseCustomFactoryWhenSet_Generic()
-		{
-			ResetViewModelLocationProvider();
+      string viewModel = "Test String";
+      ViewModelLocationProvider.Register<Mock>(() => viewModel);
 
-			var view = new Mock();
+      ViewModelLocationProvider.AutoWireViewModelChanged(view, (v, vm) =>
+      {
+        Assert.NotNull(v);
+        Assert.NotNull(vm);
+        Assert.Equal(viewModel, vm);
+      });
+    }
 
-			string viewModel = "Test String";
-			ViewModelLocationProvider.Register<Mock>(() => viewModel);
+    [Fact]
+    public void ShouldUseCustomTypeWhenSet()
+    {
+      ResetViewModelLocationProvider();
 
-			ViewModelLocationProvider.AutoWireViewModelChanged(view, (v, vm) =>
-			{
-				Assert.NotNull(v);
-				Assert.NotNull(vm);
-				Assert.Equal(viewModel, vm);
-			});
-		}
+      var view = new Mock();
 
-		[Fact]
-		public void ShouldUseCustomTypeWhenSet()
-		{
-			ResetViewModelLocationProvider();
+      ViewModelLocationProvider.Register(view.GetType().ToString(), typeof(ViewModelLocationProviderFixture));
 
-			var view = new Mock();
+      ViewModelLocationProvider.AutoWireViewModelChanged(view, (v, vm) =>
+      {
+        Assert.NotNull(v);
+        Assert.NotNull(vm);
+        Assert.IsType<ViewModelLocationProviderFixture>(vm);
+      });
+    }
 
-			ViewModelLocationProvider.Register(view.GetType().ToString(), typeof(ViewModelLocationProviderFixture));
+    [Fact]
+    public void ShouldUseCustomTypeWhenSet_Generic()
+    {
+      ResetViewModelLocationProvider();
 
-			ViewModelLocationProvider.AutoWireViewModelChanged(view, (v, vm) =>
-			{
-				Assert.NotNull(v);
-				Assert.NotNull(vm);
-				Assert.IsType<ViewModelLocationProviderFixture>(vm);
-			});
-		}
+      var view = new Mock();
 
-		private static void ResetViewModelLocationProvider()
-		{
-			Type staticType = typeof(ViewModelLocationProvider);
-			ConstructorInfo ci = staticType.GetTypeInfo().TypeInitializer;
-			object[] parameters = new object[0];
-			ci.Invoke(null, parameters);
-		}
-	}
+      ViewModelLocationProvider.Register<Mock, ViewModelLocationProviderFixture>();
+
+      ViewModelLocationProvider.AutoWireViewModelChanged(view, (v, vm) =>
+      {
+        Assert.NotNull(v);
+        Assert.NotNull(vm);
+        Assert.IsType<ViewModelLocationProviderFixture>(vm);
+      });
+    }
+
+    private static void ResetViewModelLocationProvider()
+    {
+      Type staticType = typeof(ViewModelLocationProvider);
+      ConstructorInfo ci = staticType.GetTypeInfo().TypeInitializer;
+      object[] parameters = new object[0];
+      ci.Invoke(null, parameters);
+    }
+  }
 }

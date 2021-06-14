@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>4238e846-0da5-4093-8179-3e188257f97d</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Container.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Fixtures\Application\CrystalApplicationFixture.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Fixtures\Bootstrapper\BootstrapperFixture.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Fixtures\Bootstrapper\BootstrapperNullModuleCatalogFixture.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Fixtures\Bootstrapper\BootstrapperRunMethodFixture.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Fixtures\ContainerExtensionCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Fixtures\Ioc\ContainerExtensionFixture.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Fixtures\Ioc\ContainerProviderExtensionFixture.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Fixtures\Mvvm\ViewModelLocatorFixture.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Fixtures\Regions\RegionNavigationContentLoaderFixture.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mocks\NullModuleCatalogBootstrapper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mocks\Services\CompositeService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mocks\Services\IServiceA.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mocks\Services\IServiceB.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mocks\Services\IServiceC.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mocks\Services\ServiceA.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mocks\Services\ServiceB.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mocks\Services\ServiceC.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mocks\ViewModels\ConstructorArgumentViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mocks\Views\BadView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mocks\Views\ViewA.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mocks\Views\ViewB.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mocks\Views\ViewBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tests\ContainerExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tests\ContainerExtensionCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tests\ContainerFixture.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tests\ContainerResolutionExceptionFixture.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tests\ContainerSetup.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tests\TestBase.cs" />
+  </ItemGroup>
+</Project>
