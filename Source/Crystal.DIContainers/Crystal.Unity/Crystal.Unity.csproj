@@ -5,6 +5,10 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>obj\</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Unity" Version="5.11.10" />
     <PackageReference Include="Unity.Abstractions" Version="5.11.7" />

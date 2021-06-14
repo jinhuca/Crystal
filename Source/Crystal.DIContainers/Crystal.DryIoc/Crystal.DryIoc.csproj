@@ -5,6 +5,10 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>obj\</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="DryIoc" Version="4.7.6" />
   </ItemGroup>

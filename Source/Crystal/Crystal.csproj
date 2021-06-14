@@ -9,7 +9,13 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile></DocumentationFile>
-    <OutputPath></OutputPath>
+    <OutputPath>obj\</OutputPath>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <Optimize>false</Optimize>
+    <OutputPath>obj\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
