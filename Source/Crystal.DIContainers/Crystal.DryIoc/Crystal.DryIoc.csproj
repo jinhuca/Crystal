@@ -3,6 +3,18 @@
   <PropertyGroup>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
+    <Version>1.0.0.2</Version>
+    <Authors>Jin Hu</Authors>
+    <Description>DryIoc extension for Crystal</Description>
+    <PackageLicenseFile>License.txt</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/jinhuca/Crystal</PackageProjectUrl>
+    <PackageIcon>Crystal_DryIoc.png</PackageIcon>
+    <PackageIconUrl />
+    <RepositoryUrl>https://github.com/jinhuca/Crystal</RepositoryUrl>
+    <RepositoryType>Library</RepositoryType>
+    <PackageTags>Wpf</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -10,7 +22,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DryIoc" Version="4.7.6" />
+    <PackageReference Include="DryIoc" Version="4.8.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,6 +42,17 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\License.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="Crystal_DryIoc.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

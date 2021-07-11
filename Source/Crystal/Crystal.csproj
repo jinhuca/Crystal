@@ -5,17 +5,28 @@
     <UseWPF>true</UseWPF>
     <Authors>Jin Hu</Authors>
     <PackageTags>WPF</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Version>1.0.0.2</Version>
+    <PackageProjectUrl>https://github.com/jinhuca/Crystal</PackageProjectUrl>
+    <PackageIcon>Crystal.png</PackageIcon>
+    <PackageIconUrl />
+    <RepositoryUrl>https://github.com/jinhuca/Crystal</RepositoryUrl>
+    <RepositoryType>Library</RepositoryType>
+    <PackageLicenseFile>License.txt</PackageLicenseFile>
+    <Description>Tools for building composite Wpf applications.</Description>
+    <PackageId>Crystal.Core</PackageId>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile></DocumentationFile>
-    <OutputPath>obj\</OutputPath>
+    <OutputPath>bin\debug</OutputPath>
     <Optimize>false</Optimize>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <Optimize>false</Optimize>
-    <OutputPath>obj\</OutputPath>
+    <OutputPath>Bin\Release</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -35,6 +46,17 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\CrystalClassic\Resources\FinalIcons\Crystal.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\..\License.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
