@@ -13,7 +13,7 @@ namespace Crystal
 	{
 		private readonly IModuleInitializer moduleInitializer;
 		private IEnumerable<IModuleTypeLoader> typeLoaders;
-		private HashSet<IModuleTypeLoader> subscribedToModuleTypeLoaders = new HashSet<IModuleTypeLoader>();
+		private readonly HashSet<IModuleTypeLoader> subscribedToModuleTypeLoaders = new HashSet<IModuleTypeLoader>();
 
 		/// <summary>
 		/// Initializes an instance of the <see cref="ModuleManager"/> class.

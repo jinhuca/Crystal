@@ -9,7 +9,7 @@ namespace System
 	/// </summary>
 	public static class ExceptionExtensions
 	{
-		private static List<Type> frameworkExceptionTypes = new List<Type>();
+		private static readonly List<Type> frameworkExceptionTypes = new();
 
 		/// <summary>
 		/// Register the type of an Exception that is thrown by the framework. The <see cref="GetRootException"/> method uses

@@ -29,12 +29,7 @@ namespace Crystal
 		/// <param name="raiseErrorsChanged">The action that is invoked when errors are added for an object.</param>
 		public ErrorsContainer(Action<string> raiseErrorsChanged)
 		{
-			if (raiseErrorsChanged == null)
-			{
-				throw new ArgumentNullException(nameof(raiseErrorsChanged));
-			}
-
-			this.raiseErrorsChanged = raiseErrorsChanged;
+			this.raiseErrorsChanged = raiseErrorsChanged ?? throw new ArgumentNullException(nameof(raiseErrorsChanged));
 			validationResults = new Dictionary<string, List<T>>();
 		}
 
@@ -57,15 +52,9 @@ namespace Crystal
 		public IEnumerable<T> GetErrors(string propertyName)
 		{
 			var localPropertyName = propertyName ?? string.Empty;
-			List<T> currentValidationResults = null;
-			if (validationResults.TryGetValue(localPropertyName, out currentValidationResults))
-			{
-				return currentValidationResults;
-			}
-			else
-			{
-				return noErrors;
-			}
+			return validationResults.TryGetValue(localPropertyName, out var currentValidationResults)
+				? currentValidationResults
+				: noErrors;
 		}
 
 		/// <summary>
@@ -123,7 +112,7 @@ namespace Crystal
 		{
 			var localPropertyName = propertyName ?? string.Empty;
 			var hasCurrentValidationResults = validationResults.ContainsKey(localPropertyName);
-			var hasNewValidationResults = newValidationResults != null && newValidationResults.Count() > 0;
+			var hasNewValidationResults = newValidationResults == null || !newValidationResults.Any();
 
 			if (hasCurrentValidationResults || hasNewValidationResults)
 			{

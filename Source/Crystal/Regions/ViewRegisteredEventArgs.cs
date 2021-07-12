@@ -21,11 +21,11 @@ namespace Crystal
 		/// <summary>
 		/// Gets the region name to which the content was registered.
 		/// </summary>
-		public string RegionName { get; private set; }
+		public string RegionName { get; }
 
 		/// <summary>
 		/// Gets the content which was registered.
 		/// </summary>
-		public Func<object> GetView { get; private set; }
+		public Func<object> GetView { get; }
 	}
 }

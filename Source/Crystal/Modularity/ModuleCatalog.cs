@@ -48,10 +48,10 @@ namespace Crystal
 		/// <returns>The valid absolute file path</returns>
 		protected virtual string GetFileAbsoluteUri(string filePath)
 		{
-			UriBuilder uriBuilder = new UriBuilder();
-			uriBuilder.Host = String.Empty;
-			uriBuilder.Scheme = Uri.UriSchemeFile;
-			uriBuilder.Path = Path.GetFullPath(filePath);
+			UriBuilder uriBuilder = new UriBuilder
+			{
+				Host = string.Empty, Scheme = Uri.UriSchemeFile, Path = Path.GetFullPath(filePath)
+			};
 			Uri fileUri = uriBuilder.Uri;
 
 			return fileUri.ToString();

@@ -1,4 +1,5 @@
-﻿using Crystal.Properties;
+﻿#nullable enable
+using Crystal.Properties;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -25,7 +26,7 @@ namespace Crystal
 		/// <summary>
 		/// Directory containing modules to search for.
 		/// </summary>
-		public string ModulePath { get; set; }
+		public string? ModulePath { get; set; }
 
 		/// <summary>
 		/// Drives the main logic of building the child domain and searching for the assemblies.
@@ -83,10 +84,12 @@ namespace Crystal
 			{
 				DirectoryInfo directory = new DirectoryInfo(path);
 
-				ResolveEventHandler resolveEventHandler =
-						delegate (object sender, ResolveEventArgs args) { return OnReflectionOnlyResolve(args, directory); };
+				Assembly? ResolveEventHandler(object sender, ResolveEventArgs args)
+				{
+					return OnReflectionOnlyResolve(args, directory);
+				}
 
-				AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += resolveEventHandler;
+				AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += ResolveEventHandler;
 
 				Assembly moduleReflectionOnlyAssembly = AppDomain.CurrentDomain.GetAssemblies().First(asm => asm.FullName == typeof(IModule).Assembly.FullName);
 				Type IModuleType = moduleReflectionOnlyAssembly.GetType(typeof(IModule).FullName);
@@ -94,7 +97,7 @@ namespace Crystal
 				IEnumerable<ModuleInfo> modules = GetNotAlreadyLoadedModuleInfos(directory, IModuleType);
 
 				var array = modules.ToArray();
-				AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve -= resolveEventHandler;
+				AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve -= ResolveEventHandler;
 				return array;
 			}
 
@@ -125,7 +128,7 @@ namespace Crystal
 										.Where(IModuleType.IsAssignableFrom)
 										.Where(t => t != IModuleType)
 										.Where(t => !t.IsAbstract)
-										.Select(type => CreateModuleInfo(type)));
+										.Select(CreateModuleInfo));
 			}
 
 			private static Assembly OnReflectionOnlyResolve(ResolveEventArgs args, DirectoryInfo directory)
@@ -194,7 +197,7 @@ namespace Crystal
 
 				var moduleDependencyAttributes =
 						CustomAttributeData.GetCustomAttributes(type).Where(
-								cad => cad.Constructor.DeclaringType.FullName == typeof(ModuleDependencyAttribute).FullName);
+								cad => cad.Constructor.DeclaringType?.FullName == typeof(ModuleDependencyAttribute).FullName);
 
 				foreach (CustomAttributeData cad in moduleDependencyAttributes)
 				{
@@ -204,7 +207,7 @@ namespace Crystal
 				ModuleInfo moduleInfo = new ModuleInfo(moduleName, type.AssemblyQualifiedName)
 				{
 					InitializationMode = onDemand ? InitializationMode.OnDemand : InitializationMode.WhenAvailable,
-					Ref = type.Assembly.EscapedCodeBase,
+					Ref = type.Assembly?.EscapedCodeBase,
 				};
 				moduleInfo.DependsOn.AddRange(dependsOn);
 				return moduleInfo;

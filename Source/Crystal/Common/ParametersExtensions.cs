@@ -107,7 +107,7 @@ namespace Crystal
 				success = true;
 				value = kvp.Value;
 			}
-			else if (type.IsAssignableFrom(kvp.Value.GetType()))
+			else if (type.IsInstanceOfType(kvp.Value))
 			{
 				success = true;
 				value = kvp.Value;

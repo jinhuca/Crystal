@@ -7,10 +7,7 @@ namespace Crystal
 	{
 		internal static void ConfigureViewModelLocator()
 		{
-			ViewModelLocationProvider.SetDefaultViewModelFactory((view, type) =>
-			{
-				return ContainerLocator.Container.Resolve(type);
-			});
+			ViewModelLocationProvider.SetDefaultViewModelFactory((view, type) => ContainerLocator.Container.Resolve(type));
 		}
 
 		internal static void RegisterRequiredTypes(this IContainerRegistry containerRegistry, IModuleCatalog moduleCatalog)

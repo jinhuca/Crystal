@@ -69,10 +69,7 @@ namespace Crystal
 				throw new ArgumentNullException(nameof(moduleInfo));
 			}
 
-			if (moduleInfo.Ref == null)
-			{
-				moduleInfo.Ref = Ref;
-			}
+			moduleInfo.Ref ??= Ref;
 
 			if (moduleInfo.InitializationMode == InitializationMode.WhenAvailable && InitializationMode != InitializationMode.WhenAvailable)
 			{

@@ -175,7 +175,7 @@ namespace Crystal
 				return arguments =>
 				{
 					TPayload argument = default(TPayload);
-					if (arguments != null && arguments.Length > 0 && arguments[0] != null)
+					if (arguments is {Length: > 0} && arguments[0] != null)
 					{
 						argument = (TPayload)arguments[0];
 					}

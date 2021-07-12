@@ -34,18 +34,18 @@ namespace Crystal
 		/// Gets the result.
 		/// </summary>
 		/// <value>The result.</value>
-		public bool? Result { get; private set; }
+		public bool? Result { get; }
 
 		/// <summary>
 		/// Gets an exception that occurred while navigating.
 		/// </summary>
 		/// <value>The exception.</value>
-		public Exception Error { get; private set; }
+		public Exception Error { get; }
 
 		/// <summary>
 		/// Gets the navigation context.
 		/// </summary>
 		/// <value>The navigation context.</value>
-		public NavigationContext Context { get; private set; }
+		public NavigationContext Context { get; }
 	}
 }

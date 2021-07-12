@@ -20,12 +20,12 @@ namespace Crystal
     /// <summary>
     /// A dictionary that contains all the registered factories for the views.
     /// </summary>
-    static Dictionary<string, Func<object>> _factories = new Dictionary<string, Func<object>>();
+    static readonly Dictionary<string, Func<object>> _factories = new Dictionary<string, Func<object>>();
 
     /// <summary>
     /// A dictionary that contains all the registered ViewModel types for the views.
     /// </summary>
-    static Dictionary<string, Type> _typeFactories = new Dictionary<string, Type>();
+    static readonly Dictionary<string, Type> _typeFactories = new Dictionary<string, Type>();
 
     /// <summary>
     /// The default view model factory which provides the ViewModel type as a parameter.

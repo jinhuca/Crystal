@@ -24,7 +24,7 @@ namespace Crystal
 		/// Gets the navigation context.
 		/// </summary>
 		/// <value>The navigation context.</value>
-		public NavigationContext NavigationContext { get; private set; }
+		public NavigationContext NavigationContext { get; }
 
 		/// <summary>
 		/// Gets the navigation URI

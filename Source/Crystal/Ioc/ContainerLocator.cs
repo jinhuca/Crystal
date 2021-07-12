@@ -17,7 +17,7 @@ namespace Crystal
 		/// Gets the current <see cref="IContainerExtension"/>.
 		/// </summary>
 		[EditorBrowsable(EditorBrowsableState.Never)]
-		public static IContainerExtension Current => _current ?? (_current = _lazyContainer?.Value);
+		public static IContainerExtension Current => _current ??= _lazyContainer?.Value;
 
 		/// <summary>
 		/// Gets the <see cref="IContainerProvider"/>

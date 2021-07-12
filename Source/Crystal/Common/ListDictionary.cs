@@ -179,10 +179,7 @@ namespace Crystal
 			if (innerValues.ContainsKey(key))
 			{
 				List<TValue> innerList = (List<TValue>)innerValues[key];
-				innerList.RemoveAll(delegate (TValue item)
-																			 {
-																				 return value.Equals(item);
-																			 });
+				innerList.RemoveAll(item => value.Equals(item));
 			}
 		}
 

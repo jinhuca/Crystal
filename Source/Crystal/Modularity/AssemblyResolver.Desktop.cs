@@ -62,8 +62,7 @@ namespace Crystal
 				return null;
 			}
 
-			Uri uri;
-			if (!Uri.TryCreate(filePath, UriKind.Absolute, out uri))
+			if (!Uri.TryCreate(filePath, UriKind.Absolute, out var uri))
 			{
 				return null;
 			}
@@ -97,9 +96,9 @@ namespace Crystal
 
 		private class AssemblyInfo
 		{
-			public AssemblyName AssemblyName { get; set; }
+			public AssemblyName AssemblyName { get; init; }
 
-			public Uri AssemblyUri { get; set; }
+			public Uri AssemblyUri { get; init; }
 
 			public Assembly Assembly { get; set; }
 		}

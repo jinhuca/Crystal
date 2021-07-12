@@ -10,7 +10,7 @@ namespace Crystal
 	{
 		internal static void AutowireViewModel(object viewOrViewModel)
 		{
-			if (viewOrViewModel is FrameworkElement view && view.DataContext is null && ViewModelLocator.GetAutoWireViewModel(view) is null)
+			if (viewOrViewModel is FrameworkElement { DataContext: null } view && ViewModelLocator.GetAutoWireViewModel(view) is null)
 			{
 				ViewModelLocator.SetAutoWireViewModel(view, true);
 			}
@@ -32,7 +32,7 @@ namespace Crystal
 				action(viewAsT);
 			}
 
-			if (view is FrameworkElement element && element.DataContext is T viewModelAsT)
+			if (view is FrameworkElement { DataContext: T viewModelAsT })
 			{
 				action(viewModelAsT);
 			}
@@ -55,7 +55,7 @@ namespace Crystal
 				return viewAsT;
 			}
 
-			if (view is FrameworkElement element && element.DataContext is T vmAsT)
+			if (view is FrameworkElement { DataContext: T vmAsT })
 			{
 				return vmAsT;
 			}

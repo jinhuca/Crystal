@@ -25,7 +25,7 @@ namespace Crystal
 		{
 			if (@delegate == null)
 			{
-				throw new ArgumentNullException("delegate");
+				throw new ArgumentNullException(nameof(@delegate));
 			}
 			if (keepReferenceAlive)
 			{

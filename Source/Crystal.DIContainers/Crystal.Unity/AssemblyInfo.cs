@@ -10,4 +10,4 @@ using System.Windows.Markup;
 																							// app, or any theme specific resource dictionaries)
 )]
 
-[assembly: XmlnsDefinition("http://schemas.crystal.com/1.0.0.2", "Crystal.DryIoc")]
+[assembly: XmlnsDefinition("http://schemas.crystal.com/1.0.0.2", "Crystal.Unity")]

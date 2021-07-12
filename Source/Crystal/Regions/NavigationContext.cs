@@ -37,13 +37,13 @@ namespace Crystal
 		/// Gets the region navigation service.
 		/// </summary>
 		/// <value>The navigation service.</value>
-		public IRegionNavigationService NavigationService { get; private set; }
+		public IRegionNavigationService NavigationService { get; }
 
 		/// <summary>
 		/// Gets the navigation URI.
 		/// </summary>
 		/// <value>The navigation URI.</value>
-		public Uri Uri { get; private set; }
+		public Uri Uri { get; }
 
 		/// <summary>
 		/// Gets the <see cref="NavigationParameters"/> extracted from the URI and the object parameters passed in navigation.

@@ -39,7 +39,7 @@ namespace Crystal
 		/// Gets the journal.
 		/// </summary>
 		/// <value>The journal.</value>
-		public IRegionNavigationJournal Journal { get; private set; }
+		public IRegionNavigationJournal Journal { get; }
 
 		/// <summary>
 		/// Raised when the region is about to be navigated to content.

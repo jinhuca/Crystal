@@ -380,7 +380,7 @@ namespace Crystal
 				RaiseCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, item, index));
 			}
 
-			protected void RaiseCollectionChanged(NotifyCollectionChangedEventArgs eventArgs)
+			private void RaiseCollectionChanged(NotifyCollectionChangedEventArgs eventArgs)
 			{
 				CollectionChanged?.Invoke(this, eventArgs);
 			}

@@ -334,21 +334,21 @@ namespace Crystal.DryIoc
 		/// <returns><c>true</c> if the service is registered.</returns>
 		public bool IsRegistered(Type type, string name)
 		{
-			return Instance.IsRegistered(type, name) || Instance.IsRegistered(type, name, FactoryType.Wrapper); ;
+			return Instance.IsRegistered(type, name) || Instance.IsRegistered(type, name, FactoryType.Wrapper);
 		}
 
 		Type IContainerInfo.GetRegistrationType(string key)
 		{
-			var matchingRegistration = Instance.GetServiceRegistrations().Where(r => key.Equals(r.OptionalServiceKey?.ToString(), StringComparison.Ordinal)).FirstOrDefault();
+			var matchingRegistration = Instance.GetServiceRegistrations().FirstOrDefault(r => key.Equals(r.OptionalServiceKey?.ToString(), StringComparison.Ordinal));
 			if (matchingRegistration.OptionalServiceKey == null)
-				matchingRegistration = Instance.GetServiceRegistrations().Where(r => key.Equals(r.ImplementationType.Name, StringComparison.Ordinal)).FirstOrDefault();
+				matchingRegistration = Instance.GetServiceRegistrations().FirstOrDefault(r => key.Equals(r.ImplementationType.Name, StringComparison.Ordinal));
 
 			return matchingRegistration.ImplementationType;
 		}
 
 		Type IContainerInfo.GetRegistrationType(Type serviceType)
 		{
-			var registration = Instance.GetServiceRegistrations().Where(x => x.ServiceType == serviceType).FirstOrDefault();
+			var registration = Instance.GetServiceRegistrations().FirstOrDefault(x => x.ServiceType == serviceType);
 			return registration.ServiceType is null ? null : registration.ImplementationType;
 		}
 

@@ -1,5 +1,3 @@
-
-
 using System.Collections.Generic;
 
 namespace Crystal
@@ -16,23 +14,8 @@ namespace Crystal
 		/// <value>The module type loaders.</value>
 		public virtual IEnumerable<IModuleTypeLoader> ModuleTypeLoaders
 		{
-			get
-			{
-				if (typeLoaders == null)
-				{
-					typeLoaders = new List<IModuleTypeLoader>
-																					{
-																							new FileModuleTypeLoader()
-																					};
-				}
-
-				return typeLoaders;
-			}
-
-			set
-			{
-				typeLoaders = value;
-			}
+			get => typeLoaders ??= new List<IModuleTypeLoader> { new FileModuleTypeLoader() };
+			set => typeLoaders = value;
 		}
 
 	}

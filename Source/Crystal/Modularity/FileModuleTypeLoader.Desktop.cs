@@ -14,7 +14,7 @@ namespace Crystal
 		private const string RefFilePrefix = "file://";
 
 		private readonly IAssemblyResolver assemblyResolver;
-		private HashSet<Uri> downloadedUris = new HashSet<Uri>();
+		private readonly HashSet<Uri> downloadedUris = new HashSet<Uri>();
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="FileModuleTypeLoader"/> class.

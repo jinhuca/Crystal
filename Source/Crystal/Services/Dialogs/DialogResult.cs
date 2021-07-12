@@ -9,12 +9,12 @@
 		/// <summary>
 		/// The parameters from the dialog.
 		/// </summary>
-		public IDialogParameters Parameters { get; private set; } = new DialogParameters();
+		public IDialogParameters Parameters { get; } = new DialogParameters();
 
 		/// <summary>
 		/// The result of the dialog.
 		/// </summary>
-		public ButtonResult Result { get; private set; } = ButtonResult.None;
+		public ButtonResult Result { get; } = ButtonResult.None;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="DialogResult"/> class.

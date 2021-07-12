@@ -77,14 +77,9 @@ namespace Crystal
 			}
 			else
 			{
-				if (!string.IsNullOrEmpty(assemblyName))
-				{
-					moduleException = new ModuleInitializeException(moduleInfo.ModuleName, assemblyName, exception.Message, exception);
-				}
-				else
-				{
-					moduleException = new ModuleInitializeException(moduleInfo.ModuleName, exception.Message, exception);
-				}
+				moduleException = !string.IsNullOrEmpty(assemblyName)
+					? new ModuleInitializeException(moduleInfo.ModuleName, assemblyName, exception.Message, exception)
+					: new ModuleInitializeException(moduleInfo.ModuleName, exception.Message, exception);
 			}
 
 			throw moduleException;

@@ -21,8 +21,8 @@ namespace Crystal
 		private readonly RegionAdapterMappings regionAdapterMappings;
 		private WeakReference elementWeakReference;
 		private bool regionCreated;
-		private static ICollection<DelayedRegionCreationBehavior> _instanceTracker = new Collection<DelayedRegionCreationBehavior>();
-		private object _trackerLock = new object();
+		private static readonly ICollection<DelayedRegionCreationBehavior> _instanceTracker = new Collection<DelayedRegionCreationBehavior>();
+		private readonly object _trackerLock = new object();
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="DelayedRegionCreationBehavior"/> class.

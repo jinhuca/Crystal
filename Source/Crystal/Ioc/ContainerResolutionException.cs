@@ -195,7 +195,7 @@ namespace Crystal
 				{
 					// TODO: Add Exceptions Extensions lookup here to get root Exception
 					errors.Add(parameter.ParameterType, ex);
-					if (ex is ContainerResolutionException cre && !cre.IsKnownIssue)
+					if (ex is ContainerResolutionException {IsKnownIssue: false} cre)
 					{
 						foreach (var subError in cre.GetErrors())
 						{

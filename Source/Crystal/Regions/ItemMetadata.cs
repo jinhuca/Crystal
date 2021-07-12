@@ -36,7 +36,7 @@ namespace Crystal
 		/// Gets the wrapped item.
 		/// </summary>
 		/// <value>The wrapped item.</value>
-		public object Item { get; private set; }
+		public object Item { get; }
 
 		/// <summary>
 		/// Gets or sets a name for the wrapped item.

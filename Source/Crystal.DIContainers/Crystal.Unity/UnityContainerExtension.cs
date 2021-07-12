@@ -340,18 +340,14 @@ namespace Crystal.Unity
 		Type IContainerInfo.GetRegistrationType(string key)
 		{
 			//First try friendly name registration. If not found, try type registration
-			var matchingRegistration = Instance.Registrations.Where(r => key.Equals(r.Name, StringComparison.Ordinal)).FirstOrDefault();
-			if (matchingRegistration == null)
-			{
-				matchingRegistration = Instance.Registrations.Where(r => key.Equals(r.RegisteredType.Name, StringComparison.Ordinal)).FirstOrDefault();
-			}
-
+			var matchingRegistration = Instance.Registrations.FirstOrDefault(r => key.Equals(r.Name, StringComparison.Ordinal)) ??
+			                           Instance.Registrations.FirstOrDefault(r => key.Equals(r.RegisteredType.Name, StringComparison.Ordinal));
 			return matchingRegistration?.MappedToType;
 		}
 
 		Type IContainerInfo.GetRegistrationType(Type serviceType)
 		{
-			var matchingRegistration = Instance.Registrations.Where(x => x.RegisteredType == serviceType).FirstOrDefault();
+			var matchingRegistration = Instance.Registrations.FirstOrDefault(x => x.RegisteredType == serviceType);
 			return matchingRegistration?.MappedToType;
 		}
 

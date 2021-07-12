@@ -16,12 +16,7 @@ namespace Crystal
 		/// <param name="error">Any error that occurred during the call.</param>
 		public LoadModuleCompletedEventArgs(IModuleInfo moduleInfo, Exception error)
 		{
-			if (moduleInfo == null)
-			{
-				throw new ArgumentNullException(nameof(moduleInfo));
-			}
-
-			ModuleInfo = moduleInfo;
+			ModuleInfo = moduleInfo ?? throw new ArgumentNullException(nameof(moduleInfo));
 			Error = error;
 		}
 
@@ -29,13 +24,13 @@ namespace Crystal
 		/// Gets the module info.
 		/// </summary>
 		/// <value>The module info.</value>
-		public IModuleInfo ModuleInfo { get; private set; }
+		public IModuleInfo ModuleInfo { get; }
 
 		/// <summary>
 		/// Gets any error that occurred
 		/// </summary>
 		/// <value>The exception if an error occurred; otherwise null.</value>
-		public Exception Error { get; private set; }
+		public Exception Error { get; }
 
 		/// <summary>
 		/// Gets or sets a value indicating whether the error has been handled by the event subscriber.

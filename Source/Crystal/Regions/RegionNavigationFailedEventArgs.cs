@@ -35,13 +35,13 @@ namespace Crystal
 		/// Gets the navigation context.
 		/// </summary>
 		/// <value>The navigation context.</value>
-		public NavigationContext NavigationContext { get; private set; }
+		public NavigationContext NavigationContext { get; }
 
 		/// <summary>
 		/// Gets the error.
 		/// </summary>
 		/// <value>The <see cref="Exception"/>, or <see langword="null"/> if the failure was not caused by an exception.</value>
-		public Exception Error { get; private set; }
+		public Exception Error { get; }
 
 		/// <summary>
 		/// Gets the navigation URI

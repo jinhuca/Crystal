@@ -235,15 +235,9 @@ namespace Crystal
 		public virtual SubscriptionToken Subscribe(Action<TPayload> action, ThreadOption threadOption, bool keepSubscriberReferenceAlive, Predicate<TPayload> filter)
 		{
 			IDelegateReference actionReference = new DelegateReference(action, keepSubscriberReferenceAlive);
-			IDelegateReference filterReference;
-			if (filter != null)
-			{
-				filterReference = new DelegateReference(filter, keepSubscriberReferenceAlive);
-			}
-			else
-			{
-				filterReference = new DelegateReference(new Predicate<TPayload>(delegate { return true; }), true);
-			}
+			IDelegateReference filterReference = filter != null
+				? new DelegateReference(filter, keepSubscriberReferenceAlive)
+				: new DelegateReference(new Predicate<TPayload>(delegate { return true; }), true);
 			EventSubscription<TPayload> subscription;
 			switch (threadOption)
 			{

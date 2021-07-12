@@ -12,7 +12,7 @@ namespace Crystal
 		private readonly Uri _resourceUri;
 
 		private const string _refFilePrefix = "file://";
-		private int _refFilePrefixLength = _refFilePrefix.Length;
+		private readonly int _refFilePrefixLength = _refFilePrefix.Length;
 
 		/// <summary>
 		/// Creates an instance of a XamlResourceCatalog.
@@ -107,13 +107,7 @@ namespace Crystal
 		private static ModuleCatalog CreateFromXaml(Uri builderResourceUri)
 		{
 			var streamInfo = System.Windows.Application.GetResourceStream(builderResourceUri);
-
-			if ((streamInfo != null) && (streamInfo.Stream != null))
-			{
-				return CreateFromXaml(streamInfo.Stream);
-			}
-
-			return null;
+			return streamInfo is { Stream: { } } ? CreateFromXaml(streamInfo.Stream) : null;
 		}
 	}
 }

@@ -143,8 +143,7 @@ namespace Crystal
 				// This is needed to prevent the ActiveViews_CollectionChanged() method from firing. 
 				updatingActiveViewsInHostControlSelectionChanged = true;
 
-				object source;
-				source = e.OriginalSource;
+				var source = e.OriginalSource;
 
 				if (source == sender)
 				{
