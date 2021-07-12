@@ -9,7 +9,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Crystal", "Crystal", "{A360
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{984AD424-7981-446A-9E41-D8F858CA7806}"
 	ProjectSection(SolutionItems) = preProject
-		..\CrystalClassic\Documentation\Crystal TimeLine.svg = ..\CrystalClassic\Documentation\Crystal TimeLine.svg
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -18,6 +17,14 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crystal.DryIoc", "Source\Crystal.DIContainers\Crystal.DryIoc\Crystal.DryIoc.csproj", "{B4A5AAFC-6A05-4424-87D5-85646838F9D1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crystal.Unity", "Source\Crystal.DIContainers\Crystal.Unity\Crystal.Unity.csproj", "{5B004B2E-6B81-4204-89E5-E8FA0E36E830}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{4F132354-5BF3-4F91-BDF8-F504E112AA17}"
+	ProjectSection(SolutionItems) = preProject
+		Documentation\1. Introduction.docx = Documentation\1. Introduction.docx
+		Documentation\2. Initializing Application.docx = Documentation\2. Initializing Application.docx
+		Documentation\5. Implementing the MVVM Pattern.docx = Documentation\5. Implementing the MVVM Pattern.docx
+		Documentation\Crystal TimeLine.svg = Documentation\Crystal TimeLine.svg
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
