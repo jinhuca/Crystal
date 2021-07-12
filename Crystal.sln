@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Crystal", "Crystal", "{A360
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{984AD424-7981-446A-9E41-D8F858CA7806}"
 	ProjectSection(SolutionItems) = preProject
+		..\CrystalClassic\Documentation\Crystal TimeLine.svg = ..\CrystalClassic\Documentation\Crystal TimeLine.svg
 		README.md = README.md
 	EndProjectSection
 EndProject
