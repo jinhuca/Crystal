@@ -1,4 +1,4 @@
-![Crystal](https://github.com/jinhuca/Crystal/blob/master/Source/Crystal/Resources/Crystal.png)
+<img align="left" width="110" height="110" src="https://github.com/jinhuca/Crystal/blob/master/Source/Crystal/Resources/Crystal.png">
 
 Crystal is a set of tools and guidance with cohesive design principles and consistent implementation. It has been coming from collective knowledge of many people in the software industry and other fields. It has been coming from practices (bad and good). It is the result of software development experience within corporations and on streets. Crystal is created based upon Microsoft Composite Application Guidance for WPF in 2008, and Prism library in 2009 under Microsoft Patterns and Practices.
 
