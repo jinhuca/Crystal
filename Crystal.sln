@@ -1,0 +1,83 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Crystal.DIContainers", "Crystal.DIContainers", "{0DF3E43B-E0BA-4126-A905-DA8F081FA904}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Crystal", "Crystal", "{A360DF81-B6DD-4551-BAC5-1C99669588C6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{984AD424-7981-446A-9E41-D8F858CA7806}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crystal", "Source\Crystal\Crystal.csproj", "{E86C0551-5EB1-4D76-B70C-0454351948FB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crystal.DryIoc", "Source\Crystal.DIContainers\Crystal.DryIoc\Crystal.DryIoc.csproj", "{B4A5AAFC-6A05-4424-87D5-85646838F9D1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crystal.Unity", "Source\Crystal.DIContainers\Crystal.Unity\Crystal.Unity.csproj", "{5B004B2E-6B81-4204-89E5-E8FA0E36E830}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{4F132354-5BF3-4F91-BDF8-F504E112AA17}"
+	ProjectSection(SolutionItems) = preProject
+		Documentation\1. Introduction.docx = Documentation\1. Introduction.docx
+		Documentation\2. Initializing Application.docx = Documentation\2. Initializing Application.docx
+		Documentation\5. Implementing the MVVM Pattern.docx = Documentation\5. Implementing the MVVM Pattern.docx
+		Documentation\Crystal TimeLine.svg = Documentation\Crystal TimeLine.svg
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crystal.UnitTests", "UnitTests\Crystal.UnitTests\Crystal.UnitTests.csproj", "{A5DA7200-1029-4A51-B510-04BD16B6BB0A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{3DD86B52-806B-4F16-BAB9-3262D2183867}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests.Support", "UnitTests\UnitTests.Support\UnitTests.Support.csproj", "{97337D2F-940A-47DD-BF5D-C7412C87508E}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UnitTests.Shared", "UnitTests\UnitTests.Shared\Container.Shared\UnitTests.Shared.shproj", "{4238E846-0DA5-4093-8179-3E188257F97D}"
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		UnitTests\UnitTests.Shared\Container.Shared\Container.Shared.projitems*{4238e846-0da5-4093-8179-3e188257f97d}*SharedItemsImports = 13
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E86C0551-5EB1-4D76-B70C-0454351948FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E86C0551-5EB1-4D76-B70C-0454351948FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E86C0551-5EB1-4D76-B70C-0454351948FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E86C0551-5EB1-4D76-B70C-0454351948FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4A5AAFC-6A05-4424-87D5-85646838F9D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4A5AAFC-6A05-4424-87D5-85646838F9D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4A5AAFC-6A05-4424-87D5-85646838F9D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4A5AAFC-6A05-4424-87D5-85646838F9D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B004B2E-6B81-4204-89E5-E8FA0E36E830}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B004B2E-6B81-4204-89E5-E8FA0E36E830}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B004B2E-6B81-4204-89E5-E8FA0E36E830}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B004B2E-6B81-4204-89E5-E8FA0E36E830}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5DA7200-1029-4A51-B510-04BD16B6BB0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5DA7200-1029-4A51-B510-04BD16B6BB0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5DA7200-1029-4A51-B510-04BD16B6BB0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5DA7200-1029-4A51-B510-04BD16B6BB0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97337D2F-940A-47DD-BF5D-C7412C87508E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97337D2F-940A-47DD-BF5D-C7412C87508E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97337D2F-940A-47DD-BF5D-C7412C87508E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97337D2F-940A-47DD-BF5D-C7412C87508E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0DF3E43B-E0BA-4126-A905-DA8F081FA904} = {984AD424-7981-446A-9E41-D8F858CA7806}
+		{A360DF81-B6DD-4551-BAC5-1C99669588C6} = {984AD424-7981-446A-9E41-D8F858CA7806}
+		{E86C0551-5EB1-4D76-B70C-0454351948FB} = {A360DF81-B6DD-4551-BAC5-1C99669588C6}
+		{B4A5AAFC-6A05-4424-87D5-85646838F9D1} = {0DF3E43B-E0BA-4126-A905-DA8F081FA904}
+		{5B004B2E-6B81-4204-89E5-E8FA0E36E830} = {0DF3E43B-E0BA-4126-A905-DA8F081FA904}
+		{A5DA7200-1029-4A51-B510-04BD16B6BB0A} = {3DD86B52-806B-4F16-BAB9-3262D2183867}
+		{97337D2F-940A-47DD-BF5D-C7412C87508E} = {3DD86B52-806B-4F16-BAB9-3262D2183867}
+		{4238E846-0DA5-4093-8179-3E188257F97D} = {3DD86B52-806B-4F16-BAB9-3262D2183867}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EB05221E-019C-41DA-97BD-B30D58036BF1}
+	EndGlobalSection
+EndGlobal

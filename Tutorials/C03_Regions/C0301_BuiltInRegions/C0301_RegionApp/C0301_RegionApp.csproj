@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Crystal.Core" Version="1.1.0.8" />
+    <PackageReference Include="Crystal.Unity" Version="1.1.0.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\C0301_ModuleA\C0301_ModuleA.csproj" />
+    <ProjectReference Include="..\C0301_RegionInfra\C0301_RegionInfra.csproj" />
+  </ItemGroup>
+
+</Project>

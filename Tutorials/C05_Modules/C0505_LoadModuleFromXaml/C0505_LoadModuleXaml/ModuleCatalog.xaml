@@ -1,0 +1,5 @@
+﻿<crystal:ModuleCatalog xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+											 xmlns:crystal="http://schemas.crystal.com/1.0.0.2">
+	<crystal:ModuleInfo ModuleName="ModuleAModule"
+	                    ModuleType="C0505_ModuleA.ModuleAModule, C0505_ModuleA, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/>
+</crystal:ModuleCatalog>
