@@ -1,0 +1,12 @@
+﻿<Window x:Class="C0302_RegionApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:infra="clr-namespace:C0302_RegionInfra;assembly=C0302_RegionInfra"
+        xmlns:crystal="http://schemas.crystal.com"
+        Title="Custom Regions" Height="450" Width="800">
+	<DockPanel LastChildFill="True">
+		<StackPanel crystal:RegionManager.RegionName="{x:Static infra:RegionNames.ToolbarRegion}" Margin="10,3" 
+		            DockPanel.Dock="Top" Orientation="Horizontal"/>
+		<ContentControl crystal:RegionManager.RegionName="{x:Static infra:RegionNames.ContentRegion}" Margin="10"/>
+	</DockPanel>
+</Window>

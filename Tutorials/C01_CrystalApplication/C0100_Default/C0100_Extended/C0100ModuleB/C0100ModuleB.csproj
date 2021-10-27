@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Crystal" Version="1.1.0.19" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\Source\Crystal.Core\Crystal.Core.csproj" />
+    <ProjectReference Include="..\C0100Shared\C0100Shared.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,7 @@
+﻿<Window x:Class="T0202UnityBootstrapper.Shell"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:crystal="http://schemas.crystal.com"
+        Title="Shell" Height="450" Width="800">
+	<ContentControl crystal:RegionManager.RegionName="ContentRegion"/>
+</Window>

@@ -1,0 +1,21 @@
+﻿<Window x:Class="C0201_DryIocBootstrapperApp.Shell"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:crystal="http://schemas.crystal.com"
+        xmlns:inf="clr-namespace:C0201_Shared;assembly=C0201_Shared"
+        Title="Shell from Crystal DryIoc" Height="450" Width="800">
+  <Grid Background="Beige">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition/>
+      <ColumnDefinition/>
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition/>
+      <RowDefinition/>
+    </Grid.RowDefinitions>
+    <ContentControl Grid.Row="0" Grid.Column="0" crystal:RegionManager.RegionName="{x:Static inf:RegionNames.Region1}"/>
+    <ContentControl Grid.Row="0" Grid.Column="1" crystal:RegionManager.RegionName="{x:Static inf:RegionNames.Region2}"/>
+    <ContentControl Grid.Row="1" Grid.Column="0" crystal:RegionManager.RegionName="{x:Static inf:RegionNames.Region3}"/>
+    <ContentControl Grid.Row="1" Grid.Column="1" crystal:RegionManager.RegionName="{x:Static inf:RegionNames.Region4}"/>
+  </Grid>
+</Window>
