@@ -4,20 +4,20 @@
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <Authors>Jin Hu</Authors>
-    <PackageTags>WPF</PackageTags>
+    <PackageTags>.NET</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>1.1.0.18</Version>
+    <Version>1.2.0.21</Version>
     <PackageProjectUrl>https://github.com/jinhuca/Crystal</PackageProjectUrl>
     <PackageIcon>Crystal.png</PackageIcon>
     <PackageIconUrl />
     <RepositoryUrl>https://github.com/jinhuca/Crystal</RepositoryUrl>
     <RepositoryType>Library</RepositoryType>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
-    <Description>Tools for building composite Wpf applications.</Description>
+    <Description>Library for building composite .NET applications and components</Description>
     <PackageId>Crystal.Core</PackageId>
-    <AssemblyVersion>1.1.0.18</AssemblyVersion>
-    <FileVersion>1.1.0.18</FileVersion>
+    <AssemblyVersion>1.2.0.21</AssemblyVersion>
+    <FileVersion>1.2.0.21</FileVersion>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   </PropertyGroup>
 
