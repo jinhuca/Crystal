@@ -29,9 +29,9 @@ The ```Crystal``` packages have been created significantly different from Prism,
 
 ### Nuget Packages: ###
 
-| Package | NuGet | License |
-| -------- | ------- | ------- |
-| <a href="https://www.nuget.org/packages/Crystal/">![](https://img.shields.io/badge/Crystal-Composite-brightgreen)</a> | [![NuGet Badge](https://buildstats.info/nuget/Crystal.composite)](https://www.nuget.org/packages/Crystal.composite/) | ![License: MIT](https://img.shields.io/badge/license-MIT-blue) |
+<a href="https://www.nuget.org/packages/Crystal/">![](https://img.shields.io/badge/Crystal-Composite-brightgreen)</a>
+[![NuGet Badge](https://buildstats.info/nuget/Crystal.composite)](https://www.nuget.org/packages/Crystal.composite/)
+![License: MIT](https://img.shields.io/badge/license-MIT-blue)
 
 
 | Package | NuGet | 
