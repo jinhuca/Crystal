@@ -1,49 +1,33 @@
-# Crystal
+# Crystal.Core
 
-```Crystal``` library is a set of tools and guidance with battle-tested design principles and consistent implementation for building loosely coupled, maintainable, and testable applications with complex business logic and visual sophistication.
+```Crystal.Core``` is a library for building composite .NET applications and components, with some battle-tested design principles and practices. It helps developers for architecting loosely coupled, testable, and maintainable applications with complex business logic and visual sophistication.
 
-* It aims to provide ```complete``` infrastructure and glue for composite applications in various fields, as well as ```flexibility``` and ```extensibility``` in software life cycle.
+* It aims to provide ```complete``` infrastructure and glue for composite applications in various industries.
 
-* It has been coming from ```collective``` knowledges and experiences of many people in the software industry and other fields. It is the result of software development practices in large corporations and on streets.
+* It has been coming from ```collective``` knowledge and experience of many people in software industry and others.
 
-* Crystal has been building based upon the original ```Microsoft Composite Application Guidance for WPF``` in 2008, and the ```Prism``` library in 2009 under Microsoft Patterns and Practices and on GitHub as Open-Source since 2015.
+* It is the result of software development practices in small companies and large corporations, as well as on streets.
 
-The ```Crystal``` packages have been created significantly different from Prism, and targeted the applications for both classic .NET Framework with <a href="https://github.com/jinhuca/CrystalClassic">```CrystalClassic```</a> packages and modern .NET 5.0 and above <a href="https://github.com/jinhuca/Crystal">```Crystal```</a> packages.
+* ```Crystal.Core``` has been building based upon the original <a href="https://www.microsoft.com/en-us/download/details.aspx?id=22379">```Microsoft Composite Application Guidance for WPF```</a> in 2008, and the <a href="https://prismlibrary.com/">```Prism```</a> in 2009 under Microsoft Patterns and Practices, and now in Github <a href="https://github.com/prism">```Prism```</a>.
+
+The ```Crystal.Core``` have been created significant different from Prism, and targeted the applications for modern .NET 5.0 and above. It contains a default Dependency Injector, Module Management, and other features to provide ```complete``` toolkits for developers.
 <br/>
 
-### Time line for Building Composite Applications: ###
+#### Nuget Packages: ####
+
+<a href="https://www.nuget.org/packages/Crystal.Core/">![](https://img.shields.io/badge/Crystal-Core-brightgreen)</a> [![NuGet Badge](https://buildstats.info/nuget/Crystal.Core)](https://www.nuget.org/packages/Crystal.Core/) ![License: MIT](https://img.shields.io/badge/license-MIT-blue)
+
+#### Time line for Building Composite Applications: ####
 <br/>
 
 ![Crystal Roadmap](https://github.com/jinhuca/Crystal/blob/master/Documentation/Crystal%20TimeLine.svg)
 <br/>
 
-- For applications targeting classic .NET, i.e., .NET Framework up to 4.8, download <a href="https://www.nuget.org/packages/CrystalClassic/">```CrystalClassic```</a> package and optional DI containers (<a href="https://www.nuget.org/packages/CrystalClassic.DryIoc/">```CrystalClassic.DryIoc```</a> or <a href="https://www.nuget.org/packages/CrystalClassic.Unity/">```CrystalClassic.Unity```</a>) from Nuget.
-
-- For applications targeting modern .NET, i.e., .NET 5 and above, please download <a href="https://www.nuget.org/packages/Crystal.Core/">```Crystal.Core```</a> package and optional DI containers: <a href="https://www.nuget.org/packages/Crystal.DryIoc/">```Crystal.DryIoc```</a> or Crystal.Unity <a href="https://www.nuget.org/packages/Crystal.Unity/">```Crystal.Unity```</a> from Nuget.
-
-### Application Architecture - Module Composition ###
-<br/>
-
-![](https://github.com/jinhuca/Crystal/blob/master/Documentation/Composite.svg)
-<br/><br/>
-
-### Nuget Packages: ###
-
-<a href="https://www.nuget.org/packages/Crystal/">![](https://img.shields.io/badge/Crystal-Composite-brightgreen)</a>
-[![NuGet Badge](https://buildstats.info/nuget/Crystal.composite)](https://www.nuget.org/packages/Crystal.composite/)
-![License: MIT](https://img.shields.io/badge/license-MIT-blue)
-
-
-| Package | NuGet | 
-| -------- | ------- |
-| <a href="https://www.nuget.org/packages/Crystal/">![](https://img.shields.io/badge/Crystal-Composite-brightgreen)</a> | [![NuGet Badge](https://buildstats.info/nuget/Crystal)](https://www.nuget.org/packages/Crystal/) |
-| <a href="https://www.nuget.org/packages/Crystal.Core/">![](https://img.shields.io/badge/Crystal.Core-Core-orange)</a> | [![NuGet Badge](https://buildstats.info/nuget/Crystal.Core)](https://www.nuget.org/packages/Crystal.Core/) |
-| <a href="https://www.nuget.org/packages/Crystal.DryIoc/">![](https://img.shields.io/badge/Crystal.DryIoc-Container-brightgreen)</a> | [![NuGet Badge](https://buildstats.info/nuget/Crystal.DryIoc)](https://www.nuget.org/packages/Crystal.DryIoc/) |
-| <a href="https://www.nuget.org/packages/Crystal.Unity/">![](https://img.shields.io/badge/Crystal.Unity-Container-blue)</a> | [![NuGet Badge](https://buildstats.info/nuget/Crystal.Unity)](https://www.nuget.org/packages/Crystal.Unity/) |
-
-### [Wiki for Crystal Library](https://github.com/jinhuca/Crystal/wiki) ###
+#### Introduction ####
+In this section, we overview some major components built in <a href="https://github.com/jinhuca/Crystal">```Crystal.Core```</a>. Visit wiki <a href="https://github.com/jinhuca/Crystal/wiki">```wiki```</a> for more detailed information and tutorials.
 
 [```Challenges```](https://github.com/jinhuca/Crystal/wiki/00.-Challenges)
+
 [```Architectural Goals```](https://github.com/jinhuca/Crystal/wiki/01.-Architectural-Goals)
 [```Solid Principles```](https://github.com/jinhuca/Crystal/wiki/02.-Solid-Principles)
 [```Composite Approach```](https://github.com/jinhuca/Crystal/wiki/03.--Composite-Approach)
