@@ -1,7 +1,0 @@
-﻿<UserControl x:Class="C0102_ModuleB.Views.ViewB1"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-	<Grid Background="DarkGray">
-		<TextBlock Text="ViewB1" FontSize="24" FontWeight="Black" Foreground="Chartreuse"  VerticalAlignment="Center" HorizontalAlignment="Center"/>
-	</Grid>
-</UserControl>

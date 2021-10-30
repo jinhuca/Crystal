@@ -1,0 +1,6 @@
+﻿<UserControl x:Class="ModuleA.Views.ViewA1"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="BlanchedAlmond">
+	<TextBlock Text="Hello Crystal" FontSize="45" FontWeight="Black" Foreground="DarkRed" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+</UserControl>

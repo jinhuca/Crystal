@@ -1,9 +1,0 @@
-﻿<Window x:Class="C0504_LoadManually.Views.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:crystal="http://schemas.crystal.com">
-	<DockPanel LastChildFill="True">
-		<Button DockPanel.Dock="Top" Content="Load Module" Click="Button_Click"/>
-		<ContentControl crystal:RegionManager.RegionName="ContentRegion"/>
-	</DockPanel>
-</Window>

@@ -1,5 +1,0 @@
-﻿<Crystal:CrystalApplication x:Class="C0301_RegionApp.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:Crystal="http://schemas.crystal.com">
-</Crystal:CrystalApplication>

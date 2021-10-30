@@ -1,6 +1,0 @@
-﻿<UserControl x:Class="T0202UnityModule.Views.ViewA"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-	<TextBlock Text="Hello Unity Bootstrapper" Foreground="DarkCyan"  HorizontalAlignment="Center" VerticalAlignment="Center" 
-	           FontFamily="Calibri" FontSize="34" FontWeight="Bold"/>
-</UserControl>

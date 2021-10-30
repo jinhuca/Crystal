@@ -1,7 +1,0 @@
-﻿<UserControl x:Class="C0504_ModuleA.Views.ViewA"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-	<Grid>
-		<TextBlock Text="View A loaded Manually." FontSize="38" FontWeight="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Red"/>
-	</Grid>
-</UserControl>
