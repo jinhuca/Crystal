@@ -1,4 +1,4 @@
-# Crystal.Core
+# Crystal
 
 ```Crystal.Core``` is a library for building composite .NET applications and components, with some battle-tested design principles and practices. It helps developers for architecting loosely coupled, testable, and maintainable applications with complex business logic and visual sophistication.
 
@@ -15,7 +15,9 @@ The ```Crystal.Core``` have been created significant different from Prism, and t
 
 #### Nuget Packages: ####
 
-<a href="https://www.nuget.org/packages/Crystal.Core/">![](https://img.shields.io/badge/Crystal-Core-brightgreen)</a> [![NuGet Badge](https://buildstats.info/nuget/Crystal.Core)](https://www.nuget.org/packages/Crystal.Core/) ![License: MIT](https://img.shields.io/badge/license-MIT-blue)
+<a href="https://www.nuget.org/packages/Crystal.infrastructure/">![](https://img.shields.io/badge/Crystal-infrastructure-brightgreen)</a> [![NuGet Badge](https://buildstats.info/nuget/Crystal.infrastructure)](https://www.nuget.org/packages/Crystal.infrastructure/) ![License: MIT](https://img.shields.io/badge/license-MIT-blue)
+
+
 
 #### Time line for Building Composite Applications: ####
 <br/>
