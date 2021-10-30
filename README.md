@@ -1,6 +1,6 @@
 # Crystal
 
-```Crystal.Core``` is a library for building composite .NET applications and components, with some battle-tested design principles and practices. It helps developers for architecting loosely coupled, testable, and maintainable applications with complex business logic and visual sophistication.
+```Crystal``` is a library for building composite .NET applications and components, with some battle-tested design principles and practices. It helps developers for architecting loosely coupled, testable, and maintainable applications with complex business logic and visual sophistication.
 
 * It aims to provide ```complete``` infrastructure and glue for composite applications in various industries.
 
