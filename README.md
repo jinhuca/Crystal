@@ -15,9 +15,9 @@ The ```Crystal.Core``` have been created significant different from Prism, and t
 
 #### Nuget Packages: ####
 
-<a href="https://www.nuget.org/packages/Crystal.Desktop/">![](https://img.shields.io/badge/Crystal-Desktop-blue)</a> [![NuGet Badge](https://buildstats.info/nuget/Crystal.Desktop)](https://www.nuget.org/packages/Crystal.Desktop/) ![License: MIT](https://img.shields.io/badge/license-MIT-blue)
+<a href="https://www.nuget.org/packages/Crystal.Desktop/">![](https://img.shields.io/badge/Crystal-Desktop-blue)</a> [![NuGet Badge](https://buildstats.info/nuget/Crystal.Desktop)](https://www.nuget.org/packages/Crystal.Desktop/) 
 
-<a href="https://www.nuget.org/packages/Crystal.Infrastructure/">![](https://img.shields.io/badge/Crystal-Infrastructure-brightgreen)</a> [![NuGet Badge](https://buildstats.info/nuget/Crystal.Infrastructure)](https://www.nuget.org/packages/Crystal.Infrastructure/) ![License: MIT](https://img.shields.io/badge/license-MIT-blue)
+<a href="https://www.nuget.org/packages/Crystal.Infrastructure/">![](https://img.shields.io/badge/Crystal-Infrastructure-brightgreen)</a> [![NuGet Badge](https://buildstats.info/nuget/Crystal.Infrastructure)](https://www.nuget.org/packages/Crystal.Infrastructure/)
 
 #### Time line for Building Composite Applications: ####
 <br/>
