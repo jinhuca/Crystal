@@ -39,7 +39,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Source\Crystal.Desktop\Crystal.Desktop.csproj" />
-    <ProjectReference Include="..\..\Source\Crystal.Infrastructure\Crystal.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
