@@ -25,7 +25,7 @@ The ```Crystal.Core``` have been created significant different from Prism, and t
 <br/>
 
 #### Introduction ####
-In this section, we overview some major components built in <a href="https://github.com/jinhuca/Crystal">```Crystal.Core```</a>. Visit <a href="https://github.com/jinhuca/Crystal/wiki">```wiki```</a> for more detailed information and tutorials.
+We overview some major components built in <a href="https://github.com/jinhuca/Crystal.Infrastructure">```Crystal```</a>. Visit <a href="https://github.com/jinhuca/Crystal.Infrastructure/wiki">```wiki```</a> for more detailed information and tutorials.
 
 [```Challenges```](https://github.com/jinhuca/Crystal/wiki/00.-Challenges)
 
