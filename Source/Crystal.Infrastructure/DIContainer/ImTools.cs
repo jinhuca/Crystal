@@ -6,7 +6,7 @@ using System.Threading;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-namespace Crystal.Injector.ImTools
+namespace Crystal.Utilities
 {
   /// <summary>Helpers for functional composition</summary>
   public static class Fun

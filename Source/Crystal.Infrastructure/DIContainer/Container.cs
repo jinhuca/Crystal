@@ -38,8 +38,8 @@ using System.Diagnostics.CodeAnalysis;  // for SuppressMessage
 using System.Diagnostics;               // for StackTrace
 using System.Runtime.CompilerServices;  // for MethodImplAttribute
 
-using Crystal.Injector.ImTools;
-using static Crystal.Injector.ImTools.ArrayTools;
+using Crystal.Utilities;
+using static Crystal.Utilities.ArrayTools;
 using static System.Environment;
 
 using ExprType = System.Linq.Expressions.ExpressionType;
@@ -54,8 +54,8 @@ using static FastExpressionCompiler.LightExpression.Expression;
 
 namespace Crystal
 {
-  /// <summary>Inversion of control container</summary>
-  public partial class Container : IContainer
+	/// <summary>Inversion of control container</summary>
+	public partial class Container : IContainer
   {
     /// <summary>Creates new container with default rules <see cref="Injector.Rules.Default"/>.</summary>
     public Container() : this(Rules.Default, Ref.Of(Registry.Default), NewSingletonScope()) =>
@@ -14598,10 +14598,10 @@ namespace Crystal
 #if SUPPORTS_ASYNC_LOCAL
 namespace Crystal
 {
-  using System.Threading;
+	using System.Threading;
 
-  /// <summary>Stores scopes propagating through async-await boundaries.</summary>
-  public sealed class AsyncExecutionFlowScopeContext : IScopeContext
+	/// <summary>Stores scopes propagating through async-await boundaries.</summary>
+	public sealed class AsyncExecutionFlowScopeContext : IScopeContext
   {
     /// <summary>Statically known name of root scope in this context.</summary>
     public static readonly string ScopeContextName = typeof(AsyncExecutionFlowScopeContext).FullName;
@@ -14632,14 +14632,14 @@ namespace Crystal
 #if SUPPORTS_VARIANCE
 namespace Crystal
 {
-  using System;
-  using System.Collections.Generic;
-  using System.Linq;
-  using System.Threading;
-  using System.Threading.Tasks;
+	using System;
+	using System.Collections.Generic;
+	using System.Linq;
+	using System.Threading;
+	using System.Threading.Tasks;
 
-  /// Base type for messages
-  public interface IMessage<out TResponse> { }
+	/// Base type for messages
+	public interface IMessage<out TResponse> { }
 
   /// Type for an empty response
   public struct EmptyResponse
@@ -14766,8 +14766,8 @@ namespace Crystal
 
 namespace Crystal
 {
-  /// <summary>The testing utility</summary>
-  public interface ITest
+	/// <summary>The testing utility</summary>
+	public interface ITest
   {
     /// <summary>Runs the tests and should return the number of run tests</summary>
     int Run();
