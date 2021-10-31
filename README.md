@@ -33,10 +33,15 @@ In the whole life cycles of real-world applications, developers face a number of
 * Maintain the complex codebase.
 * Add/remove features/components.
 * Deploy application in regular basis.
-
 It requires an architecture that allows individual parts of the application to be independently developed and tested, and then modified or updated later, in isolation, without affecting the rest of the application.
 
-[```Architectural Goals```](https://github.com/jinhuca/Crystal/wiki/01.-Architectural-Goals)
+```Architectural Goals```<br/>
+* Composability: Full support modularity at various level in application.
+* Extensibility: The ability to enhance, extend, or replace pieces of the Crystal Library without requiring users to redesign the applications.
+* Performance: The Crystal Library minimizes overhead while the application is running.
+* Testability: UI and business logic are to be tested.
+* 
+
 [```Solid Principles```](https://github.com/jinhuca/Crystal/wiki/02.-Solid-Principles)
 [```Composite Approach```](https://github.com/jinhuca/Crystal/wiki/03.--Composite-Approach)
 [```Key Concepts```](https://github.com/jinhuca/Crystal/wiki/04.-Key-Concepts)
