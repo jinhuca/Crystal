@@ -40,7 +40,6 @@ It requires an architecture that allows individual parts of the application to b
 * Extensibility: The ability to enhance, extend, or replace pieces of the Crystal Library without requiring users to redesign the applications.
 * Performance: The Crystal Library minimizes overhead while the application is running.
 * Testability: UI and business logic are to be tested.
-* 
 
 [```Solid Principles```](https://github.com/jinhuca/Crystal/wiki/02.-Solid-Principles)
 [```Composite Approach```](https://github.com/jinhuca/Crystal/wiki/03.--Composite-Approach)
