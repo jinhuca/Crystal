@@ -7,17 +7,17 @@
     <PackageTags>Desktop</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>2.0.1.1</Version>
-    <PackageProjectUrl>https://github.com/jinhuca/Crystal.Infrastructure</PackageProjectUrl>
+    <Version>2.0.1.2</Version>
+    <PackageProjectUrl>https://github.com/jinhuca/Crystal</PackageProjectUrl>
     <PackageIcon>CrystalDesktop.png</PackageIcon>
     <PackageIconUrl />
-    <RepositoryUrl>https://github.com/jinhuca/Crystal.Infrastructure</RepositoryUrl>
+    <RepositoryUrl>https://github.com/jinhuca/Crystal</RepositoryUrl>
     <RepositoryType>Library</RepositoryType>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
     <Description>Crystal library for building composite .NET applications and components.</Description>
     <PackageId>Crystal.Desktop</PackageId>
-    <AssemblyVersion>2.0.1.1</AssemblyVersion>
-    <FileVersion>2.0.1.1</FileVersion>
+    <AssemblyVersion>2.0.1.2</AssemblyVersion>
+    <FileVersion>2.0.1.2</FileVersion>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   </PropertyGroup>
 

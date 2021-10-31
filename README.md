@@ -20,7 +20,7 @@ The ```Crystal.Core``` have been created significant different from Prism, and t
 <br/>
 
 #### Introduction ####
-We overview some major components built in <a href="https://github.com/jinhuca/Crystal.Infrastructure">```Crystal```</a>. Visit <a href="https://github.com/jinhuca/Crystal.Infrastructure/wiki">```wiki```</a> for more detailed information and tutorials.
+We overview some major components built in <a href="https://github.com/jinhuca/Crystal">```Crystal```</a>. Visit <a href="https://github.com/jinhuca/Crystal/wiki">```wiki```</a> for more detailed information and tutorials.
 
 ```Challenges```<br/>
 In the whole life cycles of real-world applications, developers face a number of challenges:

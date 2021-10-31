@@ -2,20 +2,20 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <Version>2.0.1.1</Version>
+    <Version>2.0.1.2</Version>
     <Authors>Jin Hu</Authors>
     <Description>Crystal library for building composite .NET applications and components</Description>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
-    <PackageProjectUrl>https://github.com/jinhuca/Crystal.Infrastructure</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/jinhuca/Crystal.Infrastructure</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/jinhuca/Crystal</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/jinhuca/Crystal</RepositoryUrl>
     <RepositoryType>Library</RepositoryType>
     <PackageTags>.NET</PackageTags>
     <PackageIcon>CrystalCore.png</PackageIcon>
     <PackageIconUrl />
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <AssemblyVersion>2.0.1.1</AssemblyVersion>
-    <FileVersion>2.0.1.1</FileVersion>
+    <AssemblyVersion>2.0.1.2</AssemblyVersion>
+    <FileVersion>2.0.1.2</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
