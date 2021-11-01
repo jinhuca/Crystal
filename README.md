@@ -36,13 +36,6 @@ It requires an architecture that allows individual parts of the application to b
 * Performance: The Crystal Library minimizes overhead while the application is running.
 * Testability: UI and business logic are to be tested.
 
-#### Packages ####
-```Crystal``` library contains two packages:
-
-<a href="https://www.nuget.org/packages/Crystal.Core/">![](https://img.shields.io/badge/Crystal-Core-blue)</a> [![NuGet Badge](https://buildstats.info/nuget/Crystal.Core)](https://www.nuget.org/packages/Crystal.Core/) ![License: MIT](https://img.shields.io/badge/license-MIT-blue) 
-
-<a href="https://www.nuget.org/packages/Crystal.Desktop/">![](https://img.shields.io/badge/Crystal-Desktop-blue)</a> [![NuGet Badge](https://buildstats.info/nuget/Crystal.Desktop)](https://www.nuget.org/packages/Crystal.Desktop/) ![License: MIT](https://img.shields.io/badge/license-MIT-blue) 
-
 [```Solid Principles```](https://github.com/jinhuca/Crystal/wiki/01.-Solid-Principles)
 [```Composite Approach```](https://github.com/jinhuca/Crystal/wiki/02.-Composite-Approach)
 [```Key Concepts```](https://github.com/jinhuca/Crystal/wiki/03.-Key-Concepts)
@@ -53,3 +46,10 @@ It requires an architecture that allows individual parts of the application to b
 [```Commands```](https://github.com/jinhuca/Crystal/wiki/08.-Commands)
 [```Event Aggregators```](https://github.com/jinhuca/Crystal/wiki/09.-Event-Aggregators)
 <br/>
+
+#### Packages ####
+```Crystal``` library contains two packages:
+
+<a href="https://www.nuget.org/packages/Crystal.Core/">![](https://img.shields.io/badge/Crystal-Core-blue)</a> [![NuGet Badge](https://buildstats.info/nuget/Crystal.Core)](https://www.nuget.org/packages/Crystal.Core/) ![License: MIT](https://img.shields.io/badge/license-MIT-blue) 
+
+<a href="https://www.nuget.org/packages/Crystal.Desktop/">![](https://img.shields.io/badge/Crystal-Desktop-blue)</a> [![NuGet Badge](https://buildstats.info/nuget/Crystal.Desktop)](https://www.nuget.org/packages/Crystal.Desktop/) ![License: MIT](https://img.shields.io/badge/license-MIT-blue) 
