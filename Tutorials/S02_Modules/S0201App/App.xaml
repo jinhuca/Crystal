@@ -1,9 +1,8 @@
-﻿<Application x:Class="S0201App.App"
+﻿<crystal:CrystalApplication x:Class="S0201App.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:S0201App"
-             StartupUri="MainWindow.xaml">
+             xmlns:crystal="http://schemas.crystal.com">
     <Application.Resources>
          
     </Application.Resources>
-</Application>
+</crystal:CrystalApplication>
