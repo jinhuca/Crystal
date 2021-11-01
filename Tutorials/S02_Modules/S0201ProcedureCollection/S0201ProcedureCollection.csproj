@@ -9,4 +9,8 @@
     <PackageReference Include="Crystal.Desktop" Version="2.0.1.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\S0201SharedLibrary\S0201SharedLibrary.csproj" />
+  </ItemGroup>
+
 </Project>
