@@ -48,8 +48,10 @@ It requires an architecture that allows individual parts of the application to b
 <br/>
 
 #### Packages ####
-```Crystal``` library contains two packages:
+```Crystal``` library is built into two packages for two kinds of modules:
 
+```Crystal.Core``` is designed for modules which refers to ```Microsoft.NETCore.App```.</br>
 <a href="https://www.nuget.org/packages/Crystal.Core/">![](https://img.shields.io/badge/Crystal-Core-red)</a> [![NuGet Badge](https://buildstats.info/nuget/Crystal.Core)](https://www.nuget.org/packages/Crystal.Core/) ![License: MIT](https://img.shields.io/badge/license-MIT-blue) 
 
+```Crystal.Desktop``` is designed for modules which refers to ```Microsoft.WindowsDesktop.App.WPF```.</br>
 <a href="https://www.nuget.org/packages/Crystal.Desktop/">![](https://img.shields.io/badge/Crystal-Desktop-red)</a> [![NuGet Badge](https://buildstats.info/nuget/Crystal.Desktop)](https://www.nuget.org/packages/Crystal.Desktop/) ![License: MIT](https://img.shields.io/badge/license-MIT-blue) 
