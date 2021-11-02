@@ -22,16 +22,5 @@ Crystal library is built into two packages: `Crystal.Core` is designed for modul
 <a href="https://www.nuget.org/packages/Crystal.Core/">![](https://img.shields.io/badge/Crystal-Core-red)</a> [![NuGet Badge](https://buildstats.info/nuget/Crystal.Core)](https://www.nuget.org/packages/Crystal.Core/) ![License: MIT](https://img.shields.io/badge/license-MIT-blue) </br>
 <a href="https://www.nuget.org/packages/Crystal.Desktop/">![](https://img.shields.io/badge/Crystal-Desktop-red)</a> [![NuGet Badge](https://buildstats.info/nuget/Crystal.Desktop)](https://www.nuget.org/packages/Crystal.Desktop/) ![License: MIT](https://img.shields.io/badge/license-MIT-blue)
 
-#### [```Wiki```](https://github.com/jinhuca/Crystal/wiki) contains more details.
-[```Solid Principles```](https://github.com/jinhuca/Crystal/wiki/01.-Solid-Principles)
-[```Composite Approach```](https://github.com/jinhuca/Crystal/wiki/02.-Composite-Approach)
-[```Key Concepts```](https://github.com/jinhuca/Crystal/wiki/03.-Key-Concepts)
-[```Application and Shell```](https://github.com/jinhuca/Crystal/wiki/04.-Application-and-Shell)
-[```Modules```](https://github.com/jinhuca/Crystal/wiki/05.-Modules)
-[```Regions```](https://github.com/jinhuca/Crystal/wiki/06.-Regions)
-[```MVVM```](https://github.com/jinhuca/Crystal/wiki/07.-MVVM)
-[```Commands```](https://github.com/jinhuca/Crystal/wiki/08.-Commands)
-[```Event Aggregators```](https://github.com/jinhuca/Crystal/wiki/09.-Event-Aggregators)
-
-#### [`Crystal.Samples`](https://github.com/jinhuca/Crystal.Samples) contains sample applications using Crystal library.
-
+#### [`Wiki`](https://github.com/jinhuca/Crystal/wiki) contains more details about key design and implementation about Crystal library.
+#### [`Samples`](https://github.com/jinhuca/Crystal.Samples) contains sample applications using Crystal library.
