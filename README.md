@@ -19,11 +19,6 @@ The Crystal have been created for modern applications targeting .NET 5.0 and abo
 ![Crystal Roadmap](https://github.com/jinhuca/Crystal/blob/master/Documentation/Crystal%20TimeLine.svg)
 <br/>
 
-#### Challenges
-In the whole life cycles of real-world software applications, developers face a number of challenges, such as: `requirements` change over time; `Maintain` the complex codebase; 
-Add/remove `features`; `Deploy` application in regular basis.</b>
-It requires an architecture that allows individual parts of the application to be independently developed and tested, and then modified or updated later, in isolation, without affecting the rest of the application.
-
 #### Architectural Goals
 `Composability`: Full support modularity at various level in application.
 `Extensibility`: The ability to enhance, extend, or replace pieces of the Crystal Library without requiring users to redesign the applications.
