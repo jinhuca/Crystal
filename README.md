@@ -10,7 +10,7 @@
 
 * ```Crystal.Core``` has been building based upon the original <a href="https://www.microsoft.com/en-us/download/details.aspx?id=22379">```Microsoft Composite Application Guidance for WPF```</a> in 2008, and the Prism in 2009 under Microsoft Patterns and Practices, and now in Github <a href="https://github.com/prism">```Prism```</a>.
 
-The ```Crystal.Core``` have been created significant different from Prism, and targeted the applications for modern .NET 5.0 and above. It contains a default Dependency Injector, Module Management, and other features to provide ```complete``` toolkits for developers.
+The ```Crystal.Core``` have been created for modern applications targeting .NET 5.0 and above. It contains an integrated Dependency Injector, Module Management, and other features to provide ```complete``` toolkits for developers.
 <br/>
 
 #### Time line for Building Composite Applications: ####
@@ -19,22 +19,23 @@ The ```Crystal.Core``` have been created significant different from Prism, and t
 ![Crystal Roadmap](https://github.com/jinhuca/Crystal/blob/master/Documentation/Crystal%20TimeLine.svg)
 <br/>
 
-#### Introduction ####
-We overview some major components built in <a href="https://github.com/jinhuca/Crystal">```Crystal```</a>. Visit <a href="https://github.com/jinhuca/Crystal/wiki">```wiki```</a> for more detailed information and tutorials.
-
-```Challenges```<br/>
-In the whole life cycles of real-world applications, developers face a number of challenges:
-* Application requirements change over time.
-* Maintain the complex codebase.
-* Add/remove features/components.
-* Deploy application in regular basis.
+#### `Challenges` 
+In the whole life cycles of real-world software applications, developers face a number of challenges, such as: `requirements` change over time; `Maintain` the complex codebase; 
+Add/remove `features`; `Deploy` application in regular basis.</b>
 It requires an architecture that allows individual parts of the application to be independently developed and tested, and then modified or updated later, in isolation, without affecting the rest of the application.
 
-```Architectural Goals```<br/>
-* Composability: Full support modularity at various level in application.
-* Extensibility: The ability to enhance, extend, or replace pieces of the Crystal Library without requiring users to redesign the applications.
-* Performance: The Crystal Library minimizes overhead while the application is running.
-* Testability: UI and business logic are to be tested.
+#### `Architectural Goals`
+`Composability`: Full support modularity at various level in application.
+`Extensibility`: The ability to enhance, extend, or replace pieces of the Crystal Library without requiring users to redesign the applications.
+`Performance`: The Crystal Library minimizes overhead while the application is running.
+`Testability`: UI and business logic are to be tested.
+
+#### `SOLID Principles`
+Crystal library supports SOLID principles via integrated Dependency Injection and loosely coupled modularity.
+
+#### `Composite Approach`
+
+[```Wiki```]("https://github.com/jinhuca/Crystal/wiki/Home") contains more details.
 
 [```Solid Principles```](https://github.com/jinhuca/Crystal/wiki/01.-Solid-Principles)
 [```Composite Approach```](https://github.com/jinhuca/Crystal/wiki/02.-Composite-Approach)
