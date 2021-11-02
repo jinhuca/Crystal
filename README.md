@@ -18,7 +18,7 @@ The Crystal have been created for modern applications targeting .NET 5.0 and abo
 `Testability`: UI and business logic are to be tested.
 
 ### Packages ###
-Crystal library is built into two packages: `Crystal.Core` is designed for modules which refer to ```Microsoft.NETCore.App``` and `Crystal.Desktop` is designed for modules which refer to ```Microsoft.WindowsDesktop.App.WPF```:</br></br>
+Crystal library is built into two packages: `Crystal.Core` is designed for modules which refer to Microsoft.NETCore.App and `Crystal.Desktop` is designed for modules which refer to Microsoft.WindowsDesktop.App.WPF:</br></br>
 <a href="https://www.nuget.org/packages/Crystal.Core/">![](https://img.shields.io/badge/Crystal-Core-red)</a> [![NuGet Badge](https://buildstats.info/nuget/Crystal.Core)](https://www.nuget.org/packages/Crystal.Core/) ![License: MIT](https://img.shields.io/badge/license-MIT-blue) </br>
 <a href="https://www.nuget.org/packages/Crystal.Desktop/">![](https://img.shields.io/badge/Crystal-Desktop-red)</a> [![NuGet Badge](https://buildstats.info/nuget/Crystal.Desktop)](https://www.nuget.org/packages/Crystal.Desktop/) ![License: MIT](https://img.shields.io/badge/license-MIT-blue)
 
