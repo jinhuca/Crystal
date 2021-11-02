@@ -35,7 +35,8 @@ Crystal library supports SOLID principles via integrated Dependency Injection an
 
 #### `Composite Approach`
 
-[```Wiki```]("https://github.com/jinhuca/Crystal/wiki/Home") contains more details.
+[```Wiki```]("https://github.com/jinhuca/Crystal/wiki") 
+contains more details.
 
 [```Solid Principles```](https://github.com/jinhuca/Crystal/wiki/01.-Solid-Principles)
 [```Composite Approach```](https://github.com/jinhuca/Crystal/wiki/02.-Composite-Approach)
