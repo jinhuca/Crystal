@@ -54,13 +54,7 @@ namespace Crystal.Behaviors
       set { SetValue(FalseStateProperty, value); }
     }
 
-    private FrameworkElement TargetObject
-    {
-      get
-      {
-        return VisualStateUtilities.FindNearestStatefulControl(AssociatedObject);
-      }
-    }
+    private FrameworkElement TargetObject => VisualStateUtilities.FindNearestStatefulControl(AssociatedObject);
 
     /// <summary>
     /// Called after the behavior is attached to an AssociatedObject.

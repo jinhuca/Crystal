@@ -334,20 +334,8 @@ namespace Crystal.Behaviors
 
     }
 
-    private ListBoxItem ItemContainer
-    {
-      get
-      {
-        return (ListBoxItem)DependencyObjectHelper.GetSelfAndAncestors(AssociatedObject).FirstOrDefault(element => element is ListBoxItem);
-      }
-    }
+    private ListBoxItem ItemContainer => (ListBoxItem)DependencyObjectHelper.GetSelfAndAncestors(AssociatedObject).FirstOrDefault(element => element is ListBoxItem);
 
-    private ItemsControl ItemsControl
-    {
-      get
-      {
-        return (ItemsControl)DependencyObjectHelper.GetSelfAndAncestors(AssociatedObject).FirstOrDefault(element => element is ItemsControl);
-      }
-    }
+    private ItemsControl ItemsControl => (ItemsControl)DependencyObjectHelper.GetSelfAndAncestors(AssociatedObject).FirstOrDefault(element => element is ItemsControl);
   }
 }

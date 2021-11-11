@@ -53,7 +53,7 @@ namespace Crystal.Behaviors
       }
     }
 
-    public static bool IsRunningFluidLayoutTransition { get { return LayoutTransitionStoryboard != null; } }
+    public static bool IsRunningFluidLayoutTransition => LayoutTransitionStoryboard != null;
 
     #region Data attached to VSM
     /// <summary>

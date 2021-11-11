@@ -75,26 +75,17 @@ namespace Crystal.Behaviors
             }
         }
 
-        private static bool IsPrototypingRuntimeLoaded
-        {
-            get { return InteractionContext.runtimeAssembly != null; }
-        }
+    private static bool IsPrototypingRuntimeLoaded => InteractionContext.runtimeAssembly != null;
 
-        private static bool CanGoBack
-        {
-            get { return (bool)InteractionContext.canGoBackPropertyInfo.GetValue(ActiveNavigationViewModelObject, null); }
-        }
+    private static bool CanGoBack => (bool)InteractionContext.canGoBackPropertyInfo.GetValue(ActiveNavigationViewModelObject, null);
 
-        private static bool CanGoForward
-        {
-            get { return (bool)InteractionContext.canGoForwardPropertyInfo.GetValue(ActiveNavigationViewModelObject, null); }
-        }
+    private static bool CanGoForward => (bool)InteractionContext.canGoForwardPropertyInfo.GetValue(ActiveNavigationViewModelObject, null);
 
-        #endregion properties
+    #endregion properties
 
-        #region public methods
+    #region public methods
 
-        public static void GoBack()
+    public static void GoBack()
         {
             if (InteractionContext.IsPrototypingRuntimeLoaded)
             {

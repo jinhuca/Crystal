@@ -150,13 +150,7 @@ namespace Crystal.Behaviors
     /// Gets the parent element of the associated object.
     /// </summary>
     /// <value>The parent element of the associated object.</value>
-    private FrameworkElement ParentElement
-    {
-      get
-      {
-        return AssociatedObject.Parent as FrameworkElement;
-      }
-    }
+    private FrameworkElement ParentElement => AssociatedObject.Parent as FrameworkElement;
 
     /// <summary>
     /// Gets the root element of the scene in which the associated object is located.

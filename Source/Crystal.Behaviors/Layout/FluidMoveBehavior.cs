@@ -224,10 +224,7 @@ namespace Crystal.Behaviors
       UpdateLayoutTransitionCore(child, root, tag, newTagData);
     }
 
-    protected virtual bool ShouldSkipInitialLayout
-    {
-      get { return (Tag == TagType.DataContext); }
-    }
+    protected virtual bool ShouldSkipInitialLayout => (Tag == TagType.DataContext);
 
     internal abstract void UpdateLayoutTransitionCore(FrameworkElement child, FrameworkElement root, object tag, TagData newTagData);
 
@@ -413,13 +410,7 @@ namespace Crystal.Behaviors
 
     private static Dictionary<object, Storyboard> transitionStoryboardDictionary = new Dictionary<object, Storyboard>();
 
-    protected override bool ShouldSkipInitialLayout
-    {
-      get
-      {
-        return base.ShouldSkipInitialLayout || (InitialTag == TagType.DataContext);
-      }
-    }
+    protected override bool ShouldSkipInitialLayout => base.ShouldSkipInitialLayout || (InitialTag == TagType.DataContext);
 
     protected override void EnsureTags(FrameworkElement child)
     {
@@ -782,10 +773,7 @@ namespace Crystal.Behaviors
       }
     }
 
-    protected override int VisualChildrenCount
-    {
-      get { return child == null ? 0 : 1; }
-    }
+    protected override int VisualChildrenCount => child == null ? 0 : 1;
 
     protected override Visual GetVisualChild(int index)
     {

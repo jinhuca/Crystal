@@ -29,30 +29,18 @@ namespace Crystal.Behaviors
         {
         }
 
-        /// <summary>
-        /// Gets the object to which the trigger is attached.
-        /// </summary>
-        /// <value>The associated object.</value>
-        protected new T AssociatedObject
-        {
-            get
-            {
-                return (T)base.AssociatedObject;
-            }
-        }
+    /// <summary>
+    /// Gets the object to which the trigger is attached.
+    /// </summary>
+    /// <value>The associated object.</value>
+    protected new T AssociatedObject => (T)base.AssociatedObject;
 
-        /// <summary>
-        /// Gets the type constraint of the associated object.
-        /// </summary>
-        /// <value>The associated object type constraint.</value>
-        protected sealed override Type AssociatedObjectTypeConstraint
-        {
-            get
-            {
-                return base.AssociatedObjectTypeConstraint;
-            }
-        }
-    }
+    /// <summary>
+    /// Gets the type constraint of the associated object.
+    /// </summary>
+    /// <value>The associated object type constraint.</value>
+    protected sealed override Type AssociatedObjectTypeConstraint => base.AssociatedObjectTypeConstraint;
+  }
 
     /// <summary>
     /// Argument passed to PreviewInvoke event. Assigning Cancelling to True will cancel the invoking of the trigger.
@@ -115,22 +103,16 @@ namespace Crystal.Behaviors
             }
         }
 
-        /// <summary>
-        /// Gets the actions associated with this trigger.
-        /// </summary>
-        /// <value>The actions associated with this trigger.</value>
-        public TriggerActionCollection Actions
-        {
-            get
-            {
-                return (TriggerActionCollection)GetValue(ActionsProperty);
-            }
-        }
+    /// <summary>
+    /// Gets the actions associated with this trigger.
+    /// </summary>
+    /// <value>The actions associated with this trigger.</value>
+    public TriggerActionCollection Actions => (TriggerActionCollection)GetValue(ActionsProperty);
 
-        /// <summary>
-        /// Event handler for registering to PreviewInvoke.
-        /// </summary>
-        public event EventHandler<PreviewInvokeEventArgs> PreviewInvoke;
+    /// <summary>
+    /// Event handler for registering to PreviewInvoke.
+    /// </summary>
+    public event EventHandler<PreviewInvokeEventArgs> PreviewInvoke;
 
         /// <summary>
         /// Invoke all actions associated with this trigger.
@@ -180,27 +162,21 @@ namespace Crystal.Behaviors
             return (Freezable)Activator.CreateInstance(classType);
         }
 
-        #region IAttachedObject Members
+    #region IAttachedObject Members
 
-        /// <summary>
-        /// Gets the associated object.
-        /// </summary>
-        /// <value>The associated object.</value>
-        DependencyObject IAttachedObject.AssociatedObject
-        {
-            get
-            {
-                return AssociatedObject;
-            }
-        }
+    /// <summary>
+    /// Gets the associated object.
+    /// </summary>
+    /// <value>The associated object.</value>
+    DependencyObject IAttachedObject.AssociatedObject => AssociatedObject;
 
-        /// <summary>
-        /// Attaches to the specified object.
-        /// </summary>
-        /// <param name="dependencyObject">The object to attach to.</param>
-        /// <exception cref="InvalidOperationException">Cannot host the same trigger on more than one object at a time.</exception>
-        /// <exception cref="InvalidOperationException">dependencyObject does not satisfy the trigger type constraint.</exception>
-        public void Attach(DependencyObject dependencyObject)
+    /// <summary>
+    /// Attaches to the specified object.
+    /// </summary>
+    /// <param name="dependencyObject">The object to attach to.</param>
+    /// <exception cref="InvalidOperationException">Cannot host the same trigger on more than one object at a time.</exception>
+    /// <exception cref="InvalidOperationException">dependencyObject does not satisfy the trigger type constraint.</exception>
+    public void Attach(DependencyObject dependencyObject)
         {
             if (dependencyObject != AssociatedObject)
             {

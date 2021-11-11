@@ -40,20 +40,14 @@ namespace Crystal.Behaviors
 			methodDescriptors = new List<MethodDescriptor>();
 		}
 
-		private object Target
-		{
-			get
-			{
-				return TargetObject ?? AssociatedObject;
-			}
-		}
+    private object Target => TargetObject ?? AssociatedObject;
 
-		/// <summary>
-		/// Invokes the action.
-		/// </summary>
-		/// <param name="parameter">The parameter of the action. If the action does not require a parameter, the parameter may be set to a null reference.</param>
-		///// <exception cref="ArgumentException">A method with <c cref="MethodName"/> could not be found on the <c cref="TargetObject"/>.</exception>
-		protected override void Invoke(object parameter)
+    /// <summary>
+    /// Invokes the action.
+    /// </summary>
+    /// <param name="parameter">The parameter of the action. If the action does not require a parameter, the parameter may be set to a null reference.</param>
+    ///// <exception cref="ArgumentException">A method with <c cref="MethodName"/> could not be found on the <c cref="TargetObject"/>.</exception>
+    protected override void Invoke(object parameter)
 		{
 			if (AssociatedObject != null)
 			{
@@ -223,17 +217,11 @@ namespace Crystal.Behaviors
 				private set;
 			}
 
-			public bool HasParameters
-			{
-				get { return Parameters.Length > 0; }
-			}
+      public bool HasParameters => Parameters.Length > 0;
 
-			public int ParameterCount
-			{
-				get { return Parameters.Length; }
-			}
+      public int ParameterCount => Parameters.Length;
 
-			public ParameterInfo[] Parameters
+      public ParameterInfo[] Parameters
 			{
 				get;
 				private set;

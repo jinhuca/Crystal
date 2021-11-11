@@ -144,15 +144,8 @@ namespace Crystal.Behaviors
       }
     }
 
-    private Point RenderTransformOriginInElementCoordinates
-    {
-      get
-      {
-        return new Point(AssociatedObject.RenderTransformOrigin.X * AssociatedObject.ActualWidth,
+    private Point RenderTransformOriginInElementCoordinates => new Point(AssociatedObject.RenderTransformOrigin.X * AssociatedObject.ActualWidth,
                         AssociatedObject.RenderTransformOrigin.Y * AssociatedObject.ActualHeight);
-
-      }
-    }
 
     // This needs to take the render transform origin into account to get the proper transform value.
     private Matrix FullTransformValue
@@ -176,13 +169,7 @@ namespace Crystal.Behaviors
       }
     }
 
-    private FrameworkElement ParentElement
-    {
-      get
-      {
-        return AssociatedObject.Parent as FrameworkElement;
-      }
-    }
+    private FrameworkElement ParentElement => AssociatedObject.Parent as FrameworkElement;
 
     #endregion
 

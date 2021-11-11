@@ -32,25 +32,25 @@
 
   <ItemGroup>
     <Compile Remove="Commands\**" />
+    <Compile Remove="Interactivity\**" />
     <Compile Remove="Properties\**" />
     <EmbeddedResource Remove="Commands\**" />
+    <EmbeddedResource Remove="Interactivity\**" />
     <EmbeddedResource Remove="Properties\**" />
     <None Remove="Commands\**" />
+    <None Remove="Interactivity\**" />
     <None Remove="Properties\**" />
     <None Include="Resources\CrystalDesktop.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
     <Page Remove="Commands\**" />
+    <Page Remove="Interactivity\**" />
     <Page Remove="Properties\**" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Crystal.Core\Crystal.Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Interactivity\" />
   </ItemGroup>
 
 </Project>

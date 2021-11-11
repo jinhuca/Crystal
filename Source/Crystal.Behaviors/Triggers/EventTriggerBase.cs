@@ -32,20 +32,14 @@ namespace Crystal.Behaviors
         {
         }
 
-        /// <summary>
-        /// Gets the resolved source. If <c ref="SourceName"/> is not set or cannot be resolved, defaults to AssociatedObject.
-        /// </summary>
-        /// <value>The resolved source object.</value>
-        /// <remarks>In general, this property should be used in place of AssociatedObject in derived classes.</remarks>
-        public new T Source
-        {
-            get
-            {
-                return (T)base.Source;
-            }
-        }
+    /// <summary>
+    /// Gets the resolved source. If <c ref="SourceName"/> is not set or cannot be resolved, defaults to AssociatedObject.
+    /// </summary>
+    /// <value>The resolved source object.</value>
+    /// <remarks>In general, this property should be used in place of AssociatedObject in derived classes.</remarks>
+    public new T Source => (T)base.Source;
 
-        internal sealed override void OnSourceChangedImpl(object oldSource, object newSource)
+    internal sealed override void OnSourceChangedImpl(object oldSource, object newSource)
         {
             base.OnSourceChangedImpl(oldSource, newSource);
             OnSourceChanged(oldSource as T, newSource as T);
@@ -106,23 +100,17 @@ namespace Crystal.Behaviors
             }
         }
 
-        /// <summary>
-        /// Gets the source type constraint.
-        /// </summary>
-        /// <value>The source type constraint.</value>
-        protected Type SourceTypeConstraint
-        {
-            get
-            {
-                return sourceTypeConstraint;
-            }
-        }
+    /// <summary>
+    /// Gets the source type constraint.
+    /// </summary>
+    /// <value>The source type constraint.</value>
+    protected Type SourceTypeConstraint => sourceTypeConstraint;
 
-        /// <summary>
-        /// Gets or sets the target object. If TargetObject is not set, the target will look for the object specified by TargetName. If an element referred to by TargetName cannot be found, the target will default to the AssociatedObject. This is a dependency property.
-        /// </summary>
-        /// <value>The target object.</value>
-        public object SourceObject
+    /// <summary>
+    /// Gets or sets the target object. If TargetObject is not set, the target will look for the object specified by TargetName. If an element referred to by TargetName cannot be found, the target will default to the AssociatedObject. This is a dependency property.
+    /// </summary>
+    /// <value>The target object.</value>
+    public object SourceObject
         {
             get { return GetValue(SourceObjectProperty); }
             set { SetValue(SourceObjectProperty, value); }
@@ -172,26 +160,17 @@ namespace Crystal.Behaviors
             }
         }
 
-        private NameResolver SourceNameResolver
-        {
-            get { return sourceNameResolver; }
-        }
+    private NameResolver SourceNameResolver => sourceNameResolver;
 
-        private bool IsSourceChangedRegistered
+    private bool IsSourceChangedRegistered
         {
             get { return isSourceChangedRegistered; }
             set { isSourceChangedRegistered = value; }
         }
 
-        private bool IsSourceNameSet
-        {
-            get
-            {
-                return !string.IsNullOrEmpty(SourceName) || ReadLocalValue(SourceNameProperty) != DependencyProperty.UnsetValue;
-            }
-        }
+    private bool IsSourceNameSet => !string.IsNullOrEmpty(SourceName) || ReadLocalValue(SourceNameProperty) != DependencyProperty.UnsetValue;
 
-        private bool IsLoadedRegistered
+    private bool IsLoadedRegistered
         {
             get;
             set;

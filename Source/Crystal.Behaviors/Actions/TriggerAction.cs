@@ -15,8 +15,7 @@ namespace Crystal.Behaviors
     /// <summary>
     /// Initializes a new instance of the <see cref="TriggerAction&lt;T&gt;"/> class.
     /// </summary>
-    protected TriggerAction()
-        : base(typeof(T))
+    protected TriggerAction() : base(typeof(T))
     {
     }
 
@@ -24,25 +23,13 @@ namespace Crystal.Behaviors
     /// Gets the object to which this <see cref="Crystal.Behaviors.TriggerAction&lt;T&gt;"/> is attached.
     /// </summary>
     /// <value>The associated object.</value>
-    protected new T AssociatedObject
-    {
-      get
-      {
-        return (T)base.AssociatedObject;
-      }
-    }
+    protected new T AssociatedObject => (T)base.AssociatedObject;
 
     /// <summary>
     /// Gets the associated object type constraint.
     /// </summary>
     /// <value>The associated object type constraint.</value>
-    protected sealed override Type AssociatedObjectTypeConstraint
-    {
-      get
-      {
-        return base.AssociatedObjectTypeConstraint;
-      }
-    }
+    protected sealed override Type AssociatedObjectTypeConstraint => base.AssociatedObjectTypeConstraint;
   }
 
   /// <summary>
@@ -51,9 +38,7 @@ namespace Crystal.Behaviors
   /// <remarks>This is an infrastructure class. Action authors should derive from TriggerAction&lt;T&gt; instead of this class.</remarks>
   [DefaultTrigger(typeof(UIElement), typeof(Crystal.Behaviors.EventTrigger), "MouseLeftButtonDown")]
   [DefaultTrigger(typeof(ButtonBase), typeof(Crystal.Behaviors.EventTrigger), "Click")]
-  public abstract class TriggerAction :
-      Animatable,
-      IAttachedObject
+  public abstract class TriggerAction : Animatable, IAttachedObject
   {
     private bool isHosted;
     private DependencyObject associatedObject;
@@ -177,13 +162,7 @@ namespace Crystal.Behaviors
     /// Gets the associated object.
     /// </summary>
     /// <value>The associated object.</value>
-    DependencyObject IAttachedObject.AssociatedObject
-    {
-      get
-      {
-        return AssociatedObject;
-      }
-    }
+    DependencyObject IAttachedObject.AssociatedObject => AssociatedObject;
 
     /// <summary>
     /// Attaches to the specified object.

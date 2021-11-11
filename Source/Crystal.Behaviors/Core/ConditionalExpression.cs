@@ -41,18 +41,15 @@ namespace Crystal.Behaviors
 			get { return (ForwardChaining)GetValue(ForwardChainingProperty); }
 			set { SetValue(ForwardChainingProperty, value); }
 		}
-		/// <summary>
-		/// Return the Condition collections.
-		/// </summary>
-		public ConditionCollection Conditions
-		{
-			get { return (ConditionCollection)GetValue(ConditionsProperty); }
-		}
+    /// <summary>
+    /// Return the Condition collections.
+    /// </summary>
+    public ConditionCollection Conditions => (ConditionCollection)GetValue(ConditionsProperty);
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="ConditionalExpression"/> class.
-		/// </summary>
-		public ConditionalExpression()
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ConditionalExpression"/> class.
+    /// </summary>
+    public ConditionalExpression()
 		{
 			SetValue(ConditionalExpression.ConditionsProperty, new ConditionCollection());
 		}

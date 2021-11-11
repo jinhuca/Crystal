@@ -161,26 +161,20 @@
 #endif
 		}
 
-		#region IAttachedObject Members
+    #region IAttachedObject Members
 
-		/// <summary>
-		/// Gets the associated object.
-		/// </summary>
-		/// <value>The associated object.</value>
-		DependencyObject IAttachedObject.AssociatedObject
-		{
-			get
-			{
-				return AssociatedObject;
-			}
-		}
+    /// <summary>
+    /// Gets the associated object.
+    /// </summary>
+    /// <value>The associated object.</value>
+    DependencyObject IAttachedObject.AssociatedObject => AssociatedObject;
 
-		/// <summary>
-		/// Attaches to the specified object.
-		/// </summary>
-		/// <param name="dependencyObject">The object to attach to.</param>
-		/// <exception cref="InvalidOperationException">The IAttachedObject is already attached to a different object.</exception>
-		public void Attach(DependencyObject dependencyObject)
+    /// <summary>
+    /// Attaches to the specified object.
+    /// </summary>
+    /// <param name="dependencyObject">The object to attach to.</param>
+    /// <exception cref="InvalidOperationException">The IAttachedObject is already attached to a different object.</exception>
+    public void Attach(DependencyObject dependencyObject)
 		{
 			if (dependencyObject != AssociatedObject)
 			{
