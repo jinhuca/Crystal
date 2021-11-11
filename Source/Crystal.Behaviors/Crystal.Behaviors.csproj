@@ -4,8 +4,19 @@
     <TargetFramework>net5.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <Version>2.1.2.5</Version>
+    <Version>2.1.2.6</Version>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Company>Jin Hu</Company>
+    <AssemblyVersion>2.1.2.6</AssemblyVersion>
+    <FileVersion>2.1.2.6</FileVersion>
+    <PackageIcon>CrystalBehaviors.png</PackageIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="Resources\CrystalBehaviors.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>
