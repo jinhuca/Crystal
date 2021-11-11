@@ -6,7 +6,8 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Crystal.Desktop" Version="2.1.2.6" />
+    <PackageReference Include="Crystal.Behaviors" Version="2.1.2.7" />
+    <PackageReference Include="Crystal.Desktop" Version="2.1.2.7" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ModuleA\ModuleA.csproj" />
