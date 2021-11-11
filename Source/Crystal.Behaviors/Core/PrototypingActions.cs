@@ -39,19 +39,27 @@ namespace Crystal.Behaviors
   public sealed class ActivateStateAction : PrototypingActionBase
   {
     public static readonly DependencyProperty TargetScreenProperty = DependencyProperty.Register(
-        "TargetScreen", typeof(string), typeof(ActivateStateAction), new PropertyMetadata(null));
+      nameof(TargetScreen),
+      typeof(string),
+      typeof(ActivateStateAction),
+      new PropertyMetadata(null));
+
     public static readonly DependencyProperty TargetStateProperty = DependencyProperty.Register(
-        "TargetState", typeof(string), typeof(ActivateStateAction), new PropertyMetadata(null));
+      nameof(TargetState),
+      typeof(string),
+      typeof(ActivateStateAction),
+      new PropertyMetadata(null));
+
     public string TargetScreen
     {
-      get { return GetValue(TargetScreenProperty) as string; }
-      set { SetValue(TargetScreenProperty, value); }
+      get => (string)GetValue(TargetScreenProperty);
+      set => SetValue(TargetScreenProperty, value);
     }
 
     public string TargetState
     {
-      get { return GetValue(TargetStateProperty) as string; }
-      set { SetValue(TargetStateProperty, value); }
+      get => (string)GetValue(TargetStateProperty);
+      set => SetValue(TargetStateProperty, value);
     }
 
     protected override void Invoke(object parameter)
@@ -79,8 +87,8 @@ namespace Crystal.Behaviors
 
     public string TargetScreen
     {
-      get { return GetValue(TargetScreenProperty) as string; }
-      set { SetValue(TargetScreenProperty, value as string); }
+      get => (string)GetValue(TargetScreenProperty);
+      set => SetValue(TargetScreenProperty, value as string);
     }
 
     protected override void Invoke(object parameter)
@@ -137,14 +145,14 @@ namespace Crystal.Behaviors
 
     public string TargetScreen
     {
-      get { return GetValue(TargetScreenProperty) as string; }
-      set { SetValue(TargetScreenProperty, value); }
+      get => (string)GetValue(TargetScreenProperty);
+      set => SetValue(TargetScreenProperty, value);
     }
 
     public string SketchFlowAnimation
     {
-      get { return GetValue(SketchFlowAnimationProperty) as string; }
-      set { SetValue(SketchFlowAnimationProperty, value); }
+      get => (string)GetValue(SketchFlowAnimationProperty);
+      set => SetValue(SketchFlowAnimationProperty, value);
     }
 
     protected override void Invoke(object parameter)
@@ -170,46 +178,46 @@ namespace Crystal.Behaviors
   public sealed class NavigationMenuAction : TargetedTriggerAction<FrameworkElement>
   {
     public static readonly DependencyProperty InactiveStateProperty = DependencyProperty.Register(
-        "InactiveState",
+        nameof(InactiveState),
         typeof(string),
         typeof(NavigationMenuAction),
         new PropertyMetadata(null));
 
     public static readonly DependencyProperty TargetScreenProperty = DependencyProperty.Register(
-        "TargetScreen",
+        nameof(TargetScreen),
         typeof(string),
         typeof(NavigationMenuAction),
         new PropertyMetadata(null));
 
     public static readonly DependencyProperty ActiveStateProperty = DependencyProperty.Register(
-        "ActiveState",
+        nameof(ActiveState),
         typeof(string),
         typeof(NavigationMenuAction),
         new PropertyMetadata(null));
 
     public string TargetScreen
     {
-      get { return (string)GetValue(TargetScreenProperty); }
-      set { SetValue(TargetScreenProperty, value); }
+      get => (string)GetValue(TargetScreenProperty);
+      set => SetValue(TargetScreenProperty, value);
     }
 
     public string ActiveState
     {
-      get { return (string)GetValue(ActiveStateProperty); }
-      set { SetValue(ActiveStateProperty, value); }
+      get => (string)GetValue(ActiveStateProperty);
+      set => SetValue(ActiveStateProperty, value);
     }
 
     public string InactiveState
     {
-      get { return (string)GetValue(InactiveStateProperty); }
-      set { SetValue(InactiveStateProperty, value); }
+      get => (string)GetValue(InactiveStateProperty);
+      set => SetValue(InactiveStateProperty, value);
     }
 
     private bool IsTargetObjectSet
     {
       get
       {
-        bool isLocallySet = ReadLocalValue(TargetedTriggerAction.TargetObjectProperty) != DependencyProperty.UnsetValue;
+        bool isLocallySet = ReadLocalValue(TargetObjectProperty) != DependencyProperty.UnsetValue;
         // if the value can be set indirectly (via trigger, style, etc), should also check ValueSource, but not a concern for behaviors right now.
         return isLocallySet;
       }
@@ -251,15 +259,9 @@ namespace Crystal.Behaviors
 
     internal void InvokeImpl(FrameworkElement stateTarget)
     {
-      if (stateTarget != null &&
-          !string.IsNullOrEmpty(ActiveState) &&
-          !string.IsNullOrEmpty(InactiveState) &&
-          !string.IsNullOrEmpty(TargetScreen))
+      if (stateTarget != null && !string.IsNullOrEmpty(ActiveState) && !string.IsNullOrEmpty(InactiveState) && !string.IsNullOrEmpty(TargetScreen))
       {
-        UserControl screen = stateTarget
-                .GetSelfAndAncestors()
-                .OfType<UserControl>()
-                .FirstOrDefault(control => control.GetType().ToString() == TargetScreen);
+        UserControl screen = stateTarget.GetSelfAndAncestors().OfType<UserControl>().FirstOrDefault(control => control.GetType().ToString() == TargetScreen);
 
         string stateName = InactiveState;
         if (screen != null)
@@ -269,8 +271,7 @@ namespace Crystal.Behaviors
 
         if (!string.IsNullOrEmpty(stateName))
         {
-          ToggleButton toggleButton = stateTarget as ToggleButton;
-          if (toggleButton != null)
+          if (stateTarget is ToggleButton toggleButton)
           {
             switch (stateName)
             {
@@ -312,16 +313,14 @@ namespace Crystal.Behaviors
         {
           // Given the flexibility of databinding, we won't always have a collection where we can 
           // remove an item.  But let's try a common scenario.
-          IList list = items.ItemsSource as IList;
-          if (list != null && !list.IsReadOnly && list.Contains(AssociatedObject.DataContext))
+          if (items.ItemsSource is IList list && !list.IsReadOnly && list.Contains(AssociatedObject.DataContext))
           {
             list.Remove(AssociatedObject.DataContext);
           }
         }
         else
         {
-          ListBox listBox = ItemsControl as ListBox;
-          if (listBox != null)
+          if (ItemsControl is ListBox listBox)
           {
             ListBoxItem listBoxItem = ItemContainer;
             if (listBoxItem != null)
@@ -334,8 +333,8 @@ namespace Crystal.Behaviors
 
     }
 
-    private ListBoxItem ItemContainer => (ListBoxItem)DependencyObjectHelper.GetSelfAndAncestors(AssociatedObject).FirstOrDefault(element => element is ListBoxItem);
+    private ListBoxItem ItemContainer => (ListBoxItem)AssociatedObject.GetSelfAndAncestors().FirstOrDefault(element => element is ListBoxItem);
 
-    private ItemsControl ItemsControl => (ItemsControl)DependencyObjectHelper.GetSelfAndAncestors(AssociatedObject).FirstOrDefault(element => element is ItemsControl);
+    private ItemsControl ItemsControl => (ItemsControl)AssociatedObject.GetSelfAndAncestors().FirstOrDefault(element => element is ItemsControl);
   }
 }

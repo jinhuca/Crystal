@@ -13,22 +13,24 @@ namespace Crystal.Behaviors
   /// </remarks>
   public abstract class StoryboardAction : TriggerAction<DependencyObject>
   {
-    public static readonly DependencyProperty StoryboardProperty = DependencyProperty.Register("Storyboard", typeof(Storyboard), typeof(StoryboardAction),
-        new FrameworkPropertyMetadata(new PropertyChangedCallback(OnStoryboardChanged)));
+    public static readonly DependencyProperty StoryboardProperty = DependencyProperty.Register(
+      nameof(Storyboard),
+      typeof(Storyboard),
+      typeof(StoryboardAction),
+      new FrameworkPropertyMetadata(new PropertyChangedCallback(OnStoryboardChanged)));
 
     /// <summary>
     /// The targeted Storyboard. This is a dependency property.
     /// </summary>
     public Storyboard Storyboard
     {
-      get { return (Storyboard)GetValue(StoryboardProperty); }
-      set { SetValue(StoryboardProperty, value); }
+      get => (Storyboard)GetValue(StoryboardProperty);
+      set => SetValue(StoryboardProperty, value);
     }
 
     private static void OnStoryboardChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
     {
-      StoryboardAction storyboardAction = sender as StoryboardAction;
-      if (storyboardAction != null)
+      if (sender is StoryboardAction storyboardAction)
       {
         storyboardAction.OnStoryboardChanged(args);
       }
@@ -67,8 +69,8 @@ namespace Crystal.Behaviors
 
     public ControlStoryboardOption ControlStoryboardOption
     {
-      get { return (ControlStoryboardOption)GetValue(ControlStoryboardProperty); }
-      set { SetValue(ControlStoryboardProperty, value); }
+      get => (ControlStoryboardOption)GetValue(ControlStoryboardProperty);
+      set => SetValue(ControlStoryboardProperty, value);
     }
 
     /// <summary>

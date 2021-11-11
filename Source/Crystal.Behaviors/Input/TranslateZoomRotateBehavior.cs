@@ -54,8 +54,8 @@ namespace Crystal.Behaviors
     /// </summary>
     public ManipulationModes SupportedGestures
     {
-      get { return (ManipulationModes)GetValue(TranslateZoomRotateBehavior.SupportedGesturesProperty); }
-      set { SetValue(TranslateZoomRotateBehavior.SupportedGesturesProperty, value); }
+      get => (ManipulationModes)GetValue(SupportedGesturesProperty);
+      set => SetValue(SupportedGesturesProperty, value);
     }
 
     /// <summary>
@@ -63,8 +63,8 @@ namespace Crystal.Behaviors
     /// </summary>
     public double TranslateFriction
     {
-      get { return (double)GetValue(TranslateZoomRotateBehavior.TranslateFrictionProperty); }
-      set { SetValue(TranslateZoomRotateBehavior.TranslateFrictionProperty, value); }
+      get => (double)GetValue(TranslateFrictionProperty);
+      set => SetValue(TranslateFrictionProperty, value);
     }
 
     /// <summary>
@@ -72,8 +72,8 @@ namespace Crystal.Behaviors
     /// </summary>
     public double RotationalFriction
     {
-      get { return (double)GetValue(TranslateZoomRotateBehavior.RotationalFrictionProperty); }
-      set { SetValue(TranslateZoomRotateBehavior.RotationalFrictionProperty, value); }
+      get => (double)GetValue(RotationalFrictionProperty);
+      set => SetValue(RotationalFrictionProperty, value);
     }
 
     /// <summary>
@@ -81,8 +81,8 @@ namespace Crystal.Behaviors
     /// </summary>
     public bool ConstrainToParentBounds
     {
-      get { return (bool)GetValue(TranslateZoomRotateBehavior.ConstrainToParentBoundsProperty); }
-      set { SetValue(TranslateZoomRotateBehavior.ConstrainToParentBoundsProperty, value); }
+      get => (bool)GetValue(ConstrainToParentBoundsProperty);
+      set => SetValue(ConstrainToParentBoundsProperty, value);
     }
 
     /// <summary>
@@ -90,8 +90,8 @@ namespace Crystal.Behaviors
     /// </summary>
     public double MinimumScale
     {
-      get { return (double)GetValue(TranslateZoomRotateBehavior.MinimumScaleProperty); }
-      set { SetValue(TranslateZoomRotateBehavior.MinimumScaleProperty, value); }
+      get => (double)GetValue(MinimumScaleProperty);
+      set => SetValue(MinimumScaleProperty, value);
     }
 
     /// <summary>
@@ -99,8 +99,8 @@ namespace Crystal.Behaviors
     /// </summary>
     public double MaximumScale
     {
-      get { return (double)GetValue(TranslateZoomRotateBehavior.MaximumScaleProperty); }
-      set { SetValue(TranslateZoomRotateBehavior.MaximumScaleProperty, value); }
+      get => (double)GetValue(MaximumScaleProperty);
+      set => SetValue(MaximumScaleProperty, value);
     }
 
     #endregion
@@ -127,7 +127,7 @@ namespace Crystal.Behaviors
     {
       get
       {
-        if (cachedRenderTransform == null || !object.ReferenceEquals(cachedRenderTransform, AssociatedObject.RenderTransform))
+        if (cachedRenderTransform == null || !ReferenceEquals(cachedRenderTransform, AssociatedObject.RenderTransform))
         {
           Transform clonedTransform = MouseDragElementBehavior.CloneTransform(AssociatedObject.RenderTransform);
           RenderTransform = clonedTransform;
@@ -212,12 +212,12 @@ namespace Crystal.Behaviors
       // scale is the incremental scale, while lastScale is the current accumulated scale in the transform.  We want to constrain the incremental scale
       // so that the accumulated scale doesn't exceed min or max scale.  To prevent collapsing to a zero scale, we'll enforce a positive hard minimum scale.
       double newScaleX = scaleX * lastScaleX;
-      newScaleX = Math.Min(Math.Max(Math.Max(TranslateZoomRotateBehavior.HardMinimumScale, MinimumScale), newScaleX), MaximumScale);
+      newScaleX = Math.Min(Math.Max(Math.Max(HardMinimumScale, MinimumScale), newScaleX), MaximumScale);
       scaleX = newScaleX / lastScaleX;
       lastScaleX = scaleX * lastScaleX;
 
       double newScaleY = scaleY * lastScaleY;
-      newScaleY = Math.Min(Math.Max(Math.Max(TranslateZoomRotateBehavior.HardMinimumScale, MinimumScale), newScaleY), MaximumScale);
+      newScaleY = Math.Min(Math.Max(Math.Max(HardMinimumScale, MinimumScale), newScaleY), MaximumScale);
       scaleY = newScaleY / lastScaleY;
       lastScaleY = scaleY * lastScaleY;
 

@@ -33,8 +33,8 @@ namespace Crystal.Behaviors
     /// </remarks>
     public Uri Source
     {
-      get { return (Uri)GetValue(SourceProperty); }
-      set { SetValue(SourceProperty, value); }
+      get => (Uri)GetValue(SourceProperty);
+      set => SetValue(SourceProperty, value);
     }
 
     /// <summary>
@@ -42,8 +42,8 @@ namespace Crystal.Behaviors
     /// </summary>
     public double Volume
     {
-      get { return (double)GetValue(VolumeProperty); }
-      set { SetValue(VolumeProperty, value); }
+      get => (double)GetValue(VolumeProperty);
+      set => SetValue(VolumeProperty, value);
     }
 
     /// <summary>

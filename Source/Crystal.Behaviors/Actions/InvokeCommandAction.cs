@@ -62,8 +62,8 @@ namespace Crystal.Behaviors
     /// <remarks>This is the value passed to ICommand.CanExecute and ICommand.Execute.</remarks>
     public object CommandParameter
     {
-      get => GetValue(InvokeCommandAction.CommandParameterProperty);
-      set => SetValue(InvokeCommandAction.CommandParameterProperty, value);
+      get => GetValue(CommandParameterProperty);
+      set => SetValue(CommandParameterProperty, value);
     }
 
     /// <summary>
@@ -81,7 +81,7 @@ namespace Crystal.Behaviors
     /// </summary>
     public object EventArgsConverterParameter
     {
-      get => (object)GetValue(EventArgsConverterParameterProperty);
+      get => GetValue(EventArgsConverterParameterProperty);
       set => SetValue(EventArgsConverterParameterProperty, value);
     }
 

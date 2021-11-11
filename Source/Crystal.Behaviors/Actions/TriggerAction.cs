@@ -20,7 +20,7 @@ namespace Crystal.Behaviors
     }
 
     /// <summary>
-    /// Gets the object to which this <see cref="Crystal.Behaviors.TriggerAction&lt;T&gt;"/> is attached.
+    /// Gets the object to which this <see cref="TriggerAction&lt;T&gt;"/> is attached.
     /// </summary>
     /// <value>The associated object.</value>
     protected new T AssociatedObject => (T)base.AssociatedObject;
@@ -36,8 +36,8 @@ namespace Crystal.Behaviors
   /// Represents an attachable object that encapsulates a unit of functionality.
   /// </summary>
   /// <remarks>This is an infrastructure class. Action authors should derive from TriggerAction&lt;T&gt; instead of this class.</remarks>
-  [DefaultTrigger(typeof(UIElement), typeof(Crystal.Behaviors.EventTrigger), "MouseLeftButtonDown")]
-  [DefaultTrigger(typeof(ButtonBase), typeof(Crystal.Behaviors.EventTrigger), "Click")]
+  [DefaultTrigger(typeof(UIElement), typeof(EventTrigger), "MouseLeftButtonDown")]
+  [DefaultTrigger(typeof(ButtonBase), typeof(EventTrigger), "Click")]
   public abstract class TriggerAction : Animatable, IAttachedObject
   {
     private bool isHosted;
@@ -57,11 +57,8 @@ namespace Crystal.Behaviors
     /// </value>
     public bool IsEnabled
     {
-      get { return (bool)GetValue(TriggerAction.IsEnabledProperty); }
-      set
-      {
-        SetValue(TriggerAction.IsEnabledProperty, value);
-      }
+      get => (bool)GetValue(IsEnabledProperty);
+      set => SetValue(IsEnabledProperty, value);
     }
 
     /// <summary>

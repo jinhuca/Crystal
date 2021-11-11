@@ -34,7 +34,7 @@ namespace Crystal.Behaviors
     /// <remarks>Internal, because this should not be inherited outside this assembly.</remarks>
     internal AttachableCollection()
     {
-      INotifyCollectionChanged notifyCollectionChanged = (INotifyCollectionChanged)this;
+      INotifyCollectionChanged notifyCollectionChanged = this;
       notifyCollectionChanged.CollectionChanged += new NotifyCollectionChangedEventHandler(OnCollectionChanged);
       snapshot = new Collection<T>();
     }
@@ -64,7 +64,7 @@ namespace Crystal.Behaviors
     [Conditional("DEBUG")]
     private void VerifySnapshotIntegrity()
     {
-      bool isValid = (Count == snapshot.Count);
+      bool isValid = Count == snapshot.Count;
       if (isValid)
       {
         for (int i = 0; i < Count; i++)

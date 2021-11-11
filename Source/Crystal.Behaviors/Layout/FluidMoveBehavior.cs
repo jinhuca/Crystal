@@ -38,8 +38,8 @@ namespace Crystal.Behaviors
     /// </summary>
     public FluidMoveScope AppliesTo
     {
-      get { return (FluidMoveScope)GetValue(AppliesToProperty); }
-      set { SetValue(AppliesToProperty, value); }
+      get => (FluidMoveScope)GetValue(AppliesToProperty);
+      set => SetValue(AppliesToProperty, value);
     }
     /// <summary>
     /// Dependency property for the scope of the behavior. See FluidMoveScope for more details.
@@ -51,8 +51,8 @@ namespace Crystal.Behaviors
     /// </summary>
     public bool IsActive
     {
-      get { return (bool)GetValue(IsActiveProperty); }
-      set { SetValue(IsActiveProperty, value); }
+      get => (bool)GetValue(IsActiveProperty);
+      set => SetValue(IsActiveProperty, value);
     }
     /// <summary>
     /// Dependency property for the active state of the behavior.
@@ -64,8 +64,8 @@ namespace Crystal.Behaviors
     /// </summary>
     public TagType Tag
     {
-      get { return (TagType)GetValue(TagProperty); }
-      set { SetValue(TagProperty, value); }
+      get => (TagType)GetValue(TagProperty);
+      set => SetValue(TagProperty, value);
     }
     /// <summary>
     /// Dependency property that provides the ability to use the element as its own tag, or the binding on the element.
@@ -77,13 +77,13 @@ namespace Crystal.Behaviors
     /// </summary>
     public string TagPath
     {
-      get { return (string)GetValue(TagPathProperty); }
-      set { SetValue(TagPathProperty, value); }
+      get => (string)GetValue(TagPathProperty);
+      set => SetValue(TagPathProperty, value);
     }
     /// <summary>
     /// Dependency property for the extra path to add to the binding when UsaBindingAsTag is true.
     /// </summary>
-    public static readonly DependencyProperty TagPathProperty = DependencyProperty.Register("TagPath", typeof(string), typeof(FluidMoveBehaviorBase), new PropertyMetadata(String.Empty));
+    public static readonly DependencyProperty TagPathProperty = DependencyProperty.Register("TagPath", typeof(string), typeof(FluidMoveBehaviorBase), new PropertyMetadata(string.Empty));
 
     /// <summary>
     /// Identity tag used to detect element motion between containers.
@@ -204,7 +204,7 @@ namespace Crystal.Behaviors
       {
         newTagData.AppRect = TranslateRect(newTagData.ParentRect, newTagData.Parent, root);
       }
-      catch (System.ArgumentException)
+      catch (ArgumentException)
       {
         if (ShouldSkipInitialLayout)
         {
@@ -224,7 +224,7 @@ namespace Crystal.Behaviors
       UpdateLayoutTransitionCore(child, root, tag, newTagData);
     }
 
-    protected virtual bool ShouldSkipInitialLayout => (Tag == TagType.DataContext);
+    protected virtual bool ShouldSkipInitialLayout => Tag == TagType.DataContext;
 
     internal abstract void UpdateLayoutTransitionCore(FrameworkElement child, FrameworkElement root, object tag, TagData newTagData);
 
@@ -306,8 +306,8 @@ namespace Crystal.Behaviors
     /// </summary>
     public Duration Duration
     {
-      get { return (Duration)GetValue(DurationProperty); }
-      set { SetValue(DurationProperty, value); }
+      get => (Duration)GetValue(DurationProperty);
+      set => SetValue(DurationProperty, value);
     }
     /// <summary>
     /// Dependency property for the duration of the move.
@@ -319,8 +319,8 @@ namespace Crystal.Behaviors
     /// </summary>
     public TagType InitialTag
     {
-      get { return (TagType)GetValue(InitialTagProperty); }
-      set { SetValue(InitialTagProperty, value); }
+      get => (TagType)GetValue(InitialTagProperty);
+      set => SetValue(InitialTagProperty, value);
     }
     /// <summary>
     /// Dependency property for the tag type to use just before the object is loaded.
@@ -332,13 +332,13 @@ namespace Crystal.Behaviors
     /// </summary>
     public string InitialTagPath
     {
-      get { return (string)GetValue(InitialTagPathProperty); }
-      set { SetValue(InitialTagPathProperty, value); }
+      get => (string)GetValue(InitialTagPathProperty);
+      set => SetValue(InitialTagPathProperty, value);
     }
     /// <summary>
     /// Dependency property for the extra path to add to the binding when UsaBindingAsTag is true.
     /// </summary>
-    public static readonly DependencyProperty InitialTagPathProperty = DependencyProperty.Register("InitialTagPath", typeof(string), typeof(FluidMoveBehavior), new PropertyMetadata(String.Empty));
+    public static readonly DependencyProperty InitialTagPathProperty = DependencyProperty.Register("InitialTagPath", typeof(string), typeof(FluidMoveBehavior), new PropertyMetadata(string.Empty));
 
     /// <summary>
     /// Identity tag used to detect element motion between containers.
@@ -353,8 +353,8 @@ namespace Crystal.Behaviors
     /// </summary>
     public bool FloatAbove
     {
-      get { return (bool)GetValue(FloatAboveProperty); }
-      set { SetValue(FloatAboveProperty, value); }
+      get => (bool)GetValue(FloatAboveProperty);
+      set => SetValue(FloatAboveProperty, value);
     }
     /// <summary>
     /// Dependency property for the FloatAbove flag.
@@ -366,8 +366,8 @@ namespace Crystal.Behaviors
     /// </summary>
     public IEasingFunction EaseX
     {
-      get { return (IEasingFunction)GetValue(EaseXProperty); }
-      set { SetValue(EaseXProperty, value); }
+      get => (IEasingFunction)GetValue(EaseXProperty);
+      set => SetValue(EaseXProperty, value);
     }
     /// <summary>
     /// Dependency property for the EasingFunction to use for the horizontal component of the move.
@@ -379,8 +379,8 @@ namespace Crystal.Behaviors
     /// </summary>
     public IEasingFunction EaseY
     {
-      get { return (IEasingFunction)GetValue(EaseYProperty); }
-      set { SetValue(EaseYProperty, value); }
+      get => (IEasingFunction)GetValue(EaseYProperty);
+      set => SetValue(EaseYProperty, value);
     }
     /// <summary>
     /// Dependency property for the EasingFunction to use for the vertical component of the move.
@@ -410,7 +410,7 @@ namespace Crystal.Behaviors
 
     private static Dictionary<object, Storyboard> transitionStoryboardDictionary = new Dictionary<object, Storyboard>();
 
-    protected override bool ShouldSkipInitialLayout => base.ShouldSkipInitialLayout || (InitialTag == TagType.DataContext);
+    protected override bool ShouldSkipInitialLayout => base.ShouldSkipInitialLayout || InitialTag == TagType.DataContext;
 
     protected override void EnsureTags(FrameworkElement child)
     {
@@ -476,8 +476,8 @@ namespace Crystal.Behaviors
 
       FrameworkElement originalChild = child;
 
-      if ((!FluidMoveBehavior.IsEmptyRect(previousRect) && !FluidMoveBehavior.IsEmptyRect(newTagData.ParentRect)) && (!IsClose(previousRect.Left, newTagData.ParentRect.Left) || !IsClose(previousRect.Top, newTagData.ParentRect.Top)) ||
-          (child != tagData.Child && transitionStoryboardDictionary.ContainsKey(tag)))
+      if (!IsEmptyRect(previousRect) && !IsEmptyRect(newTagData.ParentRect) && (!IsClose(previousRect.Left, newTagData.ParentRect.Left) || !IsClose(previousRect.Top, newTagData.ParentRect.Top)) ||
+          child != tagData.Child && transitionStoryboardDictionary.ContainsKey(tag))
       {
         Rect currentRect = previousRect;
         bool forceFloatAbove = false;
@@ -490,7 +490,7 @@ namespace Crystal.Behaviors
           object tagOverlay = GetOverlay(tagData.Child);
           AdornerContainer adornerContainer = (AdornerContainer)tagOverlay;
 
-          forceFloatAbove = (tagOverlay != null); // if floating before, we need to keep floating
+          forceFloatAbove = tagOverlay != null; // if floating before, we need to keep floating
           FrameworkElement elementWithTransform = tagData.Child;
 
           if (tagOverlay != null)
@@ -517,7 +517,7 @@ namespace Crystal.Behaviors
           if (tagOverlay != null)
           {
             System.Windows.Documents.AdornerLayer.GetAdornerLayer(root).Remove(adornerContainer);
-            TransferLocalValue(tagData.Child, FluidMoveBehavior.cacheDuringOverlayProperty, FrameworkElement.RenderTransformProperty);
+            TransferLocalValue(tagData.Child, cacheDuringOverlayProperty, UIElement.RenderTransformProperty);
             SetOverlay(tagData.Child, null);
           }
         }
@@ -530,7 +530,7 @@ namespace Crystal.Behaviors
         // 3. Hide the original element (opacity=0 so we do not disturb layout)
         // 4. Animate the image
         // 5. Keep track of all the info we need to unwind this later
-        if (forceFloatAbove || (parentChange && FloatAbove))
+        if (forceFloatAbove || parentChange && FloatAbove)
         {
           Canvas canvas = new Canvas() { Width = newTagData.ParentRect.Width, Height = newTagData.ParentRect.Height, IsHitTestVisible = false };
 
@@ -553,7 +553,7 @@ namespace Crystal.Behaviors
           //image.Source = bitmap;
 
           // can't animate this or it will flash, have to set the value outright
-          TransferLocalValue(child, FrameworkElement.RenderTransformProperty, FluidMoveBehavior.cacheDuringOverlayProperty);
+          TransferLocalValue(child, UIElement.RenderTransformProperty, cacheDuringOverlayProperty);
           child.RenderTransform = new TranslateTransform(-10000, -10000);
           canvas.RenderTransform = new TranslateTransform(10000, 10000);
 
@@ -581,7 +581,7 @@ namespace Crystal.Behaviors
             if (overlay != null)
             {
               System.Windows.Documents.AdornerLayer.GetAdornerLayer(root).Remove((AdornerContainer)overlay);
-              TransferLocalValue(originalChild, FluidMoveBehavior.cacheDuringOverlayProperty, FrameworkElement.RenderTransformProperty);
+              TransferLocalValue(originalChild, cacheDuringOverlayProperty, UIElement.RenderTransformProperty);
               SetOverlay(originalChild, null);
             }
           }
@@ -604,8 +604,8 @@ namespace Crystal.Behaviors
       Storyboard transitionStoryboard = new Storyboard();
       transitionStoryboard.Duration = duration;
 
-      double xScaleFrom = (!usingBeforeLoaded || layoutRect.Width == 0.0) ? 1.0 : (currentRect.Width / layoutRect.Width);
-      double yScaleFrom = (!usingBeforeLoaded || layoutRect.Height == 0.0) ? 1.0 : (currentRect.Height / layoutRect.Height);
+      double xScaleFrom = !usingBeforeLoaded || layoutRect.Width == 0.0 ? 1.0 : currentRect.Width / layoutRect.Width;
+      double yScaleFrom = !usingBeforeLoaded || layoutRect.Height == 0.0 ? 1.0 : currentRect.Height / layoutRect.Height;
       double xFrom = currentRect.Left - layoutRect.Left;
       double yFrom = currentRect.Top - layoutRect.Top;
 
@@ -733,12 +733,12 @@ namespace Crystal.Behaviors
 
     private static bool IsClose(double a, double b)
     {
-      return (Math.Abs((double)(a - b)) < 1E-07);
+      return Math.Abs((double)(a - b)) < 1E-07;
     }
 
     private static bool IsEmptyRect(Rect rect)
     {
-      return ((rect.IsEmpty || double.IsNaN(rect.Left)) || double.IsNaN(rect.Top));
+      return rect.IsEmpty || double.IsNaN(rect.Left) || double.IsNaN(rect.Top);
     }
   }
 
@@ -765,7 +765,7 @@ namespace Crystal.Behaviors
 
     public UIElement Child
     {
-      get { return child; }
+      get => child;
       set
       {
         AddVisualChild(value);

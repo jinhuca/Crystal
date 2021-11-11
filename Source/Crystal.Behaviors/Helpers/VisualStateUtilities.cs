@@ -33,7 +33,7 @@ namespace Crystal.Behaviors
         }
         else
         {
-          success = ExtendedVisualStateManager.GoToElementState(element, stateName, useTransitions);
+          success = VisualStateManager.GoToElementState(element, stateName, useTransitions);
         }
       }
 
@@ -114,7 +114,7 @@ namespace Crystal.Behaviors
 
       if (HasVisualStateGroupsDefined(frameworkElement))
       {
-        if ((frameworkElement.TemplatedParent != null) && (frameworkElement.TemplatedParent is Control))
+        if (frameworkElement.TemplatedParent != null && frameworkElement.TemplatedParent is Control)
         {
           // We didn't need to walk the tree to get this because TemplatedParent is set for all elements in the 
           // template.  However, it maintains consistency in our error checking to do it this way.
@@ -163,7 +163,7 @@ namespace Crystal.Behaviors
       {
         // stop if parent's parent is null AND parent isn't the template root of a ControlTemplate or DataTemplate
         FrameworkElement templatedParent = FindTemplatedParent(element);
-        if (templatedParent == null || (!(templatedParent is Control) && !(templatedParent is ContentPresenter)))
+        if (templatedParent == null || !(templatedParent is Control) && !(templatedParent is ContentPresenter))
         {
           return false;
         }

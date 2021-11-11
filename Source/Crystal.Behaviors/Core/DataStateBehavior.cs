@@ -12,18 +12,37 @@ namespace Crystal.Behaviors
   /// </summary>
   public class DataStateBehavior : Behavior<FrameworkElement>
   {
-    public static readonly DependencyProperty BindingProperty = DependencyProperty.Register("Binding", typeof(object), typeof(DataStateBehavior), new PropertyMetadata(OnBindingChanged));
-    public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(object), typeof(DataStateBehavior), new PropertyMetadata(OnValueChanged));
-    public static readonly DependencyProperty TrueStateProperty = DependencyProperty.Register("TrueState", typeof(string), typeof(DataStateBehavior), new PropertyMetadata(OnTrueStateChanged));
-    public static readonly DependencyProperty FalseStateProperty = DependencyProperty.Register("FalseState", typeof(string), typeof(DataStateBehavior), new PropertyMetadata(OnFalseStateChanged));
+    public static readonly DependencyProperty BindingProperty = DependencyProperty.Register(
+      nameof(Binding),
+      typeof(object),
+      typeof(DataStateBehavior),
+      new PropertyMetadata(OnBindingChanged));
+
+    public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
+      nameof(Value),
+      typeof(object),
+      typeof(DataStateBehavior),
+      new PropertyMetadata(OnValueChanged));
+
+    public static readonly DependencyProperty TrueStateProperty = DependencyProperty.Register(
+      nameof(TrueState),
+      typeof(string),
+      typeof(DataStateBehavior),
+      new PropertyMetadata(OnTrueStateChanged));
+
+    public static readonly DependencyProperty FalseStateProperty = DependencyProperty.Register(
+      nameof(FalseState),
+      typeof(string),
+      typeof(DataStateBehavior),
+      new PropertyMetadata(OnFalseStateChanged));
 
     /// <summary>
     /// Gets or sets the binding that produces the property value of the data object. This is a dependency property.
     /// </summary>
     public object Binding
     {
-      get { return GetValue(BindingProperty); }
-      set { SetValue(BindingProperty, value); }
+      get => GetValue(BindingProperty);
+      set => SetValue(BindingProperty, value);
     }
 
     /// <summary>
@@ -32,8 +51,8 @@ namespace Crystal.Behaviors
     [SuppressMessage("Microsoft.Naming", "CA1721:PropertyNamesShouldNotMatchGetMethods", Justification = "This matches the structure of DataTrigger, which this is patterned after.")]
     public object Value
     {
-      get { return GetValue(ValueProperty); }
-      set { SetValue(ValueProperty, value); }
+      get => GetValue(ValueProperty);
+      set => SetValue(ValueProperty, value);
     }
 
     /// <summary>
@@ -41,8 +60,8 @@ namespace Crystal.Behaviors
     /// </summary>
     public string TrueState
     {
-      get { return (string)GetValue(TrueStateProperty); }
-      set { SetValue(TrueStateProperty, value); }
+      get => (string)GetValue(TrueStateProperty);
+      set => SetValue(TrueStateProperty, value);
     }
 
     /// <summary>
@@ -50,8 +69,8 @@ namespace Crystal.Behaviors
     /// </summary>
     public string FalseState
     {
-      get { return (string)GetValue(FalseStateProperty); }
-      set { SetValue(FalseStateProperty, value); }
+      get => (string)GetValue(FalseStateProperty);
+      set => SetValue(FalseStateProperty, value);
     }
 
     private FrameworkElement TargetObject => VisualStateUtilities.FindNearestStatefulControl(AssociatedObject);
@@ -76,10 +95,7 @@ namespace Crystal.Behaviors
       }
       else
       {
-        AssociatedObject.Loaded += (o, e) =>
-            {
-              ValidateStateNames();
-            };
+        AssociatedObject.Loaded += (o, e) => { ValidateStateNames(); };
       }
     }
 
@@ -115,10 +131,7 @@ namespace Crystal.Behaviors
           }
           throw new ArgumentException(string.Format(CultureInfo.CurrentCulture,
               ExceptionStringTable.DataStateBehaviorStateNameNotFoundExceptionMessage,
-              stateName,
-              TargetObject != null ?
-                  TargetObject.GetType().Name :
-                  "null"));
+              stateName, TargetObject != null ? TargetObject.GetType().Name : "null"));
         }
       }
     }

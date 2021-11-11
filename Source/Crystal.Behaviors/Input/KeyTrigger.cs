@@ -31,8 +31,8 @@ namespace Crystal.Behaviors
     /// </summary>
     public Key Key
     {
-      get { return (Key)GetValue(KeyTrigger.KeyProperty); }
-      set { SetValue(KeyTrigger.KeyProperty, value); }
+      get => (Key)GetValue(KeyProperty);
+      set => SetValue(KeyProperty, value);
     }
 
     /// <summary>
@@ -40,8 +40,8 @@ namespace Crystal.Behaviors
     /// </summary>
     public ModifierKeys Modifiers
     {
-      get { return (ModifierKeys)GetValue(KeyTrigger.ModifiersProperty); }
-      set { SetValue(KeyTrigger.ModifiersProperty, value); }
+      get => (ModifierKeys)GetValue(ModifiersProperty);
+      set => SetValue(ModifiersProperty, value);
     }
 
     /// <summary>
@@ -50,8 +50,8 @@ namespace Crystal.Behaviors
     /// </summary>
     public bool ActiveOnFocus
     {
-      get { return (bool)GetValue(KeyTrigger.ActiveOnFocusProperty); }
-      set { SetValue(KeyTrigger.ActiveOnFocusProperty, value); }
+      get => (bool)GetValue(ActiveOnFocusProperty);
+      set => SetValue(ActiveOnFocusProperty, value);
     }
 
     /// <summary>
@@ -59,8 +59,8 @@ namespace Crystal.Behaviors
     /// </summary>
     public KeyTriggerFiredOn FiredOn
     {
-      get { return (KeyTriggerFiredOn)GetValue(KeyTrigger.FiredOnProperty); }
-      set { SetValue(KeyTrigger.FiredOnProperty, value); }
+      get => (KeyTriggerFiredOn)GetValue(FiredOnProperty);
+      set => SetValue(FiredOnProperty, value);
     }
 
     protected override string GetEventName()
@@ -103,7 +103,7 @@ namespace Crystal.Behaviors
       }
       else
       {
-        targetElement = KeyTrigger.GetRoot(Source);
+        targetElement = GetRoot(Source);
       }
 
       if (FiredOn == KeyTriggerFiredOn.KeyDown)

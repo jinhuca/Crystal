@@ -8,8 +8,17 @@ namespace Crystal.Behaviors
   /// </summary>
   public class DataTrigger : PropertyChangedTrigger
   {
-    public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(object), typeof(DataTrigger), new PropertyMetadata(OnValueChanged));
-    public static readonly DependencyProperty ComparisonProperty = DependencyProperty.Register("Comparison", typeof(ComparisonConditionType), typeof(DataTrigger), new PropertyMetadata(OnComparisonChanged));
+    public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
+      nameof(Value),
+      typeof(object),
+      typeof(DataTrigger),
+      new PropertyMetadata(OnValueChanged));
+
+    public static readonly DependencyProperty ComparisonProperty = DependencyProperty.Register(
+      nameof(Comparison),
+      typeof(ComparisonConditionType),
+      typeof(DataTrigger),
+      new PropertyMetadata(OnComparisonChanged));
 
     /// <summary>
     /// Gets or sets the value to be compared with the property value of the data object. This is a dependency property.
@@ -17,8 +26,8 @@ namespace Crystal.Behaviors
     [SuppressMessage("Microsoft.Naming", "CA1721:PropertyNamesShouldNotMatchGetMethods", Justification = "This matches the structure of the WPF DataTrigger.")]
     public object Value
     {
-      get { return GetValue(ValueProperty); }
-      set { SetValue(ValueProperty, value); }
+      get => GetValue(ValueProperty);
+      set => SetValue(ValueProperty, value);
     }
 
     /// <summary>
@@ -26,8 +35,8 @@ namespace Crystal.Behaviors
     /// </summary>
     public ComparisonConditionType Comparison
     {
-      get { return (ComparisonConditionType)GetValue(ComparisonProperty); }
-      set { SetValue(ComparisonProperty, value); }
+      get => (ComparisonConditionType)GetValue(ComparisonProperty);
+      set => SetValue(ComparisonProperty, value);
     }
 
     public DataTrigger()

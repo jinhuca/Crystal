@@ -13,22 +13,24 @@ namespace Crystal.Behaviors
   /// </remarks>
   public abstract class StoryboardTrigger : TriggerBase<DependencyObject>
   {
-    public static readonly DependencyProperty StoryboardProperty = DependencyProperty.Register("Storyboard", typeof(Storyboard), typeof(StoryboardTrigger),
-        new FrameworkPropertyMetadata(new PropertyChangedCallback(OnStoryboardChanged)));
+    public static readonly DependencyProperty StoryboardProperty = DependencyProperty.Register(
+      nameof(Storyboard),
+      typeof(Storyboard),
+      typeof(StoryboardTrigger),
+      new FrameworkPropertyMetadata(new PropertyChangedCallback(OnStoryboardChanged)));
 
     /// <summary>
     /// The targeted Storyboard. This is a dependency property.
     /// </summary>
     public Storyboard Storyboard
     {
-      get { return (Storyboard)GetValue(StoryboardProperty); }
-      set { SetValue(StoryboardProperty, value); }
+      get => (Storyboard)GetValue(StoryboardProperty);
+      set => SetValue(StoryboardProperty, value);
     }
 
     private static void OnStoryboardChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
     {
-      StoryboardTrigger storyboardTrigger = sender as StoryboardTrigger;
-      if (storyboardTrigger != null)
+      if (sender is StoryboardTrigger storyboardTrigger)
       {
         storyboardTrigger.OnStoryboardChanged(args);
       }

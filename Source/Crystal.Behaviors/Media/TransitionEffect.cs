@@ -15,13 +15,13 @@ namespace Crystal.Behaviors
     /// Brush-valued properties that turn into sampler-properties in the shader.
     /// Represents the image present in the final state of the transition.
     /// </summary>
-    public static readonly DependencyProperty InputProperty = ShaderEffect.RegisterPixelShaderSamplerProperty("Input", typeof(TransitionEffect), 0, SamplingMode.NearestNeighbor);
+    public static readonly DependencyProperty InputProperty = RegisterPixelShaderSamplerProperty("Input", typeof(TransitionEffect), 0, SamplingMode.NearestNeighbor);
 
     /// <summary>
     /// Brush-valued properties that turn into sampler-properties in the shader.
     /// Represents the image present in the initial state of the transition.
     /// </summary>
-    public static readonly DependencyProperty OldImageProperty = ShaderEffect.RegisterPixelShaderSamplerProperty("OldImage", typeof(TransitionEffect), 1, SamplingMode.NearestNeighbor);
+    public static readonly DependencyProperty OldImageProperty = RegisterPixelShaderSamplerProperty("OldImage", typeof(TransitionEffect), 1, SamplingMode.NearestNeighbor);
 
     /// <summary>
     /// A Dependency property as the backing store for Progress.
@@ -66,8 +66,8 @@ namespace Crystal.Behaviors
     /// </summary>
     public Brush Input
     {
-      get { return (Brush)GetValue(InputProperty); }
-      set { SetValue(InputProperty, value); }
+      get => (Brush)GetValue(InputProperty);
+      set => SetValue(InputProperty, value);
     }
 
     /// <summary>
@@ -75,8 +75,8 @@ namespace Crystal.Behaviors
     /// </summary>
     public Brush OldImage
     {
-      get { return (Brush)GetValue(OldImageProperty); }
-      set { SetValue(OldImageProperty, value); }
+      get => (Brush)GetValue(OldImageProperty);
+      set => SetValue(OldImageProperty, value);
     }
 
     /// <summary>
@@ -84,8 +84,8 @@ namespace Crystal.Behaviors
     /// </summary>
     public double Progress
     {
-      get { return (double)GetValue(ProgressProperty); }
-      set { SetValue(ProgressProperty, value); }
+      get => (double)GetValue(ProgressProperty);
+      set => SetValue(ProgressProperty, value);
     }
   }
 }

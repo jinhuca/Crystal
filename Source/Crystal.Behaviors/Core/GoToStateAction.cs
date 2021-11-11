@@ -14,16 +14,25 @@ namespace Crystal.Behaviors
   /// </remarks>
   public class GoToStateAction : TargetedTriggerAction<FrameworkElement>
   {
-    public static readonly DependencyProperty UseTransitionsProperty = DependencyProperty.Register("UseTransitions", typeof(bool), typeof(GoToStateAction), new PropertyMetadata(true));
-    public static readonly DependencyProperty StateNameProperty = DependencyProperty.Register("StateName", typeof(string), typeof(GoToStateAction), new PropertyMetadata(string.Empty));
+    public static readonly DependencyProperty UseTransitionsProperty = DependencyProperty.Register(
+      nameof(UseTransitions),
+      typeof(bool),
+      typeof(GoToStateAction),
+      new PropertyMetadata(true));
+
+    public static readonly DependencyProperty StateNameProperty = DependencyProperty.Register(
+      nameof(StateName),
+      typeof(string),
+      typeof(GoToStateAction),
+      new PropertyMetadata(string.Empty));
 
     /// <summary>
     /// Determines whether or not to use a VisualTransition to transition between states.
     /// </summary>
     public bool UseTransitions
     {
-      get { return (bool)GetValue(UseTransitionsProperty); }
-      set { SetValue(UseTransitionsProperty, value); }
+      get => (bool)GetValue(UseTransitionsProperty);
+      set => SetValue(UseTransitionsProperty, value);
     }
 
     /// <summary>
@@ -31,8 +40,8 @@ namespace Crystal.Behaviors
     /// </summary>
     public string StateName
     {
-      get { return (string)GetValue(StateNameProperty); }
-      set { SetValue(StateNameProperty, value); }
+      get => (string)GetValue(StateNameProperty);
+      set => SetValue(StateNameProperty, value);
     }
 
     private FrameworkElement StateTarget
@@ -45,7 +54,7 @@ namespace Crystal.Behaviors
     {
       get
       {
-        bool isLocallySet = ReadLocalValue(TargetedTriggerAction.TargetObjectProperty) != DependencyProperty.UnsetValue;
+        bool isLocallySet = ReadLocalValue(TargetObjectProperty) != DependencyProperty.UnsetValue;
         // if the value can be set indirectly (via trigger, style, etc), should also check ValueSource, but not a concern for behaviors right now.
         return isLocallySet;
       }
@@ -68,9 +77,7 @@ namespace Crystal.Behaviors
         bool successful = VisualStateUtilities.TryFindNearestStatefulControl(AssociatedObject as FrameworkElement, out frameworkElement);
         if (!successful && frameworkElement != null)
         {
-          throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture,
-                                  ExceptionStringTable.GoToStateActionTargetHasNoStateGroups,
-                                  frameworkElement.Name));
+          throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, ExceptionStringTable.GoToStateActionTargetHasNoStateGroups, frameworkElement.Name));
         }
       }
       else

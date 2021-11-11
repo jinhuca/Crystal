@@ -7,19 +7,19 @@ namespace Crystal.Behaviors
   /// <summary>
   /// A trigger that is triggered by a specified event occurring on its source and fires after a delay when that event is fired.
   /// </summary>
-  public class TimerTrigger : Crystal.Behaviors.EventTrigger
+  public class TimerTrigger : EventTrigger
   {
-    public static readonly DependencyProperty MillisecondsPerTickProperty = DependencyProperty.Register("MillisecondsPerTick",
-                                                                                                typeof(double),
-                                                                                                typeof(TimerTrigger),
-                                                                                                new FrameworkPropertyMetadata(1000.0)
-                                                                                                );
+    public static readonly DependencyProperty MillisecondsPerTickProperty = DependencyProperty.Register(
+      nameof(MillisecondsPerTick),
+      typeof(double),
+      typeof(TimerTrigger),
+      new FrameworkPropertyMetadata(1000.0));
 
-    public static readonly DependencyProperty TotalTicksProperty = DependencyProperty.Register("TotalTicks",
-                                                                                                typeof(int),
-                                                                                                typeof(TimerTrigger),
-                                                                                                new FrameworkPropertyMetadata(-1)
-                                                                                                );
+    public static readonly DependencyProperty TotalTicksProperty = DependencyProperty.Register(
+      nameof(TotalTicks),
+      typeof(int),
+      typeof(TimerTrigger),
+      new FrameworkPropertyMetadata(-1));
 
     private ITickTimer timer;
     private EventArgs eventArgs;
@@ -28,8 +28,7 @@ namespace Crystal.Behaviors
     /// <summary>
     /// Initializes a new instance of the <see cref="TimerTrigger"/> class.
     /// </summary>
-    public TimerTrigger() :
-        this(new DispatcherTickTimer())
+    public TimerTrigger() : this(new DispatcherTickTimer())
     {
     }
 
@@ -44,8 +43,8 @@ namespace Crystal.Behaviors
     /// </summary>
     public double MillisecondsPerTick
     {
-      get { return (double)GetValue(MillisecondsPerTickProperty); }
-      set { SetValue(MillisecondsPerTickProperty, value); }
+      get => (double)GetValue(MillisecondsPerTickProperty);
+      set => SetValue(MillisecondsPerTickProperty, value);
     }
 
     /// <summary>
@@ -53,8 +52,8 @@ namespace Crystal.Behaviors
     /// </summary>
     public int TotalTicks
     {
-      get { return (int)GetValue(TotalTicksProperty); }
-      set { SetValue(TotalTicksProperty, value); }
+      get => (int)GetValue(TotalTicksProperty);
+      set => SetValue(TotalTicksProperty, value);
     }
 
     protected override void OnEvent(EventArgs eventArgs)
@@ -120,8 +119,8 @@ namespace Crystal.Behaviors
 
       public TimeSpan Interval
       {
-        get { return dispatcherTimer.Interval; }
-        set { dispatcherTimer.Interval = value; }
+        get => dispatcherTimer.Interval;
+        set => dispatcherTimer.Interval = value;
       }
 
       public void Start()

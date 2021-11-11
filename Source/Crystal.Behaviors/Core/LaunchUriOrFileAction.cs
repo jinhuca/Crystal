@@ -20,8 +20,8 @@ namespace Crystal.Behaviors
     /// </summary>
     public string Path
     {
-      get { return (string)GetValue(PathProperty); }
-      set { SetValue(PathProperty, value); }
+      get => (string)GetValue(PathProperty);
+      set => SetValue(PathProperty, value);
     }
 
     /// <summary>

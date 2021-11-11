@@ -1,11 +1,9 @@
-﻿// Copyright (c) Microsoft. All rights reserved. 
-// Licensed under the MIT license. See LICENSE file in the project root for full license information. 
+﻿using System.Windows;
+using System;
+using System.Diagnostics;
+
 namespace Crystal.Behaviors
 {
-  using System.Windows;
-  using System;
-  using System.Diagnostics;
-
   /// <summary>
   /// Represents a collection of actions with a shared AssociatedObject and provides change notifications to its contents when that AssociatedObject changes.
   /// </summary>

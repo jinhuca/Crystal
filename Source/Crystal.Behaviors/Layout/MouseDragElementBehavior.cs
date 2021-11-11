@@ -66,8 +66,8 @@ namespace Crystal.Behaviors
     [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "X", Justification = "X is the correct property name.")]
     public double X
     {
-      get { return (double)GetValue(XProperty); }
-      set { SetValue(XProperty, value); }
+      get => (double)GetValue(XProperty);
+      set => SetValue(XProperty, value);
     }
 
     /// <summary>
@@ -76,8 +76,8 @@ namespace Crystal.Behaviors
     [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Y", Justification = "Y is the correct property name.")]
     public double Y
     {
-      get { return (double)GetValue(YProperty); }
-      set { SetValue(YProperty, value); }
+      get => (double)GetValue(YProperty);
+      set => SetValue(YProperty, value);
     }
 
     /// <summary>
@@ -88,8 +88,8 @@ namespace Crystal.Behaviors
     /// </value>
     public bool ConstrainToParentBounds
     {
-      get { return (bool)GetValue(ConstrainToParentBoundsProperty); }
-      set { SetValue(ConstrainToParentBoundsProperty, value); }
+      get => (bool)GetValue(ConstrainToParentBoundsProperty);
+      set => SetValue(ConstrainToParentBoundsProperty, value);
     }
 
     #endregion
@@ -127,7 +127,7 @@ namespace Crystal.Behaviors
       get
       {
         GeneralTransform elementToRoot = AssociatedObject.TransformToVisual(RootElement);
-        Point translation = MouseDragElementBehavior.GetTransformOffset(elementToRoot);
+        Point translation = GetTransformOffset(elementToRoot);
         return new Point(translation.X, translation.Y);
       }
     }
@@ -178,9 +178,9 @@ namespace Crystal.Behaviors
     {
       get
       {
-        if (cachedRenderTransform == null || !object.ReferenceEquals(cachedRenderTransform, AssociatedObject.RenderTransform))
+        if (cachedRenderTransform == null || !ReferenceEquals(cachedRenderTransform, AssociatedObject.RenderTransform))
         {
-          Transform clonedTransform = MouseDragElementBehavior.CloneTransform(AssociatedObject.RenderTransform);
+          Transform clonedTransform = CloneTransform(AssociatedObject.RenderTransform);
           RenderTransform = clonedTransform;
         }
         return cachedRenderTransform;
@@ -208,7 +208,7 @@ namespace Crystal.Behaviors
       if (!settingPosition && AssociatedObject != null)
       {
         GeneralTransform elementToRoot = AssociatedObject.TransformToVisual(RootElement);
-        Point translation = MouseDragElementBehavior.GetTransformOffset(elementToRoot);
+        Point translation = GetTransformOffset(elementToRoot);
         double xChange = double.IsNaN(point.X) ? 0 : point.X - translation.X;
         double yChange = double.IsNaN(point.Y) ? 0 : point.Y - translation.Y;
         ApplyTranslation(xChange, yChange);
@@ -225,7 +225,7 @@ namespace Crystal.Behaviors
       if (ParentElement != null)
       {
         GeneralTransform rootToParent = RootElement.TransformToVisual(ParentElement);
-        Point transformedPoint = MouseDragElementBehavior.TransformAsVector(rootToParent, x, y);
+        Point transformedPoint = TransformAsVector(rootToParent, x, y);
         x = transformedPoint.X;
         y = transformedPoint.Y;
 
@@ -242,7 +242,7 @@ namespace Crystal.Behaviors
           endPosition.X += x;
           endPosition.Y += y;
 
-          if (!MouseDragElementBehavior.RectContainsRect(parentBounds, endPosition))
+          if (!RectContainsRect(parentBounds, endPosition))
           {
             if (endPosition.X < parentBounds.Left)
             {
@@ -333,7 +333,7 @@ namespace Crystal.Behaviors
     /// </summary>
     /// <param name="transform">The transform to clone.</param>
     /// <returns>A deep copy of the specified transform, or null if the specified transform is null.</returns>
-    /// <exception cref="System.ArgumentException">Thrown if the type of the Transform is not recognized.</exception>
+    /// <exception cref="ArgumentException">Thrown if the type of the Transform is not recognized.</exception>
     internal static Transform CloneTransform(Transform transform)
     {
       ScaleTransform scaleTransform = null;
@@ -413,7 +413,7 @@ namespace Crystal.Behaviors
     private void UpdatePosition()
     {
       GeneralTransform elementToRoot = AssociatedObject.TransformToVisual(RootElement);
-      Point translation = MouseDragElementBehavior.GetTransformOffset(elementToRoot);
+      Point translation = GetTransformOffset(elementToRoot);
       X = translation.X;
       Y = translation.Y;
     }
@@ -501,7 +501,7 @@ namespace Crystal.Behaviors
       {
         return false;
       }
-      return ((((rect1.X <= rect2.X) && (rect1.Y <= rect2.Y)) && ((rect1.X + rect1.Width) >= (rect2.X + rect2.Width))) && ((rect1.Y + rect1.Height) >= (rect2.Y + rect2.Height)));
+      return rect1.X <= rect2.X && rect1.Y <= rect2.Y && rect1.X + rect1.Width >= rect2.X + rect2.Width && rect1.Y + rect1.Height >= rect2.Y + rect2.Height;
     }
 
     /// <summary>

@@ -20,7 +20,6 @@ namespace Crystal.Behaviors
   /// </summary>
   public class ExtendedVisualStateManager : VisualStateManager
   {
-
     internal class WrapperCanvas : Canvas
     {
       public Rect OldRect { get; set; }
@@ -30,11 +29,15 @@ namespace Crystal.Behaviors
 
       public double SimulationProgress
       {
-        get { return (double)GetValue(SimulationProgressProperty); }
-        set { SetValue(SimulationProgressProperty, value); }
+        get => (double)GetValue(SimulationProgressProperty);
+        set => SetValue(SimulationProgressProperty, value);
       }
 
-      internal static readonly DependencyProperty SimulationProgressProperty = DependencyProperty.Register("SimulationProgress", typeof(double), typeof(WrapperCanvas), new PropertyMetadata(0d, SimulationProgressChanged));
+      internal static readonly DependencyProperty SimulationProgressProperty = DependencyProperty.Register(
+        nameof(SimulationProgress),
+        typeof(double),
+        typeof(WrapperCanvas),
+        new PropertyMetadata(0d, SimulationProgressChanged));
 
       private static void SimulationProgressChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
       {
@@ -47,8 +50,8 @@ namespace Crystal.Behaviors
 
           child.Width = Math.Max(0, wrapper.OldRect.Width * progress + wrapper.NewRect.Width * (1 - progress));
           child.Height = Math.Max(0, wrapper.OldRect.Height * progress + wrapper.NewRect.Height * (1 - progress));
-          Canvas.SetLeft(child, progress * (wrapper.OldRect.Left - wrapper.NewRect.Left));
-          Canvas.SetTop(child, progress * (wrapper.OldRect.Top - wrapper.NewRect.Top));
+          SetLeft(child, progress * (wrapper.OldRect.Left - wrapper.NewRect.Left));
+          SetTop(child, progress * (wrapper.OldRect.Top - wrapper.NewRect.Top));
         }
       }
     }
@@ -411,7 +414,7 @@ namespace Crystal.Behaviors
         //
         LayoutTransitionStoryboard = CreateLayoutTransitionStoryboard(transition, MovingElements, oldOpacities);
 
-        LayoutTransitionStoryboard.Completed += (EventHandler)delegate (object sender, EventArgs args)
+        LayoutTransitionStoryboard.Completed += delegate (object sender, EventArgs args)
         {
           stateGroupsRoot.LayoutUpdated -= new EventHandler(control_LayoutUpdated);
           StopAnimations();
@@ -485,8 +488,8 @@ namespace Crystal.Behaviors
     {
       public double DummyValue
       {
-        get { return (double)GetValue(DummyValueProperty); }
-        set { SetValue(DummyValueProperty, value); }
+        get => (double)GetValue(DummyValueProperty);
+        set => SetValue(DummyValueProperty, value);
       }
 
       public static readonly DependencyProperty DummyValueProperty = DependencyProperty.Register("DummyValue", typeof(double), typeof(DummyEasingFunction), new PropertyMetadata(0.0));
@@ -508,13 +511,13 @@ namespace Crystal.Behaviors
 
     private static bool PrepareTransitionEffectImage(FrameworkElement stateGroupsRoot, bool useTransitions, VisualTransition transition)
     {
-      TransitionEffect effect = transition == null ? null : ExtendedVisualStateManager.GetTransitionEffect(transition);
+      TransitionEffect effect = transition == null ? null : GetTransitionEffect(transition);
       bool animateWithTransitionEffect = false;
 
       // Are we using TransitionEffects?
       if (effect != null)
       {
-        effect = (TransitionEffect)effect.CloneCurrentValue();
+        effect = effect.CloneCurrentValue();
 
         // If we're going to be animating, take a snapshot
         if (useTransitions)
@@ -542,7 +545,7 @@ namespace Crystal.Behaviors
 
         if (useTransitions)
         {
-          TransferLocalValue(stateGroupsRoot, FrameworkElement.EffectProperty, CachedEffectProperty);
+          TransferLocalValue(stateGroupsRoot, UIElement.EffectProperty, CachedEffectProperty);
           stateGroupsRoot.Effect = effect;
         }
       }
@@ -561,7 +564,7 @@ namespace Crystal.Behaviors
         // However, if animating to opacity 0, then we have to stop just before the end, because if the opacity
         // reaches zero then there will be no surface on which to draw.
         oldGeneratedEasingFunction = transition.GeneratedEasingFunction;
-        transition.GeneratedEasingFunction = new DummyEasingFunction() { DummyValue = (FinishesWithZeroOpacity(control, stateGroupsRoot, state, previousState) ? 0.01 : 0) };
+        transition.GeneratedEasingFunction = new DummyEasingFunction() { DummyValue = FinishesWithZeroOpacity(control, stateGroupsRoot, state, previousState) ? 0.01 : 0 };
       }
 
       bool returnValue = base.GoToStateCore(control, stateGroupsRoot, stateName, group, state, useTransitions);
@@ -597,7 +600,7 @@ namespace Crystal.Behaviors
           bool gotValue;
           object value = GetValueFromTimeline(timeline, out gotValue);
 
-          return (gotValue && value is double && (double)value == 0);
+          return gotValue && value is double && (double)value == 0;
         }
       }
 
@@ -613,11 +616,11 @@ namespace Crystal.Behaviors
         }
 
         double baseOpacity = (double)stateGroupsRoot.GetAnimationBaseValue(UIElement.OpacityProperty);
-        return (baseOpacity == 0);
+        return baseOpacity == 0;
       }
 
       // if it's not mentioned in either state, then let's just check the current opacity
-      return (stateGroupsRoot.Opacity == 0);
+      return stateGroupsRoot.Opacity == 0;
     }
 
     private static bool TimelineIsAnimatingRootOpacity(Timeline timeline, FrameworkElement control, FrameworkElement stateGroupsRoot)
@@ -648,7 +651,7 @@ namespace Crystal.Behaviors
 
       // On WPF, can't seem to address the Effect directly.
       Storyboard.SetTarget(da, stateGroupsRoot);
-      Storyboard.SetTargetProperty(da, new PropertyPath("(0).(1)", new DependencyProperty[] { FrameworkElement.EffectProperty, TransitionEffect.ProgressProperty }));
+      Storyboard.SetTargetProperty(da, new PropertyPath("(0).(1)", new DependencyProperty[] { UIElement.EffectProperty, TransitionEffect.ProgressProperty }));
 
       // If the background is null, make it transparent so that the effect will be drawn in the correct area.
       Panel rootPanel = stateGroupsRoot as Panel;
@@ -679,7 +682,7 @@ namespace Crystal.Behaviors
     {
       SetTransitionEffectStoryboard(stateGroupsRoot, null);
 
-      TransferLocalValue(stateGroupsRoot, CachedEffectProperty, FrameworkElement.EffectProperty);
+      TransferLocalValue(stateGroupsRoot, CachedEffectProperty, UIElement.EffectProperty);
 
       if (GetDidCacheBackground(stateGroupsRoot))
       {
@@ -697,8 +700,8 @@ namespace Crystal.Behaviors
     /// <returns>The transition</returns>
     private static VisualTransition FindTransition(VisualStateGroup group, VisualState previousState, VisualState state)
     {
-      string previousStateName = (previousState != null ? previousState.Name : string.Empty);
-      string stateName = (state != null ? state.Name : string.Empty);
+      string previousStateName = previousState != null ? previousState.Name : string.Empty;
+      string stateName = state != null ? state.Name : string.Empty;
 
       int bestMatchScore = -1;
       VisualTransition bestTransition = null;
@@ -911,7 +914,7 @@ namespace Crystal.Behaviors
       {
         Rect rect;
 
-        if (movingElements != null && movingElements.Contains(target) && (target.Parent is WrapperCanvas))
+        if (movingElements != null && movingElements.Contains(target) && target.Parent is WrapperCanvas)
         {
           // If this element is being moved currently, then we've wrapped it in a Canvas.
           // Incorporate the Canvas into the layout calculations
@@ -943,7 +946,7 @@ namespace Crystal.Behaviors
       double actualHeight = element.ActualHeight;
 
       // Use RenderSize here because that works for SL Image and MediaElement - the other uses fo ActualWidth/Height are correct even for these element types
-      if ((element is Image || element is MediaElement))
+      if (element is Image || element is MediaElement)
       {
         if (element.Parent is Canvas)
         {
@@ -973,15 +976,15 @@ namespace Crystal.Behaviors
           break;
 
         case HorizontalAlignment.Center:
-          left = ((((slotRect.Left + margin.Left) + slotRect.Right) - margin.Right) / 2.0) - (actualWidth / 2.0);
+          left = (slotRect.Left + margin.Left + slotRect.Right - margin.Right) / 2.0 - actualWidth / 2.0;
           break;
 
         case HorizontalAlignment.Right:
-          left = (slotRect.Right - margin.Right) - actualWidth;
+          left = slotRect.Right - margin.Right - actualWidth;
           break;
 
         case HorizontalAlignment.Stretch:
-          left = Math.Max((double)(slotRect.Left + margin.Left), (double)(((((slotRect.Left + margin.Left) + slotRect.Right) - margin.Right) / 2.0) - (actualWidth / 2.0)));
+          left = Math.Max((double)(slotRect.Left + margin.Left), (double)((slotRect.Left + margin.Left + slotRect.Right - margin.Right) / 2.0 - actualWidth / 2.0));
           break;
       }
 
@@ -992,15 +995,15 @@ namespace Crystal.Behaviors
           break;
 
         case VerticalAlignment.Center:
-          top = ((((slotRect.Top + margin.Top) + slotRect.Bottom) - margin.Bottom) / 2.0) - (actualHeight / 2.0);
+          top = (slotRect.Top + margin.Top + slotRect.Bottom - margin.Bottom) / 2.0 - actualHeight / 2.0;
           break;
 
         case VerticalAlignment.Bottom:
-          top = (slotRect.Bottom - margin.Bottom) - actualHeight;
+          top = slotRect.Bottom - margin.Bottom - actualHeight;
           break;
 
         case VerticalAlignment.Stretch:
-          top = Math.Max((double)(slotRect.Top + margin.Top), (double)(((((slotRect.Top + margin.Top) + slotRect.Bottom) - margin.Bottom) / 2.0) - (actualHeight / 2.0)));
+          top = Math.Max((double)(slotRect.Top + margin.Top), (double)((slotRect.Top + margin.Top + slotRect.Bottom - margin.Bottom) / 2.0 - actualHeight / 2.0));
           break;
       }
 
@@ -1042,7 +1045,7 @@ namespace Crystal.Behaviors
 
           if (!oldOpacities.TryGetValue(originalValueRecord.Element, out oldOpacity))
           {
-            oldOpacity = ((Visibility)(originalValueRecord.Element.GetValue(originalValueRecord.Property)) == Visibility.Visible ? 1.0 : 0.0);
+            oldOpacity = (Visibility)originalValueRecord.Element.GetValue(originalValueRecord.Property) == Visibility.Visible ? 1.0 : 0.0;
             oldOpacities.Add(originalValueRecord.Element, oldOpacity);
           }
         }
@@ -1060,7 +1063,7 @@ namespace Crystal.Behaviors
           double oldOpacity;
           if (!oldOpacities.TryGetValue(target, out oldOpacity))
           {
-            oldOpacity = ((Visibility)target.GetValue(property) == Visibility.Visible ? 1.0 : 0.0);
+            oldOpacity = (Visibility)target.GetValue(property) == Visibility.Visible ? 1.0 : 0.0;
             oldOpacities.Add(target, oldOpacity);
           }
         }
@@ -1433,7 +1436,7 @@ namespace Crystal.Behaviors
         }
 
         double oldOpacity = oldOpacities[visibilityElement];
-        double newOpacity = (parentCanvas.DestinationVisibilityCache == Visibility.Visible ? 1.0 : 0.0);
+        double newOpacity = parentCanvas.DestinationVisibilityCache == Visibility.Visible ? 1.0 : 0.0;
 
         // Animate the opacity to smooth out the visibility change
         if (!IsClose(oldOpacity, 1) || !IsClose(newOpacity, 1))
@@ -1441,7 +1444,7 @@ namespace Crystal.Behaviors
           DoubleAnimation animation = new DoubleAnimation() { From = oldOpacity, To = newOpacity, Duration = duration };
           animation.EasingFunction = ease;
           Storyboard.SetTarget(animation, parentCanvas);
-          Storyboard.SetTargetProperty(animation, new PropertyPath(FrameworkElement.OpacityProperty));
+          Storyboard.SetTargetProperty(animation, new PropertyPath(UIElement.OpacityProperty));
           layoutTransitionStoryboard.Children.Add(animation);
         }
       }
@@ -1481,7 +1484,7 @@ namespace Crystal.Behaviors
 
     private static bool IsClose(double a, double b)
     {
-      return (Math.Abs((double)(a - b)) < 1E-07);
+      return Math.Abs((double)(a - b)) < 1E-07;
     }
     #endregion
   }
