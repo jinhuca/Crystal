@@ -186,27 +186,23 @@ namespace Crystal
 		/// Gets the collection with all the views along with their metadata.
 		/// </summary>
 		/// <value>An <see cref="ObservableCollection{T}"/> of <see cref="ItemMetadata"/> with all the added views.</value>
-		protected virtual ObservableCollection<ItemMetadata> ItemMetadataCollection 
-			=> _itemMetadataCollection ??= new ObservableCollection<ItemMetadata>();
+		protected virtual ObservableCollection<ItemMetadata> ItemMetadataCollection => _itemMetadataCollection ??= new ObservableCollection<ItemMetadata>();
 
-		/// <overloads>Adds a new view to the region.</overloads>
-		/// <summary>
-		/// Adds a new view to the region.
-		/// </summary>
-		/// <param name="view">The view to add.</param>
-		/// <returns>The <see cref="IRegionManager"/> that is set on the view if it is a <see cref="DependencyObject"/>. It will be the current region manager when using this overload.</returns>
-		public IRegionManager Add(object view)
-		{
-			return Add(view, null, false);
-		}
+    /// <overloads>Adds a new view to the region.</overloads>
+    /// <summary>
+    /// Adds a new view to the region.
+    /// </summary>
+    /// <param name="view">The view to add.</param>
+    /// <returns>The <see cref="IRegionManager"/> that is set on the view if it is a <see cref="DependencyObject"/>. It will be the current region manager when using this overload.</returns>
+    public IRegionManager Add(object view) => Add(view, null, false);
 
-		/// <summary>
-		/// Adds a new view to the region.
-		/// </summary>
-		/// <param name="view">The view to add.</param>
-		/// <param name="viewName">The name of the view. This can be used to retrieve it later by calling <see cref="IRegion.GetView"/>.</param>
-		/// <returns>The <see cref="IRegionManager"/> that is set on the view if it is a <see cref="DependencyObject"/>. It will be the current region manager when using this overload.</returns>
-		public IRegionManager Add(object view, string viewName)
+    /// <summary>
+    /// Adds a new view to the region.
+    /// </summary>
+    /// <param name="view">The view to add.</param>
+    /// <param name="viewName">The name of the view. This can be used to retrieve it later by calling <see cref="IRegion.GetView"/>.</param>
+    /// <returns>The <see cref="IRegionManager"/> that is set on the view if it is a <see cref="DependencyObject"/>. It will be the current region manager when using this overload.</returns>
+    public IRegionManager Add(object view, string viewName)
 		{
 			if (IsNullOrEmpty(viewName))
 			{

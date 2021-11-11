@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:crystal="http://schemas.crystal.com"
              crystal:ViewModelLocator.AutoWireViewModel="True">
-  <Grid x:Name="LayoutRoot" Background="White" Margin="10">
+  <Grid x:Name="LayoutRoot" Margin="10" TextBlock.FontSize="18">
     <Grid.RowDefinitions>
       <RowDefinition Height="100"/>
       <RowDefinition Height="Auto"/>
@@ -11,7 +11,7 @@
 
     <ListBox x:Name="_listOfPeople" ItemsSource="{Binding People}"/>
     <ContentControl Grid.Row="1" Margin="10"
-                        crystal:RegionManager.RegionName="PersonDetailsRegion"
-                        crystal:RegionManager.RegionContext="{Binding SelectedItem, ElementName=_listOfPeople}"/>
+                    crystal:RegionManager.RegionName="PersonDetailsRegion"
+                    crystal:RegionManager.RegionContext="{Binding SelectedItem, ElementName=_listOfPeople}"/>
   </Grid>
 </UserControl>

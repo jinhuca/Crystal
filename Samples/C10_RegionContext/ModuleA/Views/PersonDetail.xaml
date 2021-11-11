@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:crystal="http://schemas.crystal.com"
              crystal:ViewModelLocator.AutoWireViewModel="True">
-  <Grid x:Name="LayoutRoot" Background="White">
+  <Grid x:Name="LayoutRoot" Background="White" TextBlock.FontSize="20">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="Auto"/>
       <ColumnDefinition />

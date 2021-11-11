@@ -17,7 +17,7 @@ namespace Crystal
 		/// Identifies the Value property of the ObservableObject
 		/// </summary>
 		public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-			"Value",
+			nameof(Value),
 			typeof(T),
 			typeof(ObservableObject<T>),
 			new PropertyMetadata(null, ValueChangedCallback));

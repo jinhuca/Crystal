@@ -12,7 +12,6 @@ namespace RegionSimple
 
 		protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
 		{
-			base.ConfigureModuleCatalog(moduleCatalog);
 			moduleCatalog.AddModule<ModuleAModule>();
 		}
 

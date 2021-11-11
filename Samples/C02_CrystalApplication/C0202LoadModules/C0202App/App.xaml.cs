@@ -8,9 +8,6 @@ namespace C0202App
 	{
 		protected override Window CreateShell() => Container.Resolve<MainWindow>();
 
-		protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
-		{
-			moduleCatalog.AddModule<Module>();
-		}
-	}
+    protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog) => moduleCatalog.AddModule<Module>();
+  }
 }

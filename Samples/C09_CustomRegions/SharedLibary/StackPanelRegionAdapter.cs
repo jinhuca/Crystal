@@ -4,7 +4,7 @@ using System.Windows.Controls;
 
 namespace SharedLibary
 {
-	public class StackPanelRegionAdapter : RegionAdapterBase<StackPanel>
+  public class StackPanelRegionAdapter : RegionAdapterBase<StackPanel>
 	{
 		public StackPanelRegionAdapter(IRegionBehaviorFactory regionBehaviorFactory) : base(regionBehaviorFactory)
 		{
@@ -26,9 +26,6 @@ namespace SharedLibary
 			};
 		}
 
-		protected override IRegion CreateRegion()
-		{
-			return new AllActiveRegion();
-		}
-	}
+    protected override IRegion CreateRegion() => new AllActiveRegion();
+  }
 }
