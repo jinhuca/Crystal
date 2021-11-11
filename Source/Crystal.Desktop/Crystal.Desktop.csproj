@@ -7,7 +7,7 @@
     <PackageTags>Desktop</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>2.1.1.2</Version>
+    <Version>2.1.2.5</Version>
     <PackageProjectUrl>https://github.com/jinhuca/Crystal</PackageProjectUrl>
     <PackageIcon>CrystalDesktop.png</PackageIcon>
     <PackageIconUrl />

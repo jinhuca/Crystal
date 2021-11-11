@@ -8,14 +8,22 @@
     ".NETCoreApp,Version=v6.0": {
       "ModuleA/1.0.0": {
         "dependencies": {
-          "Crystal.Desktop": "2.0.1.3",
+          "Crystal.Desktop": "2.1.1.2",
           "Shared": "1.0.0"
         },
         "runtime": {
           "ModuleA.dll": {}
         }
       },
-      "Crystal.Core/2.0.1.3": {
+      "Crystal.Behaviors/2.1.1.2": {
+        "runtime": {
+          "lib/net5.0-windows7.0/Crystal.Behaviors.dll": {
+            "assemblyVersion": "2.1.1.2",
+            "fileVersion": "2.1.1.2"
+          }
+        }
+      },
+      "Crystal.Core/2.1.1.2": {
         "runtime": {
           "lib/net5.0/Crystal.Core.dll": {
             "assemblyVersion": "2.0.1.3",
@@ -23,23 +31,15 @@
           }
         }
       },
-      "Crystal.Desktop/2.0.1.3": {
+      "Crystal.Desktop/2.1.1.2": {
         "dependencies": {
-          "Crystal.Core": "2.0.1.3",
-          "Microsoft.Xaml.Behaviors.Wpf": "1.1.37"
+          "Crystal.Behaviors": "2.1.1.2",
+          "Crystal.Core": "2.1.1.2"
         },
         "runtime": {
           "lib/net5.0-windows7.0/Crystal.Desktop.dll": {
             "assemblyVersion": "2.0.1.3",
             "fileVersion": "2.0.1.3"
-          }
-        }
-      },
-      "Microsoft.Xaml.Behaviors.Wpf/1.1.37": {
-        "runtime": {
-          "lib/net5.0-windows7.0/Microsoft.Xaml.Behaviors.dll": {
-            "assemblyVersion": "1.1.0.0",
-            "fileVersion": "1.1.37.31167"
           }
         }
       },
@@ -56,26 +56,26 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Crystal.Core/2.0.1.3": {
+    "Crystal.Behaviors/2.1.1.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-MVfp656qBjaehIeDe/YlUc3koptTLZlLj2OgZ0vB5HP9HUAortUIPqsE3n1ftJgi7DZcwfZPvkS0TFsYDD8CGw==",
-      "path": "crystal.core/2.0.1.3",
-      "hashPath": "crystal.core.2.0.1.3.nupkg.sha512"
+      "sha512": "sha512-WqLtTCEmZLPJix+njW1Vv+zPBubSQSIMVSmz4+ul9GNV2drZ+TVmqhWS+HffiVFZFcZwc7FFeu5UaICEbMveTw==",
+      "path": "crystal.behaviors/2.1.1.2",
+      "hashPath": "crystal.behaviors.2.1.1.2.nupkg.sha512"
     },
-    "Crystal.Desktop/2.0.1.3": {
+    "Crystal.Core/2.1.1.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-1ulB6m36yvsbZ1Yrd5m8riK23/T+4oJbi/AGhfV8upCAEQSf9MuTE+oRm/6Rs9CKr+o1jNOra+Y2VQQwVXVqbQ==",
-      "path": "crystal.desktop/2.0.1.3",
-      "hashPath": "crystal.desktop.2.0.1.3.nupkg.sha512"
+      "sha512": "sha512-uUqEjHAiyJSJsOE5CoBe6jcwUnqsec2iE0T4U0UBW1ECUXZqN5md+wpBE1zj79pvJqutjiaUwEpVIw6Eug/QCA==",
+      "path": "crystal.core/2.1.1.2",
+      "hashPath": "crystal.core.2.1.1.2.nupkg.sha512"
     },
-    "Microsoft.Xaml.Behaviors.Wpf/1.1.37": {
+    "Crystal.Desktop/2.1.1.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-TxH7g5I/4UzOHfs0GqD1W4evdl7DIHOQCr/KWc4G4BkgtsAhaHHXAW5JbKrkB7cqClN0JYOX6j9/4v4emCjFIA==",
-      "path": "microsoft.xaml.behaviors.wpf/1.1.37",
-      "hashPath": "microsoft.xaml.behaviors.wpf.1.1.37.nupkg.sha512"
+      "sha512": "sha512-2iW0j5FVRoYiQC7RxyiWJdHpOp56yxCcEgImrvbweHL+GEIByhYuFUJwUoRDC0ZMNAFpsD0oRkhaSHf/PZq8FA==",
+      "path": "crystal.desktop/2.1.1.2",
+      "hashPath": "crystal.desktop.2.1.1.2.nupkg.sha512"
     },
     "Shared/1.0.0": {
       "type": "project",

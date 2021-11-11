@@ -44,7 +44,7 @@ namespace Crystal
 		/// Dependency property identifying the command to execute when invoked.
 		/// </summary>
 		public static readonly DependencyProperty CommandProperty = DependencyProperty.Register(
-			nameof(Command), 
+			"Command", 
 			typeof(ICommand), 
 			typeof(InvokeCommandAction),
 			new PropertyMetadata(null, (d, e) => ((InvokeCommandAction)d).OnCommandChanged((ICommand)e.NewValue)));
@@ -97,7 +97,7 @@ namespace Crystal
 		/// <summary>
 		/// Dependency property identifying the TriggerParameterPath to be parsed to identify the child property of the trigger parameter to be used as the command parameter.
 		/// </summary>
-		public static readonly DependencyProperty TriggerParameterPathProperty = DependencyProperty.Register(nameof(TriggerParameterPath), typeof(string), typeof(InvokeCommandAction), new PropertyMetadata(null, (_, _) => { }));
+		public static readonly DependencyProperty TriggerParameterPathProperty = DependencyProperty.Register("TriggerParameterPath", typeof(string), typeof(InvokeCommandAction), new PropertyMetadata(null, (_, _) => { }));
 
 		/// <summary>
 		/// Gets or sets the TriggerParameterPath value.

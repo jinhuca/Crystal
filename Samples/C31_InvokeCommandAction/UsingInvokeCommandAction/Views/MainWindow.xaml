@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:crystal="http://schemas.crystal.com"
+        xmlns:behaviors="http://schemas.crystal.com/behaviors"
         crystal:ViewModelLocator.AutoWireViewModel="True"
         Title="{Binding Title}" Height="350" Width="525">
   <Grid>
@@ -22,13 +23,13 @@
     </StackPanel>
 
     <ListBox Grid.Row="1" Margin="5" ItemsSource="{Binding Items}" SelectionMode="Single">
-      <i:Interaction.Triggers>
+      <behaviors:Interaction.Triggers>
         <!-- This event trigger will execute the action when the corresponding event is raised by the ListBox. -->
-        <i:EventTrigger EventName="SelectionChanged">
+        <behaviors:EventTrigger EventName="SelectionChanged">
           <!-- This action will invoke the selected command in the view model and pass the parameters of the event to it. -->
           <crystal:InvokeCommandAction Command="{Binding SelectedCommand}" TriggerParameterPath="AddedItems" />
-        </i:EventTrigger>
-      </i:Interaction.Triggers>
+        </behaviors:EventTrigger>
+      </behaviors:Interaction.Triggers>
     </ListBox>
 
     <StackPanel Grid.Row="2" Margin="5" Orientation="Horizontal">

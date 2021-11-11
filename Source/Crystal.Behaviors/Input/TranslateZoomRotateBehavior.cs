@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace Crystal.Behaviors.Input
+namespace Crystal.Behaviors
 {
   /// <summary>
   /// Allows the user to use common touch gestures to translate, zoom, and rotate the attached object.
