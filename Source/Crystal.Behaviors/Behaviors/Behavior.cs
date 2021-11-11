@@ -1,10 +1,10 @@
-﻿namespace Crystal.Behaviors
-{
-	using System;
-	using System.Globalization;
-	using System.Windows;
-	using System.Windows.Media.Animation;
+﻿using System;
+using System.Globalization;
+using System.Windows;
+using System.Windows.Media.Animation;
 
+namespace Crystal.Behaviors
+{
 	/// <summary>
 	/// Encapsulates state information and zero or more ICommands into an attachable object.
 	/// </summary>
