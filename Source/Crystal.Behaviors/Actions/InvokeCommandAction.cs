@@ -1,15 +1,13 @@
-// Copyright (c) Microsoft. All rights reserved. 
-// Licensed under the MIT license. See LICENSE file in the project root for full license information. 
+using System;
+using System.Diagnostics;
+using System.Reflection;
+using System.Windows;
+using System.Windows.Input;
+using System.Globalization;
+using System.Windows.Data;
+
 namespace Crystal.Behaviors
 {
-  using System;
-  using System.Diagnostics;
-  using System.Reflection;
-  using System.Windows;
-  using System.Windows.Input;
-  using System.Globalization;
-  using System.Windows.Data;
-
   /// <summary>
   /// Executes a specified ICommand when invoked.
   /// </summary>
@@ -53,8 +51,8 @@ namespace Crystal.Behaviors
     /// <remarks>This property will take precedence over the CommandName property if both are set.</remarks>
     public ICommand Command
     {
-      get { return (ICommand)GetValue(CommandProperty); }
-      set { SetValue(CommandProperty, value); }
+      get => (ICommand)GetValue(CommandProperty);
+      set => SetValue(CommandProperty, value);
     }
 
     /// <summary>
@@ -64,8 +62,8 @@ namespace Crystal.Behaviors
     /// <remarks>This is the value passed to ICommand.CanExecute and ICommand.Execute.</remarks>
     public object CommandParameter
     {
-      get { return GetValue(InvokeCommandAction.CommandParameterProperty); }
-      set { SetValue(InvokeCommandAction.CommandParameterProperty, value); }
+      get => GetValue(InvokeCommandAction.CommandParameterProperty);
+      set => SetValue(InvokeCommandAction.CommandParameterProperty, value);
     }
 
     /// <summary>
@@ -74,8 +72,8 @@ namespace Crystal.Behaviors
     /// <remarks>If the <see cref="Command"/> or <see cref="EventArgsParameterPath"/> properties are set, this property is ignored.</remarks>
     public IValueConverter EventArgsConverter
     {
-      get { return (IValueConverter)GetValue(EventArgsConverterProperty); }
-      set { SetValue(EventArgsConverterProperty, value); }
+      get => (IValueConverter)GetValue(EventArgsConverterProperty);
+      set => SetValue(EventArgsConverterProperty, value);
     }
 
     /// <summary>
@@ -83,8 +81,8 @@ namespace Crystal.Behaviors
     /// </summary>
     public object EventArgsConverterParameter
     {
-      get { return (object)GetValue(EventArgsConverterParameterProperty); }
-      set { SetValue(EventArgsConverterParameterProperty, value); }
+      get => (object)GetValue(EventArgsConverterParameterProperty);
+      set => SetValue(EventArgsConverterParameterProperty, value);
     }
 
     /// <summary>
@@ -93,8 +91,8 @@ namespace Crystal.Behaviors
     /// <remarks>If the <see cref="Command"/> propert is set, this property is ignored.</remarks>
     public string EventArgsParameterPath
     {
-      get { return (string)GetValue(EventArgsParameterPathProperty); }
-      set { SetValue(EventArgsParameterPathProperty, value); }
+      get => (string)GetValue(EventArgsParameterPathProperty);
+      set => SetValue(EventArgsParameterPathProperty, value);
     }
 
     /// <summary>

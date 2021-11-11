@@ -1,5 +1,4 @@
 ﻿using Crystal;
-using Crystal.Desktop;
 using System.Windows;
 
 namespace BasicBootstrapper

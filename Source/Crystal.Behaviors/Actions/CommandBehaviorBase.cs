@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace Crystal
+namespace Crystal.Behaviors
 {
 	/// <summary>
 	/// Base behavior to handle connecting a <see cref="Control"/> to a Command.

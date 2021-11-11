@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Crystal.Desktop
+namespace Crystal
 {
 	/// <summary>
 	/// Base bootstrapper class that uses <see cref="ContainerExtension"/> as it's container.

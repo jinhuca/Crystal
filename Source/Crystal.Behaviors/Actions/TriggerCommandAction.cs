@@ -3,24 +3,24 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
 
-namespace Crystal
+namespace Crystal.Behaviors
 {
   /// <summary>
   /// Trigger action that executes a command when invoked. 
   /// It also maintains the Enabled state of the target control based on the CanExecute method of the command.
   /// </summary>
-  public class InvokeCommandAction : TriggerAction<UIElement>
+  public class TriggerCommandAction : TriggerAction<UIElement>
 	{
 		private ExecutableCommandBehavior _commandBehavior;
 
-		/// <summary>
-		/// Dependency property identifying if the associated element should automatically be enabled or disabled based on the result of the Command's CanExecute
-		/// </summary>
-		public static readonly DependencyProperty AutoEnableProperty = DependencyProperty.Register(
+    /// <summary>
+    /// Dependency property identifying if the associated element should automatically be enabled or disabled based on the result of the Command's CanExecute
+    /// </summary>
+    public static readonly DependencyProperty AutoEnableProperty = DependencyProperty.Register(
 			nameof(AutoEnable), 
 			typeof(bool), 
-			typeof(InvokeCommandAction),
-			new PropertyMetadata(true, (d, e) => ((InvokeCommandAction)d).OnAllowDisableChanged((bool)e.NewValue)));
+			typeof(TriggerCommandAction),
+			new PropertyMetadata(true, (d, e) => ((TriggerCommandAction)d).OnAllowDisableChanged((bool)e.NewValue)));
 
 		/// <summary>
 		/// Gets or sets whether or not the associated element will automatically be enabled or disabled based on the result of the commands CanExecute
@@ -46,8 +46,8 @@ namespace Crystal
 		public static readonly DependencyProperty CommandProperty = DependencyProperty.Register(
 			"Command", 
 			typeof(ICommand), 
-			typeof(InvokeCommandAction),
-			new PropertyMetadata(null, (d, e) => ((InvokeCommandAction)d).OnCommandChanged((ICommand)e.NewValue)));
+			typeof(TriggerCommandAction),
+			new PropertyMetadata(null, (d, e) => ((TriggerCommandAction)d).OnCommandChanged((ICommand)e.NewValue)));
 
 		/// <summary>
 		/// Gets or sets the command to execute when invoked.
@@ -73,8 +73,8 @@ namespace Crystal
 		public static readonly DependencyProperty CommandParameterProperty = DependencyProperty.Register(
 			nameof(CommandParameter), 
 			typeof(object), 
-			typeof(InvokeCommandAction),
-			new PropertyMetadata(null, (d, e) => ((InvokeCommandAction)d).OnCommandParameterChanged(e.NewValue)));
+			typeof(TriggerCommandAction),
+			new PropertyMetadata(null, (d, e) => ((TriggerCommandAction)d).OnCommandParameterChanged(e.NewValue)));
 
 		/// <summary>
 		/// Gets or sets the command parameter to supply on command execution.
@@ -97,7 +97,7 @@ namespace Crystal
 		/// <summary>
 		/// Dependency property identifying the TriggerParameterPath to be parsed to identify the child property of the trigger parameter to be used as the command parameter.
 		/// </summary>
-		public static readonly DependencyProperty TriggerParameterPathProperty = DependencyProperty.Register("TriggerParameterPath", typeof(string), typeof(InvokeCommandAction), new PropertyMetadata(null, (_, _) => { }));
+		public static readonly DependencyProperty TriggerParameterPathProperty = DependencyProperty.Register("TriggerParameterPath", typeof(string), typeof(TriggerCommandAction), new PropertyMetadata(null, (_, _) => { }));
 
 		/// <summary>
 		/// Gets or sets the TriggerParameterPath value.
@@ -194,7 +194,7 @@ namespace Crystal
 
 		/// <summary>
 		/// A CommandBehavior that exposes a public ExecuteCommand method. It provides the functionality to invoke commands and update Enabled state of the target control.
-		/// It is not possible to make the <see cref="InvokeCommandAction"/> inherit from <see cref="CommandBehaviorBase{T}"/>, since the <see cref="InvokeCommandAction"/>
+		/// It is not possible to make the <see cref="TriggerCommandAction"/> inherit from <see cref="CommandBehaviorBase{T}"/>, since the <see cref="TriggerCommandAction"/>
 		/// must already inherit from <see cref="TriggerAction{T}"/>, so we chose to follow the aggregation approach.
 		/// </summary>
 		private class ExecutableCommandBehavior : CommandBehaviorBase<UIElement>

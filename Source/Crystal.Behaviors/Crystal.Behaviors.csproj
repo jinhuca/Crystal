@@ -4,14 +4,30 @@
     <TargetFramework>net5.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <Version>2.1.2.6</Version>
+    <Version>2.1.2.7</Version>
+    <Authors>Jin Hu</Authors>
+    <Description>Behaviors library for desktop applications.</Description>
+    <PackageProjectUrl>https://github.com/jinhuca/Crystal</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/jinhuca/Crystal</RepositoryUrl>
+    <RepositoryType>Library</RepositoryType>
+    <PackageTags>.NET</PackageTags>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Company>Jin Hu</Company>
-    <AssemblyVersion>2.1.2.6</AssemblyVersion>
-    <FileVersion>2.1.2.6</FileVersion>
+    <Company></Company>
+    <AssemblyVersion>2.1.2.7</AssemblyVersion>
+    <FileVersion>2.1.2.7</FileVersion>
     <PackageIcon>CrystalBehaviors.png</PackageIcon>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\debug</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+  </PropertyGroup>
+  
   <ItemGroup>
     <None Include="Resources\CrystalBehaviors.png">
       <Pack>True</Pack>

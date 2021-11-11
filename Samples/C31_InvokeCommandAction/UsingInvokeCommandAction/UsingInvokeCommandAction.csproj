@@ -6,6 +6,14 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Crystal.Desktop" Version="2.1.2.6" />
+    <Reference Include="Crystal.Behaviors">
+      <HintPath>..\..\..\Source\Output\Crystal.Behaviors.dll</HintPath>
+    </Reference>
+    <Reference Include="Crystal.Core">
+      <HintPath>..\..\..\Source\Output\Crystal.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Crystal.Desktop">
+      <HintPath>..\..\..\Source\Output\Crystal.Desktop.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>
