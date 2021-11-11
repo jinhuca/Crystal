@@ -1,0 +1,9 @@
+﻿<crystal:CrystalApplication x:Class="UsingInvokeCommandAction.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                        xmlns:crystal="http://schemas.crystal.com"
+             xmlns:local="clr-namespace:UsingInvokeCommandAction">
+    <Application.Resources>
+         
+    </Application.Resources>
+</crystal:CrystalApplication>
