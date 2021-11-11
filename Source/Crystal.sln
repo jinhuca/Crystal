@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{984AD424-7981-446A-9E41-D8F858CA7806}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{3DD86B52-806B-4F16-BAB9-3262D2183867}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crystal.Core", "Crystal.Core\Crystal.Core.csproj", "{5DAEEBAF-47A7-4053-A2A5-391859C3FF84}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crystal.Desktop", "Crystal.Desktop\Crystal.Desktop.csproj", "{80A1600A-05C6-4AFE-BC81-B30E233818DE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crystal.UnitTests", "..\UnitTests\Crystal.UnitTests\Crystal.UnitTests.csproj", "{B43E8F82-CDB2-4612-BEDF-CBDE0AF1586B}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UnitTests.Shared", "..\UnitTests\UnitTests.Shared\Container.Shared\UnitTests.Shared.shproj", "{4238E846-0DA5-4093-8179-3E188257F97D}"
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\UnitTests\UnitTests.Shared\Container.Shared\Container.Shared.projitems*{4238e846-0da5-4093-8179-3e188257f97d}*SharedItemsImports = 13
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5DAEEBAF-47A7-4053-A2A5-391859C3FF84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DAEEBAF-47A7-4053-A2A5-391859C3FF84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DAEEBAF-47A7-4053-A2A5-391859C3FF84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DAEEBAF-47A7-4053-A2A5-391859C3FF84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80A1600A-05C6-4AFE-BC81-B30E233818DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80A1600A-05C6-4AFE-BC81-B30E233818DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80A1600A-05C6-4AFE-BC81-B30E233818DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80A1600A-05C6-4AFE-BC81-B30E233818DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B43E8F82-CDB2-4612-BEDF-CBDE0AF1586B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B43E8F82-CDB2-4612-BEDF-CBDE0AF1586B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B43E8F82-CDB2-4612-BEDF-CBDE0AF1586B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B43E8F82-CDB2-4612-BEDF-CBDE0AF1586B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5DAEEBAF-47A7-4053-A2A5-391859C3FF84} = {984AD424-7981-446A-9E41-D8F858CA7806}
+		{80A1600A-05C6-4AFE-BC81-B30E233818DE} = {984AD424-7981-446A-9E41-D8F858CA7806}
+		{B43E8F82-CDB2-4612-BEDF-CBDE0AF1586B} = {3DD86B52-806B-4F16-BAB9-3262D2183867}
+		{4238E846-0DA5-4093-8179-3E188257F97D} = {3DD86B52-806B-4F16-BAB9-3262D2183867}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EB05221E-019C-41DA-97BD-B30D58036BF1}
+	EndGlobalSection
+EndGlobal
