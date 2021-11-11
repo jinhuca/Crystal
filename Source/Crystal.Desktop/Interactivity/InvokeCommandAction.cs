@@ -1,15 +1,15 @@
-using Microsoft.Xaml.Behaviors;
+using Crystal.Behaviors;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
 
 namespace Crystal
 {
-	/// <summary>
-	/// Trigger action that executes a command when invoked. 
-	/// It also maintains the Enabled state of the target control based on the CanExecute method of the command.
-	/// </summary>
-	public class InvokeCommandAction : TriggerAction<UIElement>
+  /// <summary>
+  /// Trigger action that executes a command when invoked. 
+  /// It also maintains the Enabled state of the target control based on the CanExecute method of the command.
+  /// </summary>
+  public class InvokeCommandAction : TriggerAction<UIElement>
 	{
 		private ExecutableCommandBehavior _commandBehavior;
 

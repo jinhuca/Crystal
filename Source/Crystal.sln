@@ -18,6 +18,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crystal.UnitTests", "..\Uni
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UnitTests.Shared", "..\UnitTests\UnitTests.Shared\Container.Shared\UnitTests.Shared.shproj", "{4238E846-0DA5-4093-8179-3E188257F97D}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crystal.Behaviors", "Crystal.Behaviors\Crystal.Behaviors.csproj", "{AC173EF3-CC0B-4D3E-BD71-D2CA41C4425C}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		..\UnitTests\UnitTests.Shared\Container.Shared\Container.Shared.projitems*{4238e846-0da5-4093-8179-3e188257f97d}*SharedItemsImports = 13
@@ -39,6 +41,10 @@ Global
 		{B43E8F82-CDB2-4612-BEDF-CBDE0AF1586B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B43E8F82-CDB2-4612-BEDF-CBDE0AF1586B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B43E8F82-CDB2-4612-BEDF-CBDE0AF1586B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC173EF3-CC0B-4D3E-BD71-D2CA41C4425C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC173EF3-CC0B-4D3E-BD71-D2CA41C4425C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC173EF3-CC0B-4D3E-BD71-D2CA41C4425C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC173EF3-CC0B-4D3E-BD71-D2CA41C4425C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +54,7 @@ Global
 		{80A1600A-05C6-4AFE-BC81-B30E233818DE} = {984AD424-7981-446A-9E41-D8F858CA7806}
 		{B43E8F82-CDB2-4612-BEDF-CBDE0AF1586B} = {3DD86B52-806B-4F16-BAB9-3262D2183867}
 		{4238E846-0DA5-4093-8179-3E188257F97D} = {3DD86B52-806B-4F16-BAB9-3262D2183867}
+		{AC173EF3-CC0B-4D3E-BD71-D2CA41C4425C} = {984AD424-7981-446A-9E41-D8F858CA7806}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EB05221E-019C-41DA-97BD-B30D58036BF1}
