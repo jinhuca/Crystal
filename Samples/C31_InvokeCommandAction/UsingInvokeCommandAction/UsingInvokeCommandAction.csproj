@@ -6,6 +6,6 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Crystal.Desktop" Version="2.1.2.5" />
+    <PackageReference Include="Crystal.Desktop" Version="2.1.2.6" />
   </ItemGroup>
 </Project>
