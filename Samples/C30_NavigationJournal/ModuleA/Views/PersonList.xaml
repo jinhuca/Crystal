@@ -1,9 +1,8 @@
 ﻿<UserControl x:Class="ModuleA.Views.PersonList"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:crystal="http://schemas.crystal.com"
-             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:b="http://schemas.crystal.com/behaviors"
              crystal:ViewModelLocator.AutoWireViewModel="True">
   <Grid x:Name="LayoutRoot" Background="White" Margin="10">
     <Grid.RowDefinitions>
