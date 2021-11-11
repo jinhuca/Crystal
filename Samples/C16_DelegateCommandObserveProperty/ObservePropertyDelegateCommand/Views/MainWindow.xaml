@@ -1,0 +1,12 @@
+﻿<Window x:Class="ObservePropertyDelegateCommand.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Delegate Command Observe Property" WindowStyle="ToolWindow" Width="450" Height="350" Background="Beige">
+  <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+    <TextBlock Text="DelegateCommand Observe Property" Margin="10" FontSize="16" FontWeight="Black"/>
+    <CheckBox IsChecked="{Binding IsEnabled}" Content="Can Execute Command" Margin="10" FontSize="12"/>
+    <CheckBox IsChecked="{Binding IsAnotherEnabled}" Content="Property observed by DelegateCommand" Margin="10" FontSize="12"/>
+    <Button Content="DelegateCommand ObservesProperty" Command="{Binding DelegateCommandObservesProperty}" Margin="10" FontSize="12"/>
+    <TextBlock Text="{Binding UpdateText}" Margin="10" FontSize="12" FontWeight="Black" Foreground="DarkBlue"/>
+  </StackPanel>
+</Window>

@@ -1,0 +1,15 @@
+﻿<Window x:Class="ViewsDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:crystal="http://schemas.crystal.com"
+        xmlns:shared="clr-namespace:SharedLibrary;assembly=SharedLibrary"
+        Title="Shell">
+	<Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="45"/>
+      <RowDefinition />
+    </Grid.RowDefinitions>
+    <ContentControl Grid.Row="0" crystal:RegionManager.RegionName="{x:Static shared:Regionnames.ToolbarRegionName}" Margin="5"/>
+    <ContentControl Grid.Row="1" crystal:RegionManager.RegionName="{x:Static shared:Regionnames.ContentRegionName}" Margin="5"/>
+	</Grid>
+</Window>

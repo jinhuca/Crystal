@@ -24,14 +24,14 @@ namespace Crystal
 
 #if !ContainerExtensions
 		/// <summary>
-		/// Constructs a default instance of the <see cref="DryIocContainerExtension" />
+		/// Constructs a default instance of the <see cref="ContainerExtension" />
 		/// </summary>
 		public ContainerExtension() : this(new Container(DefaultRules))
 		{
 		}
 
 		/// <summary>
-		/// Constructs a new <see cref="DryIocContainerExtension" />
+		/// Constructs a new <see cref="ContainerExtension" />
 		/// </summary>
 		/// <param name="container">The <see cref="IContainer" /> instance to use.</param>
 		public ContainerExtension(IContainer container)

@@ -1,0 +1,5 @@
+﻿<UserControl x:Class="ModuleA.Views.ViewA2"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	<TextBlock Text="ViewA2" FontSize="26" FontWeight="Black" Foreground="DarkGoldenrod" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+</UserControl>

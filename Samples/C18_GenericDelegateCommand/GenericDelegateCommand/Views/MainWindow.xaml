@@ -1,0 +1,13 @@
+﻿<Window x:Class="GenericDelegateCommand.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:crystal="http://schemas.crystal.com"
+        crystal:ViewModelLocator.AutoWireViewModel="True"
+        Title="Generic DelegateCommand" WindowStyle="ToolWindow" Width="450" Height="350" Background="LightSlateGray">
+  <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+    <TextBlock Text="Generic DelegateCommand" Margin="10" FontSize="16" FontWeight="Black"/>
+    <CheckBox IsChecked="{Binding IsEnabled}" Content="Can Execute Command" Margin="10" FontSize="12"/>
+    <Button Content="Generic DelegateCommand" Command="{Binding GenericDelegateCommand}" CommandParameter="{Binding Id}" Margin="10" FontSize="12" FontWeight="Black"/>
+    <TextBlock Text="{Binding UpdateText}" Margin="10" FontSize="12" FontWeight="Black" Foreground="DarkBlue"/>
+  </StackPanel>
+</Window>

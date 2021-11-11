@@ -1,0 +1,11 @@
+﻿<Window x:Class="UsingDelegateCommands.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="DelegateCommand Basics" WindowStyle="ToolWindow" Width="450" Height="350" Background="Bisque">
+  <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+    <TextBlock Text="Basic Non-Generic DelegateCommand" Margin="10" FontSize="16" FontWeight="Black"/>
+    <CheckBox IsChecked="{Binding IsEnabled}" Content="Can Execute Command" Margin="10" FontSize="12"/>
+    <Button Content="Delegate Command" Command="{Binding ExecuteDelegateCommand}" Margin="10" FontSize="12" FontWeight="Black"/>
+    <TextBlock Text="{Binding UpdateText}" Margin="10" FontSize="12" FontWeight="Black" Foreground="DarkBlue"/>
+  </StackPanel>
+</Window>

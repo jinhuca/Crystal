@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <AssemblyName>UsingEventAggregator</AssemblyName>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Crystal.Desktop" Version="2.0.1.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ModuleA\ModuleA.csproj" />
+    <ProjectReference Include="..\ModuleB\ModuleB.csproj" />
+    <ProjectReference Include="..\UsingEventAggregator.Core\UsingEventAggregator.Core.csproj" />
+  </ItemGroup>
+</Project>

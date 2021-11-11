@@ -1,0 +1,11 @@
+﻿<Window x:Class="DelegateCommandDemo.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="DelegateCommand Observes CanExecute" WindowStyle="ToolWindow" Width="450" Height="350" Background="LightSkyBlue">
+  <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+    <TextBlock Text="DelegateCommand ObservesCanExecute" Margin="10" FontSize="16" FontWeight="Black"/>
+    <CheckBox IsChecked="{Binding IsEnabled}" Content="Can Execute Command" Margin="10" FontSize="12"/>
+    <Button Content="Delegate Command" Command="{Binding DelegateCommandObservesCanExecute}" Margin="10" FontSize="12" FontWeight="Black"/>
+    <TextBlock Text="{Binding UpdateText}" Margin="10" FontSize="12" FontWeight="Black" Foreground="DarkBlue"/>
+  </StackPanel>
+</Window>
