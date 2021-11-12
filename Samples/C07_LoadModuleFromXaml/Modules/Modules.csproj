@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <AssemblyName>Modules</AssemblyName>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
@@ -9,7 +9,7 @@
     <Page Remove="ModuleCatalog.xaml" />
   </ItemGroup>
   <ItemGroup>
-	  <PackageReference Include="Crystal.Desktop" Version="2.1.2.7" />
+	  <PackageReference Include="Crystal.Desktop" Version="2.2.3.6" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="ModuleCatalog.xaml">

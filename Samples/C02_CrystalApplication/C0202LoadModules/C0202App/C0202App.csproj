@@ -8,16 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\C0202ModuleA\C0202ModuleA.csproj" />
+    <PackageReference Include="Crystal.Desktop" Version="2.2.3.6" />
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Crystal.Core">
-      <HintPath>..\..\..\Lib\Crystal.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Crystal.Desktop">
-      <HintPath>..\..\..\Lib\Crystal.Desktop.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\C0202ModuleA\C0202ModuleA.csproj" />
   </ItemGroup>
 
 </Project>

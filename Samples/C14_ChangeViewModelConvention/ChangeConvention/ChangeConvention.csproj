@@ -2,13 +2,13 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Crystal.Desktop" Version="2.1.2.7" />
+    <PackageReference Include="Crystal.Desktop" Version="2.2.3.6" />
   </ItemGroup>
 
 </Project>
