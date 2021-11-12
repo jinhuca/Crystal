@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Crystal.Desktop" Version="2.1.2.7" />
+    <PackageReference Include="Crystal.Desktop" Version="2.2.3.6" />
   </ItemGroup>
 
   <ItemGroup>
