@@ -339,3 +339,4 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 /CrystalLibrary/DIContainerExtensions/Crystal.Unity/ClassDiagram1.cd
+/Samples/Modules/ModuleA.deps.json
