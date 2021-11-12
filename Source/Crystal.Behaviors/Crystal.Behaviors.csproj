@@ -6,16 +6,18 @@
     <UseWPF>true</UseWPF>
     <Version>2.1.2.7</Version>
     <Authors>Jin Hu</Authors>
-    <Description>Behaviors library for desktop applications.</Description>
+    <Description>Behaviors library for building .NET desktop applications and components.</Description>
     <PackageProjectUrl>https://github.com/jinhuca/Crystal</PackageProjectUrl>
     <RepositoryUrl>https://github.com/jinhuca/Crystal</RepositoryUrl>
     <RepositoryType>Library</RepositoryType>
-    <PackageTags>.NET</PackageTags>
+    <PackageTags>.NET WPF</PackageTags>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Company></Company>
     <AssemblyVersion>2.1.2.7</AssemblyVersion>
     <FileVersion>2.1.2.7</FileVersion>
     <PackageIcon>CrystalBehaviors.png</PackageIcon>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
