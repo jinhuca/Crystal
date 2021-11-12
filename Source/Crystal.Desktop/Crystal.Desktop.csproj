@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <Authors>Jin Hu</Authors>
     <PackageTags>.NET WPF</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>2.1.2.7</Version>
+    <Version>2.2.3.6</Version>
     <PackageProjectUrl>https://github.com/jinhuca/Crystal</PackageProjectUrl>
     <PackageIcon>CrystalDesktop.png</PackageIcon>
     <PackageIconUrl />
@@ -14,8 +14,8 @@
     <RepositoryType>Library</RepositoryType>
     <Description>Crystal library for building composite .NET applications and components.</Description>
     <PackageId>Crystal.Desktop</PackageId>
-    <AssemblyVersion>2.1.2.7</AssemblyVersion>
-    <FileVersion>2.1.2.7</FileVersion>
+    <AssemblyVersion>2.2.3.6</AssemblyVersion>
+    <FileVersion>2.2.3.6</FileVersion>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>

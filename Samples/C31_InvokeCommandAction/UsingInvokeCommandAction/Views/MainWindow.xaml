@@ -13,7 +13,7 @@
     </Grid.RowDefinitions>
 
     <StackPanel Grid.Row="0">
-      <TextBlock Margin="5" FontSize="24" Foreground="DarkRed" TextWrapping="Wrap">InvokeCommandAction</TextBlock>
+      <TextBlock Margin="5" FontSize="24" FontWeight="Black" Foreground="DarkBlue" TextWrapping="Wrap">InvokeCommandAction</TextBlock>
       <TextBlock Margin="5" TextWrapping="Wrap">The <Bold>InvokeCommandAction</Bold> is useful when you need to invoke a command in response to an event raised by a control in the view.</TextBlock>
       <TextBlock Margin="5" TextWrapping="Wrap">
                 In the following example there is a list of items and we want to execute a command in the view model when an item is selected. 

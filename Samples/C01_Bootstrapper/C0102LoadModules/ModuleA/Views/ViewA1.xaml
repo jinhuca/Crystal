@@ -7,6 +7,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 	<Grid>
-		<TextBlock Text="ViewA1" FontSize="35" FontWeight="Black" Foreground="Red" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+		<TextBlock Text="ViewA1" FontSize="35" FontWeight="Black" Foreground="Blue" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 	</Grid>
 </UserControl>

@@ -1,14 +1,19 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <AssemblyName>ModuleA</AssemblyName>
     <RootNamespace>ModuleA</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Crystal.Desktop" Version="2.1.2.7" />
+    <Reference Include="Crystal.Core">
+      <HintPath>..\..\..\Lib\Crystal.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Crystal.Desktop">
+      <HintPath>..\..\..\Lib\Crystal.Desktop.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
