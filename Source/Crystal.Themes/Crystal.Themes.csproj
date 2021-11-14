@@ -45,7 +45,6 @@
     <None Remove="Assets\Eyedropper.cur" />
     <None Remove="Directory.Build.Targets" />
     <Resource Include="Assets\Eyedropper.cur" />
-    <None Include="..\.editorconfig" Link=".editorconfig" />
     <None Include="VisualStudioToolsManifest.xml" Pack="true" PackagePath="tools" />
     <UpToDateCheckInput Include="**/*.xaml" />
   </ItemGroup>
