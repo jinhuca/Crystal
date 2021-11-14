@@ -1,4 +1,4 @@
-﻿<themes:MetroWindow x:Class="LoadViaAppConfig.MainWindow"
+﻿<themes:CrystalWindow x:Class="LoadViaAppConfig.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 				xmlns:crystal="http://schemas.crystal.com"
@@ -13,4 +13,4 @@
 		<ContentControl Grid.Row="0" crystal:RegionManager.RegionName="{x:Static shared:RegionNames.ToolbarRegionName}" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
 		<ContentControl Grid.Row="1" crystal:RegionManager.RegionName="{x:Static shared:RegionNames.ContentRegionName}" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
 	</Grid>
-</themes:MetroWindow>
+</themes:CrystalWindow>

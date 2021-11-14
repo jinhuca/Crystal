@@ -1,7 +1,8 @@
-﻿<Window x:Class="LoadViaCode.MainWindow"
+﻿<themes:CrystalWindow x:Class="LoadViaCode.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:crystal="http://schemas.crystal.com"
+        xmlns:themes="http://schemas.crystal.com/themes"
 				xmlns:shared="clr-namespace:Shared;assembly=Shared"
         Title="Shell">
 	<Grid>
@@ -12,4 +13,4 @@
 		<ContentControl Grid.Row="0" crystal:RegionManager.RegionName="{x:Static shared:RegionNames.ToolbarRegionName}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
 		<ContentControl Grid.Row="1" crystal:RegionManager.RegionName="{x:Static shared:RegionNames.ContentRegionName}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
 	</Grid>
-</Window>
+</themes:CrystalWindow>
