@@ -18,9 +18,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "C02_CrystalApplication", "C02_CrystalApplication", "{9794E3DA-5CA6-4E10-922E-B55977654529}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "C0201BasicApp", "C0201BasicApp", "{6ADCD8C8-510B-4DD2-807D-6D3F27A51E4D}"
-	ProjectSection(SolutionItems) = preProject
-		C02_CrystalApplication\C0201BasicApp\C0201BasicApp\C0201BasicApp.csproj = C02_CrystalApplication\C0201BasicApp\C0201BasicApp\C0201BasicApp.csproj
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "C0202LoadModules", "C0202LoadModules", "{76A7DF92-810C-48D0-8B24-C20E07FE2FE3}"
 EndProject
@@ -207,6 +204,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "C31_InvokeCommandAction", "C31_InvokeCommandAction", "{601A6D8B-E414-47CD-B4CC-51CD940C8117}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UsingInvokeCommandAction", "C31_InvokeCommandAction\UsingInvokeCommandAction\UsingInvokeCommandAction.csproj", "{17237C67-C4DB-4FB7-B794-01B650F11BC1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "C0201BasicApp", "C02_CrystalApplication\C0201BasicApp\C0201BasicApp\C0201BasicApp.csproj", "{8FA98534-66AF-4AE9-8D2F-A3E81EEAE4B0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -482,6 +481,10 @@ Global
 		{17237C67-C4DB-4FB7-B794-01B650F11BC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17237C67-C4DB-4FB7-B794-01B650F11BC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17237C67-C4DB-4FB7-B794-01B650F11BC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FA98534-66AF-4AE9-8D2F-A3E81EEAE4B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FA98534-66AF-4AE9-8D2F-A3E81EEAE4B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FA98534-66AF-4AE9-8D2F-A3E81EEAE4B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FA98534-66AF-4AE9-8D2F-A3E81EEAE4B0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -558,6 +561,7 @@ Global
 		{63403AC1-4039-4E3F-BAEE-DFB5DF5B0AAA} = {49CB676C-4D0B-41E9-92E6-71CF007A8B89}
 		{7042F287-2FDC-4898-993D-25FD6166BB56} = {49CB676C-4D0B-41E9-92E6-71CF007A8B89}
 		{17237C67-C4DB-4FB7-B794-01B650F11BC1} = {601A6D8B-E414-47CD-B4CC-51CD940C8117}
+		{8FA98534-66AF-4AE9-8D2F-A3E81EEAE4B0} = {6ADCD8C8-510B-4DD2-807D-6D3F27A51E4D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {31BC22F3-ED9E-40DD-AF2D-FCC315B1EE7A}

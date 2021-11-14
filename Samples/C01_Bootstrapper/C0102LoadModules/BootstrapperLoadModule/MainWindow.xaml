@@ -1,4 +1,4 @@
-﻿<themes:MetroWindow x:Class="C0102BootstrapperModule.MainWindow"
+﻿<themes:CrystalWindow x:Class="C0102BootstrapperModule.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -10,4 +10,4 @@
 	<Grid>
 		<ContentControl crystal:RegionManager.RegionName="ContentRegion" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 	</Grid>
-</themes:MetroWindow>
+</themes:CrystalWindow>
