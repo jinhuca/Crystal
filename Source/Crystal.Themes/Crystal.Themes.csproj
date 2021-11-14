@@ -10,16 +10,18 @@
     <DefineConstants>$(DefineConstants);INTERNAL_NULLABLE_ATTRIBUTES</DefineConstants>
     <SignAssembly>False</SignAssembly>
     <TargetFrameworks></TargetFrameworks>
-    <PackageProjectUrl>https://github.com/jinhuca/Crystal.Themes</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/jinhuca/Crystal.Themes</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/jinhuca/Crystal</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/jinhuca/Crystal</RepositoryUrl>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageIcon>CrystalTheme.png</PackageIcon>
-    <PackageTags>WPF</PackageTags>
+    <PackageTags>WPF, .NET</PackageTags>
     <TargetFrameworks>net6.0-windows</TargetFrameworks>
-    <Version>2.2.4.1</Version>
+    <Version>2.2.4.2</Version>
     <Authors>Jin Hu</Authors>
-    <AssemblyVersion>2.2.4.1</AssemblyVersion>
-    <FileVersion>2.2.4.1</FileVersion>
+    <AssemblyVersion>2.2.4.2</AssemblyVersion>
+    <FileVersion>2.2.4.2</FileVersion>
+    <Description>Library for modern WPF Controls</Description>
+    <PackageReleaseNotes>https://github.com/jinhuca/Crystal/releases</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup Condition="$(DefineConstants.Contains(NETCOREAPP)) == false">

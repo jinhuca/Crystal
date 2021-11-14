@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "T01_CrystalWindow", "T01_CrystalWindow", "{2802F6F8-C340-424D-A7F4-922B661F77BD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "T0101CrystalWindow", "T01_CrystalWindow\T0101CrystalWindow\T0101CrystalWindow.csproj", "{98EE20CE-5D42-44B7-955D-242125344A07}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "T0102CrystalWindow", "T01_CrystalWindow\T0102CrystalWindow\T0102CrystalWindow.csproj", "{3353907E-16B7-4D04-B176-94B0137F7368}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{98EE20CE-5D42-44B7-955D-242125344A07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98EE20CE-5D42-44B7-955D-242125344A07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98EE20CE-5D42-44B7-955D-242125344A07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98EE20CE-5D42-44B7-955D-242125344A07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3353907E-16B7-4D04-B176-94B0137F7368}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3353907E-16B7-4D04-B176-94B0137F7368}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3353907E-16B7-4D04-B176-94B0137F7368}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3353907E-16B7-4D04-B176-94B0137F7368}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{98EE20CE-5D42-44B7-955D-242125344A07} = {2802F6F8-C340-424D-A7F4-922B661F77BD}
+		{3353907E-16B7-4D04-B176-94B0137F7368} = {2802F6F8-C340-424D-A7F4-922B661F77BD}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {95085690-0B33-4E36-B6E8-046F80518E68}
+	EndGlobalSection
+EndGlobal
