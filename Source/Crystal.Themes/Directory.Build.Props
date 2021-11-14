@@ -1,0 +1,58 @@
+<Project>
+
+  <!-- SourceLink -->
+  <PropertyGroup>
+    <IsBuildingWpfTempProj Condition="$(MSBuildProjectName.Contains('_wpftmp')) != 'true'">false</IsBuildingWpfTempProj>
+    <IsBuildingWpfTempProj Condition="$(MSBuildProjectName.Contains('_wpftmp')) == 'true'">true</IsBuildingWpfTempProj>
+    <!-- Optional: Declare that the Repository URL can be published to NuSpec -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <!-- <IncludeSymbols>true</IncludeSymbols> -->
+    <!-- Optional: Embed source files that are not tracked by the source control manager to the PDB -->
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <!-- Optional: Include PDB in the built .nupkg -->
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <!-- https://github.com/dotnet/sourcelink/blob/master/docs/README.md#embedallsources -->
+    <!-- <EmbedAllSources>true</EmbedAllSources>-->
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <AppendTargetFrameworkToOutputPath>true</AppendTargetFrameworkToOutputPath>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <AutoGenerateBindingRedirects Condition=" $(TargetFramework.StartsWith('net4')) ">true</AutoGenerateBindingRedirects>
+    <LangVersion>latest</LangVersion>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+    <NoError>$(NoError);CS1591</NoError>
+    <UseWPF>true</UseWPF>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Nullable>enable</Nullable>
+    <DefineConstants Condition="'$(TargetFramework)' == 'net6.0-windows'">$(DefineConstants);NET6_0_OR_GREATER</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <SourceRoot Include="$(MSBuildThisFileDirectory)/"/>
+    <None Remove="**\*.png;**\*.jpg;**\*.ico;**\*.ttf"/>
+    <Resource Include="**\*.png;**\*.jpg;**\*.ico;**\*.ttf"/>
+    <PackageReference Include="JetBrains.Annotations" Version="2021.*" PrivateAssets="All" IncludeAssets="build;compile"/>
+    <PackageReference Include="WpfAnalyzers" Version="3.5.*" PrivateAssets="All"/>
+  </ItemGroup>
+
+  <!-- NuGet -->
+  <PropertyGroup>
+    <Authors>Jin Hu</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/jinhuca/Crystal.Themes</PackageProjectUrl>
+    <PackageTags>WPF;.NET</PackageTags>
+    <PackageReleaseNotes>https://github.com/jinhuca/Crystal.Themes/releases</PackageReleaseNotes>
+    <RepositoryUrl>https://github.com/jinhuca/Crystal.Themes.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <GenerateLibraryLayout>true</GenerateLibraryLayout>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFrameworkMonikerAssemblyAttributesPath>$([System.IO.Path]::Combine('$(IntermediateOutputPath)','$(TargetFrameworkMoniker).AssemblyAttributes$(DefaultLanguageSourceExtension)'))</TargetFrameworkMonikerAssemblyAttributesPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedFiles Include="$(GeneratedAssemblyInfoFile)"/>
+  </ItemGroup>
+</Project>

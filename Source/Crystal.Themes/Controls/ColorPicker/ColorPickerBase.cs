@@ -1,0 +1,605 @@
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System.ComponentModel;
+using System.Windows.Controls;
+using System.Windows.Media;
+using JetBrains.Annotations;
+using Crystal.Themes.ValueBoxes;
+
+namespace Crystal.Themes.Controls
+{
+  [DefaultEvent("SelectedColorChanged")]
+    public class ColorPickerBase : Control
+    {
+        protected bool ColorIsUpdating;
+        protected bool UpdateHsvValues = true;
+
+        /// <summary>Identifies the <see cref="SelectedColor"/> dependency property.</summary>
+        public static readonly DependencyProperty SelectedColorProperty
+            = DependencyProperty.Register(nameof(SelectedColor),
+                                          typeof(Color?),
+                                          typeof(ColorPickerBase),
+                                          new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnSelectedColorPropertyChanged, CoerceSelectedColorProperty));
+
+        private static void OnSelectedColorPropertyChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+        {
+            if (dependencyObject is ColorPickerBase colorPicker && e.OldValue != e.NewValue && !colorPicker.ColorIsUpdating)
+            {
+                colorPicker.ColorIsUpdating = true;
+                try
+                {
+                    colorPicker.OnSelectedColorChanged(e.OldValue as Color?, e.NewValue as Color? ?? colorPicker.DefaultColor);
+                }
+                finally
+                {
+                    colorPicker.ColorIsUpdating = false;
+                }
+            }
+        }
+
+        [MustUseReturnValue]
+        private static object? CoerceSelectedColorProperty(DependencyObject dependencyObject, object? basevalue)
+        {
+            if (dependencyObject is ColorPickerBase colorPicker)
+            {
+                basevalue ??= colorPicker.DefaultColor;
+            }
+
+            return basevalue;
+        }
+
+        /// <summary>
+        /// Gets or sets the selected <see cref="Color"/>.
+        /// </summary>
+        public Color? SelectedColor
+        {
+            get => (Color?)GetValue(SelectedColorProperty);
+            set => SetValue(SelectedColorProperty, value);
+        }
+
+        /// <summary>Identifies the <see cref="DefaultColor"/> dependency property.</summary>
+        public static readonly DependencyProperty DefaultColorProperty
+            = DependencyProperty.Register(nameof(DefaultColor),
+                                          typeof(Color?),
+                                          typeof(ColorPickerBase),
+                                          new FrameworkPropertyMetadata(null, OnDefaultColorPropertyChanged));
+
+        private static void OnDefaultColorPropertyChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+        {
+            if (dependencyObject is ColorPickerBase colorPicker && e.OldValue != e.NewValue)
+            {
+                colorPicker.SetCurrentValue(SelectedColorProperty, e.NewValue ?? colorPicker.SelectedColor);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a default selected <see cref="Color"/>
+        /// </summary>
+        public Color? DefaultColor
+        {
+            get => (Color?)GetValue(DefaultColorProperty);
+            set => SetValue(DefaultColorProperty, value);
+        }
+
+        private static readonly DependencyPropertyKey SelectedHSVColorPropertyKey
+            = DependencyProperty.RegisterReadOnly(nameof(SelectedHSVColor),
+                                                  typeof(HSVColor),
+                                                  typeof(ColorPickerBase),
+                                                  new PropertyMetadata(new HSVColor(Colors.Black)));
+
+        /// <summary>Identifies the <see cref="SelectedHSVColor"/> dependency property.</summary>
+        public static readonly DependencyProperty SelectedHSVColorProperty = SelectedHSVColorPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// Gets the <see cref="SelectedColor"/> as <see cref="HSVColor"/>. This property is read only.
+        /// </summary>
+        public HSVColor SelectedHSVColor => (HSVColor)GetValue(SelectedHSVColorProperty);
+
+        /// <summary>Identifies the <see cref="ColorName"/> dependency property.</summary>
+        public static readonly DependencyProperty ColorNameProperty
+            = DependencyProperty.Register(nameof(ColorName),
+                                          typeof(string),
+                                          typeof(ColorPickerBase),
+                                          new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnColorNamePropertyChanged));
+
+        private static void OnColorNamePropertyChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+        {
+            if (dependencyObject is ColorPickerBase colorPicker && !colorPicker.ColorIsUpdating)
+            {
+                if (string.IsNullOrEmpty(e.NewValue?.ToString()))
+                {
+                    colorPicker.SetCurrentValue(SelectedColorProperty, null);
+                }
+                else if ((colorPicker.ColorHelper ?? ColorHelper.DefaultInstance).ColorFromString(e.NewValue?.ToString(), colorPicker.ColorNamesDictionary) is { } color)
+                {
+                    if (colorPicker.SelectedColor != color)
+                    {
+                        colorPicker.SetCurrentValue(SelectedColorProperty, color);
+                    }
+                    else // if the color stayed the same we still have to update the displayed name
+                    {
+                        colorPicker.ColorIsUpdating = true;
+                        try
+                        {
+                            colorPicker.SetCurrentValue(ColorNameProperty, (colorPicker.ColorHelper ?? ColorHelper.DefaultInstance).GetColorName(color, colorPicker.ColorNamesDictionary, colorPicker.IsAlphaChannelVisible));
+                        }
+                        finally
+                        {
+                            colorPicker.ColorIsUpdating = false;
+                        }
+                    }
+                }
+                else
+                {
+                    throw new InvalidCastException("Cannot convert the given input to a valid color");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the name of the <see cref="SelectedColor"/>.
+        /// </summary>
+        public string? ColorName
+        {
+            get => (string?)GetValue(ColorNameProperty);
+            set => SetValue(ColorNameProperty, value);
+        }
+
+        /// <summary>Identifies the <see cref="ColorNamesDictionary"/> dependency property.</summary>
+        public static readonly DependencyProperty ColorNamesDictionaryProperty
+            = DependencyProperty.Register(nameof(ColorNamesDictionary),
+                                          typeof(Dictionary<Color, string>),
+                                          typeof(ColorPickerBase),
+                                          new PropertyMetadata(null));
+
+        /// <summary>
+        /// Gets or sets a <see cref="Dictionary{TKey, TValue}"/> for looking up the <see cref="ColorName"/>
+        /// </summary>
+        public Dictionary<Color, string>? ColorNamesDictionary
+        {
+            get => (Dictionary<Color, string>?)GetValue(ColorNamesDictionaryProperty);
+            set => SetValue(ColorNamesDictionaryProperty, value);
+        }
+
+        /// <summary>Identifies the <see cref="ColorHelper"/> dependency property.</summary>
+        public static readonly DependencyProperty ColorHelperProperty =
+            DependencyProperty.Register(nameof(ColorHelper),
+                                        typeof(ColorHelper),
+                                        typeof(ColorPickerBase),
+                                        new PropertyMetadata(null, OnUpdateColorNameProperty));
+
+        private static void OnUpdateColorNameProperty(DependencyObject d, DependencyPropertyChangedEventArgs _)
+        {
+            if (d is ColorPickerBase colorPicker)
+            {
+                colorPicker.ColorIsUpdating = true;
+
+                try
+                {
+                    colorPicker.SetCurrentValue(ColorNameProperty, (colorPicker.ColorHelper ?? ColorHelper.DefaultInstance).GetColorName(colorPicker.SelectedColor, colorPicker.ColorNamesDictionary, colorPicker.IsAlphaChannelVisible));
+                }
+                finally
+                {
+                    colorPicker.ColorIsUpdating = false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or Sets the helper class which is used to convert the color from or to string
+        /// </summary>
+        public ColorHelper? ColorHelper
+        {
+            get => (ColorHelper?)GetValue(ColorHelperProperty);
+            set => SetValue(ColorHelperProperty, value);
+        }
+
+        /// <summary>Identifies the <see cref="A"/> dependency property.</summary>
+        public static readonly DependencyProperty AProperty
+            = DependencyProperty.Register(nameof(A),
+                                          typeof(byte),
+                                          typeof(ColorPickerBase),
+                                          new FrameworkPropertyMetadata((byte)255, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnColorChannelChanged));
+
+        /// <summary>
+        /// Gets or sets the Alpha-Channel
+        /// </summary>
+        public byte A
+        {
+            get => (byte)GetValue(AProperty);
+            set => SetValue(AProperty, value);
+        }
+
+        /// <summary>Identifies the <see cref="R"/> dependency property.</summary>
+        public static readonly DependencyProperty RProperty
+            = DependencyProperty.Register(nameof(R),
+                                          typeof(byte),
+                                          typeof(ColorPickerBase),
+                                          new FrameworkPropertyMetadata((byte)0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnColorChannelChanged));
+
+        /// <summary>
+        /// Gets or sets the Red-Channel
+        /// </summary>
+        public byte R
+        {
+            get => (byte)GetValue(RProperty);
+            set => SetValue(RProperty, value);
+        }
+
+        /// <summary>Identifies the <see cref="G"/> dependency property.</summary>
+        public static readonly DependencyProperty GProperty
+            = DependencyProperty.Register(nameof(G),
+                                          typeof(byte),
+                                          typeof(ColorPickerBase),
+                                          new FrameworkPropertyMetadata((byte)0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnColorChannelChanged));
+
+        /// <summary>
+        /// Gets or sets the Green-Channel
+        /// </summary>
+        public byte G
+        {
+            get => (byte)GetValue(GProperty);
+            set => SetValue(GProperty, value);
+        }
+
+        /// <summary>Identifies the <see cref="B"/> dependency property.</summary>
+        public static readonly DependencyProperty BProperty
+            = DependencyProperty.Register(nameof(B),
+                                          typeof(byte),
+                                          typeof(ColorPickerBase),
+                                          new FrameworkPropertyMetadata((byte)0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnColorChannelChanged));
+
+        /// <summary>
+        /// Gets or sets the Blue-Channel
+        /// </summary>
+        public byte B
+        {
+            get => (byte)GetValue(BProperty);
+            set => SetValue(BProperty, value);
+        }
+
+        /// <summary>Identifies the <see cref="Hue"/> dependency property.</summary>
+        public static readonly DependencyProperty HueProperty
+            = DependencyProperty.Register(nameof(Hue),
+                                          typeof(double),
+                                          typeof(ColorPickerBase),
+                                          new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnHSVValuesChanged));
+
+        private static void OnHSVValuesChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+        {
+            if (dependencyObject is ColorPickerBase colorPicker && !colorPicker.ColorIsUpdating)
+            {
+                var hsv = new HSVColor(colorPicker.A / 255d, colorPicker.Hue, colorPicker.Saturation, colorPicker.Value);
+
+                colorPicker.UpdateHsvValues = false;
+                try
+                {
+                    colorPicker.SetCurrentValue(SelectedColorProperty, hsv.ToColor());
+                }
+                finally
+                {
+                    colorPicker.UpdateHsvValues = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the Hue-Channel
+        /// </summary>
+        public double Hue
+        {
+            get => (double)GetValue(HueProperty);
+            set => SetValue(HueProperty, value);
+        }
+
+        /// <summary>Identifies the <see cref="Saturation"/> dependency property.</summary>
+        public static readonly DependencyProperty SaturationProperty
+            = DependencyProperty.Register(nameof(Saturation),
+                                          typeof(double),
+                                          typeof(ColorPickerBase),
+                                          new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnHSVValuesChanged));
+
+        /// <summary>
+        /// Gets or sets the Saturation-Channel
+        /// </summary>
+        public double Saturation
+        {
+            get => (double)GetValue(SaturationProperty);
+            set => SetValue(SaturationProperty, value);
+        }
+
+        /// <summary>Identifies the <see cref="Value"/> dependency property.</summary>
+        public static readonly DependencyProperty ValueProperty
+            = DependencyProperty.Register(nameof(Value),
+                                          typeof(double),
+                                          typeof(ColorPickerBase),
+                                          new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnHSVValuesChanged));
+
+        /// <summary>
+        /// Gets or sets the Value-Channel
+        /// </summary>
+        public double Value
+        {
+            get => (double)GetValue(ValueProperty);
+            set => SetValue(ValueProperty, value);
+        }
+
+        /// <summary>Identifies the <see cref="LabelAlphaChannel"/> dependency property.</summary>
+        public static readonly DependencyProperty LabelAlphaChannelProperty
+            = DependencyProperty.Register(nameof(LabelAlphaChannel),
+                                          typeof(object),
+                                          typeof(ColorPickerBase),
+                                          new PropertyMetadata("A"));
+
+        /// <summary>
+        /// Gets or sets the label for the Alpha-Channel in the UI
+        /// </summary>
+        public object LabelAlphaChannel
+        {
+            get => (object)GetValue(LabelAlphaChannelProperty);
+            set => SetValue(LabelAlphaChannelProperty, value);
+        }
+
+        /// <summary>Identifies the <see cref="LabelRedChannel"/> dependency property.</summary>
+        public static readonly DependencyProperty LabelRedChannelProperty
+            = DependencyProperty.Register(nameof(LabelRedChannel),
+                                          typeof(object),
+                                          typeof(ColorPickerBase),
+                                          new PropertyMetadata("R"));
+
+        /// <summary>
+        /// Gets or sets the label for the Red-Channel in the UI
+        /// </summary>
+        public object LabelRedChannel
+        {
+            get => (object)GetValue(LabelRedChannelProperty);
+            set => SetValue(LabelRedChannelProperty, value);
+        }
+
+        /// <summary>Identifies the <see cref="LabelGreenChannel"/> dependency property.</summary>
+        public static readonly DependencyProperty LabelGreenChannelProperty
+            = DependencyProperty.Register(nameof(LabelGreenChannel),
+                                          typeof(object),
+                                          typeof(ColorPickerBase),
+                                          new PropertyMetadata("G"));
+
+        /// <summary>
+        /// Gets or sets the label for the Green-Channel in the UI
+        /// </summary>
+        public object LabelGreenChannel
+        {
+            get => (object)GetValue(LabelGreenChannelProperty);
+            set => SetValue(LabelGreenChannelProperty, value);
+        }
+
+        /// <summary>Identifies the <see cref="LabelBlueChannel"/> dependency property.</summary>
+        public static readonly DependencyProperty LabelBlueChannelProperty
+            = DependencyProperty.Register(nameof(LabelBlueChannel),
+                                          typeof(object),
+                                          typeof(ColorPickerBase),
+                                          new PropertyMetadata("B"));
+
+        /// <summary>
+        /// Gets or sets the label for the Blue-Channel in the UI
+        /// </summary>
+        public object LabelBlueChannel
+        {
+            get => (object)GetValue(LabelBlueChannelProperty);
+            set => SetValue(LabelBlueChannelProperty, value);
+        }
+
+        /// <summary>Identifies the <see cref="LabelColorPreview"/> dependency property.</summary>
+        public static readonly DependencyProperty LabelColorPreviewProperty
+            = DependencyProperty.Register(nameof(LabelColorPreview),
+                                          typeof(object),
+                                          typeof(ColorPickerBase),
+                                          new PropertyMetadata("Preview"));
+
+        /// <summary>
+        /// Gets or sets the label for the Preview in the UI
+        /// </summary>
+        public object LabelColorPreview
+        {
+            get => (object)GetValue(LabelColorPreviewProperty);
+            set => SetValue(LabelColorPreviewProperty, value);
+        }
+
+        /// <summary>Identifies the <see cref="LabelHueChannel"/> dependency property.</summary>
+        public static readonly DependencyProperty LabelHueChannelProperty
+            = DependencyProperty.Register(nameof(LabelHueChannel),
+                                          typeof(object),
+                                          typeof(ColorPickerBase),
+                                          new PropertyMetadata("H"));
+
+        /// <summary>
+        /// Gets or sets the label for the Hue-Channel in the UI
+        /// </summary>
+        public object LabelHueChannel
+        {
+            get => (object)GetValue(LabelHueChannelProperty);
+            set => SetValue(LabelHueChannelProperty, value);
+        }
+
+        /// <summary>Identifies the <see cref="LabelSaturationChannel"/> dependency property.</summary>
+        public static readonly DependencyProperty LabelSaturationChannelProperty
+            = DependencyProperty.Register(nameof(LabelSaturationChannel),
+                                          typeof(object),
+                                          typeof(ColorPickerBase),
+                                          new PropertyMetadata("S"));
+
+        /// <summary>
+        /// Gets or sets the label for the Saturation-Channel in the UI
+        /// </summary>
+        public object LabelSaturationChannel
+        {
+            get => (object)GetValue(LabelSaturationChannelProperty);
+            set => SetValue(LabelSaturationChannelProperty, value);
+        }
+
+        /// <summary>Identifies the <see cref="LabelValueChannel"/> dependency property.</summary>
+        public static readonly DependencyProperty LabelValueChannelProperty
+            = DependencyProperty.Register(nameof(LabelValueChannel),
+                                          typeof(object),
+                                          typeof(ColorPickerBase),
+                                          new PropertyMetadata("V"));
+
+        /// <summary>
+        /// Gets or sets the label for the Value-Channel in the UI
+        /// </summary>
+        public object LabelValueChannel
+        {
+            get => (object)GetValue(LabelValueChannelProperty);
+            set => SetValue(LabelValueChannelProperty, value);
+        }
+
+        /// <summary>Identifies the <see cref="LabelColorName"/> dependency property.</summary>
+        public static readonly DependencyProperty LabelColorNameProperty
+            = DependencyProperty.Register(nameof(LabelColorName),
+                                          typeof(object),
+                                          typeof(ColorPickerBase),
+                                          new PropertyMetadata("Name"));
+
+        /// <summary>
+        /// Gets or sets the label for the <see cref="ColorName"/> in the UI
+        /// </summary>
+        public object LabelColorName
+        {
+            get => (object)GetValue(LabelColorNameProperty);
+            set => SetValue(LabelColorNameProperty, value);
+        }
+
+        /// <summary>Identifies the <see cref="AreRgbChannelsVisible"/> dependency property.</summary>
+        public static readonly DependencyProperty AreRgbChannelsVisibleProperty
+            = DependencyProperty.Register(nameof(AreRgbChannelsVisible),
+                                          typeof(bool),
+                                          typeof(ColorPickerBase),
+                                          new PropertyMetadata(BooleanBoxes.TrueBox));
+
+        /// <summary>
+        /// Gets or sets whether the RGB-Channels are visible
+        /// </summary>
+        public bool AreRgbChannelsVisible
+        {
+            get => (bool)GetValue(AreRgbChannelsVisibleProperty);
+            set => SetValue(AreRgbChannelsVisibleProperty, BooleanBoxes.Box(value));
+        }
+
+        /// <summary>Identifies the <see cref="AreHsvChannelsVisible"/> dependency property.</summary>
+        public static readonly DependencyProperty AreHsvChannelsVisibleProperty
+            = DependencyProperty.Register(nameof(AreHsvChannelsVisible),
+                                          typeof(bool),
+                                          typeof(ColorPickerBase),
+                                          new PropertyMetadata(BooleanBoxes.TrueBox));
+
+        /// <summary>
+        /// Gets or sets whether the HSV-Channels are visible
+        /// </summary>
+        public bool AreHsvChannelsVisible
+        {
+            get => (bool)GetValue(AreHsvChannelsVisibleProperty);
+            set => SetValue(AreHsvChannelsVisibleProperty, BooleanBoxes.Box(value));
+        }
+
+        /// <summary>Identifies the <see cref="IsAlphaChannelVisible"/> dependency property.</summary>
+        public static readonly DependencyProperty IsAlphaChannelVisibleProperty
+            = DependencyProperty.Register(nameof(IsAlphaChannelVisible),
+                                          typeof(bool),
+                                          typeof(ColorPickerBase),
+                                          new PropertyMetadata(BooleanBoxes.TrueBox, OnUpdateColorNameProperty));
+
+        /// <summary>
+        /// Gets or sets whether the Alpha-Channel is visible
+        /// </summary>
+        public bool IsAlphaChannelVisible
+        {
+            get => (bool)GetValue(IsAlphaChannelVisibleProperty);
+            set => SetValue(IsAlphaChannelVisibleProperty, BooleanBoxes.Box(value));
+        }
+
+        /// <summary>Identifies the <see cref="IsColorNameVisible"/> dependency property.</summary>
+        public static readonly DependencyProperty IsColorNameVisibleProperty
+            = DependencyProperty.Register(nameof(IsColorNameVisible),
+                                          typeof(bool),
+                                          typeof(ColorPickerBase),
+                                          new PropertyMetadata(BooleanBoxes.TrueBox));
+
+        /// <summary>
+        /// Gets or sets whether the field for the <see cref="ColorName"/> is visible
+        /// </summary>
+        public bool IsColorNameVisible
+        {
+            get => (bool)GetValue(IsColorNameVisibleProperty);
+            set => SetValue(IsColorNameVisibleProperty, BooleanBoxes.Box(value));
+        }
+
+        /// <summary>Identifies the <see cref="IsEyeDropperVisible"/> dependency property.</summary>
+        public static readonly DependencyProperty IsEyeDropperVisibleProperty
+            = DependencyProperty.Register(nameof(IsEyeDropperVisible),
+                                          typeof(bool),
+                                          typeof(ColorPickerBase),
+                                          new PropertyMetadata(BooleanBoxes.TrueBox));
+
+        /// <summary>
+        /// Gets or sets whether the <see cref="ColorEyeDropper"/> is visible
+        /// </summary>
+        public bool IsEyeDropperVisible
+        {
+            get => (bool)GetValue(IsEyeDropperVisibleProperty);
+            set => SetValue(IsEyeDropperVisibleProperty, BooleanBoxes.Box(value));
+        }
+
+        /// <summary>Identifies the <see cref="SelectedColorChanged"/> routed event.</summary>
+        public static readonly RoutedEvent SelectedColorChangedEvent
+            = EventManager.RegisterRoutedEvent(nameof(SelectedColorChanged),
+                                               RoutingStrategy.Bubble,
+                                               typeof(RoutedPropertyChangedEventHandler<Color?>),
+                                               typeof(ColorPickerBase));
+
+        /// <summary>
+        ///     Occurs when the <see cref="SelectedColor" /> property is changed.
+        /// </summary>
+        public event RoutedPropertyChangedEventHandler<Color?> SelectedColorChanged
+        {
+            add => AddHandler(SelectedColorChangedEvent, value);
+            remove => RemoveHandler(SelectedColorChangedEvent, value);
+        }
+
+        internal virtual void OnSelectedColorChanged(Color? oldValue, Color? newValue)
+        {
+            SetCurrentValue(ColorNameProperty, (ColorHelper ?? ColorHelper.DefaultInstance).GetColorName(newValue, ColorNamesDictionary, IsAlphaChannelVisible));
+
+            // We just update the following lines if we have a Color.
+            if (newValue != null)
+            {
+                var color = (Color)newValue;
+
+                if (UpdateHsvValues)
+                {
+                    var hsv = new HSVColor(color);
+                    SetCurrentValue(HueProperty, hsv.Hue);
+                    SetCurrentValue(SaturationProperty, hsv.Saturation);
+                    SetCurrentValue(ValueProperty, hsv.Value);
+                }
+
+                SetValue(SelectedHSVColorPropertyKey, new HSVColor(A / 255d, Hue, Saturation, Value));
+
+                SetCurrentValue(AProperty, color.A);
+                SetCurrentValue(RProperty, color.R);
+                SetCurrentValue(GProperty, color.G);
+                SetCurrentValue(BProperty, color.B);
+            }
+
+            RaiseEvent(new RoutedPropertyChangedEventArgs<Color?>(oldValue, newValue, SelectedColorChangedEvent));
+        }
+
+        internal static void OnColorChannelChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+        {
+            if (dependencyObject is ColorPickerBase colorPicker && !colorPicker.ColorIsUpdating)
+            {
+                colorPicker.SetCurrentValue(SelectedColorProperty, Color.FromArgb(colorPicker.A, colorPicker.R, colorPicker.G, colorPicker.B));
+            }
+        }
+    }
+}

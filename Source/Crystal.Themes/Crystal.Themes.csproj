@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <!-- Project properties -->
+  <PropertyGroup>
+    <AssemblyName>Crystal.Themes</AssemblyName>
+    <Title>Crystal.Themes</Title>
+    <RootNamespace>Crystal.Themes</RootNamespace>
+    <DefaultItemExcludes>$(DefaultItemExcludes);**\*.Template.xaml</DefaultItemExcludes>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <DefineConstants>$(DefineConstants);INTERNAL_NULLABLE_ATTRIBUTES</DefineConstants>
+    <SignAssembly>False</SignAssembly>
+    <TargetFrameworks></TargetFrameworks>
+    <PackageProjectUrl>https://github.com/jinhuca/Crystal.Themes</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/jinhuca/Crystal.Themes</RepositoryUrl>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageIcon>CrystalTheme.png</PackageIcon>
+    <PackageTags>WPF</PackageTags>
+    <TargetFrameworks>net6.0-windows</TargetFrameworks>
+    <Version>2.2.4.1</Version>
+    <Authors>Jin Hu</Authors>
+    <AssemblyVersion>2.2.4.1</AssemblyVersion>
+    <FileVersion>2.2.4.1</FileVersion>
+  </PropertyGroup>
+
+  <ItemGroup Condition="$(DefineConstants.Contains(NETCOREAPP)) == false">
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ControlzEx" version="[5.*, 6)" />
+    <PackageReference Include="XamlColorSchemeGenerator" version="4.0.0-rc0155" PrivateAssets="all" IncludeAssets="build" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.*">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <!-- Items include -->
+  <ItemGroup>
+    <EmbeddedResource Include="**\*.Template.xaml" />
+    <EmbeddedResource Include="**\GeneratorParameters.json" />
+    <None Remove="Assets\Eyedropper.cur" />
+    <None Remove="Directory.Build.Targets" />
+    <Resource Include="Assets\Eyedropper.cur" />
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+    <None Include="VisualStudioToolsManifest.xml" Pack="true" PackagePath="tools" />
+    <UpToDateCheckInput Include="**/*.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="FrameworkStubs.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Remove="Resources\CrystalTheme.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\CrystalContentControl.xaml" />
+    <UpToDateCheckInput Remove="Themes\CrystalHeader.xaml" />
+    <UpToDateCheckInput Remove="Themes\CrystalWindow.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Lang\ColorNames.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ColorNames.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Lang\MultiSelectionComboBox.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MultiSelectionComboBox.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Update="Lang\ColorNames.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ColorNames.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Lang\MultiSelectionComboBox.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>MultiSelectionComboBox.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Resources\CrystalTheme.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <!-- Generate theme files -->
+  <Target Name="GenerateXamlFiles" BeforeTargets="DispatchToInnerBuilds;PrepareForBuild" Condition=" '$(IsBuildingWpfTempProj)' != 'true' and '$(XamlColorSchemeGeneratorExecutable)' != '' ">
+    <Message Text="Generating XAML Color Scheme files... $(XamlColorSchemeGeneratorExecutable)" Importance="high" />
+    <Exec Command="&quot;$(XamlColorSchemeGeneratorExecutable)&quot;" WorkingDirectory="$(MSBuildProjectDirectory)/Styles/Themes" />
+  </Target>
+
+  <!-- Delete generated XAML files when user explicitly executes Clean build. -->
+  <Target Name="CleanGenerateXamlFiles" AfterTargets="Clean">
+    <ItemGroup>
+      <ThemeFiles Include="$(MSBuildProjectDirectory)/Styles/Themes/Dark.*.xaml" />
+      <ThemeFiles Include="$(MSBuildProjectDirectory)/Styles/Themes/Light.*.xaml" />
+    </ItemGroup>
+    <Message Text="Deleting XAML Color Scheme files..." Importance="high" />
+    <Delete Files="@(ThemeFiles)" ContinueOnError="true" />
+  </Target>
+
+</Project>
