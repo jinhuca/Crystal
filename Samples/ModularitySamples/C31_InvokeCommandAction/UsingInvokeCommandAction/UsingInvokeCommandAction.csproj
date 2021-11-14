@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <AssemblyName>UsingInvokeCommandAction</AssemblyName>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Crystal.Behaviors" Version="2.2.3.6" />
+    <PackageReference Include="Crystal.Desktop" Version="2.2.3.6" />
+  </ItemGroup>
+</Project>

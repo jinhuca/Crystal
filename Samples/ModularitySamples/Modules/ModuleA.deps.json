@@ -1,0 +1,70 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "ModuleA/1.0.0": {
+        "dependencies": {
+          "Crystal.Desktop": "2.2.3.6",
+          "Shared": "1.0.0"
+        },
+        "runtime": {
+          "ModuleA.dll": {}
+        }
+      },
+      "Crystal.Core/2.2.3.6": {
+        "runtime": {
+          "lib/net6.0-windows7.0/Crystal.Core.dll": {
+            "assemblyVersion": "2.2.3.6",
+            "fileVersion": "2.2.3.6"
+          }
+        }
+      },
+      "Crystal.Desktop/2.2.3.6": {
+        "dependencies": {
+          "Crystal.Core": "2.2.3.6"
+        },
+        "runtime": {
+          "lib/net6.0-windows7.0/Crystal.Desktop.dll": {
+            "assemblyVersion": "2.2.3.6",
+            "fileVersion": "2.2.3.6"
+          }
+        }
+      },
+      "Shared/1.0.0": {
+        "runtime": {
+          "Shared.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "ModuleA/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Crystal.Core/2.2.3.6": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-kTCKpVSQa6yizVtun3zll3PHVoW/ikoKQ0bEqiQRLIAVMlXPNOFy+lqH2cwVJ7PWT6AiO/waw1V2yoiFu9y6Tg==",
+      "path": "crystal.core/2.2.3.6",
+      "hashPath": "crystal.core.2.2.3.6.nupkg.sha512"
+    },
+    "Crystal.Desktop/2.2.3.6": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-j1I3+b9vb5up5oCB3ZN6iIBV08ogo5h6KwTfXkHAjPlZcSMpLFB2673JA5xAqQyKm6C8oQhQCPeD5ZhAX+TbvA==",
+      "path": "crystal.desktop/2.2.3.6",
+      "hashPath": "crystal.desktop.2.2.3.6.nupkg.sha512"
+    },
+    "Shared/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
