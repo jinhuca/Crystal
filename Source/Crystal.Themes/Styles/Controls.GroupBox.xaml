@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:mah="clr-namespace:Crystal.Themes.Controls"
+                    xmlns:crystal="clr-namespace:Crystal.Themes.Controls"
                     xmlns:mahConverters="clr-namespace:Crystal.Themes.Converters">
 
     <mahConverters:ThicknessBindingConverter x:Key="ThicknessBindingConverter" />
@@ -24,45 +24,45 @@
                         </Grid.RowDefinitions>
                         <Border x:Name="HeaderSite"
                                 Grid.Row="0"
-                                Background="{TemplateBinding mah:HeaderedControlHelper.HeaderBackground}"
+                                Background="{TemplateBinding crystal:HeaderedControlHelper.HeaderBackground}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:ControlsHelper.CornerRadius), Converter={StaticResource CornerRadiusBindingConverter}, ConverterParameter={x:Static mahConverters:RadiusType.Bottom}}"
+                                CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.CornerRadius), Converter={StaticResource CornerRadiusBindingConverter}, ConverterParameter={x:Static mahConverters:RadiusType.Bottom}}"
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                 UseLayoutRounding="True">
-                            <mah:ContentControlEx x:Name="HeaderContent"
+                            <crystal:ContentControlEx x:Name="HeaderContent"
                                                   Margin="{DynamicResource GroupBoxHeaderThemePadding}"
-                                                  HorizontalAlignment="{TemplateBinding mah:HeaderedControlHelper.HeaderHorizontalContentAlignment}"
-                                                  VerticalAlignment="{TemplateBinding mah:HeaderedControlHelper.HeaderVerticalContentAlignment}"
+                                                  HorizontalAlignment="{TemplateBinding crystal:HeaderedControlHelper.HeaderHorizontalContentAlignment}"
+                                                  VerticalAlignment="{TemplateBinding crystal:HeaderedControlHelper.HeaderVerticalContentAlignment}"
                                                   Content="{TemplateBinding Header}"
-                                                  ContentCharacterCasing="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:ControlsHelper.ContentCharacterCasing)}"
+                                                  ContentCharacterCasing="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.ContentCharacterCasing)}"
                                                   ContentStringFormat="{TemplateBinding HeaderStringFormat}"
                                                   ContentTemplate="{TemplateBinding HeaderTemplate}"
                                                   ContentTemplateSelector="{TemplateBinding HeaderTemplateSelector}"
-                                                  FontFamily="{TemplateBinding mah:HeaderedControlHelper.HeaderFontFamily}"
-                                                  FontSize="{TemplateBinding mah:HeaderedControlHelper.HeaderFontSize}"
-                                                  FontStretch="{TemplateBinding mah:HeaderedControlHelper.HeaderFontStretch}"
-                                                  FontWeight="{TemplateBinding mah:HeaderedControlHelper.HeaderFontWeight}"
-                                                  RecognizesAccessKey="{TemplateBinding mah:ControlsHelper.RecognizesAccessKey}"
+                                                  FontFamily="{TemplateBinding crystal:HeaderedControlHelper.HeaderFontFamily}"
+                                                  FontSize="{TemplateBinding crystal:HeaderedControlHelper.HeaderFontSize}"
+                                                  FontStretch="{TemplateBinding crystal:HeaderedControlHelper.HeaderFontStretch}"
+                                                  FontWeight="{TemplateBinding crystal:HeaderedControlHelper.HeaderFontWeight}"
+                                                  RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}"
                                                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                                   UseLayoutRounding="False">
                                 <TextElement.Foreground>
                                     <MultiBinding Converter="{x:Static mahConverters:BackgroundToForegroundConverter.Instance}">
                                         <Binding Mode="OneWay"
-                                                 Path="(mah:HeaderedControlHelper.HeaderBackground)"
+                                                 Path="(crystal:HeaderedControlHelper.HeaderBackground)"
                                                  RelativeSource="{RelativeSource TemplatedParent}" />
                                         <Binding Mode="OneWay"
-                                                 Path="(mah:HeaderedControlHelper.HeaderForeground)"
+                                                 Path="(crystal:HeaderedControlHelper.HeaderForeground)"
                                                  RelativeSource="{RelativeSource TemplatedParent}" />
                                     </MultiBinding>
                                 </TextElement.Foreground>
-                            </mah:ContentControlEx>
+                            </crystal:ContentControlEx>
                         </Border>
                         <Border Grid.Row="1"
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessBindingConverter}, ConverterParameter={x:Static mahConverters:ThicknessSideType.Top}}"
-                                CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:ControlsHelper.CornerRadius), Converter={StaticResource CornerRadiusBindingConverter}, ConverterParameter={x:Static mahConverters:RadiusType.Top}}"
+                                CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.CornerRadius), Converter={StaticResource CornerRadiusBindingConverter}, ConverterParameter={x:Static mahConverters:RadiusType.Top}}"
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                 UseLayoutRounding="True">
                             <ContentPresenter Margin="{TemplateBinding Padding}"
@@ -75,9 +75,9 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="mah:ControlsHelper.ContentCharacterCasing" Value="{DynamicResource Crystal.CharacterCasing.GroupBox}" />
-        <Setter Property="mah:HeaderedControlHelper.HeaderBackground" Value="{DynamicResource Crystal.Brushes.Accent}" />
-        <Setter Property="mah:HeaderedControlHelper.HeaderFontSize" Value="{DynamicResource Crystal.Font.Size.Content}" />
-        <Setter Property="mah:HeaderedControlHelper.HeaderForeground" Value="{x:Null}" />
+        <Setter Property="crystal:ControlsHelper.ContentCharacterCasing" Value="{DynamicResource Crystal.CharacterCasing.GroupBox}" />
+        <Setter Property="crystal:HeaderedControlHelper.HeaderBackground" Value="{DynamicResource Crystal.Brushes.Accent}" />
+        <Setter Property="crystal:HeaderedControlHelper.HeaderFontSize" Value="{DynamicResource Crystal.Font.Size.Content}" />
+        <Setter Property="crystal:HeaderedControlHelper.HeaderForeground" Value="{x:Null}" />
     </Style>
 </ResourceDictionary>

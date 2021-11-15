@@ -1,18 +1,18 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:mah="clr-namespace:Crystal.Themes.Controls">
+                    xmlns:crystal="clr-namespace:Crystal.Themes.Controls">
 
-    <Style TargetType="mah:TransitioningContentControl">
+    <Style TargetType="crystal:TransitioningContentControl">
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="IsTabStop" Value="False" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="mah:TransitioningContentControl">
+                <ControlTemplate TargetType="crystal:TransitioningContentControl">
                     <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="{TemplateBinding mah:ControlsHelper.CornerRadius}">
+                            CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}">
                         <Grid>
                             <ContentPresenter x:Name="PreviousContentPresentationSite"
                                               HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"

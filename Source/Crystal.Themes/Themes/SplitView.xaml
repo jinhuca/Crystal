@@ -1,10 +1,10 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:mah="clr-namespace:Crystal.Themes.Controls">
+                    xmlns:crystal="clr-namespace:Crystal.Themes.Controls">
 
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 
-    <Style x:Key="Crystal.Styles.MetroThumb.SplitView.Resize" TargetType="mah:MetroThumb">
+    <Style x:Key="Crystal.Styles.MetroThumb.SplitView.Resize" TargetType="crystal:MetroThumb">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Cursor" Value="SizeWE" />
         <Setter Property="Template">
@@ -20,7 +20,7 @@
         <Setter Property="Width" Value="3" />
     </Style>
 
-    <Style TargetType="{x:Type mah:SplitView}">
+    <Style TargetType="{x:Type crystal:SplitView}">
         <Setter Property="CanResizeOpenPane" Value="False" />
         <Setter Property="CompactPaneLength" Value="48" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -32,7 +32,7 @@
         <Setter Property="ResizeThumbStyle" Value="{StaticResource Crystal.Styles.MetroThumb.SplitView.Resize}" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type mah:SplitView}">
+                <ControlTemplate TargetType="{x:Type crystal:SplitView}">
                     <Grid x:Name="root"
                           Background="{TemplateBinding Background}"
                           Tag="{TemplateBinding TemplateSettings}">
@@ -94,7 +94,7 @@
                             </Storyboard>
 
                             <Storyboard x:Key="ClosedCompactLeftToOpenCompactOverlayLeftStoryboard">
-                                <mah:GridLengthAnimation BeginTime="0:0:0"
+                                <crystal:GridLengthAnimation BeginTime="0:0:0"
                                                          Storyboard.TargetName="ColumnDefinition1"
                                                          Storyboard.TargetProperty="(ColumnDefinition.Width)"
                                                          To="{Binding ElementName=ProxyElement, Path=DataContext.CompactPaneGridLength}" />
@@ -122,11 +122,11 @@
                             </Storyboard>
 
                             <Storyboard x:Key="ClosedCompactRightToOpenCompactOverlayRightStoryboard">
-                                <mah:GridLengthAnimation BeginTime="0:0:0"
+                                <crystal:GridLengthAnimation BeginTime="0:0:0"
                                                          Storyboard.TargetName="ColumnDefinition1"
                                                          Storyboard.TargetProperty="(ColumnDefinition.Width)"
                                                          To="*" />
-                                <mah:GridLengthAnimation BeginTime="0:0:0"
+                                <crystal:GridLengthAnimation BeginTime="0:0:0"
                                                          Storyboard.TargetName="ColumnDefinition2"
                                                          Storyboard.TargetProperty="(ColumnDefinition.Width)"
                                                          To="{Binding ElementName=ProxyElement, Path=DataContext.CompactPaneGridLength}" />
@@ -203,7 +203,7 @@
                             </Storyboard>
 
                             <Storyboard x:Key="OpenCompactOverlayLeftToClosedCompactLeftStoryboard">
-                                <mah:GridLengthAnimation BeginTime="0:0:0"
+                                <crystal:GridLengthAnimation BeginTime="0:0:0"
                                                          Storyboard.TargetName="ColumnDefinition1"
                                                          Storyboard.TargetProperty="(ColumnDefinition.Width)"
                                                          To="{Binding ElementName=ProxyElement, Path=DataContext.CompactPaneGridLength}" />
@@ -228,11 +228,11 @@
                             </Storyboard>
 
                             <Storyboard x:Key="OpenCompactOverlayRightToClosedCompactRightStoryboard">
-                                <mah:GridLengthAnimation BeginTime="0:0:0"
+                                <crystal:GridLengthAnimation BeginTime="0:0:0"
                                                          Storyboard.TargetName="ColumnDefinition1"
                                                          Storyboard.TargetProperty="(ColumnDefinition.Width)"
                                                          To="*" />
-                                <mah:GridLengthAnimation BeginTime="0:0:0"
+                                <crystal:GridLengthAnimation BeginTime="0:0:0"
                                                          Storyboard.TargetName="ColumnDefinition2"
                                                          Storyboard.TargetProperty="(ColumnDefinition.Width)"
                                                          To="{Binding ElementName=ProxyElement, Path=DataContext.CompactPaneGridLength}" />
@@ -260,7 +260,7 @@
                             </Storyboard>
 
                             <Storyboard x:Key="ClosedCompactLeftStoryboard">
-                                <mah:GridLengthAnimation BeginTime="0:0:0"
+                                <crystal:GridLengthAnimation BeginTime="0:0:0"
                                                          Storyboard.TargetName="ColumnDefinition1"
                                                          Storyboard.TargetProperty="(ColumnDefinition.Width)"
                                                          To="{Binding ElementName=ProxyElement, Path=DataContext.CompactPaneGridLength}" />
@@ -280,11 +280,11 @@
                             </Storyboard>
 
                             <Storyboard x:Key="ClosedCompactRightStoryboard">
-                                <mah:GridLengthAnimation BeginTime="0:0:0"
+                                <crystal:GridLengthAnimation BeginTime="0:0:0"
                                                          Storyboard.TargetName="ColumnDefinition1"
                                                          Storyboard.TargetProperty="(ColumnDefinition.Width)"
                                                          To="*" />
-                                <mah:GridLengthAnimation BeginTime="0:0:0"
+                                <crystal:GridLengthAnimation BeginTime="0:0:0"
                                                          Storyboard.TargetName="ColumnDefinition2"
                                                          Storyboard.TargetProperty="(ColumnDefinition.Width)"
                                                          To="{Binding ElementName=ProxyElement, Path=DataContext.CompactPaneGridLength}" />
@@ -355,11 +355,11 @@
                             </Storyboard>
 
                             <Storyboard x:Key="OpenInlineRightStoryboard">
-                                <mah:GridLengthAnimation BeginTime="0:0:0"
+                                <crystal:GridLengthAnimation BeginTime="0:0:0"
                                                          Storyboard.TargetName="ColumnDefinition1"
                                                          Storyboard.TargetProperty="(ColumnDefinition.Width)"
                                                          To="*" />
-                                <mah:GridLengthAnimation BeginTime="0:0:0"
+                                <crystal:GridLengthAnimation BeginTime="0:0:0"
                                                          Storyboard.TargetName="ColumnDefinition2"
                                                          Storyboard.TargetProperty="(ColumnDefinition.Width)"
                                                          To="{Binding ElementName=ProxyElement, Path=DataContext.OpenPaneGridLength}" />
@@ -384,7 +384,7 @@
                             </Storyboard>
 
                             <Storyboard x:Key="OpenCompactOverlayLeftStoryboard">
-                                <mah:GridLengthAnimation BeginTime="0:0:0"
+                                <crystal:GridLengthAnimation BeginTime="0:0:0"
                                                          Storyboard.TargetName="ColumnDefinition1"
                                                          Storyboard.TargetProperty="(ColumnDefinition.Width)"
                                                          To="{Binding ElementName=ProxyElement, Path=DataContext.CompactPaneGridLength}" />
@@ -406,11 +406,11 @@
                             </Storyboard>
 
                             <Storyboard x:Key="OpenCompactOverlayRightStoryboard">
-                                <mah:GridLengthAnimation BeginTime="0:0:0"
+                                <crystal:GridLengthAnimation BeginTime="0:0:0"
                                                          Storyboard.TargetName="ColumnDefinition1"
                                                          Storyboard.TargetProperty="(ColumnDefinition.Width)"
                                                          To="*" />
-                                <mah:GridLengthAnimation BeginTime="0:0:0"
+                                <crystal:GridLengthAnimation BeginTime="0:0:0"
                                                          Storyboard.TargetName="ColumnDefinition2"
                                                          Storyboard.TargetProperty="(ColumnDefinition.Width)"
                                                          To="{Binding ElementName=ProxyElement, Path=DataContext.CompactPaneGridLength}" />
@@ -491,7 +491,7 @@
                                        HorizontalAlignment="Right"
                                        Fill="Transparent"
                                        Visibility="Collapsed" />
-                            <mah:MetroThumb x:Name="PART_ResizingThumb"
+                            <crystal:MetroThumb x:Name="PART_ResizingThumb"
                                             HorizontalAlignment="Right"
                                             Style="{TemplateBinding ResizeThumbStyle}"
                                             Visibility="{TemplateBinding CanResizeOpenPane, Converter={StaticResource BooleanToVisibilityConverter}}" />

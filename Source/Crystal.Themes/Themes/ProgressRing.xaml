@@ -1,8 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:mah="clr-namespace:Crystal.Themes.Controls">
+                    xmlns:crystal="clr-namespace:Crystal.Themes.Controls">
 
-    <Style TargetType="mah:ProgressRing">
+    <Style TargetType="crystal:ProgressRing">
         <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Accent}" />
         <Setter Property="Height" Value="60" />
         <Setter Property="HorizontalAlignment" Value="Center" />
@@ -11,7 +11,7 @@
         <Setter Property="MinWidth" Value="20" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="mah:ProgressRing">
+                <ControlTemplate TargetType="crystal:ProgressRing">
                     <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}">

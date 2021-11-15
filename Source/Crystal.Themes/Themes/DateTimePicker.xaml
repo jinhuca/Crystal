@@ -3,7 +3,7 @@
                     xmlns:behaviors="clr-namespace:Crystal.Themes.Behaviors"
                     xmlns:controlzex="urn:controlzex"
                     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-                    xmlns:mah="clr-namespace:Crystal.Themes.Controls"
+                    xmlns:crystal="clr-namespace:Crystal.Themes.Controls"
                     xmlns:mahConverters="clr-namespace:Crystal.Themes.Converters"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
@@ -108,7 +108,7 @@
         <system:Int32>59</system:Int32>
     </x:Array>
 
-    <Style x:Key="Crystal.Styles.TimePickerBase" TargetType="{x:Type mah:TimePickerBase}">
+    <Style x:Key="Crystal.Styles.TimePickerBase" TargetType="{x:Type crystal:TimePickerBase}">
         <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Control.Background}" />
         <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.TextBox.Border}" />
         <Setter Property="BorderThickness" Value="1" />
@@ -123,13 +123,13 @@
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type mah:TimePickerBase}">
+                <ControlTemplate TargetType="{x:Type crystal:TimePickerBase}">
                     <Grid x:Name="PART_Root">
                         <Border x:Name="Base"
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="{TemplateBinding mah:ControlsHelper.CornerRadius}"
+                                CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
 
                         <Grid x:Name="PART_InnerGrid" Margin="{TemplateBinding BorderThickness}">
@@ -150,9 +150,9 @@
                                                Padding="{TemplateBinding Padding}"
                                                HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                               mah:TextBoxHelper.Watermark="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:TextBoxHelper.Watermark), Mode=OneWay}"
-                                               mah:TextBoxHelper.WatermarkAlignment="{TemplateBinding mah:TextBoxHelper.WatermarkAlignment}"
-                                               mah:TextBoxHelper.WatermarkTrimming="{TemplateBinding mah:TextBoxHelper.WatermarkTrimming}"
+                                               crystal:TextBoxHelper.Watermark="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:TextBoxHelper.Watermark), Mode=OneWay}"
+                                               crystal:TextBoxHelper.WatermarkAlignment="{TemplateBinding crystal:TextBoxHelper.WatermarkAlignment}"
+                                               crystal:TextBoxHelper.WatermarkTrimming="{TemplateBinding crystal:TextBoxHelper.WatermarkTrimming}"
                                                CaretBrush="{DynamicResource Crystal.Brushes.ThemeForeground}"
                                                ContextMenu="{TemplateBinding ContextMenu}"
                                                Focusable="{TemplateBinding Focusable}"
@@ -187,9 +187,9 @@
                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                            Foreground="{TemplateBinding Foreground}"
                                            Style="{DynamicResource Crystal.Styles.TextBlock.AutoCollapsing}"
-                                           Text="{TemplateBinding mah:TextBoxHelper.Watermark}"
-                                           TextAlignment="{TemplateBinding mah:TextBoxHelper.WatermarkAlignment}"
-                                           TextTrimming="{TemplateBinding mah:TextBoxHelper.WatermarkTrimming}">
+                                           Text="{TemplateBinding crystal:TextBoxHelper.Watermark}"
+                                           TextAlignment="{TemplateBinding crystal:TextBoxHelper.WatermarkAlignment}"
+                                           TextTrimming="{TemplateBinding crystal:TextBoxHelper.WatermarkTrimming}">
                                     <TextBlock.RenderTransform>
                                         <TranslateTransform x:Name="FloatingMessageTransform">
                                             <TranslateTransform.Y>
@@ -211,31 +211,31 @@
                                     Grid.Row="0"
                                     Grid.RowSpan="2"
                                     Grid.Column="1"
-                                    Width="{TemplateBinding mah:TextBoxHelper.ButtonWidth}"
-                                    Command="{TemplateBinding mah:TextBoxHelper.ButtonCommand}"
-                                    CommandParameter="{TemplateBinding mah:TextBoxHelper.ButtonCommandParameter}"
-                                    CommandTarget="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:TimePickerBase}}, Mode=OneWay}"
-                                    Content="{TemplateBinding mah:TextBoxHelper.ButtonContent}"
-                                    ContentTemplate="{TemplateBinding mah:TextBoxHelper.ButtonContentTemplate}"
+                                    Width="{TemplateBinding crystal:TextBoxHelper.ButtonWidth}"
+                                    Command="{TemplateBinding crystal:TextBoxHelper.ButtonCommand}"
+                                    CommandParameter="{TemplateBinding crystal:TextBoxHelper.ButtonCommandParameter}"
+                                    CommandTarget="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type crystal:TimePickerBase}}, Mode=OneWay}"
+                                    Content="{TemplateBinding crystal:TextBoxHelper.ButtonContent}"
+                                    ContentTemplate="{TemplateBinding crystal:TextBoxHelper.ButtonContentTemplate}"
                                     Focusable="False"
-                                    FontFamily="{TemplateBinding mah:TextBoxHelper.ButtonFontFamily}"
-                                    FontSize="{TemplateBinding mah:TextBoxHelper.ButtonFontSize}"
+                                    FontFamily="{TemplateBinding crystal:TextBoxHelper.ButtonFontFamily}"
+                                    FontSize="{TemplateBinding crystal:TextBoxHelper.ButtonFontSize}"
                                     Foreground="{TemplateBinding Foreground}"
                                     IsTabStop="False"
                                     Style="{DynamicResource Crystal.Styles.Button.Chromeless}"
-                                    Template="{TemplateBinding mah:TextBoxHelper.ButtonTemplate}"
+                                    Template="{TemplateBinding crystal:TextBoxHelper.ButtonTemplate}"
                                     Visibility="Visible" />
 
                             <Button x:Name="PART_Button"
                                     Grid.Row="0"
                                     Grid.RowSpan="2"
                                     Grid.Column="2"
-                                    Width="{TemplateBinding mah:TextBoxHelper.ButtonWidth}"
-                                    Content="{TemplateBinding mah:DatePickerHelper.DropDownButtonContent}"
-                                    ContentTemplate="{TemplateBinding mah:DatePickerHelper.DropDownButtonContentTemplate}"
+                                    Width="{TemplateBinding crystal:TextBoxHelper.ButtonWidth}"
+                                    Content="{TemplateBinding crystal:DatePickerHelper.DropDownButtonContent}"
+                                    ContentTemplate="{TemplateBinding crystal:DatePickerHelper.DropDownButtonContentTemplate}"
                                     Focusable="False"
-                                    FontFamily="{TemplateBinding mah:DatePickerHelper.DropDownButtonFontFamily}"
-                                    FontSize="{TemplateBinding mah:DatePickerHelper.DropDownButtonFontSize}"
+                                    FontFamily="{TemplateBinding crystal:DatePickerHelper.DropDownButtonFontFamily}"
+                                    FontSize="{TemplateBinding crystal:DatePickerHelper.DropDownButtonFontSize}"
                                     Foreground="{TemplateBinding Foreground}"
                                     IsTabStop="False"
                                     Style="{DynamicResource Crystal.Styles.Button.Chromeless}" />
@@ -389,18 +389,18 @@
                                 Background="{DynamicResource Crystal.Brushes.Control.Disabled}"
                                 BorderBrush="{DynamicResource Crystal.Brushes.Control.Disabled}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="{TemplateBinding mah:ControlsHelper.CornerRadius}"
+                                CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
                                 IsHitTestVisible="False"
                                 Opacity="0"
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
 
                     </Grid>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="mah:TextBoxHelper.ClearTextButton" Value="True">
-                            <Setter Property="mah:TextBoxHelper.ButtonCommand" Value="{x:Static mah:CrystalAppsCommands.ClearControlCommand}" />
+                        <Trigger Property="crystal:TextBoxHelper.ClearTextButton" Value="True">
+                            <Setter Property="crystal:TextBoxHelper.ButtonCommand" Value="{x:Static crystal:CrystalAppsCommands.ClearControlCommand}" />
                         </Trigger>
 
-                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(mah:TextBoxHelper.ButtonsAlignment)}" Value="Left">
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(crystal:TextBoxHelper.ButtonsAlignment)}" Value="Left">
                             <Setter TargetName="ButtonColumn" Property="Width" Value="*" />
                             <Setter TargetName="PART_Button" Property="Grid.Column" Value="0" />
                             <Setter TargetName="PART_ClearText" Property="Grid.Column" Value="1" />
@@ -410,15 +410,15 @@
                         </DataTrigger>
 
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Base" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:ControlsHelper.MouseOverBorderBrush)}" />
+                            <Setter TargetName="Base" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.MouseOverBorderBrush)}" />
                         </Trigger>
                         <Trigger SourceName="PART_TextBox" Property="IsFocused" Value="True">
-                            <Setter TargetName="Base" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:ControlsHelper.FocusBorderBrush)}" />
+                            <Setter TargetName="Base" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.FocusBorderBrush)}" />
                             <Setter TargetName="PART_FloatingMessage" Property="Foreground" Value="{DynamicResource Crystal.Brushes.TextBlock.FloatingMessage}" />
                             <Setter TargetName="PART_FloatingMessage" Property="Opacity" Value="1" />
                         </Trigger>
                         <Trigger Property="IsKeyboardFocusWithin" Value="True">
-                            <Setter TargetName="Base" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:ControlsHelper.FocusBorderBrush)}" />
+                            <Setter TargetName="Base" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.FocusBorderBrush)}" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="DisabledVisualElement" Property="Opacity" Value="0.6" />
@@ -445,14 +445,14 @@
                             <Setter TargetName="PART_Calendar" Property="Visibility" Value="Visible" />
                         </Trigger>
 
-                        <Trigger Property="mah:TextBoxHelper.ButtonCommand" Value="{x:Null}">
+                        <Trigger Property="crystal:TextBoxHelper.ButtonCommand" Value="{x:Null}">
                             <Setter TargetName="PART_ClearText" Property="Visibility" Value="Collapsed" />
                         </Trigger>
 
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsReadOnly" Value="True" />
-                                <Condition Property="mah:TextBoxHelper.ButtonCommand" Value="{x:Null}" />
+                                <Condition Property="crystal:TextBoxHelper.ButtonCommand" Value="{x:Null}" />
                             </MultiTrigger.Conditions>
                             <Setter TargetName="PART_ClearText" Property="IsEnabled" Value="False" />
                         </MultiTrigger>
@@ -468,9 +468,9 @@
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
                                 <Condition Binding="{Binding Path=IsVisible, RelativeSource={RelativeSource Self}}" Value="True" />
-                                <Condition Binding="{Binding Path=(mah:TextBoxHelper.UseFloatingWatermark), RelativeSource={RelativeSource Self}}" Value="True" />
-                                <Condition Binding="{Binding Path=(mah:TextBoxHelper.HasText), RelativeSource={RelativeSource Self}}" Value="True" />
-                                <Condition Binding="{Binding Path=(mah:TextBoxHelper.Watermark), RelativeSource={RelativeSource Self}, Converter={x:Static mahConverters:StringIsNullOrEmptyConverter.Default}}" Value="False" />
+                                <Condition Binding="{Binding Path=(crystal:TextBoxHelper.UseFloatingWatermark), RelativeSource={RelativeSource Self}}" Value="True" />
+                                <Condition Binding="{Binding Path=(crystal:TextBoxHelper.HasText), RelativeSource={RelativeSource Self}}" Value="True" />
+                                <Condition Binding="{Binding Path=(crystal:TextBoxHelper.Watermark), RelativeSource={RelativeSource Self}, Converter={x:Static mahConverters:StringIsNullOrEmptyConverter.Default}}" Value="False" />
                             </MultiDataTrigger.Conditions>
                             <MultiDataTrigger.EnterActions>
                                 <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ShowFloatingMessage}" />
@@ -485,34 +485,34 @@
             </Setter.Value>
         </Setter>
         <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource Crystal.Templates.ValidationError}" />
-        <Setter Property="mah:ControlsHelper.FocusBorderBrush" Value="{DynamicResource Crystal.Brushes.TextBox.Border.Focus}" />
-        <Setter Property="mah:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource Crystal.Brushes.TextBox.Border.MouseOver}" />
+        <Setter Property="crystal:ControlsHelper.FocusBorderBrush" Value="{DynamicResource Crystal.Brushes.TextBox.Border.Focus}" />
+        <Setter Property="crystal:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource Crystal.Brushes.TextBox.Border.MouseOver}" />
         <!--  Modern - Calendar14  -->
-        <Setter Property="mah:DatePickerHelper.DropDownButtonContent" Value="M 34.0047,52.0073L 31.0042,52.0073L 31.0042,38.5053C 29.6649,39.8964 28.157,40.7849 26.3412,41.4502L 26.3412,37.7553C 27.2998,37.4474 28.3405,36.8645 29.4634,36.0068C 30.5862,35.149 31.3572,34.1483 31.7762,33.0046L 34.0047,33.0046L 34.0047,52.0073 Z M 45.0063,52.0073L 45.0063,48.0067L 37.0052,48.0067L 37.0052,45.0063L 45.0063,33.0046L 48.0067,33.0046L 48.0067,45.0063L 50.007,45.0063L 50.007,48.0067L 48.0067,48.0067L 48.0067,52.0073L 45.0063,52.0073 Z M 45.0063,45.0063L 45.0063,38.2555L 40.2556,45.0063L 45.0063,45.0063 Z M 18.0025,57.0082L 18.0025,23.0033L 23.0032,23.0033L 23.0032,20.0029C 23.0033,18.898 23.8988,18.0026 25.0035,18.0026L 29.004,18.0026C 30.1087,18.0026 31.0042,18.898 31.0043,20.0026L 31.0043,23.0033L 45.0063,23.0033L 45.0062,20.0026C 45.0062,18.8979 45.9018,18.0023 47.0065,18.0023L 51.0071,18.0023C 52.1118,18.0023 53.0074,18.8979 53.0074,20.0026L 53.0074,23.0033L 58.0081,23.0033L 58.0081,57.0082L 18.0025,57.0082 Z M 21.0029,54.0078L 55.0076,54.0078L 55.0076,31.0044L 21.0029,31.0044L 21.0029,54.0078 Z M 48.5067,20.0029C 47.6782,20.0029 47.0065,20.6746 47.0065,21.5031L 47.0065,24.5035C 47.0065,25.3321 47.6782,26.0038 48.5067,26.0038L 49.5068,26.0038C 50.3354,26.0038 51.007,25.3321 51.007,24.5035L 51.007,21.5031C 51.007,20.6746 50.3354,20.0029 49.5068,20.0029L 48.5067,20.0029 Z M 26.5037,20.0029C 25.6751,20.0029 25.0035,20.6745 25.0035,21.5031L 25.0035,24.5035C 25.0035,25.3321 25.6751,26.0037 26.5037,26.0037L 27.5038,26.0037C 28.3324,26.0037 29.004,25.3321 29.004,24.5035L 29.004,21.5031C 29.004,20.6745 28.3324,20.0029 27.5038,20.0029L 26.5037,20.0029 Z" />
-        <Setter Property="mah:DatePickerHelper.DropDownButtonContentTemplate">
+        <Setter Property="crystal:DatePickerHelper.DropDownButtonContent" Value="M 34.0047,52.0073L 31.0042,52.0073L 31.0042,38.5053C 29.6649,39.8964 28.157,40.7849 26.3412,41.4502L 26.3412,37.7553C 27.2998,37.4474 28.3405,36.8645 29.4634,36.0068C 30.5862,35.149 31.3572,34.1483 31.7762,33.0046L 34.0047,33.0046L 34.0047,52.0073 Z M 45.0063,52.0073L 45.0063,48.0067L 37.0052,48.0067L 37.0052,45.0063L 45.0063,33.0046L 48.0067,33.0046L 48.0067,45.0063L 50.007,45.0063L 50.007,48.0067L 48.0067,48.0067L 48.0067,52.0073L 45.0063,52.0073 Z M 45.0063,45.0063L 45.0063,38.2555L 40.2556,45.0063L 45.0063,45.0063 Z M 18.0025,57.0082L 18.0025,23.0033L 23.0032,23.0033L 23.0032,20.0029C 23.0033,18.898 23.8988,18.0026 25.0035,18.0026L 29.004,18.0026C 30.1087,18.0026 31.0042,18.898 31.0043,20.0026L 31.0043,23.0033L 45.0063,23.0033L 45.0062,20.0026C 45.0062,18.8979 45.9018,18.0023 47.0065,18.0023L 51.0071,18.0023C 52.1118,18.0023 53.0074,18.8979 53.0074,20.0026L 53.0074,23.0033L 58.0081,23.0033L 58.0081,57.0082L 18.0025,57.0082 Z M 21.0029,54.0078L 55.0076,54.0078L 55.0076,31.0044L 21.0029,31.0044L 21.0029,54.0078 Z M 48.5067,20.0029C 47.6782,20.0029 47.0065,20.6746 47.0065,21.5031L 47.0065,24.5035C 47.0065,25.3321 47.6782,26.0038 48.5067,26.0038L 49.5068,26.0038C 50.3354,26.0038 51.007,25.3321 51.007,24.5035L 51.007,21.5031C 51.007,20.6746 50.3354,20.0029 49.5068,20.0029L 48.5067,20.0029 Z M 26.5037,20.0029C 25.6751,20.0029 25.0035,20.6745 25.0035,21.5031L 25.0035,24.5035C 25.0035,25.3321 25.6751,26.0037 26.5037,26.0037L 27.5038,26.0037C 28.3324,26.0037 29.004,25.3321 29.004,24.5035L 29.004,21.5031C 29.004,20.6745 28.3324,20.0029 27.5038,20.0029L 26.5037,20.0029 Z" />
+        <Setter Property="crystal:DatePickerHelper.DropDownButtonContentTemplate">
             <Setter.Value>
                 <DataTemplate>
-                    <mah:PathIcon Width="{Binding RelativeSource={RelativeSource AncestorType=mah:TimePickerBase}, Path=(mah:TextBoxHelper.ButtonWidth), Mode=OneWay}"
-                                  Height="{Binding RelativeSource={RelativeSource AncestorType=mah:TimePickerBase}, Path=(mah:TextBoxHelper.ButtonWidth), Mode=OneWay}"
+                    <crystal:PathIcon Width="{Binding RelativeSource={RelativeSource AncestorType=crystal:TimePickerBase}, Path=(crystal:TextBoxHelper.ButtonWidth), Mode=OneWay}"
+                                  Height="{Binding RelativeSource={RelativeSource AncestorType=crystal:TimePickerBase}, Path=(crystal:TextBoxHelper.ButtonWidth), Mode=OneWay}"
                                   Padding="3"
                                   Data="{Binding Mode=OneWay}" />
                 </DataTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="mah:TextBoxHelper.ButtonFontSize" Value="{DynamicResource Crystal.Font.Size.Button.ClearText}" />
-        <Setter Property="mah:TextBoxHelper.ButtonTemplate" Value="{DynamicResource Crystal.Templates.Button.Chromeless}" />
-        <Setter Property="mah:TextBoxHelper.ButtonWidth" Value="22" />
-        <Setter Property="mah:TextBoxHelper.IsMonitoring" Value="True" />
+        <Setter Property="crystal:TextBoxHelper.ButtonFontSize" Value="{DynamicResource Crystal.Font.Size.Button.ClearText}" />
+        <Setter Property="crystal:TextBoxHelper.ButtonTemplate" Value="{DynamicResource Crystal.Templates.Button.Chromeless}" />
+        <Setter Property="crystal:TextBoxHelper.ButtonWidth" Value="22" />
+        <Setter Property="crystal:TextBoxHelper.IsMonitoring" Value="True" />
     </Style>
 
-    <Style BasedOn="{StaticResource Crystal.Styles.TimePickerBase}" TargetType="{x:Type mah:DateTimePicker}">
+    <Style BasedOn="{StaticResource Crystal.Styles.TimePickerBase}" TargetType="{x:Type crystal:DateTimePicker}">
         <Setter Property="CalendarStyle" Value="{DynamicResource Crystal.Styles.Calendar.DateTimePicker}" />
         <Setter Property="IsTodayHighlighted" Value="True" />
-        <Setter Property="mah:TextBoxHelper.Watermark" Value="Select a date" />
+        <Setter Property="crystal:TextBoxHelper.Watermark" Value="Select a date" />
     </Style>
 
-    <Style BasedOn="{StaticResource Crystal.Styles.TimePickerBase}" TargetType="{x:Type mah:TimePicker}">
-        <Setter Property="mah:DatePickerHelper.DropDownButtonContent" Value="M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z" />
-        <Setter Property="mah:TextBoxHelper.Watermark" Value="Select a time" />
+    <Style BasedOn="{StaticResource Crystal.Styles.TimePickerBase}" TargetType="{x:Type crystal:TimePicker}">
+        <Setter Property="crystal:DatePickerHelper.DropDownButtonContent" Value="M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z" />
+        <Setter Property="crystal:TextBoxHelper.Watermark" Value="Select a time" />
     </Style>
 </ResourceDictionary>

@@ -1,17 +1,17 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:mah="clr-namespace:Crystal.Themes.Controls">
+                    xmlns:crystal="clr-namespace:Crystal.Themes.Controls">
 
-    <ControlTemplate x:Key="Crystal.Templates.SplitButton.Horizontal" TargetType="{x:Type mah:SplitButton}">
+    <ControlTemplate x:Key="Crystal.Templates.SplitButton.Horizontal" TargetType="{x:Type crystal:SplitButton}">
         <Grid UseLayoutRounding="True">
             <Border x:Name="PART_Border"
                     Background="Transparent"
                     BorderBrush="{TemplateBinding BorderBrush}"
                     BorderThickness="{TemplateBinding BorderThickness}"
-                    CornerRadius="{TemplateBinding mah:ControlsHelper.CornerRadius}"
+                    CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
                     SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
-                <mah:ClipBorder x:Name="PART_ClipBorder"
-                                CornerRadius="{TemplateBinding mah:ControlsHelper.CornerRadius}"
+                <crystal:ClipBorder x:Name="PART_ClipBorder"
+                                CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                     <Grid x:Name="PART_Container"
                           HorizontalAlignment="Stretch"
@@ -42,19 +42,19 @@
                                                   Focusable="False"
                                                   RecognizesAccessKey="True"
                                                   UseLayoutRounding="False" />
-                                <mah:ContentControlEx x:Name="PART_ButtonContent"
+                                <crystal:ContentControlEx x:Name="PART_ButtonContent"
                                                       Padding="{TemplateBinding Padding}"
                                                       HorizontalAlignment="Center"
                                                       VerticalAlignment="Center"
                                                       HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                       VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                                       Content="{TemplateBinding SelectionBoxItem}"
-                                                      ContentCharacterCasing="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:ControlsHelper.ContentCharacterCasing)}"
+                                                      ContentCharacterCasing="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.ContentCharacterCasing)}"
                                                       ContentStringFormat="{TemplateBinding SelectionBoxItemStringFormat}"
                                                       ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
                                                       ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
                                                       IsHitTestVisible="False"
-                                                      RecognizesAccessKey="{TemplateBinding mah:ControlsHelper.RecognizesAccessKey}"
+                                                      RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}"
                                                       SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                                       UseLayoutRounding="False" />
                             </StackPanel>
@@ -69,14 +69,14 @@
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                 Style="{TemplateBinding ButtonArrowStyle}">
                             <!--  Material - ChevronDown  -->
-                            <mah:PathIcon Width="9"
+                            <crystal:PathIcon Width="9"
                                           Height="9"
                                           HorizontalAlignment="Center"
                                           VerticalAlignment="Center"
                                           Data="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z" />
                         </Button>
                     </Grid>
-                </mah:ClipBorder>
+                </crystal:ClipBorder>
             </Border>
             <Popup x:Name="PART_Popup"
                    AllowsTransparency="True"
@@ -128,16 +128,16 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
-    <ControlTemplate x:Key="Crystal.Templates.SplitButton.Vertical" TargetType="{x:Type mah:SplitButton}">
+    <ControlTemplate x:Key="Crystal.Templates.SplitButton.Vertical" TargetType="{x:Type crystal:SplitButton}">
         <Grid UseLayoutRounding="True">
             <Border x:Name="PART_Border"
                     Background="Transparent"
                     BorderBrush="{TemplateBinding BorderBrush}"
                     BorderThickness="{TemplateBinding BorderThickness}"
-                    CornerRadius="{TemplateBinding mah:ControlsHelper.CornerRadius}"
+                    CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
                     SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
-                <mah:ClipBorder x:Name="PART_ClipBorder"
-                                CornerRadius="{TemplateBinding mah:ControlsHelper.CornerRadius}"
+                <crystal:ClipBorder x:Name="PART_ClipBorder"
+                                CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                     <Grid x:Name="PART_Container"
                           HorizontalAlignment="Stretch"
@@ -168,19 +168,19 @@
                                                   Focusable="False"
                                                   RecognizesAccessKey="True"
                                                   UseLayoutRounding="False" />
-                                <mah:ContentControlEx x:Name="PART_ButtonContent"
+                                <crystal:ContentControlEx x:Name="PART_ButtonContent"
                                                       Padding="{TemplateBinding Padding}"
                                                       HorizontalAlignment="Center"
                                                       VerticalAlignment="Center"
                                                       HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                       VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                                       Content="{TemplateBinding SelectionBoxItem}"
-                                                      ContentCharacterCasing="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:ControlsHelper.ContentCharacterCasing)}"
+                                                      ContentCharacterCasing="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.ContentCharacterCasing)}"
                                                       ContentStringFormat="{TemplateBinding SelectionBoxItemStringFormat}"
                                                       ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
                                                       ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
                                                       IsHitTestVisible="False"
-                                                      RecognizesAccessKey="{TemplateBinding mah:ControlsHelper.RecognizesAccessKey}"
+                                                      RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}"
                                                       SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                                       UseLayoutRounding="False" />
                             </StackPanel>
@@ -195,14 +195,14 @@
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                 Style="{TemplateBinding ButtonArrowStyle}">
                             <!--  Material - ChevronDown  -->
-                            <mah:PathIcon Width="9"
+                            <crystal:PathIcon Width="9"
                                           Height="9"
                                           HorizontalAlignment="Center"
                                           VerticalAlignment="Center"
                                           Data="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z" />
                         </Button>
                     </Grid>
-                </mah:ClipBorder>
+                </crystal:ClipBorder>
             </Border>
             <Popup x:Name="PART_Popup"
                    AllowsTransparency="True"
@@ -268,7 +268,7 @@
         </Setter>
     </Style>
 
-    <Style TargetType="{x:Type mah:SplitButton}">
+    <Style TargetType="{x:Type crystal:SplitButton}">
         <Setter Property="ArrowBrush" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
         <Setter Property="ArrowMouseOverBrush" Value="{DynamicResource Crystal.Brushes.Accent}" />
         <Setter Property="ArrowPressedBrush" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />

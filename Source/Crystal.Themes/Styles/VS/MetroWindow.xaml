@@ -1,13 +1,13 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:mah="clr-namespace:Crystal.Themes.Controls">
+                    xmlns:crystal="clr-namespace:Crystal.Themes.Controls">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.Buttons.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.TextBox.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <Style x:Key="Crystal.Styles.MetroWindow.VisualStudio" TargetType="{x:Type mah:CrystalWindow}">
+    <Style x:Key="Crystal.Styles.MetroWindow.VisualStudio" TargetType="{x:Type crystal:CrystalWindow}">
         <Setter Property="GlowBrush" Value="{DynamicResource Crystal.Brushes.Window.Glow}" />
         <Setter Property="NonActiveWindowTitleBrush" Value="{DynamicResource Crystal.Brushes.Accent}" />
         <Setter Property="ShowTitleBar" Value="True" />
@@ -25,7 +25,7 @@
         </Style.Triggers>
     </Style>
 
-    <Style TargetType="{x:Type mah:WindowButtonCommands}">
+    <Style TargetType="{x:Type crystal:WindowButtonCommands}">
         <Setter Property="DarkCloseButtonStyle" Value="{StaticResource Crystal.Styles.Button.Window.VisualStudio}" />
         <Setter Property="DarkMaxButtonStyle" Value="{StaticResource Crystal.Styles.Button.Window.VisualStudio}" />
         <Setter Property="DarkMinButtonStyle" Value="{StaticResource Crystal.Styles.Button.Window.VisualStudio}" />
@@ -60,7 +60,7 @@
         <Setter Property="MaxWidth" Value="300" />
         <Setter Property="MinWidth" Value="200" />
         <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="mah:ControlsHelper.FocusBorderBrush" Value="{DynamicResource Crystal.Brushes.QuickLaunchTextBox.FocusedBorder}" />
+        <Setter Property="crystal:ControlsHelper.FocusBorderBrush" Value="{DynamicResource Crystal.Brushes.QuickLaunchTextBox.FocusedBorder}" />
         <Style.Triggers>
             <Trigger Property="IsFocused" Value="True">
                 <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.QuickLaunchTextBox.Border}" />

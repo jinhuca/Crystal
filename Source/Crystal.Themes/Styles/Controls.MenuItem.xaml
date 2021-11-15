@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:mah="clr-namespace:Crystal.Themes.Controls">
+                    xmlns:crystal="clr-namespace:Crystal.Themes.Controls">
 
     <MenuScrollingVisibilityConverter x:Key="MenuScrollingVisibilityConverter" />
 
@@ -43,7 +43,7 @@
         <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
         <Setter Property="Template" Value="{DynamicResource {ComponentResourceKey ResourceId=SubmenuItemTemplateKey, TypeInTargetAssembly={x:Type MenuItem}}}" />
         <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
-        <Setter Property="mah:ControlsHelper.CornerRadius" Value="{Binding Path=(mah:ControlsHelper.CornerRadius), FallbackValue=0, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+        <Setter Property="crystal:ControlsHelper.CornerRadius" Value="{Binding Path=(crystal:ControlsHelper.CornerRadius), FallbackValue=0, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
         <Style.Triggers>
             <Trigger Property="Role" Value="TopLevelHeader">
                 <Setter Property="Padding" Value="7 5 8 6" />
@@ -64,27 +64,27 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="{x:Static mah:Spelling.SuggestionMenuItemStyleKey}"
+    <Style x:Key="{x:Static crystal:Spelling.SuggestionMenuItemStyleKey}"
            BasedOn="{StaticResource Crystal.Styles.MenuItem}"
            TargetType="{x:Type MenuItem}">
         <Setter Property="FontWeight" Value="Bold" />
         <Setter Property="Header" Value="{Binding RelativeSource={RelativeSource Self}, Path=CommandParameter}" />
     </Style>
 
-    <Style x:Key="{x:Static mah:Spelling.IgnoreAllMenuItemStyleKey}"
+    <Style x:Key="{x:Static crystal:Spelling.IgnoreAllMenuItemStyleKey}"
            BasedOn="{StaticResource Crystal.Styles.MenuItem}"
            TargetType="{x:Type MenuItem}">
         <Setter Property="Header" Value="Ignore All" />
     </Style>
 
-    <Style x:Key="{x:Static mah:Spelling.NoSuggestionsMenuItemStyleKey}"
+    <Style x:Key="{x:Static crystal:Spelling.NoSuggestionsMenuItemStyleKey}"
            BasedOn="{StaticResource Crystal.Styles.MenuItem}"
            TargetType="{x:Type MenuItem}">
         <Setter Property="Header" Value="(no spelling suggestions)" />
         <Setter Property="IsEnabled" Value="False" />
     </Style>
 
-    <Style x:Key="{x:Static mah:Spelling.SeparatorStyleKey}"
+    <Style x:Key="{x:Static crystal:Spelling.SeparatorStyleKey}"
            BasedOn="{StaticResource {x:Static MenuItem.SeparatorStyleKey}}"
            TargetType="{x:Type Separator}" />
 
@@ -228,11 +228,11 @@
                    Placement="Bottom"
                    PopupAnimation="{DynamicResource {x:Static SystemParameters.MenuPopupAnimationKey}}"
                    VerticalOffset="-2">
-                <mah:ClipBorder x:Name="Border"
+                <crystal:ClipBorder x:Name="Border"
                                 Background="{DynamicResource Crystal.Brushes.SubMenu.Background}"
                                 BorderBrush="{DynamicResource Crystal.Brushes.SubMenu.Border}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="{TemplateBinding mah:ControlsHelper.CornerRadius}"
+                                CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                     <ScrollViewer x:Name="SubMenuScrollViewer"
                                   CanContentScroll="True"
@@ -244,7 +244,7 @@
                                         KeyboardNavigation.TabNavigation="Cycle"
                                         SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                     </ScrollViewer>
-                </mah:ClipBorder>
+                </crystal:ClipBorder>
             </Popup>
         </Grid>
         <ControlTemplate.Triggers>
@@ -384,11 +384,11 @@
                        Placement="Right"
                        PopupAnimation="{DynamicResource {x:Static SystemParameters.MenuPopupAnimationKey}}"
                        VerticalOffset="-3">
-                    <mah:ClipBorder x:Name="Border"
+                    <crystal:ClipBorder x:Name="Border"
                                     Background="{DynamicResource Crystal.Brushes.SubMenu.Background}"
                                     BorderBrush="{DynamicResource Crystal.Brushes.SubMenu.Border}"
                                     BorderThickness="{TemplateBinding BorderThickness}"
-                                    CornerRadius="{TemplateBinding mah:ControlsHelper.CornerRadius}"
+                                    CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
                                     SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                         <ScrollViewer x:Name="SubMenuScrollViewer"
                                       CanContentScroll="True"
@@ -400,7 +400,7 @@
                                             KeyboardNavigation.TabNavigation="Cycle"
                                             SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                         </ScrollViewer>
-                    </mah:ClipBorder>
+                    </crystal:ClipBorder>
                 </Popup>
             </Grid>
         </Grid>

@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:actions="clr-namespace:Crystal.Themes.Actions"
                     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-                    xmlns:mah="clr-namespace:Crystal.Themes.Controls"
+                    xmlns:crystal="clr-namespace:Crystal.Themes.Controls"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
     <ResourceDictionary.MergedDictionaries>
@@ -157,29 +157,29 @@
                                     HorizontalAlignment="Stretch"
                                     VerticalAlignment="Stretch"
                                     Orientation="Horizontal">
-                            <mah:ContentControlEx x:Name="ContentSite"
+                            <crystal:ContentControlEx x:Name="ContentSite"
                                                   Padding="{TemplateBinding Padding}"
                                                   Content="{TemplateBinding Header}"
-                                                  ContentCharacterCasing="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:ControlsHelper.ContentCharacterCasing)}"
+                                                  ContentCharacterCasing="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.ContentCharacterCasing)}"
                                                   ContentStringFormat="{TemplateBinding HeaderStringFormat}"
                                                   ContentTemplate="{TemplateBinding HeaderTemplate}"
                                                   ContentTemplateSelector="{TemplateBinding HeaderTemplateSelector}"
-                                                  FontFamily="{TemplateBinding mah:HeaderedControlHelper.HeaderFontFamily}"
-                                                  FontSize="{TemplateBinding mah:HeaderedControlHelper.HeaderFontSize}"
-                                                  FontStretch="{TemplateBinding mah:HeaderedControlHelper.HeaderFontStretch}"
+                                                  FontFamily="{TemplateBinding crystal:HeaderedControlHelper.HeaderFontFamily}"
+                                                  FontSize="{TemplateBinding crystal:HeaderedControlHelper.HeaderFontSize}"
+                                                  FontStretch="{TemplateBinding crystal:HeaderedControlHelper.HeaderFontStretch}"
                                                   FontStyle="{TemplateBinding FontStyle}"
-                                                  FontWeight="{TemplateBinding mah:HeaderedControlHelper.HeaderFontWeight}"
+                                                  FontWeight="{TemplateBinding crystal:HeaderedControlHelper.HeaderFontWeight}"
                                                   Foreground="{TemplateBinding Foreground}"
-                                                  RecognizesAccessKey="{TemplateBinding mah:ControlsHelper.RecognizesAccessKey}"
+                                                  RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}"
                                                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                             <Button x:Name="PART_CloseButton"
                                     VerticalAlignment="Center"
                                     IsTabStop="False"
                                     Style="{DynamicResource Crystal.Styles.Button.TabItemClose.VisualStudio}"
-                                    Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:TabControlHelper.CloseButtonEnabled), Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:TabControlHelper.CloseButtonEnabled), Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Click">
-                                        <actions:CloseTabItemAction Command="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:TabControlHelper.CloseTabCommand), Mode=OneWay}" CommandParameter="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:TabControlHelper.CloseTabCommandParameter), Mode=OneWay}" />
+                                        <actions:CloseTabItemAction Command="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:TabControlHelper.CloseTabCommand), Mode=OneWay}" CommandParameter="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:TabControlHelper.CloseTabCommandParameter), Mode=OneWay}" />
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </Button>
@@ -222,7 +222,7 @@
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsMouseOver" Value="False" />
                                 <Condition Property="IsSelected" Value="False" />
-                                <Condition Property="mah:TabControlHelper.CloseButtonEnabled" Value="True" />
+                                <Condition Property="crystal:TabControlHelper.CloseButtonEnabled" Value="True" />
                             </MultiTrigger.Conditions>
                             <Setter TargetName="PART_CloseButton" Property="Visibility" Value="Hidden" />
                         </MultiTrigger>
@@ -238,7 +238,7 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="mah:TabControlHelper.CloseButtonEnabled" Value="True" />
+        <Setter Property="crystal:TabControlHelper.CloseButtonEnabled" Value="True" />
     </Style>
 
     <DataTemplate x:Key="Crystal.Templates.TabItem.Closable.VisualStudio">

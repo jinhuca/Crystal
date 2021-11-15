@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:mah="clr-namespace:Crystal.Themes.Controls">
+                    xmlns:crystal="clr-namespace:Crystal.Themes.Controls">
 
     <!--  Tooltip Style  -->
     <Style x:Key="Crystal.Styles.ToolTip" TargetType="ToolTip">
@@ -18,13 +18,13 @@
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="{TemplateBinding mah:ControlsHelper.CornerRadius}"
+                            CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
                             Opacity="0"
                             SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
-                        <mah:ContentControlEx x:Name="PART_ContentPresenter"
+                        <crystal:ContentControlEx x:Name="PART_ContentPresenter"
                                               Margin="{TemplateBinding Padding}"
                                               Content="{TemplateBinding Content}"
-                                              ContentCharacterCasing="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:ControlsHelper.ContentCharacterCasing)}"
+                                              ContentCharacterCasing="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.ContentCharacterCasing)}"
                                               ContentStringFormat="{TemplateBinding ContentStringFormat}"
                                               ContentTemplate="{TemplateBinding ContentTemplate}"
                                               ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"

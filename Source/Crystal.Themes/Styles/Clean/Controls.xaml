@@ -1,19 +1,19 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:mah="clr-namespace:Crystal.Themes.Controls">
+                    xmlns:crystal="clr-namespace:Crystal.Themes.Controls">
 
-    <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Clean/GroupBox.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Clean/CrystalWindow.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Clean/WindowButtonCommands.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Clean/WindowCommands.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Clean/StatusBar.xaml" />
-    </ResourceDictionary.MergedDictionaries>
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Clean/GroupBox.xaml" />
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Clean/CrystalWindow.xaml" />
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Clean/WindowButtonCommands.xaml" />
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Clean/WindowCommands.xaml" />
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Clean/StatusBar.xaml" />
+  </ResourceDictionary.MergedDictionaries>
 
-    <Style BasedOn="{StaticResource Crystal.Styles.GroupBox.Clean}" TargetType="{x:Type GroupBox}" />
-    <Style BasedOn="{StaticResource Crystal.Styles.MetroWindow.Clean}" TargetType="{x:Type mah:CrystalWindow}" />
-    <Style BasedOn="{StaticResource Crystal.Styles.WindowButtonCommands.Clean.Win10}" TargetType="{x:Type mah:WindowButtonCommands}" />
-    <Style BasedOn="{StaticResource Crystal.Styles.WindowCommands.Clean}" TargetType="{x:Type mah:WindowCommands}" />
-    <Style BasedOn="{StaticResource Crystal.Styles.StatusBar.Clean}" TargetType="{x:Type StatusBar}" />
+  <Style BasedOn="{StaticResource Crystal.Styles.GroupBox.Clean}" TargetType="{x:Type GroupBox}" />
+  <Style BasedOn="{StaticResource Crystal.Styles.MetroWindow.Clean}" TargetType="{x:Type crystal:CrystalWindow}" />
+  <Style BasedOn="{StaticResource Crystal.Styles.WindowButtonCommands.Clean.Win10}" TargetType="{x:Type crystal:WindowButtonCommands}" />
+  <Style BasedOn="{StaticResource Crystal.Styles.WindowCommands.Clean}" TargetType="{x:Type crystal:WindowCommands}" />
+  <Style BasedOn="{StaticResource Crystal.Styles.StatusBar.Clean}" TargetType="{x:Type StatusBar}" />
 
 </ResourceDictionary>

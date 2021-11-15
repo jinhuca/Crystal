@@ -1,11 +1,11 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:mah="clr-namespace:Crystal.Themes.Controls"
+                    xmlns:crystal="clr-namespace:Crystal.Themes.Controls"
                     xmlns:mahConverters="clr-namespace:Crystal.Themes.Converters">
 
     <mahConverters:CornerRadiusBindingConverter x:Key="CornerRadiusBindingConverter" />
 
-    <Style x:Key="Crystal.Styles.CustomValidationPopup" TargetType="{x:Type mah:CustomValidationPopup}">
+    <Style x:Key="Crystal.Styles.CustomValidationPopup" TargetType="{x:Type crystal:CustomValidationPopup}">
         <Setter Property="HorizontalAlignment" Value="Right" />
         <Setter Property="HorizontalOffset" Value="0" />
         <Setter Property="Placement" Value="Right" />
@@ -23,7 +23,7 @@
                 <Border x:Name="ValidationErrorElement"
                         BorderBrush="{DynamicResource Crystal.Brushes.Control.Validation}"
                         BorderThickness="{Binding ElementName=placeholder, Path=AdornedElement.BorderThickness, FallbackValue=1, TargetNullValue=1}"
-                        CornerRadius="{Binding ElementName=placeholder, Path=(mah:ControlsHelper.CornerRadius), Converter={StaticResource CornerRadiusBindingConverter}, ConverterParameter={x:Static mahConverters:RadiusType.TopRight}}"
+                        CornerRadius="{Binding ElementName=placeholder, Path=(crystal:ControlsHelper.CornerRadius), Converter={StaticResource CornerRadiusBindingConverter}, ConverterParameter={x:Static mahConverters:RadiusType.TopRight}}"
                         DataContext="{Binding ElementName=placeholder}"
                         SnapsToDevicePixels="{Binding ElementName=placeholder, Path=AdornedElement.SnapsToDevicePixels, FallbackValue=true, TargetNullValue=true}">
 
@@ -43,7 +43,7 @@
                     </Grid>
                 </Border>
 
-                <mah:CustomValidationPopup x:Name="ValidationPopup"
+                <crystal:CustomValidationPopup x:Name="ValidationPopup"
                                            AdornedElement="{Binding ElementName=placeholder, Path=AdornedElement, Mode=OneWay}"
                                            AllowsTransparency="True"
                                            IsOpen="False"
@@ -120,7 +120,7 @@
                             <ItemsControl ItemsSource="{Binding}" />
                         </Border>
                     </Grid>
-                </mah:CustomValidationPopup>
+                </crystal:CustomValidationPopup>
             </Grid>
         </AdornedElementPlaceholder>
 
@@ -140,7 +140,7 @@
                 <MultiDataTrigger.Conditions>
                     <Condition Binding="{Binding ElementName=RedTriangle, Path=IsMouseOver, Mode=OneWay}" Value="True" />
                     <Condition Binding="{Binding ElementName=placeholder, Path=AdornedElement.(Validation.HasError), Mode=OneWay}" Value="True" />
-                    <Condition Binding="{Binding ElementName=placeholder, Path=AdornedElement.(mah:ValidationHelper.ShowValidationErrorOnMouseOver), Mode=OneWay}" Value="True" />
+                    <Condition Binding="{Binding ElementName=placeholder, Path=AdornedElement.(crystal:ValidationHelper.ShowValidationErrorOnMouseOver), Mode=OneWay}" Value="True" />
                 </MultiDataTrigger.Conditions>
                 <Setter TargetName="ValidationPopup" Property="IsOpen" Value="True" />
             </MultiDataTrigger>

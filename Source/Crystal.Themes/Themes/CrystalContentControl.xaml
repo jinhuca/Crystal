@@ -1,15 +1,15 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:mah="clr-namespace:Crystal.Themes.Controls">
+                    xmlns:crystal="clr-namespace:Crystal.Themes.Controls">
 
-    <Style TargetType="{x:Type mah:CrystalContentControl}">
+    <Style TargetType="{x:Type crystal:CrystalContentControl}">
         <Setter Property="Focusable" Value="False" />
         <Setter Property="Foreground" Value="#FF000000" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="mah:CrystalContentControl">
+                <ControlTemplate TargetType="crystal:CrystalContentControl">
                     <Grid x:Name="RootGrid"
                           Opacity="0"
                           RenderTransformOrigin="0.5,0.5">

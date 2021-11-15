@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:actions="clr-namespace:Crystal.Themes.Actions"
                     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-                    xmlns:mah="clr-namespace:Crystal.Themes.Controls">
+                    xmlns:crystal="clr-namespace:Crystal.Themes.Controls">
 
     <DataTemplate x:Key="Crystal.Templates.Flyout.Header" x:Shared="False">
         <DockPanel x:Name="dpHeader"
@@ -17,20 +17,20 @@
                     VerticalAlignment="Bottom"
                     Content="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"
                     DockPanel.Dock="Left"
-                    Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type mah:Flyout}}, Path=Foreground}"
-                    IsCancel="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:Flyout}}, Path=CloseButtonIsCancel}"
+                    Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type crystal:Flyout}}, Path=Foreground}"
+                    IsCancel="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type crystal:Flyout}}, Path=CloseButtonIsCancel}"
                     Style="{DynamicResource Crystal.Styles.Button.Circle}"
                     UseLayoutRounding="True"
-                    Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:Flyout}}, Path=CloseButtonVisibility}">
+                    Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type crystal:Flyout}}, Path=CloseButtonVisibility}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
-                        <actions:CloseFlyoutAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type mah:Flyout}}, Path=CloseCommand, Mode=OneWay}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type mah:Flyout}}, Path=CloseCommandParameter, Mode=OneWay}" />
+                        <actions:CloseFlyoutAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type crystal:Flyout}}, Path=CloseCommand, Mode=OneWay}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type crystal:Flyout}}, Path=CloseCommandParameter, Mode=OneWay}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
                 <Button.ContentTemplate>
                     <DataTemplate>
-                        <mah:PathIcon Data="{Binding}"
-                                      FlowDirection="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:Flyout}}, Path=FlowDirection}"
+                        <crystal:PathIcon Data="{Binding}"
+                                      FlowDirection="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type crystal:Flyout}}, Path=FlowDirection}"
                                       UseLayoutRounding="True" />
                     </DataTemplate>
                 </Button.ContentTemplate>
@@ -41,10 +41,10 @@
                             Content="{Binding}"
                             Focusable="False"
                             IsTabStop="False"
-                            Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:Flyout}}, Path=TitleVisibility}" />
+                            Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type crystal:Flyout}}, Path=TitleVisibility}" />
         </DockPanel>
         <DataTemplate.Triggers>
-            <DataTrigger Binding="{Binding Position, RelativeSource={RelativeSource AncestorType={x:Type mah:Flyout}}}" Value="Left">
+            <DataTrigger Binding="{Binding Position, RelativeSource={RelativeSource AncestorType={x:Type crystal:Flyout}}}" Value="Left">
                 <!--  Material - ChevronLeft  -->
                 <Setter TargetName="PART_BackButton" Property="Content" Value="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" />
                 <Setter TargetName="PART_BackButton" Property="DockPanel.Dock" Value="Right" />
@@ -52,12 +52,12 @@
                 <Setter TargetName="PART_BackHeaderText" Property="HorizontalAlignment" Value="Right" />
                 <Setter TargetName="PART_BackHeaderText" Property="Margin" Value="0 0 15 0" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Position, RelativeSource={RelativeSource AncestorType={x:Type mah:Flyout}}}" Value="Top">
+            <DataTrigger Binding="{Binding Position, RelativeSource={RelativeSource AncestorType={x:Type crystal:Flyout}}}" Value="Top">
                 <!--  Material - ChevronUp  -->
                 <Setter TargetName="PART_BackButton" Property="Content" Value="M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z" />
                 <Setter TargetName="PART_BackButton" Property="Padding" Value="0 0 0 2" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Position, RelativeSource={RelativeSource AncestorType={x:Type mah:Flyout}}}" Value="Bottom">
+            <DataTrigger Binding="{Binding Position, RelativeSource={RelativeSource AncestorType={x:Type crystal:Flyout}}}" Value="Bottom">
                 <!--  Material - ChevronDown  -->
                 <Setter TargetName="PART_BackButton" Property="Content" Value="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z" />
                 <Setter TargetName="PART_BackButton" Property="Padding" Value="0 2 0 0" />
@@ -65,7 +65,7 @@
         </DataTemplate.Triggers>
     </DataTemplate>
 
-    <ControlTemplate x:Key="Crystal.Templates.Flyout" TargetType="{x:Type mah:Flyout}">
+    <ControlTemplate x:Key="Crystal.Templates.Flyout" TargetType="{x:Type crystal:Flyout}">
         <Border x:Name="PART_Root"
                 Background="{TemplateBinding Background}"
                 BorderBrush="{TemplateBinding BorderBrush}"
@@ -75,18 +75,18 @@
             </Border.RenderTransform>
             <AdornerDecorator>
                 <DockPanel FocusVisualStyle="{x:Null}" Focusable="False">
-                    <mah:MetroThumbContentControl x:Name="PART_Header"
-                                                  Padding="{TemplateBinding mah:HeaderedControlHelper.HeaderMargin}"
+                    <crystal:MetroThumbContentControl x:Name="PART_Header"
+                                                  Padding="{TemplateBinding crystal:HeaderedControlHelper.HeaderMargin}"
                                                   Content="{TemplateBinding Header}"
-                                                  ContentCharacterCasing="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:ControlsHelper.ContentCharacterCasing)}"
+                                                  ContentCharacterCasing="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.ContentCharacterCasing)}"
                                                   ContentStringFormat="{TemplateBinding HeaderStringFormat}"
                                                   ContentTemplate="{TemplateBinding HeaderTemplate}"
                                                   ContentTemplateSelector="{TemplateBinding HeaderTemplateSelector}"
                                                   DockPanel.Dock="Top"
-                                                  FontFamily="{TemplateBinding mah:HeaderedControlHelper.HeaderFontFamily}"
-                                                  FontSize="{TemplateBinding mah:HeaderedControlHelper.HeaderFontSize}"
-                                                  FontStretch="{TemplateBinding mah:HeaderedControlHelper.HeaderFontStretch}"
-                                                  FontWeight="{TemplateBinding mah:HeaderedControlHelper.HeaderFontWeight}"
+                                                  FontFamily="{TemplateBinding crystal:HeaderedControlHelper.HeaderFontFamily}"
+                                                  FontSize="{TemplateBinding crystal:HeaderedControlHelper.HeaderFontSize}"
+                                                  FontStretch="{TemplateBinding crystal:HeaderedControlHelper.HeaderFontStretch}"
+                                                  FontWeight="{TemplateBinding crystal:HeaderedControlHelper.HeaderFontWeight}"
                                                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                     <ContentPresenter x:Name="PART_Content"
                                       ContentSource="Content"
@@ -218,7 +218,7 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
-    <Style x:Key="Crystal.Styles.Flyout" TargetType="{x:Type mah:Flyout}">
+    <Style x:Key="Crystal.Styles.Flyout" TargetType="{x:Type crystal:Flyout}">
         <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Flyout.Background}" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
@@ -231,14 +231,14 @@
         <Setter Property="Template" Value="{StaticResource Crystal.Templates.Flyout}" />
         <Setter Property="VerticalAlignment" Value="Stretch" />
         <Setter Property="Visibility" Value="Hidden" />
-        <Setter Property="mah:HeaderedControlHelper.HeaderFontSize" Value="{DynamicResource Crystal.Font.Size.Flyout.Header}" />
-        <Setter Property="mah:HeaderedControlHelper.HeaderMargin" Value="10" />
+        <Setter Property="crystal:HeaderedControlHelper.HeaderFontSize" Value="{DynamicResource Crystal.Font.Size.Flyout.Header}" />
+        <Setter Property="crystal:HeaderedControlHelper.HeaderMargin" Value="10" />
         <Style.Triggers>
             <Trigger Property="Position" Value="Right">
-                <Setter Property="mah:HeaderedControlHelper.HeaderMargin" Value="10 25 10 10" />
+                <Setter Property="crystal:HeaderedControlHelper.HeaderMargin" Value="10 25 10 10" />
             </Trigger>
             <Trigger Property="Position" Value="Left">
-                <Setter Property="mah:HeaderedControlHelper.HeaderMargin" Value="10 25 10 10" />
+                <Setter Property="crystal:HeaderedControlHelper.HeaderMargin" Value="10 25 10 10" />
             </Trigger>
         </Style.Triggers>
     </Style>

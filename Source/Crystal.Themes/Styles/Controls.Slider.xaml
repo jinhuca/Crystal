@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:mah="clr-namespace:Crystal.Themes.Controls"
+                    xmlns:crystal="clr-namespace:Crystal.Themes.Controls"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
     <system:Double x:Key="Crystal.Sizes.Slider.HorizontalThumb.Height">16</system:Double>
@@ -109,20 +109,20 @@
                 <Track.DecreaseRepeatButton>
                     <RepeatButton x:Name="HorizontalTrackDecrease"
                                   Command="{x:Static Slider.DecreaseLarge}"
-                                  Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackValueFillBrush)}"
+                                  Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackValueFillBrush)}"
                                   Style="{DynamicResource Crystal.Styles.RepeatButton.Slider.HorizontalTrackValue}" />
                 </Track.DecreaseRepeatButton>
                 <Track.IncreaseRepeatButton>
                     <RepeatButton x:Name="HorizontalTrackIncrease"
                                   Command="{x:Static Slider.IncreaseLarge}"
-                                  Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackFillBrush)}"
+                                  Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackFillBrush)}"
                                   Style="{DynamicResource Crystal.Styles.RepeatButton.Slider.HorizontalTrack}" />
                 </Track.IncreaseRepeatButton>
                 <Track.Thumb>
-                    <mah:MetroThumb x:Name="HorizontalThumb"
+                    <crystal:MetroThumb x:Name="HorizontalThumb"
                                     Width="{DynamicResource Crystal.Sizes.Slider.HorizontalThumb.Width}"
                                     Height="{DynamicResource Crystal.Sizes.Slider.HorizontalThumb.Height}"
-                                    Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.ThumbFillBrush)}"
+                                    Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.ThumbFillBrush)}"
                                     BorderThickness="1 0"
                                     IsTabStop="True"
                                     Style="{DynamicResource Crystal.Styles.Thumb.Slider}" />
@@ -142,29 +142,29 @@
             </Trigger>
 
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter TargetName="HorizontalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.ThumbFillHoverBrush)}" />
-                <Setter TargetName="HorizontalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackValueFillHoverBrush)}" />
-                <Setter TargetName="HorizontalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackFillHoverBrush)}" />
+                <Setter TargetName="HorizontalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.ThumbFillHoverBrush)}" />
+                <Setter TargetName="HorizontalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackValueFillHoverBrush)}" />
+                <Setter TargetName="HorizontalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackFillHoverBrush)}" />
             </Trigger>
             <Trigger SourceName="HorizontalTrackDecrease" Property="IsPressed" Value="True">
-                <Setter TargetName="HorizontalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.ThumbFillPressedBrush)}" />
-                <Setter TargetName="HorizontalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackValueFillPressedBrush)}" />
-                <Setter TargetName="HorizontalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackFillPressedBrush)}" />
+                <Setter TargetName="HorizontalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.ThumbFillPressedBrush)}" />
+                <Setter TargetName="HorizontalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackValueFillPressedBrush)}" />
+                <Setter TargetName="HorizontalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackFillPressedBrush)}" />
             </Trigger>
             <Trigger SourceName="HorizontalTrackIncrease" Property="IsPressed" Value="True">
-                <Setter TargetName="HorizontalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.ThumbFillPressedBrush)}" />
-                <Setter TargetName="HorizontalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackValueFillPressedBrush)}" />
-                <Setter TargetName="HorizontalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackFillPressedBrush)}" />
+                <Setter TargetName="HorizontalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.ThumbFillPressedBrush)}" />
+                <Setter TargetName="HorizontalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackValueFillPressedBrush)}" />
+                <Setter TargetName="HorizontalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackFillPressedBrush)}" />
             </Trigger>
             <Trigger SourceName="HorizontalThumb" Property="IsDragging" Value="True">
-                <Setter TargetName="HorizontalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.ThumbFillPressedBrush)}" />
-                <Setter TargetName="HorizontalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackValueFillPressedBrush)}" />
-                <Setter TargetName="HorizontalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackFillPressedBrush)}" />
+                <Setter TargetName="HorizontalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.ThumbFillPressedBrush)}" />
+                <Setter TargetName="HorizontalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackValueFillPressedBrush)}" />
+                <Setter TargetName="HorizontalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackFillPressedBrush)}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter TargetName="HorizontalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.ThumbFillDisabledBrush)}" />
-                <Setter TargetName="HorizontalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackValueFillDisabledBrush)}" />
-                <Setter TargetName="HorizontalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackFillDisabledBrush)}" />
+                <Setter TargetName="HorizontalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.ThumbFillDisabledBrush)}" />
+                <Setter TargetName="HorizontalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackValueFillDisabledBrush)}" />
+                <Setter TargetName="HorizontalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackFillDisabledBrush)}" />
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
@@ -195,20 +195,20 @@
                 <Track.DecreaseRepeatButton>
                     <RepeatButton x:Name="VerticalTrackDecrease"
                                   Command="{x:Static Slider.DecreaseLarge}"
-                                  Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackValueFillBrush)}"
+                                  Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackValueFillBrush)}"
                                   Style="{DynamicResource Crystal.Styles.RepeatButton.Slider.VerticalTrackValue}" />
                 </Track.DecreaseRepeatButton>
                 <Track.IncreaseRepeatButton>
                     <RepeatButton x:Name="VerticalTrackIncrease"
                                   Command="{x:Static Slider.IncreaseLarge}"
-                                  Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackFillBrush)}"
+                                  Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackFillBrush)}"
                                   Style="{DynamicResource Crystal.Styles.RepeatButton.Slider.VerticalTrack}" />
                 </Track.IncreaseRepeatButton>
                 <Track.Thumb>
-                    <mah:MetroThumb x:Name="VerticalThumb"
+                    <crystal:MetroThumb x:Name="VerticalThumb"
                                     Width="{DynamicResource Crystal.Sizes.Slider.VerticalThumb.Width}"
                                     Height="{DynamicResource Crystal.Sizes.Slider.VerticalThumb.Height}"
-                                    Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.ThumbFillBrush)}"
+                                    Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.ThumbFillBrush)}"
                                     BorderThickness="0 1"
                                     IsTabStop="True"
                                     Style="{DynamicResource Crystal.Styles.Thumb.Slider}" />
@@ -228,29 +228,29 @@
             </Trigger>
 
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter TargetName="VerticalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.ThumbFillHoverBrush)}" />
-                <Setter TargetName="VerticalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackValueFillHoverBrush)}" />
-                <Setter TargetName="VerticalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackFillHoverBrush)}" />
+                <Setter TargetName="VerticalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.ThumbFillHoverBrush)}" />
+                <Setter TargetName="VerticalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackValueFillHoverBrush)}" />
+                <Setter TargetName="VerticalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackFillHoverBrush)}" />
             </Trigger>
             <Trigger SourceName="VerticalTrackDecrease" Property="IsPressed" Value="True">
-                <Setter TargetName="VerticalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.ThumbFillPressedBrush)}" />
-                <Setter TargetName="VerticalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackValueFillPressedBrush)}" />
-                <Setter TargetName="VerticalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackFillPressedBrush)}" />
+                <Setter TargetName="VerticalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.ThumbFillPressedBrush)}" />
+                <Setter TargetName="VerticalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackValueFillPressedBrush)}" />
+                <Setter TargetName="VerticalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackFillPressedBrush)}" />
             </Trigger>
             <Trigger SourceName="VerticalTrackIncrease" Property="IsPressed" Value="True">
-                <Setter TargetName="VerticalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.ThumbFillPressedBrush)}" />
-                <Setter TargetName="VerticalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackValueFillPressedBrush)}" />
-                <Setter TargetName="VerticalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackFillPressedBrush)}" />
+                <Setter TargetName="VerticalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.ThumbFillPressedBrush)}" />
+                <Setter TargetName="VerticalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackValueFillPressedBrush)}" />
+                <Setter TargetName="VerticalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackFillPressedBrush)}" />
             </Trigger>
             <Trigger SourceName="VerticalThumb" Property="IsDragging" Value="True">
-                <Setter TargetName="VerticalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.ThumbFillPressedBrush)}" />
-                <Setter TargetName="VerticalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackValueFillPressedBrush)}" />
-                <Setter TargetName="VerticalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackFillPressedBrush)}" />
+                <Setter TargetName="VerticalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.ThumbFillPressedBrush)}" />
+                <Setter TargetName="VerticalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackValueFillPressedBrush)}" />
+                <Setter TargetName="VerticalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackFillPressedBrush)}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter TargetName="VerticalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.ThumbFillDisabledBrush)}" />
-                <Setter TargetName="VerticalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackValueFillDisabledBrush)}" />
-                <Setter TargetName="VerticalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackFillDisabledBrush)}" />
+                <Setter TargetName="VerticalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.ThumbFillDisabledBrush)}" />
+                <Setter TargetName="VerticalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackValueFillDisabledBrush)}" />
+                <Setter TargetName="VerticalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackFillDisabledBrush)}" />
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
@@ -266,18 +266,18 @@
         <Setter Property="Template" Value="{DynamicResource Crystal.Templates.Slider.Horizontal}" />
         <Setter Property="Value" Value="0" />
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
-        <Setter Property="mah:SliderHelper.ThumbFillBrush" Value="{DynamicResource Crystal.Brushes.Gray2}" />
-        <Setter Property="mah:SliderHelper.ThumbFillDisabledBrush" Value="{DynamicResource Crystal.Brushes.Gray6}" />
-        <Setter Property="mah:SliderHelper.ThumbFillHoverBrush" Value="{DynamicResource Crystal.Brushes.Gray5}" />
-        <Setter Property="mah:SliderHelper.ThumbFillPressedBrush" Value="{DynamicResource Crystal.Brushes.Gray2}" />
-        <Setter Property="mah:SliderHelper.TrackFillBrush" Value="{DynamicResource Crystal.Brushes.Gray3}" />
-        <Setter Property="mah:SliderHelper.TrackFillDisabledBrush" Value="{DynamicResource Crystal.Brushes.Gray6}" />
-        <Setter Property="mah:SliderHelper.TrackFillHoverBrush" Value="{DynamicResource Crystal.Brushes.Gray3}" />
-        <Setter Property="mah:SliderHelper.TrackFillPressedBrush" Value="{DynamicResource Crystal.Brushes.Gray3}" />
-        <Setter Property="mah:SliderHelper.TrackValueFillBrush" Value="{DynamicResource Crystal.Brushes.Accent}" />
-        <Setter Property="mah:SliderHelper.TrackValueFillDisabledBrush" Value="{DynamicResource Crystal.Brushes.Gray6}" />
-        <Setter Property="mah:SliderHelper.TrackValueFillHoverBrush" Value="{DynamicResource Crystal.Brushes.Accent}" />
-        <Setter Property="mah:SliderHelper.TrackValueFillPressedBrush" Value="{DynamicResource Crystal.Brushes.Accent}" />
+        <Setter Property="crystal:SliderHelper.ThumbFillBrush" Value="{DynamicResource Crystal.Brushes.Gray2}" />
+        <Setter Property="crystal:SliderHelper.ThumbFillDisabledBrush" Value="{DynamicResource Crystal.Brushes.Gray6}" />
+        <Setter Property="crystal:SliderHelper.ThumbFillHoverBrush" Value="{DynamicResource Crystal.Brushes.Gray5}" />
+        <Setter Property="crystal:SliderHelper.ThumbFillPressedBrush" Value="{DynamicResource Crystal.Brushes.Gray2}" />
+        <Setter Property="crystal:SliderHelper.TrackFillBrush" Value="{DynamicResource Crystal.Brushes.Gray3}" />
+        <Setter Property="crystal:SliderHelper.TrackFillDisabledBrush" Value="{DynamicResource Crystal.Brushes.Gray6}" />
+        <Setter Property="crystal:SliderHelper.TrackFillHoverBrush" Value="{DynamicResource Crystal.Brushes.Gray3}" />
+        <Setter Property="crystal:SliderHelper.TrackFillPressedBrush" Value="{DynamicResource Crystal.Brushes.Gray3}" />
+        <Setter Property="crystal:SliderHelper.TrackValueFillBrush" Value="{DynamicResource Crystal.Brushes.Accent}" />
+        <Setter Property="crystal:SliderHelper.TrackValueFillDisabledBrush" Value="{DynamicResource Crystal.Brushes.Gray6}" />
+        <Setter Property="crystal:SliderHelper.TrackValueFillHoverBrush" Value="{DynamicResource Crystal.Brushes.Accent}" />
+        <Setter Property="crystal:SliderHelper.TrackValueFillPressedBrush" Value="{DynamicResource Crystal.Brushes.Accent}" />
         <Style.Triggers>
             <Trigger Property="Orientation" Value="Vertical">
                 <Setter Property="Template" Value="{DynamicResource Crystal.Templates.Slider.Vertical}" />
@@ -362,20 +362,20 @@
                 <Track.DecreaseRepeatButton>
                     <RepeatButton x:Name="HorizontalTrackDecrease"
                                   Command="{x:Static Slider.DecreaseLarge}"
-                                  Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackValueFillBrush)}"
+                                  Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackValueFillBrush)}"
                                   Style="{DynamicResource Crystal.Styles.RepeatButton.Slider.HorizontalTrack.Win10}" />
                 </Track.DecreaseRepeatButton>
                 <Track.IncreaseRepeatButton>
                     <RepeatButton x:Name="HorizontalTrackIncrease"
                                   Command="{x:Static Slider.IncreaseLarge}"
-                                  Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackFillBrush)}"
+                                  Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackFillBrush)}"
                                   Style="{DynamicResource Crystal.Styles.RepeatButton.Slider.HorizontalTrack.Win10}" />
                 </Track.IncreaseRepeatButton>
                 <Track.Thumb>
-                    <mah:MetroThumb x:Name="HorizontalThumb"
+                    <crystal:MetroThumb x:Name="HorizontalThumb"
                                     Width="8"
                                     Height="24"
-                                    Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.ThumbFillBrush)}"
+                                    Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.ThumbFillBrush)}"
                                     IsTabStop="True"
                                     Style="{DynamicResource Crystal.Styles.Thumb.Slider.Win10}" />
                 </Track.Thumb>
@@ -394,29 +394,29 @@
             </Trigger>
 
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter TargetName="HorizontalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.ThumbFillHoverBrush)}" />
-                <Setter TargetName="HorizontalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackValueFillHoverBrush)}" />
-                <Setter TargetName="HorizontalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackFillHoverBrush)}" />
+                <Setter TargetName="HorizontalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.ThumbFillHoverBrush)}" />
+                <Setter TargetName="HorizontalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackValueFillHoverBrush)}" />
+                <Setter TargetName="HorizontalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackFillHoverBrush)}" />
             </Trigger>
             <Trigger SourceName="HorizontalTrackDecrease" Property="IsPressed" Value="True">
-                <Setter TargetName="HorizontalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.ThumbFillPressedBrush)}" />
-                <Setter TargetName="HorizontalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackValueFillPressedBrush)}" />
-                <Setter TargetName="HorizontalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackFillPressedBrush)}" />
+                <Setter TargetName="HorizontalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.ThumbFillPressedBrush)}" />
+                <Setter TargetName="HorizontalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackValueFillPressedBrush)}" />
+                <Setter TargetName="HorizontalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackFillPressedBrush)}" />
             </Trigger>
             <Trigger SourceName="HorizontalTrackIncrease" Property="IsPressed" Value="True">
-                <Setter TargetName="HorizontalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.ThumbFillPressedBrush)}" />
-                <Setter TargetName="HorizontalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackValueFillPressedBrush)}" />
-                <Setter TargetName="HorizontalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackFillPressedBrush)}" />
+                <Setter TargetName="HorizontalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.ThumbFillPressedBrush)}" />
+                <Setter TargetName="HorizontalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackValueFillPressedBrush)}" />
+                <Setter TargetName="HorizontalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackFillPressedBrush)}" />
             </Trigger>
             <Trigger SourceName="HorizontalThumb" Property="IsDragging" Value="True">
-                <Setter TargetName="HorizontalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.ThumbFillPressedBrush)}" />
-                <Setter TargetName="HorizontalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackValueFillPressedBrush)}" />
-                <Setter TargetName="HorizontalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackFillPressedBrush)}" />
+                <Setter TargetName="HorizontalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.ThumbFillPressedBrush)}" />
+                <Setter TargetName="HorizontalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackValueFillPressedBrush)}" />
+                <Setter TargetName="HorizontalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackFillPressedBrush)}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter TargetName="HorizontalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.ThumbFillDisabledBrush)}" />
-                <Setter TargetName="HorizontalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackValueFillDisabledBrush)}" />
-                <Setter TargetName="HorizontalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackFillDisabledBrush)}" />
+                <Setter TargetName="HorizontalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.ThumbFillDisabledBrush)}" />
+                <Setter TargetName="HorizontalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackValueFillDisabledBrush)}" />
+                <Setter TargetName="HorizontalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackFillDisabledBrush)}" />
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
@@ -449,20 +449,20 @@
                 <Track.DecreaseRepeatButton>
                     <RepeatButton x:Name="VerticalTrackDecrease"
                                   Command="{x:Static Slider.DecreaseLarge}"
-                                  Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackValueFillBrush)}"
+                                  Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackValueFillBrush)}"
                                   Style="{DynamicResource Crystal.Styles.RepeatButton.Slider.VerticalTrack.Win10}" />
                 </Track.DecreaseRepeatButton>
                 <Track.IncreaseRepeatButton>
                     <RepeatButton x:Name="VerticalTrackIncrease"
                                   Command="{x:Static Slider.IncreaseLarge}"
-                                  Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackFillBrush)}"
+                                  Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackFillBrush)}"
                                   Style="{DynamicResource Crystal.Styles.RepeatButton.Slider.VerticalTrack.Win10}" />
                 </Track.IncreaseRepeatButton>
                 <Track.Thumb>
-                    <mah:MetroThumb x:Name="VerticalThumb"
+                    <crystal:MetroThumb x:Name="VerticalThumb"
                                     Width="24"
                                     Height="8"
-                                    Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.ThumbFillBrush)}"
+                                    Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.ThumbFillBrush)}"
                                     IsTabStop="True"
                                     Style="{DynamicResource Crystal.Styles.Thumb.Slider.Win10}" />
                 </Track.Thumb>
@@ -481,29 +481,29 @@
             </Trigger>
 
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter TargetName="VerticalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.ThumbFillHoverBrush)}" />
-                <Setter TargetName="VerticalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackValueFillHoverBrush)}" />
-                <Setter TargetName="VerticalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackFillHoverBrush)}" />
+                <Setter TargetName="VerticalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.ThumbFillHoverBrush)}" />
+                <Setter TargetName="VerticalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackValueFillHoverBrush)}" />
+                <Setter TargetName="VerticalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackFillHoverBrush)}" />
             </Trigger>
             <Trigger SourceName="VerticalTrackDecrease" Property="IsPressed" Value="True">
-                <Setter TargetName="VerticalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.ThumbFillPressedBrush)}" />
-                <Setter TargetName="VerticalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackValueFillPressedBrush)}" />
-                <Setter TargetName="VerticalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackFillPressedBrush)}" />
+                <Setter TargetName="VerticalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.ThumbFillPressedBrush)}" />
+                <Setter TargetName="VerticalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackValueFillPressedBrush)}" />
+                <Setter TargetName="VerticalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackFillPressedBrush)}" />
             </Trigger>
             <Trigger SourceName="VerticalTrackIncrease" Property="IsPressed" Value="True">
-                <Setter TargetName="VerticalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.ThumbFillPressedBrush)}" />
-                <Setter TargetName="VerticalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackValueFillPressedBrush)}" />
-                <Setter TargetName="VerticalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackFillPressedBrush)}" />
+                <Setter TargetName="VerticalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.ThumbFillPressedBrush)}" />
+                <Setter TargetName="VerticalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackValueFillPressedBrush)}" />
+                <Setter TargetName="VerticalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackFillPressedBrush)}" />
             </Trigger>
             <Trigger SourceName="VerticalThumb" Property="IsDragging" Value="True">
-                <Setter TargetName="VerticalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.ThumbFillPressedBrush)}" />
-                <Setter TargetName="VerticalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackValueFillPressedBrush)}" />
-                <Setter TargetName="VerticalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackFillPressedBrush)}" />
+                <Setter TargetName="VerticalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.ThumbFillPressedBrush)}" />
+                <Setter TargetName="VerticalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackValueFillPressedBrush)}" />
+                <Setter TargetName="VerticalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackFillPressedBrush)}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter TargetName="VerticalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.ThumbFillDisabledBrush)}" />
-                <Setter TargetName="VerticalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackValueFillDisabledBrush)}" />
-                <Setter TargetName="VerticalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:SliderHelper.TrackFillDisabledBrush)}" />
+                <Setter TargetName="VerticalThumb" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.ThumbFillDisabledBrush)}" />
+                <Setter TargetName="VerticalTrackDecrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackValueFillDisabledBrush)}" />
+                <Setter TargetName="VerticalTrackIncrease" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackFillDisabledBrush)}" />
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
@@ -520,18 +520,18 @@
         <Setter Property="Template" Value="{DynamicResource Crystal.Templates.Slider.Horizontal.Win10}" />
         <Setter Property="Value" Value="0" />
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
-        <Setter Property="mah:SliderHelper.ThumbFillBrush" Value="{DynamicResource Crystal.Brushes.AccentBase}" />
-        <Setter Property="mah:SliderHelper.ThumbFillDisabledBrush" Value="{DynamicResource Crystal.Brushes.Gray6}" />
-        <Setter Property="mah:SliderHelper.ThumbFillHoverBrush" Value="{DynamicResource Crystal.Brushes.Gray1}" />
-        <Setter Property="mah:SliderHelper.ThumbFillPressedBrush" Value="{DynamicResource Crystal.Brushes.Gray6}" />
-        <Setter Property="mah:SliderHelper.TrackFillBrush" Value="{DynamicResource Crystal.Brushes.Gray3}" />
-        <Setter Property="mah:SliderHelper.TrackFillDisabledBrush" Value="{DynamicResource Crystal.Brushes.Gray6}" />
-        <Setter Property="mah:SliderHelper.TrackFillHoverBrush" Value="{DynamicResource Crystal.Brushes.Gray2}" />
-        <Setter Property="mah:SliderHelper.TrackFillPressedBrush" Value="{DynamicResource Crystal.Brushes.Gray3}" />
-        <Setter Property="mah:SliderHelper.TrackValueFillBrush" Value="{DynamicResource Crystal.Brushes.AccentBase}" />
-        <Setter Property="mah:SliderHelper.TrackValueFillDisabledBrush" Value="{DynamicResource Crystal.Brushes.Gray6}" />
-        <Setter Property="mah:SliderHelper.TrackValueFillHoverBrush" Value="{DynamicResource Crystal.Brushes.AccentBase}" />
-        <Setter Property="mah:SliderHelper.TrackValueFillPressedBrush" Value="{DynamicResource Crystal.Brushes.AccentBase}" />
+        <Setter Property="crystal:SliderHelper.ThumbFillBrush" Value="{DynamicResource Crystal.Brushes.AccentBase}" />
+        <Setter Property="crystal:SliderHelper.ThumbFillDisabledBrush" Value="{DynamicResource Crystal.Brushes.Gray6}" />
+        <Setter Property="crystal:SliderHelper.ThumbFillHoverBrush" Value="{DynamicResource Crystal.Brushes.Gray1}" />
+        <Setter Property="crystal:SliderHelper.ThumbFillPressedBrush" Value="{DynamicResource Crystal.Brushes.Gray6}" />
+        <Setter Property="crystal:SliderHelper.TrackFillBrush" Value="{DynamicResource Crystal.Brushes.Gray3}" />
+        <Setter Property="crystal:SliderHelper.TrackFillDisabledBrush" Value="{DynamicResource Crystal.Brushes.Gray6}" />
+        <Setter Property="crystal:SliderHelper.TrackFillHoverBrush" Value="{DynamicResource Crystal.Brushes.Gray2}" />
+        <Setter Property="crystal:SliderHelper.TrackFillPressedBrush" Value="{DynamicResource Crystal.Brushes.Gray3}" />
+        <Setter Property="crystal:SliderHelper.TrackValueFillBrush" Value="{DynamicResource Crystal.Brushes.AccentBase}" />
+        <Setter Property="crystal:SliderHelper.TrackValueFillDisabledBrush" Value="{DynamicResource Crystal.Brushes.Gray6}" />
+        <Setter Property="crystal:SliderHelper.TrackValueFillHoverBrush" Value="{DynamicResource Crystal.Brushes.AccentBase}" />
+        <Setter Property="crystal:SliderHelper.TrackValueFillPressedBrush" Value="{DynamicResource Crystal.Brushes.AccentBase}" />
         <Style.Triggers>
             <Trigger Property="Orientation" Value="Vertical">
                 <Setter Property="Template" Value="{DynamicResource Crystal.Templates.Slider.Vertical.Win10}" />
