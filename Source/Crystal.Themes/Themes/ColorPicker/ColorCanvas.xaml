@@ -10,18 +10,18 @@
 
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 
-    <DrawingBrush x:Key="MahApps.Brushes.Tile"
+    <DrawingBrush x:Key="Crystal.Brushes.Tile"
                   TileMode="Tile"
                   Viewport="0,0,20,20"
                   ViewportUnits="Absolute">
         <DrawingBrush.Drawing>
             <DrawingGroup>
-                <GeometryDrawing Brush="{DynamicResource MahApps.Brushes.ThemeBackground}">
+                <GeometryDrawing Brush="{DynamicResource Crystal.Brushes.ThemeBackground}">
                     <GeometryDrawing.Geometry>
                         <RectangleGeometry Rect="0,0,20,20" />
                     </GeometryDrawing.Geometry>
                 </GeometryDrawing>
-                <GeometryDrawing Brush="{DynamicResource MahApps.Brushes.Gray7}">
+                <GeometryDrawing Brush="{DynamicResource Crystal.Brushes.Gray7}">
                     <GeometryDrawing.Geometry>
                         <GeometryGroup>
                             <RectangleGeometry Rect="0,0,10,10" />
@@ -33,18 +33,18 @@
         </DrawingBrush.Drawing>
     </DrawingBrush>
 
-    <DrawingBrush x:Key="MahApps.Brushes.Tile.Small"
+    <DrawingBrush x:Key="Crystal.Brushes.Tile.Small"
                   TileMode="Tile"
                   Viewport="0,0,10,10"
                   ViewportUnits="Absolute">
         <DrawingBrush.Drawing>
             <DrawingGroup>
-                <GeometryDrawing Brush="{DynamicResource MahApps.Brushes.ThemeBackground}">
+                <GeometryDrawing Brush="{DynamicResource Crystal.Brushes.ThemeBackground}">
                     <GeometryDrawing.Geometry>
                         <RectangleGeometry Rect="0,0,10,10" />
                     </GeometryDrawing.Geometry>
                 </GeometryDrawing>
-                <GeometryDrawing Brush="{DynamicResource MahApps.Brushes.Gray7}">
+                <GeometryDrawing Brush="{DynamicResource Crystal.Brushes.Gray7}">
                     <GeometryDrawing.Geometry>
                         <GeometryGroup>
                             <RectangleGeometry Rect="0,0,5,5" />
@@ -57,11 +57,11 @@
         </DrawingBrush.Drawing>
     </DrawingBrush>
 
-    <DataTemplate x:Key="MahApps.DataTemplates.ColorPicker.NoColor">
-        <Path Fill="{DynamicResource MahApps.Brushes.ThemeBackground}"
+    <DataTemplate x:Key="Crystal.DataTemplates.ColorPicker.NoColor">
+        <Path Fill="{DynamicResource Crystal.Brushes.ThemeBackground}"
               SnapsToDevicePixels="True"
               Stretch="Fill"
-              Stroke="{DynamicResource MahApps.Brushes.ThemeForeground}"
+              Stroke="{DynamicResource Crystal.Brushes.ThemeForeground}"
               StrokeThickness="1">
             <Path.Data>
                 <GeometryGroup>
@@ -73,7 +73,7 @@
         </Path>
     </DataTemplate>
 
-    <Style x:Key="MahApps.Styles.ColorCanvas" TargetType="{x:Type mah:ColorCanvas}">
+    <Style x:Key="Crystal.Styles.ColorCanvas" TargetType="{x:Type mah:ColorCanvas}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type mah:ColorCanvas}">
@@ -104,7 +104,7 @@
                                     Grid.Column="0"
                                     Margin="5"
                                     Background="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=SelectedHSVColor, Converter={x:Static mahConverters:HSVColorChannel2BrushConverter.Default}, ConverterParameter={x:Static mahConverters:HSVColorChannelType.SVMax}}"
-                                    BorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"
+                                    BorderBrush="{DynamicResource Crystal.Brushes.ThemeForeground}"
                                     BorderThickness="1">
                                 <Grid SnapsToDevicePixels="True" UseLayoutRounding="False">
                                     <Grid.ColumnDefinitions>
@@ -184,8 +184,8 @@
                                 <Border Grid.Row="0"
                                         Grid.Column="1"
                                         Margin="5 0 0 0"
-                                        Background="{DynamicResource MahApps.Brushes.Tile}"
-                                        BorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"
+                                        Background="{DynamicResource Crystal.Brushes.Tile}"
+                                        BorderBrush="{DynamicResource Crystal.Brushes.ThemeForeground}"
                                         BorderThickness="1">
                                     <Rectangle Fill="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedColor, Converter={x:Static mahConverters:ColorToSolidColorBrushConverter.DefaultInstance}}" />
                                 </Border>
@@ -194,7 +194,7 @@
                                                 Grid.Row="0"
                                                 Grid.Column="1"
                                                 Margin="5 0 0 0"
-                                                ContentTemplate="{DynamicResource MahApps.DataTemplates.ColorPicker.NoColor}"
+                                                ContentTemplate="{DynamicResource Crystal.DataTemplates.ColorPicker.NoColor}"
                                                 Visibility="Collapsed" />
                             </Grid>
 
@@ -208,7 +208,7 @@
                                     <Grid Visibility="{TemplateBinding AreRgbChannelsVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto"
-                                                              MinWidth="{DynamicResource MahApps.Font.Size.Content}"
+                                                              MinWidth="{DynamicResource Crystal.Font.Size.Content}"
                                                               SharedSizeGroup="Label" />
                                             <ColumnDefinition Width="*" MinWidth="50" />
                                             <ColumnDefinition Width="Auto" MinWidth="100" />
@@ -228,7 +228,7 @@
                                         <Slider Grid.Row="0"
                                                 Grid.Column="1"
                                                 Background="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=SelectedColor, Converter={x:Static mahConverters:ColorChannel2GradientBrushConverter.Default}, ConverterParameter={x:Static mahConverters:ColorChannelType.R}}"
-                                                Style="{DynamicResource MahApps.Styles.Slider.ColorComponent.ARGB}"
+                                                Style="{DynamicResource Crystal.Styles.Slider.ColorComponent.ARGB}"
                                                 Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=R}" />
                                         <mah:NumericUpDown Grid.Row="0"
                                                            Grid.Column="2"
@@ -245,7 +245,7 @@
                                         <Slider Grid.Row="1"
                                                 Grid.Column="1"
                                                 Background="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=SelectedColor, Converter={x:Static mahConverters:ColorChannel2GradientBrushConverter.Default}, ConverterParameter={x:Static mahConverters:ColorChannelType.G}}"
-                                                Style="{DynamicResource MahApps.Styles.Slider.ColorComponent.ARGB}"
+                                                Style="{DynamicResource Crystal.Styles.Slider.ColorComponent.ARGB}"
                                                 Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=G}" />
                                         <mah:NumericUpDown Grid.Row="1"
                                                            Grid.Column="2"
@@ -262,7 +262,7 @@
                                         <Slider Grid.Row="2"
                                                 Grid.Column="1"
                                                 Background="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=SelectedColor, Converter={x:Static mahConverters:ColorChannel2GradientBrushConverter.Default}, ConverterParameter={x:Static mahConverters:ColorChannelType.B}}"
-                                                Style="{DynamicResource MahApps.Styles.Slider.ColorComponent.ARGB}"
+                                                Style="{DynamicResource Crystal.Styles.Slider.ColorComponent.ARGB}"
                                                 Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=B}" />
                                         <mah:NumericUpDown Grid.Row="2"
                                                            Grid.Column="2"
@@ -275,7 +275,7 @@
                                     <Grid Margin="0 10 0 0" Visibility="{TemplateBinding AreHsvChannelsVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto"
-                                                              MinWidth="{DynamicResource MahApps.Font.Size.Content}"
+                                                              MinWidth="{DynamicResource Crystal.Font.Size.Content}"
                                                               SharedSizeGroup="Label" />
                                             <ColumnDefinition Width="*" MinWidth="50" />
                                             <ColumnDefinition Width="Auto" MinWidth="100" />
@@ -294,7 +294,7 @@
                                                           Content="{TemplateBinding LabelHueChannel}" />
                                         <Slider Grid.Row="0"
                                                 Grid.Column="1"
-                                                Style="{DynamicResource MahApps.Styles.Slider.ColorComponent.Hue}"
+                                                Style="{DynamicResource Crystal.Styles.Slider.ColorComponent.Hue}"
                                                 Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Hue, UpdateSourceTrigger=PropertyChanged}" />
                                         <mah:NumericUpDown Grid.Row="0"
                                                            Grid.Column="2"
@@ -312,7 +312,7 @@
                                         <Slider Grid.Row="1"
                                                 Grid.Column="1"
                                                 Background="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=SelectedHSVColor, Converter={x:Static mahConverters:HSVColorChannel2GradientBrushConverter.Default}, ConverterParameter={x:Static mahConverters:HSVColorChannelType.S}}"
-                                                Style="{DynamicResource MahApps.Styles.Slider.ColorComponent.SV}"
+                                                Style="{DynamicResource Crystal.Styles.Slider.ColorComponent.SV}"
                                                 Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Saturation}" />
                                         <mah:NumericUpDown Grid.Row="1"
                                                            Grid.Column="2"
@@ -331,7 +331,7 @@
                                         <Slider Grid.Row="2"
                                                 Grid.Column="1"
                                                 Background="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=SelectedHSVColor, Converter={x:Static mahConverters:HSVColorChannel2GradientBrushConverter.Default}, ConverterParameter={x:Static mahConverters:HSVColorChannelType.V}}"
-                                                Style="{DynamicResource MahApps.Styles.Slider.ColorComponent.SV}"
+                                                Style="{DynamicResource Crystal.Styles.Slider.ColorComponent.SV}"
                                                 Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Value}" />
                                         <mah:NumericUpDown Grid.Row="2"
                                                            Grid.Column="2"
@@ -346,7 +346,7 @@
                                     <Grid Margin="0 10 0 0" Visibility="{TemplateBinding IsAlphaChannelVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto"
-                                                              MinWidth="{DynamicResource MahApps.Font.Size.Content}"
+                                                              MinWidth="{DynamicResource Crystal.Font.Size.Content}"
                                                               SharedSizeGroup="Label" />
                                             <ColumnDefinition Width="*" MinWidth="50" />
                                             <ColumnDefinition Width="Auto" MinWidth="100" />
@@ -360,7 +360,7 @@
                                         <Slider Grid.Row="0"
                                                 Grid.Column="1"
                                                 Background="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=SelectedColor, Converter={x:Static mahConverters:ColorChannel2GradientBrushConverter.Default}, ConverterParameter={x:Static mahConverters:ColorChannelType.A}}"
-                                                Style="{DynamicResource MahApps.Styles.Slider.ColorComponent.ARGB}"
+                                                Style="{DynamicResource Crystal.Styles.Slider.ColorComponent.ARGB}"
                                                 Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=A}" />
                                         <mah:NumericUpDown Grid.Row="0"
                                                            Grid.Column="2"
@@ -416,7 +416,7 @@
                                                      Grid.Column="2"
                                                      Margin="0 0 2 0"
                                                      SelectedColor="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=SelectedColor, TargetNullValue=Transparent}"
-                                                     Style="{DynamicResource MahApps.Styles.ColorEyeDropper.ColorCanvas}"
+                                                     Style="{DynamicResource Crystal.Styles.ColorEyeDropper.ColorCanvas}"
                                                      Visibility="{TemplateBinding IsEyeDropperVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
                             </Grid>
                         </Grid>

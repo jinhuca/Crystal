@@ -7,7 +7,7 @@
         <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.TabControl.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <Style BasedOn="{StaticResource MahApps.Styles.TabControl}" TargetType="{x:Type mah:MetroAnimatedTabControl}">
+    <Style BasedOn="{StaticResource Crystal.Styles.TabControl}" TargetType="{x:Type mah:MetroAnimatedTabControl}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type mah:MetroAnimatedTabControl}">

@@ -330,7 +330,7 @@ namespace Crystal.Themes.Controls.Dialogs
     {
       if (DialogSettings is LoginDialogSettings settings && settings.EnablePasswordPreview)
       {
-        var win8MetroPasswordStyle = FindResource("MahApps.Styles.PasswordBox.Win8") as Style;
+        var win8MetroPasswordStyle = FindResource("Crystal.Styles.PasswordBox.Win8") as Style;
         if (win8MetroPasswordStyle != null)
         {
           PART_TextBox2.Style = win8MetroPasswordStyle;
@@ -345,9 +345,9 @@ namespace Crystal.Themes.Controls.Dialogs
       switch (DialogSettings.ColorScheme)
       {
         case MetroDialogColorScheme.Accented:
-          PART_NegativeButton.SetResourceReference(StyleProperty, "MahApps.Styles.Button.Dialogs.AccentHighlight");
-          PART_TextBox.SetResourceReference(ForegroundProperty, "MahApps.Brushes.ThemeForeground");
-          PART_TextBox2.SetResourceReference(ForegroundProperty, "MahApps.Brushes.ThemeForeground");
+          PART_NegativeButton.SetResourceReference(StyleProperty, "Crystal.Styles.Button.Dialogs.AccentHighlight");
+          PART_TextBox.SetResourceReference(ForegroundProperty, "Crystal.Brushes.ThemeForeground");
+          PART_TextBox2.SetResourceReference(ForegroundProperty, "Crystal.Brushes.ThemeForeground");
           break;
       }
     }

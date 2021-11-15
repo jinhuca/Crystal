@@ -10,18 +10,18 @@
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 
     <!--  TextBox Style  -->
-    <Style x:Key="MahApps.Styles.TextBox" TargetType="{x:Type TextBox}">
-        <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Control.Background}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.TextBox.Border}" />
+    <Style x:Key="Crystal.Styles.TextBox" TargetType="{x:Type TextBox}">
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Control.Background}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.TextBox.Border}" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="CaretBrush" Value="{DynamicResource MahApps.Brushes.ThemeForeground}" />
-        <Setter Property="ContextMenu" Value="{DynamicResource MahApps.TextBox.ContextMenu}" />
-        <Setter Property="FontFamily" Value="{DynamicResource MahApps.Fonts.Family.Control}" />
-        <Setter Property="FontSize" Value="{DynamicResource MahApps.Font.Size.Content}" />
-        <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Text}" />
+        <Setter Property="CaretBrush" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
+        <Setter Property="ContextMenu" Value="{DynamicResource Crystal.TextBox.ContextMenu}" />
+        <Setter Property="FontFamily" Value="{DynamicResource Crystal.Fonts.Family.Control}" />
+        <Setter Property="FontSize" Value="{DynamicResource Crystal.Font.Size.Content}" />
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Text}" />
         <Setter Property="MinHeight" Value="26" />
         <Setter Property="Padding" Value="4" />
-        <Setter Property="SelectionBrush" Value="{DynamicResource MahApps.Brushes.Highlight}" />
+        <Setter Property="SelectionBrush" Value="{DynamicResource Crystal.Brushes.Highlight}" />
         <!--  change SnapsToDevicePixels to True to view a better border and validation error  -->
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Template">
@@ -34,7 +34,7 @@
                                     BorderBrush="Transparent"
                                     BorderThickness="{TemplateBinding BorderThickness}"
                                     CornerRadius="{TemplateBinding mah:ControlsHelper.CornerRadius}"
-                                    Effect="{DynamicResource MahApps.DropShadowEffect.WaitingForData}"
+                                    Effect="{DynamicResource Crystal.DropShadowEffect.WaitingForData}"
                                     SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                         </AdornerDecorator>
 
@@ -74,7 +74,7 @@
                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                        Foreground="{TemplateBinding Foreground}"
-                                       Style="{DynamicResource MahApps.Styles.TextBlock.Watermark}"
+                                       Style="{DynamicResource Crystal.Styles.TextBlock.Watermark}"
                                        Text="{TemplateBinding mah:TextBoxHelper.Watermark}"
                                        TextAlignment="{TemplateBinding mah:TextBoxHelper.WatermarkAlignment}"
                                        TextTrimming="{TemplateBinding mah:TextBoxHelper.WatermarkTrimming}"
@@ -85,7 +85,7 @@
                                             Grid.Row="0"
                                             Grid.Column="0"
                                             Margin="4 0"
-                                            Style="{DynamicResource MahApps.Styles.ContentControl.FloatingMessageContainer}">
+                                            Style="{DynamicResource Crystal.Styles.ContentControl.FloatingMessageContainer}">
                                 <ContentControl.Height>
                                     <MultiBinding Converter="{mahConverters:MathMultiplyConverter}">
                                         <Binding ElementName="PART_FloatingMessage"
@@ -100,7 +100,7 @@
                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                            Foreground="{TemplateBinding Foreground}"
-                                           Style="{DynamicResource MahApps.Styles.TextBlock.AutoCollapsing}"
+                                           Style="{DynamicResource Crystal.Styles.TextBlock.AutoCollapsing}"
                                            Text="{TemplateBinding mah:TextBoxHelper.Watermark}"
                                            TextAlignment="{TemplateBinding mah:TextBoxHelper.WatermarkAlignment}"
                                            TextTrimming="{TemplateBinding mah:TextBoxHelper.WatermarkTrimming}">
@@ -134,13 +134,13 @@
                                     FontSize="{TemplateBinding mah:TextBoxHelper.ButtonFontSize}"
                                     Foreground="{TemplateBinding Foreground}"
                                     IsTabStop="False"
-                                    Style="{DynamicResource MahApps.Styles.Button.Chromeless}"
+                                    Style="{DynamicResource Crystal.Styles.Button.Chromeless}"
                                     Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:TextBoxHelper.ClearTextButton), Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
                         </Grid>
 
                         <Border x:Name="DisabledVisualElement"
-                                Background="{DynamicResource MahApps.Brushes.Control.Disabled}"
-                                BorderBrush="{DynamicResource MahApps.Brushes.Control.Disabled}"
+                                Background="{DynamicResource Crystal.Brushes.Control.Disabled}"
+                                BorderBrush="{DynamicResource Crystal.Brushes.Control.Disabled}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 CornerRadius="{TemplateBinding mah:ControlsHelper.CornerRadius}"
                                 IsHitTestVisible="False"
@@ -170,10 +170,10 @@
                                 <Condition Binding="{Binding Path=(mah:TextBoxHelper.Watermark), RelativeSource={RelativeSource Self}, Converter={x:Static mahConverters:StringIsNullOrEmptyConverter.Default}}" Value="False" />
                             </MultiDataTrigger.Conditions>
                             <MultiDataTrigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource MahApps.Storyboard.ShowFloatingMessage}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ShowFloatingMessage}" />
                             </MultiDataTrigger.EnterActions>
                             <MultiDataTrigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource MahApps.Storyboard.HideFloatingMessage}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.HideFloatingMessage}" />
                             </MultiDataTrigger.ExitActions>
                         </MultiDataTrigger>
 
@@ -197,16 +197,16 @@
                         </Trigger>
                         <Trigger Property="IsFocused" Value="True">
                             <Setter TargetName="Base" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:ControlsHelper.FocusBorderBrush)}" />
-                            <Setter TargetName="PART_FloatingMessage" Property="Foreground" Value="{DynamicResource MahApps.Brushes.TextBlock.FloatingMessage}" />
+                            <Setter TargetName="PART_FloatingMessage" Property="Foreground" Value="{DynamicResource Crystal.Brushes.TextBlock.FloatingMessage}" />
                             <Setter TargetName="PART_FloatingMessage" Property="Opacity" Value="1" />
                         </Trigger>
                         <Trigger SourceName="PART_ClearText" Property="IsMouseOver" Value="True">
-                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource MahApps.Brushes.Gray8}" />
-                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource MahApps.Brushes.Accent}" />
+                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray8}" />
+                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource Crystal.Brushes.Accent}" />
                         </Trigger>
                         <Trigger SourceName="PART_ClearText" Property="IsPressed" Value="True">
-                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource MahApps.Brushes.ThemeForeground}" />
-                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource MahApps.Brushes.ThemeBackground}" />
+                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
+                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
                         </Trigger>
 
                         <MultiTrigger>
@@ -215,19 +215,19 @@
                                 <Condition Property="IsFocused" Value="True" />
                             </MultiTrigger.Conditions>
                             <MultiTrigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource MahApps.Storyboard.EnterGotFocus}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.EnterGotFocus}" />
                             </MultiTrigger.EnterActions>
                             <MultiTrigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource MahApps.Storyboard.ExitGotFocus}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ExitGotFocus}" />
                             </MultiTrigger.ExitActions>
                         </MultiTrigger>
 
                         <Trigger Property="mah:TextBoxHelper.HasText" Value="True">
                             <Trigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource MahApps.Storyboard.EnterHasText}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.EnterHasText}" />
                             </Trigger.EnterActions>
                             <Trigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource MahApps.Storyboard.ExitHasText}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ExitHasText}" />
                             </Trigger.ExitActions>
                         </Trigger>
 
@@ -238,7 +238,7 @@
                             </MultiTrigger.Conditions>
                             <Setter TargetName="PART_WaitingForDataEffectAdornerDecorator" Property="Visibility" Value="Visible" />
                             <MultiTrigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource MahApps.Storyboard.WaitingForData}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.WaitingForData}" />
                             </MultiTrigger.EnterActions>
                         </MultiTrigger>
                         <Trigger Property="mah:TextBoxHelper.IsWaitingForData" Value="False">
@@ -248,18 +248,18 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource MahApps.Templates.ValidationError}" />
-        <Setter Property="mah:ControlsHelper.FocusBorderBrush" Value="{DynamicResource MahApps.Brushes.TextBox.Border.Focus}" />
-        <Setter Property="mah:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource MahApps.Brushes.TextBox.Border.MouseOver}" />
-        <Setter Property="mah:TextBoxHelper.ButtonFontSize" Value="{DynamicResource MahApps.Font.Size.Button.ClearText}" />
+        <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource Crystal.Templates.ValidationError}" />
+        <Setter Property="mah:ControlsHelper.FocusBorderBrush" Value="{DynamicResource Crystal.Brushes.TextBox.Border.Focus}" />
+        <Setter Property="mah:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource Crystal.Brushes.TextBox.Border.MouseOver}" />
+        <Setter Property="mah:TextBoxHelper.ButtonFontSize" Value="{DynamicResource Crystal.Font.Size.Button.ClearText}" />
         <Setter Property="mah:TextBoxHelper.ButtonWidth" Value="22" />
         <Setter Property="mah:TextBoxHelper.IsMonitoring" Value="True" />
         <Setter Property="mah:TextBoxHelper.IsSpellCheckContextMenuEnabled" Value="{Binding RelativeSource={RelativeSource Self}, Path=(SpellCheck.IsEnabled)}" />
         <Setter Property="mah:TextBoxHelper.WatermarkWrapping" Value="{Binding RelativeSource={RelativeSource Self}, Path=TextWrapping, Mode=OneWay}" />
     </Style>
 
-    <Style x:Key="MahApps.Styles.TextBox.Button"
-           BasedOn="{StaticResource MahApps.Styles.TextBox}"
+    <Style x:Key="Crystal.Styles.TextBox.Button"
+           BasedOn="{StaticResource Crystal.Styles.TextBox}"
            TargetType="{x:Type TextBox}">
         <!--  change SnapsToDevicePixels to True to view a better border and validation error  -->
         <Setter Property="Template">
@@ -272,7 +272,7 @@
                                     BorderBrush="Transparent"
                                     BorderThickness="{TemplateBinding BorderThickness}"
                                     CornerRadius="{TemplateBinding mah:ControlsHelper.CornerRadius}"
-                                    Effect="{DynamicResource MahApps.DropShadowEffect.WaitingForData}"
+                                    Effect="{DynamicResource Crystal.DropShadowEffect.WaitingForData}"
                                     SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                         </AdornerDecorator>
 
@@ -311,7 +311,7 @@
                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                        Foreground="{TemplateBinding Foreground}"
-                                       Style="{DynamicResource MahApps.Styles.TextBlock.Watermark}"
+                                       Style="{DynamicResource Crystal.Styles.TextBlock.Watermark}"
                                        Text="{TemplateBinding mah:TextBoxHelper.Watermark}"
                                        TextAlignment="{TemplateBinding mah:TextBoxHelper.WatermarkAlignment}"
                                        TextTrimming="{TemplateBinding mah:TextBoxHelper.WatermarkTrimming}"
@@ -322,7 +322,7 @@
                                             Grid.Row="0"
                                             Grid.Column="0"
                                             Margin="4 0"
-                                            Style="{DynamicResource MahApps.Styles.ContentControl.FloatingMessageContainer}">
+                                            Style="{DynamicResource Crystal.Styles.ContentControl.FloatingMessageContainer}">
                                 <ContentControl.Height>
                                     <MultiBinding Converter="{mahConverters:MathMultiplyConverter}">
                                         <Binding ElementName="PART_FloatingMessage"
@@ -337,7 +337,7 @@
                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                            Foreground="{TemplateBinding Foreground}"
-                                           Style="{DynamicResource MahApps.Styles.TextBlock.AutoCollapsing}"
+                                           Style="{DynamicResource Crystal.Styles.TextBlock.AutoCollapsing}"
                                            Text="{TemplateBinding mah:TextBoxHelper.Watermark}"
                                            TextAlignment="{TemplateBinding mah:TextBoxHelper.WatermarkAlignment}"
                                            TextTrimming="{TemplateBinding mah:TextBoxHelper.WatermarkTrimming}">
@@ -371,14 +371,14 @@
                                     FontSize="{TemplateBinding mah:TextBoxHelper.ButtonFontSize}"
                                     Foreground="{TemplateBinding Foreground}"
                                     IsTabStop="False"
-                                    Style="{DynamicResource MahApps.Styles.Button.Chromeless}"
+                                    Style="{DynamicResource Crystal.Styles.Button.Chromeless}"
                                     Template="{TemplateBinding mah:TextBoxHelper.ButtonTemplate}"
                                     Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:TextBoxHelper.TextButton), Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
                         </Grid>
 
                         <Border x:Name="DisabledVisualElement"
-                                Background="{DynamicResource MahApps.Brushes.Control.Disabled}"
-                                BorderBrush="{DynamicResource MahApps.Brushes.Control.Disabled}"
+                                Background="{DynamicResource Crystal.Brushes.Control.Disabled}"
+                                BorderBrush="{DynamicResource Crystal.Brushes.Control.Disabled}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 CornerRadius="{TemplateBinding mah:ControlsHelper.CornerRadius}"
                                 IsHitTestVisible="False"
@@ -408,10 +408,10 @@
                                 <Condition Binding="{Binding Path=(mah:TextBoxHelper.Watermark), RelativeSource={RelativeSource Self}, Converter={x:Static mahConverters:StringIsNullOrEmptyConverter.Default}}" Value="False" />
                             </MultiDataTrigger.Conditions>
                             <MultiDataTrigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource MahApps.Storyboard.ShowFloatingMessage}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ShowFloatingMessage}" />
                             </MultiDataTrigger.EnterActions>
                             <MultiDataTrigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource MahApps.Storyboard.HideFloatingMessage}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.HideFloatingMessage}" />
                             </MultiDataTrigger.ExitActions>
                         </MultiDataTrigger>
 
@@ -439,16 +439,16 @@
                         </MultiTrigger>
                         <Trigger Property="IsFocused" Value="True">
                             <Setter TargetName="Base" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:ControlsHelper.FocusBorderBrush)}" />
-                            <Setter TargetName="PART_FloatingMessage" Property="Foreground" Value="{DynamicResource MahApps.Brushes.TextBlock.FloatingMessage}" />
+                            <Setter TargetName="PART_FloatingMessage" Property="Foreground" Value="{DynamicResource Crystal.Brushes.TextBlock.FloatingMessage}" />
                             <Setter TargetName="PART_FloatingMessage" Property="Opacity" Value="1" />
                         </Trigger>
                         <Trigger SourceName="PART_ClearText" Property="IsMouseOver" Value="True">
-                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource MahApps.Brushes.Gray8}" />
-                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource MahApps.Brushes.Accent}" />
+                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray8}" />
+                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource Crystal.Brushes.Accent}" />
                         </Trigger>
                         <Trigger SourceName="PART_ClearText" Property="IsPressed" Value="True">
-                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource MahApps.Brushes.ThemeForeground}" />
-                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource MahApps.Brushes.ThemeBackground}" />
+                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
+                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
                         </Trigger>
 
                         <MultiTrigger>
@@ -457,19 +457,19 @@
                                 <Condition Property="IsFocused" Value="True" />
                             </MultiTrigger.Conditions>
                             <MultiTrigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource MahApps.Storyboard.EnterGotFocus}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.EnterGotFocus}" />
                             </MultiTrigger.EnterActions>
                             <MultiTrigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource MahApps.Storyboard.ExitGotFocus}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ExitGotFocus}" />
                             </MultiTrigger.ExitActions>
                         </MultiTrigger>
 
                         <Trigger Property="mah:TextBoxHelper.HasText" Value="True">
                             <Trigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource MahApps.Storyboard.EnterHasText}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.EnterHasText}" />
                             </Trigger.EnterActions>
                             <Trigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource MahApps.Storyboard.ExitHasText}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ExitHasText}" />
                             </Trigger.ExitActions>
                         </Trigger>
 
@@ -480,7 +480,7 @@
                             </MultiTrigger.Conditions>
                             <Setter TargetName="PART_WaitingForDataEffectAdornerDecorator" Property="Visibility" Value="Visible" />
                             <MultiTrigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource MahApps.Storyboard.WaitingForData}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.WaitingForData}" />
                             </MultiTrigger.EnterActions>
                         </MultiTrigger>
                         <Trigger Property="mah:TextBoxHelper.IsWaitingForData" Value="False">
@@ -490,12 +490,12 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="mah:TextBoxHelper.ButtonTemplate" Value="{DynamicResource MahApps.Templates.Button.Chromeless}" />
+        <Setter Property="mah:TextBoxHelper.ButtonTemplate" Value="{DynamicResource Crystal.Templates.Button.Chromeless}" />
         <Setter Property="mah:TextBoxHelper.TextButton" Value="True" />
     </Style>
 
-    <Style x:Key="MahApps.Styles.TextBox.Search"
-           BasedOn="{StaticResource MahApps.Styles.TextBox.Button}"
+    <Style x:Key="Crystal.Styles.TextBox.Search"
+           BasedOn="{StaticResource Crystal.Styles.TextBox.Button}"
            TargetType="{x:Type TextBox}">
         <!--  Modern - Magnify  -->
         <Setter Property="mah:TextBoxHelper.ButtonContent" Value="M 42.5,22C 49.4036,22 55,27.5964 55,34.5C 55,41.4036 49.4036,47 42.5,47C 40.1356,47 37.9245,46.3435 36,45.2426L 26.9749,54.2678C 25.8033,55.4393 23.9038,55.4393 22.7322,54.2678C 21.5607,53.0962 21.5607,51.1967 22.7322,50.0251L 31.7971,40.961C 30.6565,39.0755 30,36.8644 30,34.5C 30,27.5964 35.5964,22 42.5,22 Z M 42.5,26C 37.8056,26 34,29.8056 34,34.5C 34,39.1944 37.8056,43 42.5,43C 47.1944,43 51,39.1944 51,34.5C 51,29.8056 47.1944,26 42.5,26 Z" />
@@ -511,14 +511,14 @@
         </Setter>
     </Style>
 
-    <Style x:Key="MahApps.Styles.RichTextBox" TargetType="{x:Type RichTextBox}">
+    <Style x:Key="Crystal.Styles.RichTextBox" TargetType="{x:Type RichTextBox}">
         <Style.Resources>
             <Style BasedOn="{StaticResource {x:Type Hyperlink}}" TargetType="{x:Type Hyperlink}">
-                <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Text}" />
+                <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Text}" />
                 <Setter Property="TextDecorations" Value="Underline" />
                 <Style.Triggers>
                     <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Highlight}" />
+                        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Highlight}" />
                     </Trigger>
                     <Trigger Property="IsEnabled" Value="False">
                         <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
@@ -541,22 +541,22 @@
             </Style>
         </Style.Resources>
         <Setter Property="AllowDrop" Value="True" />
-        <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Control.Background}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.TextBox.Border}" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Control.Background}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.TextBox.Border}" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="CaretBrush" Value="{DynamicResource MahApps.Brushes.ThemeForeground}" />
-        <Setter Property="ContextMenu" Value="{DynamicResource MahApps.TextBox.ContextMenu}" />
+        <Setter Property="CaretBrush" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
+        <Setter Property="ContextMenu" Value="{DynamicResource Crystal.TextBox.ContextMenu}" />
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-        <Setter Property="FontFamily" Value="{DynamicResource MahApps.Fonts.Family.Control}" />
-        <Setter Property="FontSize" Value="{DynamicResource MahApps.Font.Size.Content}" />
-        <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Text}" />
+        <Setter Property="FontFamily" Value="{DynamicResource Crystal.Fonts.Family.Control}" />
+        <Setter Property="FontSize" Value="{DynamicResource Crystal.Font.Size.Content}" />
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Text}" />
         <Setter Property="MinHeight" Value="26" />
         <Setter Property="MinWidth" Value="10" />
         <Setter Property="Padding" Value="2 4" />
         <Setter Property="ScrollViewer.IsDeferredScrollingEnabled" Value="False" />
         <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst" />
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
-        <Setter Property="SelectionBrush" Value="{DynamicResource MahApps.Brushes.Highlight}" />
+        <Setter Property="SelectionBrush" Value="{DynamicResource Crystal.Brushes.Highlight}" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
         <Setter Property="Template">
@@ -599,7 +599,7 @@
                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                        Foreground="{TemplateBinding Foreground}"
-                                       Style="{DynamicResource MahApps.Styles.TextBlock.Watermark}"
+                                       Style="{DynamicResource Crystal.Styles.TextBlock.Watermark}"
                                        Text="{TemplateBinding mah:TextBoxHelper.Watermark}"
                                        TextAlignment="{TemplateBinding mah:TextBoxHelper.WatermarkAlignment}"
                                        TextTrimming="{TemplateBinding mah:TextBoxHelper.WatermarkTrimming}"
@@ -610,7 +610,7 @@
                                             Grid.Row="0"
                                             Grid.Column="0"
                                             Margin="4 0"
-                                            Style="{DynamicResource MahApps.Styles.ContentControl.FloatingMessageContainer}">
+                                            Style="{DynamicResource Crystal.Styles.ContentControl.FloatingMessageContainer}">
                                 <ContentControl.Height>
                                     <MultiBinding Converter="{mahConverters:MathMultiplyConverter}">
                                         <Binding ElementName="PART_FloatingMessage"
@@ -625,7 +625,7 @@
                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                            Foreground="{TemplateBinding Foreground}"
-                                           Style="{DynamicResource MahApps.Styles.TextBlock.AutoCollapsing}"
+                                           Style="{DynamicResource Crystal.Styles.TextBlock.AutoCollapsing}"
                                            Text="{TemplateBinding mah:TextBoxHelper.Watermark}"
                                            TextAlignment="{TemplateBinding mah:TextBoxHelper.WatermarkAlignment}"
                                            TextTrimming="{TemplateBinding mah:TextBoxHelper.WatermarkTrimming}">
@@ -659,13 +659,13 @@
                                     FontSize="{TemplateBinding mah:TextBoxHelper.ButtonFontSize}"
                                     Foreground="{TemplateBinding Foreground}"
                                     IsTabStop="False"
-                                    Style="{DynamicResource MahApps.Styles.Button.Chromeless}"
+                                    Style="{DynamicResource Crystal.Styles.Button.Chromeless}"
                                     Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:TextBoxHelper.ClearTextButton), Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
                         </Grid>
 
                         <Border x:Name="DisabledVisualElement"
-                                Background="{DynamicResource MahApps.Brushes.Control.Disabled}"
-                                BorderBrush="{DynamicResource MahApps.Brushes.Control.Disabled}"
+                                Background="{DynamicResource Crystal.Brushes.Control.Disabled}"
+                                BorderBrush="{DynamicResource Crystal.Brushes.Control.Disabled}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 CornerRadius="{TemplateBinding mah:ControlsHelper.CornerRadius}"
                                 IsHitTestVisible="False"
@@ -695,10 +695,10 @@
                                 <Condition Binding="{Binding Path=(mah:TextBoxHelper.Watermark), RelativeSource={RelativeSource Self}, Converter={x:Static mahConverters:StringIsNullOrEmptyConverter.Default}}" Value="False" />
                             </MultiDataTrigger.Conditions>
                             <MultiDataTrigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource MahApps.Storyboard.ShowFloatingMessage}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ShowFloatingMessage}" />
                             </MultiDataTrigger.EnterActions>
                             <MultiDataTrigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource MahApps.Storyboard.HideFloatingMessage}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.HideFloatingMessage}" />
                             </MultiDataTrigger.ExitActions>
                         </MultiDataTrigger>
 
@@ -722,16 +722,16 @@
                         </Trigger>
                         <Trigger Property="IsFocused" Value="True">
                             <Setter TargetName="BorderElement" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:ControlsHelper.FocusBorderBrush)}" />
-                            <Setter TargetName="PART_FloatingMessage" Property="Foreground" Value="{DynamicResource MahApps.Brushes.TextBlock.FloatingMessage}" />
+                            <Setter TargetName="PART_FloatingMessage" Property="Foreground" Value="{DynamicResource Crystal.Brushes.TextBlock.FloatingMessage}" />
                             <Setter TargetName="PART_FloatingMessage" Property="Opacity" Value="1" />
                         </Trigger>
                         <Trigger SourceName="PART_ClearText" Property="IsMouseOver" Value="True">
-                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource MahApps.Brushes.Gray8}" />
-                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource MahApps.Brushes.Accent}" />
+                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray8}" />
+                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource Crystal.Brushes.Accent}" />
                         </Trigger>
                         <Trigger SourceName="PART_ClearText" Property="IsPressed" Value="True">
-                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource MahApps.Brushes.ThemeForeground}" />
-                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource MahApps.Brushes.ThemeBackground}" />
+                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
+                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
                         </Trigger>
 
                         <MultiTrigger>
@@ -740,36 +740,36 @@
                                 <Condition Property="IsFocused" Value="True" />
                             </MultiTrigger.Conditions>
                             <MultiTrigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource MahApps.Storyboard.EnterGotFocus}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.EnterGotFocus}" />
                             </MultiTrigger.EnterActions>
                             <MultiTrigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource MahApps.Storyboard.ExitGotFocus}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ExitGotFocus}" />
                             </MultiTrigger.ExitActions>
                         </MultiTrigger>
 
                         <Trigger Property="mah:TextBoxHelper.HasText" Value="True">
                             <Trigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource MahApps.Storyboard.EnterHasText}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.EnterHasText}" />
                             </Trigger.EnterActions>
                             <Trigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource MahApps.Storyboard.ExitHasText}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ExitHasText}" />
                             </Trigger.ExitActions>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource MahApps.Templates.ValidationError}" />
-        <Setter Property="mah:ControlsHelper.FocusBorderBrush" Value="{DynamicResource MahApps.Brushes.TextBox.Border.Focus}" />
-        <Setter Property="mah:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource MahApps.Brushes.TextBox.Border.MouseOver}" />
-        <Setter Property="mah:TextBoxHelper.ButtonFontSize" Value="{DynamicResource MahApps.Font.Size.Button.ClearText}" />
+        <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource Crystal.Templates.ValidationError}" />
+        <Setter Property="mah:ControlsHelper.FocusBorderBrush" Value="{DynamicResource Crystal.Brushes.TextBox.Border.Focus}" />
+        <Setter Property="mah:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource Crystal.Brushes.TextBox.Border.MouseOver}" />
+        <Setter Property="mah:TextBoxHelper.ButtonFontSize" Value="{DynamicResource Crystal.Font.Size.Button.ClearText}" />
         <Setter Property="mah:TextBoxHelper.ButtonWidth" Value="22" />
         <Setter Property="mah:TextBoxHelper.IsMonitoring" Value="True" />
         <Setter Property="mah:TextBoxHelper.IsSpellCheckContextMenuEnabled" Value="{Binding RelativeSource={RelativeSource Self}, Path=(SpellCheck.IsEnabled)}" />
     </Style>
 
-    <Style x:Key="MahApps.Styles.RichTextBox.Button"
-           BasedOn="{StaticResource MahApps.Styles.RichTextBox}"
+    <Style x:Key="Crystal.Styles.RichTextBox.Button"
+           BasedOn="{StaticResource Crystal.Styles.RichTextBox}"
            TargetType="{x:Type RichTextBox}">
         <Setter Property="Template">
             <Setter.Value>
@@ -811,7 +811,7 @@
                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                        Foreground="{TemplateBinding Foreground}"
-                                       Style="{DynamicResource MahApps.Styles.TextBlock.Watermark}"
+                                       Style="{DynamicResource Crystal.Styles.TextBlock.Watermark}"
                                        Text="{TemplateBinding mah:TextBoxHelper.Watermark}"
                                        TextAlignment="{TemplateBinding mah:TextBoxHelper.WatermarkAlignment}"
                                        TextTrimming="{TemplateBinding mah:TextBoxHelper.WatermarkTrimming}"
@@ -822,7 +822,7 @@
                                             Grid.Row="0"
                                             Grid.Column="0"
                                             Margin="6 0"
-                                            Style="{DynamicResource MahApps.Styles.ContentControl.FloatingMessageContainer}">
+                                            Style="{DynamicResource Crystal.Styles.ContentControl.FloatingMessageContainer}">
                                 <ContentControl.Height>
                                     <MultiBinding Converter="{mahConverters:MathMultiplyConverter}">
                                         <Binding ElementName="PART_FloatingMessage"
@@ -837,7 +837,7 @@
                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                            Foreground="{TemplateBinding Foreground}"
-                                           Style="{DynamicResource MahApps.Styles.TextBlock.AutoCollapsing}"
+                                           Style="{DynamicResource Crystal.Styles.TextBlock.AutoCollapsing}"
                                            Text="{TemplateBinding mah:TextBoxHelper.Watermark}"
                                            TextAlignment="{TemplateBinding mah:TextBoxHelper.WatermarkAlignment}"
                                            TextTrimming="{TemplateBinding mah:TextBoxHelper.WatermarkTrimming}">
@@ -873,14 +873,14 @@
                                     FontSize="{TemplateBinding mah:TextBoxHelper.ButtonFontSize}"
                                     Foreground="{TemplateBinding Foreground}"
                                     IsTabStop="False"
-                                    Style="{DynamicResource MahApps.Styles.Button.Chromeless}"
+                                    Style="{DynamicResource Crystal.Styles.Button.Chromeless}"
                                     Template="{TemplateBinding mah:TextBoxHelper.ButtonTemplate}"
                                     Visibility="Visible" />
                         </Grid>
 
                         <Border x:Name="DisabledVisualElement"
-                                Background="{DynamicResource MahApps.Brushes.Control.Disabled}"
-                                BorderBrush="{DynamicResource MahApps.Brushes.Control.Disabled}"
+                                Background="{DynamicResource Crystal.Brushes.Control.Disabled}"
+                                BorderBrush="{DynamicResource Crystal.Brushes.Control.Disabled}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 CornerRadius="{TemplateBinding mah:ControlsHelper.CornerRadius}"
                                 IsHitTestVisible="False"
@@ -910,10 +910,10 @@
                                 <Condition Binding="{Binding Path=(mah:TextBoxHelper.Watermark), RelativeSource={RelativeSource Self}, Converter={x:Static mahConverters:StringIsNullOrEmptyConverter.Default}}" Value="False" />
                             </MultiDataTrigger.Conditions>
                             <MultiDataTrigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource MahApps.Storyboard.ShowFloatingMessage}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ShowFloatingMessage}" />
                             </MultiDataTrigger.EnterActions>
                             <MultiDataTrigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource MahApps.Storyboard.HideFloatingMessage}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.HideFloatingMessage}" />
                             </MultiDataTrigger.ExitActions>
                         </MultiDataTrigger>
 
@@ -932,16 +932,16 @@
                         </MultiTrigger>
                         <Trigger Property="IsFocused" Value="True">
                             <Setter TargetName="BorderElement" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:ControlsHelper.FocusBorderBrush)}" />
-                            <Setter TargetName="PART_FloatingMessage" Property="Foreground" Value="{DynamicResource MahApps.Brushes.TextBlock.FloatingMessage}" />
+                            <Setter TargetName="PART_FloatingMessage" Property="Foreground" Value="{DynamicResource Crystal.Brushes.TextBlock.FloatingMessage}" />
                             <Setter TargetName="PART_FloatingMessage" Property="Opacity" Value="1" />
                         </Trigger>
                         <Trigger SourceName="PART_ClearText" Property="IsMouseOver" Value="True">
-                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource MahApps.Brushes.Gray8}" />
-                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource MahApps.Brushes.Accent}" />
+                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray8}" />
+                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource Crystal.Brushes.Accent}" />
                         </Trigger>
                         <Trigger SourceName="PART_ClearText" Property="IsPressed" Value="True">
-                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource MahApps.Brushes.ThemeForeground}" />
-                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource MahApps.Brushes.ThemeBackground}" />
+                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
+                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
                         </Trigger>
 
                         <MultiTrigger>
@@ -950,19 +950,19 @@
                                 <Condition Property="IsFocused" Value="True" />
                             </MultiTrigger.Conditions>
                             <MultiTrigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource MahApps.Storyboard.EnterGotFocus}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.EnterGotFocus}" />
                             </MultiTrigger.EnterActions>
                             <MultiTrigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource MahApps.Storyboard.ExitGotFocus}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ExitGotFocus}" />
                             </MultiTrigger.ExitActions>
                         </MultiTrigger>
 
                         <Trigger Property="mah:TextBoxHelper.HasText" Value="True">
                             <Trigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource MahApps.Storyboard.EnterHasText}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.EnterHasText}" />
                             </Trigger.EnterActions>
                             <Trigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource MahApps.Storyboard.ExitHasText}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ExitHasText}" />
                             </Trigger.ExitActions>
                         </Trigger>
                     </ControlTemplate.Triggers>
@@ -970,7 +970,7 @@
             </Setter.Value>
         </Setter>
         <Setter Property="mah:TextBoxHelper.ButtonCommandParameter" Value="{Binding RelativeSource={RelativeSource Self}}" />
-        <Setter Property="mah:TextBoxHelper.ButtonTemplate" Value="{DynamicResource MahApps.Templates.Button.Chromeless}" />
+        <Setter Property="mah:TextBoxHelper.ButtonTemplate" Value="{DynamicResource Crystal.Templates.Button.Chromeless}" />
     </Style>
 
 </ResourceDictionary>

@@ -15,11 +15,11 @@
 
     <KeyTime x:Key="ToggleSwitchTranslateDuration">0:0:0.500</KeyTime>
 
-    <Style x:Key="MahApps.Styles.ToggleSwitch" TargetType="{x:Type mah:ToggleSwitch}">
+    <Style x:Key="Crystal.Styles.ToggleSwitch" TargetType="{x:Type mah:ToggleSwitch}">
         <Setter Property="ContentDirection" Value="RightToLeft" />
-        <Setter Property="FontFamily" Value="{DynamicResource MahApps.Fonts.Family.ToggleSwitch}" />
-        <Setter Property="FontSize" Value="{DynamicResource MahApps.Font.Size.ToggleSwitch}" />
-        <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.ToggleSwitch.ContentForeground}" />
+        <Setter Property="FontFamily" Value="{DynamicResource Crystal.Fonts.Family.ToggleSwitch}" />
+        <Setter Property="FontSize" Value="{DynamicResource Crystal.Font.Size.ToggleSwitch}" />
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ToggleSwitch.ContentForeground}" />
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="MinWidth" Value="{DynamicResource ToggleSwitchThemeMinWidth}" />
@@ -77,7 +77,7 @@
                                       Grid.RowSpan="3"
                                       Grid.ColumnSpan="3"
                                       Margin="0 5"
-                                      Background="{DynamicResource MahApps.Brushes.ToggleSwitch.ContainerBackground}" />
+                                      Background="{DynamicResource Crystal.Brushes.ToggleSwitch.ContainerBackground}" />
 
                                 <ContentPresenter x:Name="OffContentPresenter"
                                                   Grid.Row="0"
@@ -137,17 +137,17 @@
                                       Height="20"
                                       HorizontalAlignment="Left">
                                     <Rectangle x:Name="OuterBorder"
-                                               Fill="{DynamicResource MahApps.Brushes.ToggleSwitch.FillOff}"
+                                               Fill="{DynamicResource Crystal.Brushes.ToggleSwitch.FillOff}"
                                                RadiusX="10"
                                                RadiusY="10"
-                                               Stroke="{DynamicResource MahApps.Brushes.ToggleSwitch.StrokeOff}"
+                                               Stroke="{DynamicResource Crystal.Brushes.ToggleSwitch.StrokeOff}"
                                                StrokeThickness="{DynamicResource ToggleSwitchOffStrokeThickness}" />
                                     <Rectangle x:Name="SwitchKnobBounds"
-                                               Fill="{DynamicResource MahApps.Brushes.ToggleSwitch.FillOn}"
+                                               Fill="{DynamicResource Crystal.Brushes.ToggleSwitch.FillOn}"
                                                Opacity="0"
                                                RadiusX="10"
                                                RadiusY="10"
-                                               Stroke="{DynamicResource MahApps.Brushes.ToggleSwitch.StrokeOn}"
+                                               Stroke="{DynamicResource Crystal.Brushes.ToggleSwitch.StrokeOn}"
                                                StrokeThickness="{DynamicResource ToggleSwitchOnStrokeThickness}" />
                                     <Grid x:Name="SwitchKnob"
                                           Width="20"
@@ -156,12 +156,12 @@
                                         <Ellipse x:Name="SwitchKnobOn"
                                                  Width="10"
                                                  Height="10"
-                                                 Fill="{DynamicResource MahApps.Brushes.ToggleSwitch.KnobFillOn}"
+                                                 Fill="{DynamicResource Crystal.Brushes.ToggleSwitch.KnobFillOn}"
                                                  Opacity="0" />
                                         <Ellipse x:Name="SwitchKnobOff"
                                                  Width="10"
                                                  Height="10"
-                                                 Fill="{DynamicResource MahApps.Brushes.ToggleSwitch.KnobFillOff}" />
+                                                 Fill="{DynamicResource Crystal.Brushes.ToggleSwitch.KnobFillOff}" />
                                         <Grid.RenderTransform>
                                             <TranslateTransform x:Name="KnobTranslateTransform" />
                                         </Grid.RenderTransform>
@@ -351,51 +351,51 @@
 
                         <!--  MouseOver  -->
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="OuterBorder" Property="Fill" Value="{DynamicResource MahApps.Brushes.ToggleSwitch.FillOffPointerOver}" />
-                            <Setter TargetName="OuterBorder" Property="Stroke" Value="{DynamicResource MahApps.Brushes.ToggleSwitch.StrokeOffPointerOver}" />
-                            <Setter TargetName="SwitchAreaGrid" Property="Background" Value="{DynamicResource MahApps.Brushes.ToggleSwitch.ContainerBackgroundPointerOver}" />
-                            <Setter TargetName="SwitchKnobBounds" Property="Fill" Value="{DynamicResource MahApps.Brushes.ToggleSwitch.FillOnPointerOver}" />
-                            <Setter TargetName="SwitchKnobBounds" Property="Stroke" Value="{DynamicResource MahApps.Brushes.ToggleSwitch.StrokeOnPointerOver}" />
-                            <Setter TargetName="SwitchKnobOff" Property="Fill" Value="{DynamicResource MahApps.Brushes.ToggleSwitch.KnobFillOffPointerOver}" />
-                            <Setter TargetName="SwitchKnobOn" Property="Fill" Value="{DynamicResource MahApps.Brushes.ToggleSwitch.KnobFillOnPointerOver}" />
+                            <Setter TargetName="OuterBorder" Property="Fill" Value="{DynamicResource Crystal.Brushes.ToggleSwitch.FillOffPointerOver}" />
+                            <Setter TargetName="OuterBorder" Property="Stroke" Value="{DynamicResource Crystal.Brushes.ToggleSwitch.StrokeOffPointerOver}" />
+                            <Setter TargetName="SwitchAreaGrid" Property="Background" Value="{DynamicResource Crystal.Brushes.ToggleSwitch.ContainerBackgroundPointerOver}" />
+                            <Setter TargetName="SwitchKnobBounds" Property="Fill" Value="{DynamicResource Crystal.Brushes.ToggleSwitch.FillOnPointerOver}" />
+                            <Setter TargetName="SwitchKnobBounds" Property="Stroke" Value="{DynamicResource Crystal.Brushes.ToggleSwitch.StrokeOnPointerOver}" />
+                            <Setter TargetName="SwitchKnobOff" Property="Fill" Value="{DynamicResource Crystal.Brushes.ToggleSwitch.KnobFillOffPointerOver}" />
+                            <Setter TargetName="SwitchKnobOn" Property="Fill" Value="{DynamicResource Crystal.Brushes.ToggleSwitch.KnobFillOnPointerOver}" />
                         </Trigger>
 
                         <!--  Pressed  -->
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="OuterBorder" Property="Fill" Value="{DynamicResource MahApps.Brushes.ToggleSwitch.FillOffPressed}" />
-                            <Setter TargetName="OuterBorder" Property="Stroke" Value="{DynamicResource MahApps.Brushes.ToggleSwitch.StrokeOffPressed}" />
+                            <Setter TargetName="OuterBorder" Property="Fill" Value="{DynamicResource Crystal.Brushes.ToggleSwitch.FillOffPressed}" />
+                            <Setter TargetName="OuterBorder" Property="Stroke" Value="{DynamicResource Crystal.Brushes.ToggleSwitch.StrokeOffPressed}" />
                             <Setter TargetName="OuterBorder" Property="StrokeThickness" Value="0" />
-                            <Setter TargetName="SwitchAreaGrid" Property="Background" Value="{DynamicResource MahApps.Brushes.ToggleSwitch.ContainerBackgroundPressed}" />
-                            <Setter TargetName="SwitchKnobBounds" Property="Fill" Value="{DynamicResource MahApps.Brushes.ToggleSwitch.FillOnPressed}" />
-                            <Setter TargetName="SwitchKnobBounds" Property="Stroke" Value="{DynamicResource MahApps.Brushes.ToggleSwitch.StrokeOnPressed}" />
-                            <Setter TargetName="SwitchKnobOff" Property="Fill" Value="{DynamicResource MahApps.Brushes.ToggleSwitch.KnobFillOffPressed}" />
-                            <Setter TargetName="SwitchKnobOn" Property="Fill" Value="{DynamicResource MahApps.Brushes.ToggleSwitch.KnobFillOnPressed}" />
+                            <Setter TargetName="SwitchAreaGrid" Property="Background" Value="{DynamicResource Crystal.Brushes.ToggleSwitch.ContainerBackgroundPressed}" />
+                            <Setter TargetName="SwitchKnobBounds" Property="Fill" Value="{DynamicResource Crystal.Brushes.ToggleSwitch.FillOnPressed}" />
+                            <Setter TargetName="SwitchKnobBounds" Property="Stroke" Value="{DynamicResource Crystal.Brushes.ToggleSwitch.StrokeOnPressed}" />
+                            <Setter TargetName="SwitchKnobOff" Property="Fill" Value="{DynamicResource Crystal.Brushes.ToggleSwitch.KnobFillOffPressed}" />
+                            <Setter TargetName="SwitchKnobOn" Property="Fill" Value="{DynamicResource Crystal.Brushes.ToggleSwitch.KnobFillOnPressed}" />
                         </Trigger>
 
                         <!--  Disabled  -->
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{DynamicResource MahApps.Brushes.ToggleSwitch.ContentForegroundDisabled}" />
-                            <Setter TargetName="HeaderContentPresenter" Property="TextElement.Foreground" Value="{DynamicResource MahApps.Brushes.ToggleSwitch.HeaderForegroundDisabled}" />
-                            <Setter TargetName="OffContentPresenter" Property="TextElement.Foreground" Value="{DynamicResource MahApps.Brushes.ToggleSwitch.ContentForegroundDisabled}" />
-                            <Setter TargetName="OnContentPresenter" Property="TextElement.Foreground" Value="{DynamicResource MahApps.Brushes.ToggleSwitch.ContentForegroundDisabled}" />
-                            <Setter TargetName="OuterBorder" Property="Fill" Value="{DynamicResource MahApps.Brushes.ToggleSwitch.FillOffDisabled}" />
-                            <Setter TargetName="OuterBorder" Property="Stroke" Value="{DynamicResource MahApps.Brushes.ToggleSwitch.StrokeOffDisabled}" />
-                            <Setter TargetName="SwitchAreaGrid" Property="Background" Value="{DynamicResource MahApps.Brushes.ToggleSwitch.ContainerBackgroundDisabled}" />
-                            <Setter TargetName="SwitchKnobBounds" Property="Fill" Value="{DynamicResource MahApps.Brushes.ToggleSwitch.FillOnDisabled}" />
-                            <Setter TargetName="SwitchKnobBounds" Property="Stroke" Value="{DynamicResource MahApps.Brushes.ToggleSwitch.StrokeOnDisabled}" />
-                            <Setter TargetName="SwitchKnobOff" Property="Fill" Value="{DynamicResource MahApps.Brushes.ToggleSwitch.KnobFillOffDisabled}" />
-                            <Setter TargetName="SwitchKnobOn" Property="Fill" Value="{DynamicResource MahApps.Brushes.ToggleSwitch.KnobFillOnDisabled}" />
+                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{DynamicResource Crystal.Brushes.ToggleSwitch.ContentForegroundDisabled}" />
+                            <Setter TargetName="HeaderContentPresenter" Property="TextElement.Foreground" Value="{DynamicResource Crystal.Brushes.ToggleSwitch.HeaderForegroundDisabled}" />
+                            <Setter TargetName="OffContentPresenter" Property="TextElement.Foreground" Value="{DynamicResource Crystal.Brushes.ToggleSwitch.ContentForegroundDisabled}" />
+                            <Setter TargetName="OnContentPresenter" Property="TextElement.Foreground" Value="{DynamicResource Crystal.Brushes.ToggleSwitch.ContentForegroundDisabled}" />
+                            <Setter TargetName="OuterBorder" Property="Fill" Value="{DynamicResource Crystal.Brushes.ToggleSwitch.FillOffDisabled}" />
+                            <Setter TargetName="OuterBorder" Property="Stroke" Value="{DynamicResource Crystal.Brushes.ToggleSwitch.StrokeOffDisabled}" />
+                            <Setter TargetName="SwitchAreaGrid" Property="Background" Value="{DynamicResource Crystal.Brushes.ToggleSwitch.ContainerBackgroundDisabled}" />
+                            <Setter TargetName="SwitchKnobBounds" Property="Fill" Value="{DynamicResource Crystal.Brushes.ToggleSwitch.FillOnDisabled}" />
+                            <Setter TargetName="SwitchKnobBounds" Property="Stroke" Value="{DynamicResource Crystal.Brushes.ToggleSwitch.StrokeOnDisabled}" />
+                            <Setter TargetName="SwitchKnobOff" Property="Fill" Value="{DynamicResource Crystal.Brushes.ToggleSwitch.KnobFillOffDisabled}" />
+                            <Setter TargetName="SwitchKnobOn" Property="Fill" Value="{DynamicResource Crystal.Brushes.ToggleSwitch.KnobFillOnDisabled}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource MahApps.Templates.ValidationError}" />
+        <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource Crystal.Templates.ValidationError}" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="mah:HeaderedControlHelper.HeaderFontFamily" Value="{DynamicResource MahApps.Fonts.Family.ToggleSwitch.Header}" />
-        <Setter Property="mah:HeaderedControlHelper.HeaderFontSize" Value="{DynamicResource MahApps.Font.Size.ToggleSwitch.Header}" />
-        <Setter Property="mah:HeaderedControlHelper.HeaderForeground" Value="{DynamicResource MahApps.Brushes.ToggleSwitch.HeaderForeground}" />
+        <Setter Property="mah:HeaderedControlHelper.HeaderFontFamily" Value="{DynamicResource Crystal.Fonts.Family.ToggleSwitch.Header}" />
+        <Setter Property="mah:HeaderedControlHelper.HeaderFontSize" Value="{DynamicResource Crystal.Font.Size.ToggleSwitch.Header}" />
+        <Setter Property="mah:HeaderedControlHelper.HeaderForeground" Value="{DynamicResource Crystal.Brushes.ToggleSwitch.HeaderForeground}" />
         <Setter Property="mah:HeaderedControlHelper.HeaderMargin" Value="{DynamicResource ToggleSwitchTopHeaderMargin}" />
     </Style>
 

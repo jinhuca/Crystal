@@ -10,34 +10,34 @@
         <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.Buttons.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <Style x:Key="MahApps.Styles.Button.Dialogs"
-           BasedOn="{StaticResource MahApps.Styles.Button.Square}"
+    <Style x:Key="Crystal.Styles.Button.Dialogs"
+           BasedOn="{StaticResource Crystal.Styles.Button.Square}"
            TargetType="{x:Type ButtonBase}">
         <Setter Property="MinHeight" Value="35" />
         <Setter Property="MinWidth" Value="80" />
         <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="mah:ControlsHelper.ContentCharacterCasing" Value="{DynamicResource MahApps.CharacterCasing.Button.Dialogs}" />
+        <Setter Property="mah:ControlsHelper.ContentCharacterCasing" Value="{DynamicResource Crystal.CharacterCasing.Button.Dialogs}" />
     </Style>
 
-    <Style x:Key="MahApps.Styles.Button.Dialogs.Accent"
-           BasedOn="{StaticResource MahApps.Styles.Button.Square.Accent}"
+    <Style x:Key="Crystal.Styles.Button.Dialogs.Accent"
+           BasedOn="{StaticResource Crystal.Styles.Button.Square.Accent}"
            TargetType="{x:Type ButtonBase}">
         <Setter Property="MinHeight" Value="35" />
         <Setter Property="MinWidth" Value="80" />
         <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="mah:ControlsHelper.ContentCharacterCasing" Value="{DynamicResource MahApps.CharacterCasing.Button.Dialogs.Accent}" />
+        <Setter Property="mah:ControlsHelper.ContentCharacterCasing" Value="{DynamicResource Crystal.CharacterCasing.Button.Dialogs.Accent}" />
     </Style>
 
-    <Style x:Key="MahApps.Styles.Button.Dialogs.AccentHighlight"
-           BasedOn="{StaticResource MahApps.Styles.Button.Square.Highlight}"
+    <Style x:Key="Crystal.Styles.Button.Dialogs.AccentHighlight"
+           BasedOn="{StaticResource Crystal.Styles.Button.Square.Highlight}"
            TargetType="{x:Type ButtonBase}">
         <Setter Property="MinHeight" Value="35" />
         <Setter Property="MinWidth" Value="80" />
         <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="mah:ControlsHelper.ContentCharacterCasing" Value="{DynamicResource MahApps.CharacterCasing.Button.Dialogs.AccentHighlight}" />
+        <Setter Property="mah:ControlsHelper.ContentCharacterCasing" Value="{DynamicResource Crystal.CharacterCasing.Button.Dialogs.AccentHighlight}" />
     </Style>
 
-    <Storyboard x:Key="MahApps.Storyboard.Dialogs.Show" po:Freeze="True">
+    <Storyboard x:Key="Crystal.Storyboard.Dialogs.Show" po:Freeze="True">
         <DoubleAnimation AccelerationRatio=".9"
                          BeginTime="0:0:0"
                          Storyboard.TargetProperty="Opacity"
@@ -45,7 +45,7 @@
                          Duration="0:0:0.2" />
     </Storyboard>
 
-    <Storyboard x:Key="MahApps.Storyboard.Dialogs.Close" po:Freeze="True">
+    <Storyboard x:Key="Crystal.Storyboard.Dialogs.Close" po:Freeze="True">
         <DoubleAnimation AccelerationRatio=".9"
                          BeginTime="0:0:0"
                          Storyboard.TargetProperty="Opacity"
@@ -53,7 +53,7 @@
                          Duration="0:0:0.2" />
     </Storyboard>
 
-    <ControlTemplate x:Key="MahApps.Templates.BaseMetroDialog" TargetType="{x:Type dialogs:BaseMetroDialog}">
+    <ControlTemplate x:Key="Crystal.Templates.BaseMetroDialog" TargetType="{x:Type dialogs:BaseMetroDialog}">
         <Grid Background="{TemplateBinding Background}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -108,19 +108,19 @@
             </Trigger>
             <EventTrigger RoutedEvent="Loaded">
                 <EventTrigger.Actions>
-                    <BeginStoryboard Storyboard="{StaticResource MahApps.Storyboard.Dialogs.Show}" />
+                    <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.Dialogs.Show}" />
                 </EventTrigger.Actions>
             </EventTrigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
-    <Style x:Key="MahApps.Styles.BaseMetroDialog" TargetType="{x:Type dialogs:BaseMetroDialog}">
-        <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Dialog.Background}" />
-        <Setter Property="DialogButtonFontSize" Value="{DynamicResource MahApps.Font.Size.Dialog.Button}" />
-        <Setter Property="DialogMessageFontSize" Value="{DynamicResource MahApps.Font.Size.Dialog.Message}" />
-        <Setter Property="DialogTitleFontSize" Value="{DynamicResource MahApps.Font.Size.Dialog.Title}" />
+    <Style x:Key="Crystal.Styles.BaseMetroDialog" TargetType="{x:Type dialogs:BaseMetroDialog}">
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Dialog.Background}" />
+        <Setter Property="DialogButtonFontSize" Value="{DynamicResource Crystal.Font.Size.Dialog.Button}" />
+        <Setter Property="DialogMessageFontSize" Value="{DynamicResource Crystal.Font.Size.Dialog.Message}" />
+        <Setter Property="DialogTitleFontSize" Value="{DynamicResource Crystal.Font.Size.Dialog.Title}" />
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-        <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Dialog.Foreground}" />
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Dialog.Foreground}" />
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="KeyboardNavigation.ControlTabNavigation" Value="Cycle" />
@@ -128,7 +128,7 @@
         <Setter Property="KeyboardNavigation.TabNavigation" Value="Cycle" />
         <Setter Property="Opacity" Value="0" />
         <Setter Property="Padding" Value="0 10 0 0" />
-        <Setter Property="Template" Value="{StaticResource MahApps.Templates.BaseMetroDialog}" />
+        <Setter Property="Template" Value="{StaticResource Crystal.Templates.BaseMetroDialog}" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
     </Style>

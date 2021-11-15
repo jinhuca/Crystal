@@ -73,7 +73,7 @@ namespace Crystal.Themes.Controls.Dialogs
     protected override void OnLoaded()
     {
       NegativeButtonText = DialogSettings.NegativeButtonText;
-      SetResourceReference(ProgressBarForegroundProperty, DialogSettings.ColorScheme == MetroDialogColorScheme.Theme ? "MahApps.Brushes.Accent" : "MahApps.Brushes.ThemeForeground");
+      SetResourceReference(ProgressBarForegroundProperty, DialogSettings.ColorScheme == MetroDialogColorScheme.Theme ? "Crystal.Brushes.Accent" : "Crystal.Brushes.ThemeForeground");
     }
 
     internal CancellationToken CancellationToken => DialogSettings.CancellationToken;

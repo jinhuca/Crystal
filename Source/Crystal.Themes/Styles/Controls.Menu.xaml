@@ -2,10 +2,10 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:mah="clr-namespace:Crystal.Themes.Controls">
 
-    <Style x:Key="MahApps.Styles.Menu" TargetType="{x:Type Menu}">
-        <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Menu.Background}" />
+    <Style x:Key="Crystal.Styles.Menu" TargetType="{x:Type Menu}">
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Menu.Background}" />
         <Setter Property="FontFamily" Value="{DynamicResource {x:Static SystemFonts.MenuFontFamilyKey}}" />
-        <Setter Property="FontSize" Value="{DynamicResource MahApps.Font.Size.Menu}" />
+        <Setter Property="FontSize" Value="{DynamicResource Crystal.Font.Size.Menu}" />
         <Setter Property="FontStyle" Value="{DynamicResource {x:Static SystemFonts.MenuFontStyleKey}}" />
         <Setter Property="FontWeight" Value="{DynamicResource {x:Static SystemFonts.MenuFontWeightKey}}" />
         <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.MenuTextBrushKey}}" />

@@ -4,7 +4,7 @@
                     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                     xmlns:mah="clr-namespace:Crystal.Themes.Controls">
 
-    <DataTemplate x:Key="MahApps.Templates.Flyout.Header" x:Shared="False">
+    <DataTemplate x:Key="Crystal.Templates.Flyout.Header" x:Shared="False">
         <DockPanel x:Name="dpHeader"
                    VerticalAlignment="Center"
                    LastChildFill="True">
@@ -19,7 +19,7 @@
                     DockPanel.Dock="Left"
                     Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type mah:Flyout}}, Path=Foreground}"
                     IsCancel="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:Flyout}}, Path=CloseButtonIsCancel}"
-                    Style="{DynamicResource MahApps.Styles.Button.Circle}"
+                    Style="{DynamicResource Crystal.Styles.Button.Circle}"
                     UseLayoutRounding="True"
                     Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:Flyout}}, Path=CloseButtonVisibility}">
                 <i:Interaction.Triggers>
@@ -65,7 +65,7 @@
         </DataTemplate.Triggers>
     </DataTemplate>
 
-    <ControlTemplate x:Key="MahApps.Templates.Flyout" TargetType="{x:Type mah:Flyout}">
+    <ControlTemplate x:Key="Crystal.Templates.Flyout" TargetType="{x:Type mah:Flyout}">
         <Border x:Name="PART_Root"
                 Background="{TemplateBinding Background}"
                 BorderBrush="{TemplateBinding BorderBrush}"
@@ -218,20 +218,20 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
-    <Style x:Key="MahApps.Styles.Flyout" TargetType="{x:Type mah:Flyout}">
-        <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Flyout.Background}" />
+    <Style x:Key="Crystal.Styles.Flyout" TargetType="{x:Type mah:Flyout}">
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Flyout.Background}" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-        <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Flyout.Foreground}" />
-        <Setter Property="HeaderTemplate" Value="{StaticResource MahApps.Templates.Flyout.Header}" />
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Flyout.Foreground}" />
+        <Setter Property="HeaderTemplate" Value="{StaticResource Crystal.Templates.Flyout.Header}" />
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="KeyboardNavigation.ControlTabNavigation" Value="Cycle" />
         <Setter Property="KeyboardNavigation.DirectionalNavigation" Value="Cycle" />
         <Setter Property="KeyboardNavigation.TabNavigation" Value="Cycle" />
-        <Setter Property="Template" Value="{StaticResource MahApps.Templates.Flyout}" />
+        <Setter Property="Template" Value="{StaticResource Crystal.Templates.Flyout}" />
         <Setter Property="VerticalAlignment" Value="Stretch" />
         <Setter Property="Visibility" Value="Hidden" />
-        <Setter Property="mah:HeaderedControlHelper.HeaderFontSize" Value="{DynamicResource MahApps.Font.Size.Flyout.Header}" />
+        <Setter Property="mah:HeaderedControlHelper.HeaderFontSize" Value="{DynamicResource Crystal.Font.Size.Flyout.Header}" />
         <Setter Property="mah:HeaderedControlHelper.HeaderMargin" Value="10" />
         <Style.Triggers>
             <Trigger Property="Position" Value="Right">

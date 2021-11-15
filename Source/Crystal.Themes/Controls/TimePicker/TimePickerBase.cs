@@ -63,8 +63,8 @@ namespace Crystal.Themes.Controls
         /// This list contains values from 0 to 55 with an interval of 5. It can be used to bind to <see cref="SourceMinutes"/> and <see cref="SourceSeconds"/>.
         /// </summary>
         /// <example>
-        /// <code>&lt;MahApps:TimePicker SourceSeconds="{x:Static MahApps:TimePickerBase.IntervalOf5}" /&gt;</code>
-        /// <code>&lt;MahApps:DateTimePicker SourceSeconds="{x:Static MahApps:TimePickerBase.IntervalOf5}" /&gt;</code>
+        /// <code>&lt;Crystal:TimePicker SourceSeconds="{x:Static Crystal:TimePickerBase.IntervalOf5}" /&gt;</code>
+        /// <code>&lt;Crystal:DateTimePicker SourceSeconds="{x:Static Crystal:TimePickerBase.IntervalOf5}" /&gt;</code>
         /// </example>
         /// <returns>
         /// Returns a list containing {0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55}.
@@ -75,8 +75,8 @@ namespace Crystal.Themes.Controls
         /// This list contains values from 0 to 50 with an interval of 10. It can be used to bind to <see cref="SourceMinutes"/> and <see cref="SourceSeconds"/>.
         /// </summary>
         /// <example>
-        /// <code>&lt;MahApps:TimePicker SourceSeconds="{x:Static MahApps:TimePickerBase.IntervalOf10}" /&gt;</code>
-        /// <code>&lt;MahApps:DateTimePicker SourceSeconds="{x:Static MahApps:TimePickerBase.IntervalOf10}" /&gt;</code>
+        /// <code>&lt;Crystal:TimePicker SourceSeconds="{x:Static Crystal:TimePickerBase.IntervalOf10}" /&gt;</code>
+        /// <code>&lt;Crystal:DateTimePicker SourceSeconds="{x:Static Crystal:TimePickerBase.IntervalOf10}" /&gt;</code>
         /// </example>
         /// <returns>
         /// Returns a list containing {0, 10, 20, 30, 40, 50}.
@@ -87,8 +87,8 @@ namespace Crystal.Themes.Controls
         /// This list contains values from 0 to 45 with an interval of 15. It can be used to bind to <see cref="SourceMinutes"/> and <see cref="SourceSeconds"/>.
         /// </summary>
         /// <example>
-        /// <code>&lt;MahApps:TimePicker SourceSeconds="{x:Static MahApps:TimePickerBase.IntervalOf15}" /&gt;</code>
-        /// <code>&lt;MahApps:DateTimePicker SourceSeconds="{x:Static MahApps:TimePickerBase.IntervalOf15}" /&gt;</code>
+        /// <code>&lt;Crystal:TimePicker SourceSeconds="{x:Static Crystal:TimePickerBase.IntervalOf15}" /&gt;</code>
+        /// <code>&lt;Crystal:DateTimePicker SourceSeconds="{x:Static Crystal:TimePickerBase.IntervalOf15}" /&gt;</code>
         /// </example>
         /// <returns>
         /// Returns a list containing {0, 15, 30, 45}.

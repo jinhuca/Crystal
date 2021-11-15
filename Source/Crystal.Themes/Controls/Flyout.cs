@@ -724,44 +724,44 @@ namespace Crystal.Themes.Controls
 
     protected virtual void OverrideFlyoutResources(ResourceDictionary resources, bool accent = false)
     {
-      var fromColorKey = accent ? "MahApps.Colors.Highlight" : "MahApps.Colors.Flyout";
+      var fromColorKey = accent ? "Crystal.Colors.Highlight" : "Crystal.Colors.Flyout";
 
       resources.BeginInit();
 
       var fromColor = (Color)resources[fromColorKey];
-      resources["MahApps.Colors.ThemeBackground"] = fromColor;
-      resources["MahApps.Colors.Flyout"] = fromColor;
+      resources["Crystal.Colors.ThemeBackground"] = fromColor;
+      resources["Crystal.Colors.Flyout"] = fromColor;
 
       var newBrush = new SolidColorBrush(fromColor);
       newBrush.Freeze();
-      resources["MahApps.Brushes.Flyout.Background"] = newBrush;
-      resources["MahApps.Brushes.Control.Background"] = newBrush;
-      resources["MahApps.Brushes.ThemeBackground"] = newBrush;
-      resources["MahApps.Brushes.Window.Background"] = newBrush;
+      resources["Crystal.Brushes.Flyout.Background"] = newBrush;
+      resources["Crystal.Brushes.Control.Background"] = newBrush;
+      resources["Crystal.Brushes.ThemeBackground"] = newBrush;
+      resources["Crystal.Brushes.Window.Background"] = newBrush;
       resources[SystemColors.WindowBrushKey] = newBrush;
 
       if (accent)
       {
-        fromColor = (Color)resources["MahApps.Colors.IdealForeground"];
+        fromColor = (Color)resources["Crystal.Colors.IdealForeground"];
         newBrush = new SolidColorBrush(fromColor);
         newBrush.Freeze();
-        resources["MahApps.Brushes.Flyout.Foreground"] = newBrush;
-        resources["MahApps.Brushes.Text"] = newBrush;
+        resources["Crystal.Brushes.Flyout.Foreground"] = newBrush;
+        resources["Crystal.Brushes.Text"] = newBrush;
 
-        if (resources.Contains("MahApps.Colors.AccentBase"))
+        if (resources.Contains("Crystal.Colors.AccentBase"))
         {
-          fromColor = (Color)resources["MahApps.Colors.AccentBase"];
+          fromColor = (Color)resources["Crystal.Colors.AccentBase"];
         }
         else
         {
-          var accentColor = (Color)resources["MahApps.Colors.Accent"];
+          var accentColor = (Color)resources["Crystal.Colors.Accent"];
           fromColor = Color.FromArgb(255, accentColor.R, accentColor.G, accentColor.B);
         }
 
         newBrush = new SolidColorBrush(fromColor);
         newBrush.Freeze();
-        resources["MahApps.Colors.Highlight"] = fromColor;
-        resources["MahApps.Brushes.Highlight"] = newBrush;
+        resources["Crystal.Colors.Highlight"] = fromColor;
+        resources["Crystal.Brushes.Highlight"] = newBrush;
       }
 
       resources.EndInit();

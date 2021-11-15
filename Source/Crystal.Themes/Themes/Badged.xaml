@@ -21,11 +21,11 @@
     </Storyboard>
 
     <Style TargetType="{x:Type mah:Badged}">
-        <Setter Property="BadgeBackground" Value="{DynamicResource MahApps.Brushes.Badged.Background}" />
+        <Setter Property="BadgeBackground" Value="{DynamicResource Crystal.Brushes.Badged.Background}" />
         <Setter Property="BadgeChangedStoryboard" Value="{StaticResource BadgeChangedStoryboard}" />
         <Setter Property="BadgeFontSize" Value="11" />
         <Setter Property="BadgeFontWeight" Value="DemiBold" />
-        <Setter Property="BadgeForeground" Value="{DynamicResource MahApps.Brushes.Badged.Foreground}" />
+        <Setter Property="BadgeForeground" Value="{DynamicResource Crystal.Brushes.Badged.Foreground}" />
         <Setter Property="BadgeMargin" Value="1 0" />
         <Setter Property="BadgePlacementMode" Value="TopRight" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -113,8 +113,8 @@
                             <Setter TargetName="PART_BadgeContainer" Property="VerticalAlignment" Value="Center" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="PART_BadgeContainer" Property="Background" Value="{DynamicResource MahApps.Brushes.Badged.Background.Disabled}" />
-                            <Setter TargetName="PART_BadgeContent" Property="Foreground" Value="{DynamicResource MahApps.Brushes.Badged.Foreground.Disabled}" />
+                            <Setter TargetName="PART_BadgeContainer" Property="Background" Value="{DynamicResource Crystal.Brushes.Badged.Background.Disabled}" />
+                            <Setter TargetName="PART_BadgeContent" Property="Foreground" Value="{DynamicResource Crystal.Brushes.Badged.Foreground.Disabled}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

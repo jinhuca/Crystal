@@ -2,9 +2,9 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:mah="clr-namespace:Crystal.Themes.Controls">
 
-    <Style x:Key="MahApps.Styles.ListBox" TargetType="{x:Type ListBox}">
-        <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.ThemeBackground}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.ThemeForeground}" />
+    <Style x:Key="Crystal.Styles.ListBox" TargetType="{x:Type ListBox}">
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
         <!--  default to 0  -->
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -49,7 +49,7 @@
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Style.Triggers>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.Gray9}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Gray9}" />
             </Trigger>
             <Trigger Property="VirtualizingStackPanel.IsVirtualizing" Value="True">
                 <Setter Property="ItemsPanel">
@@ -66,8 +66,8 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="MahApps.Styles.ListBox.Virtualized"
-           BasedOn="{StaticResource MahApps.Styles.ListBox}"
+    <Style x:Key="Crystal.Styles.ListBox.Virtualized"
+           BasedOn="{StaticResource Crystal.Styles.ListBox}"
            TargetType="{x:Type ListBox}">
         <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
         <Setter Property="VirtualizingStackPanel.IsVirtualizing" Value="True" />
@@ -75,10 +75,10 @@
         <Setter Property="VirtualizingStackPanel.VirtualizationMode" Value="Recycling" />
     </Style>
 
-    <Style x:Key="MahApps.Styles.ListBoxItem" TargetType="{x:Type ListBoxItem}">
-        <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.ThemeBackground}" />
+    <Style x:Key="Crystal.Styles.ListBoxItem" TargetType="{x:Type ListBoxItem}">
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
         <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Text}" />
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Text}" />
         <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, Mode=OneWay, FallbackValue=Stretch, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
         <Setter Property="Margin" Value="0" />
         <Setter Property="MinHeight" Value="25" />
@@ -162,16 +162,16 @@
             </Setter.Value>
         </Setter>
         <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, Mode=OneWay, FallbackValue=Center, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
-        <Setter Property="mah:ItemHelper.ActiveSelectionBackgroundBrush" Value="{DynamicResource MahApps.Brushes.Accent}" />
-        <Setter Property="mah:ItemHelper.ActiveSelectionForegroundBrush" Value="{DynamicResource MahApps.Brushes.Selected.Foreground}" />
-        <Setter Property="mah:ItemHelper.DisabledForegroundBrush" Value="{DynamicResource MahApps.Brushes.Gray}" />
-        <Setter Property="mah:ItemHelper.DisabledSelectedBackgroundBrush" Value="{DynamicResource MahApps.Brushes.Gray7}" />
-        <Setter Property="mah:ItemHelper.DisabledSelectedForegroundBrush" Value="{DynamicResource MahApps.Brushes.Selected.Foreground}" />
-        <Setter Property="mah:ItemHelper.HoverBackgroundBrush" Value="{DynamicResource MahApps.Brushes.Accent3}" />
-        <Setter Property="mah:ItemHelper.HoverForegroundBrush" Value="{DynamicResource MahApps.Brushes.Text}" />
-        <Setter Property="mah:ItemHelper.HoverSelectedBackgroundBrush" Value="{DynamicResource MahApps.Brushes.Accent}" />
-        <Setter Property="mah:ItemHelper.HoverSelectedForegroundBrush" Value="{DynamicResource MahApps.Brushes.Selected.Foreground}" />
-        <Setter Property="mah:ItemHelper.SelectedBackgroundBrush" Value="{DynamicResource MahApps.Brushes.Accent2}" />
-        <Setter Property="mah:ItemHelper.SelectedForegroundBrush" Value="{DynamicResource MahApps.Brushes.Selected.Foreground}" />
+        <Setter Property="mah:ItemHelper.ActiveSelectionBackgroundBrush" Value="{DynamicResource Crystal.Brushes.Accent}" />
+        <Setter Property="mah:ItemHelper.ActiveSelectionForegroundBrush" Value="{DynamicResource Crystal.Brushes.Selected.Foreground}" />
+        <Setter Property="mah:ItemHelper.DisabledForegroundBrush" Value="{DynamicResource Crystal.Brushes.Gray}" />
+        <Setter Property="mah:ItemHelper.DisabledSelectedBackgroundBrush" Value="{DynamicResource Crystal.Brushes.Gray7}" />
+        <Setter Property="mah:ItemHelper.DisabledSelectedForegroundBrush" Value="{DynamicResource Crystal.Brushes.Selected.Foreground}" />
+        <Setter Property="mah:ItemHelper.HoverBackgroundBrush" Value="{DynamicResource Crystal.Brushes.Accent3}" />
+        <Setter Property="mah:ItemHelper.HoverForegroundBrush" Value="{DynamicResource Crystal.Brushes.Text}" />
+        <Setter Property="mah:ItemHelper.HoverSelectedBackgroundBrush" Value="{DynamicResource Crystal.Brushes.Accent}" />
+        <Setter Property="mah:ItemHelper.HoverSelectedForegroundBrush" Value="{DynamicResource Crystal.Brushes.Selected.Foreground}" />
+        <Setter Property="mah:ItemHelper.SelectedBackgroundBrush" Value="{DynamicResource Crystal.Brushes.Accent2}" />
+        <Setter Property="mah:ItemHelper.SelectedForegroundBrush" Value="{DynamicResource Crystal.Brushes.Selected.Foreground}" />
     </Style>
 </ResourceDictionary>

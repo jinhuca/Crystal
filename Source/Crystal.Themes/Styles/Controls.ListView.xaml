@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:mah="clr-namespace:Crystal.Themes.Controls">
 
-    <Style x:Key="MahApps.Styles.ScrollViewer.GridView"
+    <Style x:Key="Crystal.Styles.ScrollViewer.GridView"
            BasedOn="{StaticResource {x:Static GridView.GridViewScrollViewerStyleKey}}"
            TargetType="{x:Type ScrollViewer}">
         <Setter Property="Focusable" Value="False" />
@@ -93,10 +93,10 @@
         It also (setting True) has the ugly side effect of scrolling the entire group and not the items. The downside is we lose
         virtualisation http://serialseb.blogspot.com/2007/09/wpf-tips-7-smooth-scrolling.html
     -->
-    <Style x:Key="MahApps.Styles.ListView" TargetType="{x:Type ListView}">
+    <Style x:Key="Crystal.Styles.ListView" TargetType="{x:Type ListView}">
         <Setter Property="AlternationCount" Value="2" />
-        <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.ThemeBackground}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.ThemeForeground}" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="ScrollViewer.CanContentScroll" Value="False" />
@@ -117,7 +117,7 @@
                                       Focusable="False"
                                       HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
                                       SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                      Style="{DynamicResource MahApps.Styles.ScrollViewer.GridView}"
+                                      Style="{DynamicResource Crystal.Styles.ScrollViewer.GridView}"
                                       VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
                             <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                         </ScrollViewer>
@@ -131,7 +131,7 @@
                             <Setter Property="ScrollViewer.CanContentScroll" Value="false" />
                         </MultiTrigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.Gray9}" />
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Gray9}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -140,8 +140,8 @@
         <Setter Property="VerticalContentAlignment" Value="Center" />
     </Style>
 
-    <Style x:Key="MahApps.Styles.ListView.Virtualized"
-           BasedOn="{StaticResource MahApps.Styles.ListView}"
+    <Style x:Key="Crystal.Styles.ListView.Virtualized"
+           BasedOn="{StaticResource Crystal.Styles.ListView}"
            TargetType="{x:Type ListView}">
         <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
         <Setter Property="ScrollViewer.IsDeferredScrollingEnabled" Value="True" />
@@ -150,10 +150,10 @@
         <Setter Property="VirtualizingStackPanel.VirtualizationMode" Value="Recycling" />
     </Style>
 
-    <Style x:Key="MahApps.Styles.ListViewItem" TargetType="{x:Type ListViewItem}">
-        <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.ThemeBackground}" />
+    <Style x:Key="Crystal.Styles.ListViewItem" TargetType="{x:Type ListViewItem}">
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
         <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Text}" />
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Text}" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="Margin" Value="0" />
         <Setter Property="MinHeight" Value="25" />
@@ -189,7 +189,7 @@
 
                         <Trigger Property="IsSelected" Value="True">
                             <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:ItemHelper.SelectedBackgroundBrush), Mode=OneWay}" />
-                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.Highlight}" />
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Highlight}" />
                             <Setter TargetName="PART_ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:ItemHelper.SelectedForegroundBrush), Mode=OneWay}" />
                             <Setter TargetName="PART_RowPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:ItemHelper.SelectedForegroundBrush), Mode=OneWay}" />
                         </Trigger>
@@ -199,7 +199,7 @@
                                 <Condition Property="Selector.IsSelectionActive" Value="True" />
                             </MultiTrigger.Conditions>
                             <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:ItemHelper.ActiveSelectionBackgroundBrush), Mode=OneWay}" />
-                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.Highlight}" />
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Highlight}" />
                             <Setter TargetName="PART_ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:ItemHelper.ActiveSelectionForegroundBrush), Mode=OneWay}" />
                             <Setter TargetName="PART_RowPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:ItemHelper.ActiveSelectionForegroundBrush), Mode=OneWay}" />
                         </MultiTrigger>
@@ -249,7 +249,7 @@
                                 <Setter TargetName="PART_ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:ItemHelper.DisabledSelectedForegroundBrush), Mode=OneWay}" />
                                 <Setter TargetName="PART_RowPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:ItemHelper.DisabledSelectedForegroundBrush), Mode=OneWay}" />
                                 <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:ItemHelper.DisabledSelectedBackgroundBrush), Mode=OneWay}" />
-                                <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.Gray7}" />
+                                <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Gray7}" />
                             </MultiTrigger.Setters>
                         </MultiTrigger>
                     </ControlTemplate.Triggers>
@@ -257,23 +257,23 @@
             </Setter.Value>
         </Setter>
         <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="mah:ItemHelper.ActiveSelectionBackgroundBrush" Value="{DynamicResource MahApps.Brushes.Accent}" />
-        <Setter Property="mah:ItemHelper.ActiveSelectionForegroundBrush" Value="{DynamicResource MahApps.Brushes.Selected.Foreground}" />
-        <Setter Property="mah:ItemHelper.DisabledForegroundBrush" Value="{DynamicResource MahApps.Brushes.Gray}" />
-        <Setter Property="mah:ItemHelper.DisabledSelectedBackgroundBrush" Value="{DynamicResource MahApps.Brushes.Gray7}" />
-        <Setter Property="mah:ItemHelper.DisabledSelectedForegroundBrush" Value="{DynamicResource MahApps.Brushes.Selected.Foreground}" />
-        <Setter Property="mah:ItemHelper.HoverBackgroundBrush" Value="{DynamicResource MahApps.Brushes.Accent3}" />
-        <Setter Property="mah:ItemHelper.HoverForegroundBrush" Value="{DynamicResource MahApps.Brushes.Text}" />
-        <Setter Property="mah:ItemHelper.HoverSelectedBackgroundBrush" Value="{DynamicResource MahApps.Brushes.Accent}" />
-        <Setter Property="mah:ItemHelper.HoverSelectedForegroundBrush" Value="{DynamicResource MahApps.Brushes.Selected.Foreground}" />
-        <Setter Property="mah:ItemHelper.SelectedBackgroundBrush" Value="{DynamicResource MahApps.Brushes.Accent2}" />
-        <Setter Property="mah:ItemHelper.SelectedForegroundBrush" Value="{DynamicResource MahApps.Brushes.Selected.Foreground}" />
+        <Setter Property="mah:ItemHelper.ActiveSelectionBackgroundBrush" Value="{DynamicResource Crystal.Brushes.Accent}" />
+        <Setter Property="mah:ItemHelper.ActiveSelectionForegroundBrush" Value="{DynamicResource Crystal.Brushes.Selected.Foreground}" />
+        <Setter Property="mah:ItemHelper.DisabledForegroundBrush" Value="{DynamicResource Crystal.Brushes.Gray}" />
+        <Setter Property="mah:ItemHelper.DisabledSelectedBackgroundBrush" Value="{DynamicResource Crystal.Brushes.Gray7}" />
+        <Setter Property="mah:ItemHelper.DisabledSelectedForegroundBrush" Value="{DynamicResource Crystal.Brushes.Selected.Foreground}" />
+        <Setter Property="mah:ItemHelper.HoverBackgroundBrush" Value="{DynamicResource Crystal.Brushes.Accent3}" />
+        <Setter Property="mah:ItemHelper.HoverForegroundBrush" Value="{DynamicResource Crystal.Brushes.Text}" />
+        <Setter Property="mah:ItemHelper.HoverSelectedBackgroundBrush" Value="{DynamicResource Crystal.Brushes.Accent}" />
+        <Setter Property="mah:ItemHelper.HoverSelectedForegroundBrush" Value="{DynamicResource Crystal.Brushes.Selected.Foreground}" />
+        <Setter Property="mah:ItemHelper.SelectedBackgroundBrush" Value="{DynamicResource Crystal.Brushes.Accent2}" />
+        <Setter Property="mah:ItemHelper.SelectedForegroundBrush" Value="{DynamicResource Crystal.Brushes.Selected.Foreground}" />
     </Style>
 
     <!--  Gives the impression that items cannot be selected on the ListView  -->
-    <Style x:Key="MahApps.Styles.ListViewItem.NonSelectable" TargetType="{x:Type ListViewItem}">
-        <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.Gray1}" />
-        <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.ThemeForeground}" />
+    <Style x:Key="Crystal.Styles.ListViewItem.NonSelectable" TargetType="{x:Type ListViewItem}">
+        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Gray1}" />
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="IsTabStop" Value="False" />
         <Setter Property="Margin" Value="0" />
@@ -309,7 +309,7 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="MahApps.Styles.Thumb.GridViewColumnHeaderGripper" TargetType="Thumb">
+    <Style x:Key="Crystal.Styles.Thumb.GridViewColumnHeaderGripper" TargetType="Thumb">
         <Setter Property="Background" Value="LightGray" />
         <Setter Property="Template">
             <Setter.Value>
@@ -327,9 +327,9 @@
         <Setter Property="Width" Value="18" />
     </Style>
 
-    <Style x:Key="MahApps.Styles.GridViewColumnHeader" TargetType="GridViewColumnHeader">
+    <Style x:Key="Crystal.Styles.GridViewColumnHeader" TargetType="GridViewColumnHeader">
         <Setter Property="FontWeight" Value="SemiBold" />
-        <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Text}" />
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Text}" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="Padding" Value="4 2 4 2" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
@@ -355,11 +355,11 @@
                         <Thumb x:Name="PART_HeaderGripper"
                                Margin="0 0 -9 0"
                                HorizontalAlignment="Right"
-                               Style="{StaticResource MahApps.Styles.Thumb.GridViewColumnHeaderGripper}" />
+                               Style="{StaticResource Crystal.Styles.Thumb.GridViewColumnHeaderGripper}" />
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="HeaderBorder" Property="Background" Value="{DynamicResource MahApps.Brushes.Gray8}" />
+                            <Setter TargetName="HeaderBorder" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray8}" />
                             <Setter TargetName="HeaderContent" Property="Margin" Value="1 1 0 0" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
@@ -370,7 +370,7 @@
             </Setter.Value>
         </Setter>
         <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="mah:ControlsHelper.ContentCharacterCasing" Value="{DynamicResource MahApps.CharacterCasing.GridViewColumnHeader}" />
+        <Setter Property="mah:ControlsHelper.ContentCharacterCasing" Value="{DynamicResource Crystal.CharacterCasing.GridViewColumnHeader}" />
         <Style.Triggers>
             <Trigger Property="Role" Value="Floating">
                 <Setter Property="Opacity" Value="0.7" />
@@ -380,7 +380,7 @@
                             <Canvas Name="PART_FloatingHeaderCanvas">
                                 <Rectangle Width="{TemplateBinding ActualWidth}"
                                            Height="{TemplateBinding ActualHeight}"
-                                           Fill="{DynamicResource MahApps.Brushes.Accent3}" />
+                                           Fill="{DynamicResource Crystal.Brushes.Accent3}" />
                                 <!--  Fill="#60000000" />  -->
                             </Canvas>
                         </ControlTemplate>

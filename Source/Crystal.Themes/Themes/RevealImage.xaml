@@ -3,12 +3,12 @@
                     xmlns:mah="clr-namespace:Crystal.Themes.Controls"
                     xmlns:mahConverters="clr-namespace:Crystal.Themes.Converters">
 
-    <Style x:Key="MahApps.Styles.RevealImage" TargetType="{x:Type mah:RevealImage}">
-        <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Control.Background}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.SystemControlForegroundChromeWhite}" />
+    <Style x:Key="Crystal.Styles.RevealImage" TargetType="{x:Type mah:RevealImage}">
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Control.Background}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.SystemControlForegroundChromeWhite}" />
         <Setter Property="BorderThickness" Value="2" />
         <Setter Property="FontFamily" Value="Segoe WP SemiLight" />
-        <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.SystemControlForegroundChromeWhite}" />
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.SystemControlForegroundChromeWhite}" />
         <Setter Property="Padding" Value="5" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Template">

@@ -3,12 +3,12 @@
                     xmlns:mah="clr-namespace:Crystal.Themes.Controls">
 
     <!--  Tooltip Style  -->
-    <Style x:Key="MahApps.Styles.ToolTip" TargetType="ToolTip">
-        <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Control.Background}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.Gray7}" />
+    <Style x:Key="Crystal.Styles.ToolTip" TargetType="ToolTip">
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Control.Background}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Gray7}" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="FontSize" Value="{DynamicResource MahApps.Font.Size.Tooltip}" />
-        <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.ThemeForeground}" />
+        <Setter Property="FontSize" Value="{DynamicResource Crystal.Font.Size.Tooltip}" />
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
         <Setter Property="Padding" Value="6 3" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Template">

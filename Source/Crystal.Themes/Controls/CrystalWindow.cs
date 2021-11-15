@@ -1278,7 +1278,7 @@ namespace Crystal.Themes.Controls
 
     private void MetroWindow_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
     {
-      // MahApps add these controls to the window with AddLogicalChild method.
+      // Crystal add these controls to the window with AddLogicalChild method.
       // This has the side effect that the DataContext doesn't update, so do this now here.
       if (LeftWindowCommands != null)
       {

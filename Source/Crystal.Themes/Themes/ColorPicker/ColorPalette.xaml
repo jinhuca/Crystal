@@ -8,13 +8,13 @@
         <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.ListBox.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <system:Double x:Key="MahApps.Sizes.ColorListBox.ItemWidth">16</system:Double>
-    <system:Double x:Key="MahApps.Sizes.ColorListBox.ItemHeight">16</system:Double>
+    <system:Double x:Key="Crystal.Sizes.ColorListBox.ItemWidth">16</system:Double>
+    <system:Double x:Key="Crystal.Sizes.ColorListBox.ItemHeight">16</system:Double>
 
-    <Style x:Key="MahApps.Styles.ListBoxItem.ColorPaletteItem"
-           BasedOn="{StaticResource MahApps.Styles.ListBoxItem}"
+    <Style x:Key="Crystal.Styles.ListBoxItem.ColorPaletteItem"
+           BasedOn="{StaticResource Crystal.Styles.ListBoxItem}"
            TargetType="{x:Type ListBoxItem}">
-        <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.Control.Border}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Control.Border}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="MinHeight" Value="1" />
         <Setter Property="Padding" Value="3" />
@@ -98,13 +98,13 @@
         </Setter>
     </Style>
 
-    <DataTemplate x:Key="MahApps.Templates.ColorPaletteItem">
+    <DataTemplate x:Key="Crystal.Templates.ColorPaletteItem">
         <Border x:Name="ColorPresenter"
-                Width="{DynamicResource MahApps.Sizes.ColorListBox.ItemWidth}"
-                Height="{DynamicResource MahApps.Sizes.ColorListBox.ItemHeight}"
+                Width="{DynamicResource Crystal.Sizes.ColorListBox.ItemWidth}"
+                Height="{DynamicResource Crystal.Sizes.ColorListBox.ItemHeight}"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                Background="{DynamicResource MahApps.Brushes.Tile.Small}">
+                Background="{DynamicResource Crystal.Brushes.Tile.Small}">
             <Border.ToolTip>
                 <MultiBinding Converter="{mahConverters:ColorToNameConverter}">
                     <Binding />
@@ -117,14 +117,14 @@
         </Border>
     </DataTemplate>
 
-    <Style x:Key="MahApps.Styles.ColorPalette" TargetType="{x:Type mah:ColorPalette}">
-        <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.Accent}" />
+    <Style x:Key="Crystal.Styles.ColorPalette" TargetType="{x:Type mah:ColorPalette}">
+        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Accent}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Focusable" Value="False" />
         <Setter Property="Header" Value="Default Colors" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Setter Property="ItemContainerStyle" Value="{DynamicResource MahApps.Styles.ListBoxItem.ColorPaletteItem}" />
-        <Setter Property="ItemTemplate" Value="{DynamicResource MahApps.Templates.ColorPaletteItem}" />
+        <Setter Property="ItemContainerStyle" Value="{DynamicResource Crystal.Styles.ListBoxItem.ColorPaletteItem}" />
+        <Setter Property="ItemTemplate" Value="{DynamicResource Crystal.Templates.ColorPaletteItem}" />
         <Setter Property="ItemsPanel">
             <Setter.Value>
                 <ItemsPanelTemplate>
@@ -151,7 +151,7 @@
                               BorderThickness="{TemplateBinding BorderThickness}"
                               Foreground="{TemplateBinding Foreground}"
                               Header="{TemplateBinding Header}"
-                              Style="{DynamicResource MahApps.Styles.GroupBox}">
+                              Style="{DynamicResource Crystal.Styles.GroupBox}">
                         <ScrollViewer Padding="{TemplateBinding Padding}"
                                       mah:ScrollViewerHelper.BubbleUpScrollEventToParentScrollviewer="True"
                                       CanContentScroll="{TemplateBinding ScrollViewer.CanContentScroll}"
@@ -166,14 +166,14 @@
             </Setter.Value>
         </Setter>
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
-        <Setter Property="mah:ControlsHelper.ContentCharacterCasing" Value="{DynamicResource MahApps.CharacterCasing.ColorPalette}" />
-        <Setter Property="mah:HeaderedControlHelper.HeaderBackground" Value="{DynamicResource MahApps.Brushes.Accent}" />
-        <Setter Property="mah:HeaderedControlHelper.HeaderFontSize" Value="{DynamicResource MahApps.Font.Size.Content}" />
-        <Setter Property="mah:HeaderedControlHelper.HeaderForeground" Value="{DynamicResource MahApps.Brushes.IdealForeground}" />
+        <Setter Property="mah:ControlsHelper.ContentCharacterCasing" Value="{DynamicResource Crystal.CharacterCasing.ColorPalette}" />
+        <Setter Property="mah:HeaderedControlHelper.HeaderBackground" Value="{DynamicResource Crystal.Brushes.Accent}" />
+        <Setter Property="mah:HeaderedControlHelper.HeaderFontSize" Value="{DynamicResource Crystal.Font.Size.Content}" />
+        <Setter Property="mah:HeaderedControlHelper.HeaderForeground" Value="{DynamicResource Crystal.Brushes.IdealForeground}" />
     </Style>
 
-    <Style x:Key="MahApps.Styles.ColorPalette.ColorPickerDropDown"
-           BasedOn="{StaticResource MahApps.Styles.ColorPalette}"
+    <Style x:Key="Crystal.Styles.ColorPalette.ColorPickerDropDown"
+           BasedOn="{StaticResource Crystal.Styles.ColorPalette}"
            TargetType="{x:Type mah:ColorPalette}" />
 
 </ResourceDictionary>

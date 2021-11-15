@@ -2,11 +2,11 @@
 
 namespace Crystal.Themes.Controls
 {
-  public static class MahAppsCommands
+  public static class CrystalAppsCommands
   {
-    public static ICommand ClearControlCommand { get; } = new RoutedUICommand("Clear", nameof(ClearControlCommand), typeof(MahAppsCommands));
+    public static ICommand ClearControlCommand { get; } = new RoutedUICommand("Clear", nameof(ClearControlCommand), typeof(CrystalAppsCommands));
 
-    static MahAppsCommands()
+    static CrystalAppsCommands()
     {
       // Register CommandBinding for all windows.
       CommandManager.RegisterClassCommandBinding(typeof(Window), new CommandBinding(ClearControlCommand, (_, args) => ClearControl(args), (_, args) => CanClearControl(args)));

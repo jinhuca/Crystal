@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:mah="clr-namespace:Crystal.Themes.Controls">
 
-    <Style x:Key="MahApps.Styles.DropDownButton.FocusVisualStyle">
+    <Style x:Key="Crystal.Styles.DropDownButton.FocusVisualStyle">
         <Setter Property="Control.Template">
             <Setter.Value>
                 <ControlTemplate>
@@ -17,20 +17,20 @@
     </Style>
 
     <Style TargetType="{x:Type mah:DropDownButton}">
-        <Setter Property="ArrowBrush" Value="{DynamicResource MahApps.Brushes.ThemeForeground}" />
-        <Setter Property="ArrowMouseOverBrush" Value="{DynamicResource MahApps.Brushes.Accent}" />
-        <Setter Property="ArrowPressedBrush" Value="{DynamicResource MahApps.Brushes.ThemeForeground}" />
-        <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.ThemeBackground}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.ThemeForeground}" />
+        <Setter Property="ArrowBrush" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
+        <Setter Property="ArrowMouseOverBrush" Value="{DynamicResource Crystal.Brushes.Accent}" />
+        <Setter Property="ArrowPressedBrush" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="ButtonStyle" Value="{DynamicResource MahApps.Styles.Button.DropDown}" />
-        <Setter Property="FocusVisualStyle" Value="{StaticResource MahApps.Styles.DropDownButton.FocusVisualStyle}" />
+        <Setter Property="ButtonStyle" Value="{DynamicResource Crystal.Styles.Button.DropDown}" />
+        <Setter Property="FocusVisualStyle" Value="{StaticResource Crystal.Styles.DropDownButton.FocusVisualStyle}" />
         <Setter Property="Focusable" Value="False" />
-        <Setter Property="FontFamily" Value="{DynamicResource MahApps.Fonts.Family.Control}" />
-        <Setter Property="FontSize" Value="{DynamicResource MahApps.Font.Size.Content}" />
-        <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.ThemeForeground}" />
+        <Setter Property="FontFamily" Value="{DynamicResource Crystal.Fonts.Family.Control}" />
+        <Setter Property="FontSize" Value="{DynamicResource Crystal.Font.Size.Content}" />
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
-        <Setter Property="MenuStyle" Value="{DynamicResource MahApps.Styles.ContextMenu}" />
+        <Setter Property="MenuStyle" Value="{DynamicResource Crystal.Styles.ContextMenu}" />
         <Setter Property="MinHeight" Value="26" />
         <Setter Property="Padding" Value="3" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
@@ -151,10 +151,10 @@
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Style.Triggers>
             <Trigger Property="IsFocused" Value="True">
-                <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.Accent}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Accent}" />
             </Trigger>
             <Trigger Property="IsKeyboardFocusWithin" Value="True">
-                <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.Accent}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Accent}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Opacity" Value=".55" />

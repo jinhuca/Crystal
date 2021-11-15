@@ -186,9 +186,9 @@ namespace Crystal.Themes.Controls.Dialogs
       switch (DialogSettings.ColorScheme)
       {
         case MetroDialogColorScheme.Accented:
-          PART_NegativeButton.SetResourceReference(StyleProperty, "MahApps.Styles.Button.Dialogs.AccentHighlight");
-          PART_TextBox.SetResourceReference(ForegroundProperty, "MahApps.Brushes.ThemeForeground");
-          PART_TextBox.SetResourceReference(ControlsHelper.FocusBorderBrushProperty, "MahApps.Brushes.TextBox.Border.Focus");
+          PART_NegativeButton.SetResourceReference(StyleProperty, "Crystal.Styles.Button.Dialogs.AccentHighlight");
+          PART_TextBox.SetResourceReference(ForegroundProperty, "Crystal.Brushes.ThemeForeground");
+          PART_TextBox.SetResourceReference(ControlsHelper.FocusBorderBrushProperty, "Crystal.Brushes.TextBox.Border.Focus");
           break;
       }
     }

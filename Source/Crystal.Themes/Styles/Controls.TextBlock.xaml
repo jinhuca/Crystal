@@ -2,19 +2,19 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <!--  never ever make a default style for TextBlock in App.xaml !!!  -->
-    <Style x:Key="MahApps.Styles.TextBlock" TargetType="{x:Type TextBlock}" />
+    <Style x:Key="Crystal.Styles.TextBlock" TargetType="{x:Type TextBlock}" />
 
-    <Style x:Key="MahApps.Styles.TextBlock.Watermark"
-           BasedOn="{StaticResource MahApps.Styles.TextBlock}"
+    <Style x:Key="Crystal.Styles.TextBlock.Watermark"
+           BasedOn="{StaticResource Crystal.Styles.TextBlock}"
            TargetType="{x:Type TextBlock}">
         <Setter Property="IsHitTestVisible" Value="False" />
         <Setter Property="Opacity" Value="0.6" />
     </Style>
 
-    <Style x:Key="MahApps.Styles.TextBlock.AutoCollapsing"
-           BasedOn="{StaticResource MahApps.Styles.TextBlock}"
+    <Style x:Key="Crystal.Styles.TextBlock.AutoCollapsing"
+           BasedOn="{StaticResource Crystal.Styles.TextBlock}"
            TargetType="{x:Type TextBlock}">
-        <Setter Property="FontSize" Value="{DynamicResource MahApps.Font.Size.FloatingWatermark}" />
+        <Setter Property="FontSize" Value="{DynamicResource Crystal.Font.Size.FloatingWatermark}" />
         <Setter Property="Opacity" Value="0.6" />
         <Style.Triggers>
             <Trigger Property="Text" Value="">

@@ -8,7 +8,7 @@
     </ResourceDictionary.MergedDictionaries>
 
     <!--  Style for toolbar buttons  -->
-    <Style x:Key="MahApps.Styles.Button.ToolBar" TargetType="{x:Type ButtonBase}">
+    <Style x:Key="Crystal.Styles.Button.ToolBar" TargetType="{x:Type ButtonBase}">
         <Style.Resources>
             <!--  Disabled all images placed inside a button - most common scenario  -->
             <Style TargetType="Image">
@@ -19,12 +19,12 @@
                 </Style.Triggers>
             </Style>
         </Style.Resources>
-        <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Transparent}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.Transparent}" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Transparent}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Transparent}" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="FocusVisualStyle" Value="{DynamicResource MahApps.Styles.Button.FocusVisualStyle.Flat}" />
-        <Setter Property="FontSize" Value="{DynamicResource MahApps.Font.Size.Button.Flat}" />
-        <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Text}" />
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource Crystal.Styles.Button.FocusVisualStyle.Flat}" />
+        <Setter Property="FontSize" Value="{DynamicResource Crystal.Font.Size.Button.Flat}" />
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Text}" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="OverridesDefaultStyle" Value="true" />
         <Setter Property="Padding" Value="10 5 10 5" />
@@ -57,24 +57,24 @@
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Gray7}" />
-                <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.Gray7}" />
+                <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Gray7}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Gray7}" />
             </Trigger>
             <Trigger Property="IsKeyboardFocused" Value="True">
-                <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Gray7}" />
-                <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.Gray7}" />
+                <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Gray7}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Gray7}" />
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Accent}" />
-                <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.Accent}" />
+                <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Accent}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Accent}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Gray3}" />
+                <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Gray3}" />
             </Trigger>
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="MahApps.Styles.ToggleButton.ToolBar" TargetType="{x:Type ToggleButton}">
+    <Style x:Key="Crystal.Styles.ToggleButton.ToolBar" TargetType="{x:Type ToggleButton}">
         <Style.Resources>
             <!--  Disabled all images placed inside a button - most common scenario  -->
             <Style TargetType="Image">
@@ -85,12 +85,12 @@
                 </Style.Triggers>
             </Style>
         </Style.Resources>
-        <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Transparent}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.Transparent}" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Transparent}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Transparent}" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="FocusVisualStyle" Value="{DynamicResource MahApps.Styles.Button.FocusVisualStyle.Flat}" />
-        <Setter Property="FontSize" Value="{DynamicResource MahApps.Font.Size.Button.Flat}" />
-        <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Text}" />
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource Crystal.Styles.Button.FocusVisualStyle.Flat}" />
+        <Setter Property="FontSize" Value="{DynamicResource Crystal.Font.Size.Button.Flat}" />
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Text}" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="OverridesDefaultStyle" Value="true" />
         <Setter Property="Padding" Value="10 5 10 5" />
@@ -123,52 +123,52 @@
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Gray7}" />
-                <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.Gray7}" />
+                <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Gray7}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Gray7}" />
             </Trigger>
             <Trigger Property="IsKeyboardFocused" Value="True">
-                <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Gray7}" />
-                <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.Gray7}" />
+                <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Gray7}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Gray7}" />
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Accent}" />
-                <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.Accent}" />
+                <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Accent}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Accent}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Gray3}" />
+                <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Gray3}" />
             </Trigger>
             <Trigger Property="IsChecked" Value="True">
-                <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Accent}" />
-                <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.IdealForeground}" />
+                <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Accent}" />
+                <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForeground}" />
             </Trigger>
         </Style.Triggers>
     </Style>
 
     <!--  Style for all types of regular buttons  -->
     <Style x:Key="{x:Static ToolBar.ButtonStyleKey}"
-           BasedOn="{StaticResource MahApps.Styles.Button.ToolBar}"
+           BasedOn="{StaticResource Crystal.Styles.Button.ToolBar}"
            TargetType="{x:Type Button}" />
     <Style x:Key="{x:Static ToolBar.ToggleButtonStyleKey}"
-           BasedOn="{StaticResource MahApps.Styles.ToggleButton.ToolBar}"
+           BasedOn="{StaticResource Crystal.Styles.ToggleButton.ToolBar}"
            TargetType="{x:Type ToggleButton}" />
     <Style x:Key="{x:Static ToolBar.CheckBoxStyleKey}"
-           BasedOn="{StaticResource MahApps.Styles.ToggleButton.ToolBar}"
+           BasedOn="{StaticResource Crystal.Styles.ToggleButton.ToolBar}"
            TargetType="{x:Type CheckBox}" />
     <Style x:Key="{x:Static ToolBar.RadioButtonStyleKey}"
-           BasedOn="{StaticResource MahApps.Styles.ToggleButton.ToolBar}"
+           BasedOn="{StaticResource Crystal.Styles.ToggleButton.ToolBar}"
            TargetType="{x:Type RadioButton}" />
 
     <!--  Style for text box inside a toolbar if needed  -->
     <Style x:Key="{x:Static ToolBar.TextBoxStyleKey}"
-           BasedOn="{StaticResource MahApps.Styles.TextBox}"
+           BasedOn="{StaticResource Crystal.Styles.TextBox}"
            TargetType="{x:Type TextBox}" />
 
     <Style x:Key="{x:Static ToolBar.ComboBoxStyleKey}"
-           BasedOn="{StaticResource MahApps.Styles.ComboBox}"
+           BasedOn="{StaticResource Crystal.Styles.ComboBox}"
            TargetType="{x:Type ComboBox}" />
 
     <!--  Style the toolbar thumb  -->
-    <Style x:Key="MahApps.Styles.Thumb.ToolBar" TargetType="{x:Type Thumb}">
+    <Style x:Key="Crystal.Styles.Thumb.ToolBar" TargetType="{x:Type Thumb}">
         <Setter Property="Cursor" Value="SizeAll" />
         <Setter Property="OverridesDefaultStyle" Value="true" />
         <Setter Property="Template">
@@ -186,7 +186,7 @@
                                               Viewport="0,0,5,4"
                                               ViewportUnits="Absolute">
                                     <DrawingBrush.Drawing>
-                                        <GeometryDrawing Brush="{DynamicResource MahApps.Brushes.Gray3}">
+                                        <GeometryDrawing Brush="{DynamicResource Crystal.Brushes.Gray3}">
                                             <GeometryDrawing.Geometry>
                                                 <GeometryGroup>
                                                     <GeometryGroup.Children>
@@ -207,7 +207,7 @@
         </Setter>
     </Style>
 
-    <Style x:Key="MahApps.Styles.ToggleButton.ToolBarOverflow" TargetType="{x:Type ToggleButton}">
+    <Style x:Key="Crystal.Styles.ToggleButton.ToolBarOverflow" TargetType="{x:Type ToggleButton}">
         <Setter Property="OverridesDefaultStyle" Value="true" />
         <Setter Property="Template">
             <Setter.Value>
@@ -223,34 +223,34 @@
                                        Height="1"
                                        Margin="2 8"
                                        VerticalAlignment="Bottom"
-                                       Fill="{DynamicResource MahApps.Brushes.ThemeForeground}" />
+                                       Fill="{DynamicResource Crystal.Brushes.ThemeForeground}" />
                             <Path Name="Arrow"
                                   Margin="2 3"
                                   VerticalAlignment="Bottom"
                                   Data="M 0 0 L 6 0 3 3 Z"
-                                  Fill="{DynamicResource MahApps.Brushes.ThemeForeground}" />
+                                  Fill="{DynamicResource Crystal.Brushes.ThemeForeground}" />
                             <ContentPresenter />
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="true">
-                            <Setter TargetName="Arrow" Property="Fill" Value="{DynamicResource MahApps.Brushes.Accent}" />
-                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource MahApps.Brushes.Gray7}" />
-                            <Setter TargetName="Rectangle" Property="Fill" Value="{DynamicResource MahApps.Brushes.Accent}" />
+                            <Setter TargetName="Arrow" Property="Fill" Value="{DynamicResource Crystal.Brushes.Accent}" />
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray7}" />
+                            <Setter TargetName="Rectangle" Property="Fill" Value="{DynamicResource Crystal.Brushes.Accent}" />
                         </Trigger>
                         <Trigger Property="IsKeyboardFocused" Value="true">
-                            <Setter TargetName="Arrow" Property="Fill" Value="{DynamicResource MahApps.Brushes.Accent}" />
-                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource MahApps.Brushes.Gray7}" />
-                            <Setter TargetName="Rectangle" Property="Fill" Value="{DynamicResource MahApps.Brushes.Accent}" />
+                            <Setter TargetName="Arrow" Property="Fill" Value="{DynamicResource Crystal.Brushes.Accent}" />
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray7}" />
+                            <Setter TargetName="Rectangle" Property="Fill" Value="{DynamicResource Crystal.Brushes.Accent}" />
                         </Trigger>
                         <Trigger Property="IsChecked" Value="true">
-                            <Setter TargetName="Arrow" Property="Fill" Value="{DynamicResource MahApps.Brushes.ThemeForeground}" />
-                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource MahApps.Brushes.Accent}" />
-                            <Setter TargetName="Rectangle" Property="Fill" Value="{DynamicResource MahApps.Brushes.ThemeForeground}" />
+                            <Setter TargetName="Arrow" Property="Fill" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource Crystal.Brushes.Accent}" />
+                            <Setter TargetName="Rectangle" Property="Fill" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
-                            <Setter TargetName="Arrow" Property="Fill" Value="{DynamicResource MahApps.Brushes.Transparent}" />
-                            <Setter TargetName="Rectangle" Property="Fill" Value="{DynamicResource MahApps.Brushes.Transparent}" />
+                            <Setter TargetName="Arrow" Property="Fill" Value="{DynamicResource Crystal.Brushes.Transparent}" />
+                            <Setter TargetName="Rectangle" Property="Fill" Value="{DynamicResource Crystal.Brushes.Transparent}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -259,15 +259,15 @@
     </Style>
 
     <!--  Style the toolbar  -->
-    <Style x:Key="MahApps.Styles.ToolBar" TargetType="{x:Type ToolBar}">
+    <Style x:Key="Crystal.Styles.ToolBar" TargetType="{x:Type ToolBar}">
         <Setter Property="OverridesDefaultStyle" Value="true" />
         <Setter Property="SnapsToDevicePixels" Value="true" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ToolBar}">
                     <Border x:Name="Border"
-                            Background="{DynamicResource MahApps.Brushes.Transparent}"
-                            BorderBrush="{DynamicResource MahApps.Brushes.Transparent}"
+                            Background="{DynamicResource Crystal.Brushes.Transparent}"
+                            BorderBrush="{DynamicResource Crystal.Brushes.Transparent}"
                             BorderThickness="1"
                             CornerRadius="2">
                         <DockPanel>
@@ -275,7 +275,7 @@
                                           DockPanel.Dock="Right"
                                           IsChecked="{Binding Path=IsOverflowOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
                                           IsEnabled="{TemplateBinding HasOverflowItems}"
-                                          Style="{StaticResource MahApps.Styles.ToggleButton.ToolBarOverflow}">
+                                          Style="{StaticResource Crystal.Styles.ToggleButton.ToolBarOverflow}">
                                 <Popup x:Name="OverflowPopup"
                                        AllowsTransparency="true"
                                        Focusable="false"
@@ -284,8 +284,8 @@
                                        PopupAnimation="Slide"
                                        StaysOpen="false">
                                     <Border x:Name="DropDownBorder"
-                                            Background="{DynamicResource MahApps.Brushes.Control.Background}"
-                                            BorderBrush="{DynamicResource MahApps.Brushes.Control.Border}"
+                                            Background="{DynamicResource Crystal.Brushes.Control.Background}"
+                                            BorderBrush="{DynamicResource Crystal.Brushes.Control.Border}"
                                             BorderThickness="1">
                                         <ToolBarOverflowPanel x:Name="PART_ToolBarOverflowPanel"
                                                               Margin="2"
@@ -300,7 +300,7 @@
 
                             <Thumb x:Name="ToolBarThumb"
                                    Width="10"
-                                   Style="{StaticResource MahApps.Styles.Thumb.ToolBar}" />
+                                   Style="{StaticResource Crystal.Styles.Thumb.ToolBar}" />
 
                             <ToolBarPanel x:Name="PART_ToolBarPanel"
                                           Margin="0 1 2 2"
@@ -321,8 +321,8 @@
     </Style>
 
     <!--  Style the toolbar tray  -->
-    <Style x:Key="MahApps.Styles.ToolBarTray" TargetType="{x:Type ToolBarTray}">
-        <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Window.Background}" />
+    <Style x:Key="Crystal.Styles.ToolBarTray" TargetType="{x:Type ToolBarTray}">
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Window.Background}" />
     </Style>
 
 </ResourceDictionary>

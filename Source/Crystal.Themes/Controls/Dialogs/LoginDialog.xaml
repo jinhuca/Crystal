@@ -53,12 +53,12 @@
                     Margin="0 0 5 0"
                     Content="{Binding AffirmativeButtonText, RelativeSource={RelativeSource AncestorType=dialogs:LoginDialog, Mode=FindAncestor}, UpdateSourceTrigger=PropertyChanged}"
                     FontSize="{Binding DialogButtonFontSize, RelativeSource={RelativeSource AncestorType=dialogs:LoginDialog, Mode=FindAncestor}, UpdateSourceTrigger=PropertyChanged}"
-                    Style="{DynamicResource MahApps.Styles.Button.Dialogs.Accent}" />
+                    Style="{DynamicResource Crystal.Styles.Button.Dialogs.Accent}" />
       <Button x:Name="PART_NegativeButton"
                     Margin="5 0 5 0"
                     Content="{Binding NegativeButtonText, RelativeSource={RelativeSource AncestorType=dialogs:LoginDialog, Mode=FindAncestor}, UpdateSourceTrigger=PropertyChanged}"
                     FontSize="{Binding DialogButtonFontSize, RelativeSource={RelativeSource AncestorType=dialogs:LoginDialog, Mode=FindAncestor}, UpdateSourceTrigger=PropertyChanged}"
-                    Style="{DynamicResource MahApps.Styles.Button.Dialogs}"
+                    Style="{DynamicResource Crystal.Styles.Button.Dialogs}"
                     Visibility="{Binding NegativeButtonButtonVisibility, RelativeSource={RelativeSource AncestorType=dialogs:LoginDialog, Mode=FindAncestor}, UpdateSourceTrigger=PropertyChanged}" />
     </StackPanel>
   </Grid>

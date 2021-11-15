@@ -4,24 +4,24 @@
                     xmlns:po="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
                     mc:Ignorable="po">
 
-    <ExponentialEase x:Key="MahApps.ExponentialEase.EaseInOut"
+    <ExponentialEase x:Key="Crystal.ExponentialEase.EaseInOut"
                      EasingMode="EaseInOut"
                      Exponent="2" />
 
-    <Storyboard x:Key="MahApps.Storyboard.EnterGotFocus" po:Freeze="True">
+    <Storyboard x:Key="Crystal.Storyboard.EnterGotFocus" po:Freeze="True">
         <DoubleAnimation Storyboard.TargetName="PART_Message"
                          Storyboard.TargetProperty="Opacity"
                          To=".2"
                          Duration="0:0:0.2" />
     </Storyboard>
 
-    <Storyboard x:Key="MahApps.Storyboard.ExitGotFocus" po:Freeze="True">
+    <Storyboard x:Key="Crystal.Storyboard.ExitGotFocus" po:Freeze="True">
         <DoubleAnimation Storyboard.TargetName="PART_Message"
                          Storyboard.TargetProperty="Opacity"
                          Duration="0:0:0.2" />
     </Storyboard>
 
-    <Storyboard x:Key="MahApps.Storyboard.EnterGotFocus.DatePickerTextBox" po:Freeze="True">
+    <Storyboard x:Key="Crystal.Storyboard.EnterGotFocus.DatePickerTextBox" po:Freeze="True">
         <DoubleAnimation Storyboard.TargetName="PART_Watermark"
                          Storyboard.TargetProperty="Opacity"
                          To=".2"
@@ -32,7 +32,7 @@
                          Duration="0:0:0.2" />
     </Storyboard>
 
-    <Storyboard x:Key="MahApps.Storyboard.ExitGotFocus.DatePickerTextBox" po:Freeze="True">
+    <Storyboard x:Key="Crystal.Storyboard.ExitGotFocus.DatePickerTextBox" po:Freeze="True">
         <DoubleAnimation Storyboard.TargetName="PART_Watermark"
                          Storyboard.TargetProperty="Opacity"
                          Duration="0:0:0.2" />
@@ -41,7 +41,7 @@
                          Duration="0:0:0.2" />
     </Storyboard>
 
-    <Storyboard x:Key="MahApps.Storyboard.EnterHasText" po:Freeze="True">
+    <Storyboard x:Key="Crystal.Storyboard.EnterHasText" po:Freeze="True">
         <DoubleAnimation Storyboard.TargetName="PART_Message"
                          Storyboard.TargetProperty="Opacity"
                          From=".2"
@@ -49,13 +49,13 @@
                          Duration="0:0:0.2" />
     </Storyboard>
 
-    <Storyboard x:Key="MahApps.Storyboard.ExitHasText" po:Freeze="True">
+    <Storyboard x:Key="Crystal.Storyboard.ExitHasText" po:Freeze="True">
         <DoubleAnimation Storyboard.TargetName="PART_Message"
                          Storyboard.TargetProperty="Opacity"
                          Duration="0:0:0.2" />
     </Storyboard>
 
-    <Storyboard x:Key="MahApps.Storyboard.EnterHasText.DatePickerTextBox" po:Freeze="True">
+    <Storyboard x:Key="Crystal.Storyboard.EnterHasText.DatePickerTextBox" po:Freeze="True">
         <DoubleAnimation Storyboard.TargetName="PART_Watermark"
                          Storyboard.TargetProperty="Opacity"
                          From=".2"
@@ -68,7 +68,7 @@
                          Duration="0:0:0.2" />
     </Storyboard>
 
-    <Storyboard x:Key="MahApps.Storyboard.ExitHasText.DatePickerTextBox" po:Freeze="True">
+    <Storyboard x:Key="Crystal.Storyboard.ExitHasText.DatePickerTextBox" po:Freeze="True">
         <DoubleAnimation Storyboard.TargetName="PART_Watermark"
                          Storyboard.TargetProperty="Opacity"
                          Duration="0:0:0.2" />
@@ -77,7 +77,7 @@
                          Duration="0:0:0.2" />
     </Storyboard>
 
-    <Storyboard x:Key="MahApps.Storyboard.WaitingForData" po:Freeze="True">
+    <Storyboard x:Key="Crystal.Storyboard.WaitingForData" po:Freeze="True">
         <DoubleAnimation AutoReverse="True"
                          RepeatBehavior="Forever"
                          Timeline.DesiredFrameRate="30"
@@ -88,8 +88,8 @@
                          Duration="00:00:02" />
     </Storyboard>
 
-    <Storyboard x:Key="MahApps.Storyboard.HideFloatingMessage" po:Freeze="True">
-        <DoubleAnimation EasingFunction="{StaticResource MahApps.ExponentialEase.EaseInOut}"
+    <Storyboard x:Key="Crystal.Storyboard.HideFloatingMessage" po:Freeze="True">
+        <DoubleAnimation EasingFunction="{StaticResource Crystal.ExponentialEase.EaseInOut}"
                          Storyboard.TargetName="PART_FloatingMessageContainer"
                          Storyboard.TargetProperty="Opacity"
                          From="1"
@@ -100,11 +100,11 @@
         </ObjectAnimationUsingKeyFrames>
     </Storyboard>
 
-    <Storyboard x:Key="MahApps.Storyboard.ShowFloatingMessage" po:Freeze="True">
+    <Storyboard x:Key="Crystal.Storyboard.ShowFloatingMessage" po:Freeze="True">
         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PART_FloatingMessageContainer" Storyboard.TargetProperty="(UIElement.Visibility)">
             <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
         </ObjectAnimationUsingKeyFrames>
-        <DoubleAnimation EasingFunction="{StaticResource MahApps.ExponentialEase.EaseInOut}"
+        <DoubleAnimation EasingFunction="{StaticResource Crystal.ExponentialEase.EaseInOut}"
                          Storyboard.TargetName="PART_FloatingMessageContainer"
                          Storyboard.TargetProperty="Opacity"
                          From="0"

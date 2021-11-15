@@ -14,7 +14,7 @@
     <mahConverters:ClockDegreeConverter x:Key="ClockDegreeConverter" TotalParts="60" />
     <mahConverters:ClockDegreeConverter x:Key="HourDegreeConverter" TotalParts="12" />
 
-    <DataTemplate x:Key="MahApps.Templates.DateTimePicker.FiveMinuteIndicator">
+    <DataTemplate x:Key="Crystal.Templates.DateTimePicker.FiveMinuteIndicator">
         <StackPanel Height="57"
                     Orientation="Horizontal"
                     RenderTransformOrigin=".5,1">
@@ -24,11 +24,11 @@
             <Rectangle Width="2"
                        Height="10"
                        Margin="0 -49 0 0"
-                       Fill="{DynamicResource MahApps.Brushes.Accent3}" />
+                       Fill="{DynamicResource Crystal.Brushes.Accent3}" />
         </StackPanel>
     </DataTemplate>
 
-    <DataTemplate x:Key="MahApps.Templates.DateTimePicker.MinuteIndicator">
+    <DataTemplate x:Key="Crystal.Templates.DateTimePicker.MinuteIndicator">
         <StackPanel Height="57"
                     Orientation="Horizontal"
                     RenderTransformOrigin=".5,1">
@@ -38,7 +38,7 @@
             <Rectangle Width="1"
                        Height="5"
                        Margin="0 -49.75 0 0"
-                       Fill="{DynamicResource MahApps.Brushes.Accent4}" />
+                       Fill="{DynamicResource Crystal.Brushes.Accent4}" />
         </StackPanel>
     </DataTemplate>
 
@@ -108,14 +108,14 @@
         <system:Int32>59</system:Int32>
     </x:Array>
 
-    <Style x:Key="MahApps.Styles.TimePickerBase" TargetType="{x:Type mah:TimePickerBase}">
-        <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Control.Background}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.TextBox.Border}" />
+    <Style x:Key="Crystal.Styles.TimePickerBase" TargetType="{x:Type mah:TimePickerBase}">
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Control.Background}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.TextBox.Border}" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="ContextMenu" Value="{DynamicResource MahApps.TextBox.ContextMenu}" />
-        <Setter Property="FontFamily" Value="{DynamicResource MahApps.Fonts.Family.Control}" />
-        <Setter Property="FontSize" Value="{DynamicResource MahApps.Font.Size.Content}" />
-        <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Text}" />
+        <Setter Property="ContextMenu" Value="{DynamicResource Crystal.TextBox.ContextMenu}" />
+        <Setter Property="FontFamily" Value="{DynamicResource Crystal.Fonts.Family.Control}" />
+        <Setter Property="FontSize" Value="{DynamicResource Crystal.Font.Size.Content}" />
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Text}" />
         <Setter Property="HandVisibility" Value="HourMinute" />
         <Setter Property="MinHeight" Value="26" />
         <Setter Property="Padding" Value="4" />
@@ -153,15 +153,15 @@
                                                mah:TextBoxHelper.Watermark="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:TextBoxHelper.Watermark), Mode=OneWay}"
                                                mah:TextBoxHelper.WatermarkAlignment="{TemplateBinding mah:TextBoxHelper.WatermarkAlignment}"
                                                mah:TextBoxHelper.WatermarkTrimming="{TemplateBinding mah:TextBoxHelper.WatermarkTrimming}"
-                                               CaretBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"
+                                               CaretBrush="{DynamicResource Crystal.Brushes.ThemeForeground}"
                                                ContextMenu="{TemplateBinding ContextMenu}"
                                                Focusable="{TemplateBinding Focusable}"
                                                FontFamily="{TemplateBinding FontFamily}"
                                                FontSize="{TemplateBinding FontSize}"
                                                Foreground="{TemplateBinding Foreground}"
                                                IsReadOnly="{Binding Path=IsReadOnly, RelativeSource={RelativeSource TemplatedParent}}"
-                                               SelectionBrush="{DynamicResource MahApps.Brushes.Highlight}"
-                                               Style="{DynamicResource MahApps.Styles.DatePickerTextBox.TimePickerBase}">
+                                               SelectionBrush="{DynamicResource Crystal.Brushes.Highlight}"
+                                               Style="{DynamicResource Crystal.Styles.DatePickerTextBox.TimePickerBase}">
                                 <i:Interaction.Behaviors>
                                     <behaviors:DatePickerTextBoxBehavior />
                                 </i:Interaction.Behaviors>
@@ -171,7 +171,7 @@
                                             Grid.Row="0"
                                             Grid.Column="0"
                                             Margin="4 0"
-                                            Style="{DynamicResource MahApps.Styles.ContentControl.FloatingMessageContainer}">
+                                            Style="{DynamicResource Crystal.Styles.ContentControl.FloatingMessageContainer}">
                                 <ContentControl.Height>
                                     <MultiBinding Converter="{mahConverters:MathMultiplyConverter}">
                                         <Binding ElementName="PART_FloatingMessage"
@@ -186,7 +186,7 @@
                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                            Foreground="{TemplateBinding Foreground}"
-                                           Style="{DynamicResource MahApps.Styles.TextBlock.AutoCollapsing}"
+                                           Style="{DynamicResource Crystal.Styles.TextBlock.AutoCollapsing}"
                                            Text="{TemplateBinding mah:TextBoxHelper.Watermark}"
                                            TextAlignment="{TemplateBinding mah:TextBoxHelper.WatermarkAlignment}"
                                            TextTrimming="{TemplateBinding mah:TextBoxHelper.WatermarkTrimming}">
@@ -222,7 +222,7 @@
                                     FontSize="{TemplateBinding mah:TextBoxHelper.ButtonFontSize}"
                                     Foreground="{TemplateBinding Foreground}"
                                     IsTabStop="False"
-                                    Style="{DynamicResource MahApps.Styles.Button.Chromeless}"
+                                    Style="{DynamicResource Crystal.Styles.Button.Chromeless}"
                                     Template="{TemplateBinding mah:TextBoxHelper.ButtonTemplate}"
                                     Visibility="Visible" />
 
@@ -238,7 +238,7 @@
                                     FontSize="{TemplateBinding mah:DatePickerHelper.DropDownButtonFontSize}"
                                     Foreground="{TemplateBinding Foreground}"
                                     IsTabStop="False"
-                                    Style="{DynamicResource MahApps.Styles.Button.Chromeless}" />
+                                    Style="{DynamicResource Crystal.Styles.Button.Chromeless}" />
 
                             <controlzex:PopupEx x:Name="PART_Popup"
                                                 Grid.Row="1"
@@ -251,8 +251,8 @@
                                                 PopupAnimation="Fade"
                                                 StaysOpen="False">
                                 <Border x:Name="PART_PopupBorder"
-                                        Background="{DynamicResource MahApps.Brushes.Control.Background}"
-                                        BorderBrush="{DynamicResource MahApps.Brushes.Control.Border}"
+                                        Background="{DynamicResource Crystal.Brushes.Control.Background}"
+                                        BorderBrush="{DynamicResource Crystal.Brushes.Control.Border}"
                                         BorderThickness="1">
                                     <StackPanel x:Name="PART_PopupContainer" Background="Transparent">
                                         <ContentPresenter x:Name="PART_Calendar"
@@ -270,13 +270,13 @@
                                                     Height="120"
                                                     Margin="0 5 5 0"
                                                     HorizontalAlignment="Center"
-                                                    BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
+                                                    BorderBrush="{DynamicResource Crystal.Brushes.Accent}"
                                                     BorderThickness="2"
                                                     CornerRadius="75">
                                                 <Canvas HorizontalAlignment="Center">
                                                     <ItemsControl Focusable="False"
                                                                   IsTabStop="False"
-                                                                  ItemTemplate="{StaticResource MahApps.Templates.DateTimePicker.FiveMinuteIndicator}"
+                                                                  ItemTemplate="{StaticResource Crystal.Templates.DateTimePicker.FiveMinuteIndicator}"
                                                                   ItemsSource="{StaticResource FiveMinuteKeys}">
                                                         <ItemsControl.ItemsPanel>
                                                             <ItemsPanelTemplate>
@@ -286,7 +286,7 @@
                                                     </ItemsControl>
                                                     <ItemsControl Focusable="False"
                                                                   IsTabStop="False"
-                                                                  ItemTemplate="{StaticResource MahApps.Templates.DateTimePicker.MinuteIndicator}"
+                                                                  ItemTemplate="{StaticResource Crystal.Templates.DateTimePicker.MinuteIndicator}"
                                                                   ItemsSource="{StaticResource MinuteKeys}">
                                                         <ItemsControl.ItemsPanel>
                                                             <ItemsPanelTemplate>
@@ -299,7 +299,7 @@
                                                                Width="2"
                                                                Height="51"
                                                                HorizontalAlignment="Center"
-                                                               Fill="{DynamicResource MahApps.Brushes.ThemeForeground}"
+                                                               Fill="{DynamicResource Crystal.Brushes.ThemeForeground}"
                                                                RenderTransformOrigin=".5,1">
                                                         <Rectangle.RenderTransform>
                                                             <RotateTransform Angle="{Binding Path=SelectedDateTime, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource ClockDegreeConverter}, ConverterParameter='m', Mode=OneWay}" />
@@ -310,7 +310,7 @@
                                                                Width="2"
                                                                Height="30"
                                                                HorizontalAlignment="Center"
-                                                               Fill="{DynamicResource MahApps.Brushes.ThemeForeground}"
+                                                               Fill="{DynamicResource Crystal.Brushes.ThemeForeground}"
                                                                RenderTransformOrigin=".5,1">
                                                         <Rectangle.RenderTransform>
                                                             <RotateTransform Angle="{Binding Path=SelectedDateTime, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource HourDegreeConverter}, ConverterParameter='h', Mode=OneWay}" />
@@ -320,7 +320,7 @@
                                                              Canvas.Top="54"
                                                              Width="6"
                                                              Height="6"
-                                                             Fill="{DynamicResource MahApps.Brushes.ThemeForeground}" />
+                                                             Fill="{DynamicResource Crystal.Brushes.ThemeForeground}" />
                                                     <Rectangle x:Name="PART_SecondHand"
                                                                Canvas.Left="0.75"
                                                                Canvas.Top="6"
@@ -328,7 +328,7 @@
                                                                Height="61"
                                                                Margin="0 5 0 0"
                                                                HorizontalAlignment="Center"
-                                                               Fill="{DynamicResource MahApps.Brushes.ThemeForeground}"
+                                                               Fill="{DynamicResource Crystal.Brushes.ThemeForeground}"
                                                                Opacity=".25"
                                                                RenderTransformOrigin=".5,.75">
                                                         <Rectangle.RenderTransform>
@@ -386,8 +386,8 @@
                         </Grid>
 
                         <Border x:Name="DisabledVisualElement"
-                                Background="{DynamicResource MahApps.Brushes.Control.Disabled}"
-                                BorderBrush="{DynamicResource MahApps.Brushes.Control.Disabled}"
+                                Background="{DynamicResource Crystal.Brushes.Control.Disabled}"
+                                BorderBrush="{DynamicResource Crystal.Brushes.Control.Disabled}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 CornerRadius="{TemplateBinding mah:ControlsHelper.CornerRadius}"
                                 IsHitTestVisible="False"
@@ -397,7 +397,7 @@
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="mah:TextBoxHelper.ClearTextButton" Value="True">
-                            <Setter Property="mah:TextBoxHelper.ButtonCommand" Value="{x:Static mah:MahAppsCommands.ClearControlCommand}" />
+                            <Setter Property="mah:TextBoxHelper.ButtonCommand" Value="{x:Static mah:CrystalAppsCommands.ClearControlCommand}" />
                         </Trigger>
 
                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(mah:TextBoxHelper.ButtonsAlignment)}" Value="Left">
@@ -414,7 +414,7 @@
                         </Trigger>
                         <Trigger SourceName="PART_TextBox" Property="IsFocused" Value="True">
                             <Setter TargetName="Base" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:ControlsHelper.FocusBorderBrush)}" />
-                            <Setter TargetName="PART_FloatingMessage" Property="Foreground" Value="{DynamicResource MahApps.Brushes.TextBlock.FloatingMessage}" />
+                            <Setter TargetName="PART_FloatingMessage" Property="Foreground" Value="{DynamicResource Crystal.Brushes.TextBlock.FloatingMessage}" />
                             <Setter TargetName="PART_FloatingMessage" Property="Opacity" Value="1" />
                         </Trigger>
                         <Trigger Property="IsKeyboardFocusWithin" Value="True">
@@ -430,12 +430,12 @@
                             <Setter TargetName="PART_TextBox" Property="IsReadOnly" Value="True" />
                         </Trigger>
                         <Trigger SourceName="PART_Button" Property="IsMouseOver" Value="True">
-                            <Setter TargetName="PART_Button" Property="Background" Value="{DynamicResource MahApps.Brushes.Gray8}" />
-                            <Setter TargetName="PART_Button" Property="Foreground" Value="{DynamicResource MahApps.Brushes.Accent}" />
+                            <Setter TargetName="PART_Button" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray8}" />
+                            <Setter TargetName="PART_Button" Property="Foreground" Value="{DynamicResource Crystal.Brushes.Accent}" />
                         </Trigger>
                         <Trigger SourceName="PART_Button" Property="IsPressed" Value="True">
-                            <Setter TargetName="PART_Button" Property="Background" Value="{DynamicResource MahApps.Brushes.ThemeForeground}" />
-                            <Setter TargetName="PART_Button" Property="Foreground" Value="{DynamicResource MahApps.Brushes.ThemeBackground}" />
+                            <Setter TargetName="PART_Button" Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
+                            <Setter TargetName="PART_Button" Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
                         </Trigger>
 
                         <Trigger Property="IsClockVisible" Value="False">
@@ -457,12 +457,12 @@
                             <Setter TargetName="PART_ClearText" Property="IsEnabled" Value="False" />
                         </MultiTrigger>
                         <Trigger SourceName="PART_ClearText" Property="IsMouseOver" Value="True">
-                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource MahApps.Brushes.Gray8}" />
-                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource MahApps.Brushes.Accent}" />
+                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray8}" />
+                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource Crystal.Brushes.Accent}" />
                         </Trigger>
                         <Trigger SourceName="PART_ClearText" Property="IsPressed" Value="True">
-                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource MahApps.Brushes.ThemeForeground}" />
-                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource MahApps.Brushes.ThemeBackground}" />
+                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
+                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
                         </Trigger>
 
                         <MultiDataTrigger>
@@ -473,10 +473,10 @@
                                 <Condition Binding="{Binding Path=(mah:TextBoxHelper.Watermark), RelativeSource={RelativeSource Self}, Converter={x:Static mahConverters:StringIsNullOrEmptyConverter.Default}}" Value="False" />
                             </MultiDataTrigger.Conditions>
                             <MultiDataTrigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource MahApps.Storyboard.ShowFloatingMessage}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ShowFloatingMessage}" />
                             </MultiDataTrigger.EnterActions>
                             <MultiDataTrigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource MahApps.Storyboard.HideFloatingMessage}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.HideFloatingMessage}" />
                             </MultiDataTrigger.ExitActions>
                         </MultiDataTrigger>
 
@@ -484,9 +484,9 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource MahApps.Templates.ValidationError}" />
-        <Setter Property="mah:ControlsHelper.FocusBorderBrush" Value="{DynamicResource MahApps.Brushes.TextBox.Border.Focus}" />
-        <Setter Property="mah:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource MahApps.Brushes.TextBox.Border.MouseOver}" />
+        <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource Crystal.Templates.ValidationError}" />
+        <Setter Property="mah:ControlsHelper.FocusBorderBrush" Value="{DynamicResource Crystal.Brushes.TextBox.Border.Focus}" />
+        <Setter Property="mah:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource Crystal.Brushes.TextBox.Border.MouseOver}" />
         <!--  Modern - Calendar14  -->
         <Setter Property="mah:DatePickerHelper.DropDownButtonContent" Value="M 34.0047,52.0073L 31.0042,52.0073L 31.0042,38.5053C 29.6649,39.8964 28.157,40.7849 26.3412,41.4502L 26.3412,37.7553C 27.2998,37.4474 28.3405,36.8645 29.4634,36.0068C 30.5862,35.149 31.3572,34.1483 31.7762,33.0046L 34.0047,33.0046L 34.0047,52.0073 Z M 45.0063,52.0073L 45.0063,48.0067L 37.0052,48.0067L 37.0052,45.0063L 45.0063,33.0046L 48.0067,33.0046L 48.0067,45.0063L 50.007,45.0063L 50.007,48.0067L 48.0067,48.0067L 48.0067,52.0073L 45.0063,52.0073 Z M 45.0063,45.0063L 45.0063,38.2555L 40.2556,45.0063L 45.0063,45.0063 Z M 18.0025,57.0082L 18.0025,23.0033L 23.0032,23.0033L 23.0032,20.0029C 23.0033,18.898 23.8988,18.0026 25.0035,18.0026L 29.004,18.0026C 30.1087,18.0026 31.0042,18.898 31.0043,20.0026L 31.0043,23.0033L 45.0063,23.0033L 45.0062,20.0026C 45.0062,18.8979 45.9018,18.0023 47.0065,18.0023L 51.0071,18.0023C 52.1118,18.0023 53.0074,18.8979 53.0074,20.0026L 53.0074,23.0033L 58.0081,23.0033L 58.0081,57.0082L 18.0025,57.0082 Z M 21.0029,54.0078L 55.0076,54.0078L 55.0076,31.0044L 21.0029,31.0044L 21.0029,54.0078 Z M 48.5067,20.0029C 47.6782,20.0029 47.0065,20.6746 47.0065,21.5031L 47.0065,24.5035C 47.0065,25.3321 47.6782,26.0038 48.5067,26.0038L 49.5068,26.0038C 50.3354,26.0038 51.007,25.3321 51.007,24.5035L 51.007,21.5031C 51.007,20.6746 50.3354,20.0029 49.5068,20.0029L 48.5067,20.0029 Z M 26.5037,20.0029C 25.6751,20.0029 25.0035,20.6745 25.0035,21.5031L 25.0035,24.5035C 25.0035,25.3321 25.6751,26.0037 26.5037,26.0037L 27.5038,26.0037C 28.3324,26.0037 29.004,25.3321 29.004,24.5035L 29.004,21.5031C 29.004,20.6745 28.3324,20.0029 27.5038,20.0029L 26.5037,20.0029 Z" />
         <Setter Property="mah:DatePickerHelper.DropDownButtonContentTemplate">
@@ -499,19 +499,19 @@
                 </DataTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="mah:TextBoxHelper.ButtonFontSize" Value="{DynamicResource MahApps.Font.Size.Button.ClearText}" />
-        <Setter Property="mah:TextBoxHelper.ButtonTemplate" Value="{DynamicResource MahApps.Templates.Button.Chromeless}" />
+        <Setter Property="mah:TextBoxHelper.ButtonFontSize" Value="{DynamicResource Crystal.Font.Size.Button.ClearText}" />
+        <Setter Property="mah:TextBoxHelper.ButtonTemplate" Value="{DynamicResource Crystal.Templates.Button.Chromeless}" />
         <Setter Property="mah:TextBoxHelper.ButtonWidth" Value="22" />
         <Setter Property="mah:TextBoxHelper.IsMonitoring" Value="True" />
     </Style>
 
-    <Style BasedOn="{StaticResource MahApps.Styles.TimePickerBase}" TargetType="{x:Type mah:DateTimePicker}">
-        <Setter Property="CalendarStyle" Value="{DynamicResource MahApps.Styles.Calendar.DateTimePicker}" />
+    <Style BasedOn="{StaticResource Crystal.Styles.TimePickerBase}" TargetType="{x:Type mah:DateTimePicker}">
+        <Setter Property="CalendarStyle" Value="{DynamicResource Crystal.Styles.Calendar.DateTimePicker}" />
         <Setter Property="IsTodayHighlighted" Value="True" />
         <Setter Property="mah:TextBoxHelper.Watermark" Value="Select a date" />
     </Style>
 
-    <Style BasedOn="{StaticResource MahApps.Styles.TimePickerBase}" TargetType="{x:Type mah:TimePicker}">
+    <Style BasedOn="{StaticResource Crystal.Styles.TimePickerBase}" TargetType="{x:Type mah:TimePicker}">
         <Setter Property="mah:DatePickerHelper.DropDownButtonContent" Value="M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z" />
         <Setter Property="mah:TextBoxHelper.Watermark" Value="Select a time" />
     </Style>

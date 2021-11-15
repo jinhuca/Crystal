@@ -21,10 +21,10 @@
     <mah:HamburgerMenuItemStyleSelector x:Key="HamburgerMenuItemStyleSelector" />
     <mah:HamburgerMenuItemStyleSelector x:Key="HamburgerMenuItemOptionsStyleSelector" IsItemOptions="True" />
 
-    <Style x:Key="MahApps.Styles.Button.Hamburger"
-           BasedOn="{StaticResource MahApps.Styles.Button.Chromeless}"
+    <Style x:Key="Crystal.Styles.Button.Hamburger"
+           BasedOn="{StaticResource Crystal.Styles.Button.Chromeless}"
            TargetType="{x:Type Button}">
-        <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.ThemeForeground}" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Margin" Value="0" />
         <Setter Property="Padding" Value="0" />
@@ -65,8 +65,8 @@
                  EasingMode="EaseInOut"
                  po:Freeze="true" />
 
-    <Style x:Key="MahApps.Styles.ScrollViewer.Hamburger"
-           BasedOn="{StaticResource MahApps.Styles.ScrollViewer}"
+    <Style x:Key="Crystal.Styles.ScrollViewer.Hamburger"
+           BasedOn="{StaticResource Crystal.Styles.ScrollViewer}"
            TargetType="{x:Type ScrollViewer}">
         <Setter Property="Template">
             <Setter.Value>
@@ -173,15 +173,15 @@
         </Setter>
     </Style>
 
-    <ControlTemplate x:Key="MahApps.Templates.HamburgerMenuItem.FocusVisual">
+    <ControlTemplate x:Key="Crystal.Templates.HamburgerMenuItem.FocusVisual">
         <Rectangle SnapsToDevicePixels="True"
                    Stroke="Black"
                    StrokeThickness="2"
                    UseLayoutRounding="True" />
     </ControlTemplate>
 
-    <Style x:Key="MahApps.Styles.ListBoxItem.HamburgerBase"
-           BasedOn="{StaticResource MahApps.Styles.ListBoxItem}"
+    <Style x:Key="Crystal.Styles.ListBoxItem.HamburgerBase"
+           BasedOn="{StaticResource Crystal.Styles.ListBoxItem}"
            TargetType="{x:Type ListBoxItem}">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="BorderThickness" Value="0" />
@@ -193,8 +193,8 @@
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
     </Style>
 
-    <Style x:Key="MahApps.Styles.ListBoxItem.HamburgerMenuItem"
-           BasedOn="{StaticResource MahApps.Styles.ListBoxItem.HamburgerBase}"
+    <Style x:Key="Crystal.Styles.ListBoxItem.HamburgerMenuItem"
+           BasedOn="{StaticResource Crystal.Styles.ListBoxItem.HamburgerBase}"
            TargetType="{x:Type ListBoxItem}">
         <Setter Property="FocusVisualStyle" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:HamburgerMenu}}, Path=ItemFocusVisualStyle, Mode=OneWay, FallbackValue={x:Null}}" />
         <Setter Property="IsTabStop" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:HamburgerMenu}}, Path=IsTabStop, Mode=OneWay, FallbackValue=True}" />
@@ -294,34 +294,34 @@
             </Setter.Value>
         </Setter>
         <Setter Property="mah:ItemHelper.HoverForegroundBrush" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}, Path=Foreground, Mode=OneWay}" />
-        <Setter Property="mah:ItemHelper.SelectedBackgroundBrush" Value="{DynamicResource MahApps.Brushes.Accent}" />
+        <Setter Property="mah:ItemHelper.SelectedBackgroundBrush" Value="{DynamicResource Crystal.Brushes.Accent}" />
     </Style>
 
-    <Style x:Key="MahApps.Styles.ListBoxItem.HamburgerMenuItem.CreatorsUpdate"
-           BasedOn="{StaticResource MahApps.Styles.ListBoxItem.HamburgerMenuItem}"
+    <Style x:Key="Crystal.Styles.ListBoxItem.HamburgerMenuItem.CreatorsUpdate"
+           BasedOn="{StaticResource Crystal.Styles.ListBoxItem.HamburgerMenuItem}"
            TargetType="{x:Type ListBoxItem}">
         <Setter Property="mah:ItemHelper.ActiveSelectionBackgroundBrush" Value="Transparent" />
-        <Setter Property="mah:ItemHelper.ActiveSelectionForegroundBrush" Value="{DynamicResource MahApps.Brushes.AccentBase}" />
-        <Setter Property="mah:ItemHelper.DisabledForegroundBrush" Value="{DynamicResource MahApps.Brushes.Gray}" />
+        <Setter Property="mah:ItemHelper.ActiveSelectionForegroundBrush" Value="{DynamicResource Crystal.Brushes.AccentBase}" />
+        <Setter Property="mah:ItemHelper.DisabledForegroundBrush" Value="{DynamicResource Crystal.Brushes.Gray}" />
         <Setter Property="mah:ItemHelper.DisabledSelectedBackgroundBrush" Value="Transparent" />
-        <Setter Property="mah:ItemHelper.DisabledSelectedForegroundBrush" Value="{DynamicResource MahApps.Brushes.Gray}" />
-        <Setter Property="mah:ItemHelper.HoverBackgroundBrush" Value="{DynamicResource MahApps.Brushes.Gray9}" />
-        <Setter Property="mah:ItemHelper.HoverSelectedBackgroundBrush" Value="{DynamicResource MahApps.Brushes.Gray9}" />
-        <Setter Property="mah:ItemHelper.HoverSelectedForegroundBrush" Value="{DynamicResource MahApps.Brushes.AccentBase}" />
+        <Setter Property="mah:ItemHelper.DisabledSelectedForegroundBrush" Value="{DynamicResource Crystal.Brushes.Gray}" />
+        <Setter Property="mah:ItemHelper.HoverBackgroundBrush" Value="{DynamicResource Crystal.Brushes.Gray9}" />
+        <Setter Property="mah:ItemHelper.HoverSelectedBackgroundBrush" Value="{DynamicResource Crystal.Brushes.Gray9}" />
+        <Setter Property="mah:ItemHelper.HoverSelectedForegroundBrush" Value="{DynamicResource Crystal.Brushes.AccentBase}" />
         <Setter Property="mah:ItemHelper.SelectedBackgroundBrush" Value="Transparent" />
-        <Setter Property="mah:ItemHelper.SelectedForegroundBrush" Value="{DynamicResource MahApps.Brushes.AccentBase}" />
+        <Setter Property="mah:ItemHelper.SelectedForegroundBrush" Value="{DynamicResource Crystal.Brushes.AccentBase}" />
     </Style>
 
-    <Style x:Key="MahApps.Styles.TextBlock.HamburgerMenuHeader"
-           BasedOn="{StaticResource MahApps.Styles.TextBlock}"
+    <Style x:Key="Crystal.Styles.TextBlock.HamburgerMenuHeader"
+           BasedOn="{StaticResource Crystal.Styles.TextBlock}"
            TargetType="{x:Type TextBlock}">
         <Setter Property="FontSize" Value="16" />
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="TextWrapping" Value="NoWrap" />
     </Style>
 
-    <Style x:Key="MahApps.Styles.ListBoxItem.HamburgerMenuHeader"
-           BasedOn="{StaticResource MahApps.Styles.ListBoxItem.HamburgerBase}"
+    <Style x:Key="Crystal.Styles.ListBoxItem.HamburgerMenuHeader"
+           BasedOn="{StaticResource Crystal.Styles.ListBoxItem.HamburgerBase}"
            TargetType="{x:Type ListBoxItem}">
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
         <Setter Property="Focusable" Value="False" />
@@ -337,7 +337,7 @@
                                    Margin="{TemplateBinding Padding}"
                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                   Style="{DynamicResource MahApps.Styles.TextBlock.HamburgerMenuHeader}"
+                                   Style="{DynamicResource Crystal.Styles.TextBlock.HamburgerMenuHeader}"
                                    Text="{Binding Label}" />
                     </Grid>
                     <ControlTemplate.Triggers>
@@ -350,8 +350,8 @@
         </Setter>
     </Style>
 
-    <Style x:Key="MahApps.Styles.ListBoxItem.HamburgerMenuSeparator"
-           BasedOn="{StaticResource MahApps.Styles.ListBoxItem.HamburgerBase}"
+    <Style x:Key="Crystal.Styles.ListBoxItem.HamburgerMenuSeparator"
+           BasedOn="{StaticResource Crystal.Styles.ListBoxItem.HamburgerBase}"
            TargetType="{x:Type ListBoxItem}">
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
         <Setter Property="Focusable" Value="False" />
@@ -372,8 +372,8 @@
         </Setter>
     </Style>
 
-    <Style x:Key="MahApps.Styles.ListBox.HamburgerMenu"
-           BasedOn="{StaticResource MahApps.Styles.ListBox}"
+    <Style x:Key="Crystal.Styles.ListBox.HamburgerMenu"
+           BasedOn="{StaticResource Crystal.Styles.ListBox}"
            TargetType="{x:Type ListBox}">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="BorderThickness" Value="0" />
@@ -394,7 +394,7 @@
                                       Focusable="False"
                                       HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
                                       SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                      Style="{StaticResource MahApps.Styles.ScrollViewer.Hamburger}"
+                                      Style="{StaticResource Crystal.Styles.ScrollViewer.Hamburger}"
                                       VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
                             <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                         </ScrollViewer>
@@ -414,11 +414,11 @@
         <Setter Property="VirtualizingStackPanel.IsVirtualizing" Value="False" />
     </Style>
 
-    <Style x:Key="MahApps.Styles.HamburgerMenuListBox"
-           BasedOn="{StaticResource MahApps.Styles.ListBox.HamburgerMenu}"
+    <Style x:Key="Crystal.Styles.HamburgerMenuListBox"
+           BasedOn="{StaticResource Crystal.Styles.ListBox.HamburgerMenu}"
            TargetType="{x:Type mah:HamburgerMenuListBox}" />
 
-    <ControlTemplate x:Key="MahApps.Templates.HamburgerMenu" TargetType="{x:Type mah:HamburgerMenu}">
+    <ControlTemplate x:Key="Crystal.Templates.HamburgerMenu" TargetType="{x:Type mah:HamburgerMenu}">
         <Grid>
             <mah:SplitView x:Name="MainSplitView"
                            CanResizeOpenPane="{TemplateBinding CanResizeOpenPane}"

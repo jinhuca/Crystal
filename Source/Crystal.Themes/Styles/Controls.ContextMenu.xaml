@@ -2,13 +2,13 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:mah="clr-namespace:Crystal.Themes.Controls">
 
-    <Style x:Key="MahApps.Styles.ContextMenu" TargetType="{x:Type ContextMenu}">
-        <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.ContextMenu.Background}" />
+    <Style x:Key="Crystal.Styles.ContextMenu" TargetType="{x:Type ContextMenu}">
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.ContextMenu.Background}" />
         <Setter Property="Block.TextAlignment" Value="Left" />
-        <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.ContextMenu.Border}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.ContextMenu.Border}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="FontFamily" Value="{DynamicResource {x:Static SystemFonts.MenuFontFamilyKey}}" />
-        <Setter Property="FontSize" Value="{DynamicResource MahApps.Font.Size.ContextMenu}" />
+        <Setter Property="FontSize" Value="{DynamicResource Crystal.Font.Size.ContextMenu}" />
         <Setter Property="FontStyle" Value="{DynamicResource {x:Static SystemFonts.MenuFontStyleKey}}" />
         <Setter Property="FontWeight" Value="{DynamicResource {x:Static SystemFonts.MenuFontWeightKey}}" />
         <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.MenuTextBrushKey}}" />
@@ -44,7 +44,7 @@
                     </mah:ClipBorder>
                     <ControlTemplate.Triggers>
                         <Trigger Property="HasDropShadow" Value="True">
-                            <Setter TargetName="Border" Property="Effect" Value="{DynamicResource MahApps.DropShadowEffect.Menu}" />
+                            <Setter TargetName="Border" Property="Effect" Value="{DynamicResource Crystal.DropShadowEffect.Menu}" />
                             <Setter TargetName="Border" Property="Margin" Value="0 0 6 6" />
                         </Trigger>
                     </ControlTemplate.Triggers>
@@ -55,12 +55,12 @@
         <Setter Property="VerticalContentAlignment" Value="Center" />
     </Style>
 
-    <ContextMenu x:Key="MahApps.TextBox.ContextMenu"
+    <ContextMenu x:Key="Crystal.TextBox.ContextMenu"
                  x:Shared="False"
-                 Style="{StaticResource MahApps.Styles.ContextMenu}">
-        <MenuItem Command="ApplicationCommands.Cut" Style="{DynamicResource MahApps.Styles.MenuItem}" />
-        <MenuItem Command="ApplicationCommands.Copy" Style="{DynamicResource MahApps.Styles.MenuItem}" />
-        <MenuItem Command="ApplicationCommands.Paste" Style="{DynamicResource MahApps.Styles.MenuItem}" />
+                 Style="{StaticResource Crystal.Styles.ContextMenu}">
+        <MenuItem Command="ApplicationCommands.Cut" Style="{DynamicResource Crystal.Styles.MenuItem}" />
+        <MenuItem Command="ApplicationCommands.Copy" Style="{DynamicResource Crystal.Styles.MenuItem}" />
+        <MenuItem Command="ApplicationCommands.Paste" Style="{DynamicResource Crystal.Styles.MenuItem}" />
     </ContextMenu>
 
 </ResourceDictionary>

@@ -3,7 +3,7 @@
                     xmlns:mah="clr-namespace:Crystal.Themes.Controls">
 
     <Style TargetType="{x:Type mah:Underline}">
-        <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.Gray}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Gray}" />
         <Setter Property="Focusable" Value="False" />
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="IsTabStop" Value="False" />

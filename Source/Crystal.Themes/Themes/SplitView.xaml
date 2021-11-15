@@ -4,7 +4,7 @@
 
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 
-    <Style x:Key="MahApps.Styles.MetroThumb.SplitView.Resize" TargetType="mah:MetroThumb">
+    <Style x:Key="Crystal.Styles.MetroThumb.SplitView.Resize" TargetType="mah:MetroThumb">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Cursor" Value="SizeWE" />
         <Setter Property="Template">
@@ -28,8 +28,8 @@
         <Setter Property="MinimumOpenPaneLength" Value="100" />
         <Setter Property="OpenPaneLength" Value="320" />
         <Setter Property="PaneBackground" Value="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" />
-        <Setter Property="PaneForeground" Value="{DynamicResource MahApps.Brushes.Text}" />
-        <Setter Property="ResizeThumbStyle" Value="{StaticResource MahApps.Styles.MetroThumb.SplitView.Resize}" />
+        <Setter Property="PaneForeground" Value="{DynamicResource Crystal.Brushes.Text}" />
+        <Setter Property="ResizeThumbStyle" Value="{StaticResource Crystal.Styles.MetroThumb.SplitView.Resize}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type mah:SplitView}">

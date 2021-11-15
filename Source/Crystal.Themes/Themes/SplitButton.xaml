@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:mah="clr-namespace:Crystal.Themes.Controls">
 
-    <ControlTemplate x:Key="MahApps.Templates.SplitButton.Horizontal" TargetType="{x:Type mah:SplitButton}">
+    <ControlTemplate x:Key="Crystal.Templates.SplitButton.Horizontal" TargetType="{x:Type mah:SplitButton}">
         <Grid UseLayoutRounding="True">
             <Border x:Name="PART_Border"
                     Background="Transparent"
@@ -88,7 +88,7 @@
                     <Border x:Name="PopupBorder"
                             Height="Auto"
                             HorizontalAlignment="Stretch"
-                            Background="{DynamicResource MahApps.Brushes.ThemeBackground}"
+                            Background="{DynamicResource Crystal.Brushes.ThemeBackground}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="1"
                             SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
@@ -128,7 +128,7 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
-    <ControlTemplate x:Key="MahApps.Templates.SplitButton.Vertical" TargetType="{x:Type mah:SplitButton}">
+    <ControlTemplate x:Key="Crystal.Templates.SplitButton.Vertical" TargetType="{x:Type mah:SplitButton}">
         <Grid UseLayoutRounding="True">
             <Border x:Name="PART_Border"
                     Background="Transparent"
@@ -214,7 +214,7 @@
                     <Border x:Name="PopupBorder"
                             Height="Auto"
                             HorizontalAlignment="Stretch"
-                            Background="{DynamicResource MahApps.Brushes.ThemeBackground}"
+                            Background="{DynamicResource Crystal.Brushes.ThemeBackground}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="1"
                             SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
@@ -254,7 +254,7 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
-    <Style x:Key="MahApps.Styles.SplitButton.FocusVisualStyle">
+    <Style x:Key="Crystal.Styles.SplitButton.FocusVisualStyle">
         <Setter Property="Control.Template">
             <Setter.Value>
                 <ControlTemplate>
@@ -269,18 +269,18 @@
     </Style>
 
     <Style TargetType="{x:Type mah:SplitButton}">
-        <Setter Property="ArrowBrush" Value="{DynamicResource MahApps.Brushes.ThemeForeground}" />
-        <Setter Property="ArrowMouseOverBrush" Value="{DynamicResource MahApps.Brushes.Accent}" />
-        <Setter Property="ArrowPressedBrush" Value="{DynamicResource MahApps.Brushes.ThemeForeground}" />
-        <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.ThemeBackground}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.ThemeForeground}" />
+        <Setter Property="ArrowBrush" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
+        <Setter Property="ArrowMouseOverBrush" Value="{DynamicResource Crystal.Brushes.Accent}" />
+        <Setter Property="ArrowPressedBrush" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="ButtonArrowStyle" Value="{DynamicResource MahApps.Styles.Button.Split.Arrow}" />
-        <Setter Property="ButtonStyle" Value="{DynamicResource MahApps.Styles.Button.Split}" />
-        <Setter Property="FocusVisualStyle" Value="{StaticResource MahApps.Styles.SplitButton.FocusVisualStyle}" />
-        <Setter Property="FontFamily" Value="{DynamicResource MahApps.Fonts.Family.Control}" />
-        <Setter Property="FontSize" Value="{DynamicResource MahApps.Font.Size.Content}" />
-        <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.ThemeForeground}" />
+        <Setter Property="ButtonArrowStyle" Value="{DynamicResource Crystal.Styles.Button.Split.Arrow}" />
+        <Setter Property="ButtonStyle" Value="{DynamicResource Crystal.Styles.Button.Split}" />
+        <Setter Property="FocusVisualStyle" Value="{StaticResource Crystal.Styles.SplitButton.FocusVisualStyle}" />
+        <Setter Property="FontFamily" Value="{DynamicResource Crystal.Fonts.Family.Control}" />
+        <Setter Property="FontSize" Value="{DynamicResource Crystal.Font.Size.Content}" />
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="MinHeight" Value="26" />
         <Setter Property="Padding" Value="2" />
@@ -291,7 +291,7 @@
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
-        <Setter Property="Template" Value="{StaticResource MahApps.Templates.SplitButton.Horizontal}" />
+        <Setter Property="Template" Value="{StaticResource Crystal.Templates.SplitButton.Horizontal}" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="VirtualizingStackPanel.IsVirtualizing" Value="True" />
         <Setter Property="VirtualizingStackPanel.IsVirtualizingWhenGrouping" Value="True" />
@@ -310,13 +310,13 @@
                 </Setter>
             </Trigger>
             <Trigger Property="Orientation" Value="Vertical">
-                <Setter Property="Template" Value="{StaticResource MahApps.Templates.SplitButton.Vertical}" />
+                <Setter Property="Template" Value="{StaticResource Crystal.Templates.SplitButton.Vertical}" />
             </Trigger>
             <Trigger Property="IsFocused" Value="True">
-                <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.Accent}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Accent}" />
             </Trigger>
             <Trigger Property="IsKeyboardFocusWithin" Value="True">
-                <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.Accent}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Accent}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Opacity" Value=".55" />

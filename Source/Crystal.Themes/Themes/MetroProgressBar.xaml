@@ -3,16 +3,16 @@
                     xmlns:mah="clr-namespace:Crystal.Themes.Controls"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
-    <system:Double x:Key="MahApps.Sizes.ProgressBar.MinHeight">6</system:Double>
+    <system:Double x:Key="Crystal.Sizes.ProgressBar.MinHeight">6</system:Double>
 
-    <Style x:Key="MahApps.Styles.MetroProgressBar" TargetType="{x:Type mah:MetroProgressBar}">
+    <Style x:Key="Crystal.Styles.MetroProgressBar" TargetType="{x:Type mah:MetroProgressBar}">
         <Setter Property="Background" Value="#1FFFFFFF" />
         <Setter Property="BorderBrush" Value="Transparent" />
         <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Highlight}" />
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Highlight}" />
         <Setter Property="IsTabStop" Value="False" />
         <Setter Property="Maximum" Value="100" />
-        <Setter Property="MinHeight" Value="{StaticResource MahApps.Sizes.ProgressBar.MinHeight}" />
+        <Setter Property="MinHeight" Value="{StaticResource Crystal.Sizes.ProgressBar.MinHeight}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type mah:MetroProgressBar}">
@@ -270,7 +270,7 @@
                         </Trigger>
                         <Trigger Property="Orientation" Value="Vertical">
                             <Setter Property="MinHeight" Value="0" />
-                            <Setter Property="MinWidth" Value="{StaticResource MahApps.Sizes.ProgressBar.MinHeight}" />
+                            <Setter Property="MinWidth" Value="{StaticResource Crystal.Sizes.ProgressBar.MinHeight}" />
                             <Setter Property="UseLayoutRounding" Value="True" />
                             <Setter TargetName="ContainingGrid" Property="LayoutTransform">
                                 <Setter.Value>

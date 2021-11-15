@@ -2,10 +2,10 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:mah="clr-namespace:Crystal.Themes.Controls">
 
-    <Style x:Key="MahApps.Styles.Button.VisualStudio" TargetType="Button">
-        <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Background.Normal}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.Border.Normal}" />
-        <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Foreground}" />
+    <Style x:Key="Crystal.Styles.Button.VisualStudio" TargetType="Button">
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Background.Normal}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Border.Normal}" />
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Foreground}" />
         <Setter Property="Height" Value="23" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="Padding" Value="1" />
@@ -23,12 +23,12 @@
                     </mah:ClipBorder>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.BackgroundHighlighted}" />
-                            <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.Border.Highlighted}" />
+                            <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.BackgroundHighlighted}" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Border.Highlighted}" />
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.BackgroundSelected}" />
-                            <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.Border.Selected}" />
+                            <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.BackgroundSelected}" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Border.Selected}" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Background" Value="Transparent" />
@@ -40,9 +40,9 @@
         <Setter Property="VerticalContentAlignment" Value="Center" />
     </Style>
 
-    <Style x:Key="MahApps.Styles.Button.Link.VisualStudio" TargetType="Button">
+    <Style x:Key="Crystal.Styles.Button.Link.VisualStudio" TargetType="Button">
         <Setter Property="Cursor" Value="Hand" />
-        <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.LinkButton.Foreground}" />
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.LinkButton.Foreground}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -54,7 +54,7 @@
         </Setter>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="true">
-                <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.LinkButton.ForegroundHighlighted}" />
+                <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.LinkButton.ForegroundHighlighted}" />
             </Trigger>
         </Style.Triggers>
     </Style>

@@ -254,7 +254,7 @@ namespace Crystal.Themes.Controls.Dialogs
 
     private void BaseMetroDialogDataContextChanged(object? sender, DependencyPropertyChangedEventArgs e)
     {
-      // MahApps add these content presenter to the dialog with AddLogicalChild method.
+      // Crystal add these content presenter to the dialog with AddLogicalChild method.
       // This has the side effect that the DataContext doesn't update, so do this now here.
       if (DialogTop is FrameworkElement elementTop)
       {
@@ -303,8 +303,8 @@ namespace Crystal.Themes.Controls.Dialogs
       {
         case MetroDialogColorScheme.Theme:
           ThemeManager.Current.ChangeTheme(this, Resources, theme);
-          SetCurrentValue(BackgroundProperty, TryGetResource(theme, "MahApps.Brushes.Dialog.Background"));
-          SetCurrentValue(ForegroundProperty, TryGetResource(theme, "MahApps.Brushes.Dialog.Foreground"));
+          SetCurrentValue(BackgroundProperty, TryGetResource(theme, "Crystal.Brushes.Dialog.Background"));
+          SetCurrentValue(ForegroundProperty, TryGetResource(theme, "Crystal.Brushes.Dialog.Foreground"));
           break;
         case MetroDialogColorScheme.Inverted:
           theme = ThemeManager.Current.GetInverseTheme(theme);
@@ -315,20 +315,20 @@ namespace Crystal.Themes.Controls.Dialogs
           }
 
           ThemeManager.Current.ChangeTheme(this, Resources, theme);
-          SetCurrentValue(BackgroundProperty, TryGetResource(theme, "MahApps.Brushes.Dialog.Background"));
-          SetCurrentValue(ForegroundProperty, TryGetResource(theme, "MahApps.Brushes.Dialog.Foreground"));
+          SetCurrentValue(BackgroundProperty, TryGetResource(theme, "Crystal.Brushes.Dialog.Background"));
+          SetCurrentValue(ForegroundProperty, TryGetResource(theme, "Crystal.Brushes.Dialog.Foreground"));
           break;
         case MetroDialogColorScheme.Accented:
           ThemeManager.Current.ChangeTheme(this, Resources, theme);
-          SetCurrentValue(BackgroundProperty, TryGetResource(theme, "MahApps.Brushes.Dialog.Background.Accent"));
-          SetCurrentValue(ForegroundProperty, TryGetResource(theme, "MahApps.Brushes.Dialog.Foreground.Accent"));
+          SetCurrentValue(BackgroundProperty, TryGetResource(theme, "Crystal.Brushes.Dialog.Background.Accent"));
+          SetCurrentValue(ForegroundProperty, TryGetResource(theme, "Crystal.Brushes.Dialog.Foreground.Accent"));
           break;
       }
 
       if (ParentDialogWindow != null)
       {
         ParentDialogWindow.SetCurrentValue(BackgroundProperty, Background);
-        var glowBrush = TryGetResource(theme, "MahApps.Brushes.Dialog.Glow");
+        var glowBrush = TryGetResource(theme, "Crystal.Brushes.Dialog.Glow");
         if (glowBrush != null)
         {
           ParentDialogWindow.SetCurrentValue(CrystalWindow.GlowBrushProperty, glowBrush);
@@ -486,7 +486,7 @@ namespace Crystal.Themes.Controls.Dialogs
 
       if (DialogSettings.AnimateHide)
       {
-        var closingStoryboard = TryFindResource("MahApps.Storyboard.Dialogs.Close") as Storyboard;
+        var closingStoryboard = TryFindResource("Crystal.Storyboard.Dialogs.Close") as Storyboard;
 
         if (closingStoryboard is null)
         {

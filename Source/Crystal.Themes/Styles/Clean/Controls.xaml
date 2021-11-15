@@ -10,10 +10,10 @@
         <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Clean/StatusBar.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <Style BasedOn="{StaticResource MahApps.Styles.GroupBox.Clean}" TargetType="{x:Type GroupBox}" />
-    <Style BasedOn="{StaticResource MahApps.Styles.MetroWindow.Clean}" TargetType="{x:Type mah:CrystalWindow}" />
-    <Style BasedOn="{StaticResource MahApps.Styles.WindowButtonCommands.Clean.Win10}" TargetType="{x:Type mah:WindowButtonCommands}" />
-    <Style BasedOn="{StaticResource MahApps.Styles.WindowCommands.Clean}" TargetType="{x:Type mah:WindowCommands}" />
-    <Style BasedOn="{StaticResource MahApps.Styles.StatusBar.Clean}" TargetType="{x:Type StatusBar}" />
+    <Style BasedOn="{StaticResource Crystal.Styles.GroupBox.Clean}" TargetType="{x:Type GroupBox}" />
+    <Style BasedOn="{StaticResource Crystal.Styles.MetroWindow.Clean}" TargetType="{x:Type mah:CrystalWindow}" />
+    <Style BasedOn="{StaticResource Crystal.Styles.WindowButtonCommands.Clean.Win10}" TargetType="{x:Type mah:WindowButtonCommands}" />
+    <Style BasedOn="{StaticResource Crystal.Styles.WindowCommands.Clean}" TargetType="{x:Type mah:WindowCommands}" />
+    <Style BasedOn="{StaticResource Crystal.Styles.StatusBar.Clean}" TargetType="{x:Type StatusBar}" />
 
 </ResourceDictionary>

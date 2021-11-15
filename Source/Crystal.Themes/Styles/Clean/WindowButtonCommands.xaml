@@ -7,23 +7,23 @@
         <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Clean/WindowButtons.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <Style x:Key="MahApps.Styles.WindowButtonCommands.Clean"
-           BasedOn="{StaticResource MahApps.Styles.WindowButtonCommands.Base}"
+    <Style x:Key="Crystal.Styles.WindowButtonCommands.Clean"
+           BasedOn="{StaticResource Crystal.Styles.WindowButtonCommands.Base}"
            TargetType="{x:Type mah:WindowButtonCommands}">
-        <Setter Property="DarkCloseButtonStyle" Value="{StaticResource MahApps.Styles.Button.MetroWindow.Close.Dark.Clean}" />
-        <Setter Property="DarkMaxButtonStyle" Value="{DynamicResource MahApps.Styles.Button.MetroWindow.Dark.Clean}" />
-        <Setter Property="DarkMinButtonStyle" Value="{DynamicResource MahApps.Styles.Button.MetroWindow.Dark.Clean}" />
-        <Setter Property="LightCloseButtonStyle" Value="{StaticResource MahApps.Styles.Button.MetroWindow.Close.Light.Clean}" />
-        <Setter Property="LightMaxButtonStyle" Value="{DynamicResource MahApps.Styles.Button.MetroWindow.Light.Clean}" />
-        <Setter Property="LightMinButtonStyle" Value="{DynamicResource MahApps.Styles.Button.MetroWindow.Light.Clean}" />
+        <Setter Property="DarkCloseButtonStyle" Value="{StaticResource Crystal.Styles.Button.MetroWindow.Close.Dark.Clean}" />
+        <Setter Property="DarkMaxButtonStyle" Value="{DynamicResource Crystal.Styles.Button.MetroWindow.Dark.Clean}" />
+        <Setter Property="DarkMinButtonStyle" Value="{DynamicResource Crystal.Styles.Button.MetroWindow.Dark.Clean}" />
+        <Setter Property="LightCloseButtonStyle" Value="{StaticResource Crystal.Styles.Button.MetroWindow.Close.Light.Clean}" />
+        <Setter Property="LightMaxButtonStyle" Value="{DynamicResource Crystal.Styles.Button.MetroWindow.Light.Clean}" />
+        <Setter Property="LightMinButtonStyle" Value="{DynamicResource Crystal.Styles.Button.MetroWindow.Light.Clean}" />
     </Style>
 
-    <Style x:Key="MahApps.Styles.WindowButtonCommands.Clean.Win10"
-           BasedOn="{StaticResource MahApps.Styles.WindowButtonCommands.Clean}"
+    <Style x:Key="Crystal.Styles.WindowButtonCommands.Clean.Win10"
+           BasedOn="{StaticResource Crystal.Styles.WindowButtonCommands.Clean}"
            TargetType="{x:Type mah:WindowButtonCommands}">
-        <Setter Property="DarkCloseButtonStyle" Value="{DynamicResource MahApps.Styles.Button.MetroWindow.Close.Dark.Clean.Win10}" />
-        <Setter Property="LightCloseButtonStyle" Value="{DynamicResource MahApps.Styles.Button.MetroWindow.Close.Light.Clean.Win10}" />
-        <Setter Property="Template" Value="{StaticResource MahApps.Templates.WindowButtonCommands.Win10}" />
+        <Setter Property="DarkCloseButtonStyle" Value="{DynamicResource Crystal.Styles.Button.MetroWindow.Close.Dark.Clean.Win10}" />
+        <Setter Property="LightCloseButtonStyle" Value="{DynamicResource Crystal.Styles.Button.MetroWindow.Close.Light.Clean.Win10}" />
+        <Setter Property="Template" Value="{StaticResource Crystal.Templates.WindowButtonCommands.Win10}" />
     </Style>
 
 </ResourceDictionary>

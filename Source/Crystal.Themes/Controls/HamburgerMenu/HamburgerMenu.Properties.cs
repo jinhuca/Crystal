@@ -463,7 +463,7 @@ namespace Crystal.Themes.Controls
 
     private void ChangeItemFocusVisualStyle()
     {
-      _defaultItemFocusVisualTemplate ??= TryFindResource("MahApps.Templates.HamburgerMenuItem.FocusVisual") as ControlTemplate;
+      _defaultItemFocusVisualTemplate ??= TryFindResource("Crystal.Templates.HamburgerMenuItem.FocusVisual") as ControlTemplate;
       if (_defaultItemFocusVisualTemplate != null)
       {
         var focusVisualStyle = new Style(typeof(Control));

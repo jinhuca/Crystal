@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:mah="clr-namespace:Crystal.Themes.Controls">
 
-    <Style x:Key="MahApps.Styles.CrystalHeader" TargetType="{x:Type mah:CrystalHeader}">
+    <Style x:Key="Crystal.Styles.CrystalHeader" TargetType="{x:Type mah:CrystalHeader}">
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="IsTabStop" Value="False" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
@@ -47,7 +47,7 @@
         </Setter>
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
         <Setter Property="mah:HeaderedControlHelper.HeaderBackground" Value="{Binding RelativeSource={RelativeSource Self}, Path=Background, Mode=OneWay}" />
-        <Setter Property="mah:HeaderedControlHelper.HeaderFontSize" Value="{DynamicResource MahApps.Font.Size.Default}" />
+        <Setter Property="mah:HeaderedControlHelper.HeaderFontSize" Value="{DynamicResource Crystal.Font.Size.Default}" />
         <Setter Property="mah:HeaderedControlHelper.HeaderForeground" Value="{Binding RelativeSource={RelativeSource Self}, Path=Foreground, Mode=OneWay}" />
         <Setter Property="mah:HeaderedControlHelper.HeaderMargin" Value="0 0 0 2" />
     </Style>

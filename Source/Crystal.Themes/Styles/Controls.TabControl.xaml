@@ -6,8 +6,8 @@
 
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 
-    <Style x:Key="MahApps.Styles.TabControl" TargetType="{x:Type TabControl}">
-        <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.ThemeBackground}" />
+    <Style x:Key="Crystal.Styles.TabControl" TargetType="{x:Type TabControl}">
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
         <Setter Property="BorderBrush" Value="{x:Null}" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Template">
@@ -94,19 +94,19 @@
             </Setter.Value>
         </Setter>
         <!--  special property for header font size  -->
-        <Setter Property="mah:HeaderedControlHelper.HeaderFontSize" Value="{DynamicResource MahApps.Font.Size.TabItem}" />
-        <Setter Property="mah:TabControlHelper.UnderlineBrush" Value="{DynamicResource MahApps.Brushes.Gray}" />
-        <Setter Property="mah:TabControlHelper.UnderlineMouseOverBrush" Value="{DynamicResource MahApps.Brushes.Gray.MouseOver}" />
-        <Setter Property="mah:TabControlHelper.UnderlineMouseOverSelectedBrush" Value="{DynamicResource MahApps.Brushes.Highlight}" />
-        <Setter Property="mah:TabControlHelper.UnderlineSelectedBrush" Value="{DynamicResource MahApps.Brushes.Accent}" />
+        <Setter Property="mah:HeaderedControlHelper.HeaderFontSize" Value="{DynamicResource Crystal.Font.Size.TabItem}" />
+        <Setter Property="mah:TabControlHelper.UnderlineBrush" Value="{DynamicResource Crystal.Brushes.Gray}" />
+        <Setter Property="mah:TabControlHelper.UnderlineMouseOverBrush" Value="{DynamicResource Crystal.Brushes.Gray.MouseOver}" />
+        <Setter Property="mah:TabControlHelper.UnderlineMouseOverSelectedBrush" Value="{DynamicResource Crystal.Brushes.Highlight}" />
+        <Setter Property="mah:TabControlHelper.UnderlineSelectedBrush" Value="{DynamicResource Crystal.Brushes.Accent}" />
     </Style>
 
-    <Style x:Key="MahApps.Styles.TabItem" TargetType="TabItem">
+    <Style x:Key="Crystal.Styles.TabItem" TargetType="TabItem">
         <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=Background, Mode=OneWay, FallbackValue=Transparent}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.Accent}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Accent}" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-        <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Text}" />
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Text}" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="IsTabStop" Value="False" />
         <Setter Property="MinHeight" Value="5" />
@@ -210,11 +210,11 @@
                         </DataTrigger>
 
                         <Trigger Property="IsSelected" Value="true">
-                            <Setter TargetName="ContentSite" Property="TextElement.Foreground" Value="{DynamicResource MahApps.Brushes.Accent}" />
+                            <Setter TargetName="ContentSite" Property="TextElement.Foreground" Value="{DynamicResource Crystal.Brushes.Accent}" />
                             <Setter TargetName="Underline" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:TabControlHelper.UnderlineSelectedBrush), Mode=OneWay}" />
                         </Trigger>
                         <Trigger Property="IsSelected" Value="false">
-                            <Setter TargetName="ContentSite" Property="TextElement.Foreground" Value="{DynamicResource MahApps.Brushes.Gray}" />
+                            <Setter TargetName="ContentSite" Property="TextElement.Foreground" Value="{DynamicResource Crystal.Brushes.Gray}" />
                         </Trigger>
 
                         <MultiDataTrigger>
@@ -233,7 +233,7 @@
                         </MultiDataTrigger>
 
                         <Trigger SourceName="Border" Property="IsMouseOver" Value="True">
-                            <Setter TargetName="ContentSite" Property="TextElement.Foreground" Value="{DynamicResource MahApps.Brushes.Gray.MouseOver}" />
+                            <Setter TargetName="ContentSite" Property="TextElement.Foreground" Value="{DynamicResource Crystal.Brushes.Gray.MouseOver}" />
                             <Setter TargetName="Underline" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:TabControlHelper.UnderlineMouseOverBrush), Mode=OneWay}" />
                         </Trigger>
 
@@ -259,7 +259,7 @@
                                 <Condition SourceName="Border" Property="IsMouseOver" Value="True" />
                                 <Condition Property="IsSelected" Value="True" />
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="ContentSite" Property="TextElement.Foreground" Value="{DynamicResource MahApps.Brushes.Highlight}" />
+                            <Setter TargetName="ContentSite" Property="TextElement.Foreground" Value="{DynamicResource Crystal.Brushes.Highlight}" />
                             <Setter TargetName="Underline" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:TabControlHelper.UnderlineMouseOverSelectedBrush), Mode=OneWay}" />
                         </MultiTrigger>
 
@@ -503,13 +503,13 @@
         <Setter Property="mah:TabControlHelper.UnderlineSelectedBrush" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(mah:TabControlHelper.UnderlineSelectedBrush), Mode=OneWay}" />
     </Style>
 
-    <!--  MahApps.Styles.TabControl.AnimatedSingleRow  -->
+    <!--  Crystal.Styles.TabControl.AnimatedSingleRow  -->
 
-    <Style x:Key="MahApps.Styles.RepeatButton.ScrollBar.AnimatedSingleRow" TargetType="{x:Type RepeatButton}">
+    <Style x:Key="Crystal.Styles.RepeatButton.ScrollBar.AnimatedSingleRow" TargetType="{x:Type RepeatButton}">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Focusable" Value="False" />
-        <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Gray3}" />
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Gray3}" />
         <Setter Property="IsTabStop" Value="False" />
         <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="Padding" Value="0" />
@@ -530,10 +530,10 @@
                             <Setter TargetName="PART_Arrow" Property="Opacity" Value="0.5" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="PART_Arrow" Property="Foreground" Value="{DynamicResource MahApps.Brushes.Gray1}" />
+                            <Setter TargetName="PART_Arrow" Property="Foreground" Value="{DynamicResource Crystal.Brushes.Gray1}" />
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="PART_Arrow" Property="Foreground" Value="{DynamicResource MahApps.Brushes.Accent}" />
+                            <Setter TargetName="PART_Arrow" Property="Foreground" Value="{DynamicResource Crystal.Brushes.Accent}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -541,7 +541,7 @@
         </Setter>
     </Style>
 
-    <ControlTemplate x:Key="MahApps.Templates.ScrollBar.AnimatedSingleRow.Horizontal" TargetType="{x:Type ScrollBar}">
+    <ControlTemplate x:Key="Crystal.Templates.ScrollBar.AnimatedSingleRow.Horizontal" TargetType="{x:Type ScrollBar}">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -552,16 +552,16 @@
                           Width="{DynamicResource {x:Static SystemParameters.HorizontalScrollBarButtonWidthKey}}"
                           Command="ScrollBar.PageLeftCommand"
                           Content="M6 2L0 8l6 6z"
-                          Style="{DynamicResource MahApps.Styles.RepeatButton.ScrollBar.AnimatedSingleRow}" />
+                          Style="{DynamicResource Crystal.Styles.RepeatButton.ScrollBar.AnimatedSingleRow}" />
             <RepeatButton Grid.Column="2"
                           Width="{DynamicResource {x:Static SystemParameters.HorizontalScrollBarButtonWidthKey}}"
                           Command="ScrollBar.PageRightCommand"
                           Content="M0 14l6-6-6-6z"
-                          Style="{DynamicResource MahApps.Styles.RepeatButton.ScrollBar.AnimatedSingleRow}" />
+                          Style="{DynamicResource Crystal.Styles.RepeatButton.ScrollBar.AnimatedSingleRow}" />
         </Grid>
     </ControlTemplate>
 
-    <ControlTemplate x:Key="MahApps.Templates.ScrollBar.AnimatedSingleRow.Vertical" TargetType="{x:Type ScrollBar}">
+    <ControlTemplate x:Key="Crystal.Templates.ScrollBar.AnimatedSingleRow.Vertical" TargetType="{x:Type ScrollBar}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -572,36 +572,36 @@
                           Height="{DynamicResource {x:Static SystemParameters.VerticalScrollBarButtonHeightKey}}"
                           Command="ScrollBar.PageUpCommand"
                           Content="M12 11L6 5l-6 6z"
-                          Style="{DynamicResource MahApps.Styles.RepeatButton.ScrollBar.AnimatedSingleRow}" />
+                          Style="{DynamicResource Crystal.Styles.RepeatButton.ScrollBar.AnimatedSingleRow}" />
             <RepeatButton Grid.Row="2"
                           Height="{DynamicResource {x:Static SystemParameters.VerticalScrollBarButtonHeightKey}}"
                           Command="ScrollBar.PageDownCommand"
                           Content="M0 5l6 6 6-6z"
-                          Style="{DynamicResource MahApps.Styles.RepeatButton.ScrollBar.AnimatedSingleRow}" />
+                          Style="{DynamicResource Crystal.Styles.RepeatButton.ScrollBar.AnimatedSingleRow}" />
         </Grid>
     </ControlTemplate>
 
-    <ControlTemplate x:Key="MahApps.Templates.ScrollViewer.AnimatedSingleRow" TargetType="{x:Type ScrollViewer}">
+    <ControlTemplate x:Key="Crystal.Templates.ScrollViewer.AnimatedSingleRow" TargetType="{x:Type ScrollViewer}">
         <Grid>
             <ScrollBar x:Name="PART_HorizontalScrollBar"
                        Height="Auto"
-                       AutomationProperties.AutomationId="MahApps.Templates.ScrollBar.AnimatedSingleRow.Horizontal"
+                       AutomationProperties.AutomationId="Crystal.Templates.ScrollBar.AnimatedSingleRow.Horizontal"
                        Cursor="Arrow"
                        Maximum="{TemplateBinding ScrollableWidth}"
                        Minimum="0"
                        Orientation="Horizontal"
-                       Template="{DynamicResource MahApps.Templates.ScrollBar.AnimatedSingleRow.Horizontal}"
+                       Template="{DynamicResource Crystal.Templates.ScrollBar.AnimatedSingleRow.Horizontal}"
                        ViewportSize="{TemplateBinding ViewportWidth}"
                        Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
                        Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
             <ScrollBar x:Name="PART_VerticalScrollBar"
                        Width="Auto"
-                       AutomationProperties.AutomationId="MahApps.Templates.ScrollBar.AnimatedSingleRow.Vertical"
+                       AutomationProperties.AutomationId="Crystal.Templates.ScrollBar.AnimatedSingleRow.Vertical"
                        Cursor="Arrow"
                        Maximum="{TemplateBinding ScrollableHeight}"
                        Minimum="0"
                        Orientation="Vertical"
-                       Template="{DynamicResource MahApps.Templates.ScrollBar.AnimatedSingleRow.Vertical}"
+                       Template="{DynamicResource Crystal.Templates.ScrollBar.AnimatedSingleRow.Vertical}"
                        ViewportSize="{TemplateBinding ViewportHeight}"
                        Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
                        Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
@@ -645,7 +645,7 @@
         </Grid>
     </ControlTemplate>
 
-    <ControlTemplate x:Key="MahApps.Templates.TabControl.AnimatedSingleRow.Horizontal" TargetType="{x:Type TabControl}">
+    <ControlTemplate x:Key="Crystal.Templates.TabControl.AnimatedSingleRow.Horizontal" TargetType="{x:Type TabControl}">
         <Grid KeyboardNavigation.TabNavigation="Local">
             <Grid.RowDefinitions>
                 <RowDefinition x:Name="RowDefinition0" Height="Auto" />
@@ -656,7 +656,7 @@
                           Panel.ZIndex="1"
                           mah:ScrollViewerHelper.IsHorizontalScrollWheelEnabled="{TemplateBinding mah:ScrollViewerHelper.IsHorizontalScrollWheelEnabled}"
                           HorizontalScrollBarVisibility="Auto"
-                          Template="{StaticResource MahApps.Templates.ScrollViewer.AnimatedSingleRow}"
+                          Template="{StaticResource Crystal.Templates.ScrollViewer.AnimatedSingleRow}"
                           VerticalScrollBarVisibility="Disabled">
                 <Grid x:Name="HeaderPanelGrid">
                     <mah:Underline x:Name="Underline"
@@ -707,7 +707,7 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
-    <ControlTemplate x:Key="MahApps.Templates.TabControl.AnimatedSingleRow.Vertical" TargetType="{x:Type TabControl}">
+    <ControlTemplate x:Key="Crystal.Templates.TabControl.AnimatedSingleRow.Vertical" TargetType="{x:Type TabControl}">
         <Grid KeyboardNavigation.TabNavigation="Local">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition x:Name="ColumnDefinition0" Width="*" />
@@ -717,7 +717,7 @@
                           Grid.Column="1"
                           Panel.ZIndex="1"
                           HorizontalScrollBarVisibility="Disabled"
-                          Template="{StaticResource MahApps.Templates.ScrollViewer.AnimatedSingleRow}"
+                          Template="{StaticResource Crystal.Templates.ScrollViewer.AnimatedSingleRow}"
                           VerticalScrollBarVisibility="Auto">
                 <Grid x:Name="HeaderPanelGrid">
                     <mah:Underline x:Name="Underline"
@@ -768,33 +768,33 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
-    <Style x:Key="MahApps.Styles.TabControl.AnimatedSingleRow"
-           BasedOn="{StaticResource MahApps.Styles.TabControl}"
+    <Style x:Key="Crystal.Styles.TabControl.AnimatedSingleRow"
+           BasedOn="{StaticResource Crystal.Styles.TabControl}"
            TargetType="{x:Type TabControl}">
-        <Setter Property="Template" Value="{StaticResource MahApps.Templates.TabControl.AnimatedSingleRow.Horizontal}" />
+        <Setter Property="Template" Value="{StaticResource Crystal.Templates.TabControl.AnimatedSingleRow.Horizontal}" />
         <Setter Property="mah:ScrollViewerHelper.IsHorizontalScrollWheelEnabled" Value="True" />
         <Setter Property="mah:TabControlHelper.Transition" Value="Left" />
         <Style.Triggers>
             <Trigger Property="TabStripPlacement" Value="Top">
-                <Setter Property="Template" Value="{StaticResource MahApps.Templates.TabControl.AnimatedSingleRow.Horizontal}" />
+                <Setter Property="Template" Value="{StaticResource Crystal.Templates.TabControl.AnimatedSingleRow.Horizontal}" />
             </Trigger>
             <Trigger Property="TabStripPlacement" Value="Bottom">
-                <Setter Property="Template" Value="{StaticResource MahApps.Templates.TabControl.AnimatedSingleRow.Horizontal}" />
+                <Setter Property="Template" Value="{StaticResource Crystal.Templates.TabControl.AnimatedSingleRow.Horizontal}" />
             </Trigger>
             <Trigger Property="TabStripPlacement" Value="Left">
-                <Setter Property="Template" Value="{StaticResource MahApps.Templates.TabControl.AnimatedSingleRow.Vertical}" />
+                <Setter Property="Template" Value="{StaticResource Crystal.Templates.TabControl.AnimatedSingleRow.Vertical}" />
             </Trigger>
             <Trigger Property="TabStripPlacement" Value="Right">
-                <Setter Property="Template" Value="{StaticResource MahApps.Templates.TabControl.AnimatedSingleRow.Vertical}" />
+                <Setter Property="Template" Value="{StaticResource Crystal.Templates.TabControl.AnimatedSingleRow.Vertical}" />
             </Trigger>
 
         </Style.Triggers>
     </Style>
 
-    <!--  MahApps.Styles.TabControl.Animated  -->
+    <!--  Crystal.Styles.TabControl.Animated  -->
 
-    <Style x:Key="MahApps.Styles.TabControl.Animated"
-           BasedOn="{StaticResource MahApps.Styles.TabControl}"
+    <Style x:Key="Crystal.Styles.TabControl.Animated"
+           BasedOn="{StaticResource Crystal.Styles.TabControl}"
            TargetType="{x:Type TabControl}">
         <Setter Property="Template">
             <Setter.Value>
@@ -893,10 +893,10 @@
     </Style>
 
 
-    <Style x:Key="MahApps.Styles.TabControl.ColorPicker"
-           BasedOn="{StaticResource MahApps.Styles.TabControl}"
+    <Style x:Key="Crystal.Styles.TabControl.ColorPicker"
+           BasedOn="{StaticResource Crystal.Styles.TabControl}"
            TargetType="TabControl">
-        <Setter Property="mah:HeaderedControlHelper.HeaderFontSize" Value="{DynamicResource MahApps.Font.Size.ColorPicker.TabItemHeader}" />
+        <Setter Property="mah:HeaderedControlHelper.HeaderFontSize" Value="{DynamicResource Crystal.Font.Size.ColorPicker.TabItemHeader}" />
     </Style>
 
 </ResourceDictionary>

@@ -19,7 +19,7 @@
         <TextBox x:Name="PART_TextBox"
                  Grid.Row="1"
                  Margin="0 5 0 0"
-                 mah:ControlsHelper.FocusBorderBrush="{DynamicResource MahApps.Brushes.Accent}"
+                 mah:ControlsHelper.FocusBorderBrush="{DynamicResource Crystal.Brushes.Accent}"
                  mah:TextBoxHelper.SelectAllOnFocus="True"
                  FontSize="{Binding DialogMessageFontSize, RelativeSource={RelativeSource AncestorType=dialogs:InputDialog, Mode=FindAncestor}, UpdateSourceTrigger=PropertyChanged}"
                  Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=dialogs:InputDialog, Mode=FindAncestor}, UpdateSourceTrigger=PropertyChanged}"
@@ -34,12 +34,12 @@
                     Margin="0 0 5 0"
                     Content="{Binding AffirmativeButtonText, RelativeSource={RelativeSource AncestorType=dialogs:InputDialog, Mode=FindAncestor}, UpdateSourceTrigger=PropertyChanged}"
                     FontSize="{Binding DialogButtonFontSize, RelativeSource={RelativeSource AncestorType=dialogs:InputDialog, Mode=FindAncestor}, UpdateSourceTrigger=PropertyChanged}"
-                    Style="{DynamicResource MahApps.Styles.Button.Dialogs.Accent}" />
+                    Style="{DynamicResource Crystal.Styles.Button.Dialogs.Accent}" />
             <Button x:Name="PART_NegativeButton"
                     Margin="5 0 5 0"
                     Content="{Binding NegativeButtonText, RelativeSource={RelativeSource AncestorType=dialogs:InputDialog, Mode=FindAncestor}, UpdateSourceTrigger=PropertyChanged}"
                     FontSize="{Binding DialogButtonFontSize, RelativeSource={RelativeSource AncestorType=dialogs:InputDialog, Mode=FindAncestor}, UpdateSourceTrigger=PropertyChanged}"
-                    Style="{DynamicResource MahApps.Styles.Button.Dialogs}" />
+                    Style="{DynamicResource Crystal.Styles.Button.Dialogs}" />
         </StackPanel>
     </Grid>
 </dialogs:BaseMetroDialog>

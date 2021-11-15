@@ -2,8 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:mah="clr-namespace:Crystal.Themes.Controls">
 
-    <Style x:Key="MahApps.Styles.Menu.VisualStudio" TargetType="{x:Type Menu}">
-        <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.LightBackground}" />
+    <Style x:Key="Crystal.Styles.Menu.VisualStudio" TargetType="{x:Type Menu}">
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.LightBackground}" />
         <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.MenuTextBrushKey}}" />
         <Setter Property="RenderOptions.ClearTypeHint" Value="Enabled" />
         <Setter Property="SnapsToDevicePixels" Value="True" />

@@ -2,55 +2,55 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
-    <FontFamily x:Key="MahApps.Fonts.Family.SymbolTheme">Segoe MDL2 Assets,/Crystal.Themes;component/Assets/#Segoe MDL2 Assets</FontFamily>
-    <FontFamily x:Key="MahApps.Fonts.Family.Button">Segoe UI, Lucida Sans Unicode, Verdana</FontFamily>
-    <FontFamily x:Key="MahApps.Fonts.Family.Header">Segoe UI Light, Lucida Sans Unicode, Verdana</FontFamily>
-    <FontFamily x:Key="MahApps.Fonts.Family.Window.Title">Segoe UI Light, Lucida Sans Unicode, Verdana</FontFamily>
-    <FontFamily x:Key="MahApps.Fonts.Family.Control">Segoe UI, Lucida Sans Unicode, Verdana</FontFamily>
-    <FontFamily x:Key="MahApps.Fonts.Family.ToggleSwitch">Segoe UI, Lucida Sans Unicode, Verdana</FontFamily>
-    <FontFamily x:Key="MahApps.Fonts.Family.ToggleSwitch.Header">Segoe UI, Lucida Sans Unicode, Verdana</FontFamily>
+    <FontFamily x:Key="Crystal.Fonts.Family.SymbolTheme">Segoe MDL2 Assets,/Crystal.Themes;component/Assets/#Segoe MDL2 Assets</FontFamily>
+    <FontFamily x:Key="Crystal.Fonts.Family.Button">Segoe UI, Lucida Sans Unicode, Verdana</FontFamily>
+    <FontFamily x:Key="Crystal.Fonts.Family.Header">Segoe UI Light, Lucida Sans Unicode, Verdana</FontFamily>
+    <FontFamily x:Key="Crystal.Fonts.Family.Window.Title">Segoe UI Light, Lucida Sans Unicode, Verdana</FontFamily>
+    <FontFamily x:Key="Crystal.Fonts.Family.Control">Segoe UI, Lucida Sans Unicode, Verdana</FontFamily>
+    <FontFamily x:Key="Crystal.Fonts.Family.ToggleSwitch">Segoe UI, Lucida Sans Unicode, Verdana</FontFamily>
+    <FontFamily x:Key="Crystal.Fonts.Family.ToggleSwitch.Header">Segoe UI, Lucida Sans Unicode, Verdana</FontFamily>
 
-    <system:Double x:Key="MahApps.Font.Size.Header">40</system:Double>
-    <system:Double x:Key="MahApps.Font.Size.SubHeader">29.333</system:Double>
-    <system:Double x:Key="MahApps.Font.Size.Window.Title">16</system:Double>
-    <system:Double x:Key="MahApps.Font.Size.Default">14</system:Double>
-    <system:Double x:Key="MahApps.Font.Size.Content">12</system:Double>
-    <system:Double x:Key="MahApps.Font.Size.Button.Flat">14</system:Double>
-    <system:Double x:Key="MahApps.Font.Size.TabItem">26.67</system:Double>
-    <system:Double x:Key="MahApps.Font.Size.Button">10</system:Double>
-    <system:Double x:Key="MahApps.Font.Size.FloatingWatermark">10</system:Double>
-    <system:Double x:Key="MahApps.Font.Size.Button.ClearText">16</system:Double>
-    <system:Double x:Key="MahApps.Font.Size.Tooltip">12</system:Double>
-    <system:Double x:Key="MahApps.Font.Size.Menu">14</system:Double>
-    <system:Double x:Key="MahApps.Font.Size.ContextMenu">14</system:Double>
-    <system:Double x:Key="MahApps.Font.Size.StatusBar">12</system:Double>
+    <system:Double x:Key="Crystal.Font.Size.Header">40</system:Double>
+    <system:Double x:Key="Crystal.Font.Size.SubHeader">29.333</system:Double>
+    <system:Double x:Key="Crystal.Font.Size.Window.Title">16</system:Double>
+    <system:Double x:Key="Crystal.Font.Size.Default">14</system:Double>
+    <system:Double x:Key="Crystal.Font.Size.Content">12</system:Double>
+    <system:Double x:Key="Crystal.Font.Size.Button.Flat">14</system:Double>
+    <system:Double x:Key="Crystal.Font.Size.TabItem">26.67</system:Double>
+    <system:Double x:Key="Crystal.Font.Size.Button">10</system:Double>
+    <system:Double x:Key="Crystal.Font.Size.FloatingWatermark">10</system:Double>
+    <system:Double x:Key="Crystal.Font.Size.Button.ClearText">16</system:Double>
+    <system:Double x:Key="Crystal.Font.Size.Tooltip">12</system:Double>
+    <system:Double x:Key="Crystal.Font.Size.Menu">14</system:Double>
+    <system:Double x:Key="Crystal.Font.Size.ContextMenu">14</system:Double>
+    <system:Double x:Key="Crystal.Font.Size.StatusBar">12</system:Double>
 
-    <system:Double x:Key="MahApps.Font.Size.Dialog.Title">26</system:Double>
-    <system:Double x:Key="MahApps.Font.Size.Dialog.Message">15</system:Double>
-    <system:Double x:Key="MahApps.Font.Size.Dialog.Button">12</system:Double>
+    <system:Double x:Key="Crystal.Font.Size.Dialog.Title">26</system:Double>
+    <system:Double x:Key="Crystal.Font.Size.Dialog.Message">15</system:Double>
+    <system:Double x:Key="Crystal.Font.Size.Dialog.Button">12</system:Double>
 
-    <system:Double x:Key="MahApps.Font.Size.Flyout.Header">20</system:Double>
+    <system:Double x:Key="Crystal.Font.Size.Flyout.Header">20</system:Double>
 
-    <system:Double x:Key="MahApps.Font.Size.ToggleSwitch">14</system:Double>
-    <system:Double x:Key="MahApps.Font.Size.ToggleSwitch.Header">14</system:Double>
+    <system:Double x:Key="Crystal.Font.Size.ToggleSwitch">14</system:Double>
+    <system:Double x:Key="Crystal.Font.Size.ToggleSwitch.Header">14</system:Double>
 
-    <system:Double x:Key="MahApps.Font.Size.ColorPicker.TabItemHeader">16</system:Double>
+    <system:Double x:Key="Crystal.Font.Size.ColorPicker.TabItemHeader">16</system:Double>
 
-    <CharacterCasing x:Key="MahApps.CharacterCasing.Button">Upper</CharacterCasing>
-    <CharacterCasing x:Key="MahApps.CharacterCasing.Button.Square">Lower</CharacterCasing>
-    <CharacterCasing x:Key="MahApps.CharacterCasing.Button.Dialogs">Normal</CharacterCasing>
-    <CharacterCasing x:Key="MahApps.CharacterCasing.Button.Dialogs.Accent">Normal</CharacterCasing>
-    <CharacterCasing x:Key="MahApps.CharacterCasing.Button.Dialogs.AccentHighlight">Normal</CharacterCasing>
-    <CharacterCasing x:Key="MahApps.CharacterCasing.DataGridColumnHeader">Upper</CharacterCasing>
-    <CharacterCasing x:Key="MahApps.CharacterCasing.Expander">Upper</CharacterCasing>
-    <CharacterCasing x:Key="MahApps.CharacterCasing.Expander.VisualStudio">Normal</CharacterCasing>
-    <CharacterCasing x:Key="MahApps.CharacterCasing.GroupBox">Upper</CharacterCasing>
-    <CharacterCasing x:Key="MahApps.CharacterCasing.GroupBox.VisualStudio">Normal</CharacterCasing>
-    <CharacterCasing x:Key="MahApps.CharacterCasing.GridViewColumnHeader">Upper</CharacterCasing>
-    <CharacterCasing x:Key="MahApps.CharacterCasing.ColorEyeDropper">Upper</CharacterCasing>
-    <CharacterCasing x:Key="MahApps.CharacterCasing.ColorPalette">Upper</CharacterCasing>
-    <CharacterCasing x:Key="MahApps.CharacterCasing.HotKeyBox">Upper</CharacterCasing>
-    <CharacterCasing x:Key="MahApps.CharacterCasing.WindowCommands">Normal</CharacterCasing>
-    <CharacterCasing x:Key="MahApps.CharacterCasing.WindowCommands.Clean">Upper</CharacterCasing>
+    <CharacterCasing x:Key="Crystal.CharacterCasing.Button">Upper</CharacterCasing>
+    <CharacterCasing x:Key="Crystal.CharacterCasing.Button.Square">Lower</CharacterCasing>
+    <CharacterCasing x:Key="Crystal.CharacterCasing.Button.Dialogs">Normal</CharacterCasing>
+    <CharacterCasing x:Key="Crystal.CharacterCasing.Button.Dialogs.Accent">Normal</CharacterCasing>
+    <CharacterCasing x:Key="Crystal.CharacterCasing.Button.Dialogs.AccentHighlight">Normal</CharacterCasing>
+    <CharacterCasing x:Key="Crystal.CharacterCasing.DataGridColumnHeader">Upper</CharacterCasing>
+    <CharacterCasing x:Key="Crystal.CharacterCasing.Expander">Upper</CharacterCasing>
+    <CharacterCasing x:Key="Crystal.CharacterCasing.Expander.VisualStudio">Normal</CharacterCasing>
+    <CharacterCasing x:Key="Crystal.CharacterCasing.GroupBox">Upper</CharacterCasing>
+    <CharacterCasing x:Key="Crystal.CharacterCasing.GroupBox.VisualStudio">Normal</CharacterCasing>
+    <CharacterCasing x:Key="Crystal.CharacterCasing.GridViewColumnHeader">Upper</CharacterCasing>
+    <CharacterCasing x:Key="Crystal.CharacterCasing.ColorEyeDropper">Upper</CharacterCasing>
+    <CharacterCasing x:Key="Crystal.CharacterCasing.ColorPalette">Upper</CharacterCasing>
+    <CharacterCasing x:Key="Crystal.CharacterCasing.HotKeyBox">Upper</CharacterCasing>
+    <CharacterCasing x:Key="Crystal.CharacterCasing.WindowCommands">Normal</CharacterCasing>
+    <CharacterCasing x:Key="Crystal.CharacterCasing.WindowCommands.Clean">Upper</CharacterCasing>
 
 </ResourceDictionary>

@@ -6,12 +6,12 @@
         <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/HamburgerMenuTemplate.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <Style x:Key="MahApps.Styles.HamburgerMenu" TargetType="{x:Type mah:HamburgerMenu}">
+    <Style x:Key="Crystal.Styles.HamburgerMenu" TargetType="{x:Type mah:HamburgerMenu}">
         <Setter Property="CanResizeOpenPane" Value="False" />
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
         <Setter Property="Focusable" Value="False" />
         <Setter Property="HamburgerButtonName" Value="HamburgerButton" />
-        <Setter Property="HamburgerButtonStyle" Value="{DynamicResource MahApps.Styles.Button.Hamburger}" />
+        <Setter Property="HamburgerButtonStyle" Value="{DynamicResource Crystal.Styles.Button.Hamburger}" />
         <Setter Property="HamburgerButtonTemplate">
             <Setter.Value>
                 <DataTemplate>
@@ -22,32 +22,32 @@
                 </DataTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="HeaderItemContainerStyle" Value="{StaticResource MahApps.Styles.ListBoxItem.HamburgerMenuHeader}" />
+        <Setter Property="HeaderItemContainerStyle" Value="{StaticResource Crystal.Styles.ListBoxItem.HamburgerMenuHeader}" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Setter Property="ItemContainerStyle" Value="{StaticResource MahApps.Styles.ListBoxItem.HamburgerMenuItem}" />
+        <Setter Property="ItemContainerStyle" Value="{StaticResource Crystal.Styles.ListBoxItem.HamburgerMenuItem}" />
         <Setter Property="KeyboardNavigation.ControlTabNavigation" Value="Local" />
         <Setter Property="KeyboardNavigation.DirectionalNavigation" Value="Local" />
         <Setter Property="KeyboardNavigation.TabNavigation" Value="Local" />
         <Setter Property="MaximumOpenPaneLength" Value="500" />
         <Setter Property="MinimumOpenPaneLength" Value="100" />
-        <Setter Property="OptionsItemContainerStyle" Value="{StaticResource MahApps.Styles.ListBoxItem.HamburgerMenuItem}" />
-        <Setter Property="PaneBackground" Value="{DynamicResource MahApps.HamburgerMenu.Pane.Background}" />
-        <Setter Property="PaneForeground" Value="{DynamicResource MahApps.HamburgerMenu.Pane.Foreground}" />
+        <Setter Property="OptionsItemContainerStyle" Value="{StaticResource Crystal.Styles.ListBoxItem.HamburgerMenuItem}" />
+        <Setter Property="PaneBackground" Value="{DynamicResource Crystal.HamburgerMenu.Pane.Background}" />
+        <Setter Property="PaneForeground" Value="{DynamicResource Crystal.HamburgerMenu.Pane.Foreground}" />
         <Setter Property="PaneHeaderMargin" Value="0 0 0 8" />
         <Setter Property="PaneMargin" Value="0 0 0 8" />
-        <Setter Property="ResizeThumbStyle" Value="{DynamicResource MahApps.Styles.MetroThumb.SplitView.Resize}" />
-        <Setter Property="SeparatorItemContainerStyle" Value="{StaticResource MahApps.Styles.ListBoxItem.HamburgerMenuSeparator}" />
-        <Setter Property="Template" Value="{DynamicResource MahApps.Templates.HamburgerMenu}" />
+        <Setter Property="ResizeThumbStyle" Value="{DynamicResource Crystal.Styles.MetroThumb.SplitView.Resize}" />
+        <Setter Property="SeparatorItemContainerStyle" Value="{StaticResource Crystal.Styles.ListBoxItem.HamburgerMenuSeparator}" />
+        <Setter Property="Template" Value="{DynamicResource Crystal.Templates.HamburgerMenu}" />
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
     </Style>
 
-    <Style x:Key="MahApps.Styles.HamburgerMenu.CreatorsUpdate"
-           BasedOn="{StaticResource MahApps.Styles.HamburgerMenu}"
+    <Style x:Key="Crystal.Styles.HamburgerMenu.CreatorsUpdate"
+           BasedOn="{StaticResource Crystal.Styles.HamburgerMenu}"
            TargetType="{x:Type mah:HamburgerMenu}">
-        <Setter Property="ItemContainerStyle" Value="{StaticResource MahApps.Styles.ListBoxItem.HamburgerMenuItem.CreatorsUpdate}" />
-        <Setter Property="OptionsItemContainerStyle" Value="{StaticResource MahApps.Styles.ListBoxItem.HamburgerMenuItem.CreatorsUpdate}" />
-        <Setter Property="PaneBackground" Value="{DynamicResource MahApps.Brushes.ThemeBackground}" />
-        <Setter Property="PaneForeground" Value="{DynamicResource MahApps.Brushes.Text}" />
+        <Setter Property="ItemContainerStyle" Value="{StaticResource Crystal.Styles.ListBoxItem.HamburgerMenuItem.CreatorsUpdate}" />
+        <Setter Property="OptionsItemContainerStyle" Value="{StaticResource Crystal.Styles.ListBoxItem.HamburgerMenuItem.CreatorsUpdate}" />
+        <Setter Property="PaneBackground" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
+        <Setter Property="PaneForeground" Value="{DynamicResource Crystal.Brushes.Text}" />
         <Setter Property="ShowSelectionIndicator" Value="True" />
     </Style>
 

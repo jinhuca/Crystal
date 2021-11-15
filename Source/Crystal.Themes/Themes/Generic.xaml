@@ -46,33 +46,33 @@
     <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/MultiSelectionComboBox.xaml" />
   </ResourceDictionary.MergedDictionaries>
 
-  <theming:MahAppsLibraryThemeProvider x:Key="{x:Static theming:MahAppsLibraryThemeProvider.DefaultInstance}" />
+  <theming:CrystalLibraryThemeProvider x:Key="{x:Static theming:CrystalLibraryThemeProvider.DefaultInstance}" />
 
   <!--  set up default styles for our custom controls  -->
 
-  <Style BasedOn="{StaticResource MahApps.Styles.NumericUpDown}" TargetType="{x:Type mah:NumericUpDown}" />
-  <Style BasedOn="{StaticResource MahApps.Styles.Flyout}" TargetType="{x:Type mah:Flyout}" />
-  <Style BasedOn="{StaticResource MahApps.Styles.ToggleSwitch}" TargetType="{x:Type mah:ToggleSwitch}" />
-  <Style BasedOn="{StaticResource MahApps.Styles.ContentControlEx}" TargetType="{x:Type mah:ContentControlEx}" />
-  <Style BasedOn="{StaticResource MahApps.Styles.MetroThumbContentControl}" TargetType="{x:Type mah:MetroThumbContentControl}" />
-  <Style BasedOn="{StaticResource MahApps.Styles.WindowCommandsItem}" TargetType="{x:Type mah:WindowCommandsItem}" />
-  <Style BasedOn="{StaticResource MahApps.Styles.WindowCommands}" TargetType="{x:Type mah:WindowCommands}" />
-  <Style BasedOn="{StaticResource MahApps.Styles.WindowButtonCommands.Win10}" TargetType="{x:Type mah:WindowButtonCommands}" />
-  <Style BasedOn="{StaticResource MahApps.Styles.HamburgerMenuListBox}" TargetType="{x:Type mah:HamburgerMenuListBox}" />
-  <Style BasedOn="{StaticResource MahApps.Styles.HamburgerMenu}" TargetType="{x:Type mah:HamburgerMenu}" />
-  <Style BasedOn="{StaticResource MahApps.Styles.CrystalHeader}" TargetType="{x:Type mah:CrystalHeader}" />
-  <Style BasedOn="{StaticResource MahApps.Styles.BaseMetroDialog}" TargetType="{x:Type dialogs:BaseMetroDialog}" />
-  <Style BasedOn="{StaticResource MahApps.Styles.RangeSlider.Win10}" TargetType="{x:Type mah:RangeSlider}" />
-  <Style BasedOn="{StaticResource MahApps.Styles.RevealImage}" TargetType="{x:Type mah:RevealImage}" />
-  <Style BasedOn="{StaticResource MahApps.Styles.MetroProgressBar}" TargetType="{x:Type mah:MetroProgressBar}" />
-  <Style BasedOn="{StaticResource MahApps.Styles.FlipViewItem}" TargetType="{x:Type mah:FlipViewItem}" />
-  <Style BasedOn="{StaticResource MahApps.Styles.FlipView}" TargetType="{x:Type mah:FlipView}" />
+  <Style BasedOn="{StaticResource Crystal.Styles.NumericUpDown}" TargetType="{x:Type mah:NumericUpDown}" />
+  <Style BasedOn="{StaticResource Crystal.Styles.Flyout}" TargetType="{x:Type mah:Flyout}" />
+  <Style BasedOn="{StaticResource Crystal.Styles.ToggleSwitch}" TargetType="{x:Type mah:ToggleSwitch}" />
+  <Style BasedOn="{StaticResource Crystal.Styles.ContentControlEx}" TargetType="{x:Type mah:ContentControlEx}" />
+  <Style BasedOn="{StaticResource Crystal.Styles.MetroThumbContentControl}" TargetType="{x:Type mah:MetroThumbContentControl}" />
+  <Style BasedOn="{StaticResource Crystal.Styles.WindowCommandsItem}" TargetType="{x:Type mah:WindowCommandsItem}" />
+  <Style BasedOn="{StaticResource Crystal.Styles.WindowCommands}" TargetType="{x:Type mah:WindowCommands}" />
+  <Style BasedOn="{StaticResource Crystal.Styles.WindowButtonCommands.Win10}" TargetType="{x:Type mah:WindowButtonCommands}" />
+  <Style BasedOn="{StaticResource Crystal.Styles.HamburgerMenuListBox}" TargetType="{x:Type mah:HamburgerMenuListBox}" />
+  <Style BasedOn="{StaticResource Crystal.Styles.HamburgerMenu}" TargetType="{x:Type mah:HamburgerMenu}" />
+  <Style BasedOn="{StaticResource Crystal.Styles.CrystalHeader}" TargetType="{x:Type mah:CrystalHeader}" />
+  <Style BasedOn="{StaticResource Crystal.Styles.BaseMetroDialog}" TargetType="{x:Type dialogs:BaseMetroDialog}" />
+  <Style BasedOn="{StaticResource Crystal.Styles.RangeSlider.Win10}" TargetType="{x:Type mah:RangeSlider}" />
+  <Style BasedOn="{StaticResource Crystal.Styles.RevealImage}" TargetType="{x:Type mah:RevealImage}" />
+  <Style BasedOn="{StaticResource Crystal.Styles.MetroProgressBar}" TargetType="{x:Type mah:MetroProgressBar}" />
+  <Style BasedOn="{StaticResource Crystal.Styles.FlipViewItem}" TargetType="{x:Type mah:FlipViewItem}" />
+  <Style BasedOn="{StaticResource Crystal.Styles.FlipView}" TargetType="{x:Type mah:FlipView}" />
   <!--#region ColorPicker-->
-  <Style BasedOn="{StaticResource MahApps.Styles.ColorCanvas}" TargetType="{x:Type mah:ColorCanvas}" />
-  <Style BasedOn="{StaticResource MahApps.Styles.ColorEyeDropper}" TargetType="{x:Type mah:ColorEyeDropper}" />
-  <Style BasedOn="{StaticResource MahApps.Styles.ColorPalette}" TargetType="{x:Type mah:ColorPalette}" />
-  <Style BasedOn="{StaticResource MahApps.Styles.ColorPicker}" TargetType="{x:Type mah:ColorPicker}" />
+  <Style BasedOn="{StaticResource Crystal.Styles.ColorCanvas}" TargetType="{x:Type mah:ColorCanvas}" />
+  <Style BasedOn="{StaticResource Crystal.Styles.ColorEyeDropper}" TargetType="{x:Type mah:ColorEyeDropper}" />
+  <Style BasedOn="{StaticResource Crystal.Styles.ColorPalette}" TargetType="{x:Type mah:ColorPalette}" />
+  <Style BasedOn="{StaticResource Crystal.Styles.ColorPicker}" TargetType="{x:Type mah:ColorPicker}" />
   <!--#endregion-->
-  <Style BasedOn="{StaticResource MahApps.Styles.MultiSelectionComboBox}" TargetType="{x:Type mah:MultiSelectionComboBox}" />
+  <Style BasedOn="{StaticResource Crystal.Styles.MultiSelectionComboBox}" TargetType="{x:Type mah:MultiSelectionComboBox}" />
 
 </ResourceDictionary>

@@ -9,8 +9,8 @@ namespace Crystal.Themes.Controls.Dialogs
   /// </summary>
   public partial class MessageDialog : BaseMetroDialog
   {
-    private const string ACCENT_BUTTON_STYLE = "MahApps.Styles.Button.Dialogs.Accent";
-    private const string ACCENT_HIGHLIGHT_BUTTON_STYLE = "MahApps.Styles.Button.Dialogs.AccentHighlight";
+    private const string ACCENT_BUTTON_STYLE = "Crystal.Styles.Button.Dialogs.Accent";
+    private const string ACCENT_HIGHLIGHT_BUTTON_STYLE = "Crystal.Styles.Button.Dialogs.AccentHighlight";
     private CancellationTokenRegistration cancellationTokenRegistration;
 
     public static readonly DependencyProperty MessageProperty = DependencyProperty.Register(

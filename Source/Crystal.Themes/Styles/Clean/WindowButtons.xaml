@@ -6,73 +6,73 @@
     </ResourceDictionary.MergedDictionaries>
 
     <!--  light button style for min, max and close window buttons  -->
-    <Style x:Key="MahApps.Styles.Button.MetroWindow.Light.Clean"
-           BasedOn="{StaticResource MahApps.Styles.Button.MetroWindow.Light}"
+    <Style x:Key="Crystal.Styles.Button.MetroWindow.Light.Clean"
+           BasedOn="{StaticResource Crystal.Styles.Button.MetroWindow.Light}"
            TargetType="{x:Type Button}">
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Gray.SemiTransparent}" />
+                <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Gray.SemiTransparent}" />
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Accent}" />
-                <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.IdealForeground}" />
+                <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Accent}" />
+                <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForeground}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.IdealForegroundDisabled}" />
+                <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForegroundDisabled}" />
             </Trigger>
         </Style.Triggers>
     </Style>
 
     <!--  dark button style for min, max and close window buttons  -->
-    <Style x:Key="MahApps.Styles.Button.MetroWindow.Dark.Clean"
-           BasedOn="{StaticResource MahApps.Styles.Button.MetroWindow.Dark}"
+    <Style x:Key="Crystal.Styles.Button.MetroWindow.Dark.Clean"
+           BasedOn="{StaticResource Crystal.Styles.Button.MetroWindow.Dark}"
            TargetType="{x:Type Button}">
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Gray.SemiTransparent}" />
+                <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Gray.SemiTransparent}" />
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Accent}" />
-                <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.IdealForeground}" />
+                <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Accent}" />
+                <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForeground}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.IdealForegroundDisabled}" />
+                <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForegroundDisabled}" />
             </Trigger>
         </Style.Triggers>
     </Style>
 
     <!--  light button style for close window button (clean style)  -->
-    <Style x:Key="MahApps.Styles.Button.MetroWindow.Close.Light.Clean"
-           BasedOn="{StaticResource MahApps.Styles.Button.MetroWindow.Light.Clean}"
+    <Style x:Key="Crystal.Styles.Button.MetroWindow.Close.Light.Clean"
+           BasedOn="{StaticResource Crystal.Styles.Button.MetroWindow.Light.Clean}"
            TargetType="{x:Type Button}">
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Button.CleanWindow.Close.Background.MouseOver}" />
-                <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Button.CleanWindow.Close.Foreground.MouseOver}" />
+                <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Button.CleanWindow.Close.Background.MouseOver}" />
+                <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Button.CleanWindow.Close.Foreground.MouseOver}" />
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Button.CleanWindow.Close.Background.Pressed}" />
+                <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Button.CleanWindow.Close.Background.Pressed}" />
             </Trigger>
         </Style.Triggers>
     </Style>
 
     <!--  dark button style for close window button (clean style)  -->
-    <Style x:Key="MahApps.Styles.Button.MetroWindow.Close.Dark.Clean"
-           BasedOn="{StaticResource MahApps.Styles.Button.MetroWindow.Dark.Clean}"
+    <Style x:Key="Crystal.Styles.Button.MetroWindow.Close.Dark.Clean"
+           BasedOn="{StaticResource Crystal.Styles.Button.MetroWindow.Dark.Clean}"
            TargetType="{x:Type Button}">
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Button.CleanWindow.Close.Background.MouseOver}" />
-                <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Button.CleanWindow.Close.Foreground.MouseOver}" />
+                <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Button.CleanWindow.Close.Background.MouseOver}" />
+                <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Button.CleanWindow.Close.Foreground.MouseOver}" />
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Button.CleanWindow.Close.Background.Pressed}" />
+                <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Button.CleanWindow.Close.Background.Pressed}" />
             </Trigger>
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="MahApps.Styles.Button.MetroWindow.Close.Light.Clean.Win10"
-           BasedOn="{StaticResource MahApps.Styles.Button.MetroWindow.Light.Clean}"
+    <Style x:Key="Crystal.Styles.Button.MetroWindow.Close.Light.Clean.Win10"
+           BasedOn="{StaticResource Crystal.Styles.Button.MetroWindow.Light.Clean}"
            TargetType="{x:Type Button}">
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
@@ -86,8 +86,8 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="MahApps.Styles.Button.MetroWindow.Close.Dark.Clean.Win10"
-           BasedOn="{StaticResource MahApps.Styles.Button.MetroWindow.Dark.Clean}"
+    <Style x:Key="Crystal.Styles.Button.MetroWindow.Close.Dark.Clean.Win10"
+           BasedOn="{StaticResource Crystal.Styles.Button.MetroWindow.Dark.Clean}"
            TargetType="{x:Type Button}">
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">

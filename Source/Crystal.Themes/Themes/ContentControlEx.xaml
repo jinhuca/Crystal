@@ -3,7 +3,7 @@
                     xmlns:mah="clr-namespace:Crystal.Themes.Controls"
                     xmlns:mahConverters="clr-namespace:Crystal.Themes.Converters">
 
-    <Style x:Key="MahApps.Styles.ContentControlEx" TargetType="{x:Type mah:ContentControlEx}">
+    <Style x:Key="Crystal.Styles.ContentControlEx" TargetType="{x:Type mah:ContentControlEx}">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Focusable" Value="False" />
         <Setter Property="HorizontalAlignment" Value="Stretch" />
@@ -43,8 +43,8 @@
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
     </Style>
 
-    <Style x:Key="MahApps.Styles.MetroThumbContentControl"
-           BasedOn="{StaticResource MahApps.Styles.ContentControlEx}"
+    <Style x:Key="Crystal.Styles.MetroThumbContentControl"
+           BasedOn="{StaticResource Crystal.Styles.ContentControlEx}"
            TargetType="{x:Type mah:MetroThumbContentControl}" />
 
 </ResourceDictionary>

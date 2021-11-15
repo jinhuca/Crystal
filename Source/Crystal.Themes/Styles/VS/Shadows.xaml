@@ -4,10 +4,10 @@
                     xmlns:po="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
                     mc:Ignorable="po">
 
-    <DropShadowEffect x:Key="MahApps.DropShadowEffect.Menu.VisualStudio"
+    <DropShadowEffect x:Key="Crystal.DropShadowEffect.Menu.VisualStudio"
                       x:Shared="False"
                       ShadowDepth="2"
-                      Color="{DynamicResource MahApps.Colors.MenuShadow}"
+                      Color="{DynamicResource Crystal.Colors.MenuShadow}"
                       po:Freeze="True" />
 
 </ResourceDictionary>

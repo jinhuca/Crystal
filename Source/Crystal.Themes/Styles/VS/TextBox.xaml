@@ -1,11 +1,11 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <Style x:Key="MahApps.Styles.TextBox.VisualStudio" TargetType="{x:Type TextBox}">
-        <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.TextBox.Background}" />
-        <Setter Property="CaretBrush" Value="{DynamicResource MahApps.Brushes.Foreground}" />
-        <Setter Property="ContextMenu" Value="{DynamicResource MahApps.TextBox.ContextMenu}" />
-        <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Foreground}" />
+    <Style x:Key="Crystal.Styles.TextBox.VisualStudio" TargetType="{x:Type TextBox}">
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.TextBox.Background}" />
+        <Setter Property="CaretBrush" Value="{DynamicResource Crystal.Brushes.Foreground}" />
+        <Setter Property="ContextMenu" Value="{DynamicResource Crystal.TextBox.ContextMenu}" />
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Foreground}" />
         <Setter Property="Padding" Value="1" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Template">
@@ -21,20 +21,20 @@
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="true">
-                            <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.TextBox.BackgroundSelected}" />
+                            <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.TextBox.BackgroundSelected}" />
                         </Trigger>
                         <Trigger Property="IsFocused" Value="true">
-                            <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.TextBox.BackgroundSelected}" />
+                            <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.TextBox.BackgroundSelected}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource MahApps.Templates.ValidationError}" />
+        <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource Crystal.Templates.ValidationError}" />
     </Style>
 
-    <Style x:Key="MahApps.Styles.TextBox.Search.VisualStudio"
-           BasedOn="{StaticResource MahApps.Styles.TextBox.VisualStudio}"
+    <Style x:Key="Crystal.Styles.TextBox.Search.VisualStudio"
+           BasedOn="{StaticResource Crystal.Styles.TextBox.VisualStudio}"
            TargetType="{x:Type TextBox}">
         <Setter Property="Template">
             <Setter.Value>
@@ -43,7 +43,7 @@
                         <TextBlock Name="search"
                                    Margin="5 0 0 0"
                                    VerticalAlignment="Center"
-                                   Foreground="{DynamicResource MahApps.Brushes.SearchTextBox.Foreground}"
+                                   Foreground="{DynamicResource Crystal.Brushes.SearchTextBox.Foreground}"
                                    Text="Search ..."
                                    Visibility="Hidden" />
                         <ScrollViewer x:Name="PART_ContentHost"
@@ -61,11 +61,11 @@
                             <Setter TargetName="search" Property="Visibility" Value="Visible" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="true">
-                            <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.TextBox.BackgroundSelected}" />
-                            <Setter TargetName="search" Property="Foreground" Value="{DynamicResource MahApps.Brushes.Foreground}" />
+                            <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.TextBox.BackgroundSelected}" />
+                            <Setter TargetName="search" Property="Foreground" Value="{DynamicResource Crystal.Brushes.Foreground}" />
                         </Trigger>
                         <Trigger Property="IsFocused" Value="true">
-                            <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.TextBox.BackgroundSelected}" />
+                            <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.TextBox.BackgroundSelected}" />
                             <Setter TargetName="search" Property="Visibility" Value="Hidden" />
                         </Trigger>
                     </ControlTemplate.Triggers>

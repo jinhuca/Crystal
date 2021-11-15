@@ -6,12 +6,12 @@
         <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/WindowCommands.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <Style x:Key="MahApps.Styles.WindowCommands.Clean"
-           BasedOn="{StaticResource MahApps.Styles.WindowCommands.Base}"
+    <Style x:Key="Crystal.Styles.WindowCommands.Clean"
+           BasedOn="{StaticResource Crystal.Styles.WindowCommands.Base}"
            TargetType="{x:Type mah:WindowCommands}">
         <Setter Property="SeparatorHeight" Value="11" />
         <Setter Property="ShowLastSeparator" Value="False" />
-        <Setter Property="mah:ControlsHelper.ContentCharacterCasing" Value="{DynamicResource MahApps.CharacterCasing.WindowCommands.Clean}" />
+        <Setter Property="mah:ControlsHelper.ContentCharacterCasing" Value="{DynamicResource Crystal.CharacterCasing.WindowCommands.Clean}" />
     </Style>
 
 </ResourceDictionary>

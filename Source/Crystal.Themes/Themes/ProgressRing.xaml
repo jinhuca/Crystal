@@ -3,7 +3,7 @@
                     xmlns:mah="clr-namespace:Crystal.Themes.Controls">
 
     <Style TargetType="mah:ProgressRing">
-        <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Accent}" />
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Accent}" />
         <Setter Property="Height" Value="60" />
         <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="IsTabStop" Value="False" />

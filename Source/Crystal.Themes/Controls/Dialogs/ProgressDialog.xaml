@@ -26,7 +26,7 @@
                         Content="{Binding NegativeButtonText, RelativeSource={RelativeSource AncestorType=dialogs:ProgressDialog, Mode=FindAncestor}, UpdateSourceTrigger=PropertyChanged}"
                         Cursor="Arrow"
                         FontSize="{Binding DialogButtonFontSize, RelativeSource={RelativeSource AncestorType=dialogs:ProgressDialog, Mode=FindAncestor}, UpdateSourceTrigger=PropertyChanged}"
-                        Style="{DynamicResource MahApps.Styles.Button.Dialogs.Accent}"
+                        Style="{DynamicResource Crystal.Styles.Button.Dialogs.Accent}"
                         Visibility="Hidden" />
       </StackPanel>
     </Grid>

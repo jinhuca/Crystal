@@ -4,13 +4,13 @@
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
     <Thickness x:Key="GroupBoxHeaderThemePadding">2</Thickness>
-    <system:Double x:Key="MahApps.Sizes.GroupBox.HeaderThemeFont">16</system:Double>
+    <system:Double x:Key="Crystal.Sizes.GroupBox.HeaderThemeFont">16</system:Double>
 
-    <Style x:Key="MahApps.Styles.GroupBox.VisualStudio" TargetType="{x:Type GroupBox}">
+    <Style x:Key="Crystal.Styles.GroupBox.VisualStudio" TargetType="{x:Type GroupBox}">
         <Setter Property="Background" Value="{x:Null}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.Border.Normal}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Border.Normal}" />
         <Setter Property="BorderThickness" Value="2" />
-        <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Foreground}" />
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Foreground}" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Template">
             <Setter.Value>
@@ -54,10 +54,10 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="mah:ControlsHelper.ContentCharacterCasing" Value="{DynamicResource MahApps.CharacterCasing.GroupBox.VisualStudio}" />
+        <Setter Property="mah:ControlsHelper.ContentCharacterCasing" Value="{DynamicResource Crystal.CharacterCasing.GroupBox.VisualStudio}" />
         <Setter Property="mah:HeaderedControlHelper.HeaderBackground" Value="{x:Null}" />
-        <Setter Property="mah:HeaderedControlHelper.HeaderFontSize" Value="{DynamicResource MahApps.Sizes.GroupBox.HeaderThemeFont}" />
-        <Setter Property="mah:HeaderedControlHelper.HeaderForeground" Value="{DynamicResource MahApps.Brushes.Foreground}" />
+        <Setter Property="mah:HeaderedControlHelper.HeaderFontSize" Value="{DynamicResource Crystal.Sizes.GroupBox.HeaderThemeFont}" />
+        <Setter Property="mah:HeaderedControlHelper.HeaderForeground" Value="{DynamicResource Crystal.Brushes.Foreground}" />
     </Style>
 
 </ResourceDictionary>

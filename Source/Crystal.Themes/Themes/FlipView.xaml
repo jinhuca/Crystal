@@ -7,11 +7,11 @@
 
     <system:Double x:Key="FlipViewIndexItemSize">15</system:Double>
 
-    <Style x:Key="MahApps.Styles.Button.FlipView.Navigation" TargetType="{x:Type Button}">
+    <Style x:Key="Crystal.Styles.Button.FlipView.Navigation" TargetType="{x:Type Button}">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="BorderBrush" Value="Transparent" />
         <Setter Property="Focusable" Value="True" />
-        <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Text}" />
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Text}" />
         <Setter Property="Height" Value="30" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="IsTabStop" Value="True" />
@@ -42,12 +42,12 @@
                 <Setter Property="Opacity" Value="0.8" />
             </Trigger>
             <DataTrigger Binding="{Binding NavigationButtonsPosition, FallbackValue={x:Static mah:NavigationButtonsPosition.Inside}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:FlipView}}}" Value="{x:Static mah:NavigationButtonsPosition.Inside}">
-                <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.ThemeBackground}" />
+                <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
             </DataTrigger>
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="MahApps.Styles.ListBoxItem.FlipView.Index" TargetType="ListBoxItem">
+    <Style x:Key="Crystal.Styles.ListBoxItem.FlipView.Index" TargetType="ListBoxItem">
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="Margin" Value="10" />
@@ -59,17 +59,17 @@
                              Width="{DynamicResource FlipViewIndexItemSize}"
                              Height="{DynamicResource FlipViewIndexItemSize}"
                              Margin="{TemplateBinding Padding}"
-                             Fill="{DynamicResource MahApps.Brushes.SystemControlTransparent}"
+                             Fill="{DynamicResource Crystal.Brushes.SystemControlTransparent}"
                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                             Stroke="{DynamicResource MahApps.Brushes.SystemControlForegroundBaseMedium}"
+                             Stroke="{DynamicResource Crystal.Brushes.SystemControlForegroundBaseMedium}"
                              StrokeThickness="1" />
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsSelected" Value="true">
-                            <Setter TargetName="Bd" Property="Fill" Value="{DynamicResource MahApps.Brushes.SystemControlHighlightListAccentMedium}" />
+                            <Setter TargetName="Bd" Property="Fill" Value="{DynamicResource Crystal.Brushes.SystemControlHighlightListAccentMedium}" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="true">
                             <Setter Property="Cursor" Value="Hand" />
-                            <Setter TargetName="Bd" Property="Fill" Value="{DynamicResource MahApps.Brushes.SystemControlHighlightListAccentHigh}" />
+                            <Setter TargetName="Bd" Property="Fill" Value="{DynamicResource Crystal.Brushes.SystemControlHighlightListAccentHigh}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -77,7 +77,7 @@
         </Setter>
     </Style>
 
-    <ControlTemplate x:Key="MahApps.Templates.FlipView" TargetType="{x:Type mah:FlipView}">
+    <ControlTemplate x:Key="Crystal.Templates.FlipView" TargetType="{x:Type mah:FlipView}">
         <Border Background="{TemplateBinding Background}"
                 BorderBrush="{TemplateBinding BorderBrush}"
                 BorderThickness="{TemplateBinding BorderThickness}"
@@ -368,7 +368,7 @@
         </ControlTemplate.Resources>
     </ControlTemplate>
 
-    <Style x:Key="MahApps.Styles.FlipViewItem" TargetType="{x:Type mah:FlipViewItem}">
+    <Style x:Key="Crystal.Styles.FlipViewItem" TargetType="{x:Type mah:FlipViewItem}">
         <Setter Property="Background" Value="{x:Null}" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource Self}, Path=Owner.Foreground, Mode=OneWay}" />
@@ -424,9 +424,9 @@
         <Setter Property="mah:ItemHelper.HoverForegroundBrush" Value="{Binding RelativeSource={RelativeSource Self}, Path=Owner.Foreground, Mode=OneWay}" />
     </Style>
 
-    <Style x:Key="MahApps.Styles.FlipView" TargetType="{x:Type mah:FlipView}">
-        <Setter Property="BannerBackground" Value="{DynamicResource MahApps.Brushes.ThemeForeground}" />
-        <Setter Property="BannerForeground" Value="{DynamicResource MahApps.Brushes.ThemeBackground}" />
+    <Style x:Key="Crystal.Styles.FlipView" TargetType="{x:Type mah:FlipView}">
+        <Setter Property="BannerBackground" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
+        <Setter Property="BannerForeground" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
         <Setter Property="BannerOpacity" Value="0.8" />
         <Setter Property="ButtonBackContentTemplate">
             <Setter.Value>
@@ -475,13 +475,13 @@
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
         <Setter Property="FontSize" Value="16" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Setter Property="IndexItemContainerStyle" Value="{DynamicResource MahApps.Styles.ListBoxItem.FlipView.Index}" />
+        <Setter Property="IndexItemContainerStyle" Value="{DynamicResource Crystal.Styles.ListBoxItem.FlipView.Index}" />
         <Setter Property="IsSynchronizedWithCurrentItem" Value="True" />
         <Setter Property="KeyboardNavigation.DirectionalNavigation" Value="Cycle" />
         <Setter Property="MinHeight" Value="100" />
         <Setter Property="MinWidth" Value="100" />
-        <Setter Property="NavigationButtonStyle" Value="{DynamicResource MahApps.Styles.Button.FlipView.Navigation}" />
-        <Setter Property="Template" Value="{StaticResource MahApps.Templates.FlipView}" />
+        <Setter Property="NavigationButtonStyle" Value="{DynamicResource Crystal.Styles.Button.FlipView.Navigation}" />
+        <Setter Property="Template" Value="{StaticResource Crystal.Templates.FlipView}" />
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
     </Style>
 

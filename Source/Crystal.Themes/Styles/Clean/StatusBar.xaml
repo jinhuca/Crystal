@@ -5,16 +5,16 @@
         <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.StatusBar.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <Style x:Key="MahApps.Styles.StatusBar.Clean"
-           BasedOn="{StaticResource MahApps.Styles.StatusBar}"
+    <Style x:Key="Crystal.Styles.StatusBar.Clean"
+           BasedOn="{StaticResource Crystal.Styles.StatusBar}"
            TargetType="{x:Type StatusBar}">
-        <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.ThemeForeground}" />
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
     </Style>
 
-    <Style x:Key="MahApps.Styles.Separator.Clean"
-           BasedOn="{StaticResource MahApps.Styles.Separator.StatusBar}"
+    <Style x:Key="Crystal.Styles.Separator.Clean"
+           BasedOn="{StaticResource Crystal.Styles.Separator.StatusBar}"
            TargetType="{x:Type Separator}">
-        <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.ThemeForeground}" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
     </Style>
 
 </ResourceDictionary>

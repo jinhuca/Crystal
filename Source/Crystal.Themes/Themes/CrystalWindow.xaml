@@ -13,7 +13,7 @@
   <mahConverters:ThicknessBindingConverter x:Key="ThicknessBindingConverter" />
   <mahConverters:ThicknessToDoubleConverter x:Key="ThicknessToDoubleConverter" />
 
-  <ControlTemplate x:Key="MahApps.Templates.MetroWindow" TargetType="{x:Type mah:CrystalWindow}">
+  <ControlTemplate x:Key="Crystal.Templates.MetroWindow" TargetType="{x:Type mah:CrystalWindow}">
     <Grid Background="{TemplateBinding Background}" LayoutTransform="{Binding LayoutTransform, RelativeSource={RelativeSource TemplatedParent}}" UseLayoutRounding="True"
           RenderTransform="{Binding RenderTransform, RelativeSource={RelativeSource TemplatedParent}}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
       <AdornerDecorator>
@@ -41,7 +41,7 @@
                           HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Panel.ZIndex="1" Content="{TemplateBinding Icon}" ContentTemplate="{TemplateBinding IconTemplate}" Focusable="False"
                           Visibility="{TemplateBinding ShowIconOnTitleBar, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
-          <mah:MetroThumb x:Name="PART_WindowTitleThumb" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" Style="{StaticResource MahApps.Styles.Thumb.WindowTitle}" UseLayoutRounding="True"/>
+          <mah:MetroThumb x:Name="PART_WindowTitleThumb" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" Style="{StaticResource Crystal.Styles.Thumb.WindowTitle}" UseLayoutRounding="True"/>
 
           <DockPanel Grid.Row="1" Grid.Column="2" VerticalAlignment="Top" Focusable="False">
             <!--  the left window commands  -->
@@ -123,7 +123,7 @@
                                     Grid.Row="1"
                                     Grid.Column="0"
                                     Grid.ColumnSpan="5"
-                                    Style="{StaticResource MahApps.Styles.Thumb.WindowTitle}"
+                                    Style="{StaticResource Crystal.Styles.Thumb.WindowTitle}"
                                     Visibility="{Binding ElementName=PART_FlyoutModal, Path=Visibility, Mode=OneWay}" />
 
           <!--  flyouts  -->
@@ -258,7 +258,7 @@
 
   </ControlTemplate>
 
-  <ControlTemplate x:Key="MahApps.Templates.MetroWindow.Center" TargetType="{x:Type mah:CrystalWindow}">
+  <ControlTemplate x:Key="Crystal.Templates.MetroWindow.Center" TargetType="{x:Type mah:CrystalWindow}">
     <Grid Background="{TemplateBinding Background}"
               LayoutTransform="{Binding LayoutTransform, RelativeSource={RelativeSource TemplatedParent}}"
               RenderTransform="{Binding RenderTransform, RelativeSource={RelativeSource TemplatedParent}}"
@@ -308,7 +308,7 @@
                                     Grid.Row="1"
                                     Grid.Column="0"
                                     Grid.ColumnSpan="5"
-                                    Style="{StaticResource MahApps.Styles.Thumb.WindowTitle}"
+                                    Style="{StaticResource Crystal.Styles.Thumb.WindowTitle}"
                                     UseLayoutRounding="True" />
 
           <!--  the title bar  -->
@@ -401,7 +401,7 @@
                                     Grid.Row="1"
                                     Grid.Column="0"
                                     Grid.ColumnSpan="5"
-                                    Style="{StaticResource MahApps.Styles.Thumb.WindowTitle}"
+                                    Style="{StaticResource Crystal.Styles.Thumb.WindowTitle}"
                                     Visibility="{Binding ElementName=PART_FlyoutModal, Path=Visibility, Mode=OneWay}" />
 
           <!--  flyouts  -->
@@ -569,34 +569,34 @@
   </Storyboard>
 
   <Style TargetType="{x:Type mah:CrystalWindow}">
-    <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.ThemeBackground}" />
-    <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.Accent}" />
+    <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Accent}" />
     <Setter Property="BorderThickness" Value="1" />
-    <Setter Property="FlyoutOverlayBrush" Value="{DynamicResource MahApps.Brushes.Window.FlyoutOverlay}" />
-    <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.ThemeForeground}" />
-    <Setter Property="NonActiveBorderBrush" Value="{DynamicResource MahApps.Brushes.Border.NonActive}" />
-    <Setter Property="NonActiveGlowBrush" Value="{DynamicResource MahApps.Brushes.ThemeForeground}" />
-    <Setter Property="NonActiveWindowTitleBrush" Value="{DynamicResource MahApps.Brushes.WindowTitle.NonActive}" />
-    <Setter Property="OverlayBrush" Value="{DynamicResource MahApps.Brushes.ThemeForeground}" />
+    <Setter Property="FlyoutOverlayBrush" Value="{DynamicResource Crystal.Brushes.Window.FlyoutOverlay}" />
+    <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
+    <Setter Property="NonActiveBorderBrush" Value="{DynamicResource Crystal.Brushes.Border.NonActive}" />
+    <Setter Property="NonActiveGlowBrush" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
+    <Setter Property="NonActiveWindowTitleBrush" Value="{DynamicResource Crystal.Brushes.WindowTitle.NonActive}" />
+    <Setter Property="OverlayBrush" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
     <Setter Property="OverlayFadeIn" Value="{StaticResource OverlayFastSemiFadeIn}" />
     <Setter Property="OverlayFadeOut" Value="{StaticResource OverlayFastSemiFadeOut}" />
     <Setter Property="SnapsToDevicePixels" Value="True" />
-    <Setter Property="Template" Value="{StaticResource MahApps.Templates.MetroWindow}" />
-    <Setter Property="TextElement.FontSize" Value="{DynamicResource MahApps.Font.Size.Content}" />
-    <Setter Property="TitleForeground" Value="{DynamicResource MahApps.Brushes.IdealForeground}" />
+    <Setter Property="Template" Value="{StaticResource Crystal.Templates.MetroWindow}" />
+    <Setter Property="TextElement.FontSize" Value="{DynamicResource Crystal.Font.Size.Content}" />
+    <Setter Property="TitleForeground" Value="{DynamicResource Crystal.Brushes.IdealForeground}" />
     <Setter Property="TitleTemplate">
       <Setter.Value>
         <DataTemplate>
           <TextBlock Margin="8 -1 1 0"
                                VerticalAlignment="Center"
-                               FontFamily="{DynamicResource MahApps.Fonts.Family.Window.Title}"
-                               FontSize="{DynamicResource MahApps.Font.Size.Window.Title}"
+                               FontFamily="{DynamicResource Crystal.Fonts.Family.Window.Title}"
+                               FontSize="{DynamicResource Crystal.Font.Size.Window.Title}"
                                Text="{TemplateBinding Content}"
                                TextTrimming="CharacterEllipsis" />
         </DataTemplate>
       </Setter.Value>
     </Setter>
-    <Setter Property="WindowTitleBrush" Value="{DynamicResource MahApps.Brushes.WindowTitle}" />
+    <Setter Property="WindowTitleBrush" Value="{DynamicResource Crystal.Brushes.WindowTitle}" />
     <Style.Triggers>
       <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Icon, Mode=OneWay, Converter={x:Static mahConverters:IsNullConverter.Instance}}" Value="False">
         <Setter Property="IconTemplate">
@@ -613,7 +613,7 @@
         </Setter>
       </DataTrigger>
       <Trigger Property="TitleAlignment" Value="Center">
-        <Setter Property="Template" Value="{StaticResource MahApps.Templates.MetroWindow.Center}" />
+        <Setter Property="Template" Value="{StaticResource Crystal.Templates.MetroWindow.Center}" />
       </Trigger>
     </Style.Triggers>
   </Style>
