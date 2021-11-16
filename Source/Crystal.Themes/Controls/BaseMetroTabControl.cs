@@ -1,5 +1,4 @@
-﻿using ControlzEx.Controls;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 
 namespace Crystal.Themes.Controls
 {

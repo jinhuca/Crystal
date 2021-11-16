@@ -9,12 +9,11 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <DefineConstants>$(DefineConstants);INTERNAL_NULLABLE_ATTRIBUTES</DefineConstants>
     <SignAssembly>False</SignAssembly>
-    <TargetFrameworks></TargetFrameworks>
     <PackageProjectUrl>https://github.com/jinhuca/Crystal</PackageProjectUrl>
     <RepositoryUrl>https://github.com/jinhuca/Crystal</RepositoryUrl>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageIcon>CrystalTheme.png</PackageIcon>
-    <PackageTags>WPF, .NET</PackageTags>
+    <PackageTags>WPF;.NET</PackageTags>
     <TargetFrameworks>net6.0-windows</TargetFrameworks>
     <Version>2.2.4.2</Version>
     <Authors>Jin Hu</Authors>
@@ -30,7 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="ControlzEx" version="[5.*, 6)" />
+    <PackageReference Include="Crystal.Behaviors" Version="2.2.3.6" />
     <PackageReference Include="XamlColorSchemeGenerator" version="4.0.0-rc0155" PrivateAssets="all" IncludeAssets="build" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.*">
       <PrivateAssets>all</PrivateAssets>
@@ -55,9 +54,13 @@
     <Resource Remove="Resources\CrystalTheme.png" />
   </ItemGroup>
   <ItemGroup>
+    <UpToDateCheckInput Remove="Controls\GlowWindow.xaml" />
+    <UpToDateCheckInput Remove="Themes\BadgedEx.xaml" />
     <UpToDateCheckInput Remove="Themes\CrystalContentControl.xaml" />
     <UpToDateCheckInput Remove="Themes\CrystalHeader.xaml" />
     <UpToDateCheckInput Remove="Themes\CrystalWindow.xaml" />
+    <UpToDateCheckInput Remove="Themes\Glow.xaml" />
+    <UpToDateCheckInput Remove="Themes\TabControlEx.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -86,6 +89,25 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Controls\GlowWindow.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Themes\BadgedEx.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Themes\Glow.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Themes\TabControlEx.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
 
   <!-- Generate theme files -->

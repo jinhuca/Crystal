@@ -1,7 +1,6 @@
 ﻿using System.Windows.Data;
-using ControlzEx.Behaviors;
 using Crystal.Themes.Controls;
-using ControlzEx.Windows.Shell;
+using Crystal.Themes.Windows.Shell;
 
 namespace Crystal.Themes.Behaviors
 {

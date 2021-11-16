@@ -1,6 +1,4 @@
-﻿using ControlzEx;
-
-namespace Crystal.Themes.Controls
+﻿namespace Crystal.Themes.Controls
 {
   /// <summary>
   /// The HamburgerMenu is based on a <see cref="SplitView"/> control. By default it contains a HamburgerButton and a ListView to display menu items.

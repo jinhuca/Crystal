@@ -1,9 +1,10 @@
 using System.Diagnostics;
 using System.Windows.Interop;
-using ControlzEx.Native;
-using ControlzEx.Standard;
+using Crystal.Behaviors;
 using Crystal.Themes.Controls;
-using Microsoft.Xaml.Behaviors;
+using Crystal.Themes.Native;
+using Crystal.Themes.Standard;
+using Crystal.Themes.Windows.Shell;
 
 namespace Crystal.Themes.Behaviors
 {

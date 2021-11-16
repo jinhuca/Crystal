@@ -2,12 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using ControlzEx.Native;
-using ControlzEx.Standard;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Interop;
+using Crystal.Themes.Native;
+using Crystal.Themes.Standard;
 using Crystal.Themes.ValueBoxes;
 
 namespace Crystal.Themes.Controls

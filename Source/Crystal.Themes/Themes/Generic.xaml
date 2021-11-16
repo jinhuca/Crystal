@@ -44,6 +44,10 @@
     <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/ColorPicker/ColorPalette.xaml" />
     <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/ColorPicker/ColorPicker.xaml" />
     <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/MultiSelectionComboBox.xaml" />
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/BadgedEx.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/Glow.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/TabControlEx.xaml"/>
+
   </ResourceDictionary.MergedDictionaries>
 
   <theming:CrystalLibraryThemeProvider x:Key="{x:Static theming:CrystalLibraryThemeProvider.DefaultInstance}" />
@@ -75,4 +79,6 @@
   <!--#endregion-->
   <Style BasedOn="{StaticResource Crystal.Styles.MultiSelectionComboBox}" TargetType="{x:Type crystal:MultiSelectionComboBox}" />
 
+  <!--<Style BasedOn="{StaticResource Crystal.Styles.BadgedEx}" TargetType="{x:Type controls:BadgedEx}" />-->
+  <!--<Style BasedOn="{StaticResource Crystal.Styles.TabControlEx}" TargetType="{x:Type controls:TabControlEx}" />-->
 </ResourceDictionary>

@@ -1,12 +1,6 @@
 using System.Windows.Automation.Peers;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using ControlzEx;
-using ControlzEx.Theming;
 using Crystal.Themes.Automation.Peers;
+using Crystal.Themes.Theming;
 using Crystal.Themes.ValueBoxes;
 
 namespace Crystal.Themes.Controls
@@ -635,7 +629,7 @@ namespace Crystal.Themes.Controls
       }
     }
 
-    private static ControlzEx.Theming.Theme? DetectTheme(Flyout? flyout)
+    private static Theme? DetectTheme(Flyout? flyout)
     {
       if (flyout is null)
       {
@@ -665,7 +659,7 @@ namespace Crystal.Themes.Controls
       return null;
     }
 
-    internal void ChangeFlyoutTheme(ControlzEx.Theming.Theme windowTheme)
+    internal void ChangeFlyoutTheme(Theme windowTheme)
     {
       if (windowTheme == ThemeManager.Current.DetectTheme(Resources))
       {

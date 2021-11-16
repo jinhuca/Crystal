@@ -1,7 +1,7 @@
 ﻿using System.Windows.Controls.Primitives;
+using Crystal.Behaviors;
 using Crystal.Themes.Controls;
 using Crystal.Themes.ValueBoxes;
-using Microsoft.Xaml.Behaviors;
 
 namespace Crystal.Themes.Behaviors
 {

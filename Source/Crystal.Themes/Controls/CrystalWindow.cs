@@ -14,16 +14,15 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
-using ControlzEx.Behaviors;
-using ControlzEx.Native;
-using ControlzEx.Standard;
-using ControlzEx.Theming;
 using JetBrains.Annotations;
 using Crystal.Themes.Automation.Peers;
 using Crystal.Themes.Behaviors;
 using Crystal.Themes.Controls.Dialogs;
 using Crystal.Themes.ValueBoxes;
-using Microsoft.Xaml.Behaviors;
+using Crystal.Themes.Theming;
+using Crystal.Behaviors;
+using Crystal.Themes.Native;
+using Crystal.Themes.Standard;
 
 namespace Crystal.Themes.Controls
 {
@@ -1629,7 +1628,7 @@ namespace Crystal.Themes.Controls
         else if (ShowSystemMenu)
         {
 #pragma warning disable 618
-          ControlzEx.Windows.Shell.SystemCommands.ShowSystemMenuPhysicalCoordinates(this, PointToScreen(new Point(BorderThickness.Left, TitleBarHeight + BorderThickness.Top)));
+          Windows.Shell.SystemCommands.ShowSystemMenuPhysicalCoordinates(this, PointToScreen(new Point(BorderThickness.Left, TitleBarHeight + BorderThickness.Top)));
 #pragma warning restore 618
         }
       }
@@ -1741,11 +1740,11 @@ namespace Crystal.Themes.Controls
 #pragma warning disable 618
           if (window.WindowState == WindowState.Normal)
           {
-            ControlzEx.Windows.Shell.SystemCommands.MaximizeWindow(window);
+            Windows.Shell.SystemCommands.MaximizeWindow(window);
           }
           else
           {
-            ControlzEx.Windows.Shell.SystemCommands.RestoreWindow(window);
+            Windows.Shell.SystemCommands.RestoreWindow(window);
           }
 #pragma warning restore 618
           mouseButtonEventArgs.Handled = true;
@@ -1762,7 +1761,7 @@ namespace Crystal.Themes.Controls
         if ((mousePos.Y <= window.TitleBarHeight && window.TitleBarHeight > 0) || (window.UseNoneWindowStyle && window.TitleBarHeight <= 0))
         {
 #pragma warning disable 618
-          ControlzEx.Windows.Shell.SystemCommands.ShowSystemMenuPhysicalCoordinates(window, window.PointToScreen(mousePos));
+          Windows.Shell.SystemCommands.ShowSystemMenuPhysicalCoordinates(window, window.PointToScreen(mousePos));
 #pragma warning restore 618
         }
       }

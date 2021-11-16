@@ -1,6 +1,5 @@
 ﻿using System.Threading;
 using System.Windows.Input;
-using ControlzEx;
 
 namespace Crystal.Themes.Controls.Dialogs
 {

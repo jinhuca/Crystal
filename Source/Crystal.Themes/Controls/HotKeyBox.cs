@@ -5,8 +5,8 @@
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Controls;
-using ControlzEx.Standard;
 using Crystal.Themes.ValueBoxes;
+using Crystal.Themes.Standard;
 
 namespace Crystal.Themes.Controls
 {

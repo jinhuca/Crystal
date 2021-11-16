@@ -5,8 +5,8 @@
 using System.Diagnostics;
 using System.Windows.Controls;
 using System.Windows.Media;
-using ControlzEx.Theming;
-using ControlzEx.Windows.Shell;
+using Crystal.Themes.Theming;
+using Crystal.Themes.Windows.Shell;
 using JetBrains.Annotations;
 
 namespace Crystal.Themes.Controls
@@ -143,7 +143,7 @@ namespace Crystal.Themes.Controls
             window.ChangeAllWindowButtonCommandsBrush(window.OverrideDefaultWindowCommandsBrush ?? flyout.Foreground, currentTheme, flyout.Theme, flyout.Position);
         }
 
-        private static void ChangeAllWindowCommandsBrush(this CrystalWindow window, Brush? foregroundBrush, ControlzEx.Theming.Theme? currentAppTheme)
+        private static void ChangeAllWindowCommandsBrush(this CrystalWindow window, Brush? foregroundBrush, Theme? currentAppTheme)
         {
             if (foregroundBrush is null)
             {
@@ -168,7 +168,7 @@ namespace Crystal.Themes.Controls
             }
         }
 
-        private static void ChangeAllWindowButtonCommandsBrush(this CrystalWindow window, Brush? foregroundBrush, ControlzEx.Theming.Theme? currentAppTheme, FlyoutTheme flyoutTheme = FlyoutTheme.Adapt, Position position = Position.Top)
+        private static void ChangeAllWindowButtonCommandsBrush(this CrystalWindow window, Brush? foregroundBrush, Theme? currentAppTheme, FlyoutTheme flyoutTheme = FlyoutTheme.Adapt, Position position = Position.Top)
         {
             if (position == Position.Right || position == Position.Top)
             {

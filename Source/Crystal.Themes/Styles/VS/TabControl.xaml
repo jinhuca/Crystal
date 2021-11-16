@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:actions="clr-namespace:Crystal.Themes.Actions"
-                    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+                    xmlns:i="http://schemas.crystal.com/behaviors"
                     xmlns:crystal="clr-namespace:Crystal.Themes.Controls"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 

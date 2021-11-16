@@ -1,9 +1,7 @@
-﻿using System.Windows.Input;
-using System.Windows.Media;
-using ControlzEx.Theming;
+﻿using Crystal.Behaviors;
 using Crystal.Themes.Controls;
+using Crystal.Themes.Theming;
 using Crystal.Themes.ValueBoxes;
-using Microsoft.Xaml.Behaviors;
 
 namespace Crystal.Themes.Behaviors
 {

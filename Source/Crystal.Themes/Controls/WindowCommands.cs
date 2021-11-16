@@ -7,9 +7,8 @@ using System.ComponentModel;
 using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using System.Windows.Data;
-using ControlzEx;
-using ControlzEx.Theming;
 using Crystal.Themes.Automation.Peers;
+using Crystal.Themes.Theming;
 using Crystal.Themes.ValueBoxes;
 
 namespace Crystal.Themes.Controls

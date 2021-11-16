@@ -1,7 +1,6 @@
-using Microsoft.Xaml.Behaviors;
-
 namespace Crystal.Themes.Behaviors
 {
+  using Crystal.Behaviors;
   using System.ComponentModel;
 
   public class StylizedBehaviors

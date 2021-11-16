@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:behaviors="clr-namespace:Crystal.Themes.Behaviors"
                     xmlns:controlzex="urn:controlzex"
-                    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+                    xmlns:i="http://schemas.crystal.com/behaviors"
                     xmlns:crystal="clr-namespace:Crystal.Themes.Controls"
                     xmlns:mahConverters="clr-namespace:Crystal.Themes.Converters"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
@@ -240,7 +240,7 @@
                                     IsTabStop="False"
                                     Style="{DynamicResource Crystal.Styles.Button.Chromeless}" />
 
-                            <controlzex:PopupEx x:Name="PART_Popup"
+                            <crystal:PopupEx x:Name="PART_Popup"
                                                 Grid.Row="1"
                                                 Grid.Column="0"
                                                 Grid.ColumnSpan="2"
@@ -382,7 +382,7 @@
                                         </Grid>
                                     </StackPanel>
                                 </Border>
-                            </controlzex:PopupEx>
+                            </crystal:PopupEx>
                         </Grid>
 
                         <Border x:Name="DisabledVisualElement"

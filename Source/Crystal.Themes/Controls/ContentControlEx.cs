@@ -4,8 +4,9 @@
 
 using System.Windows.Controls;
 using System.Windows.Data;
-using ControlzEx.Windows.Shell;
+
 using Crystal.Themes.ValueBoxes;
+using Crystal.Themes.Windows.Shell;
 
 namespace Crystal.Themes.Controls
 {

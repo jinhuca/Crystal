@@ -48,7 +48,7 @@
             <crystal:ContentPresenterEx x:Name="PART_LeftWindowCommands"
                                                 Height="{Binding TitleBarHeight, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
                                                 VerticalAlignment="Top"
-                                                controlzEx:WindowChrome.IsHitTestVisibleInChrome="True"
+                                                WindowChrome.IsHitTestVisibleInChrome="True"
                                                 Content="{Binding LeftWindowCommands, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
                                                 DockPanel.Dock="Left"
                                                 Focusable="False" />
@@ -56,7 +56,7 @@
             <crystal:ContentPresenterEx x:Name="PART_RightWindowCommands"
                                                 Height="{Binding TitleBarHeight, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
                                                 VerticalAlignment="Top"
-                                                controlzEx:WindowChrome.IsHitTestVisibleInChrome="True"
+                                                WindowChrome.IsHitTestVisibleInChrome="True"
                                                 Content="{Binding RightWindowCommands, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
                                                 DockPanel.Dock="Right"
                                                 Focusable="False" />
@@ -91,7 +91,7 @@
                                             Height="{Binding TitleBarHeight, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
                                             VerticalAlignment="Top"
                                             Panel.ZIndex="1"
-                                            controlzEx:WindowChrome.IsHitTestVisibleInChrome="True"
+                                            WindowChrome.IsHitTestVisibleInChrome="True"
                                             Content="{Binding WindowButtonCommands, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
                                             Focusable="False" />
 
@@ -107,7 +107,7 @@
                                              UseLayoutRounding="True">
             <crystal:ContentPresenterEx x:Name="PART_ContentPresenter"
                                                 Margin="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessBindingConverter}, ConverterParameter={x:Static mahConverters:ThicknessSideType.Top}}"
-                                                controlzEx:WindowChrome.IsHitTestVisibleInChrome="True"
+                                                WindowChrome.IsHitTestVisibleInChrome="True"
                                                 UseLayoutRounding="False" />
           </crystal:CrystalContentControl>
 
@@ -224,19 +224,19 @@
       </MultiTrigger>
       <!--  HitTest visibility  -->
       <Trigger Property="GlowBrush" Value="{x:Null}">
-        <Setter TargetName="PART_Border" Property="controlzEx:WindowChrome.IsHitTestVisibleInChrome" Value="False" />
-        <Setter TargetName="PART_ContentPresenter" Property="controlzEx:WindowChrome.IsHitTestVisibleInChrome" Value="False" />
-        <Setter TargetName="PART_LeftWindowCommands" Property="controlzEx:WindowChrome.IsHitTestVisibleInChrome" Value="False" />
-        <Setter TargetName="PART_RightWindowCommands" Property="controlzEx:WindowChrome.IsHitTestVisibleInChrome" Value="False" />
-        <Setter TargetName="PART_WindowButtonCommands" Property="controlzEx:WindowChrome.IsHitTestVisibleInChrome" Value="False" />
+        <Setter TargetName="PART_Border" Property="WindowChrome.IsHitTestVisibleInChrome" Value="False" />
+        <Setter TargetName="PART_ContentPresenter" Property="WindowChrome.IsHitTestVisibleInChrome" Value="False" />
+        <Setter TargetName="PART_LeftWindowCommands" Property="WindowChrome.IsHitTestVisibleInChrome" Value="False" />
+        <Setter TargetName="PART_RightWindowCommands" Property="WindowChrome.IsHitTestVisibleInChrome" Value="False" />
+        <Setter TargetName="PART_WindowButtonCommands" Property="WindowChrome.IsHitTestVisibleInChrome" Value="False" />
       </Trigger>
       <Trigger Property="ResizeMode" Value="NoResize">
-        <Setter TargetName="PART_Border" Property="controlzEx:WindowChrome.IsHitTestVisibleInChrome" Value="True" />
-        <Setter TargetName="PART_ContentPresenter" Property="controlzEx:WindowChrome.IsHitTestVisibleInChrome" Value="True" />
-        <Setter TargetName="PART_LeftWindowCommands" Property="controlzEx:WindowChrome.IsHitTestVisibleInChrome" Value="True" />
-        <Setter TargetName="PART_RightWindowCommands" Property="controlzEx:WindowChrome.IsHitTestVisibleInChrome" Value="True" />
-        <Setter TargetName="PART_TitleBar" Property="controlzEx:WindowChrome.IsHitTestVisibleInChrome" Value="True" />
-        <Setter TargetName="PART_WindowButtonCommands" Property="controlzEx:WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+        <Setter TargetName="PART_Border" Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+        <Setter TargetName="PART_ContentPresenter" Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+        <Setter TargetName="PART_LeftWindowCommands" Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+        <Setter TargetName="PART_RightWindowCommands" Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+        <Setter TargetName="PART_TitleBar" Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+        <Setter TargetName="PART_WindowButtonCommands" Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
       </Trigger>
       <!--  no icon and no icon content template -> collapse the icon content control  -->
       <MultiTrigger>
@@ -345,7 +345,7 @@
             <crystal:ContentPresenterEx x:Name="PART_LeftWindowCommands"
                                                 Height="{Binding TitleBarHeight, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
                                                 VerticalAlignment="Top"
-                                                controlzEx:WindowChrome.IsHitTestVisibleInChrome="True"
+                                                WindowChrome.IsHitTestVisibleInChrome="True"
                                                 Content="{Binding LeftWindowCommands, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
                                                 DockPanel.Dock="Left"
                                                 Focusable="False" />
@@ -353,7 +353,7 @@
             <crystal:ContentPresenterEx x:Name="PART_RightWindowCommands"
                                                 Height="{Binding TitleBarHeight, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
                                                 VerticalAlignment="Top"
-                                                controlzEx:WindowChrome.IsHitTestVisibleInChrome="True"
+                                                WindowChrome.IsHitTestVisibleInChrome="True"
                                                 Content="{Binding RightWindowCommands, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
                                                 DockPanel.Dock="Right"
                                                 Focusable="False" />
@@ -369,7 +369,7 @@
                                             Height="{Binding TitleBarHeight, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
                                             VerticalAlignment="Top"
                                             Panel.ZIndex="1"
-                                            controlzEx:WindowChrome.IsHitTestVisibleInChrome="True"
+                                            WindowChrome.IsHitTestVisibleInChrome="True"
                                             Content="{Binding WindowButtonCommands, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
                                             Focusable="False" />
 
@@ -385,7 +385,7 @@
                                              UseLayoutRounding="True">
             <crystal:ContentPresenterEx x:Name="PART_ContentPresenter"
                                                 Margin="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessBindingConverter}, ConverterParameter={x:Static mahConverters:ThicknessSideType.Top}}"
-                                                controlzEx:WindowChrome.IsHitTestVisibleInChrome="True"
+                                                WindowChrome.IsHitTestVisibleInChrome="True"
                                                 UseLayoutRounding="False" />
           </crystal:CrystalContentControl>
 
@@ -519,19 +519,19 @@
       </MultiTrigger>
       <!--  HitTest visibility  -->
       <Trigger Property="GlowBrush" Value="{x:Null}">
-        <Setter TargetName="PART_Border" Property="controlzEx:WindowChrome.IsHitTestVisibleInChrome" Value="False" />
-        <Setter TargetName="PART_ContentPresenter" Property="controlzEx:WindowChrome.IsHitTestVisibleInChrome" Value="False" />
-        <Setter TargetName="PART_LeftWindowCommands" Property="controlzEx:WindowChrome.IsHitTestVisibleInChrome" Value="False" />
-        <Setter TargetName="PART_RightWindowCommands" Property="controlzEx:WindowChrome.IsHitTestVisibleInChrome" Value="False" />
-        <Setter TargetName="PART_WindowButtonCommands" Property="controlzEx:WindowChrome.IsHitTestVisibleInChrome" Value="False" />
+        <Setter TargetName="PART_Border" Property="WindowChrome.IsHitTestVisibleInChrome" Value="False" />
+        <Setter TargetName="PART_ContentPresenter" Property="WindowChrome.IsHitTestVisibleInChrome" Value="False" />
+        <Setter TargetName="PART_LeftWindowCommands" Property="WindowChrome.IsHitTestVisibleInChrome" Value="False" />
+        <Setter TargetName="PART_RightWindowCommands" Property="WindowChrome.IsHitTestVisibleInChrome" Value="False" />
+        <Setter TargetName="PART_WindowButtonCommands" Property="WindowChrome.IsHitTestVisibleInChrome" Value="False" />
       </Trigger>
       <Trigger Property="ResizeMode" Value="NoResize">
-        <Setter TargetName="PART_Border" Property="controlzEx:WindowChrome.IsHitTestVisibleInChrome" Value="True" />
-        <Setter TargetName="PART_ContentPresenter" Property="controlzEx:WindowChrome.IsHitTestVisibleInChrome" Value="True" />
-        <Setter TargetName="PART_LeftWindowCommands" Property="controlzEx:WindowChrome.IsHitTestVisibleInChrome" Value="True" />
-        <Setter TargetName="PART_RightWindowCommands" Property="controlzEx:WindowChrome.IsHitTestVisibleInChrome" Value="True" />
-        <Setter TargetName="PART_TitleBar" Property="controlzEx:WindowChrome.IsHitTestVisibleInChrome" Value="True" />
-        <Setter TargetName="PART_WindowButtonCommands" Property="controlzEx:WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+        <Setter TargetName="PART_Border" Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+        <Setter TargetName="PART_ContentPresenter" Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+        <Setter TargetName="PART_LeftWindowCommands" Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+        <Setter TargetName="PART_RightWindowCommands" Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+        <Setter TargetName="PART_TitleBar" Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+        <Setter TargetName="PART_WindowButtonCommands" Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
       </Trigger>
       <!--  no icon and no icon content template -> collapse the icon content control  -->
       <MultiTrigger>

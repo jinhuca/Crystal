@@ -22,6 +22,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crystal.Behaviors", "Crysta
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crystal.Themes", "Crystal.Themes\Crystal.Themes.csproj", "{145A7996-91EF-4E35-A268-C6EF75340D8E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{042D82E6-2392-4E85-BFEC-D87D80160E08}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		..\UnitTests\UnitTests.Shared\Container.Shared\Container.Shared.projitems*{4238e846-0da5-4093-8179-3e188257f97d}*SharedItemsImports = 13

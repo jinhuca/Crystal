@@ -1,5 +1,3 @@
-using ControlzEx.Theming;
-
 namespace Crystal.Themes.Theming
 {
   /// <summary>

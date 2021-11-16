@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
 using System.Windows.Documents;
+using Crystal.Behaviors;
 using Crystal.Themes.Controls;
 using Crystal.Themes.ValueBoxes;
-using Microsoft.Xaml.Behaviors;
 
 namespace Crystal.Themes.Behaviors
 {

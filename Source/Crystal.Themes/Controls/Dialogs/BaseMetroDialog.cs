@@ -2,8 +2,8 @@
 using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
-using ControlzEx.Theming;
 using Crystal.Themes.Automation.Peers;
+using Crystal.Themes.Theming;
 
 namespace Crystal.Themes.Controls.Dialogs
 {
@@ -284,7 +284,7 @@ namespace Crystal.Themes.Controls.Dialogs
       this.Invoke(HandleThemeChange);
     }
 
-    private static object? TryGetResource(ControlzEx.Theming.Theme? theme, string key)
+    private static object? TryGetResource(Theme? theme, string key)
     {
       return theme?.Resources[key];
     }
@@ -344,7 +344,7 @@ namespace Crystal.Themes.Controls.Dialogs
       // nothing here
     }
 
-    private static ControlzEx.Theming.Theme? DetectTheme(BaseMetroDialog? dialog)
+    private static Theming.Theme? DetectTheme(BaseMetroDialog? dialog)
     {
       if (dialog is null)
       {

@@ -1,5 +1,4 @@
-﻿using System.Windows.Controls.Primitives;
-using Microsoft.Xaml.Behaviors;
+﻿using Crystal.Behaviors;
 
 namespace Crystal.Themes.Behaviors
 {
