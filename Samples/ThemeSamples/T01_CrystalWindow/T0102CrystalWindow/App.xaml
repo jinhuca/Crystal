@@ -3,7 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:T0102CrystalWindow"
              StartupUri="MainWindow.xaml">
-    <Application.Resources>
-         
-    </Application.Resources>
+  <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Fonts.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Themes/Light.Blue.xaml" />
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </Application.Resources>
 </Application>

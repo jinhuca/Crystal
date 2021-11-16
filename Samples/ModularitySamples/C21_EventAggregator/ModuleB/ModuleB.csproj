@@ -6,6 +6,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Crystal.Desktop" Version="2.2.3.6" />
+    <PackageReference Include="Crystal.Themes" Version="2.2.4.2" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\UsingEventAggregator.Core\UsingEventAggregator.Core.csproj" />
