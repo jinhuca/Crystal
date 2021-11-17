@@ -129,7 +129,7 @@ namespace Crystal.Themes.Controls
         public HorizontalAlignment IndexHorizontalAlignment
         {
             get => (HorizontalAlignment)GetValue(IndexHorizontalAlignmentProperty);
-            set => SetValue(IndexHorizontalAlignmentProperty, (object)value);
+            set => SetValue(IndexHorizontalAlignmentProperty, value);
         }
 
         public static readonly DependencyProperty IndexVerticalAlignmentProperty
@@ -144,7 +144,7 @@ namespace Crystal.Themes.Controls
         public VerticalAlignment IndexVerticalAlignment
         {
             get => (VerticalAlignment)GetValue(IndexVerticalAlignmentProperty);
-            set => SetValue(IndexVerticalAlignmentProperty, (object)value);
+            set => SetValue(IndexVerticalAlignmentProperty, value);
         }
 
         /// <summary>Identifies the <see cref="CircularNavigation"/> dependency property.</summary>

@@ -588,7 +588,7 @@ namespace Crystal.Themes.Controls
         public AutoToolTipPlacement AutoToolTipPlacement
         {
             get => (AutoToolTipPlacement)GetValue(AutoToolTipPlacementProperty);
-            set => SetValue(AutoToolTipPlacementProperty, (object)value);
+            set => SetValue(AutoToolTipPlacementProperty, value);
         }
 
         /// <summary>Identifies the <see cref="AutoToolTipPrecision"/> dependency property.</summary>
@@ -609,7 +609,7 @@ namespace Crystal.Themes.Controls
         public int AutoToolTipPrecision
         {
             get => (int)GetValue(AutoToolTipPrecisionProperty);
-            set => SetValue(AutoToolTipPrecisionProperty, (object)value);
+            set => SetValue(AutoToolTipPrecisionProperty, value);
         }
 
         /// <summary>Identifies the <see cref="AutoToolTipLowerValueTemplate"/> dependency property.</summary>
@@ -724,7 +724,7 @@ namespace Crystal.Themes.Controls
         public double SelectionStart
         {
             get => (double)GetValue(SelectionStartProperty);
-            set => SetValue(SelectionStartProperty, (object)value);
+            set => SetValue(SelectionStartProperty, value);
         }
 
         private static void OnSelectionStartChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -773,7 +773,7 @@ namespace Crystal.Themes.Controls
         public double SelectionEnd
         {
             get => (double)GetValue(SelectionEndProperty);
-            set => SetValue(SelectionEndProperty, (object)value);
+            set => SetValue(SelectionEndProperty, value);
         }
 
         private static void OnSelectionEndChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

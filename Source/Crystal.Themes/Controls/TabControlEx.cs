@@ -507,7 +507,7 @@ namespace Crystal.Themes.Controls
 
       var presenter = contentPresenter;
 
-      Dispatcher.BeginInvoke(DispatcherPriority.Input, (Action)(() => 
+      Dispatcher.BeginInvoke(DispatcherPriority.Input, () =>
       {
         tabItem.BringIntoView();
         presenter.BringIntoView();
@@ -515,7 +515,7 @@ namespace Crystal.Themes.Controls
         {
           presenter.MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
         }
-      }));
+      });
     }
   }
 }

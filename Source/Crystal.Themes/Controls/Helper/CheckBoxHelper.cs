@@ -74,7 +74,7 @@
     [AttachedPropertyBrowsableForType(typeof(CheckBox))]
     public static object? GetCheckGlyphUnchecked(DependencyObject obj)
     {
-      return (object?)obj.GetValue(CheckGlyphUncheckedProperty);
+      return obj.GetValue(CheckGlyphUncheckedProperty);
     }
 
     [Category(AppName.CrystalThemes)]
@@ -601,7 +601,7 @@
     [AttachedPropertyBrowsableForType(typeof(CheckBox))]
     public static object? GetCheckGlyphChecked(DependencyObject obj)
     {
-      return (object?)obj.GetValue(CheckGlyphCheckedProperty);
+      return obj.GetValue(CheckGlyphCheckedProperty);
     }
 
     [Category(AppName.CrystalThemes)]
@@ -1125,7 +1125,7 @@
     [AttachedPropertyBrowsableForType(typeof(CheckBox))]
     public static object? GetCheckGlyphIndeterminate(DependencyObject obj)
     {
-      return (object?)obj.GetValue(CheckGlyphIndeterminateProperty);
+      return obj.GetValue(CheckGlyphIndeterminateProperty);
     }
 
     [Category(AppName.CrystalThemes)]

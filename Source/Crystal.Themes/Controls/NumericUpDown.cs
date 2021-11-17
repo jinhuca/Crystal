@@ -709,7 +709,7 @@ namespace Crystal.Themes.Controls
     [Category(AppName.CrystalThemes)]
     public object? ButtonUpContent
     {
-      get => (object?)GetValue(ButtonUpContentProperty);
+      get => GetValue(ButtonUpContentProperty);
       set => SetValue(ButtonUpContentProperty, value);
     }
 
@@ -763,7 +763,7 @@ namespace Crystal.Themes.Controls
     [Category(AppName.CrystalThemes)]
     public object? ButtonDownContent
     {
-      get => (object?)GetValue(ButtonDownContentProperty);
+      get => GetValue(ButtonDownContentProperty);
       set => SetValue(ButtonDownContentProperty, value);
     }
 

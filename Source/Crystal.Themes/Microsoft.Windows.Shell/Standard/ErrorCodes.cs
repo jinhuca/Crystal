@@ -364,7 +364,7 @@ namespace Crystal.Themes.Standard
             // Facility has 11 bits reserved (different than SCODES, which have 4 bits reserved)
             // MSDN documentation incorrectly uses 12 bits for the ESE facility (e5e), so go ahead and let that one slide.
             // And WIC also ignores it the documented size...
-            Assert.Implies((int)facility != (int)((int)facility & 0x1FF), facility == Facility.Ese || facility == Facility.WinCodec);
+            Assert.Implies((int)facility != ((int)facility & 0x1FF), facility == Facility.Ese || facility == Facility.WinCodec);
             // Code has 4 bits reserved.
             Assert.AreEqual(code, code & 0xFFFF);
 
@@ -402,7 +402,7 @@ namespace Crystal.Themes.Standard
         public static int GetCode(int error)
         {
             // #define HRESULT_CODE(hr)    ((hr) & 0xFFFF)
-            return (int)(error & 0xFFFF);
+            return error & 0xFFFF;
         }
 
         #region Object class override members

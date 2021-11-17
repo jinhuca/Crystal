@@ -2921,7 +2921,7 @@ namespace Crystal.Themes.Standard
     public static void DwmSetWindowAttributeDisallowPeek(IntPtr hwnd, bool disallowPeek)
     {
       Assert.IsTrue(Utility.IsOSWindows7OrNewer);
-      int dwDisallow = (int)(disallowPeek ? Win32Value.TRUE : Win32Value.FALSE);
+      int dwDisallow = disallowPeek ? Win32Value.TRUE : Win32Value.FALSE;
       _DwmSetWindowAttribute(hwnd, DWMWA.DISALLOW_PEEK, ref dwDisallow, sizeof(int));
     }
 

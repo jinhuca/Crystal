@@ -21,7 +21,7 @@ namespace Crystal.Themes.Controls.Dialogs
 
       return HandleOverlayOnShow(settings, window).ContinueWith(z =>
           {
-            return (Task<LoginDialogData?>)window.Dispatcher.Invoke(new Func<Task<LoginDialogData?>>(() =>
+            return window.Dispatcher.Invoke(new Func<Task<LoginDialogData?>>(() =>
                       {
                         //create the dialog control
                         LoginDialog dialog = new LoginDialog(window, settings)
@@ -53,17 +53,17 @@ namespace Crystal.Themes.Controls.Dialogs
                                               window.Dispatcher.BeginInvoke(new Action(() => DialogClosed(window, new DialogStateChangedEventArgs())));
                                             }
 
-                                            Task closingTask = (Task)window.Dispatcher.Invoke(new Func<Task>(() => dialog.WaitForCloseAsync()));
+                                            Task closingTask = window.Dispatcher.Invoke(new Func<Task>(() => dialog.WaitForCloseAsync()));
                                             return closingTask.ContinueWith(a =>
                                                   {
-                                                    return ((Task)window.Dispatcher.Invoke(new Func<Task>(() =>
+                                                    return window.Dispatcher.Invoke(new Func<Task>(() =>
                                                           {
                                                             window.SizeChanged -= sizeHandler;
 
                                                             window.RemoveDialog(dialog);
 
                                                             return HandleOverlayOnHide(settings, window);
-                                                          }))).ContinueWith(y3 => y).Unwrap();
+                                                          })).ContinueWith(y3 => y).Unwrap();
                                                   });
                                           }).Unwrap();
                                   }).Unwrap().Unwrap();
@@ -87,7 +87,7 @@ namespace Crystal.Themes.Controls.Dialogs
 
       return HandleOverlayOnShow(settings, window).ContinueWith(z =>
           {
-            return (Task<string?>)window.Dispatcher.Invoke(new Func<Task<string?>>(() =>
+            return window.Dispatcher.Invoke(new Func<Task<string?>>(() =>
                       {
                         //create the dialog control
                         var dialog = new InputDialog(window, settings)
@@ -120,17 +120,17 @@ namespace Crystal.Themes.Controls.Dialogs
                                               window.Dispatcher.BeginInvoke(new Action(() => DialogClosed(window, new DialogStateChangedEventArgs())));
                                             }
 
-                                            Task closingTask = (Task)window.Dispatcher.Invoke(new Func<Task>(() => dialog.WaitForCloseAsync()));
+                                            Task closingTask = window.Dispatcher.Invoke(new Func<Task>(() => dialog.WaitForCloseAsync()));
                                             return closingTask.ContinueWith(a =>
                                                   {
-                                                    return ((Task)window.Dispatcher.Invoke(new Func<Task>(() =>
+                                                    return window.Dispatcher.Invoke(new Func<Task>(() =>
                                                           {
                                                             window.SizeChanged -= sizeHandler;
 
                                                             window.RemoveDialog(dialog);
 
                                                             return HandleOverlayOnHide(settings, window);
-                                                          }))).ContinueWith(y3 => y).Unwrap();
+                                                          })).ContinueWith(y3 => y).Unwrap();
                                                   });
                                           }).Unwrap();
                                   }).Unwrap().Unwrap();
@@ -155,7 +155,7 @@ namespace Crystal.Themes.Controls.Dialogs
 
       return HandleOverlayOnShow(settings, window).ContinueWith(z =>
           {
-            return (Task<MessageDialogResult>)window.Dispatcher.Invoke(new Func<Task<MessageDialogResult>>(() =>
+            return window.Dispatcher.Invoke(new Func<Task<MessageDialogResult>>(() =>
                       {
                         //create the dialog control
                         var dialog = new MessageDialog(window, settings)
@@ -188,17 +188,17 @@ namespace Crystal.Themes.Controls.Dialogs
                                               window.Dispatcher.BeginInvoke(new Action(() => DialogClosed(window, new DialogStateChangedEventArgs())));
                                             }
 
-                                            Task closingTask = (Task)window.Dispatcher.Invoke(new Func<Task>(() => dialog.WaitForCloseAsync()));
+                                            Task closingTask = window.Dispatcher.Invoke(new Func<Task>(() => dialog.WaitForCloseAsync()));
                                             return closingTask.ContinueWith(a =>
                                                   {
-                                                    return ((Task)window.Dispatcher.Invoke(new Func<Task>(() =>
+                                                    return window.Dispatcher.Invoke(new Func<Task>(() =>
                                                           {
                                                             window.SizeChanged -= sizeHandler;
 
                                                             window.RemoveDialog(dialog);
 
                                                             return HandleOverlayOnHide(settings, window);
-                                                          }))).ContinueWith(y3 => y).Unwrap();
+                                                          })).ContinueWith(y3 => y).Unwrap();
                                                   });
                                           }).Unwrap();
                                   }).Unwrap().Unwrap();
@@ -223,7 +223,7 @@ namespace Crystal.Themes.Controls.Dialogs
 
       return HandleOverlayOnShow(settings, window).ContinueWith(z =>
           {
-            return ((Task<ProgressDialogController>)window.Dispatcher.Invoke(new Func<Task<ProgressDialogController>>(() =>
+            return window.Dispatcher.Invoke(new Func<Task<ProgressDialogController>>(() =>
                       {
                         //create the dialog control
                         var dialog = new ProgressDialog(window, settings)
@@ -254,10 +254,10 @@ namespace Crystal.Themes.Controls.Dialogs
                                               window.Dispatcher.BeginInvoke(new Action(() => DialogClosed(window, new DialogStateChangedEventArgs())));
                                             }
 
-                                            Task closingTask = (Task)window.Dispatcher.Invoke(new Func<Task>(() => dialog.WaitForCloseAsync()));
+                                            Task closingTask = window.Dispatcher.Invoke(new Func<Task>(() => dialog.WaitForCloseAsync()));
                                             return closingTask.ContinueWith(a =>
                                                   {
-                                                    return (Task)window.Dispatcher.Invoke(new Func<Task>(() =>
+                                                    return window.Dispatcher.Invoke(new Func<Task>(() =>
                                                           {
                                                             window.SizeChanged -= sizeHandler;
 
@@ -268,7 +268,7 @@ namespace Crystal.Themes.Controls.Dialogs
                                                   }).Unwrap();
                                           });
                                   });
-                      })));
+                      }));
           }).Unwrap();
     }
 
@@ -389,7 +389,7 @@ namespace Crystal.Themes.Controls.Dialogs
 
       return HandleOverlayOnShow(settings, window).ContinueWith(z =>
           {
-            return (Task)window.Dispatcher.Invoke(new Func<Task>(() =>
+            return window.Dispatcher.Invoke(new Func<Task>(() =>
                       {
                         SetDialogFontSizes(settings, dialog);
 
@@ -431,7 +431,7 @@ namespace Crystal.Themes.Controls.Dialogs
 
       return HandleOverlayOnShow(dialog.DialogSettings, window).ContinueWith(z =>
           {
-            return (Task<TDialog>)window.Dispatcher.Invoke(new Func<Task<TDialog>>(() =>
+            return window.Dispatcher.Invoke(new Func<Task<TDialog>>(() =>
                       {
                         SetDialogFontSizes(dialog.DialogSettings, dialog);
 
@@ -485,7 +485,7 @@ namespace Crystal.Themes.Controls.Dialogs
 
       dialog.OnClose();
 
-      Task closingTask = (Task)window.Dispatcher.Invoke(new Func<Task>(dialog.WaitForCloseAsync));
+      Task closingTask = window.Dispatcher.Invoke(new Func<Task>(dialog.WaitForCloseAsync));
       return closingTask.ContinueWith(a =>
           {
             if (DialogClosed != null)
@@ -493,7 +493,7 @@ namespace Crystal.Themes.Controls.Dialogs
               window.Dispatcher.BeginInvoke(new Action(() => DialogClosed(window, new DialogStateChangedEventArgs())));
             }
 
-            return (Task)window.Dispatcher.Invoke(new Func<Task>(() =>
+            return window.Dispatcher.Invoke(new Func<Task>(() =>
                       {
                         window.RemoveDialog(dialog);
 
@@ -512,11 +512,11 @@ namespace Crystal.Themes.Controls.Dialogs
     {
       window.Dispatcher.VerifyAccess();
       var t = new TaskCompletionSource<TDialog?>();
-      window.Dispatcher.Invoke((Action)(() =>
+      window.Dispatcher.Invoke(() =>
           {
             var dialog = window.crystalActiveDialogContainer?.Children.OfType<TDialog>().LastOrDefault();
             t.TrySetResult(dialog);
-          }));
+          });
       return t.Task;
     }
 

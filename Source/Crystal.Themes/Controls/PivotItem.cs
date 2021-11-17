@@ -17,7 +17,7 @@ namespace Crystal.Themes.Controls
         /// </summary>
         public object? Header
         {
-            get => (object?)GetValue(HeaderProperty);
+            get => GetValue(HeaderProperty);
             set => SetValue(HeaderProperty, value);
         }
 

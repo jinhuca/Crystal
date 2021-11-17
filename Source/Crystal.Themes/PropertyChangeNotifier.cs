@@ -78,7 +78,7 @@
     [Bindable(true)]
     public object? Value
     {
-      get { return (object?)GetValue(ValueProperty); }
+      get { return GetValue(ValueProperty); }
       set { SetValue(ValueProperty, value); }
     }
 

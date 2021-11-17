@@ -177,7 +177,7 @@ namespace Crystal.Themes.Controls
         /// </summary>
         public object AvailableColorPaletteHeader
         {
-            get => (object)GetValue(AvailableColorPaletteHeaderProperty);
+            get => GetValue(AvailableColorPaletteHeaderProperty);
             set => SetValue(AvailableColorPaletteHeaderProperty, value);
         }
 
@@ -257,7 +257,7 @@ namespace Crystal.Themes.Controls
         /// </summary>
         public object CustomColorPalette01Header
         {
-            get => (object)GetValue(CustomColorPalette01HeaderProperty);
+            get => GetValue(CustomColorPalette01HeaderProperty);
             set => SetValue(CustomColorPalette01HeaderProperty, value);
         }
 
@@ -337,7 +337,7 @@ namespace Crystal.Themes.Controls
         /// </summary>
         public object CustomColorPalette02Header
         {
-            get => (object)GetValue(CustomColorPalette02HeaderProperty);
+            get => GetValue(CustomColorPalette02HeaderProperty);
             set => SetValue(CustomColorPalette02HeaderProperty, value);
         }
 
@@ -417,7 +417,7 @@ namespace Crystal.Themes.Controls
         /// </summary>
         public object RecentColorPaletteHeader
         {
-            get => (object)GetValue(RecentColorPaletteHeaderProperty);
+            get => GetValue(RecentColorPaletteHeaderProperty);
             set => SetValue(RecentColorPaletteHeaderProperty, value);
         }
 
@@ -497,7 +497,7 @@ namespace Crystal.Themes.Controls
         /// </summary>
         public object StandardColorPaletteHeader
         {
-            get => (object)GetValue(StandardColorPaletteHeaderProperty);
+            get => GetValue(StandardColorPaletteHeaderProperty);
             set => SetValue(StandardColorPaletteHeaderProperty, value);
         }
 
@@ -513,7 +513,7 @@ namespace Crystal.Themes.Controls
         /// </summary>
         public object? StandardColorPaletteHeaderTemplate
         {
-            get => (object?)GetValue(StandardColorPaletteHeaderTemplateProperty);
+            get => GetValue(StandardColorPaletteHeaderTemplateProperty);
             set => SetValue(StandardColorPaletteHeaderTemplateProperty, value);
         }
 
@@ -593,7 +593,7 @@ namespace Crystal.Themes.Controls
         /// </summary>
         public object ColorPalettesTabHeader
         {
-            get => (object)GetValue(ColorPalettesTabHeaderProperty);
+            get => GetValue(ColorPalettesTabHeaderProperty);
             set => SetValue(ColorPalettesTabHeaderProperty, value);
         }
 
@@ -641,7 +641,7 @@ namespace Crystal.Themes.Controls
         /// </summary>
         public object AdvancedTabHeader
         {
-            get => (object)GetValue(AdvancedTabHeaderProperty);
+            get => GetValue(AdvancedTabHeaderProperty);
             set => SetValue(AdvancedTabHeaderProperty, value);
         }
 

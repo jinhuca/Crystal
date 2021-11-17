@@ -356,7 +356,7 @@ namespace Crystal.Themes.Controls
       {
         if (e.AddedItems.Count == 0)
         {
-          SetCurrentValue(SelectedDateTimeProperty, (DateTime?)null);
+          SetCurrentValue(SelectedDateTimeProperty, null);
           return;
         }
 

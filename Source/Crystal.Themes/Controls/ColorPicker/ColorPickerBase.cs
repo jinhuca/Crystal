@@ -334,7 +334,7 @@ namespace Crystal.Themes.Controls
         /// </summary>
         public object LabelAlphaChannel
         {
-            get => (object)GetValue(LabelAlphaChannelProperty);
+            get => GetValue(LabelAlphaChannelProperty);
             set => SetValue(LabelAlphaChannelProperty, value);
         }
 
@@ -350,7 +350,7 @@ namespace Crystal.Themes.Controls
         /// </summary>
         public object LabelRedChannel
         {
-            get => (object)GetValue(LabelRedChannelProperty);
+            get => GetValue(LabelRedChannelProperty);
             set => SetValue(LabelRedChannelProperty, value);
         }
 
@@ -366,7 +366,7 @@ namespace Crystal.Themes.Controls
         /// </summary>
         public object LabelGreenChannel
         {
-            get => (object)GetValue(LabelGreenChannelProperty);
+            get => GetValue(LabelGreenChannelProperty);
             set => SetValue(LabelGreenChannelProperty, value);
         }
 
@@ -382,7 +382,7 @@ namespace Crystal.Themes.Controls
         /// </summary>
         public object LabelBlueChannel
         {
-            get => (object)GetValue(LabelBlueChannelProperty);
+            get => GetValue(LabelBlueChannelProperty);
             set => SetValue(LabelBlueChannelProperty, value);
         }
 
@@ -398,7 +398,7 @@ namespace Crystal.Themes.Controls
         /// </summary>
         public object LabelColorPreview
         {
-            get => (object)GetValue(LabelColorPreviewProperty);
+            get => GetValue(LabelColorPreviewProperty);
             set => SetValue(LabelColorPreviewProperty, value);
         }
 
@@ -414,7 +414,7 @@ namespace Crystal.Themes.Controls
         /// </summary>
         public object LabelHueChannel
         {
-            get => (object)GetValue(LabelHueChannelProperty);
+            get => GetValue(LabelHueChannelProperty);
             set => SetValue(LabelHueChannelProperty, value);
         }
 
@@ -430,7 +430,7 @@ namespace Crystal.Themes.Controls
         /// </summary>
         public object LabelSaturationChannel
         {
-            get => (object)GetValue(LabelSaturationChannelProperty);
+            get => GetValue(LabelSaturationChannelProperty);
             set => SetValue(LabelSaturationChannelProperty, value);
         }
 
@@ -446,7 +446,7 @@ namespace Crystal.Themes.Controls
         /// </summary>
         public object LabelValueChannel
         {
-            get => (object)GetValue(LabelValueChannelProperty);
+            get => GetValue(LabelValueChannelProperty);
             set => SetValue(LabelValueChannelProperty, value);
         }
 
@@ -462,7 +462,7 @@ namespace Crystal.Themes.Controls
         /// </summary>
         public object LabelColorName
         {
-            get => (object)GetValue(LabelColorNameProperty);
+            get => GetValue(LabelColorNameProperty);
             set => SetValue(LabelColorNameProperty, value);
         }
 
