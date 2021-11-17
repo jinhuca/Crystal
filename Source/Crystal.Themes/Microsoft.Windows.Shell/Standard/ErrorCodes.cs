@@ -1,18 +1,13 @@
-using Crystal.Themes.Controls;
-using System;
-using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-#pragma warning disable SA1310 // Field names should not contain underscore
 namespace Crystal.Themes.Standard
 {
-    /// <summary>
-    /// Wrapper for common Win32 status codes.
-    /// </summary>
-    [Obsolete(DesignerConstants.Win32ElementWarning)]
+  /// <summary>
+  /// Wrapper for common Win32 status codes.
+  /// </summary>
+  [Obsolete(DesignerConstants.Win32ElementWarning)]
     [StructLayout(LayoutKind.Explicit)]
     public struct Win32Error
     {

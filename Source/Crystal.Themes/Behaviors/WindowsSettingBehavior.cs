@@ -1,10 +1,8 @@
-using System.Diagnostics;
 using System.Windows.Interop;
 using Crystal.Behaviors;
 using Crystal.Themes.Controls;
 using Crystal.Themes.Native;
 using Crystal.Themes.Standard;
-using Crystal.Themes.Windows.Shell;
 
 namespace Crystal.Themes.Behaviors
 {

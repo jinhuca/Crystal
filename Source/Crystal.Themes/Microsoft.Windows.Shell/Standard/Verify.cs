@@ -1,6 +1,3 @@
-using System;
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Threading;
@@ -13,11 +10,11 @@ using System.Threading;
 // might be included in multiple assemblies.
 namespace Crystal.Themes.Standard
 {
-    /// <summary>
-    /// A static class for retail validated assertions.
-    /// Instead of breaking into the debugger an exception is thrown.
-    /// </summary>
-    internal static class Verify
+  /// <summary>
+  /// A static class for retail validated assertions.
+  /// Instead of breaking into the debugger an exception is thrown.
+  /// </summary>
+  internal static class Verify
     {
         /// <summary>
         /// Ensure that the current thread's apartment state is what's expected.

@@ -1,28 +1,16 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Security;
-using System.Windows;
-using System.Windows.Media;
 using Crystal.Themes.Standard;
 
 #pragma warning disable 1591, 618
 #pragma warning disable CA1001
-#pragma warning disable SA1300 // Element should begin with upper-case letter
-#pragma warning disable SA1306 // Field names should begin with lower-case letter
-#pragma warning disable SA1308 // Variable names should not be prefixed
-#pragma warning disable SA1309 // Field names should not begin with underscore
-#pragma warning disable SA1310 // Field names should not contain underscore
 /**************************************************************************\
     Copyright Microsoft Corporation. All Rights Reserved.
 \**************************************************************************/
 
 namespace Crystal.Themes.Windows.Shell
 {
-    internal class SystemParameters2 : INotifyPropertyChanged
+  internal class SystemParameters2 : INotifyPropertyChanged
     {
         private delegate void _SystemMetricUpdate(IntPtr wParam, IntPtr lParam);
 

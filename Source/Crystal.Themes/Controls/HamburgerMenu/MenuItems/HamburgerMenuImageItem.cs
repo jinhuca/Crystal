@@ -1,6 +1,4 @@
-﻿using System.Windows.Media;
-
-namespace Crystal.Themes.Controls
+﻿namespace Crystal.Themes.Controls
 {
   /// <summary>
   /// The HamburgerMenuImageItem provides an image based implementation for HamburgerMenu entries.

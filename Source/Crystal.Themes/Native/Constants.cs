@@ -1,13 +1,4 @@
-﻿using Crystal.Themes.Controls;
-using System;
-
-#pragma warning disable CA1028
-#pragma warning disable SA1300 // Element should begin with upper-case letter
-#pragma warning disable SA1308 // Variable names should not be prefixed
-#pragma warning disable SA1309 // Field names should not begin with underscore
-#pragma warning disable SA1310 // Field names should not contain underscore
-#pragma warning disable SA1602 // Enumeration items should be documented
-namespace Crystal.Themes.Native
+﻿namespace Crystal.Themes.Native
 {
   [Obsolete(DesignerConstants.Win32ElementWarning)]
   public static class Constants

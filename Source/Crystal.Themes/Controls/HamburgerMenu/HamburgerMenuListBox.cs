@@ -1,7 +1,5 @@
 ﻿using Crystal.Themes.Converters;
 using System.Windows.Automation;
-using System.Windows.Controls;
-using System.Windows.Data;
 
 namespace Crystal.Themes.Controls
 {

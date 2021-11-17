@@ -1,11 +1,9 @@
-using System;
 using System.Security.Permissions;
-using Crystal.Themes.Controls;
 using Microsoft.Win32.SafeHandles;
 
 namespace Crystal.Themes.Native
 {
-    [SecurityPermission(SecurityAction.LinkDemand, UnmanagedCode = true)]
+  [SecurityPermission(SecurityAction.LinkDemand, UnmanagedCode = true)]
     [Obsolete(DesignerConstants.Win32ElementWarning)]
     public sealed class SafeLibraryHandle : SafeHandleZeroOrMinusOneIsInvalid
     {

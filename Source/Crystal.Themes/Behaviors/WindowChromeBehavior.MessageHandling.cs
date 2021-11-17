@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Security;
-using System.Windows;
-using System.Windows.Data;
 using Crystal.Themes.Standard;
 using Crystal.Themes.Windows.Shell;
 using HANDLE_MESSAGE = System.Collections.Generic.KeyValuePair<Crystal.Themes.Standard.WM, Crystal.Themes.Standard.MessageHandler>;

@@ -3,8 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 using Crystal.Themes.Windows.Shell;
-using System.Windows.Controls;
-using System.Windows.Data;
 
 namespace Crystal.Themes.Controls
 {

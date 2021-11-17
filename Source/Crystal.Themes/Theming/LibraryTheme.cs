@@ -1,16 +1,13 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Media;
-using Crystal.Themes.Internal;
+﻿using Crystal.Themes.Internal;
 
 #nullable enable
 
 namespace Crystal.Themes.Theming
 {
-    /// <summary>
-    /// Represents a theme.
-    /// </summary>
-    public class LibraryTheme
+  /// <summary>
+  /// Represents a theme.
+  /// </summary>
+  public class LibraryTheme
     {
         /// <summary>
         /// Gets the key for the library theme instance.

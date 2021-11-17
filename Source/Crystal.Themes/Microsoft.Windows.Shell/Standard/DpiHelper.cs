@@ -1,12 +1,7 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Windows;
-using System.Windows.Media;
-
-#pragma warning disable 1591, 1573, 618
+﻿#pragma warning disable 1591, 1573, 618
 namespace Crystal.Themes.Standard
 {
-    internal static class DpiHelper
+  internal static class DpiHelper
     {
         [ThreadStatic]
         private static Matrix transformToDevice;

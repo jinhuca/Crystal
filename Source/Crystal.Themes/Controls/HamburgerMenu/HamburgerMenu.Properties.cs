@@ -1,5 +1,4 @@
-﻿using JetBrains.Annotations;
-using Crystal.Themes.ValueBoxes;
+﻿using Crystal.Themes.ValueBoxes;
 
 namespace Crystal.Themes.Controls
 {

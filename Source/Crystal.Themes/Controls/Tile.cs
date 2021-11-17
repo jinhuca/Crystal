@@ -1,6 +1,3 @@
-using System.ComponentModel;
-using System.Windows.Controls;
-
 namespace Crystal.Themes.Controls
 {
   public class Tile : Button

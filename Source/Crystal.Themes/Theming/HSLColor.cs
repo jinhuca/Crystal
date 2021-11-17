@@ -1,17 +1,15 @@
-﻿using System;
-using System.Windows.Media;
-using Crystal.Themes.Standard;
+﻿using Crystal.Themes.Standard;
 
 #nullable enable
 namespace Crystal.Themes.Theming
 {
-    /// <summary>
-    /// This struct represent a Color in HSL (Hue, Saturation, Luminance)
-    /// 
-    /// Idea taken from here http://ciintelligence.blogspot.com/2012/02/converting-excel-theme-color-and-tint.html
-    /// and here: https://en.wikipedia.org/wiki/HSL_and_HSV
-    /// </summary>
-    public struct HSLColor
+  /// <summary>
+  /// This struct represent a Color in HSL (Hue, Saturation, Luminance)
+  /// 
+  /// Idea taken from here http://ciintelligence.blogspot.com/2012/02/converting-excel-theme-color-and-tint.html
+  /// and here: https://en.wikipedia.org/wiki/HSL_and_HSV
+  /// </summary>
+  public struct HSLColor
     {
         /// <summary>
         /// Creates a new HSL Color

@@ -1,5 +1,4 @@
 ﻿using System.Windows.Automation.Peers;
-using System.Windows.Controls;
 using Crystal.Themes.Automation.Peers;
 
 namespace Crystal.Themes.Controls

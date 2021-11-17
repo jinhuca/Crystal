@@ -1,6 +1,4 @@
-﻿using JetBrains.Annotations;
-
-namespace Crystal.Themes.Controls
+﻿namespace Crystal.Themes.Controls
 {
   /// <summary>
   /// A base class for every CrystalTabControl (Pivot).

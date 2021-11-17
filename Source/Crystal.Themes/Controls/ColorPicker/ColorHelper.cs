@@ -3,11 +3,9 @@
 // See the LICENSE file in the project root for more information.
 
 using Crystal.Themes.Lang;
-using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
 using System.Resources;
-using System.Windows.Media;
 
 namespace Crystal.Themes.Controls
 {

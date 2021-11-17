@@ -2,19 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Windows.Automation;
 using System.Windows.Automation.Peers;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using JetBrains.Annotations;
 using Crystal.Themes.Automation.Peers;
 using Crystal.Themes.Behaviors;
 using Crystal.Themes.Controls.Dialogs;

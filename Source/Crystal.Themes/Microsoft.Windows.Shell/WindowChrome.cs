@@ -1,18 +1,11 @@
 ﻿/**************************************************************************\
     Copyright Microsoft Corporation. All Rights Reserved.
 \**************************************************************************/
-using System;
-using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
-using System.Windows;
-using Crystal.Themes;
-using Crystal.Themes.Controls;
 using Crystal.Themes.Standard;
 
 namespace Crystal.Themes.Windows.Shell
 {
-#pragma warning disable SA1602 // Enumeration items should be documented
-    public enum ResizeGripDirection
+  public enum ResizeGripDirection
     {
         None,
         TopLeft,
@@ -25,9 +18,8 @@ namespace Crystal.Themes.Windows.Shell
         Left,
         Caption,
     }
-#pragma warning restore SA1602 // Enumeration items should be documented
 
-    public static class WindowChrome
+  public static class WindowChrome
     {
         #region Attached Properties
 

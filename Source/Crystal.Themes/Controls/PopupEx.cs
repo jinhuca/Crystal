@@ -1,22 +1,17 @@
-using System;
 using System.Runtime.InteropServices;
 using System.Security;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Input;
 using System.Windows.Interop;
 
 namespace Crystal.Themes.Controls
 {
-    /// <summary>
-    /// This custom popup can be used by validation error templates or something else.
-    /// It provides some additional nice features:
-    ///     - repositioning if host-window size or location changed
-    ///     - repositioning if host-window gets maximized and vice versa
-    ///     - it's only topmost if the host-window is activated
-    /// </summary>
-    public class PopupEx : Popup
+  /// <summary>
+  /// This custom popup can be used by validation error templates or something else.
+  /// It provides some additional nice features:
+  ///     - repositioning if host-window size or location changed
+  ///     - repositioning if host-window gets maximized and vice versa
+  ///     - it's only topmost if the host-window is activated
+  /// </summary>
+  public class PopupEx : Popup
     {
         /// <summary>Identifies the <see cref="CloseOnMouseLeftButtonDown"/> dependency property.</summary>
         public static readonly DependencyProperty CloseOnMouseLeftButtonDownProperty
@@ -221,19 +216,15 @@ namespace Crystal.Themes.Controls
 
         private Window? hostWindow;
         private bool? appliedTopMost;
-        
-#pragma warning disable SA1310 // Field names should not contain underscore
-        private static readonly IntPtr HWND_TOPMOST = new(-1);
+    private static readonly IntPtr HWND_TOPMOST = new(-1);
         private static readonly IntPtr HWND_NOTOPMOST = new(-2);
         private static readonly IntPtr HWND_TOP = new(0);
         private static readonly IntPtr HWND_BOTTOM = new(1);
-#pragma warning restore SA1310 // Field names should not contain underscore
 
-#pragma warning disable SA1602 // Enumeration items should be documented
-        /// <summary>
-        /// SetWindowPos options
-        /// </summary>
-        [Flags]
+    /// <summary>
+    /// SetWindowPos options
+    /// </summary>
+    [Flags]
         internal enum SWP
         {
             ASYNCWINDOWPOS = 0x4000,
@@ -253,15 +244,13 @@ namespace Crystal.Themes.Controls
             SHOWWINDOW = 0x0040,
             TOPMOST = NOACTIVATE | NOOWNERZORDER | NOSIZE | NOMOVE | NOREDRAW | NOSENDCHANGING,
         }
-#pragma warning restore SA1602 // Enumeration items should be documented
 
-        internal static int LOWORD(int i)
+    internal static int LOWORD(int i)
         {
             return (short)(i & 0xFFFF);
         }
 
-#pragma warning disable SA1307 // Accessible fields should begin with upper-case letter
-        [StructLayout(LayoutKind.Sequential)]
+    [StructLayout(LayoutKind.Sequential)]
         internal struct POINT
         {
             public int x;
@@ -367,10 +356,8 @@ namespace Crystal.Themes.Controls
                 return (left << 16 | LOWORD(right)) ^ (top << 16 | LOWORD(bottom));
             }
         }
-        
-#pragma warning restore SA1307 // Accessible fields should begin with upper-case letter
 
-        [SecurityCritical]
+    [SecurityCritical]
         [DllImport("user32.dll", EntryPoint = "GetWindowRect", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
@@ -378,11 +365,9 @@ namespace Crystal.Themes.Controls
         [SecurityCritical]
         [DllImport("user32.dll", EntryPoint = "SetWindowPos", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
-#pragma warning disable SA1300 // Element should begin with upper-case letter
-        private static extern bool _SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, SWP uFlags);
-#pragma warning restore SA1300 // Element should begin with upper-case letter
+    private static extern bool _SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, SWP uFlags);
 
-        [SecurityCritical]
+    [SecurityCritical]
         private static bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, SWP uFlags)
         {
             if (!_SetWindowPos(hWnd, hWndInsertAfter, x, y, cx, cy, uFlags))

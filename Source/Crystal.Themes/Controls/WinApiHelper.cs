@@ -4,10 +4,7 @@
 
 using Crystal.Themes.Native;
 using Crystal.Themes.Standard;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Windows.Interop;
-using System.Windows.Media;
 
 #pragma warning disable 618
 

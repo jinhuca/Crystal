@@ -1,6 +1,4 @@
-﻿using System.Windows.Automation;
-
-namespace Crystal.Themes.Controls
+﻿namespace Crystal.Themes.Controls
 {
   [StyleTypedProperty(Property = nameof(HamburgerButtonStyle), StyleTargetType = typeof(Button))]
   public partial class HamburgerMenu

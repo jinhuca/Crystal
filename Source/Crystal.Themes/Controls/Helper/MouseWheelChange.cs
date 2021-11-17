@@ -2,11 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System.Windows.Controls.Primitives;
-
 namespace Crystal.Themes.Controls
 {
-    public enum MouseWheelChange
+  public enum MouseWheelChange
     {
         /// <summary>
         /// Change the value of the slider if the user rotates the mouse wheel by the value defined for <see cref="RangeBase.SmallChange"/>

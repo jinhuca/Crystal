@@ -2,10 +2,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Input;
-using JetBrains.Annotations;
 using Crystal.Themes.ValueBoxes;
 
 namespace Crystal.Themes.Controls

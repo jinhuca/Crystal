@@ -1,11 +1,4 @@
-﻿using System.ComponentModel;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Input;
-using System.Windows.Markup;
-using System.Windows.Media;
-using JetBrains.Annotations;
-using Crystal.Themes.ValueBoxes;
+﻿using Crystal.Themes.ValueBoxes;
 
 namespace Crystal.Themes.Controls
 {

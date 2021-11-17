@@ -1,8 +1,4 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-
-namespace Crystal.Themes.Controls
+﻿namespace Crystal.Themes.Controls
 {
   public class Glow : Control
   {

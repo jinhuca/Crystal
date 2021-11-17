@@ -1,17 +1,12 @@
-﻿using System;
-using System.Security;
-using System.Windows;
-using System.Windows.Input;
+﻿using System.Security;
 using System.Windows.Interop;
-using System.Windows.Media;
-using Crystal.Themes.Controls;
 using Crystal.Themes.Internal;
 using Crystal.Themes.Native;
 using Crystal.Themes.Standard;
 
 namespace Crystal.Themes.Windows.Shell
 {
-    [Obsolete(DesignerConstants.Win32ElementWarning)]
+  [Obsolete(DesignerConstants.Win32ElementWarning)]
     public static class SystemCommands
     {
         public static RoutedCommand CloseWindowCommand { get; }

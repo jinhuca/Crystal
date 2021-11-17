@@ -2,12 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Markup;
-using System.Windows.Media;
 using System.Windows.Shapes;
-using JetBrains.Annotations;
 using Crystal.Themes.ValueBoxes;
 
 namespace Crystal.Themes.Controls
@@ -16,9 +11,7 @@ namespace Crystal.Themes.Controls
   ///     Represents a container with two views; one view for the main content and another view that is typically used for
   ///     navigation commands.
   /// </summary>
-#pragma warning disable WPF0132 // Use PART prefix.
   [TemplatePart(Name = "PaneClipRectangle", Type = typeof(RectangleGeometry))]
-#pragma warning restore WPF0132 // Use PART prefix.
   [TemplatePart(Name = "LightDismissLayer", Type = typeof(Rectangle))]
   [TemplatePart(Name = "PART_ResizingThumb", Type = typeof(CrystalThumb))]
   [TemplateVisualState(Name = "Closed", GroupName = "DisplayModeStates")]

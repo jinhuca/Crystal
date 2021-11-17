@@ -1,9 +1,7 @@
-﻿using System.Windows.Media;
-
-#nullable enable
+﻿#nullable enable
 namespace Crystal.Themes.Theming
 {
-    public class RuntimeThemeColorValues
+  public class RuntimeThemeColorValues
     {
         public RuntimeThemeColorValues(RuntimeThemeOptions options)
         {

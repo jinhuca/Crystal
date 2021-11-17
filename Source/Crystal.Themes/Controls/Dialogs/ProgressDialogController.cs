@@ -1,6 +1,4 @@
 using System.Threading;
-using System.Windows.Input;
-using System.Windows.Media;
 
 namespace Crystal.Themes.Controls.Dialogs
 {

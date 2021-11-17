@@ -1,6 +1,3 @@
-using System;
-
-#pragma warning disable 1591, 618
 // This file contains general utilities to aid in development.
 // Classes here generally shouldn't be exposed publicly since
 // they're not particular to any library functionality.
@@ -8,7 +5,7 @@ using System;
 // might be included in multiple assemblies.
 namespace Crystal.Themes.Standard
 {
-    internal static partial class Utility
+  internal static partial class Utility
     {
         // See: http://stackoverflow.com/questions/7913325/win-api-in-c-get-hi-and-low-word-from-intptr/7913393#7913393
         public static System.Windows.Point GetPoint(IntPtr ptr)

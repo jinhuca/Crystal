@@ -1,13 +1,9 @@
-﻿using JetBrains.Annotations;
-using System.Collections.Generic;
-using System.Diagnostics;
-
-#nullable enable
+﻿#nullable enable
 namespace Crystal.Themes.Theming
 {
-    // This class has to be kept in sync with https://github.com/batzen/XamlColorSchemeGenerator/blob/develop/src/ThemeGenerator.cs
-    // Please do not remove unused code/properties here as it makes syncing more difficult.
-    [PublicAPI]
+  // This class has to be kept in sync with https://github.com/batzen/XamlColorSchemeGenerator/blob/develop/src/ThemeGenerator.cs
+  // Please do not remove unused code/properties here as it makes syncing more difficult.
+  [PublicAPI]
     public class ThemeGenerator
     {
         public static ThemeGenerator Current { get; set; }

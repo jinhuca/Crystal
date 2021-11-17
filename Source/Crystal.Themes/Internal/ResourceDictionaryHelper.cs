@@ -1,6 +1,4 @@
-﻿using System.Windows;
-
-#nullable enable
+﻿#nullable enable
 namespace Crystal.Themes.Internal
 {
   public static class ResourceDictionaryHelper

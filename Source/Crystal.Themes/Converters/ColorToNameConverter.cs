@@ -3,11 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using Crystal.Themes.Controls;
-using System.Diagnostics;
 using System.Globalization;
-using System.Windows.Data;
-using System.Windows.Markup;
-using System.Windows.Media;
 
 namespace Crystal.Themes.Converters
 {

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-using System.Reflection;
-using System.Windows.Documents;
+﻿using System.Reflection;
 using Crystal.Behaviors;
 using Crystal.Themes.Controls;
 using Crystal.Themes.ValueBoxes;

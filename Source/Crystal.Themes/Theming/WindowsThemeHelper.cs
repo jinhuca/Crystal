@@ -1,13 +1,8 @@
-﻿using System;
-using System.Diagnostics;
-using System.Windows;
-using System.Windows.Media;
-using JetBrains.Annotations;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 
 namespace Crystal.Themes.Theming
 {
-    public static partial class WindowsThemeHelper
+  public static partial class WindowsThemeHelper
     {
         private static readonly Color baseGrayColor = Color.FromRgb(217, 217, 217);
 

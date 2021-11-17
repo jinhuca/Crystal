@@ -1,26 +1,13 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Security;
-using System.Windows;
-using System.Windows.Data;
-using System.Windows.Media;
-using System.Windows.Threading;
-using JetBrains.Annotations;
+﻿using System.Security;
 using Microsoft.Win32;
 
 #nullable enable
 namespace Crystal.Themes.Theming
 {
-    /// <summary>
-    /// A class that allows for the detection and alteration of a theme.
-    /// </summary>
-    [PublicAPI]
+  /// <summary>
+  /// A class that allows for the detection and alteration of a theme.
+  /// </summary>
+  [PublicAPI]
     public class ThemeManager
     {
         /// <summary>
@@ -1015,8 +1002,7 @@ namespace Crystal.Themes.Theming
                 ApplyResourceDictionaryEntries(oldRd, newRdMergedDictionary);
             }
 
-#pragma warning disable CS8605
-            foreach (DictionaryEntry dictionaryEntry in newRd)
+      foreach (DictionaryEntry dictionaryEntry in newRd)
             {
                 if (oldRd.Contains(dictionaryEntry.Key))
                 {
@@ -1025,14 +1011,13 @@ namespace Crystal.Themes.Theming
 
                 oldRd.Add(dictionaryEntry.Key, dictionaryEntry.Value);
             }
-#pragma warning restore CS8605
-        }
+    }
 
-        /// <summary>
-        /// Scans the resources and returns it's theme.
-        /// </summary>
-        /// <remarks>If the theme can't be detected from the <see cref="Application.MainWindow"/> we try to detect it from <see cref="Application.Current"/>.</remarks>
-        public Theme? DetectTheme()
+    /// <summary>
+    /// Scans the resources and returns it's theme.
+    /// </summary>
+    /// <remarks>If the theme can't be detected from the <see cref="Application.MainWindow"/> we try to detect it from <see cref="Application.Current"/>.</remarks>
+    public Theme? DetectTheme()
         {
             if (Application.Current is null)
             {
@@ -1317,8 +1302,7 @@ namespace Crystal.Themes.Theming
         }
     }
 
-#pragma warning disable CA1008
-    [Flags]
+  [Flags]
     public enum ThemeSyncMode
     {
         /// <summary>
@@ -1346,5 +1330,4 @@ namespace Crystal.Themes.Theming
         /// </summary>
         SyncAll = SyncWithAppMode | SyncWithAccent | SyncWithHighContrast
     }
-#pragma warning restore CA1008
 }

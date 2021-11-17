@@ -2,9 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System.Windows.Input;
 using System.Windows.Interop;
-using System.Windows.Controls;
 using Crystal.Themes.ValueBoxes;
 using Crystal.Themes.Standard;
 

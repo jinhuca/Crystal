@@ -2,14 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System.ComponentModel;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
 using Crystal.Themes.ValueBoxes;
-using JetBrains.Annotations;
 
 namespace Crystal.Themes.Controls
 {

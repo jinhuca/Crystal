@@ -1,7 +1,4 @@
-﻿using System.Windows.Markup;
-using JetBrains.Annotations;
-
-namespace Crystal.Themes.Controls
+﻿namespace Crystal.Themes.Controls
 {
   public interface IDataGridColumnStylesHelper
   {

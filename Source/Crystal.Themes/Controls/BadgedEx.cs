@@ -1,12 +1,5 @@
-﻿using System;
-using System.ComponentModel;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-
-namespace Crystal.Themes.Controls
+﻿namespace Crystal.Themes.Controls
 {
-#pragma warning disable SA1602 // Enumeration items should be documented
   public enum BadgePlacementMode
   {
     TopLeft,
@@ -18,48 +11,33 @@ namespace Crystal.Themes.Controls
     BottomLeft,
     Left
   }
-#pragma warning restore SA1602 // Enumeration items should be documented
 
   [TemplatePart(Name = BadgeContainerPartName, Type = typeof(UIElement))]
   public class BadgedEx : ContentControl
   {
     public const string BadgeContainerPartName = "PART_BadgeContainer";
     [CLSCompliant(false)]
-    // ReSharper disable once InconsistentNaming
-#pragma warning disable SA1309 // Field names should not begin with underscore
-#pragma warning disable SA1401 // Fields should be private
+
     protected FrameworkElement? _badgeContainer;
-#pragma warning restore SA1401 // Fields should be private
-#pragma warning restore SA1309 // Field names should not begin with underscore
+    public static readonly DependencyProperty BadgeProperty = DependencyProperty.Register(
+      nameof(Badge),
+      typeof(object),
+      typeof(BadgedEx),
+      new FrameworkPropertyMetadata(default, FrameworkPropertyMetadataOptions.AffectsArrange, OnBadgeChanged));
 
-    /// <summary>Identifies the <see cref="Badge"/> dependency property.</summary>
-    public static readonly DependencyProperty BadgeProperty
-        = DependencyProperty.Register(nameof(Badge),
-                                      typeof(object),
-                                      typeof(BadgedEx),
-                                      new FrameworkPropertyMetadata(default, FrameworkPropertyMetadataOptions.AffectsArrange, OnBadgeChanged));
-
-    /// <summary>
-    /// Gets or sets the Badge content to display.
-    /// </summary>
     public object Badge
     {
       get => (object)GetValue(BadgeProperty);
       set => SetValue(BadgeProperty, value);
     }
 
-    /// <summary>Identifies the <see cref="BadgeFontFamily"/> dependency property.</summary>
-    public static readonly DependencyProperty BadgeFontFamilyProperty =
-        DependencyProperty.RegisterAttached(nameof(BadgeFontFamily),
-                                            typeof(FontFamily),
-                                            typeof(BadgedEx),
-                                            new FrameworkPropertyMetadata(
-                                                SystemFonts.MessageFontFamily,
-                                                FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
+    public static readonly DependencyProperty BadgeFontFamilyProperty = DependencyProperty.RegisterAttached(
+      nameof(BadgeFontFamily),
+      typeof(FontFamily),
+      typeof(BadgedEx),
+      new FrameworkPropertyMetadata(SystemFonts.MessageFontFamily,
+        FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-    /// <summary>
-    /// The BadgeFontFamily property specifies the name of font family.
-    /// </summary>
     [Bindable(true)]
     [Localizability(LocalizationCategory.Font)]
     public FontFamily BadgeFontFamily

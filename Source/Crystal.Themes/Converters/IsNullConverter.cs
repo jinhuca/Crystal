@@ -2,8 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System.Windows.Data;
-
 namespace Crystal.Themes.Converters
 {
   [ValueConversion(typeof(object), typeof(bool))]

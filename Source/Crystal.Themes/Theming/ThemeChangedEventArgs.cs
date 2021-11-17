@@ -1,13 +1,10 @@
-﻿using System;
-using System.Windows;
-
-#nullable enable
+﻿#nullable enable
 namespace Crystal.Themes.Theming
 {
-    /// <summary>
-    /// Class which is used as argument for an event to signal theme changes.
-    /// </summary>
-    public class ThemeChangedEventArgs : EventArgs
+  /// <summary>
+  /// Class which is used as argument for an event to signal theme changes.
+  /// </summary>
+  public class ThemeChangedEventArgs : EventArgs
     {
         /// <summary>
         /// Creates a new instance of this class.

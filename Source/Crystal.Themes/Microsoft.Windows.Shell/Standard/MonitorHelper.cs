@@ -1,10 +1,7 @@
-﻿using System;
-using System.Diagnostics;
-
-#pragma warning disable 1591, 618
+﻿#pragma warning disable 1591, 618
 namespace Crystal.Themes.Standard
 {
-    internal static class MonitorHelper
+  internal static class MonitorHelper
     {
         /// <summary>
         /// Gets the monitor information from the current cursor position.

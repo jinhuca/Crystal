@@ -2,16 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Input;
-using System.Windows.Markup;
-using JetBrains.Annotations;
 using Crystal.Themes.ValueBoxes;
 
 namespace Crystal.Themes.Controls
@@ -526,9 +517,8 @@ namespace Crystal.Themes.Controls
                                                   typeof(TimePickerBase),
                                                   new PropertyMetadata(BooleanBoxes.TrueBox));
 
-        /// <summary>Identifies the <see cref="IsDatePickerVisible"/> dependency property.</summary>
-        [SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1202:ElementsMustBeOrderedByAccess", Justification = "Otherwise we have \"Static member initializer refers to static member below or in other type part\" and thus resulting in having \"null\" as value")]
-        public static readonly DependencyProperty IsDatePickerVisibleProperty = IsDatePickerVisiblePropertyKey.DependencyProperty;
+    /// <summary>Identifies the <see cref="IsDatePickerVisible"/> dependency property.</summary>
+    public static readonly DependencyProperty IsDatePickerVisibleProperty = IsDatePickerVisiblePropertyKey.DependencyProperty;
 
         /// <summary>
         /// Gets or sets a value indicating whether the date can be selected or not. This property is read-only.

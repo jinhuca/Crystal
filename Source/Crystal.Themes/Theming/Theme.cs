@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows;
-using System.Windows.Media;
-using Crystal.Themes.Internal;
+﻿using Crystal.Themes.Internal;
 
 #nullable enable
 namespace Crystal.Themes.Theming
 {
-    /// <summary>
-    /// Represents a theme.
-    /// </summary>
-    public class Theme
+  /// <summary>
+  /// Represents a theme.
+  /// </summary>
+  public class Theme
     {
         /// <summary>
         /// Gets the key for the themes name.

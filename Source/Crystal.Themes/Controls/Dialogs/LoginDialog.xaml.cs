@@ -1,6 +1,4 @@
 ﻿using System.Threading;
-using System.Windows.Controls;
-using System.Windows.Input;
 using Crystal.Themes.ValueBoxes;
 
 namespace Crystal.Themes.Controls.Dialogs

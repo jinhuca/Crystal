@@ -1,5 +1,4 @@
 using Crystal.Behaviors;
-using System.ComponentModel;
 
 namespace Crystal.Themes.Behaviors
 {

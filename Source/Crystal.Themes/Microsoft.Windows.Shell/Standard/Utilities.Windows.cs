@@ -1,12 +1,10 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using Crystal.Themes.Internal;
 
 #pragma warning disable 1591, 618
 namespace Crystal.Themes.Standard
 {
-    internal static partial class Utility
+  internal static partial class Utility
     {
         private static readonly Version osVersion = Environment.OSVersion.Version;
 

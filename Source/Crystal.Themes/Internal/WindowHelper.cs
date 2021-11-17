@@ -1,9 +1,8 @@
-﻿using System;
-using Crystal.Themes.Standard;
+﻿using Crystal.Themes.Standard;
 
 namespace Crystal.Themes.Internal
 {
-    internal static class WindowHelper
+  internal static class WindowHelper
     {
         public static bool IsWindowHandleValid(IntPtr windowHandle)
         {

@@ -2,11 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using System.Windows.Controls;
-using System.Windows.Media.Animation;
 using Crystal.Themes.ValueBoxes;
 
 namespace Crystal.Themes.Controls
@@ -294,8 +290,7 @@ namespace Crystal.Themes.Controls
             }
         }
 
-        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "newContent", Justification = "Should be used in the future.")]
-        private void StartTransition(object oldContent, object newContent)
+    private void StartTransition(object oldContent, object newContent)
         {
             // both presenters must be available, otherwise a transition is useless.
             if (currentContentPresentationSite != null && previousContentPresentationSite != null)
