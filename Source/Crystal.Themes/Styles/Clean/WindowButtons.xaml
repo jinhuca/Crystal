@@ -1,104 +1,104 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.Buttons.xaml" />
-    </ResourceDictionary.MergedDictionaries>
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.Buttons.xaml" />
+  </ResourceDictionary.MergedDictionaries>
 
-    <!--  light button style for min, max and close window buttons  -->
-    <Style x:Key="Crystal.Styles.Button.MetroWindow.Light.Clean"
-           BasedOn="{StaticResource Crystal.Styles.Button.MetroWindow.Light}"
+  <!--  light button style for min, max and close window buttons  -->
+  <Style x:Key="Crystal.Styles.Button.CrystalWindow.Light.Clean"
+           BasedOn="{StaticResource Crystal.Styles.Button.CrystalWindow.Light}"
            TargetType="{x:Type Button}">
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Gray.SemiTransparent}" />
-            </Trigger>
-            <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Accent}" />
-                <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForeground}" />
-            </Trigger>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForegroundDisabled}" />
-            </Trigger>
-        </Style.Triggers>
-    </Style>
+    <Style.Triggers>
+      <Trigger Property="IsMouseOver" Value="True">
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Gray.SemiTransparent}" />
+      </Trigger>
+      <Trigger Property="IsPressed" Value="True">
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Accent}" />
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForeground}" />
+      </Trigger>
+      <Trigger Property="IsEnabled" Value="False">
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForegroundDisabled}" />
+      </Trigger>
+    </Style.Triggers>
+  </Style>
 
-    <!--  dark button style for min, max and close window buttons  -->
-    <Style x:Key="Crystal.Styles.Button.MetroWindow.Dark.Clean"
-           BasedOn="{StaticResource Crystal.Styles.Button.MetroWindow.Dark}"
+  <!--  dark button style for min, max and close window buttons  -->
+  <Style x:Key="Crystal.Styles.Button.CrystalWindow.Dark.Clean"
+           BasedOn="{StaticResource Crystal.Styles.Button.CrystalWindow.Dark}"
            TargetType="{x:Type Button}">
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Gray.SemiTransparent}" />
-            </Trigger>
-            <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Accent}" />
-                <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForeground}" />
-            </Trigger>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForegroundDisabled}" />
-            </Trigger>
-        </Style.Triggers>
-    </Style>
+    <Style.Triggers>
+      <Trigger Property="IsMouseOver" Value="True">
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Gray.SemiTransparent}" />
+      </Trigger>
+      <Trigger Property="IsPressed" Value="True">
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Accent}" />
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForeground}" />
+      </Trigger>
+      <Trigger Property="IsEnabled" Value="False">
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForegroundDisabled}" />
+      </Trigger>
+    </Style.Triggers>
+  </Style>
 
-    <!--  light button style for close window button (clean style)  -->
-    <Style x:Key="Crystal.Styles.Button.MetroWindow.Close.Light.Clean"
-           BasedOn="{StaticResource Crystal.Styles.Button.MetroWindow.Light.Clean}"
+  <!--  light button style for close window button (clean style)  -->
+  <Style x:Key="Crystal.Styles.Button.CrystalWindow.Close.Light.Clean"
+           BasedOn="{StaticResource Crystal.Styles.Button.CrystalWindow.Light.Clean}"
            TargetType="{x:Type Button}">
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Button.CleanWindow.Close.Background.MouseOver}" />
-                <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Button.CleanWindow.Close.Foreground.MouseOver}" />
-            </Trigger>
-            <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Button.CleanWindow.Close.Background.Pressed}" />
-            </Trigger>
-        </Style.Triggers>
-    </Style>
+    <Style.Triggers>
+      <Trigger Property="IsMouseOver" Value="True">
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Button.CleanWindow.Close.Background.MouseOver}" />
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Button.CleanWindow.Close.Foreground.MouseOver}" />
+      </Trigger>
+      <Trigger Property="IsPressed" Value="True">
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Button.CleanWindow.Close.Background.Pressed}" />
+      </Trigger>
+    </Style.Triggers>
+  </Style>
 
-    <!--  dark button style for close window button (clean style)  -->
-    <Style x:Key="Crystal.Styles.Button.MetroWindow.Close.Dark.Clean"
-           BasedOn="{StaticResource Crystal.Styles.Button.MetroWindow.Dark.Clean}"
+  <!--  dark button style for close window button (clean style)  -->
+  <Style x:Key="Crystal.Styles.Button.CrystalWindow.Close.Dark.Clean"
+           BasedOn="{StaticResource Crystal.Styles.Button.CrystalWindow.Dark.Clean}"
            TargetType="{x:Type Button}">
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Button.CleanWindow.Close.Background.MouseOver}" />
-                <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Button.CleanWindow.Close.Foreground.MouseOver}" />
-            </Trigger>
-            <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Button.CleanWindow.Close.Background.Pressed}" />
-            </Trigger>
-        </Style.Triggers>
-    </Style>
+    <Style.Triggers>
+      <Trigger Property="IsMouseOver" Value="True">
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Button.CleanWindow.Close.Background.MouseOver}" />
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Button.CleanWindow.Close.Foreground.MouseOver}" />
+      </Trigger>
+      <Trigger Property="IsPressed" Value="True">
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Button.CleanWindow.Close.Background.Pressed}" />
+      </Trigger>
+    </Style.Triggers>
+  </Style>
 
-    <Style x:Key="Crystal.Styles.Button.MetroWindow.Close.Light.Clean.Win10"
-           BasedOn="{StaticResource Crystal.Styles.Button.MetroWindow.Light.Clean}"
+  <Style x:Key="Crystal.Styles.Button.CrystalWindow.Close.Light.Clean.Win10"
+           BasedOn="{StaticResource Crystal.Styles.Button.CrystalWindow.Light.Clean}"
            TargetType="{x:Type Button}">
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#E81123" />
-                <Setter Property="Foreground" Value="White" />
-            </Trigger>
-            <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="#F1707A" />
-                <Setter Property="Foreground" Value="Black" />
-            </Trigger>
-        </Style.Triggers>
-    </Style>
+    <Style.Triggers>
+      <Trigger Property="IsMouseOver" Value="True">
+        <Setter Property="Background" Value="#E81123" />
+        <Setter Property="Foreground" Value="White" />
+      </Trigger>
+      <Trigger Property="IsPressed" Value="True">
+        <Setter Property="Background" Value="#F1707A" />
+        <Setter Property="Foreground" Value="Black" />
+      </Trigger>
+    </Style.Triggers>
+  </Style>
 
-    <Style x:Key="Crystal.Styles.Button.MetroWindow.Close.Dark.Clean.Win10"
-           BasedOn="{StaticResource Crystal.Styles.Button.MetroWindow.Dark.Clean}"
+  <Style x:Key="Crystal.Styles.Button.CrystalWindowCrystalWindow.Close.Dark.Clean.Win10"
+           BasedOn="{StaticResource Crystal.Styles.Button.CrystalWindow.Dark.Clean}"
            TargetType="{x:Type Button}">
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#E81123" />
-                <Setter Property="Foreground" Value="White" />
-            </Trigger>
-            <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="#F1707A" />
-                <Setter Property="Foreground" Value="Black" />
-            </Trigger>
-        </Style.Triggers>
-    </Style>
+    <Style.Triggers>
+      <Trigger Property="IsMouseOver" Value="True">
+        <Setter Property="Background" Value="#E81123" />
+        <Setter Property="Foreground" Value="White" />
+      </Trigger>
+      <Trigger Property="IsPressed" Value="True">
+        <Setter Property="Background" Value="#F1707A" />
+        <Setter Property="Foreground" Value="Black" />
+      </Trigger>
+    </Style.Triggers>
+  </Style>
 
 </ResourceDictionary>

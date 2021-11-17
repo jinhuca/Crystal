@@ -9,66 +9,66 @@
 
     public Task<string?> ShowInputAsync(object context, string title, string message, CrystalDialogSettings? settings = null)
     {
-      var metroWindow = GetMetroWindow(context);
-      return metroWindow.Invoke(() => metroWindow.ShowInputAsync(title, message, settings));
+      var crystalWindow = GetCrystalWindow(context);
+      return crystalWindow.Invoke(() => crystalWindow.ShowInputAsync(title, message, settings));
     }
 
-    public string? ShowModalInputExternal(object context, string title, string message, CrystalDialogSettings? metroDialogSettings = null)
+    public string? ShowModalInputExternal(object context, string title, string message, CrystalDialogSettings? crystalDialogSettings = null)
     {
-      var metroWindow = GetMetroWindow(context);
-      return metroWindow.ShowModalInputExternal(title, message, metroDialogSettings);
+      var crystalWindow = GetCrystalWindow(context);
+      return crystalWindow.ShowModalInputExternal(title, message, crystalDialogSettings);
     }
 
     public Task<LoginDialogData?> ShowLoginAsync(object context, string title, string message, LoginDialogSettings? settings = null)
     {
-      var metroWindow = GetMetroWindow(context);
-      return metroWindow.Invoke(() => metroWindow.ShowLoginAsync(title, message, settings));
+      var crystalWindow = GetCrystalWindow(context);
+      return crystalWindow.Invoke(() => crystalWindow.ShowLoginAsync(title, message, settings));
     }
 
     public LoginDialogData? ShowModalLoginExternal(object context, string title, string message, LoginDialogSettings? settings = null)
     {
-      var metroWindow = GetMetroWindow(context);
-      return metroWindow.ShowModalLoginExternal(title, message, settings);
+      var crystalWindow = GetCrystalWindow(context);
+      return crystalWindow.ShowModalLoginExternal(title, message, settings);
     }
 
     public Task<MessageDialogResult> ShowMessageAsync(object context, string title, string message, MessageDialogStyle style = MessageDialogStyle.Affirmative, CrystalDialogSettings? settings = null)
     {
-      var metroWindow = GetMetroWindow(context);
-      return metroWindow.Invoke(() => metroWindow.ShowMessageAsync(title, message, style, settings));
+      var crystalWindow = GetCrystalWindow(context);
+      return crystalWindow.Invoke(() => crystalWindow.ShowMessageAsync(title, message, style, settings));
     }
 
     public MessageDialogResult ShowModalMessageExternal(object context, string title, string message, MessageDialogStyle style = MessageDialogStyle.Affirmative, CrystalDialogSettings? settings = null)
     {
-      var metroWindow = GetMetroWindow(context);
-      return metroWindow.ShowModalMessageExternal(title, message, style, settings);
+      var crystalWindow = GetCrystalWindow(context);
+      return crystalWindow.ShowModalMessageExternal(title, message, style, settings);
     }
 
     public Task<ProgressDialogController> ShowProgressAsync(object context, string title, string message, bool isCancelable = false, CrystalDialogSettings? settings = null)
     {
-      var metroWindow = GetMetroWindow(context);
-      return metroWindow.Invoke(() => metroWindow.ShowProgressAsync(title, message, isCancelable, settings));
+      var crystalWindow = GetCrystalWindow(context);
+      return crystalWindow.Invoke(() => crystalWindow.ShowProgressAsync(title, message, isCancelable, settings));
     }
 
-    public Task ShowMetroDialogAsync(object context, CrystalDialogBase dialog, CrystalDialogSettings? settings = null)
+    public Task ShowCrystalDialogAsync(object context, CrystalDialogBase dialog, CrystalDialogSettings? settings = null)
     {
-      var metroWindow = GetMetroWindow(context);
-      return metroWindow.Invoke(() => metroWindow.ShowMetroDialogAsync(dialog, settings));
+      var crystalWindow = GetCrystalWindow(context);
+      return crystalWindow.Invoke(() => crystalWindow.ShowCrystalDialogAsync(dialog, settings));
     }
 
-    public Task HideMetroDialogAsync(object context, CrystalDialogBase dialog, CrystalDialogSettings? settings = null)
+    public Task HideCrystalDialogAsync(object context, CrystalDialogBase dialog, CrystalDialogSettings? settings = null)
     {
-      var metroWindow = GetMetroWindow(context);
-      return metroWindow.Invoke(() => metroWindow.HideMetroDialogAsync(dialog, settings));
+      var crystalWindow = GetCrystalWindow(context);
+      return crystalWindow.Invoke(() => crystalWindow.HideCrystalDialogAsync(dialog, settings));
     }
 
     public Task<TDialog?> GetCurrentDialogAsync<TDialog>(object context)
         where TDialog : CrystalDialogBase
     {
-      var metroWindow = GetMetroWindow(context);
-      return metroWindow.Invoke(() => metroWindow.GetCurrentDialogAsync<TDialog>());
+      var crystalWindow = GetCrystalWindow(context);
+      return crystalWindow.Invoke(() => crystalWindow.GetCurrentDialogAsync<TDialog>());
     }
 
-    private static CrystalWindow GetMetroWindow(object context)
+    private static CrystalWindow GetCrystalWindow(object context)
     {
       if (context is null)
       {
@@ -81,13 +81,13 @@
       }
 
       var association = DialogParticipation.GetAssociation(context);
-      var metroWindow = association.Invoke(() => Window.GetWindow(association) as CrystalWindow);
-      if (metroWindow is null)
+      var crystalWindow = association.Invoke(() => Window.GetWindow(association) as CrystalWindow);
+      if (crystalWindow is null)
       {
-        throw new InvalidOperationException($"The context `{context}` is not inside a MetroWindow.");
+        throw new InvalidOperationException($"The context `{context}` is not inside a CrystalWindow.");
       }
 
-      return metroWindow;
+      return crystalWindow;
     }
   }
 }

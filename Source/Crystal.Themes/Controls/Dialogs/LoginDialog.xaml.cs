@@ -330,10 +330,10 @@ namespace Crystal.Themes.Controls.Dialogs
     {
       if (DialogSettings is LoginDialogSettings settings && settings.EnablePasswordPreview)
       {
-        var win8MetroPasswordStyle = FindResource("Crystal.Styles.PasswordBox.Win8") as Style;
-        if (win8MetroPasswordStyle != null)
+        var win8CrystalPasswordStyle = FindResource("Crystal.Styles.PasswordBox.Win8") as Style;
+        if (win8CrystalPasswordStyle != null)
         {
-          PART_TextBox2.Style = win8MetroPasswordStyle;
+          PART_TextBox2.Style = win8CrystalPasswordStyle;
           // apply template again to fire the loaded event which is necessary for revealed password
           PART_TextBox2.ApplyTemplate();
         }

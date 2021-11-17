@@ -13,7 +13,7 @@
   <crystalConverters:ThicknessBindingConverter x:Key="ThicknessBindingConverter" />
   <crystalConverters:ThicknessToDoubleConverter x:Key="ThicknessToDoubleConverter" />
 
-  <ControlTemplate x:Key="Crystal.Templates.MetroWindow" TargetType="{x:Type crystal:CrystalWindow}">
+  <ControlTemplate x:Key="Crystal.Templates.CrystalWindow" TargetType="{x:Type crystal:CrystalWindow}">
     <Grid Background="{TemplateBinding Background}" LayoutTransform="{Binding LayoutTransform, RelativeSource={RelativeSource TemplatedParent}}" UseLayoutRounding="True"
           RenderTransform="{Binding RenderTransform, RelativeSource={RelativeSource TemplatedParent}}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
       <AdornerDecorator>
@@ -258,7 +258,7 @@
 
   </ControlTemplate>
 
-  <ControlTemplate x:Key="Crystal.Templates.MetroWindow.Center" TargetType="{x:Type crystal:CrystalWindow}">
+  <ControlTemplate x:Key="Crystal.Templates.CrystalWindow.Center" TargetType="{x:Type crystal:CrystalWindow}">
     <Grid Background="{TemplateBinding Background}"
               LayoutTransform="{Binding LayoutTransform, RelativeSource={RelativeSource TemplatedParent}}"
               RenderTransform="{Binding RenderTransform, RelativeSource={RelativeSource TemplatedParent}}"
@@ -581,7 +581,7 @@
     <Setter Property="OverlayFadeIn" Value="{StaticResource OverlayFastSemiFadeIn}" />
     <Setter Property="OverlayFadeOut" Value="{StaticResource OverlayFastSemiFadeOut}" />
     <Setter Property="SnapsToDevicePixels" Value="True" />
-    <Setter Property="Template" Value="{StaticResource Crystal.Templates.MetroWindow}" />
+    <Setter Property="Template" Value="{StaticResource Crystal.Templates.CrystalWindow}" />
     <Setter Property="TextElement.FontSize" Value="{DynamicResource Crystal.Font.Size.Content}" />
     <Setter Property="TitleForeground" Value="{DynamicResource Crystal.Brushes.IdealForeground}" />
     <Setter Property="TitleTemplate">
@@ -613,7 +613,7 @@
         </Setter>
       </DataTrigger>
       <Trigger Property="TitleAlignment" Value="Center">
-        <Setter Property="Template" Value="{StaticResource Crystal.Templates.MetroWindow.Center}" />
+        <Setter Property="Template" Value="{StaticResource Crystal.Templates.CrystalWindow.Center}" />
       </Trigger>
     </Style.Triggers>
   </Style>

@@ -217,7 +217,7 @@ namespace Crystal.Themes.Controls
     /// <summary> 
     /// The CornerRadius property allows users to control the roundness of the button corners independently by 
     /// setting a radius value for each corner. Radius values that are too large are scaled so that they
-    /// smoothly blend from corner to corner. (Can be used e.g. at MetroButton style)
+    /// smoothly blend from corner to corner. (Can be used e.g. at CrystalButton style)
     /// Description taken from original Microsoft description :-D
     /// </summary>
     [Category(AppName.CrystalThemes)]

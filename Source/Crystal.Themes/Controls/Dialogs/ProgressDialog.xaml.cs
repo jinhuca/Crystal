@@ -4,7 +4,7 @@ using Crystal.Themes.ValueBoxes;
 namespace Crystal.Themes.Controls.Dialogs
 {
   /// <summary>
-  /// An internal control that represents a message dialog. Please use MetroWindow.ShowMessage instead!
+  /// An internal control that represents a message dialog. Please use CrystalWindow.ShowMessage instead!
   /// </summary>
   public partial class ProgressDialog : CrystalDialogBase
   {

@@ -11,7 +11,7 @@
   </ResourceDictionary.MergedDictionaries>
 
   <Style BasedOn="{StaticResource Crystal.Styles.GroupBox.Clean}" TargetType="{x:Type GroupBox}" />
-  <Style BasedOn="{StaticResource Crystal.Styles.MetroWindow.Clean}" TargetType="{x:Type crystal:CrystalWindow}" />
+  <Style BasedOn="{StaticResource Crystal.Styles.CrystalWindow.Clean}" TargetType="{x:Type crystal:CrystalWindow}" />
   <Style BasedOn="{StaticResource Crystal.Styles.WindowButtonCommands.Clean.Win10}" TargetType="{x:Type crystal:WindowButtonCommands}" />
   <Style BasedOn="{StaticResource Crystal.Styles.WindowCommands.Clean}" TargetType="{x:Type crystal:WindowCommands}" />
   <Style BasedOn="{StaticResource Crystal.Styles.StatusBar.Clean}" TargetType="{x:Type StatusBar}" />

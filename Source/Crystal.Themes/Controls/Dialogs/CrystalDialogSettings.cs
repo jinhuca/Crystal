@@ -3,7 +3,7 @@
 namespace Crystal.Themes.Controls.Dialogs
 {
   /// <summary>
-  /// A class that represents the settings used by Metro Dialogs.
+  /// A class that represents the settings used by CrystalDialogs.
   /// </summary>
   public class CrystalDialogSettings
   {
@@ -58,7 +58,7 @@ namespace Crystal.Themes.Controls.Dialogs
     public CancellationToken CancellationToken { get; set; }
 
     /// <summary>
-    /// Gets or sets whether the metro dialog should use the default black/white appearance (theme) or try to use the current accent.
+    /// Gets or sets whether the Crystal dialog should use the default black/white appearance (theme) or try to use the current accent.
     /// </summary>
     public CrystalDialogColorScheme ColorScheme { get; set; }
 

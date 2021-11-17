@@ -9,9 +9,9 @@ namespace Crystal.Themes.Controls
   internal static class CrystalWindowHelpers
   {
     /// <summary>
-    /// Sets the IsHitTestVisibleInChromeProperty to a MetroWindow template child
+    /// Sets the IsHitTestVisibleInChromeProperty to a CrystalWindow template child
     /// </summary>
-    /// <param name="window">The MetroWindow.</param>
+    /// <param name="window">The CrystalWindow.</param>
     /// <param name="name">The name of the template child.</param>
     /// <param name="hitTestVisible"></param>
     public static void SetIsHitTestVisibleInChromeProperty<T>([NotNull] this CrystalWindow window, string name, bool hitTestVisible = true)
@@ -31,9 +31,9 @@ namespace Crystal.Themes.Controls
     }
 
     /// <summary>
-    /// Sets the WindowChrome ResizeGripDirection to a MetroWindow template child.
+    /// Sets the WindowChrome ResizeGripDirection to a CrystalWindow template child.
     /// </summary>
-    /// <param name="window">The MetroWindow.</param>
+    /// <param name="window">The CrystalWindow.</param>
     /// <param name="name">The name of the template child.</param>
     /// <param name="direction">The direction.</param>
     public static void SetWindowChromeResizeGripDirection([NotNull] this CrystalWindow window, string name, ResizeGripDirection direction)
@@ -54,7 +54,7 @@ namespace Crystal.Themes.Controls
     /// <summary>
     /// Adapts the WindowCommands to the theme of the first opened, topmost &amp;&amp; (top || right || left) flyout
     /// </summary>
-    /// <param name="window">The MetroWindow</param>
+    /// <param name="window">The CrystalWindow</param>
     /// <param name="flyouts">All the flyouts! Or flyouts that fall into the category described in the summary.</param>
     public static void HandleWindowCommandsForFlyouts(this CrystalWindow window, IEnumerable<Flyout> flyouts)
     {

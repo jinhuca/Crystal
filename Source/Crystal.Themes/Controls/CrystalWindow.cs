@@ -398,10 +398,10 @@ namespace Crystal.Themes.Controls
       {
         var window = (CrystalWindow)dependencyObject;
 
-        window.SizeChanged -= window.MetroWindow_SizeChanged;
+        window.SizeChanged -= window.CrystalWindow_SizeChanged;
         if (e.NewValue is HorizontalAlignment horizontalAlignment && horizontalAlignment == HorizontalAlignment.Center && window.titleBar != null)
         {
-          window.SizeChanged += window.MetroWindow_SizeChanged;
+          window.SizeChanged += window.CrystalWindow_SizeChanged;
         }
       }
     }
@@ -670,9 +670,9 @@ namespace Crystal.Themes.Controls
       set => SetValue(WindowTransitionsEnabledProperty, BooleanBoxes.Box(value));
     }
 
-    /// <summary>Identifies the <see cref="MetroDialogOptions"/> dependency property.</summary>
-    public static readonly DependencyProperty MetroDialogOptionsProperty
-        = DependencyProperty.Register(nameof(MetroDialogOptions),
+    /// <summary>Identifies the <see cref="CrystalDialogOptions"/> dependency property.</summary>
+    public static readonly DependencyProperty CrystalDialogOptionsProperty
+        = DependencyProperty.Register(nameof(CrystalDialogOptions),
                                       typeof(CrystalDialogSettings),
                                       typeof(CrystalWindow),
                                       new PropertyMetadata(default(CrystalDialogSettings)));
@@ -680,10 +680,10 @@ namespace Crystal.Themes.Controls
     /// <summary>
     /// Gets or sets the default settings for the dialogs.
     /// </summary>
-    public CrystalDialogSettings? MetroDialogOptions
+    public CrystalDialogSettings? CrystalDialogOptions
     {
-      get => (CrystalDialogSettings?)GetValue(MetroDialogOptionsProperty);
-      set => SetValue(MetroDialogOptionsProperty, value);
+      get => (CrystalDialogSettings?)GetValue(CrystalDialogOptionsProperty);
+      set => SetValue(CrystalDialogOptionsProperty, value);
     }
 
     /// <summary>Identifies the <see cref="IconTemplate"/> dependency property.</summary>
@@ -1063,7 +1063,7 @@ namespace Crystal.Themes.Controls
     {
       if (overlayBox is null)
       {
-        throw new InvalidOperationException("OverlayBox can not be founded in this MetroWindow's template. Are you calling this before the window has loaded?");
+        throw new InvalidOperationException("OverlayBox can not be founded in this CrystalWindow's template. Are you calling this before the window has loaded?");
       }
 
       var tcs = new System.Threading.Tasks.TaskCompletionSource<object>();
@@ -1116,7 +1116,7 @@ namespace Crystal.Themes.Controls
     {
       if (overlayBox is null)
       {
-        throw new InvalidOperationException("OverlayBox can not be founded in this MetroWindow's template. Are you calling this before the window has loaded?");
+        throw new InvalidOperationException("OverlayBox can not be founded in this CrystalWindow's template. Are you calling this before the window has loaded?");
       }
 
       var tcs = new System.Threading.Tasks.TaskCompletionSource<object>();
@@ -1165,7 +1165,7 @@ namespace Crystal.Themes.Controls
     {
       if (overlayBox is null)
       {
-        throw new InvalidOperationException("OverlayBox can not be founded in this MetroWindow's template. Are you calling this before the window has loaded?");
+        throw new InvalidOperationException("OverlayBox can not be founded in this CrystalWindow's template. Are you calling this before the window has loaded?");
       }
 
       return overlayBox.Visibility == Visibility.Visible && overlayBox.Opacity >= OverlayOpacity;
@@ -1218,22 +1218,22 @@ namespace Crystal.Themes.Controls
     }
 
     /// <summary>
-    /// Initializes a new instance of the Crystal.Themes.Controls.MetroWindow class.
+    /// Initializes a new instance of the Crystal.Themes.Controls.CrystalWindow class.
     /// </summary>
     public CrystalWindow()
     {
-      SetCurrentValue(MetroDialogOptionsProperty, new CrystalDialogSettings());
+      SetCurrentValue(CrystalDialogOptionsProperty, new CrystalDialogSettings());
 
       // BorderlessWindowBehavior initialization has to occur in constructor. Otherwise the load event is fired early and performance of the window is degraded.
       InitializeWindowChromeBehavior();
       InitializeSettingsBehavior();
       InitializeGlowWindowBehavior();
 
-      DataContextChanged += MetroWindow_DataContextChanged;
-      Loaded += MetroWindow_Loaded;
+      DataContextChanged += CrystalWindow_DataContextChanged;
+      Loaded += CrystalWindow_Loaded;
     }
 
-    private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
+    private void CrystalWindow_Loaded(object sender, RoutedEventArgs e)
     {
       Flyouts ??= new FlyoutsControl();
 
@@ -1275,7 +1275,7 @@ namespace Crystal.Themes.Controls
       base.OnClosing(e);
     }
 
-    private void MetroWindow_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+    private void CrystalWindow_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
     {
       // Crystal add these controls to the window with AddLogicalChild method.
       // This has the side effect that the DataContext doesn't update, so do this now here.
@@ -1300,7 +1300,7 @@ namespace Crystal.Themes.Controls
       }
     }
 
-    private void MetroWindow_SizeChanged(object sender, RoutedEventArgs e)
+    private void CrystalWindow_SizeChanged(object sender, RoutedEventArgs e)
     {
       // this all works only for centered title
       if (TitleAlignment != HorizontalAlignment.Center
@@ -1309,7 +1309,7 @@ namespace Crystal.Themes.Controls
         return;
       }
 
-      // Half of this MetroWindow
+      // Half of this CrystalWindow
       var halfDistance = ActualWidth / 2;
       // Distance between center and left/right
       var margin = (Thickness)titleBar.GetValue(MarginProperty);
@@ -1517,9 +1517,9 @@ namespace Crystal.Themes.Controls
 
       UpdateTitleBarElementsVisibility();
 
-      if (GetTemplateChild(PART_Content) is CrystalContentControl metroContentControl)
+      if (GetTemplateChild(PART_Content) is CrystalContentControl crystalContentControl)
       {
-        metroContentControl.TransitionCompleted += (_, _) => RaiseEvent(new RoutedEventArgs(WindowTransitionCompletedEvent));
+        crystalContentControl.TransitionCompleted += (_, _) => RaiseEvent(new RoutedEventArgs(WindowTransitionCompletedEvent));
       }
     }
 
@@ -1572,7 +1572,7 @@ namespace Crystal.Themes.Controls
         icon.MouseDown -= IconMouseDown;
       }
 
-      SizeChanged -= MetroWindow_SizeChanged;
+      SizeChanged -= CrystalWindow_SizeChanged;
     }
 
     private void SetWindowEvents()
@@ -1613,7 +1613,7 @@ namespace Crystal.Themes.Controls
       // handle size if we have a Grid for the title (e.g. clean window have a centered title)
       if (titleBar != null && TitleAlignment == HorizontalAlignment.Center)
       {
-        SizeChanged += MetroWindow_SizeChanged;
+        SizeChanged += CrystalWindow_SizeChanged;
       }
     }
 

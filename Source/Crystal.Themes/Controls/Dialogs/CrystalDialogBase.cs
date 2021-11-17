@@ -180,7 +180,7 @@ namespace Crystal.Themes.Controls.Dialogs
     /// With this method it's possible to return your own settings in a custom dialog.
     /// </summary>
     /// <param name="settings">
-    /// Settings from the <see cref="CrystalWindow.MetroDialogOptions"/> or from constructor.
+    /// Settings from the <see cref="CrystalWindow.CrystalDialogOptions"/> or from constructor.
     /// The default is a new created settings.
     /// </param>
     /// <returns></returns>
@@ -192,7 +192,7 @@ namespace Crystal.Themes.Controls.Dialogs
     private void Initialize(CrystalWindow? owningWindow, CrystalDialogSettings? settings)
     {
       OwningWindow = owningWindow;
-      DialogSettings = ConfigureSettings(settings ?? (owningWindow?.MetroDialogOptions ?? new CrystalDialogSettings()));
+      DialogSettings = ConfigureSettings(settings ?? (owningWindow?.CrystalDialogOptions ?? new CrystalDialogSettings()));
 
       if (DialogSettings.CustomResourceDictionary != null)
       {
@@ -359,14 +359,14 @@ namespace Crystal.Themes.Controls.Dialogs
     }
 
     /// <summary>
-    /// Requests an externally shown Dialog to close. Will throw an exception if the Dialog is inside of a MetroWindow.
+    /// Requests an externally shown Dialog to close. Will throw an exception if the Dialog is inside of a CrystalWindow.
     /// </summary>
     public Task RequestCloseAsync()
     {
       if (OnRequestClose())
       {
-        // Technically, the Dialog is /always/ inside of a MetroWindow.
-        // If the dialog is inside of a user-created MetroWindow, not one created by the external dialog APIs.
+        // Technically, the Dialog is /always/ inside of a CrystalWindow.
+        // If the dialog is inside of a user-created CrystalWindow, not one created by the external dialog APIs.
         if (ParentDialogWindow is null)
         {
           // this is very bad, or the user called the close event before we can do this
@@ -376,13 +376,12 @@ namespace Crystal.Themes.Controls.Dialogs
             return Task.Factory.StartNew(() => { });
           }
 
-          // This is from a user-created MetroWindow
-          return OwningWindow.HideMetroDialogAsync(this);
+          // This is from a user-created CrystalWindow
+          return OwningWindow.HideCrystalDialogAsync(this);
         }
 
-        // This is from a MetroWindow created by the external dialog APIs.
-        return WaitForCloseAsync()
-                   .ContinueWith(_ => { ParentDialogWindow.Dispatcher.Invoke(() => { ParentDialogWindow.Close(); }); });
+        // This is from a CrystalWindow created by the external dialog APIs.
+        return WaitForCloseAsync().ContinueWith(_ => { ParentDialogWindow.Dispatcher.Invoke(() => { ParentDialogWindow.Close(); }); });
       }
 
       return Task.Factory.StartNew(() => { });

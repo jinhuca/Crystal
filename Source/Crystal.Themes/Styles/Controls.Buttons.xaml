@@ -268,7 +268,7 @@
   </Style>
 
   <!--  base button style for min, max and close window buttons  -->
-  <Style x:Key="Crystal.Styles.Button.MetroWindow.Base" TargetType="{x:Type Button}">
+  <Style x:Key="Crystal.Styles.Button.CrystalWindow.Base" TargetType="{x:Type Button}">
     <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Transparent}" />
     <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type FrameworkElement}}, Path=(TextElement.Foreground)}" />
     <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -310,8 +310,8 @@
   </Style>
 
   <!--  light button style for min, max and close window buttons  -->
-  <Style x:Key="Crystal.Styles.Button.MetroWindow.Light"
-           BasedOn="{StaticResource Crystal.Styles.Button.MetroWindow.Base}"
+  <Style x:Key="Crystal.Styles.Button.CrystalWindow.Light"
+           BasedOn="{StaticResource Crystal.Styles.Button.CrystalWindow.Base}"
            TargetType="{x:Type Button}">
     <Setter Property="FocusVisualStyle" Value="{x:Null}" />
     <Setter Property="Focusable" Value="False" />
@@ -334,8 +334,8 @@
   </Style>
 
   <!--  dark button style for min, max and close window buttons  -->
-  <Style x:Key="Crystal.Styles.Button.MetroWindow.Dark"
-           BasedOn="{StaticResource Crystal.Styles.Button.MetroWindow.Light}"
+  <Style x:Key="Crystal.Styles.Button.CrystalWindow.Dark"
+           BasedOn="{StaticResource Crystal.Styles.Button.CrystalWindow.Light}"
            TargetType="{x:Type Button}">
     <Style.Triggers>
       <Trigger Property="IsMouseOver" Value="True">
@@ -351,8 +351,8 @@
     </Style.Triggers>
   </Style>
 
-  <Style x:Key="Crystal.Styles.Button.MetroWindow.Close.Light.Win10"
-           BasedOn="{StaticResource Crystal.Styles.Button.MetroWindow.Light}"
+  <Style x:Key="Crystal.Styles.Button.CrystalWindow.Close.Light.Win10"
+           BasedOn="{StaticResource Crystal.Styles.Button.CrystalWindow.Light}"
            TargetType="{x:Type Button}">
     <Style.Triggers>
       <Trigger Property="IsMouseOver" Value="True">
@@ -366,8 +366,8 @@
     </Style.Triggers>
   </Style>
 
-  <Style x:Key="Crystal.Styles.Button.MetroWindow.Close.Dark.Win10"
-           BasedOn="{StaticResource Crystal.Styles.Button.MetroWindow.Dark}"
+  <Style x:Key="Crystal.Styles.Button.CrystalWindow.Close.Dark.Win10"
+           BasedOn="{StaticResource Crystal.Styles.Button.CrystalWindow.Dark}"
            TargetType="{x:Type Button}">
     <Style.Triggers>
       <Trigger Property="IsMouseOver" Value="True">

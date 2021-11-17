@@ -57,7 +57,7 @@
 
   </ResourceDictionary.MergedDictionaries>
 
-  <!--  note: default style for textblock is now in MetroWindow !!!  -->
+  <!--  note: default style for textblock is now in CrystalWindow !!!  -->
 
   <Style BasedOn="{StaticResource Crystal.Styles.CustomValidationPopup}" TargetType="{x:Type crystal:CustomValidationPopup}" />
   <Style BasedOn="{StaticResource Crystal.Styles.ToolTip}" TargetType="ToolTip" />

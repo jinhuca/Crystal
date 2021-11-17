@@ -11,7 +11,7 @@ namespace Crystal.Themes.Controls.Dialogs
     /// <param name="window">The window that is the parent of the dialog.</param>
     /// <param name="title">The title of the LoginDialog.</param>
     /// <param name="message">The message contained within the LoginDialog.</param>
-    /// <param name="settings">Optional settings that override the global metro dialog settings.</param>
+    /// <param name="settings">Optional settings that override the global crystal dialog settings.</param>
     /// <returns>The text that was entered or null (Nothing in Visual Basic) if the user cancelled the operation.</returns>
     public static Task<LoginDialogData?> ShowLoginAsync(this CrystalWindow window, string title, string message, LoginDialogSettings? settings = null)
     {
@@ -74,16 +74,16 @@ namespace Crystal.Themes.Controls.Dialogs
     /// <summary>
     /// Creates a InputDialog inside of the current window.
     /// </summary>
-    /// <param name="window">The MetroWindow</param>
+    /// <param name="window">The CrystalWindow</param>
     /// <param name="title">The title of the MessageDialog.</param>
     /// <param name="message">The message contained within the MessageDialog.</param>
-    /// <param name="settings">Optional settings that override the global metro dialog settings.</param>
+    /// <param name="settings">Optional settings that override the global crystal dialog settings.</param>
     /// <returns>The text that was entered or null (Nothing in Visual Basic) if the user cancelled the operation.</returns>
     public static Task<string?> ShowInputAsync(this CrystalWindow window, string title, string message, CrystalDialogSettings? settings = null)
     {
       window.Dispatcher.VerifyAccess();
 
-      settings ??= window.MetroDialogOptions;
+      settings ??= window.CrystalDialogOptions;
 
       return HandleOverlayOnShow(settings, window).ContinueWith(z =>
           {
@@ -141,17 +141,17 @@ namespace Crystal.Themes.Controls.Dialogs
     /// <summary>
     /// Creates a MessageDialog inside of the current window.
     /// </summary>
-    /// <param name="window">The MetroWindow</param>
+    /// <param name="window">The CrystalWindow</param>
     /// <param name="title">The title of the MessageDialog.</param>
     /// <param name="message">The message contained within the MessageDialog.</param>
     /// <param name="style">The type of buttons to use.</param>
-    /// <param name="settings">Optional settings that override the global metro dialog settings.</param>
+    /// <param name="settings">Optional settings that override the global crystal dialog settings.</param>
     /// <returns>A task promising the result of which button was pressed.</returns>
     public static Task<MessageDialogResult> ShowMessageAsync(this CrystalWindow window, string title, string message, MessageDialogStyle style = MessageDialogStyle.Affirmative, CrystalDialogSettings? settings = null)
     {
       window.Dispatcher.VerifyAccess();
 
-      settings ??= window.MetroDialogOptions;
+      settings ??= window.CrystalDialogOptions;
 
       return HandleOverlayOnShow(settings, window).ContinueWith(z =>
           {
@@ -209,17 +209,17 @@ namespace Crystal.Themes.Controls.Dialogs
     /// <summary>
     /// Creates a ProgressDialog inside of the current window.
     /// </summary>
-    /// <param name="window">The MetroWindow</param>
+    /// <param name="window">The CrystalWindow</param>
     /// <param name="title">The title of the ProgressDialog.</param>
     /// <param name="message">The message within the ProgressDialog.</param>
     /// <param name="isCancelable">Determines if the cancel button is visible.</param>
-    /// <param name="settings">Optional Settings that override the global metro dialog settings.</param>
+    /// <param name="settings">Optional Settings that override the global crystal dialog settings.</param>
     /// <returns>A task promising the instance of ProgressDialogController for this operation.</returns>
     public static Task<ProgressDialogController> ShowProgressAsync(this CrystalWindow window, string title, string message, bool isCancelable = false, CrystalDialogSettings? settings = null)
     {
       window.Dispatcher.VerifyAccess();
 
-      settings ??= window.MetroDialogOptions;
+      settings ??= window.CrystalDialogOptions;
 
       return HandleOverlayOnShow(settings, window).ContinueWith(z =>
           {
@@ -347,16 +347,16 @@ namespace Crystal.Themes.Controls.Dialogs
     }
 
     /// <summary>
-    /// Adds a Metro Dialog instance to the specified window and makes it visible asynchronously.
+    /// Adds a Crystal Dialog instance to the specified window and makes it visible asynchronously.
     /// If you want to wait until the user has closed the dialog, use <see cref="CrystalDialogBase.WaitUntilUnloadedAsync"/>
-    /// <para>You have to close the resulting dialog yourself with <see cref="HideMetroDialogAsync"/>.</para>
+    /// <para>You have to close the resulting dialog yourself with <see cref="HideCrystalDialogAsync"/>.</para>
     /// </summary>
     /// <param name="window">The owning window of the dialog.</param>
     /// <param name="dialog">The dialog instance itself.</param>
     /// <param name="settings">An optional pre-defined settings instance.</param>
     /// <returns>A task representing the operation.</returns>
     /// <exception cref="InvalidOperationException">The <paramref name="dialog"/> is already visible in the window.</exception>
-    public static Task ShowMetroDialogAsync(this CrystalWindow window, CrystalDialogBase dialog, CrystalDialogSettings? settings = null)
+    public static Task ShowCrystalDialogAsync(this CrystalWindow window, CrystalDialogBase dialog, CrystalDialogSettings? settings = null)
     {
       if (window is null)
       {
@@ -385,7 +385,7 @@ namespace Crystal.Themes.Controls.Dialogs
         throw new InvalidOperationException("The provided dialog is already visible in the specified window.");
       }
 
-      settings ??= (dialog.DialogSettings ?? window.MetroDialogOptions);
+      settings ??= (dialog.DialogSettings ?? window.CrystalDialogOptions);
 
       return HandleOverlayOnShow(settings, window).ContinueWith(z =>
           {
@@ -410,14 +410,14 @@ namespace Crystal.Themes.Controls.Dialogs
     }
 
     /// <summary>
-    /// Adds a Metro Dialog instance of the given type to the specified window and makes it visible asynchronously.
+    /// Adds a Crystal Dialog instance of the given type to the specified window and makes it visible asynchronously.
     /// If you want to wait until the user has closed the dialog, use <see cref="CrystalDialogBase.WaitUntilUnloadedAsync"/>
-    /// <para>You have to close the resulting dialog yourself with <see cref="HideMetroDialogAsync"/>.</para>
+    /// <para>You have to close the resulting dialog yourself with <see cref="HideCrystalDialogAsync"/>.</para>
     /// </summary>
     /// <param name="window">The owning window of the dialog.</param>
     /// <param name="settings">An optional pre-defined settings instance.</param>
     /// <returns>A task with the dialog representing the operation.</returns>
-    public static Task<TDialog> ShowMetroDialogAsync<TDialog>([NotNull] this CrystalWindow window, CrystalDialogSettings? settings = null)
+    public static Task<TDialog> ShowCrystalDialogAsync<TDialog>([NotNull] this CrystalWindow window, CrystalDialogSettings? settings = null)
         where TDialog : CrystalDialogBase
     {
       if (window is null)
@@ -452,7 +452,7 @@ namespace Crystal.Themes.Controls.Dialogs
     }
 
     /// <summary>
-    /// Hides a visible Metro Dialog instance.
+    /// Hides a visible Crystal Dialog instance.
     /// </summary>
     /// <param name="window">The window with the dialog that is visible.</param>
     /// <param name="dialog">The dialog instance to hide.</param>
@@ -460,9 +460,9 @@ namespace Crystal.Themes.Controls.Dialogs
     /// <returns>A task representing the operation.</returns>
     /// <exception cref="InvalidOperationException">
     /// The <paramref name="dialog"/> is not visible in the window.
-    /// This happens if <see cref="ShowMetroDialogAsync"/> hasn't been called before.
+    /// This happens if <see cref="ShowCrystalDialogAsync"/> hasn't been called before.
     /// </exception>
-    public static Task HideMetroDialogAsync(this CrystalWindow window, CrystalDialogBase dialog, CrystalDialogSettings? settings = null)
+    public static Task HideCrystalDialogAsync(this CrystalWindow window, CrystalDialogBase dialog, CrystalDialogSettings? settings = null)
     {
       window.Dispatcher.VerifyAccess();
 
@@ -497,7 +497,7 @@ namespace Crystal.Themes.Controls.Dialogs
                       {
                         window.RemoveDialog(dialog);
 
-                        settings ??= (dialog.DialogSettings ?? window.MetroDialogOptions);
+                        settings ??= (dialog.DialogSettings ?? window.CrystalDialogOptions);
                         return HandleOverlayOnHide(settings, window);
                       }));
           }).Unwrap();
@@ -789,7 +789,7 @@ namespace Crystal.Themes.Controls.Dialogs
     /// <param name="window">The window that is the parent of the dialog.</param>
     /// <param name="title">The title of the LoginDialog.</param>
     /// <param name="message">The message contained within the LoginDialog.</param>
-    /// <param name="settings">Optional settings that override the global metro dialog settings.</param>
+    /// <param name="settings">Optional settings that override the global crystal dialog settings.</param>
     /// <returns>The text that was entered or null (Nothing in Visual Basic) if the user cancelled the operation.</returns>
     public static LoginDialogData? ShowModalLoginExternal(this CrystalWindow window, string title, string message, LoginDialogSettings? settings = null)
     {
@@ -825,16 +825,16 @@ namespace Crystal.Themes.Controls.Dialogs
     /// <summary>
     /// Creates a InputDialog outside of the current window.
     /// </summary>
-    /// <param name="window">The MetroWindow</param>
+    /// <param name="window">The CrystalWindow</param>
     /// <param name="title">The title of the MessageDialog.</param>
     /// <param name="message">The message contained within the MessageDialog.</param>
-    /// <param name="settings">Optional settings that override the global metro dialog settings.</param>
+    /// <param name="settings">Optional settings that override the global crystal dialog settings.</param>
     /// <returns>The text that was entered or null (Nothing in Visual Basic) if the user cancelled the operation.</returns>
     public static string? ShowModalInputExternal(this CrystalWindow window, string title, string message, CrystalDialogSettings? settings = null)
     {
       var win = CreateModalExternalWindow(window);
 
-      settings ??= window.MetroDialogOptions;
+      settings ??= window.CrystalDialogOptions;
 
       //create the dialog control
       var dialog = new InputDialog(win, settings)
@@ -865,17 +865,17 @@ namespace Crystal.Themes.Controls.Dialogs
     /// <summary>
     /// Creates a MessageDialog outside of the current window.
     /// </summary>
-    /// <param name="window">The MetroWindow</param>
+    /// <param name="window">The CrystalWindow</param>
     /// <param name="title">The title of the MessageDialog.</param>
     /// <param name="message">The message contained within the MessageDialog.</param>
     /// <param name="style">The type of buttons to use.</param>
-    /// <param name="settings">Optional settings that override the global metro dialog settings.</param>
+    /// <param name="settings">Optional settings that override the global crystal dialog settings.</param>
     /// <returns>A task promising the result of which button was pressed.</returns>
     public static MessageDialogResult ShowModalMessageExternal(this CrystalWindow window, string title, string message, MessageDialogStyle style = MessageDialogStyle.Affirmative, CrystalDialogSettings? settings = null)
     {
       var win = CreateModalExternalWindow(window);
 
-      settings ??= window.MetroDialogOptions;
+      settings ??= window.CrystalDialogOptions;
 
       //create the dialog control
       var dialog = new MessageDialog(win, settings)
