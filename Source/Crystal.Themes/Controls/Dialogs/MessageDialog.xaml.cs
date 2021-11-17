@@ -6,7 +6,7 @@ namespace Crystal.Themes.Controls.Dialogs
   /// <summary>
   /// An internal control that represents a message dialog. Please use MetroWindow.ShowMessage instead!
   /// </summary>
-  public partial class MessageDialog : BaseMetroDialog
+  public partial class MessageDialog : CrystalDialogBase
   {
     private const string ACCENT_BUTTON_STYLE = "Crystal.Styles.Button.Dialogs.Accent";
     private const string ACCENT_HIGHLIGHT_BUTTON_STYLE = "Crystal.Styles.Button.Dialogs.AccentHighlight";

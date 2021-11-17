@@ -1,7 +1,4 @@
-﻿using System.Diagnostics;
-using System.Windows.Automation.Peers;
-using System.Windows.Controls;
-using System.Windows.Media.Animation;
+﻿using System.Windows.Automation.Peers;
 using Crystal.Themes.Automation.Peers;
 using Crystal.Themes.Theming;
 
@@ -16,7 +13,7 @@ namespace Crystal.Themes.Controls.Dialogs
   [TemplatePart(Name = PART_Top, Type = typeof(ContentPresenter))]
   [TemplatePart(Name = PART_Content, Type = typeof(ContentPresenter))]
   [TemplatePart(Name = PART_Bottom, Type = typeof(ContentPresenter))]
-  public abstract class BaseMetroDialog : ContentControl
+  public abstract class CrystalDialogBase : ContentControl
   {
     private const string PART_Top = "PART_Top";
     private const string PART_Content = "PART_Content";
@@ -26,7 +23,7 @@ namespace Crystal.Themes.Controls.Dialogs
     public static readonly DependencyProperty DialogContentMarginProperty
         = DependencyProperty.Register(nameof(DialogContentMargin),
                                       typeof(GridLength),
-                                      typeof(BaseMetroDialog),
+                                      typeof(CrystalDialogBase),
                                       new PropertyMetadata(new GridLength(25, GridUnitType.Star)));
 
     /// <summary>
@@ -42,7 +39,7 @@ namespace Crystal.Themes.Controls.Dialogs
     public static readonly DependencyProperty DialogContentWidthProperty
         = DependencyProperty.Register(nameof(DialogContentWidth),
                                       typeof(GridLength),
-                                      typeof(BaseMetroDialog),
+                                      typeof(CrystalDialogBase),
                                       new PropertyMetadata(new GridLength(50, GridUnitType.Star)));
 
     /// <summary>
@@ -58,7 +55,7 @@ namespace Crystal.Themes.Controls.Dialogs
     public static readonly DependencyProperty TitleProperty
         = DependencyProperty.Register(nameof(Title),
                                       typeof(string),
-                                      typeof(BaseMetroDialog),
+                                      typeof(CrystalDialogBase),
                                       new PropertyMetadata(default(string)));
 
     /// <summary>
@@ -74,7 +71,7 @@ namespace Crystal.Themes.Controls.Dialogs
     public static readonly DependencyProperty DialogTopProperty
         = DependencyProperty.Register(nameof(DialogTop),
                                       typeof(object),
-                                      typeof(BaseMetroDialog),
+                                      typeof(CrystalDialogBase),
                                       new PropertyMetadata(null, UpdateLogicalChild));
 
     /// <summary>
@@ -90,7 +87,7 @@ namespace Crystal.Themes.Controls.Dialogs
     public static readonly DependencyProperty DialogBottomProperty
         = DependencyProperty.Register(nameof(DialogBottom),
                                       typeof(object),
-                                      typeof(BaseMetroDialog),
+                                      typeof(CrystalDialogBase),
                                       new PropertyMetadata(null, UpdateLogicalChild));
 
     /// <summary>
@@ -106,7 +103,7 @@ namespace Crystal.Themes.Controls.Dialogs
     public static readonly DependencyProperty DialogTitleFontSizeProperty
         = DependencyProperty.Register(nameof(DialogTitleFontSize),
                                       typeof(double),
-                                      typeof(BaseMetroDialog),
+                                      typeof(CrystalDialogBase),
                                       new PropertyMetadata(26D));
 
     /// <summary>
@@ -122,7 +119,7 @@ namespace Crystal.Themes.Controls.Dialogs
     public static readonly DependencyProperty DialogMessageFontSizeProperty
         = DependencyProperty.Register(nameof(DialogMessageFontSize),
                                       typeof(double),
-                                      typeof(BaseMetroDialog),
+                                      typeof(CrystalDialogBase),
                                       new PropertyMetadata(15D));
 
     /// <summary>
@@ -138,7 +135,7 @@ namespace Crystal.Themes.Controls.Dialogs
     public static readonly DependencyProperty DialogButtonFontSizeProperty
         = DependencyProperty.Register(nameof(DialogButtonFontSize),
                                       typeof(double),
-                                      typeof(BaseMetroDialog),
+                                      typeof(CrystalDialogBase),
                                       new PropertyMetadata(SystemFonts.MessageFontSize));
 
     /// <summary>
@@ -154,32 +151,32 @@ namespace Crystal.Themes.Controls.Dialogs
 
     internal SizeChangedEventHandler? SizeChangedHandler { get; set; }
 
-    static BaseMetroDialog()
+    static CrystalDialogBase()
     {
-      DefaultStyleKeyProperty.OverrideMetadata(typeof(BaseMetroDialog), new FrameworkPropertyMetadata(typeof(BaseMetroDialog)));
+      DefaultStyleKeyProperty.OverrideMetadata(typeof(CrystalDialogBase), new FrameworkPropertyMetadata(typeof(CrystalDialogBase)));
     }
 
     /// <summary>
-    /// Initializes a new <see cref="BaseMetroDialog"/>.
+    /// Initializes a new <see cref="CrystalDialogBase"/>.
     /// </summary>
     /// <param name="owningWindow">The window that is the parent of the dialog.</param>
     /// <param name="settings">The settings for the message dialog.</param>
-    protected BaseMetroDialog(CrystalWindow? owningWindow, CrystalDialogSettings? settings)
+    protected CrystalDialogBase(CrystalWindow? owningWindow, CrystalDialogSettings? settings)
     {
       Initialize(owningWindow, settings);
     }
 
     /// <summary>
-    /// Initializes a new <see cref="BaseMetroDialog"/>.
+    /// Initializes a new <see cref="CrystalDialogBase"/>.
     /// </summary>
-    protected BaseMetroDialog()
+    protected CrystalDialogBase()
         : this(null, new CrystalDialogSettings())
     {
     }
 
     private static void UpdateLogicalChild(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
     {
-      if (dependencyObject is not BaseMetroDialog dialog)
+      if (dependencyObject is not CrystalDialogBase dialog)
       {
         return;
       }
@@ -247,12 +244,12 @@ namespace Crystal.Themes.Controls.Dialogs
 
       HandleThemeChange();
 
-      DataContextChanged += BaseMetroDialogDataContextChanged;
-      Loaded += BaseMetroDialogLoaded;
-      Unloaded += BaseMetroDialogUnloaded;
+      DataContextChanged += CrystalDialogBaseDataContextChanged;
+      Loaded += CrystalDialogBaseLoaded;
+      Unloaded += CrystalDialogBaseUnloaded;
     }
 
-    private void BaseMetroDialogDataContextChanged(object? sender, DependencyPropertyChangedEventArgs e)
+    private void CrystalDialogBaseDataContextChanged(object? sender, DependencyPropertyChangedEventArgs e)
     {
       // Crystal add these content presenter to the dialog with AddLogicalChild method.
       // This has the side effect that the DataContext doesn't update, so do this now here.
@@ -267,14 +264,14 @@ namespace Crystal.Themes.Controls.Dialogs
       }
     }
 
-    private void BaseMetroDialogLoaded(object? sender, RoutedEventArgs e)
+    private void CrystalDialogBaseLoaded(object? sender, RoutedEventArgs e)
     {
       ThemeManager.Current.ThemeChanged -= HandleThemeManagerThemeChanged;
       ThemeManager.Current.ThemeChanged += HandleThemeManagerThemeChanged;
       OnLoaded();
     }
 
-    private void BaseMetroDialogUnloaded(object? sender, RoutedEventArgs e)
+    private void CrystalDialogBaseUnloaded(object? sender, RoutedEventArgs e)
     {
       ThemeManager.Current.ThemeChanged -= HandleThemeManagerThemeChanged;
     }
@@ -344,7 +341,7 @@ namespace Crystal.Themes.Controls.Dialogs
       // nothing here
     }
 
-    private static Theming.Theme? DetectTheme(BaseMetroDialog? dialog)
+    private static Theming.Theme? DetectTheme(CrystalDialogBase? dialog)
     {
       if (dialog is null)
       {
@@ -490,7 +487,7 @@ namespace Crystal.Themes.Controls.Dialogs
 
         if (closingStoryboard is null)
         {
-          throw new InvalidOperationException("Unable to find the dialog closing storyboard. Did you forget to add BaseMetroDialog.xaml to your merged dictionaries?");
+          throw new InvalidOperationException("Unable to find the dialog closing storyboard. Did you forget to add CrystalDialogBase.xaml to your merged dictionaries?");
         }
 
         closingStoryboard = closingStoryboard.Clone();

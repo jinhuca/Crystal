@@ -5,7 +5,7 @@ using Crystal.Themes.ValueBoxes;
 
 namespace Crystal.Themes.Controls.Dialogs
 {
-  public partial class LoginDialog : BaseMetroDialog
+  public partial class LoginDialog : CrystalDialogBase
   {
     private CancellationTokenRegistration cancellationTokenRegistration;
 

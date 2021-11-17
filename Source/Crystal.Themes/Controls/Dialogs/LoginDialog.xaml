@@ -1,9 +1,9 @@
-﻿<dialogs:BaseMetroDialog x:Class="Crystal.Themes.Controls.Dialogs.LoginDialog"
-                         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                         xmlns:behaviors="clr-namespace:Crystal.Themes.Behaviors"
-                         xmlns:dialogs="clr-namespace:Crystal.Themes.Controls.Dialogs"
-                         xmlns:crystal="clr-namespace:Crystal.Themes.Controls">
+﻿<dialogs:CrystalDialogBase x:Class="Crystal.Themes.Controls.Dialogs.LoginDialog"
+                           xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                           xmlns:behaviors="clr-namespace:Crystal.Themes.Behaviors"
+                           xmlns:dialogs="clr-namespace:Crystal.Themes.Controls.Dialogs"
+                           xmlns:crystal="clr-namespace:Crystal.Themes.Controls">
   <Grid Margin="0 10 0 0">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto" MinHeight="20" />
@@ -62,4 +62,4 @@
                     Visibility="{Binding NegativeButtonButtonVisibility, RelativeSource={RelativeSource AncestorType=dialogs:LoginDialog, Mode=FindAncestor}, UpdateSourceTrigger=PropertyChanged}" />
     </StackPanel>
   </Grid>
-</dialogs:BaseMetroDialog>
+</dialogs:CrystalDialogBase>

@@ -6,7 +6,7 @@ namespace Crystal.Themes.Controls.Dialogs
   /// <summary>
   /// An internal control that represents a message dialog. Please use MetroWindow.ShowMessage instead!
   /// </summary>
-  public partial class ProgressDialog : BaseMetroDialog
+  public partial class ProgressDialog : CrystalDialogBase
   {
     public static readonly DependencyProperty MessageProperty = DependencyProperty.Register(
       nameof(Message),

@@ -49,20 +49,20 @@
       return metroWindow.Invoke(() => metroWindow.ShowProgressAsync(title, message, isCancelable, settings));
     }
 
-    public Task ShowMetroDialogAsync(object context, BaseMetroDialog dialog, CrystalDialogSettings? settings = null)
+    public Task ShowMetroDialogAsync(object context, CrystalDialogBase dialog, CrystalDialogSettings? settings = null)
     {
       var metroWindow = GetMetroWindow(context);
       return metroWindow.Invoke(() => metroWindow.ShowMetroDialogAsync(dialog, settings));
     }
 
-    public Task HideMetroDialogAsync(object context, BaseMetroDialog dialog, CrystalDialogSettings? settings = null)
+    public Task HideMetroDialogAsync(object context, CrystalDialogBase dialog, CrystalDialogSettings? settings = null)
     {
       var metroWindow = GetMetroWindow(context);
       return metroWindow.Invoke(() => metroWindow.HideMetroDialogAsync(dialog, settings));
     }
 
     public Task<TDialog?> GetCurrentDialogAsync<TDialog>(object context)
-        where TDialog : BaseMetroDialog
+        where TDialog : CrystalDialogBase
     {
       var metroWindow = GetMetroWindow(context);
       return metroWindow.Invoke(() => metroWindow.GetCurrentDialogAsync<TDialog>());

@@ -1268,7 +1268,7 @@ namespace Crystal.Themes.Controls
       if (e.Cancel == false)
       {
         // #2409: don't close window if there is a dialog still open
-        var dialog = await this.GetCurrentDialogAsync<BaseMetroDialog>();
+        var dialog = await this.GetCurrentDialogAsync<CrystalDialogBase>();
         e.Cancel = dialog != null && (ShowDialogsOverTitleBar || !dialog.DialogSettings.OwnerCanCloseWithDialog);
       }
 
@@ -1388,7 +1388,7 @@ namespace Crystal.Themes.Controls
         // no preview if we just clicked these elements
         if (element.TryFindParent<Flyout>() != null
             || Equals(element, overlayBox)
-            || element.TryFindParent<BaseMetroDialog>() != null
+            || element.TryFindParent<CrystalDialogBase>() != null
             || Equals(element.TryFindParent<ContentControl>(), icon)
             || element.TryFindParent<WindowCommands>() != null
             || element.TryFindParent<WindowButtonCommands>() != null)

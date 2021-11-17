@@ -280,7 +280,7 @@ namespace Crystal.Themes.Controls.Dialogs
       }
 
       Task? result = null;
-      if (!window.metroActiveDialogContainer.Children.OfType<BaseMetroDialog>().Any())
+      if (!window.metroActiveDialogContainer.Children.OfType<CrystalDialogBase>().Any())
       {
         result = (settings is null || settings.AnimateHide ? window.HideOverlayAsync() : Task.Factory.StartNew(() => window.Dispatcher.Invoke(new Action(window.HideOverlay))));
       }
@@ -302,7 +302,7 @@ namespace Crystal.Themes.Controls.Dialogs
                         }
                         else
                         {
-                          var onTopShownDialogSettings = window.metroActiveDialogContainer.Children.OfType<BaseMetroDialog>().LastOrDefault()?.DialogSettings;
+                          var onTopShownDialogSettings = window.metroActiveDialogContainer.Children.OfType<CrystalDialogBase>().LastOrDefault()?.DialogSettings;
                           var isCloseButtonEnabled = window.ShowDialogsOverTitleBar || onTopShownDialogSettings is null || onTopShownDialogSettings.OwnerCanCloseWithDialog;
                           window.SetValue(CrystalWindow.IsCloseButtonEnabledWithDialogPropertyKey, BooleanBoxes.Box(isCloseButtonEnabled));
                         }
@@ -331,7 +331,7 @@ namespace Crystal.Themes.Controls.Dialogs
                                      throw new InvalidOperationException("Active dialog container could not be found.");
                                    }
 
-                                   if (!window.metroActiveDialogContainer.Children.OfType<BaseMetroDialog>().Any())
+                                   if (!window.metroActiveDialogContainer.Children.OfType<CrystalDialogBase>().Any())
                                    {
                                      return (settings is null || settings.AnimateShow ? window.ShowOverlayAsync() : Task.Factory.StartNew(() => window.Dispatcher.Invoke(new Action(window.ShowOverlay))));
                                    }
@@ -348,7 +348,7 @@ namespace Crystal.Themes.Controls.Dialogs
 
     /// <summary>
     /// Adds a Metro Dialog instance to the specified window and makes it visible asynchronously.
-    /// If you want to wait until the user has closed the dialog, use <see cref="BaseMetroDialog.WaitUntilUnloadedAsync"/>
+    /// If you want to wait until the user has closed the dialog, use <see cref="CrystalDialogBase.WaitUntilUnloadedAsync"/>
     /// <para>You have to close the resulting dialog yourself with <see cref="HideMetroDialogAsync"/>.</para>
     /// </summary>
     /// <param name="window">The owning window of the dialog.</param>
@@ -356,7 +356,7 @@ namespace Crystal.Themes.Controls.Dialogs
     /// <param name="settings">An optional pre-defined settings instance.</param>
     /// <returns>A task representing the operation.</returns>
     /// <exception cref="InvalidOperationException">The <paramref name="dialog"/> is already visible in the window.</exception>
-    public static Task ShowMetroDialogAsync(this CrystalWindow window, BaseMetroDialog dialog, CrystalDialogSettings? settings = null)
+    public static Task ShowMetroDialogAsync(this CrystalWindow window, CrystalDialogBase dialog, CrystalDialogSettings? settings = null)
     {
       if (window is null)
       {
@@ -411,14 +411,14 @@ namespace Crystal.Themes.Controls.Dialogs
 
     /// <summary>
     /// Adds a Metro Dialog instance of the given type to the specified window and makes it visible asynchronously.
-    /// If you want to wait until the user has closed the dialog, use <see cref="BaseMetroDialog.WaitUntilUnloadedAsync"/>
+    /// If you want to wait until the user has closed the dialog, use <see cref="CrystalDialogBase.WaitUntilUnloadedAsync"/>
     /// <para>You have to close the resulting dialog yourself with <see cref="HideMetroDialogAsync"/>.</para>
     /// </summary>
     /// <param name="window">The owning window of the dialog.</param>
     /// <param name="settings">An optional pre-defined settings instance.</param>
     /// <returns>A task with the dialog representing the operation.</returns>
     public static Task<TDialog> ShowMetroDialogAsync<TDialog>([NotNull] this CrystalWindow window, CrystalDialogSettings? settings = null)
-        where TDialog : BaseMetroDialog
+        where TDialog : CrystalDialogBase
     {
       if (window is null)
       {
@@ -462,7 +462,7 @@ namespace Crystal.Themes.Controls.Dialogs
     /// The <paramref name="dialog"/> is not visible in the window.
     /// This happens if <see cref="ShowMetroDialogAsync"/> hasn't been called before.
     /// </exception>
-    public static Task HideMetroDialogAsync(this CrystalWindow window, BaseMetroDialog dialog, CrystalDialogSettings? settings = null)
+    public static Task HideMetroDialogAsync(this CrystalWindow window, CrystalDialogBase dialog, CrystalDialogSettings? settings = null)
     {
       window.Dispatcher.VerifyAccess();
 
@@ -508,7 +508,7 @@ namespace Crystal.Themes.Controls.Dialogs
     /// </summary>
     /// <param name="window">The dialog owner.</param>
     public static Task<TDialog?> GetCurrentDialogAsync<TDialog>(this CrystalWindow window)
-        where TDialog : BaseMetroDialog
+        where TDialog : CrystalDialogBase
     {
       window.Dispatcher.VerifyAccess();
       var t = new TaskCompletionSource<TDialog?>();
@@ -520,7 +520,7 @@ namespace Crystal.Themes.Controls.Dialogs
       return t.Task;
     }
 
-    private static SizeChangedEventHandler SetupAndOpenDialog(CrystalWindow window, BaseMetroDialog dialog)
+    private static SizeChangedEventHandler SetupAndOpenDialog(CrystalWindow window, CrystalDialogBase dialog)
     {
       dialog.SetValue(Panel.ZIndexProperty, (int)(window.overlayBox?.GetValue(Panel.ZIndexProperty) ?? 0) + 1);
 
@@ -560,7 +560,7 @@ namespace Crystal.Themes.Controls.Dialogs
       return OnWindowSizeChanged;
     }
 
-    private static void AddDialog(this CrystalWindow window, BaseMetroDialog dialog)
+    private static void AddDialog(this CrystalWindow window, CrystalDialogBase dialog)
     {
       if (window.metroActiveDialogContainer is null)
       {
@@ -575,7 +575,7 @@ namespace Crystal.Themes.Controls.Dialogs
       window.StoreFocus();
 
       // if there's already an active dialog, move to the background
-      var activeDialog = window.metroActiveDialogContainer.Children.OfType<BaseMetroDialog>().SingleOrDefault();
+      var activeDialog = window.metroActiveDialogContainer.Children.OfType<CrystalDialogBase>().SingleOrDefault();
       if (activeDialog != null)
       {
         window.metroActiveDialogContainer.Children.Remove(activeDialog);
@@ -587,7 +587,7 @@ namespace Crystal.Themes.Controls.Dialogs
       window.SetValue(CrystalWindow.IsAnyDialogOpenPropertyKey, BooleanBoxes.TrueBox);
     }
 
-    private static void RemoveDialog(this CrystalWindow window, BaseMetroDialog dialog)
+    private static void RemoveDialog(this CrystalWindow window, CrystalDialogBase dialog)
     {
       if (window.metroActiveDialogContainer is null)
       {
@@ -604,7 +604,7 @@ namespace Crystal.Themes.Controls.Dialogs
         window.metroActiveDialogContainer.Children.Remove(dialog); //remove the dialog from the container
 
         // if there's an inactive dialog, bring it to the front
-        var dlg = window.metroInactiveDialogContainer.Children.OfType<BaseMetroDialog>().LastOrDefault();
+        var dlg = window.metroInactiveDialogContainer.Children.OfType<CrystalDialogBase>().LastOrDefault();
         if (dlg != null)
         {
           window.metroInactiveDialogContainer.Children.Remove(dlg);
@@ -627,7 +627,7 @@ namespace Crystal.Themes.Controls.Dialogs
     /// <param name="handleExternalDialogWindow">The delegate for customizing dialog window. It can be null.</param>
     /// <returns>The given dialog.</returns>
     public static TDialog ShowDialogExternally<TDialog>(this TDialog dialog, Window? windowOwner = null, Action<Window>? handleExternalDialogWindow = null)
-        where TDialog : BaseMetroDialog
+        where TDialog : CrystalDialogBase
     {
       var win = SetupExternalDialogWindow(dialog, windowOwner);
 
@@ -647,7 +647,7 @@ namespace Crystal.Themes.Controls.Dialogs
     /// <param name="handleExternalDialogWindow">The delegate for customizing dialog window. It can be null.</param>
     /// <returns>The given dialog.</returns>
     public static TDialog ShowModalDialogExternally<TDialog>(this TDialog dialog, Window? windowOwner = null, Action<Window>? handleExternalDialogWindow = null)
-        where TDialog : BaseMetroDialog
+        where TDialog : CrystalDialogBase
     {
       var win = SetupExternalDialogWindow(dialog, windowOwner);
 
@@ -694,7 +694,7 @@ namespace Crystal.Themes.Controls.Dialogs
       return window;
     }
 
-    private static CrystalWindow SetupExternalDialogWindow(BaseMetroDialog dialog, Window? windowOwner = null)
+    private static CrystalWindow SetupExternalDialogWindow(CrystalDialogBase dialog, Window? windowOwner = null)
     {
       var win = CreateExternalWindow(windowOwner ?? Application.Current?.MainWindow);
 
@@ -903,7 +903,7 @@ namespace Crystal.Themes.Controls.Dialogs
       return result;
     }
 
-    private static void SetDialogFontSizes(CrystalDialogSettings? settings, BaseMetroDialog dialog)
+    private static void SetDialogFontSizes(CrystalDialogSettings? settings, CrystalDialogBase dialog)
     {
       if (settings is null)
       {

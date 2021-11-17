@@ -1,9 +1,9 @@
 ﻿namespace Crystal.Themes.Controls.Dialogs
 {
   /// <summary>
-  /// An implementation of BaseMetroDialog allowing arbitrary content.
+  /// An implementation of CrystalDialogBase allowing arbitrary content.
   /// </summary>
-  public class CustomDialog : BaseMetroDialog
+  public class CustomDialog : CrystalDialogBase
   {
     public CustomDialog()
         : this(null, null)

@@ -87,7 +87,7 @@
     /// <param name="settings">An optional pre-defined settings instance.</param>
     /// <returns>A task representing the operation.</returns>
     /// <exception cref="InvalidOperationException">The <paramref name="dialog"/> is already visible in the window.</exception>
-    Task ShowMetroDialogAsync(object context, BaseMetroDialog dialog, CrystalDialogSettings? settings = null);
+    Task ShowMetroDialogAsync(object context, CrystalDialogBase dialog, CrystalDialogSettings? settings = null);
 
     /// <summary>
     /// Hides a visible Metro Dialog instance.
@@ -100,13 +100,13 @@
     /// The <paramref name="dialog"/> is not visible in the window.
     /// This happens if <see cref="ShowMetroDialogAsync"/> hasn't been called before.
     /// </exception>
-    Task HideMetroDialogAsync(object context, BaseMetroDialog dialog, CrystalDialogSettings? settings = null);
+    Task HideMetroDialogAsync(object context, CrystalDialogBase dialog, CrystalDialogSettings? settings = null);
 
     /// <summary>
     /// Gets the current shown dialog.
     /// </summary>
     /// <param name="context">Typically this should be the view model, which you register in XAML using <see cref="DialogParticipation.SetRegister"/>.</param>
     Task<TDialog?> GetCurrentDialogAsync<TDialog>(object context)
-        where TDialog : BaseMetroDialog;
+        where TDialog : CrystalDialogBase;
   }
 }

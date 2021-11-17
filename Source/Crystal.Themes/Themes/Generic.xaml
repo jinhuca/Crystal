@@ -38,7 +38,7 @@
     <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/WindowCommands.xaml" />
     <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/HotKeyBox.xaml" />
     <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/ContentControlEx.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/Dialogs/BaseMetroDialog.xaml" />
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/Dialogs/CrystalDialogBase.xaml" />
     <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/ColorPicker/ColorEyeDropper.xaml" />
     <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/ColorPicker/ColorCanvas.xaml" />
     <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/ColorPicker/ColorPalette.xaml" />
@@ -65,7 +65,7 @@
   <Style BasedOn="{StaticResource Crystal.Styles.HamburgerMenuListBox}" TargetType="{x:Type crystal:HamburgerMenuListBox}" />
   <Style BasedOn="{StaticResource Crystal.Styles.HamburgerMenu}" TargetType="{x:Type crystal:HamburgerMenu}" />
   <Style BasedOn="{StaticResource Crystal.Styles.CrystalHeader}" TargetType="{x:Type crystal:CrystalHeader}" />
-  <Style BasedOn="{StaticResource Crystal.Styles.BaseMetroDialog}" TargetType="{x:Type dialogs:BaseMetroDialog}" />
+  <Style BasedOn="{StaticResource Crystal.Styles.CrystalDialogBase}" TargetType="{x:Type dialogs:CrystalDialogBase}"/>
   <Style BasedOn="{StaticResource Crystal.Styles.RangeSlider.Win10}" TargetType="{x:Type crystal:RangeSlider}" />
   <Style BasedOn="{StaticResource Crystal.Styles.RevealImage}" TargetType="{x:Type crystal:RevealImage}" />
   <Style BasedOn="{StaticResource Crystal.Styles.CrystalProgressBar}" TargetType="{x:Type crystal:CrystalProgressBar}" />

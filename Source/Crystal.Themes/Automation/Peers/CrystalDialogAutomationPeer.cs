@@ -5,7 +5,7 @@ namespace Crystal.Themes.Automation.Peers
 {
   public class CrystalDialogAutomationPeer : FrameworkElementAutomationPeer
   {
-    public CrystalDialogAutomationPeer(BaseMetroDialog owner)
+    public CrystalDialogAutomationPeer(CrystalDialogBase owner)
         : base(owner)
     {
     }
@@ -25,12 +25,12 @@ namespace Crystal.Themes.Automation.Peers
       var nameCore = base.GetNameCore();
       if (string.IsNullOrEmpty(nameCore))
       {
-        nameCore = ((BaseMetroDialog)Owner).Title;
+        nameCore = ((CrystalDialogBase)Owner).Title;
       }
 
       if (string.IsNullOrEmpty(nameCore))
       {
-        nameCore = ((BaseMetroDialog)Owner).Name;
+        nameCore = ((CrystalDialogBase)Owner).Name;
       }
 
       if (string.IsNullOrEmpty(nameCore))

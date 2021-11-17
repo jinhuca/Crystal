@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace Crystal.Themes.Controls.Dialogs
 {
-  public partial class InputDialog : BaseMetroDialog
+  public partial class InputDialog : CrystalDialogBase
   {
     private CancellationTokenRegistration cancellationTokenRegistration;
 

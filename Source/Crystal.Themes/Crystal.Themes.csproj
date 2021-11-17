@@ -65,6 +65,7 @@
     <UpToDateCheckInput Remove="Themes\CrystalTabControl.xaml" />
     <UpToDateCheckInput Remove="Themes\CrystalTabItem.xaml" />
     <UpToDateCheckInput Remove="Themes\CrystalWindow.xaml" />
+    <UpToDateCheckInput Remove="Themes\Dialogs\CrystalDialogBase.xaml" />
     <UpToDateCheckInput Remove="Themes\Glow.xaml" />
     <UpToDateCheckInput Remove="Themes\TabControlEx.xaml" />
   </ItemGroup>
