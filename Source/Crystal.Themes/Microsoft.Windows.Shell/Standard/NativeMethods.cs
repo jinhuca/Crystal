@@ -1541,7 +1541,7 @@ namespace Crystal.Themes.Standard
 
     protected override bool ReleaseHandle()
     {
-      return NativeMethods.FindClose(this.handle);
+      return NativeMethods.FindClose(handle);
     }
   }
 
@@ -1576,8 +1576,8 @@ namespace Crystal.Themes.Standard
     {
       set
       {
-        Assert.NullableIsNull(this._hwnd);
-        this._hwnd = value;
+        Assert.NullableIsNull(_hwnd);
+        _hwnd = value;
       }
     }
 #pragma warning restore CA1044
@@ -1590,17 +1590,17 @@ namespace Crystal.Themes.Standard
     [ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail)]
     protected override bool ReleaseHandle()
     {
-      if (this._created)
+      if (_created)
       {
-        return NativeMethods.DeleteDC(this.handle);
+        return NativeMethods.DeleteDC(handle);
       }
 
-      if (!this._hwnd.HasValue || this._hwnd.Value == IntPtr.Zero)
+      if (!_hwnd.HasValue || _hwnd.Value == IntPtr.Zero)
       {
         return true;
       }
 
-      return NativeMethods.ReleaseDC(this._hwnd.Value, this.handle) == 1;
+      return NativeMethods.ReleaseDC(_hwnd.Value, handle) == 1;
     }
 
     public static SafeDC CreateDC(string deviceName)
@@ -1720,7 +1720,7 @@ namespace Crystal.Themes.Standard
     [ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail)]
     protected override bool ReleaseHandle()
     {
-      return NativeMethods.DeleteObject(this.handle);
+      return NativeMethods.DeleteObject(handle);
     }
   }
 
@@ -1729,12 +1729,12 @@ namespace Crystal.Themes.Standard
     private SafeGdiplusStartupToken(IntPtr ptr)
         : base(true)
     {
-      this.handle = ptr;
+      handle = ptr;
     }
 
     protected override bool ReleaseHandle()
     {
-      Status s = NativeMethods.GdiplusShutdown(this.handle);
+      Status s = NativeMethods.GdiplusShutdown(handle);
       return s == Status.Ok;
     }
 
@@ -1766,7 +1766,7 @@ namespace Crystal.Themes.Standard
       Verify.IsNotNull(sink, "sink");
       Verify.IsNotDefault(eventId, "eventId");
 
-      this.handle = IntPtr.Zero;
+      handle = IntPtr.Zero;
 
       IConnectionPoint? cp = null;
       try
@@ -1779,8 +1779,8 @@ namespace Crystal.Themes.Standard
           throw new InvalidOperationException("IConnectionPoint::Advise returned an invalid cookie.");
         }
 
-        this.handle = new IntPtr(dwCookie);
-        this._cp = cp;
+        handle = new IntPtr(dwCookie);
+        _cp = cp;
         cp = null;
       }
       finally
@@ -1791,26 +1791,26 @@ namespace Crystal.Themes.Standard
 
     public void Disconnect()
     {
-      this.ReleaseHandle();
+      ReleaseHandle();
     }
 
     protected override bool ReleaseHandle()
     {
       try
       {
-        if (!this.IsInvalid)
+        if (!IsInvalid)
         {
-          int dwCookie = this.handle.ToInt32();
-          this.handle = IntPtr.Zero;
+          int dwCookie = handle.ToInt32();
+          handle = IntPtr.Zero;
 
-          Assert.IsNotNull(this._cp);
+          Assert.IsNotNull(_cp);
           try
           {
-            this._cp!.Unadvise(dwCookie);
+            _cp!.Unadvise(dwCookie);
           }
           finally
           {
-            Utility.SafeRelease(ref this._cp);
+            Utility.SafeRelease(ref _cp);
           }
         }
 
@@ -2130,20 +2130,20 @@ namespace Crystal.Themes.Standard
 
     public POINT(int x, int y)
     {
-      this._x = x;
-      this._y = y;
+      _x = x;
+      _y = y;
     }
 
     public int X
     {
-      get { return this._x; }
-      set { this._x = value; }
+      get { return _x; }
+      set { _x = value; }
     }
 
     public int Y
     {
-      get { return this._y; }
-      set { this._y = value; }
+      get { return _y; }
+      set { _y = value; }
     }
 
     public override bool Equals(object? obj)
@@ -2152,7 +2152,7 @@ namespace Crystal.Themes.Standard
       {
         var point = (POINT)obj;
 
-        return point._x == this._x && point._y == this._y;
+        return point._x == _x && point._y == _y;
       }
 
       return base.Equals(obj);
@@ -2160,7 +2160,7 @@ namespace Crystal.Themes.Standard
 
     public override int GetHashCode()
     {
-      return this._x.GetHashCode() ^ this._y.GetHashCode();
+      return _x.GetHashCode() ^ _y.GetHashCode();
     }
 
     public static bool operator ==(POINT a, POINT b)
@@ -2191,26 +2191,26 @@ namespace Crystal.Themes.Standard
 
     public RECT(int left, int top, int right, int bottom)
     {
-      this.Left = left;
-      this.Top = top;
-      this.Right = right;
-      this.Bottom = bottom;
+      Left = left;
+      Top = top;
+      Right = right;
+      Bottom = bottom;
     }
 
     public RECT(RECT rcSrc)
     {
-      this.Left = rcSrc.Left;
-      this.Top = rcSrc.Top;
-      this.Right = rcSrc.Right;
-      this.Bottom = rcSrc.Bottom;
+      Left = rcSrc.Left;
+      Top = rcSrc.Top;
+      Right = rcSrc.Right;
+      Bottom = rcSrc.Bottom;
     }
 
     public void Offset(int dx, int dy)
     {
-      this.Left += dx;
-      this.Top += dy;
-      this.Right += dx;
-      this.Bottom += dy;
+      Left += dx;
+      Top += dy;
+      Right += dx;
+      Bottom += dy;
     }
 
     public int Left { get; set; }
@@ -2221,9 +2221,9 @@ namespace Crystal.Themes.Standard
 
     public int Bottom { get; set; }
 
-    public int Width => this.Right - this.Left;
+    public int Width => Right - Left;
 
-    public int Height => this.Bottom - this.Top;
+    public int Height => Bottom - Top;
 
     public static RECT Union(RECT rect1, RECT rect2)
     {
@@ -2238,20 +2238,20 @@ namespace Crystal.Themes.Standard
 
     public override bool Equals(object? obj)
     {
-      return obj is RECT rect && this.Equals(rect);
+      return obj is RECT rect && Equals(rect);
     }
 
     public bool Equals(RECT other)
     {
-      return other.Bottom == this.Bottom
-             && other.Left == this.Left
-             && other.Right == this.Right
-             && other.Top == this.Top;
+      return other.Bottom == Bottom
+             && other.Left == Left
+             && other.Right == Right
+             && other.Top == Top;
     }
 
     public bool IsEmpty =>
         // BUG : On Bidi OS (hebrew arabic) left > right
-        this.Left >= this.Right || this.Top >= this.Bottom;
+        Left >= Right || Top >= Bottom;
 
     public override string ToString()
     {
@@ -2260,18 +2260,18 @@ namespace Crystal.Themes.Standard
         return "RECT {Empty}";
       }
 
-      return "RECT { left : " + this.Left + " / top : " + this.Top + " / right : " + this.Right + " / bottom : " + this.Bottom + " }";
+      return "RECT { left : " + Left + " / top : " + Top + " / right : " + Right + " / bottom : " + Bottom + " }";
     }
 
     public override int GetHashCode()
     {
-      if (this.IsEmpty)
+      if (IsEmpty)
       {
         return 0;
       }
       else
       {
-        return (this.Left << 16 | Utility.LOWORD(this.Right)) ^ (this.Top << 16 | Utility.LOWORD(this.Bottom));
+        return (Left << 16 | Utility.LOWORD(Right)) ^ (Top << 16 | Utility.LOWORD(Bottom));
       }
     }
 
@@ -2360,53 +2360,53 @@ namespace Crystal.Themes.Standard
     /// <inheritdoc />
     public override string ToString()
     {
-      return $"x: {this.x}; y: {this.y}; cx: {this.cx}; cy: {this.cy}; flags: {this.flags}";
+      return $"x: {x}; y: {y}; cx: {cx}; cy: {cy}; flags: {flags}";
     }
 
     public bool SizeAndPositionEquals(WINDOWPOS other)
     {
-      return this.x == other.x
-             && this.y == other.y
-             && this.cx == other.cx
-             && this.cy == other.cy;
+      return x == other.x
+             && y == other.y
+             && cx == other.cx
+             && cy == other.cy;
     }
 
     public bool IsEmpty()
     {
-      return this.x == 0
-             && this.y == 0
-             && this.cx == 0
-             && this.cy == 0;
+      return x == 0
+             && y == 0
+             && cx == 0
+             && cy == 0;
     }
 
     public bool Equals(WINDOWPOS other)
     {
-      return this.hwnd.Equals(other.hwnd)
-             && this.hwndInsertAfter.Equals(other.hwndInsertAfter)
-             && this.x == other.x
-             && this.y == other.y
-             && this.cx == other.cx
-             && this.cy == other.cy
-             && this.flags == other.flags;
+      return hwnd.Equals(other.hwnd)
+             && hwndInsertAfter.Equals(other.hwndInsertAfter)
+             && x == other.x
+             && y == other.y
+             && cx == other.cx
+             && cy == other.cy
+             && flags == other.flags;
     }
 
     public override bool Equals(object? obj)
     {
       return obj is WINDOWPOS other
-             && this.Equals(other);
+             && Equals(other);
     }
 
     public override int GetHashCode()
     {
       unchecked
       {
-        var hashCode = this.hwnd.GetHashCode();
-        hashCode = (hashCode * 397) ^ this.hwndInsertAfter.GetHashCode();
-        hashCode = (hashCode * 397) ^ this.x;
-        hashCode = (hashCode * 397) ^ this.y;
-        hashCode = (hashCode * 397) ^ this.cx;
-        hashCode = (hashCode * 397) ^ this.cy;
-        hashCode = (hashCode * 397) ^ (int)this.flags;
+        var hashCode = hwnd.GetHashCode();
+        hashCode = (hashCode * 397) ^ hwndInsertAfter.GetHashCode();
+        hashCode = (hashCode * 397) ^ x;
+        hashCode = (hashCode * 397) ^ y;
+        hashCode = (hashCode * 397) ^ cx;
+        hashCode = (hashCode * 397) ^ cy;
+        hashCode = (hashCode * 397) ^ (int)flags;
         return hashCode;
       }
     }

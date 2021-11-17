@@ -4,19 +4,19 @@ using Crystal.Themes.ValueBoxes;
 namespace Crystal.Themes.Controls
 {
   /// <summary>
-  /// An extended TabItem with a metro style.
+  /// An extended TabItem with a crystal style.
   /// </summary>
-  public class MetroTabItem : TabItem
+  public class CrystalTabItem : TabItem
   {
-    public MetroTabItem()
+    public CrystalTabItem()
     {
-      DefaultStyleKey = typeof(MetroTabItem);
+      DefaultStyleKey = typeof(CrystalTabItem);
     }
 
     public static readonly DependencyProperty CloseButtonEnabledProperty = DependencyProperty.Register(
       nameof(CloseButtonEnabled),
       typeof(bool),
-      typeof(MetroTabItem),
+      typeof(CrystalTabItem),
       new FrameworkPropertyMetadata(BooleanBoxes.FalseBox, FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.Inherits));
 
     public bool CloseButtonEnabled
@@ -28,7 +28,7 @@ namespace Crystal.Themes.Controls
     public static readonly DependencyProperty CloseTabCommandProperty = DependencyProperty.Register(
       nameof(CloseTabCommand),
       typeof(ICommand),
-      typeof(MetroTabItem));
+      typeof(CrystalTabItem));
 
     public ICommand? CloseTabCommand
     {
@@ -39,7 +39,7 @@ namespace Crystal.Themes.Controls
     public static readonly DependencyProperty CloseTabCommandParameterProperty = DependencyProperty.Register(
       nameof(CloseTabCommandParameter),
       typeof(object),
-      typeof(MetroTabItem),
+      typeof(CrystalTabItem),
       new PropertyMetadata(null));
 
     public object? CloseTabCommandParameter
@@ -51,7 +51,7 @@ namespace Crystal.Themes.Controls
     public static readonly DependencyProperty CloseButtonMarginProperty = DependencyProperty.Register(
       nameof(CloseButtonMargin),
       typeof(Thickness),
-      typeof(MetroTabItem),
+      typeof(CrystalTabItem),
       new FrameworkPropertyMetadata(new Thickness(), FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.Inherits));
 
     public Thickness CloseButtonMargin

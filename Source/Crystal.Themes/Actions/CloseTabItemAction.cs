@@ -37,11 +37,11 @@ namespace Crystal.Themes.Actions
                 }
             }
 
-            if (tabControl is BaseMetroTabControl metroTabControl && tabItem is MetroTabItem metroTabItem)
+            if (tabControl is CrystalTabControlBase crystalTabControl && tabItem is CrystalTabItem crystalTabItem)
             {
                 // run the command handler for the TabControl
                 // see #555
-                metroTabControl.BeginInvoke(x => x.CloseThisTabItem(metroTabItem));
+                crystalTabControl.BeginInvoke(x => x.CloseThisTabItem(crystalTabItem));
             }
             else
             {

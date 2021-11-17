@@ -14,10 +14,10 @@ namespace Crystal.Themes.Theming
         /// </summary>
         public ThemeChangedEventArgs(object? target, ResourceDictionary targetResourceDictionary, Theme? oldTheme, Theme newTheme)
         {
-            this.Target = target;
-            this.TargetResourceDictionary = targetResourceDictionary;
-            this.OldTheme = oldTheme;
-            this.NewTheme = newTheme;
+            Target = target;
+            TargetResourceDictionary = targetResourceDictionary;
+            OldTheme = oldTheme;
+            NewTheme = newTheme;
         }
 
         /// <summary>

@@ -18,10 +18,10 @@ namespace Crystal.Themes.Theming
 
         protected LibraryThemeProvider(bool registerAtThemeManager)
         {
-            this.assembly = this.GetType().Assembly;
-            this.assemblyName = this.assembly.GetName().Name!;
+            assembly = GetType().Assembly;
+            assemblyName = assembly.GetName().Name!;
 
-            this.resourceNames = this.assembly.GetManifestResourceNames();
+            resourceNames = assembly.GetManifestResourceNames();
 
             if (registerAtThemeManager)
             {
@@ -37,14 +37,14 @@ namespace Crystal.Themes.Theming
 
         public virtual string? GetThemeGeneratorParametersContent()
         {
-            foreach (var resourceName in this.resourceNames)
+            foreach (var resourceName in resourceNames)
             {
-                if (this.ResourceNamesMatch(resourceName, this.GeneratorParametersResourceName) == false)
+                if (ResourceNamesMatch(resourceName, GeneratorParametersResourceName) == false)
                 {
                     continue;
                 }
 
-                using (var stream = this.assembly.GetManifestResourceStream(resourceName))
+                using (var stream = assembly.GetManifestResourceStream(resourceName))
                 {
                     if (stream is null)
                     {
@@ -63,14 +63,14 @@ namespace Crystal.Themes.Theming
 
         public virtual string? GetThemeTemplateContent()
         {
-            foreach (var resourceName in this.resourceNames)
+            foreach (var resourceName in resourceNames)
             {
-                if (this.ResourceNamesMatch(resourceName, this.ThemeTemplateResourceName) == false)
+                if (ResourceNamesMatch(resourceName, ThemeTemplateResourceName) == false)
                 {
                     continue;
                 }
 
-                using (var stream = this.assembly.GetManifestResourceStream(resourceName))
+                using (var stream = assembly.GetManifestResourceStream(resourceName))
                 {
                     if (stream is null)
                     {
@@ -89,7 +89,7 @@ namespace Crystal.Themes.Theming
 
         public virtual LibraryTheme? GetLibraryTheme(DictionaryEntry dictionaryEntry)
         {
-            if (this.IsPotentialThemeResourceDictionary(dictionaryEntry) == false)
+            if (IsPotentialThemeResourceDictionary(dictionaryEntry) == false)
             {
                 return null;
             }
@@ -103,7 +103,7 @@ namespace Crystal.Themes.Theming
 
             var resourceDictionary = new ResourceDictionary
             {
-                Source = new Uri($"pack://application:,,,/{this.assemblyName};component/{stringKey!.Replace(".baml", ".xaml")}")
+                Source = new Uri($"pack://application:,,,/{assemblyName};component/{stringKey!.Replace(".baml", ".xaml")}")
             };
 
             if (resourceDictionary.MergedDictionaries.Count == 0
@@ -117,14 +117,14 @@ namespace Crystal.Themes.Theming
 
         public virtual IEnumerable<LibraryTheme> GetLibraryThemes()
         {
-            foreach (var resourceName in this.resourceNames)
+            foreach (var resourceName in resourceNames)
             {
                 if (resourceName.EndsWith(".g.resources", StringComparison.OrdinalIgnoreCase) == false)
                 {
                     continue;
                 }
 
-                var resourceInfo = this.assembly.GetManifestResourceInfo(resourceName);
+                var resourceInfo = assembly.GetManifestResourceInfo(resourceName);
 
                 if (resourceInfo is null
                     || resourceInfo.ResourceLocation == ResourceLocation.ContainedInAnotherAssembly)
@@ -132,7 +132,7 @@ namespace Crystal.Themes.Theming
                     continue;
                 }
 
-                var resourceStream = this.assembly.GetManifestResourceStream(resourceName);
+                var resourceStream = assembly.GetManifestResourceStream(resourceName);
 
                 if (resourceStream is null)
                 {
@@ -143,7 +143,7 @@ namespace Crystal.Themes.Theming
                 {
                     foreach (var dictionaryEntry in reader.OfType<DictionaryEntry>())
                     {
-                        var theme = this.GetLibraryTheme(dictionaryEntry);
+                        var theme = GetLibraryTheme(dictionaryEntry);
 
                         if (theme is not null)
                         {
@@ -156,7 +156,7 @@ namespace Crystal.Themes.Theming
 
         public virtual LibraryTheme? ProvideMissingLibraryTheme(Theme themeToProvideNewLibraryThemeFor)
         {
-            var libraryThemes = this.GetLibraryThemes()
+            var libraryThemes = GetLibraryThemes()
                                     .ToList();
 
             foreach (var themeLibraryTheme in themeToProvideNewLibraryThemeFor.LibraryThemes)
@@ -219,7 +219,7 @@ namespace Crystal.Themes.Theming
         protected virtual bool ResourceNamesMatch(string resourceName, string value)
         {
             if (resourceName.Equals(value, StringComparison.OrdinalIgnoreCase)
-                || (resourceName.StartsWith(this.assemblyName, StringComparison.OrdinalIgnoreCase) && resourceName.EndsWith(value, StringComparison.OrdinalIgnoreCase)))
+                || (resourceName.StartsWith(assemblyName, StringComparison.OrdinalIgnoreCase) && resourceName.EndsWith(value, StringComparison.OrdinalIgnoreCase)))
             {
                 return true;
             }

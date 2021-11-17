@@ -8,10 +8,10 @@ namespace Crystal.Themes.Theming
     {
         public RuntimeThemeOptions(bool useHSL, bool isHighContrast, ThemeGenerator.ThemeGeneratorParameters? generatorParameters, ThemeGenerator.ThemeGeneratorBaseColorScheme? baseColorScheme)
         {
-            this.UseHSL = useHSL;
-            this.IsHighContrast = isHighContrast;
-            this.GeneratorParameters = generatorParameters;
-            this.BaseColorScheme = baseColorScheme;
+            UseHSL = useHSL;
+            IsHighContrast = isHighContrast;
+            GeneratorParameters = generatorParameters;
+            BaseColorScheme = baseColorScheme;
         }
 
         public bool UseHSL { get; }

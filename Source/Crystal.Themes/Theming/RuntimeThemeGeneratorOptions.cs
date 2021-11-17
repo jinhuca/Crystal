@@ -13,7 +13,7 @@ namespace Crystal.Themes.Theming
         /// </summary>
         public virtual RuntimeThemeOptions CreateRuntimeThemeOptions(bool isHighContrast, ThemeGenerator.ThemeGeneratorParameters? generatorParameters, ThemeGenerator.ThemeGeneratorBaseColorScheme? baseColorScheme)
         {
-            return new RuntimeThemeOptions(this.UseHSL, isHighContrast, generatorParameters, baseColorScheme);
+            return new RuntimeThemeOptions(UseHSL, isHighContrast, generatorParameters, baseColorScheme);
         }
     }
 }

@@ -7,23 +7,23 @@ using System.Windows.Automation.Peers;
 namespace Crystal.Themes.Automation.Peers
 {
   /// <summary>
-  /// The MetroThumbContentControlAutomationPeer class exposes the <see cref="T:Crystal.Themes.Controls.MetroThumbContentControl" /> type to UI Automation.
+  /// The MetroThumbContentControlAutomationPeer class exposes the <see cref="T:Crystal.Themes.Controls.CrystalThumbContentControl" /> type to UI Automation.
   /// </summary>
   public class MetroThumbContentControlAutomationPeer : FrameworkElementAutomationPeer
+  {
+    public MetroThumbContentControlAutomationPeer(FrameworkElement owner)
+        : base(owner)
     {
-        public MetroThumbContentControlAutomationPeer(FrameworkElement owner)
-            : base(owner)
-        {
-        }
-
-        protected override AutomationControlType GetAutomationControlTypeCore()
-        {
-            return AutomationControlType.Custom;
-        }
-
-        protected override string GetClassNameCore()
-        {
-            return "MetroThumbContentControl";
-        }
     }
+
+    protected override AutomationControlType GetAutomationControlTypeCore()
+    {
+      return AutomationControlType.Custom;
+    }
+
+    protected override string GetClassNameCore()
+    {
+      return "CrystalThumbContentControl";
+    }
+  }
 }

@@ -59,7 +59,7 @@
                     // note, it is possible that accessing the target property
                     // will result in an exception so i’ve wrapped this check
                     // in a try catch
-                    return this.propertySource.IsAlive ? this.propertySource.Target as DependencyObject : null;
+                    return propertySource.IsAlive ? propertySource.Target as DependencyObject : null;
                 }
                 catch
                 {
@@ -84,8 +84,8 @@
         [Bindable(true)]
         public object? Value
         {
-            get { return (object?)this.GetValue(ValueProperty); }
-            set { this.SetValue(ValueProperty, value); }
+            get { return (object?)GetValue(ValueProperty); }
+            set { SetValue(ValueProperty, value); }
         }
 
         private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

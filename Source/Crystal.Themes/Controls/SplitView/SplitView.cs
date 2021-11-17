@@ -20,7 +20,7 @@ namespace Crystal.Themes.Controls
   [TemplatePart(Name = "PaneClipRectangle", Type = typeof(RectangleGeometry))]
 #pragma warning restore WPF0132 // Use PART prefix.
   [TemplatePart(Name = "LightDismissLayer", Type = typeof(Rectangle))]
-  [TemplatePart(Name = "PART_ResizingThumb", Type = typeof(MetroThumb))]
+  [TemplatePart(Name = "PART_ResizingThumb", Type = typeof(CrystalThumb))]
   [TemplateVisualState(Name = "Closed", GroupName = "DisplayModeStates")]
   [TemplateVisualState(Name = "ClosedCompactLeft", GroupName = "DisplayModeStates")]
   [TemplateVisualState(Name = "ClosedCompactRight", GroupName = "DisplayModeStates")]
@@ -31,12 +31,12 @@ namespace Crystal.Themes.Controls
   [TemplateVisualState(Name = "OpenCompactOverlayLeft", GroupName = "DisplayModeStates")]
   [TemplateVisualState(Name = "OpenCompactOverlayRight", GroupName = "DisplayModeStates")]
   [ContentProperty(nameof(Content))]
-  [StyleTypedProperty(Property = nameof(ResizeThumbStyle), StyleTargetType = typeof(MetroThumb))]
+  [StyleTypedProperty(Property = nameof(ResizeThumbStyle), StyleTargetType = typeof(CrystalThumb))]
   public class SplitView : Control
   {
     private Rectangle? lightDismissLayer;
     private RectangleGeometry? paneClipRectangle;
-    private MetroThumb? resizingThumb;
+    private CrystalThumb? resizingThumb;
 
     /// <summary>Identifies the <see cref="CompactPaneLength"/> dependency property.</summary>
     public static readonly DependencyProperty CompactPaneLengthProperty
@@ -325,7 +325,7 @@ namespace Crystal.Themes.Controls
                                       new PropertyMetadata(null));
 
     /// <summary>
-    /// Gets or Sets the <see cref="Style"/> for the resizing Thumb (type of <see cref="MetroThumb"/>)
+    /// Gets or Sets the <see cref="Style"/> for the resizing Thumb (type of <see cref="CrystalThumb"/>)
     /// </summary>
     public Style? ResizeThumbStyle
     {
@@ -485,7 +485,7 @@ namespace Crystal.Themes.Controls
         lightDismissLayer.MouseDown += OnLightDismiss;
       }
 
-      resizingThumb = GetTemplateChild("PART_ResizingThumb") as MetroThumb;
+      resizingThumb = GetTemplateChild("PART_ResizingThumb") as CrystalThumb;
       if (resizingThumb != null)
       {
         resizingThumb.DragDelta += ResizingThumb_DragDelta;

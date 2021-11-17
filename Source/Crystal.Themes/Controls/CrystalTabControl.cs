@@ -3,19 +3,19 @@
 namespace Crystal.Themes.Controls
 {
   /// <summary>
-  /// A standard MetroTabControl (Pivot).
+  /// A standard CrystalTabControl (Pivot).
   /// </summary>
-  public class MetroTabControl : BaseMetroTabControl
+  public class CrystalTabControl : CrystalTabControlBase
   {
-    static MetroTabControl()
+    static CrystalTabControl()
     {
-      DefaultStyleKeyProperty.OverrideMetadata(typeof(MetroTabControl), new FrameworkPropertyMetadata(typeof(MetroTabControl)));
+      DefaultStyleKeyProperty.OverrideMetadata(typeof(CrystalTabControl), new FrameworkPropertyMetadata(typeof(CrystalTabControl)));
     }
 
     public static readonly DependencyProperty KeepVisualTreeInMemoryWhenChangingTabsProperty = DependencyProperty.Register(
       nameof(KeepVisualTreeInMemoryWhenChangingTabs),
       typeof(bool),
-      typeof(MetroTabControl),
+      typeof(CrystalTabControl),
       new PropertyMetadata(BooleanBoxes.FalseBox));
 
     public bool KeepVisualTreeInMemoryWhenChangingTabs

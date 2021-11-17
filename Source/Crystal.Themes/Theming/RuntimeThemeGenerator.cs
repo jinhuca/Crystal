@@ -21,7 +21,7 @@ namespace Crystal.Themes.Theming
 
         public Theme? GenerateRuntimeThemeFromWindowsSettings(string baseColor, bool isHighContrast, params LibraryThemeProvider[] libraryThemeProviders)
         {
-            return this.GenerateRuntimeThemeFromWindowsSettings(baseColor, isHighContrast, libraryThemeProviders.ToList());
+            return GenerateRuntimeThemeFromWindowsSettings(baseColor, isHighContrast, libraryThemeProviders.ToList());
         }
 
         public virtual Theme? GenerateRuntimeThemeFromWindowsSettings(string baseColor, bool isHighContrast, IEnumerable<LibraryThemeProvider> libraryThemeProviders)
@@ -35,22 +35,22 @@ namespace Crystal.Themes.Theming
 
             var accentColor = windowsAccentColor.Value;
 
-            return this.GenerateRuntimeTheme(baseColor, accentColor, isHighContrast, libraryThemeProviders);
+            return GenerateRuntimeTheme(baseColor, accentColor, isHighContrast, libraryThemeProviders);
         }
 
         public Theme? GenerateRuntimeTheme(string baseColor, Color accentColor)
         {
-            return this.GenerateRuntimeTheme(baseColor, accentColor, false, ThemeManager.Current.LibraryThemeProviders.ToList());
+            return GenerateRuntimeTheme(baseColor, accentColor, false, ThemeManager.Current.LibraryThemeProviders.ToList());
         }
 
         public virtual Theme? GenerateRuntimeTheme(string baseColor, Color accentColor, bool isHighContrast)
         {
-            return this.GenerateRuntimeTheme(baseColor, accentColor, isHighContrast, ThemeManager.Current.LibraryThemeProviders.ToList());
+            return GenerateRuntimeTheme(baseColor, accentColor, isHighContrast, ThemeManager.Current.LibraryThemeProviders.ToList());
         }
 
         public Theme? GenerateRuntimeTheme(string baseColor, Color accentColor, bool isHighContrast, params LibraryThemeProvider[] libraryThemeProviders)
         {
-            return this.GenerateRuntimeTheme(baseColor, accentColor, isHighContrast, libraryThemeProviders.ToList());
+            return GenerateRuntimeTheme(baseColor, accentColor, isHighContrast, libraryThemeProviders.ToList());
         }
 
         public virtual Theme? GenerateRuntimeTheme(string baseColor, Color accentColor, bool isHighContrast, IEnumerable<LibraryThemeProvider> libraryThemeProviders)
@@ -59,7 +59,7 @@ namespace Crystal.Themes.Theming
 
             foreach (var libraryThemeProvider in libraryThemeProviders)
             {
-                var libraryTheme = this.GenerateRuntimeLibraryTheme(baseColor, accentColor, isHighContrast, libraryThemeProvider);
+                var libraryTheme = GenerateRuntimeLibraryTheme(baseColor, accentColor, isHighContrast, libraryThemeProvider);
 
                 if (libraryTheme is null)
                 {
@@ -114,9 +114,9 @@ namespace Crystal.Themes.Theming
 
             var values = colorScheme.Values;
 
-            var runtimeThemeColorValues = this.GetColors(accentColor, this.Options.CreateRuntimeThemeOptions(isHighContrast, generatorParameters, baseColorScheme));
+            var runtimeThemeColorValues = GetColors(accentColor, Options.CreateRuntimeThemeOptions(isHighContrast, generatorParameters, baseColorScheme));
 
-            return this.GenerateRuntimeLibraryTheme(libraryThemeProvider, values, runtimeThemeColorValues, themeTemplateContent!, themeName, themeDisplayName, baseColorScheme, colorScheme, generatorParameters);
+            return GenerateRuntimeLibraryTheme(libraryThemeProvider, values, runtimeThemeColorValues, themeTemplateContent!, themeName, themeDisplayName, baseColorScheme, colorScheme, generatorParameters);
         }
 
         public virtual LibraryTheme GenerateRuntimeLibraryTheme(LibraryThemeProvider libraryThemeProvider, Dictionary<string, string> values, RuntimeThemeColorValues runtimeThemeColorValues, string themeTemplateContent, string themeName, string themeDisplayName, ThemeGenerator.ThemeGeneratorBaseColorScheme baseColorScheme, ThemeGenerator.ThemeGeneratorColorScheme colorScheme, ThemeGenerator.ThemeGeneratorParameters generatorParameters)

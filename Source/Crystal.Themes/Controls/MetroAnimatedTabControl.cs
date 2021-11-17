@@ -1,20 +1,16 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-// See the LICENSE file in the project root for more information.
-
-namespace Crystal.Themes.Controls
+﻿namespace Crystal.Themes.Controls
 {
+  /// <summary>
+  /// A CrystalTabControl (Pivot) that uses a TransitioningContentControl to animate the contents of a TabItem/CrystalTabItem.
+  /// </summary>
+  public class MetroAnimatedTabControl : CrystalTabControlBase
+  {
     /// <summary>
-    /// A MetroTabControl (Pivot) that uses a TransitioningContentControl to animate the contents of a TabItem/MetroTabItem.
+    /// Initializes a new instance of the Crystal.Themes.Controls.MetroAnimatedTabControl class.
     /// </summary>
-    public class MetroAnimatedTabControl : BaseMetroTabControl
+    public MetroAnimatedTabControl()
     {
-        /// <summary>
-        /// Initializes a new instance of the Crystal.Themes.Controls.MetroAnimatedTabControl class.
-        /// </summary>
-        public MetroAnimatedTabControl()
-        {
-            DefaultStyleKey = typeof(MetroAnimatedTabControl);
-        }
+      DefaultStyleKey = typeof(MetroAnimatedTabControl);
     }
+  }
 }

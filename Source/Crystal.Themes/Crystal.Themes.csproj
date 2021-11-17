@@ -10,7 +10,7 @@
     <DefineConstants>$(DefineConstants);INTERNAL_NULLABLE_ATTRIBUTES</DefineConstants>
     <SignAssembly>False</SignAssembly>
     <PackageProjectUrl>https://github.com/jinhuca/Crystal</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/jinhuca/Crystal</RepositoryUrl>
+    <RepositoryUrl>https://github.com/jinhuca/Crystal.Themes</RepositoryUrl>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageIcon>CrystalTheme.png</PackageIcon>
     <PackageTags>WPF;.NET</PackageTags>
@@ -58,6 +58,9 @@
     <UpToDateCheckInput Remove="Themes\BadgedEx.xaml" />
     <UpToDateCheckInput Remove="Themes\CrystalContentControl.xaml" />
     <UpToDateCheckInput Remove="Themes\CrystalHeader.xaml" />
+    <UpToDateCheckInput Remove="Themes\CrystalProgressBar.xaml" />
+    <UpToDateCheckInput Remove="Themes\CrystalTabControl.xaml" />
+    <UpToDateCheckInput Remove="Themes\CrystalTabItem.xaml" />
     <UpToDateCheckInput Remove="Themes\CrystalWindow.xaml" />
     <UpToDateCheckInput Remove="Themes\Glow.xaml" />
     <UpToDateCheckInput Remove="Themes\TabControlEx.xaml" />

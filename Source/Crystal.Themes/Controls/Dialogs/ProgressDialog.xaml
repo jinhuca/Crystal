@@ -32,7 +32,7 @@
     </Grid>
   </dialogs:BaseMetroDialog.Content>
   <dialogs:BaseMetroDialog.DialogBottom>
-    <crystal:MetroProgressBar x:Name="PART_ProgressBar"
+    <crystal:CrystalProgressBar x:Name="PART_ProgressBar"
                               HorizontalAlignment="Stretch"
                               VerticalAlignment="Bottom"
                               Panel.ZIndex="5"

@@ -44,8 +44,8 @@
         /// </summary>
         public Brush? GlowBrush
         {
-            get => (Brush?)this.GetValue(GlowBrushProperty);
-            set => this.SetValue(GlowBrushProperty, value);
+            get => (Brush?)GetValue(GlowBrushProperty);
+            set => SetValue(GlowBrushProperty, value);
         }
 
         /// <summary>
@@ -58,8 +58,8 @@
         /// </summary>
         public Brush? NonActiveGlowBrush
         {
-            get => (Brush?)this.GetValue(NonActiveGlowBrushProperty);
-            set => this.SetValue(NonActiveGlowBrushProperty, value);
+            get => (Brush?)GetValue(NonActiveGlowBrushProperty);
+            set => SetValue(NonActiveGlowBrushProperty, value);
         }
 
         /// <summary>
@@ -72,8 +72,8 @@
         /// </summary>
         public bool IsGlowTransitionEnabled
         {
-            get => (bool)this.GetValue(IsGlowTransitionEnabledProperty);
-            set => this.SetValue(IsGlowTransitionEnabledProperty, value);
+            get => (bool)GetValue(IsGlowTransitionEnabledProperty);
+            set => SetValue(IsGlowTransitionEnabledProperty, value);
         }
 
         /// <summary>
@@ -86,206 +86,206 @@
         /// </summary>
         public Thickness ResizeBorderThickness
         {
-            get => (Thickness)this.GetValue(ResizeBorderThicknessProperty);
-            set => this.SetValue(ResizeBorderThicknessProperty, value);
+            get => (Thickness)GetValue(ResizeBorderThicknessProperty);
+            set => SetValue(ResizeBorderThicknessProperty, value);
         }
 
-        private bool IsActiveGlowDisabled => this.GlowBrush is null;
+        private bool IsActiveGlowDisabled => GlowBrush is null;
 
-        private bool IsNoneActiveGlowDisabled => this.NonActiveGlowBrush is null;
+        private bool IsNoneActiveGlowDisabled => NonActiveGlowBrush is null;
 
         protected override void OnAttached()
         {
             base.OnAttached();
 
-            this.AssociatedObject.SourceInitialized += this.AssociatedObjectSourceInitialized;
-            this.AssociatedObject.Loaded += this.AssociatedObjectOnLoaded;
-            this.AssociatedObject.Unloaded += this.AssociatedObjectUnloaded;
+            AssociatedObject.SourceInitialized += AssociatedObjectSourceInitialized;
+            AssociatedObject.Loaded += AssociatedObjectOnLoaded;
+            AssociatedObject.Unloaded += AssociatedObjectUnloaded;
 
-            if (this.AssociatedObject.IsLoaded)
+            if (AssociatedObject.IsLoaded)
             {
-                this.AssociatedObjectOnLoaded(this.AssociatedObject, new RoutedEventArgs());
-                this.AssociatedObjectSourceInitialized(this.AssociatedObject, EventArgs.Empty);
+                AssociatedObjectOnLoaded(AssociatedObject, new RoutedEventArgs());
+                AssociatedObjectSourceInitialized(AssociatedObject, EventArgs.Empty);
             }
         }
 
         /// <inheritdoc />
         protected override void OnDetaching()
         {
-            this.AssociatedObject.SourceInitialized -= this.AssociatedObjectSourceInitialized;
-            this.AssociatedObject.Loaded -= this.AssociatedObjectOnLoaded;
-            this.AssociatedObject.Unloaded -= this.AssociatedObjectUnloaded;
+            AssociatedObject.SourceInitialized -= AssociatedObjectSourceInitialized;
+            AssociatedObject.Loaded -= AssociatedObjectOnLoaded;
+            AssociatedObject.Unloaded -= AssociatedObjectUnloaded;
 
-            this.hwndSource?.RemoveHook(this.AssociatedObjectWindowProc);
+            hwndSource?.RemoveHook(AssociatedObjectWindowProc);
 
-            this.AssociatedObject.Activated -= this.AssociatedObjectActivatedOrDeactivated;
-            this.AssociatedObject.Deactivated -= this.AssociatedObjectActivatedOrDeactivated;
-            this.AssociatedObject.StateChanged -= this.AssociatedObjectStateChanged;
-            this.AssociatedObject.IsVisibleChanged -= this.AssociatedObjectIsVisibleChanged;
-            this.AssociatedObject.Closing -= this.AssociatedObjectOnClosing;
+            AssociatedObject.Activated -= AssociatedObjectActivatedOrDeactivated;
+            AssociatedObject.Deactivated -= AssociatedObjectActivatedOrDeactivated;
+            AssociatedObject.StateChanged -= AssociatedObjectStateChanged;
+            AssociatedObject.IsVisibleChanged -= AssociatedObjectIsVisibleChanged;
+            AssociatedObject.Closing -= AssociatedObjectOnClosing;
 
-            this.DestroyGlowVisibleTimer();
+            DestroyGlowVisibleTimer();
 
-            this.Close();
+            Close();
 
             base.OnDetaching();
         }
 
         private void AssociatedObjectSourceInitialized(object? sender, EventArgs e)
         {
-            this.windowHandle = new WindowInteropHelper(this.AssociatedObject).Handle;
-            this.hwndSource = HwndSource.FromHwnd(this.windowHandle);
-            this.hwndSource?.AddHook(this.AssociatedObjectWindowProc);
+            windowHandle = new WindowInteropHelper(AssociatedObject).Handle;
+            hwndSource = HwndSource.FromHwnd(windowHandle);
+            hwndSource?.AddHook(AssociatedObjectWindowProc);
         }
 
         private void AssociatedObjectStateChanged(object? sender, EventArgs e)
         {
-            this.makeGlowVisibleTimer?.Stop();
+            makeGlowVisibleTimer?.Stop();
 
-            if (this.AssociatedObject.WindowState == WindowState.Normal)
+            if (AssociatedObject.WindowState == WindowState.Normal)
             {
-                var ignoreTaskBar = Interaction.GetBehaviors(this.AssociatedObject).OfType<WindowChromeBehavior>().FirstOrDefault()?.IgnoreTaskbarOnMaximize == true;
-                if (this.makeGlowVisibleTimer is not null
+                var ignoreTaskBar = Interaction.GetBehaviors(AssociatedObject).OfType<WindowChromeBehavior>().FirstOrDefault()?.IgnoreTaskbarOnMaximize == true;
+                if (makeGlowVisibleTimer is not null
                     && SystemParameters.MinimizeAnimation
                     && !ignoreTaskBar)
                 {
-                    this.makeGlowVisibleTimer.Start();
+                    makeGlowVisibleTimer.Start();
                 }
                 else
                 {
-                    this.RestoreGlow();
+                    RestoreGlow();
                 }
             }
             else
             {
-                this.HideGlow();
+                HideGlow();
             }
         }
 
         private void AssociatedObjectUnloaded(object? sender, RoutedEventArgs e)
         {
-            this.DestroyGlowVisibleTimer();
+            DestroyGlowVisibleTimer();
         }
 
         private void DestroyGlowVisibleTimer()
         {
-            if (this.makeGlowVisibleTimer is null)
+            if (makeGlowVisibleTimer is null)
             {
                 return;
             }
 
-            this.makeGlowVisibleTimer.Stop();
-            this.makeGlowVisibleTimer.Tick -= this.GlowVisibleTimerOnTick;
-            this.makeGlowVisibleTimer = null;
+            makeGlowVisibleTimer.Stop();
+            makeGlowVisibleTimer.Tick -= GlowVisibleTimerOnTick;
+            makeGlowVisibleTimer = null;
         }
 
         private void GlowVisibleTimerOnTick(object? sender, EventArgs e)
         {
-            this.makeGlowVisibleTimer?.Stop();
-            this.RestoreGlow();
+            makeGlowVisibleTimer?.Stop();
+            RestoreGlow();
         }
 
         private void RestoreGlow()
         {
-            if (this.left is not null)
+            if (left is not null)
             {
-                this.left.IsGlowing = true;
+                left.IsGlowing = true;
             }
 
-            if (this.top is not null)
+            if (top is not null)
             {
-                this.top.IsGlowing = true;
+                top.IsGlowing = true;
             }
 
-            if (this.right is not null)
+            if (right is not null)
             {
-                this.right.IsGlowing = true;
+                right.IsGlowing = true;
             }
 
-            if (this.bottom is not null)
+            if (bottom is not null)
             {
-                this.bottom.IsGlowing = true;
+                bottom.IsGlowing = true;
             }
 
-            this.Update();
+            Update();
         }
 
         private void HideGlow()
         {
-            if (this.left is not null)
+            if (left is not null)
             {
-                this.left.IsGlowing = false;
+                left.IsGlowing = false;
             }
 
-            if (this.top is not null)
+            if (top is not null)
             {
-                this.top.IsGlowing = false;
+                top.IsGlowing = false;
             }
 
-            if (this.right is not null)
+            if (right is not null)
             {
-                this.right.IsGlowing = false;
+                right.IsGlowing = false;
             }
 
-            if (this.bottom is not null)
+            if (bottom is not null)
             {
-                this.bottom.IsGlowing = false;
+                bottom.IsGlowing = false;
             }
 
-            this.Update();
+            Update();
         }
 
         private void AssociatedObjectOnLoaded(object? sender, RoutedEventArgs routedEventArgs)
         {
             // No glow effect if GlowBrush not set.
-            if (this.IsActiveGlowDisabled)
+            if (IsActiveGlowDisabled)
             {
                 return;
             }
 
-            this.AssociatedObject.Activated -= this.AssociatedObjectActivatedOrDeactivated;
-            this.AssociatedObject.Activated += this.AssociatedObjectActivatedOrDeactivated;
-            this.AssociatedObject.Deactivated -= this.AssociatedObjectActivatedOrDeactivated;
-            this.AssociatedObject.Deactivated += this.AssociatedObjectActivatedOrDeactivated;
+            AssociatedObject.Activated -= AssociatedObjectActivatedOrDeactivated;
+            AssociatedObject.Activated += AssociatedObjectActivatedOrDeactivated;
+            AssociatedObject.Deactivated -= AssociatedObjectActivatedOrDeactivated;
+            AssociatedObject.Deactivated += AssociatedObjectActivatedOrDeactivated;
 
-            this.AssociatedObject.StateChanged -= this.AssociatedObjectStateChanged;
-            this.AssociatedObject.StateChanged += this.AssociatedObjectStateChanged;
+            AssociatedObject.StateChanged -= AssociatedObjectStateChanged;
+            AssociatedObject.StateChanged += AssociatedObjectStateChanged;
 
-            if (this.makeGlowVisibleTimer is null)
+            if (makeGlowVisibleTimer is null)
             {
-                this.makeGlowVisibleTimer = new DispatcherTimer { Interval = glowTimerDelay };
-                this.makeGlowVisibleTimer.Tick += this.GlowVisibleTimerOnTick;
+                makeGlowVisibleTimer = new DispatcherTimer { Interval = glowTimerDelay };
+                makeGlowVisibleTimer.Tick += GlowVisibleTimerOnTick;
             }
 
-            this.left = new GlowWindow(this.AssociatedObject, this, GlowDirection.Left);
-            this.right = new GlowWindow(this.AssociatedObject, this, GlowDirection.Right);
-            this.top = new GlowWindow(this.AssociatedObject, this, GlowDirection.Top);
-            this.bottom = new GlowWindow(this.AssociatedObject, this, GlowDirection.Bottom);
+            left = new GlowWindow(AssociatedObject, this, GlowDirection.Left);
+            right = new GlowWindow(AssociatedObject, this, GlowDirection.Right);
+            top = new GlowWindow(AssociatedObject, this, GlowDirection.Top);
+            bottom = new GlowWindow(AssociatedObject, this, GlowDirection.Bottom);
 
-            this.loadedGlowWindows = new[]
+            loadedGlowWindows = new[]
                                      {
-                                         this.left,
-                                         this.top,
-                                         this.right,
-                                         this.bottom
+                                         left,
+                                         top,
+                                         right,
+                                         bottom
                                      };
 
-            this.Show();
-            this.Update();
+            Show();
+            Update();
 
-            if (!this.IsGlowTransitionEnabled)
+            if (!IsGlowTransitionEnabled)
             {
                 // no storyboard so set opacity to 1
-                this.AssociatedObject.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() => this.SetOpacityTo(1)));
+                AssociatedObject.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() => SetOpacityTo(1)));
             }
             else
             {
                 // start the opacity storyboard 0->1
-                this.StartOpacityStoryboard();
+                StartOpacityStoryboard();
                 // hide the glows if window get invisible state
-                this.AssociatedObject.IsVisibleChanged += this.AssociatedObjectIsVisibleChanged;
+                AssociatedObject.IsVisibleChanged += AssociatedObjectIsVisibleChanged;
                 // closing always handled
-                this.AssociatedObject.Closing += this.AssociatedObjectOnClosing;
+                AssociatedObject.Closing += AssociatedObjectOnClosing;
             }
         }
 
@@ -293,7 +293,7 @@
         {
             if (!args.Cancel)
             {
-                this.AssociatedObject.IsVisibleChanged -= this.AssociatedObjectIsVisibleChanged;
+                AssociatedObject.IsVisibleChanged -= AssociatedObjectIsVisibleChanged;
             }
         }
 
@@ -304,7 +304,7 @@
 
         private IntPtr AssociatedObjectWindowProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
-            if (this.hwndSource?.RootVisual is null)
+            if (hwndSource?.RootVisual is null)
             {
                 return IntPtr.Zero;
             }
@@ -316,10 +316,10 @@
                     {
                         Assert.IsNotDefault(lParam);
                         var wp = (WINDOWPOS)Marshal.PtrToStructure(lParam, typeof(WINDOWPOS))!;
-                        if (wp.SizeAndPositionEquals(this.prevWindowPos) == false)
+                        if (wp.SizeAndPositionEquals(prevWindowPos) == false)
                         {
-                            this.UpdateCore();
-                            this.prevWindowPos = wp;
+                            UpdateCore();
+                            prevWindowPos = wp;
                         }
                     }
 
@@ -330,10 +330,10 @@
                     {
                         Assert.IsNotDefault(lParam);
                         var wp = (WINDOWPOS)Marshal.PtrToStructure(lParam, typeof(WINDOWPOS))!;
-                        if (wp.SizeAndPositionEquals(this.prevWindowPos) == false)
+                        if (wp.SizeAndPositionEquals(prevWindowPos) == false)
                         {
-                            this.UpdateCore();
-                            this.prevWindowPos = wp;
+                            UpdateCore();
+                            prevWindowPos = wp;
                         }
 
                         // todo: direct z-order
@@ -343,14 +343,14 @@
                         //    NativeMethods.SetWindowPos(glowWindowHandle, this.windowHandle, 0, 0, 0, 0, SWP.NOSIZE | SWP.NOMOVE | SWP.NOACTIVATE);
                         //}
 
-                        this.UpdateZOrderOfThisAndOwner();
+                        UpdateZOrderOfThisAndOwner();
                     }
 
                     break;
 
                 case WM.SIZE:
                 case WM.SIZING:
-                    this.UpdateCore();
+                    UpdateCore();
                     break;
             }
 
@@ -361,24 +361,24 @@
 
         private void UpdateZOrderOfThisAndOwner()
         {
-            if (this.updatingZOrder)
+            if (updatingZOrder)
             {
                 return;
             }
 
             try
             {
-                this.updatingZOrder = true;
-                var windowInteropHelper = new WindowInteropHelper(this.AssociatedObject);
+                updatingZOrder = true;
+                var windowInteropHelper = new WindowInteropHelper(AssociatedObject);
                 var currentHandle = windowInteropHelper.Handle;
 
-                if (currentHandle != this.windowHandle
+                if (currentHandle != windowHandle
                     || WindowHelper.IsWindowHandleValid(currentHandle) == false)
                 {
                     return;
                 }
 
-                foreach (var loadedGlowWindow in this.loadedGlowWindows)
+                foreach (var loadedGlowWindow in loadedGlowWindows)
                 {
                     var glowWindowHandle = new WindowInteropHelper(loadedGlowWindow).Handle;
 
@@ -395,11 +395,11 @@
                     currentHandle = glowWindowHandle;
                 }
 
-                this.UpdateZOrderOfOwner(currentHandle, windowInteropHelper.Owner);
+                UpdateZOrderOfOwner(currentHandle, windowInteropHelper.Owner);
             }
             finally
             {
-                this.updatingZOrder = false;
+                updatingZOrder = false;
             }
         }
 
@@ -434,19 +434,19 @@
 
         private void AssociatedObjectActivatedOrDeactivated(object? sender, EventArgs e)
         {
-            this.UpdateCore();
+            UpdateCore();
         }
 
         private void AssociatedObjectIsVisibleChanged(object? sender, DependencyPropertyChangedEventArgs e)
         {
-            if (!this.AssociatedObject.IsVisible)
+            if (!AssociatedObject.IsVisible)
             {
                 // the associated owner got invisible so set opacity to 0 to start the storyboard by 0 for the next visible state
-                this.SetOpacityTo(0);
+                SetOpacityTo(0);
             }
             else
             {
-                this.StartOpacityStoryboard();
+                StartOpacityStoryboard();
             }
         }
 
@@ -455,29 +455,29 @@
         /// </summary>
         private void Update()
         {
-            this.left?.Update();
-            this.right?.Update();
-            this.top?.Update();
-            this.bottom?.Update();
+            left?.Update();
+            right?.Update();
+            top?.Update();
+            bottom?.Update();
         }
 
 #pragma warning disable 618
         private void UpdateCore()
         {
-            if ((this.IsActiveGlowDisabled && this.AssociatedObject.IsActive)
-                || (this.IsNoneActiveGlowDisabled && this.AssociatedObject.IsActive == false)
-                || WindowHelper.IsWindowHandleValid(this.windowHandle) == false
-                || NativeMethods.IsWindowVisible(this.windowHandle) == false)
+            if ((IsActiveGlowDisabled && AssociatedObject.IsActive)
+                || (IsNoneActiveGlowDisabled && AssociatedObject.IsActive == false)
+                || WindowHelper.IsWindowHandleValid(windowHandle) == false
+                || NativeMethods.IsWindowVisible(windowHandle) == false)
             {
                 return;
             }
 
-            if (UnsafeNativeMethods.GetWindowRect(this.windowHandle, out var rect))
+            if (UnsafeNativeMethods.GetWindowRect(windowHandle, out var rect))
             {
-                this.left?.UpdateCore(rect);
-                this.right?.UpdateCore(rect);
-                this.top?.UpdateCore(rect);
-                this.bottom?.UpdateCore(rect);
+                left?.UpdateCore(rect);
+                right?.UpdateCore(rect);
+                top?.UpdateCore(rect);
+                bottom?.UpdateCore(rect);
             }
         }
 #pragma warning restore 618
@@ -487,17 +487,17 @@
         /// </summary>
         private void SetOpacityTo(double newOpacity)
         {
-            var canSetOpacity = this.left is not null
-                                && this.right is not null
-                                && this.top is not null
-                                && this.bottom is not null;
+            var canSetOpacity = left is not null
+                                && right is not null
+                                && top is not null
+                                && bottom is not null;
 
             if (canSetOpacity)
             {
-                this.left!.Opacity = newOpacity;
-                this.right!.Opacity = newOpacity;
-                this.top!.Opacity = newOpacity;
-                this.bottom!.Opacity = newOpacity;
+                left!.Opacity = newOpacity;
+                right!.Opacity = newOpacity;
+                top!.Opacity = newOpacity;
+                bottom!.Opacity = newOpacity;
             }
         }
 
@@ -506,17 +506,17 @@
         /// </summary>
         private void StartOpacityStoryboard()
         {
-            var canStartOpacityStoryboard = this.left?.OpacityStoryboard is not null
-                                            && this.right?.OpacityStoryboard is not null
-                                            && this.top?.OpacityStoryboard is not null
-                                            && this.bottom?.OpacityStoryboard is not null;
+            var canStartOpacityStoryboard = left?.OpacityStoryboard is not null
+                                            && right?.OpacityStoryboard is not null
+                                            && top?.OpacityStoryboard is not null
+                                            && bottom?.OpacityStoryboard is not null;
 
             if (canStartOpacityStoryboard)
             {
-                this.left!.BeginStoryboard(this.left.OpacityStoryboard!);
-                this.right!.BeginStoryboard(this.right.OpacityStoryboard!);
-                this.top!.BeginStoryboard(this.top.OpacityStoryboard!);
-                this.bottom!.BeginStoryboard(this.bottom.OpacityStoryboard!);
+                left!.BeginStoryboard(left.OpacityStoryboard!);
+                right!.BeginStoryboard(right.OpacityStoryboard!);
+                top!.BeginStoryboard(top.OpacityStoryboard!);
+                bottom!.BeginStoryboard(bottom.OpacityStoryboard!);
             }
         }
 
@@ -525,10 +525,10 @@
         /// </summary>
         private void Show()
         {
-            this.left?.Show();
-            this.right?.Show();
-            this.top?.Show();
-            this.bottom?.Show();
+            left?.Show();
+            right?.Show();
+            top?.Show();
+            bottom?.Show();
         }
 
         /// <summary>
@@ -536,10 +536,10 @@
         /// </summary>
         private void Close()
         {
-            this.left?.InternalClose();
-            this.right?.InternalClose();
-            this.top?.InternalClose();
-            this.bottom?.InternalClose();
+            left?.InternalClose();
+            right?.InternalClose();
+            top?.InternalClose();
+            bottom?.InternalClose();
         }
     }
 }

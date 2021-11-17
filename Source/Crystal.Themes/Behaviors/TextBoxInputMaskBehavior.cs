@@ -24,8 +24,8 @@ namespace Crystal.Themes.Behaviors
 
         public string InputMask
         {
-            get { return (string)this.GetValue(InputMaskProperty); }
-            set { this.SetValue(InputMaskProperty, value); }
+            get { return (string)GetValue(InputMaskProperty); }
+            set { SetValue(InputMaskProperty, value); }
         }
 
         /// <summary>Identifies the <see cref="PromptChar"/> dependency property.</summary>
@@ -33,8 +33,8 @@ namespace Crystal.Themes.Behaviors
 
         public char PromptChar
         {
-            get { return (char)this.GetValue(PromptCharProperty); }
-            set { this.SetValue(PromptCharProperty, value); }
+            get { return (char)GetValue(PromptCharProperty); }
+            set { SetValue(PromptCharProperty, value); }
         }
 
         /// <summary>Identifies the <see cref="ResetOnSpace"/> dependency property.</summary>
@@ -42,8 +42,8 @@ namespace Crystal.Themes.Behaviors
 
         public bool ResetOnSpace
         {
-            get { return (bool)this.GetValue(ResetOnSpaceProperty); }
-            set { this.SetValue(ResetOnSpaceProperty, value); }
+            get { return (bool)GetValue(ResetOnSpaceProperty); }
+            set { SetValue(ResetOnSpaceProperty, value); }
         }
 
         /// <summary>Identifies the <see cref="IgnoreSpace"/> dependency property.</summary>
@@ -51,8 +51,8 @@ namespace Crystal.Themes.Behaviors
 
         public bool IgnoreSpace
         {
-            get { return (bool)this.GetValue(IgnoreSpaceProperty); }
-            set { this.SetValue(IgnoreSpaceProperty, value); }
+            get { return (bool)GetValue(IgnoreSpaceProperty); }
+            set { SetValue(IgnoreSpaceProperty, value); }
         }
 
         #endregion
@@ -63,22 +63,22 @@ namespace Crystal.Themes.Behaviors
         {
             base.OnAttached();
 
-            this.AssociatedObject.Loaded += this.AssociatedObjectLoaded;
-            this.AssociatedObject.PreviewTextInput += this.AssociatedObjectPreviewTextInput;
-            this.AssociatedObject.PreviewKeyDown += this.AssociatedObjectPreviewKeyDown;
+            AssociatedObject.Loaded += AssociatedObjectLoaded;
+            AssociatedObject.PreviewTextInput += AssociatedObjectPreviewTextInput;
+            AssociatedObject.PreviewKeyDown += AssociatedObjectPreviewKeyDown;
 
-            DataObject.AddPastingHandler(this.AssociatedObject, this.Pasting);
+            DataObject.AddPastingHandler(AssociatedObject, Pasting);
         }
 
         protected override void OnDetaching()
         {
-            this.AssociatedObject.Loaded -= this.AssociatedObjectLoaded;
-            this.AssociatedObject.PreviewTextInput -= this.AssociatedObjectPreviewTextInput;
-            this.AssociatedObject.PreviewKeyDown -= this.AssociatedObjectPreviewKeyDown;
+            AssociatedObject.Loaded -= AssociatedObjectLoaded;
+            AssociatedObject.PreviewTextInput -= AssociatedObjectPreviewTextInput;
+            AssociatedObject.PreviewKeyDown -= AssociatedObjectPreviewKeyDown;
 
-            DataObject.RemovePastingHandler(this.AssociatedObject, this.Pasting);
+            DataObject.RemovePastingHandler(AssociatedObject, Pasting);
 
-            this.textPropertyNotifier?.Dispose();
+            textPropertyNotifier?.Dispose();
 
             base.OnDetaching();
         }
@@ -111,45 +111,45 @@ namespace Crystal.Themes.Behaviors
         */
         private void AssociatedObjectLoaded(object? sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(this.InputMask))
+            if (string.IsNullOrEmpty(InputMask))
             {
                 return;
             }
 
-            this.Provider = new MaskedTextProvider(this.InputMask, CultureInfo.CurrentCulture);
-            this.Provider.PromptChar = this.PromptChar;
-            this.Provider.SkipLiterals = true;
-            this.Provider.ResetOnSpace = this.ResetOnSpace;
-            this.Provider.Set(this.HandleCharacterCasing(this.AssociatedObject.Text));
+            Provider = new MaskedTextProvider(InputMask, CultureInfo.CurrentCulture);
+            Provider.PromptChar = PromptChar;
+            Provider.SkipLiterals = true;
+            Provider.ResetOnSpace = ResetOnSpace;
+            Provider.Set(HandleCharacterCasing(AssociatedObject.Text));
 
-            this.AssociatedObject.AllowDrop = false;
+            AssociatedObject.AllowDrop = false;
 
-            this.AssociatedObject.Text = this.GetProviderText();
+            AssociatedObject.Text = GetProviderText();
 
             // seems the only way that the text is formatted correct, when source is updated
             // AddValueChanged for TextProperty in a weak manner
-            this.textPropertyNotifier = new PropertyChangeNotifier(this.AssociatedObject, TextBox.TextProperty);
-            this.textPropertyNotifier.ValueChanged += this.UpdateText;
+            textPropertyNotifier = new PropertyChangeNotifier(AssociatedObject, TextBox.TextProperty);
+            textPropertyNotifier.ValueChanged += UpdateText;
         }
 
         private void AssociatedObjectPreviewTextInput(object? sender, TextCompositionEventArgs e)
         {
-            if (this.Provider is null)
+            if (Provider is null)
             {
                 return;
             }
 
-            this.Debug("PreviewTextInput");
+            Debug("PreviewTextInput");
 
             e.Handled = true;
-            var text = this.HandleCharacterCasing(e.Text);
+            var text = HandleCharacterCasing(e.Text);
 
-            this.TreatSelectedText();
+            TreatSelectedText();
 
-            var position = this.GetNextCharacterPosition(this.AssociatedObject.CaretIndex);
+            var position = GetNextCharacterPosition(AssociatedObject.CaretIndex);
             if (Keyboard.IsKeyToggled(Key.Insert))
             {
-                if (!this.Provider.Replace(text, position))
+                if (!Provider.Replace(text, position))
                 {
                     System.Media.SystemSounds.Beep.Play();
                     return;
@@ -157,47 +157,47 @@ namespace Crystal.Themes.Behaviors
             }
             else
             {
-                if (!this.Provider.InsertAt(text, position))
+                if (!Provider.InsertAt(text, position))
                 {
                     System.Media.SystemSounds.Beep.Play();
                     return;
                 }
             }
 
-            var nextCharacterPosition = this.GetNextCharacterPosition(position + 1);
-            this.RefreshText(nextCharacterPosition);
+            var nextCharacterPosition = GetNextCharacterPosition(position + 1);
+            RefreshText(nextCharacterPosition);
         }
 
         private void AssociatedObjectPreviewKeyDown(object? sender, KeyEventArgs e)
         {
-            if (this.Provider is null)
+            if (Provider is null)
             {
                 return;
             }
 
             // NOTE: TreatSelectedText oder sonst was nur in den IF's behandeln, weil KeyDown immer als erstes kommt
-            this.Debug("PreviewKeyDown");
+            Debug("PreviewKeyDown");
 
             if (e.Key == Key.Space) // handle the space
             {
                 e.Handled = true;
 
-                if (this.IgnoreSpace)
+                if (IgnoreSpace)
                 {
                     System.Media.SystemSounds.Beep.Play();
                     return;
                 }
 
-                this.TreatSelectedText();
+                TreatSelectedText();
 
-                var position = this.GetNextCharacterPosition(this.AssociatedObject.CaretIndex);
-                if (!this.Provider.InsertAt(" ", position))
+                var position = GetNextCharacterPosition(AssociatedObject.CaretIndex);
+                if (!Provider.InsertAt(" ", position))
                 {
                     System.Media.SystemSounds.Beep.Play();
                     return;
                 }
 
-                this.RefreshText(this.AssociatedObject.CaretIndex + 1);
+                RefreshText(AssociatedObject.CaretIndex + 1);
             }
 
             if (e.Key == Key.Back) // handle the back space
@@ -205,29 +205,29 @@ namespace Crystal.Themes.Behaviors
                 e.Handled = true;
 
                 // wenn etwas markiert war und der nutzer Backspace klickt soll nur das markierte verschwinden
-                if (this.TreatSelectedText())
+                if (TreatSelectedText())
                 {
-                    this.RefreshText(this.AssociatedObject.CaretIndex);
+                    RefreshText(AssociatedObject.CaretIndex);
                     return;
                 }
 
                 // wenn man ganz vorne steht gibs nix zu löschen, ausser wenn was selektiert war, s.h.oben
-                if (this.AssociatedObject.CaretIndex == 0)
+                if (AssociatedObject.CaretIndex == 0)
                 {
                     return;
                 }
 
-                var denDavor = this.AssociatedObject.CaretIndex - 1;
-                if (this.Provider.IsEditPosition(denDavor))
+                var denDavor = AssociatedObject.CaretIndex - 1;
+                if (Provider.IsEditPosition(denDavor))
                 {
-                    if (!this.Provider.RemoveAt(denDavor))
+                    if (!Provider.RemoveAt(denDavor))
                     {
                         System.Media.SystemSounds.Beep.Play();
                         return;
                     }
                 }
 
-                this.RefreshText(this.AssociatedObject.CaretIndex - 1);
+                RefreshText(AssociatedObject.CaretIndex - 1);
             }
 
             if (e.Key == Key.Delete) // handle the delete key
@@ -235,16 +235,16 @@ namespace Crystal.Themes.Behaviors
                 e.Handled = true;
 
                 // wenn etwas markiert war und der nutzer Delete klickt soll nur das markierte verschwinden
-                if (this.TreatSelectedText())
+                if (TreatSelectedText())
                 {
-                    this.RefreshText(this.AssociatedObject.CaretIndex);
+                    RefreshText(AssociatedObject.CaretIndex);
                     return;
                 }
 
-                var position = this.AssociatedObject.CaretIndex;
-                if (this.Provider.IsEditPosition(position))
+                var position = AssociatedObject.CaretIndex;
+                if (Provider.IsEditPosition(position))
                 {
-                    if (!this.Provider.RemoveAt(position))
+                    if (!Provider.RemoveAt(position))
                     {
                         System.Media.SystemSounds.Beep.Play();
                         return;
@@ -256,7 +256,7 @@ namespace Crystal.Themes.Behaviors
                     return;
                 }
 
-                this.RefreshText(this.AssociatedObject.CaretIndex);
+                RefreshText(AssociatedObject.CaretIndex);
             }
         }
 
@@ -265,7 +265,7 @@ namespace Crystal.Themes.Behaviors
         /// </summary>
         private void Pasting(object? sender, DataObjectPastingEventArgs e)
         {
-            if (this.Provider is null)
+            if (Provider is null)
             {
                 return;
             }
@@ -273,19 +273,19 @@ namespace Crystal.Themes.Behaviors
             // nur strg+c zulassen kein drag&drop
             if (e.DataObject.GetDataPresent(typeof(string)) && !e.IsDragDrop)
             {
-                var pastedText = this.HandleCharacterCasing((string)e.DataObject.GetData(typeof(string)));
+                var pastedText = HandleCharacterCasing((string)e.DataObject.GetData(typeof(string)));
 
-                this.TreatSelectedText();
+                TreatSelectedText();
 
-                var position = this.GetNextCharacterPosition(this.AssociatedObject.CaretIndex);
-                if (!this.Provider.InsertAt(pastedText, position))
+                var position = GetNextCharacterPosition(AssociatedObject.CaretIndex);
+                if (!Provider.InsertAt(pastedText, position))
                 {
                     System.Media.SystemSounds.Beep.Play();
                 }
                 else
                 {
-                    this.RefreshText(position);
-                    this.AssociatedObject.Focus();
+                    RefreshText(position);
+                    AssociatedObject.Focus();
                 }
             }
 
@@ -294,29 +294,29 @@ namespace Crystal.Themes.Behaviors
 
         private void UpdateText(object? sender, EventArgs eventArgs)
         {
-            if (this.Provider is null)
+            if (Provider is null)
             {
                 return;
             }
 
-            this.Debug("UpdateText");
+            Debug("UpdateText");
 
             // check Provider.Text + TextBox.Text
-            if (this.HandleCharacterCasing(this.Provider.ToDisplayString()).Equals(this.HandleCharacterCasing(this.AssociatedObject.Text), StringComparison.Ordinal))
+            if (HandleCharacterCasing(Provider.ToDisplayString()).Equals(HandleCharacterCasing(AssociatedObject.Text), StringComparison.Ordinal))
             {
                 return;
             }
 
             // use provider to format
-            var success = this.Provider.Set(this.HandleCharacterCasing(this.AssociatedObject.Text));
+            var success = Provider.Set(HandleCharacterCasing(AssociatedObject.Text));
 
             // ui and mvvm/codebehind should be in sync
-            this.SetText(success ? this.GetProviderText() : this.HandleCharacterCasing(this.AssociatedObject.Text));
+            SetText(success ? GetProviderText() : HandleCharacterCasing(AssociatedObject.Text));
         }
 
         private string HandleCharacterCasing(string text)
         {
-            switch (this.AssociatedObject.CharacterCasing)
+            switch (AssociatedObject.CharacterCasing)
             {
                 case CharacterCasing.Lower:
                     return text.ToLower();
@@ -332,10 +332,10 @@ namespace Crystal.Themes.Behaviors
         /// </summary>
         private bool TreatSelectedText()
         {
-            if (this.AssociatedObject.SelectionLength > 0
-                && this.Provider is not null)
+            if (AssociatedObject.SelectionLength > 0
+                && Provider is not null)
             {
-                this.Provider.RemoveAt(this.AssociatedObject.SelectionStart, this.AssociatedObject.SelectionStart + this.AssociatedObject.SelectionLength - 1);
+                Provider.RemoveAt(AssociatedObject.SelectionStart, AssociatedObject.SelectionStart + AssociatedObject.SelectionLength - 1);
                 return true;
             }
 
@@ -344,20 +344,20 @@ namespace Crystal.Themes.Behaviors
 
         private void RefreshText(int position)
         {
-            this.SetText(this.GetProviderText());
-            this.Debug("SetText");
-            this.AssociatedObject.CaretIndex = position;
+            SetText(GetProviderText());
+            Debug("SetText");
+            AssociatedObject.CaretIndex = position;
         }
 
         private void SetText(string? text)
         {
-            this.AssociatedObject.Text = string.IsNullOrWhiteSpace(text) ? string.Empty : text;
+            AssociatedObject.Text = string.IsNullOrWhiteSpace(text) ? string.Empty : text;
         }
 
         private int GetNextCharacterPosition(int caretIndex)
         {
-            var start = caretIndex + this.GetAnzahlIncludeLiterals(caretIndex);
-            var position = this.Provider!.FindEditPositionFrom(start, true);
+            var start = caretIndex + GetAnzahlIncludeLiterals(caretIndex);
+            var position = Provider!.FindEditPositionFrom(start, true);
 
             if (position == -1)
             {
@@ -371,16 +371,16 @@ namespace Crystal.Themes.Behaviors
 
         private string? GetProviderText()
         {
-            if (this.Provider is null)
+            if (Provider is null)
             {
                 return null;
             }
 
             // wenn noch gar kein Zeichen eingeben wurde, soll auch nix drin stehen
             // könnte man noch anpassen wenn man masken in der Oberfläche vllt doch haben will bei nem leeren feld
-            return this.Provider.AssignedEditPositionCount > 0
-                ? this.HandleCharacterCasing(this.Provider.ToDisplayString())
-                : this.HandleCharacterCasing(this.Provider.ToString(true, true));
+            return Provider.AssignedEditPositionCount > 0
+                ? HandleCharacterCasing(Provider.ToDisplayString())
+                : HandleCharacterCasing(Provider.ToString(true, true));
         }
 
         private int GetAnzahlIncludeLiterals(int index)
@@ -391,8 +391,8 @@ namespace Crystal.Themes.Behaviors
 
         private void Debug(string name)
         {
-            System.Diagnostics.Debug.WriteLine(name + ": TextBox : " + this.AssociatedObject.Text);
-            System.Diagnostics.Debug.WriteLine(name + ": Provider: " + this.Provider?.ToDisplayString());
+            System.Diagnostics.Debug.WriteLine(name + ": TextBox : " + AssociatedObject.Text);
+            System.Diagnostics.Debug.WriteLine(name + ": Provider: " + Provider?.ToDisplayString());
         }
     }
 }

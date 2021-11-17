@@ -66,33 +66,33 @@ namespace Crystal.Themes.Theming
         public ThemeManager()
         {
             {
-                this.libraryThemeProvidersInternal = new ObservableCollection<LibraryThemeProvider>();
-                this.LibraryThemeProviders = new ReadOnlyObservableCollection<LibraryThemeProvider>(this.libraryThemeProvidersInternal);
+                libraryThemeProvidersInternal = new ObservableCollection<LibraryThemeProvider>();
+                LibraryThemeProviders = new ReadOnlyObservableCollection<LibraryThemeProvider>(libraryThemeProvidersInternal);
             }
 
             {
-                this.themesInternal = new ObservableCollection<Theme>();
-                this.themes = new ReadOnlyObservableCollection<Theme>(this.themesInternal);
+                themesInternal = new ObservableCollection<Theme>();
+                themes = new ReadOnlyObservableCollection<Theme>(themesInternal);
 
-                var collectionView = CollectionViewSource.GetDefaultView(this.themes);
+                var collectionView = CollectionViewSource.GetDefaultView(themes);
                 collectionView.SortDescriptions.Add(new SortDescription(nameof(Theme.DisplayName), ListSortDirection.Ascending));
 
-                this.themesInternal.CollectionChanged += this.ThemesInternalCollectionChanged;
+                themesInternal.CollectionChanged += ThemesInternalCollectionChanged;
             }
 
             {
-                this.baseColorsInternal = new ObservableCollection<string>();
-                this.baseColors = new ReadOnlyObservableCollection<string>(this.baseColorsInternal);
+                baseColorsInternal = new ObservableCollection<string>();
+                baseColors = new ReadOnlyObservableCollection<string>(baseColorsInternal);
 
-                var collectionView = CollectionViewSource.GetDefaultView(this.baseColors);
+                var collectionView = CollectionViewSource.GetDefaultView(baseColors);
                 collectionView.SortDescriptions.Add(new SortDescription(string.Empty, ListSortDirection.Ascending));
             }
 
             {
-                this.colorSchemesInternal = new ObservableCollection<string>();
-                this.colorSchemes = new ReadOnlyObservableCollection<string>(this.colorSchemesInternal);
+                colorSchemesInternal = new ObservableCollection<string>();
+                colorSchemes = new ReadOnlyObservableCollection<string>(colorSchemesInternal);
 
-                var collectionView = CollectionViewSource.GetDefaultView(this.colorSchemes);
+                var collectionView = CollectionViewSource.GetDefaultView(colorSchemes);
                 collectionView.SortDescriptions.Add(new SortDescription(string.Empty, ListSortDirection.Ascending));
             }
         }
@@ -109,9 +109,9 @@ namespace Crystal.Themes.Theming
         {
             get
             {
-                this.EnsureThemes();
+                EnsureThemes();
 
-                return this.themes;
+                return themes;
             }
         }
 
@@ -122,9 +122,9 @@ namespace Crystal.Themes.Theming
         {
             get
             {
-                this.EnsureThemes();
+                EnsureThemes();
 
-                return this.baseColors;
+                return baseColors;
             }
         }
 
@@ -135,29 +135,29 @@ namespace Crystal.Themes.Theming
         {
             get
             {
-                this.EnsureThemes();
+                EnsureThemes();
 
-                return this.colorSchemes;
+                return colorSchemes;
             }
         }
 
         private void EnsureThemes()
         {
-            if (this.themes.Count > 0
-                || this.isEnsuringThemesOrRegisteringProvider)
+            if (themes.Count > 0
+                || isEnsuringThemesOrRegisteringProvider)
             {
                 return;
             }
 
             try
             {
-                this.isEnsuringThemesOrRegisteringProvider = true;
+                isEnsuringThemesOrRegisteringProvider = true;
 
-                foreach (var libraryThemeProvider in this.libraryThemeProvidersInternal)
+                foreach (var libraryThemeProvider in libraryThemeProvidersInternal)
                 {
                     foreach (var libraryTheme in libraryThemeProvider.GetLibraryThemes())
                     {
-                        this.AddLibraryTheme(libraryTheme);
+                        AddLibraryTheme(libraryTheme);
                     }
                 }
             }
@@ -167,7 +167,7 @@ namespace Crystal.Themes.Theming
             }
             finally
             {
-                this.isEnsuringThemesOrRegisteringProvider = false;
+                isEnsuringThemesOrRegisteringProvider = false;
             }
         }
 
@@ -178,25 +178,25 @@ namespace Crystal.Themes.Theming
                 throw new ArgumentNullException(nameof(libraryThemeProvider));
             }
 
-            if (this.libraryThemeProvidersInternal.Any(x => x.GetType() == libraryThemeProvider.GetType()))
+            if (libraryThemeProvidersInternal.Any(x => x.GetType() == libraryThemeProvider.GetType()))
             {
                 return;
             }
 
-            this.libraryThemeProvidersInternal.Add(libraryThemeProvider);
+            libraryThemeProvidersInternal.Add(libraryThemeProvider);
 
             try
             {
-                this.isEnsuringThemesOrRegisteringProvider = true;
+                isEnsuringThemesOrRegisteringProvider = true;
 
                 foreach (var libraryTheme in libraryThemeProvider.GetLibraryThemes())
                 {
-                    this.AddLibraryTheme(libraryTheme);
+                    AddLibraryTheme(libraryTheme);
                 }
             }
             finally
             {
-                this.isEnsuringThemesOrRegisteringProvider = false;
+                isEnsuringThemesOrRegisteringProvider = false;
             }
         }
 
@@ -213,14 +213,14 @@ namespace Crystal.Themes.Theming
                     {
                         foreach (var newItem in e.NewItems.OfType<Theme>())
                         {
-                            if (this.baseColorsInternal.Contains(newItem.BaseColorScheme) == false)
+                            if (baseColorsInternal.Contains(newItem.BaseColorScheme) == false)
                             {
-                                this.baseColorsInternal.Add(newItem.BaseColorScheme);
+                                baseColorsInternal.Add(newItem.BaseColorScheme);
                             }
 
-                            if (this.colorSchemesInternal.Contains(newItem.ColorScheme) == false)
+                            if (colorSchemesInternal.Contains(newItem.ColorScheme) == false)
                             {
-                                this.colorSchemesInternal.Add(newItem.ColorScheme);
+                                colorSchemesInternal.Add(newItem.ColorScheme);
                             }
                         }
                     }
@@ -232,14 +232,14 @@ namespace Crystal.Themes.Theming
                     {
                         foreach (var oldItem in e.OldItems.OfType<Theme>())
                         {
-                            if (this.themesInternal.Any(x => x.BaseColorScheme == oldItem.BaseColorScheme) == false)
+                            if (themesInternal.Any(x => x.BaseColorScheme == oldItem.BaseColorScheme) == false)
                             {
-                                this.baseColorsInternal.Remove(oldItem.BaseColorScheme);
+                                baseColorsInternal.Remove(oldItem.BaseColorScheme);
                             }
 
-                            if (this.themesInternal.Any(x => x.ColorScheme == oldItem.ColorScheme) == false)
+                            if (themesInternal.Any(x => x.ColorScheme == oldItem.ColorScheme) == false)
                             {
-                                this.baseColorsInternal.Remove(oldItem.ColorScheme);
+                                baseColorsInternal.Remove(oldItem.ColorScheme);
                             }
                         }
                     }
@@ -247,17 +247,17 @@ namespace Crystal.Themes.Theming
                     break;
 
                 case NotifyCollectionChangedAction.Reset:
-                    this.baseColorsInternal.Clear();
-                    this.colorSchemesInternal.Clear();
+                    baseColorsInternal.Clear();
+                    colorSchemesInternal.Clear();
 
-                    foreach (var theme in this.themesInternal.GroupBy(x => x.BaseColorScheme).Select(x => x.First()))
+                    foreach (var theme in themesInternal.GroupBy(x => x.BaseColorScheme).Select(x => x.First()))
                     {
-                        this.baseColorsInternal.Add(theme.BaseColorScheme);
+                        baseColorsInternal.Add(theme.BaseColorScheme);
                     }
 
-                    foreach (var theme in this.themesInternal.GroupBy(x => x.ColorScheme).Select(x => x.First()))
+                    foreach (var theme in themesInternal.GroupBy(x => x.ColorScheme).Select(x => x.First()))
                     {
-                        this.colorSchemesInternal.Add(theme.ColorScheme);
+                        colorSchemesInternal.Add(theme.ColorScheme);
                     }
 
                     break;
@@ -269,12 +269,12 @@ namespace Crystal.Themes.Theming
         /// </summary>
         public void ClearThemes()
         {
-            this.themesInternal.Clear();
+            themesInternal.Clear();
         }
 
         public Theme AddLibraryTheme(LibraryTheme libraryTheme)
         {
-            var theme = this.GetTheme(libraryTheme.Name, libraryTheme.IsHighContrast);
+            var theme = GetTheme(libraryTheme.Name, libraryTheme.IsHighContrast);
             if (theme is not null)
             {
                 theme.AddLibraryTheme(libraryTheme);
@@ -283,19 +283,19 @@ namespace Crystal.Themes.Theming
 
             theme = new Theme(libraryTheme);
 
-            this.themesInternal.Add(theme);
+            themesInternal.Add(theme);
             return theme;
         }
 
         public Theme AddTheme(Theme theme)
         {
-            var existingTheme = this.GetTheme(theme.Name, theme.IsHighContrast);
+            var existingTheme = GetTheme(theme.Name, theme.IsHighContrast);
             if (existingTheme is not null)
             {
                 return existingTheme;
             }
 
-            this.themesInternal.Add(theme);
+            themesInternal.Add(theme);
             return theme;
         }
 
@@ -310,7 +310,7 @@ namespace Crystal.Themes.Theming
                 throw new ArgumentNullException(nameof(name));
             }
 
-            return this.Themes.FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase) && x.IsHighContrast == highContrast);
+            return Themes.FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase) && x.IsHighContrast == highContrast);
         }
 
         /// <summary>
@@ -329,13 +329,13 @@ namespace Crystal.Themes.Theming
                 throw new ArgumentNullException(nameof(colorScheme));
             }
 
-            var theme = this.Themes.FirstOrDefault(x => x.BaseColorScheme == baseColorScheme && x.ColorScheme == colorScheme && x.IsHighContrast == highContrast);
+            var theme = Themes.FirstOrDefault(x => x.BaseColorScheme == baseColorScheme && x.ColorScheme == colorScheme && x.IsHighContrast == highContrast);
 
             if (theme is null
                 && highContrast)
             {
-                theme = this.Themes.FirstOrDefault(x => x.BaseColorScheme == baseColorScheme && x.ColorScheme == "Generic" && x.IsHighContrast == highContrast)
-                        ?? this.Themes.FirstOrDefault(x => x.BaseColorScheme == baseColorScheme && x.IsHighContrast == highContrast);
+                theme = Themes.FirstOrDefault(x => x.BaseColorScheme == baseColorScheme && x.ColorScheme == "Generic" && x.IsHighContrast == highContrast)
+                        ?? Themes.FirstOrDefault(x => x.BaseColorScheme == baseColorScheme && x.IsHighContrast == highContrast);
             }
 
             return theme;
@@ -360,14 +360,14 @@ namespace Crystal.Themes.Theming
                 return themeInstance;
             }
 
-            var builtInTheme = this.Themes.FirstOrDefault(x => x.Name == Theme.GetThemeName(resourceDictionary));
+            var builtInTheme = Themes.FirstOrDefault(x => x.Name == Theme.GetThemeName(resourceDictionary));
             if (builtInTheme is not null)
             {
                 return builtInTheme;
             }
 
             // support dynamically created runtime resource dictionaries
-            if (this.IsRuntimeGeneratedThemeDictionary(resourceDictionary))
+            if (IsRuntimeGeneratedThemeDictionary(resourceDictionary))
             {
                 foreach (var resourceDictionaryKey in resourceDictionary.Keys)
                 {
@@ -429,10 +429,10 @@ namespace Crystal.Themes.Theming
                 switch (theme.BaseColorScheme)
                 {
                     case BaseColorDarkConst:
-                        return this.GetTheme(BaseColorLight, theme.ColorScheme, theme.IsHighContrast);
+                        return GetTheme(BaseColorLight, theme.ColorScheme, theme.IsHighContrast);
 
                     case BaseColorLightConst:
-                        return this.GetTheme(BaseColorDark, theme.ColorScheme, theme.IsHighContrast);
+                        return GetTheme(BaseColorDark, theme.ColorScheme, theme.IsHighContrast);
                 }
             }
 
@@ -481,14 +481,14 @@ namespace Crystal.Themes.Theming
                 throw new ArgumentNullException(nameof(themeName));
             }
 
-            var theme = this.GetTheme(themeName, highContrast);
+            var theme = GetTheme(themeName, highContrast);
 
             if (theme is null)
             {
                 throw new ArgumentException($"Could not find a theme matching \"{themeName}\" and high contrast = \"{highContrast}\".");
             }
 
-            return this.ChangeTheme(app, app.Resources, theme);
+            return ChangeTheme(app, app.Resources, theme);
         }
 
         /// <summary>
@@ -507,14 +507,14 @@ namespace Crystal.Themes.Theming
                 throw new ArgumentNullException(nameof(themeName));
             }
 
-            var theme = this.GetTheme(themeName, highContrast);
+            var theme = GetTheme(themeName, highContrast);
 
             if (theme is null)
             {
                 throw new ArgumentException($"Could not find a theme matching \"{themeName}\" and high contrast = \"{highContrast}\".");
             }
 
-            return this.ChangeTheme(frameworkElement, theme);
+            return ChangeTheme(frameworkElement, theme);
         }
 
         /// <summary>
@@ -535,7 +535,7 @@ namespace Crystal.Themes.Theming
                 throw new ArgumentNullException(nameof(newTheme));
             }
 
-            return this.ChangeTheme(app, app.Resources, newTheme);
+            return ChangeTheme(app, app.Resources, newTheme);
         }
 
         /// <summary>
@@ -556,8 +556,8 @@ namespace Crystal.Themes.Theming
                 throw new ArgumentNullException(nameof(newTheme));
             }
 
-            var oldTheme = this.DetectTheme(frameworkElement);
-            return this.ChangeTheme(frameworkElement, frameworkElement.Resources, oldTheme, newTheme);
+            var oldTheme = DetectTheme(frameworkElement);
+            return ChangeTheme(frameworkElement, frameworkElement.Resources, oldTheme, newTheme);
         }
 
         /// <summary>
@@ -579,8 +579,8 @@ namespace Crystal.Themes.Theming
                 throw new ArgumentNullException(nameof(newTheme));
             }
 
-            var oldTheme = this.DetectTheme(resourceDictionary);
-            return this.ChangeTheme(target, resourceDictionary, oldTheme, newTheme);
+            var oldTheme = DetectTheme(resourceDictionary);
+            return ChangeTheme(target, resourceDictionary, oldTheme, newTheme);
         }
 
         [SecurityCritical]
@@ -654,7 +654,7 @@ namespace Crystal.Themes.Theming
 
             if (themeChanged)
             {
-                this.OnThemeChanged(target, resourceDictionary, oldTheme, newTheme);
+                OnThemeChanged(target, resourceDictionary, oldTheme, newTheme);
             }
 
             return newTheme;
@@ -684,14 +684,14 @@ namespace Crystal.Themes.Theming
                 throw new ArgumentNullException(nameof(colorScheme));
             }
 
-            var currentTheme = this.DetectTheme(app);
+            var currentTheme = DetectTheme(app);
 
             if (currentTheme is null)
             {
                 return null;
             }
 
-            return this.ChangeTheme(app, app.Resources, currentTheme, baseColorScheme, colorScheme);
+            return ChangeTheme(app, app.Resources, currentTheme, baseColorScheme, colorScheme);
         }
 
         /// <summary>
@@ -718,14 +718,14 @@ namespace Crystal.Themes.Theming
                 throw new ArgumentNullException(nameof(colorScheme));
             }
 
-            var currentTheme = this.DetectTheme(frameworkElement);
+            var currentTheme = DetectTheme(frameworkElement);
 
             if (currentTheme is null)
             {
                 return null;
             }
 
-            return this.ChangeTheme(frameworkElement, frameworkElement.Resources, currentTheme, baseColorScheme, colorScheme);
+            return ChangeTheme(frameworkElement, frameworkElement.Resources, currentTheme, baseColorScheme, colorScheme);
         }
 
         /// <summary>
@@ -754,7 +754,7 @@ namespace Crystal.Themes.Theming
                 throw new ArgumentNullException(nameof(colorScheme));
             }
 
-            var newTheme = this.GetTheme(baseColorScheme, colorScheme, oldTheme.IsHighContrast);
+            var newTheme = GetTheme(baseColorScheme, colorScheme, oldTheme.IsHighContrast);
 
             if (newTheme is null)
             {
@@ -762,7 +762,7 @@ namespace Crystal.Themes.Theming
                 return null;
             }
 
-            return this.ChangeTheme(target, resourceDictionary, oldTheme, newTheme);
+            return ChangeTheme(target, resourceDictionary, oldTheme, newTheme);
         }
 
         /// <summary>
@@ -783,14 +783,14 @@ namespace Crystal.Themes.Theming
                 throw new ArgumentNullException(nameof(baseColorScheme));
             }
 
-            var currentTheme = this.DetectTheme(app);
+            var currentTheme = DetectTheme(app);
 
             if (currentTheme is null)
             {
                 return null;
             }
 
-            return this.ChangeThemeBaseColor(app, app.Resources, currentTheme, baseColorScheme);
+            return ChangeThemeBaseColor(app, app.Resources, currentTheme, baseColorScheme);
         }
 
         /// <summary>
@@ -811,14 +811,14 @@ namespace Crystal.Themes.Theming
                 throw new ArgumentNullException(nameof(baseColorScheme));
             }
 
-            var currentTheme = this.DetectTheme(frameworkElement);
+            var currentTheme = DetectTheme(frameworkElement);
 
             if (currentTheme is null)
             {
                 return null;
             }
 
-            return this.ChangeThemeBaseColor(frameworkElement, frameworkElement.Resources, currentTheme, baseColorScheme);
+            return ChangeThemeBaseColor(frameworkElement, frameworkElement.Resources, currentTheme, baseColorScheme);
         }
 
         /// <summary>
@@ -841,14 +841,14 @@ namespace Crystal.Themes.Theming
                 throw new ArgumentNullException(nameof(baseColorScheme));
             }
 
-            var currentTheme = oldTheme ?? this.DetectTheme(resourceDictionary);
+            var currentTheme = oldTheme ?? DetectTheme(resourceDictionary);
 
             if (currentTheme is null)
             {
                 return null;
             }
 
-            var newTheme = this.ChangeTheme(target, resourceDictionary, currentTheme, baseColorScheme, currentTheme.ColorScheme);
+            var newTheme = ChangeTheme(target, resourceDictionary, currentTheme, baseColorScheme, currentTheme.ColorScheme);
 
             if (newTheme is null
                 && currentTheme.IsRuntimeGenerated)
@@ -857,7 +857,7 @@ namespace Crystal.Themes.Theming
 
                 if (runtimeTheme is not null)
                 {
-                    newTheme = this.ChangeTheme(target, resourceDictionary, currentTheme, runtimeTheme);
+                    newTheme = ChangeTheme(target, resourceDictionary, currentTheme, runtimeTheme);
                 }
             }
 
@@ -882,14 +882,14 @@ namespace Crystal.Themes.Theming
                 throw new ArgumentNullException(nameof(colorScheme));
             }
 
-            var currentTheme = this.DetectTheme(app);
+            var currentTheme = DetectTheme(app);
 
             if (currentTheme is null)
             {
                 return null;
             }
 
-            return this.ChangeThemeColorScheme(app, app.Resources, currentTheme, colorScheme);
+            return ChangeThemeColorScheme(app, app.Resources, currentTheme, colorScheme);
         }
 
         /// <summary>
@@ -910,14 +910,14 @@ namespace Crystal.Themes.Theming
                 throw new ArgumentNullException(nameof(colorScheme));
             }
 
-            var currentTheme = this.DetectTheme(frameworkElement);
+            var currentTheme = DetectTheme(frameworkElement);
 
             if (currentTheme is null)
             {
                 return null;
             }
 
-            return this.ChangeThemeColorScheme(frameworkElement, frameworkElement.Resources, currentTheme, colorScheme);
+            return ChangeThemeColorScheme(frameworkElement, frameworkElement.Resources, currentTheme, colorScheme);
         }
 
         /// <summary>
@@ -940,14 +940,14 @@ namespace Crystal.Themes.Theming
                 throw new ArgumentNullException(nameof(colorScheme));
             }
 
-            var currentTheme = oldTheme ?? this.DetectTheme(resourceDictionary);
+            var currentTheme = oldTheme ?? DetectTheme(resourceDictionary);
 
             if (currentTheme is null)
             {
                 return null;
             }
 
-            var newTheme = this.ChangeTheme(target, resourceDictionary, currentTheme, currentTheme.BaseColorScheme, colorScheme);
+            var newTheme = ChangeTheme(target, resourceDictionary, currentTheme, currentTheme.BaseColorScheme, colorScheme);
 
             if (newTheme is null
                 && currentTheme.IsRuntimeGenerated
@@ -957,7 +957,7 @@ namespace Crystal.Themes.Theming
 
                 if (runtimeTheme is not null)
                 {
-                    newTheme = this.ChangeTheme(target, resourceDictionary, currentTheme, runtimeTheme);
+                    newTheme = ChangeTheme(target, resourceDictionary, currentTheme, runtimeTheme);
                 }
             }
 
@@ -984,7 +984,7 @@ namespace Crystal.Themes.Theming
 
             newTheme.EnsureAllLibraryThemeProvidersProvided();
 
-            this.ApplyResourceDictionary(resourceDictionary, newTheme.Resources);
+            ApplyResourceDictionary(resourceDictionary, newTheme.Resources);
         }
 
         [SecurityCritical]
@@ -1003,7 +1003,7 @@ namespace Crystal.Themes.Theming
 
             oldRd.BeginInit();
 
-            this.ApplyResourceDictionaryEntries(oldRd, newRd);
+            ApplyResourceDictionaryEntries(oldRd, newRd);
 
             oldRd.EndInit();
         }
@@ -1012,7 +1012,7 @@ namespace Crystal.Themes.Theming
         {
             foreach (var newRdMergedDictionary in newRd.MergedDictionaries)
             {
-                this.ApplyResourceDictionaryEntries(oldRd, newRdMergedDictionary);
+                ApplyResourceDictionaryEntries(oldRd, newRdMergedDictionary);
             }
 
 #pragma warning disable CS8605
@@ -1039,14 +1039,14 @@ namespace Crystal.Themes.Theming
                 return null;
             }
 
-            var theme = this.DetectTheme(Application.Current);
+            var theme = DetectTheme(Application.Current);
 
             if (theme is null
                 && Application.Current.MainWindow is not null)
             {
                 try
                 {
-                    theme = this.DetectTheme(Application.Current.MainWindow);
+                    theme = DetectTheme(Application.Current.MainWindow);
 
                     if (theme is not null)
                     {
@@ -1073,7 +1073,7 @@ namespace Crystal.Themes.Theming
                 throw new ArgumentNullException(nameof(app));
             }
 
-            return this.DetectTheme(app.Resources);
+            return DetectTheme(app.Resources);
         }
 
         /// <summary>
@@ -1088,9 +1088,9 @@ namespace Crystal.Themes.Theming
                 throw new ArgumentNullException(nameof(frameworkElement));
             }
 
-            var detectedStyle = this.DetectTheme(frameworkElement.Resources)
+            var detectedStyle = DetectTheme(frameworkElement.Resources)
                                 ?? (Application.Current is not null
-                                    ? this.DetectTheme(Application.Current.Resources)
+                                    ? DetectTheme(Application.Current.Resources)
                                     : null);
 
             return detectedStyle;
@@ -1107,7 +1107,7 @@ namespace Crystal.Themes.Theming
                 throw new ArgumentNullException(nameof(resourceDictionary));
             }
 
-            if (this.DetectThemeFromResources(resourceDictionary, out var currentTheme))
+            if (DetectThemeFromResources(resourceDictionary, out var currentTheme))
             {
                 return currentTheme;
             }
@@ -1129,13 +1129,13 @@ namespace Crystal.Themes.Theming
                     }
 
                     Theme? matched;
-                    if ((matched = this.GetTheme(currentRd)) is not null)
+                    if ((matched = GetTheme(currentRd)) is not null)
                     {
                         detectedTheme = matched;
                         return true;
                     }
 
-                    if (this.DetectThemeFromResources(currentRd, out detectedTheme))
+                    if (DetectThemeFromResources(currentRd, out detectedTheme))
                     {
                         return true;
                     }
@@ -1159,19 +1159,19 @@ namespace Crystal.Themes.Theming
         [SecurityCritical]
         private void OnThemeChanged(object? target, ResourceDictionary targetResourceDictionary, Theme? oldTheme, Theme newTheme)
         {
-            this.ThemeChanged?.Invoke(this, new ThemeChangedEventArgs(target, targetResourceDictionary, oldTheme, newTheme));
+            ThemeChanged?.Invoke(this, new ThemeChangedEventArgs(target, targetResourceDictionary, oldTheme, newTheme));
         }
 
         public void SyncTheme()
         {
-            this.SyncTheme(this.ThemeSyncMode);
+            SyncTheme(ThemeSyncMode);
         }
 
         public void SyncTheme(ThemeSyncMode? syncMode)
         {
             try
             {
-                var syncModeToUse = syncMode ?? this.themeSyncMode;
+                var syncModeToUse = syncMode ?? themeSyncMode;
 
                 if (syncModeToUse == ThemeSyncMode.DoNotSync)
                 {
@@ -1183,7 +1183,7 @@ namespace Crystal.Themes.Theming
                     return;
                 }
 
-                var detectedTheme = this.DetectTheme();
+                var detectedTheme = DetectTheme();
 
                 string? baseColor = null;
                 if (syncModeToUse.HasFlag(ThemeSyncMode.SyncWithAppMode))
@@ -1215,19 +1215,19 @@ namespace Crystal.Themes.Theming
                                      && WindowsThemeHelper.IsHighContrastEnabled();
 
                 // Check if we previously generated a theme matching the desired settings
-                var theme = this.GetTheme(baseColor, accentColor, isHighContrast)
-                            ?? RuntimeThemeGenerator.Current.GenerateRuntimeThemeFromWindowsSettings(baseColor, isHighContrast, this.libraryThemeProvidersInternal);
+                var theme = GetTheme(baseColor, accentColor, isHighContrast)
+                            ?? RuntimeThemeGenerator.Current.GenerateRuntimeThemeFromWindowsSettings(baseColor, isHighContrast, libraryThemeProvidersInternal);
 
                 // Only change the theme if it's not the current already
                 if (theme is not null
                     && theme != detectedTheme)
                 {
-                    this.ChangeTheme(Application.Current, theme);
+                    ChangeTheme(Application.Current, theme);
                 }
             }
             finally
             {
-                this.isSyncScheduled = false;
+                isSyncScheduled = false;
             }
         }
 
@@ -1237,26 +1237,26 @@ namespace Crystal.Themes.Theming
 
         public ThemeSyncMode ThemeSyncMode
         {
-            get => this.themeSyncMode;
+            get => themeSyncMode;
 
             set
             {
-                if (value == this.themeSyncMode)
+                if (value == themeSyncMode)
                 {
                     return;
                 }
 
-                this.themeSyncMode = value;
+                themeSyncMode = value;
 
                 // Always remove handler first.
                 // That way we prevent double registrations.
-                SystemEvents.UserPreferenceChanged -= this.HandleUserPreferenceChanged;
-                SystemParameters.StaticPropertyChanged -= this.HandleStaticPropertyChanged;
+                SystemEvents.UserPreferenceChanged -= HandleUserPreferenceChanged;
+                SystemParameters.StaticPropertyChanged -= HandleStaticPropertyChanged;
 
-                if (this.themeSyncMode != ThemeSyncMode.DoNotSync)
+                if (themeSyncMode != ThemeSyncMode.DoNotSync)
                 {
-                    SystemEvents.UserPreferenceChanged += this.HandleUserPreferenceChanged;
-                    SystemParameters.StaticPropertyChanged += this.HandleStaticPropertyChanged;
+                    SystemEvents.UserPreferenceChanged += HandleUserPreferenceChanged;
+                    SystemParameters.StaticPropertyChanged += HandleStaticPropertyChanged;
                 }
             }
         }
@@ -1264,11 +1264,11 @@ namespace Crystal.Themes.Theming
         private void HandleUserPreferenceChanged(object sender, UserPreferenceChangedEventArgs e)
         {
             if (e.Category == UserPreferenceCategory.General
-                && this.isSyncScheduled == false)
+                && isSyncScheduled == false)
             {
-                this.isSyncScheduled = true;
+                isSyncScheduled = true;
 
-                Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => this.SyncTheme(this.ThemeSyncMode)));
+                Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => SyncTheme(ThemeSyncMode)));
             }
         }
 
@@ -1279,11 +1279,11 @@ namespace Crystal.Themes.Theming
 #endif
         {
             if (e.PropertyName == nameof(SystemParameters.HighContrast)
-                && this.isSyncScheduled == false)
+                && isSyncScheduled == false)
             {
-                this.isSyncScheduled = true;
+                isSyncScheduled = true;
 
-                Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => this.SyncTheme(this.ThemeSyncMode)));
+                Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => SyncTheme(ThemeSyncMode)));
             }
         }
 

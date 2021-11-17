@@ -67,38 +67,38 @@ namespace Crystal.Themes.Controls
 
         public GlowWindow(Window owner, GlowWindowBehavior behavior, GlowDirection direction)
         {
-            this.InitializeComponent();
+            InitializeComponent();
 
-            this.Title = $"GlowWindow_{direction}";
-            this.Name = this.Title;
+            Title = $"GlowWindow_{direction}";
+            Name = Title;
 
             // We have to set the owner to fix #92
-            this.Owner = owner ?? throw new ArgumentNullException(nameof(owner));
+            Owner = owner ?? throw new ArgumentNullException(nameof(owner));
             this.owner = owner;
 
-            this.IsGlowing = true;
-            this.Closing += (sender, e) => e.Cancel = !this.closing;
+            IsGlowing = true;
+            Closing += (sender, e) => e.Cancel = !closing;
 
-            this.glow.Direction = direction;
+            glow.Direction = direction;
 
             {
                 var b = new Binding
                 {
-                    Path = new PropertyPath(nameof(this.ActualWidth)),
+                    Path = new PropertyPath(nameof(ActualWidth)),
                     Source = this,
                     Mode = BindingMode.OneWay
                 };
-                this.glow.SetBinding(WidthProperty, b);
+                glow.SetBinding(WidthProperty, b);
             }
 
             {
                 var b = new Binding
                 {
-                    Path = new PropertyPath(nameof(this.ActualHeight)),
+                    Path = new PropertyPath(nameof(ActualHeight)),
                     Source = this,
                     Mode = BindingMode.OneWay
                 };
-                this.glow.SetBinding(HeightProperty, b);
+                glow.SetBinding(HeightProperty, b);
             }
 
             {
@@ -108,7 +108,7 @@ namespace Crystal.Themes.Controls
                     Source = behavior,
                     Mode = BindingMode.OneWay
                 };
-                this.glow.SetBinding(Glow.GlowBrushProperty, b);
+                glow.SetBinding(Glow.GlowBrushProperty, b);
             }
 
             {
@@ -118,7 +118,7 @@ namespace Crystal.Themes.Controls
                     Source = behavior,
                     Mode = BindingMode.OneWay
                 };
-                this.glow.SetBinding(Glow.NonActiveGlowBrushProperty, b);
+                glow.SetBinding(Glow.NonActiveGlowBrushProperty, b);
             }
 
             {
@@ -128,7 +128,7 @@ namespace Crystal.Themes.Controls
                     Source = owner,
                     Mode = BindingMode.OneWay
                 };
-                this.glow.SetBinding(BorderThicknessProperty, b);
+                glow.SetBinding(BorderThicknessProperty, b);
             }
 
             {
@@ -137,59 +137,59 @@ namespace Crystal.Themes.Controls
                     Path = new PropertyPath(GlowWindowBehavior.ResizeBorderThicknessProperty),
                     Source = behavior
                 };
-                this.SetBinding(ResizeBorderThicknessProperty, b);
+                SetBinding(ResizeBorderThicknessProperty, b);
             }
 
             switch (direction)
             {
                 case GlowDirection.Left:
-                    this.glow.HorizontalAlignment = HorizontalAlignment.Right;
-                    this.getLeft = rect => rect.Left - this.ResizeBorderThickness.Left + 1;
-                    this.getTop = rect => rect.Top - (this.ResizeBorderThickness.Top / 2);
-                    this.getWidth = rect => this.ResizeBorderThickness.Left;
-                    this.getHeight = rect => rect.Height + this.ResizeBorderThickness.Top;
-                    this.getHitTestValue = (p, rect) => new Rect(0, 0, rect.Width, this.ResizeBorderThickness.Top * 2).Contains(p)
+                    glow.HorizontalAlignment = HorizontalAlignment.Right;
+                    getLeft = rect => rect.Left - ResizeBorderThickness.Left + 1;
+                    getTop = rect => rect.Top - (ResizeBorderThickness.Top / 2);
+                    getWidth = rect => ResizeBorderThickness.Left;
+                    getHeight = rect => rect.Height + ResizeBorderThickness.Top;
+                    getHitTestValue = (p, rect) => new Rect(0, 0, rect.Width, ResizeBorderThickness.Top * 2).Contains(p)
                         ? HT.TOPLEFT
-                        : new Rect(0, rect.Height - this.ResizeBorderThickness.Bottom, rect.Width, this.ResizeBorderThickness.Bottom * 2).Contains(p)
+                        : new Rect(0, rect.Height - ResizeBorderThickness.Bottom, rect.Width, ResizeBorderThickness.Bottom * 2).Contains(p)
                             ? HT.BOTTOMLEFT
                             : HT.LEFT;
                     break;
 
                 case GlowDirection.Right:
-                    this.glow.HorizontalAlignment = HorizontalAlignment.Left;
-                    this.getLeft = rect => rect.Right - 1;
-                    this.getTop = rect => rect.Top - (this.ResizeBorderThickness.Top / 2);
-                    this.getWidth = rect => this.ResizeBorderThickness.Right;
-                    this.getHeight = rect => rect.Height + this.ResizeBorderThickness.Top;
-                    this.getHitTestValue = (p, rect) => new Rect(0, 0, rect.Width, this.ResizeBorderThickness.Top * 2).Contains(p)
+                    glow.HorizontalAlignment = HorizontalAlignment.Left;
+                    getLeft = rect => rect.Right - 1;
+                    getTop = rect => rect.Top - (ResizeBorderThickness.Top / 2);
+                    getWidth = rect => ResizeBorderThickness.Right;
+                    getHeight = rect => rect.Height + ResizeBorderThickness.Top;
+                    getHitTestValue = (p, rect) => new Rect(0, 0, rect.Width, ResizeBorderThickness.Top * 2).Contains(p)
                         ? HT.TOPRIGHT
-                        : new Rect(0, rect.Height - this.ResizeBorderThickness.Bottom, rect.Width, this.ResizeBorderThickness.Bottom * 2).Contains(p)
+                        : new Rect(0, rect.Height - ResizeBorderThickness.Bottom, rect.Width, ResizeBorderThickness.Bottom * 2).Contains(p)
                             ? HT.BOTTOMRIGHT
                             : HT.RIGHT;
                     break;
 
                 case GlowDirection.Top:
-                    this.glow.VerticalAlignment = VerticalAlignment.Bottom;
-                    this.getLeft = rect => rect.Left - (this.ResizeBorderThickness.Left / 2);
-                    this.getTop = rect => rect.Top - this.ResizeBorderThickness.Top + 1;
-                    this.getWidth = rect => rect.Width + this.ResizeBorderThickness.Left;
-                    this.getHeight = rect => this.ResizeBorderThickness.Top;
-                    this.getHitTestValue = (p, rect) => new Rect(0, 0, this.ResizeBorderThickness.Left * 2, rect.Height).Contains(p)
+                    glow.VerticalAlignment = VerticalAlignment.Bottom;
+                    getLeft = rect => rect.Left - (ResizeBorderThickness.Left / 2);
+                    getTop = rect => rect.Top - ResizeBorderThickness.Top + 1;
+                    getWidth = rect => rect.Width + ResizeBorderThickness.Left;
+                    getHeight = rect => ResizeBorderThickness.Top;
+                    getHitTestValue = (p, rect) => new Rect(0, 0, ResizeBorderThickness.Left * 2, rect.Height).Contains(p)
                         ? HT.TOPLEFT
-                        : new Rect(rect.Width - this.ResizeBorderThickness.Right, 0, this.ResizeBorderThickness.Right * 2, rect.Height).Contains(p)
+                        : new Rect(rect.Width - ResizeBorderThickness.Right, 0, ResizeBorderThickness.Right * 2, rect.Height).Contains(p)
                             ? HT.TOPRIGHT
                             : HT.TOP;
                     break;
 
                 case GlowDirection.Bottom:
-                    this.glow.VerticalAlignment = VerticalAlignment.Top;
-                    this.getLeft = rect => rect.Left - (this.ResizeBorderThickness.Left / 2);
-                    this.getTop = rect => rect.Bottom - 1;
-                    this.getWidth = rect => rect.Width + this.ResizeBorderThickness.Left;
-                    this.getHeight = rect => this.ResizeBorderThickness.Bottom;
-                    this.getHitTestValue = (p, rect) => new Rect(0, 0, this.ResizeBorderThickness.Left * 2, rect.Height).Contains(p)
+                    glow.VerticalAlignment = VerticalAlignment.Top;
+                    getLeft = rect => rect.Left - (ResizeBorderThickness.Left / 2);
+                    getTop = rect => rect.Bottom - 1;
+                    getWidth = rect => rect.Width + ResizeBorderThickness.Left;
+                    getHeight = rect => ResizeBorderThickness.Bottom;
+                    getHitTestValue = (p, rect) => new Rect(0, 0, ResizeBorderThickness.Left * 2, rect.Height).Contains(p)
                         ? HT.BOTTOMLEFT
-                        : new Rect(rect.Width - this.ResizeBorderThickness.Right, 0, this.ResizeBorderThickness.Right * 2, rect.Height).Contains(p)
+                        : new Rect(rect.Width - ResizeBorderThickness.Right, 0, ResizeBorderThickness.Right * 2, rect.Height).Contains(p)
                             ? HT.BOTTOMRIGHT
                             : HT.BOTTOM;
                     break;
@@ -198,10 +198,10 @@ namespace Crystal.Themes.Controls
                     throw new ArgumentOutOfRangeException(nameof(direction), direction, "Invalid direction.");
             }
 
-            owner.Activated += this.OnOwnerActivated;
-            owner.Deactivated += this.OnOwnerDeactivated;
-            owner.IsVisibleChanged += this.OnOwnerIsVisibleChanged;
-            owner.Closed += (sender, e) => this.InternalClose();
+            owner.Activated += OnOwnerActivated;
+            owner.Deactivated += OnOwnerDeactivated;
+            owner.IsVisibleChanged += OnOwnerIsVisibleChanged;
+            owner.Closed += (sender, e) => InternalClose();
         }
 
         public bool IsGlowing { get; set; }
@@ -212,8 +212,8 @@ namespace Crystal.Themes.Controls
 
         public Thickness ResizeBorderThickness
         {
-            get { return (Thickness)this.GetValue(ResizeBorderThicknessProperty); }
-            set { this.SetValue(ResizeBorderThicknessProperty, value); }
+            get { return (Thickness)GetValue(ResizeBorderThicknessProperty); }
+            set { SetValue(ResizeBorderThicknessProperty, value); }
         }
 
         private static void OnResizeBorderThicknessChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -241,33 +241,33 @@ namespace Crystal.Themes.Controls
         {
             base.OnApplyTemplate();
 
-            this.OpacityStoryboard = this.TryFindResource("Crystal.GlowWindow.OpacityStoryboard") as Storyboard;
+            OpacityStoryboard = TryFindResource("Crystal.GlowWindow.OpacityStoryboard") as Storyboard;
         }
 
         protected override void OnSourceInitialized(EventArgs e)
         {
             base.OnSourceInitialized(e);
 
-            this.hwndSource = (HwndSource)PresentationSource.FromVisual(this);
+            hwndSource = (HwndSource)PresentationSource.FromVisual(this);
 
-            if (this.hwndSource is null)
+            if (hwndSource is null)
             {
                 return;
             }
 
-            this.windowHandle = this.hwndSource.Handle;
-            var ownerWindowInteropHelper = new WindowInteropHelper(this.owner);
-            this.ownerWindowHandle = ownerWindowInteropHelper.Handle;
+            windowHandle = hwndSource.Handle;
+            var ownerWindowInteropHelper = new WindowInteropHelper(owner);
+            ownerWindowHandle = ownerWindowInteropHelper.Handle;
 
             // Set parent to the owner of our owner, that way glows on modeless windows shown with an owner work correctly.
             // We must do that only in case our owner has an owner.
             if (ownerWindowInteropHelper.Owner != IntPtr.Zero)
             {
-                NativeMethods.SetWindowLongPtr(this.windowHandle, GWL.HWNDPARENT, ownerWindowInteropHelper.Owner);
+                NativeMethods.SetWindowLongPtr(windowHandle, GWL.HWNDPARENT, ownerWindowInteropHelper.Owner);
             }
 
-            var ws = NativeMethods.GetWindowStyle(this.windowHandle);
-            var wsex = NativeMethods.GetWindowStyleEx(this.windowHandle);
+            var ws = NativeMethods.GetWindowStyle(windowHandle);
+            var wsex = NativeMethods.GetWindowStyleEx(windowHandle);
 
             ws &= ~WS.CAPTION; // We don't need a title bar
             ws &= ~WS.SYSMENU; // We don't need a system context menu
@@ -277,25 +277,25 @@ namespace Crystal.Themes.Controls
             wsex |= WS_EX.TOOLWINDOW; // We don't want our window to be visible on the taskbar
             wsex |= WS_EX.NOACTIVATE; // We don't want our this window to be activated
 
-            if (this.owner.ResizeMode == ResizeMode.NoResize || this.owner.ResizeMode == ResizeMode.CanMinimize)
+            if (owner.ResizeMode == ResizeMode.NoResize || owner.ResizeMode == ResizeMode.CanMinimize)
             {
                 wsex |= WS_EX.TRANSPARENT;
             }
 
-            NativeMethods.SetWindowStyle(this.windowHandle, ws);
-            NativeMethods.SetWindowStyleEx(this.windowHandle, wsex);
+            NativeMethods.SetWindowStyle(windowHandle, ws);
+            NativeMethods.SetWindowStyleEx(windowHandle, wsex);
 
-            this.hwndSource.AddHook(this.WndProc);
+            hwndSource.AddHook(WndProc);
 
-            this.resizeModeChangeNotifier = new PropertyChangeNotifier(this.owner, ResizeModeProperty);
-            this.resizeModeChangeNotifier.ValueChanged += this.ResizeModeChanged;
+            resizeModeChangeNotifier = new PropertyChangeNotifier(owner, ResizeModeProperty);
+            resizeModeChangeNotifier.ValueChanged += ResizeModeChanged;
         }
 
         private void ResizeModeChanged(object? sender, EventArgs e)
         {
-            var wsex = NativeMethods.GetWindowStyleEx(this.windowHandle);
+            var wsex = NativeMethods.GetWindowStyleEx(windowHandle);
 
-            if (this.owner.ResizeMode == ResizeMode.NoResize || this.owner.ResizeMode == ResizeMode.CanMinimize)
+            if (owner.ResizeMode == ResizeMode.NoResize || owner.ResizeMode == ResizeMode.CanMinimize)
             {
                 wsex |= WS_EX.TRANSPARENT;
             }
@@ -304,67 +304,67 @@ namespace Crystal.Themes.Controls
                 wsex &= ~WS_EX.TRANSPARENT;
             }
 
-            NativeMethods.SetWindowStyleEx(this.windowHandle, wsex);
+            NativeMethods.SetWindowStyleEx(windowHandle, wsex);
         }
 
         public void Update()
         {
-            if (this.CanUpdateCore() == false)
+            if (CanUpdateCore() == false)
             {
                 return;
             }
 
             RECT rect;
-            if (this.owner.Visibility == Visibility.Hidden)
+            if (owner.Visibility == Visibility.Hidden)
             {
-                this.InvokeIfCanUpdateCore(() =>
+                InvokeIfCanUpdateCore(() =>
                             {
-                                this.SetVisibilityIfPossible(Visibility.Collapsed);
+                                SetVisibilityIfPossible(Visibility.Collapsed);
                             });
 
-                if (this.IsGlowing
-                    && UnsafeNativeMethods.GetWindowRect(this.ownerWindowHandle, out rect))
+                if (IsGlowing
+                    && UnsafeNativeMethods.GetWindowRect(ownerWindowHandle, out rect))
                 {
-                    this.UpdateCore(rect);
+                    UpdateCore(rect);
                 }
             }
-            else if (this.owner.WindowState == WindowState.Normal)
+            else if (owner.WindowState == WindowState.Normal)
             {
-                var newVisibility = this.IsGlowing
+                var newVisibility = IsGlowing
                                         ? Visibility.Visible
                                         : Visibility.Collapsed;
 
-                this.InvokeIfCanUpdateCore(() =>
+                InvokeIfCanUpdateCore(() =>
                             {
-                                this.SetVisibilityIfPossible(newVisibility);
+                                SetVisibilityIfPossible(newVisibility);
                             });
 
-                if (this.IsGlowing
-                    && UnsafeNativeMethods.GetWindowRect(this.ownerWindowHandle, out rect))
+                if (IsGlowing
+                    && UnsafeNativeMethods.GetWindowRect(ownerWindowHandle, out rect))
                 {
-                    this.UpdateCore(rect);
+                    UpdateCore(rect);
                 }
             }
             else
             {
-                this.InvokeIfCanUpdateCore(() =>
+                InvokeIfCanUpdateCore(() =>
                             {
-                                this.SetVisibilityIfPossible(Visibility.Collapsed);
+                                SetVisibilityIfPossible(Visibility.Collapsed);
                             });
             }
         }
 
         private void SetVisibilityIfPossible(Visibility newVisibility)
         {
-            if (this.CanUpdateCore() == false)
+            if (CanUpdateCore() == false)
             {
                 return;
             }
 
             try
             {
-                this.glow.Visibility = newVisibility;
-                this.Visibility = newVisibility;
+                glow.Visibility = newVisibility;
+                Visibility = newVisibility;
             }
             catch (Exception e)
             {
@@ -377,31 +377,31 @@ namespace Crystal.Themes.Controls
 
         private bool IsWindowHandleValid()
         {
-            return WindowHelper.IsWindowHandleValid(this.windowHandle);
+            return WindowHelper.IsWindowHandleValid(windowHandle);
         }
 
         private bool IsOwnerHandleValid()
         {
-            return WindowHelper.IsWindowHandleValid(this.ownerWindowHandle);
+            return WindowHelper.IsWindowHandleValid(ownerWindowHandle);
         }
 
         internal bool CanUpdateCore()
         {
-            return this.closing == false
-                   && this.IsWindowHandleValid()
-                   && this.IsOwnerHandleValid();
+            return closing == false
+                   && IsWindowHandleValid()
+                   && IsOwnerHandleValid();
         }
 
         internal void UpdateCore(RECT rect)
         {
-            if (this.lastUpdateCoreRect.Equals(rect))
+            if (lastUpdateCoreRect.Equals(rect))
             {
                 return;
             }
 
-            this.lastUpdateCoreRect = rect;
+            lastUpdateCoreRect = rect;
 
-            if (this.CanUpdateCore() == false)
+            if (CanUpdateCore() == false)
             {
                 return;
             }
@@ -409,52 +409,52 @@ namespace Crystal.Themes.Controls
             // we can handle this._owner.WindowState == WindowState.Normal
             // or use NOZORDER too
             // todo: direct z-order
-            NativeMethods.SetWindowPos(this.windowHandle, this.ownerWindowHandle,
-                                       (int)this.getLeft(rect),
-                                       (int)this.getTop(rect),
-                                       (int)this.getWidth(rect),
-                                       (int)this.getHeight(rect),
+            NativeMethods.SetWindowPos(windowHandle, ownerWindowHandle,
+                                       (int)getLeft(rect),
+                                       (int)getTop(rect),
+                                       (int)getWidth(rect),
+                                       (int)getHeight(rect),
                                        SWP.NOACTIVATE | SWP.NOZORDER);
         }
 
         private void OnOwnerActivated(object? sender, EventArgs e)
         {
-            this.Update();
+            Update();
 
-            this.glow.IsGlow = true;
+            glow.IsGlow = true;
         }
 
         private void OnOwnerDeactivated(object? sender, EventArgs e)
         {
-            this.glow.IsGlow = false;
+            glow.IsGlow = false;
         }
 
         private void OnOwnerIsVisibleChanged(object? sender, DependencyPropertyChangedEventArgs e)
         {
-            this.Update();
+            Update();
         }
 
         internal void InternalClose()
         {
-            this.closing = true;
+            closing = true;
 
-            this.owner.Activated -= this.OnOwnerActivated;
-            this.owner.Deactivated -= this.OnOwnerDeactivated;
-            this.owner.IsVisibleChanged -= this.OnOwnerIsVisibleChanged;
+            owner.Activated -= OnOwnerActivated;
+            owner.Deactivated -= OnOwnerDeactivated;
+            owner.IsVisibleChanged -= OnOwnerIsVisibleChanged;
 
-            if (this.resizeModeChangeNotifier is not null)
+            if (resizeModeChangeNotifier is not null)
             {
-                this.resizeModeChangeNotifier.ValueChanged -= this.ResizeModeChanged;
-                this.resizeModeChangeNotifier.Dispose();
+                resizeModeChangeNotifier.ValueChanged -= ResizeModeChanged;
+                resizeModeChangeNotifier.Dispose();
             }
 
-            if (this.hwndSource is not null)
+            if (hwndSource is not null)
             {
-                this.hwndSource.RemoveHook(this.WndProc);
-                this.hwndSource.Dispose();
+                hwndSource.RemoveHook(WndProc);
+                hwndSource.Dispose();
             }
 
-            this.Close();
+            Close();
         }
 
         private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
@@ -462,15 +462,15 @@ namespace Crystal.Themes.Controls
             switch ((WM)msg)
             {
                 case WM.SHOWWINDOW:
-                    if ((int)lParam == 3 && this.Visibility != Visibility.Visible) // 3 == SW_PARENTOPENING
+                    if ((int)lParam == 3 && Visibility != Visibility.Visible) // 3 == SW_PARENTOPENING
                     {
                         handled = true; //handle this message so window isn't shown until we want it to       
                     }
-                    else if (this.CanUpdateCore())
+                    else if (CanUpdateCore())
                     {
                         // todo: direct z-order
                         // this fixes #58
-                        this.InvokeAsyncIfCanUpdateCore(DispatcherPriority.Send, FixWindowZOrder);
+                        InvokeAsyncIfCanUpdateCore(DispatcherPriority.Send, FixWindowZOrder);
                     }
 
                     break;
@@ -488,9 +488,9 @@ namespace Crystal.Themes.Controls
                 // But because we set the owner of the glow window we have to forward those messages to our owner.
                 case WM.NCACTIVATE:
                     handled = true;
-                    if (this.IsOwnerHandleValid())
+                    if (IsOwnerHandleValid())
                     {
-                        NativeMethods.SendMessage(this.ownerWindowHandle, WM.NCACTIVATE, wParam, lParam);
+                        NativeMethods.SendMessage(ownerWindowHandle, WM.NCACTIVATE, wParam, lParam);
                     }
 
                     // We have to return true according to https://docs.microsoft.com/en-us/windows/win32/winmsg/wm-ncactivate
@@ -503,9 +503,9 @@ namespace Crystal.Themes.Controls
 
                 case WM.MOUSEACTIVATE:
                     handled = true;
-                    if (this.IsOwnerHandleValid())
+                    if (IsOwnerHandleValid())
                     {
-                        NativeMethods.SendMessage(this.ownerWindowHandle, WM.ACTIVATE, wParam, lParam);
+                        NativeMethods.SendMessage(ownerWindowHandle, WM.ACTIVATE, wParam, lParam);
                     }
 
                     return new IntPtr(3) /* MA_NOACTIVATE */;
@@ -519,26 +519,26 @@ namespace Crystal.Themes.Controls
                 case WM.NCXBUTTONDOWN:
                 case WM.NCXBUTTONDBLCLK:
                     handled = true;
-                    if (this.IsOwnerHandleValid())
+                    if (IsOwnerHandleValid())
                     {
                         // WA_CLICKACTIVE = 2
-                        NativeMethods.SendMessage(this.ownerWindowHandle, WM.ACTIVATE, new IntPtr(2), IntPtr.Zero);
+                        NativeMethods.SendMessage(ownerWindowHandle, WM.ACTIVATE, new IntPtr(2), IntPtr.Zero);
                         // Forward message to owner
-                        NativeMethods.PostMessage(this.ownerWindowHandle, (WM)msg, wParam, IntPtr.Zero);
+                        NativeMethods.PostMessage(ownerWindowHandle, (WM)msg, wParam, IntPtr.Zero);
                     }
 
                     break;
 
                 case WM.NCHITTEST:
-                    if (this.owner.ResizeMode == ResizeMode.CanResize
-                        || this.owner.ResizeMode == ResizeMode.CanResizeWithGrip)
+                    if (owner.ResizeMode == ResizeMode.CanResize
+                        || owner.ResizeMode == ResizeMode.CanResizeWithGrip)
                     {
-                        if (this.IsOwnerHandleValid()
-                            && UnsafeNativeMethods.GetWindowRect(this.ownerWindowHandle, out var rect))
+                        if (IsOwnerHandleValid()
+                            && UnsafeNativeMethods.GetWindowRect(ownerWindowHandle, out var rect))
                         {
-                            if (NativeMethods.TryGetRelativeMousePosition(this.windowHandle, out var pt))
+                            if (NativeMethods.TryGetRelativeMousePosition(windowHandle, out var pt))
                             {
-                                var hitTestValue = this.getHitTestValue(pt, rect);
+                                var hitTestValue = getHitTestValue(pt, rect);
                                 handled = true;
                                 return new IntPtr((int)hitTestValue);
                             }
@@ -583,32 +583,32 @@ namespace Crystal.Themes.Controls
             // this fixes #58
             void FixWindowZOrder()
             {
-                NativeMethods.SetWindowPos(this.windowHandle, this.ownerWindowHandle, 0, 0, 0, 0, SWP.NOMOVE | SWP.NOSIZE | SWP.NOACTIVATE);
+                NativeMethods.SetWindowPos(windowHandle, ownerWindowHandle, 0, 0, 0, 0, SWP.NOMOVE | SWP.NOSIZE | SWP.NOACTIVATE);
             }
         }
 
         private void InvokeIfCanUpdateCore(Action invokeAction)
         {
-            if (this.CanUpdateCore() == false)
+            if (CanUpdateCore() == false)
             {
                 return;
             }
 
-            if (this.Dispatcher.CheckAccess())
+            if (Dispatcher.CheckAccess())
             {
                 invokeAction();
             }
             else
             {
-                this.Dispatcher.Invoke(invokeAction);
+                Dispatcher.Invoke(invokeAction);
             }
         }
 
         private void InvokeAsyncIfCanUpdateCore(DispatcherPriority dispatcherPriority, Action invokeAction)
         {
-            this.Dispatcher.BeginInvoke(dispatcherPriority, new Action(() =>
+            Dispatcher.BeginInvoke(dispatcherPriority, new Action(() =>
                                                                        {
-                                                                           if (this.CanUpdateCore())
+                                                                           if (CanUpdateCore())
                                                                            {
                                                                                invokeAction();
                                                                            }

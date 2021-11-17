@@ -57,26 +57,26 @@ namespace Crystal.Themes.Behaviors
                                              });
             }
 
-            this.messageTable = new List<HANDLE_MESSAGE>
+            messageTable = new List<HANDLE_MESSAGE>
                             {
-                                new HANDLE_MESSAGE(WM.NCUAHDRAWCAPTION,       this._HandleNCUAHDRAWCAPTION),
-                                new HANDLE_MESSAGE(WM.SETTEXT,                this._HandleSETICONOrSETTEXT),
-                                new HANDLE_MESSAGE(WM.SETICON,                this._HandleSETICONOrSETTEXT),
-                                new HANDLE_MESSAGE(WM.SYSCOMMAND,             this._HandleSYSCOMMAND),
-                                new HANDLE_MESSAGE(WM.NCACTIVATE,             this._HandleNCACTIVATE),
-                                new HANDLE_MESSAGE(WM.NCCALCSIZE,             this._HandleNCCALCSIZE),
-                                new HANDLE_MESSAGE(WM.NCHITTEST,              this._HandleNCHITTEST),
-                                new HANDLE_MESSAGE(WM.NCPAINT,                this._HandleNCPAINT),
-                                new HANDLE_MESSAGE(WM.NCRBUTTONUP,            this._HandleNCRBUTTONUP),
-                                new HANDLE_MESSAGE(WM.SIZE,                   this._HandleSIZE),
-                                new HANDLE_MESSAGE(WM.WINDOWPOSCHANGING,      this._HandleWINDOWPOSCHANGING),
-                                new HANDLE_MESSAGE(WM.WINDOWPOSCHANGED,       this._HandleWINDOWPOSCHANGED),
-                                new HANDLE_MESSAGE(WM.GETMINMAXINFO,          this._HandleGETMINMAXINFO),
-                                new HANDLE_MESSAGE(WM.DWMCOMPOSITIONCHANGED,  this._HandleDWMCOMPOSITIONCHANGED),
-                                new HANDLE_MESSAGE(WM.ENTERSIZEMOVE,          this._HandleENTERSIZEMOVEForAnimation),
-                                new HANDLE_MESSAGE(WM.EXITSIZEMOVE,           this._HandleEXITSIZEMOVEForAnimation),
-                                new HANDLE_MESSAGE(WM.MOVE,                   this._HandleMOVEForRealSize),
-                                new HANDLE_MESSAGE(WM.DPICHANGED,             this._HandleDPICHANGED)
+                                new HANDLE_MESSAGE(WM.NCUAHDRAWCAPTION,       _HandleNCUAHDRAWCAPTION),
+                                new HANDLE_MESSAGE(WM.SETTEXT,                _HandleSETICONOrSETTEXT),
+                                new HANDLE_MESSAGE(WM.SETICON,                _HandleSETICONOrSETTEXT),
+                                new HANDLE_MESSAGE(WM.SYSCOMMAND,             _HandleSYSCOMMAND),
+                                new HANDLE_MESSAGE(WM.NCACTIVATE,             _HandleNCACTIVATE),
+                                new HANDLE_MESSAGE(WM.NCCALCSIZE,             _HandleNCCALCSIZE),
+                                new HANDLE_MESSAGE(WM.NCHITTEST,              _HandleNCHITTEST),
+                                new HANDLE_MESSAGE(WM.NCPAINT,                _HandleNCPAINT),
+                                new HANDLE_MESSAGE(WM.NCRBUTTONUP,            _HandleNCRBUTTONUP),
+                                new HANDLE_MESSAGE(WM.SIZE,                   _HandleSIZE),
+                                new HANDLE_MESSAGE(WM.WINDOWPOSCHANGING,      _HandleWINDOWPOSCHANGING),
+                                new HANDLE_MESSAGE(WM.WINDOWPOSCHANGED,       _HandleWINDOWPOSCHANGED),
+                                new HANDLE_MESSAGE(WM.GETMINMAXINFO,          _HandleGETMINMAXINFO),
+                                new HANDLE_MESSAGE(WM.DWMCOMPOSITIONCHANGED,  _HandleDWMCOMPOSITIONCHANGED),
+                                new HANDLE_MESSAGE(WM.ENTERSIZEMOVE,          _HandleENTERSIZEMOVEForAnimation),
+                                new HANDLE_MESSAGE(WM.EXITSIZEMOVE,           _HandleEXITSIZEMOVEForAnimation),
+                                new HANDLE_MESSAGE(WM.MOVE,                   _HandleMOVEForRealSize),
+                                new HANDLE_MESSAGE(WM.DPICHANGED,             _HandleDPICHANGED)
                             };
         }
 
@@ -87,7 +87,7 @@ namespace Crystal.Themes.Behaviors
         [SecuritySafeCritical]
         private void _OnChromePropertyChangedThatRequiresRepaint()
         {
-            this._UpdateFrameState(true);
+            _UpdateFrameState(true);
         }
 
         /// <SecurityNote>
@@ -96,31 +96,31 @@ namespace Crystal.Themes.Behaviors
         [SecurityCritical]
         private void _ApplyNewCustomChrome()
         {
-            if (this.windowHandle == IntPtr.Zero
-                || this.hwndSource is null
-                || this.hwndSource.IsDisposed)
+            if (windowHandle == IntPtr.Zero
+                || hwndSource is null
+                || hwndSource.IsDisposed)
             {
                 // Not yet hooked.
                 return;
             }
 
             // Force this the first time.
-            this._UpdateSystemMenu(this.AssociatedObject.WindowState);
-            this.UpdateMinimizeSystemMenu(this.EnableMinimize);
-            this.UpdateMaxRestoreSystemMenu(this.EnableMaxRestore);
-            this._UpdateFrameState(true);
+            _UpdateSystemMenu(AssociatedObject.WindowState);
+            UpdateMinimizeSystemMenu(EnableMinimize);
+            UpdateMaxRestoreSystemMenu(EnableMaxRestore);
+            _UpdateFrameState(true);
 
-            if (this.hwndSource.IsDisposed)
+            if (hwndSource.IsDisposed)
             {
                 // If the window got closed very early
-                this.Cleanup(true);
+                Cleanup(true);
                 return;
             }
         }
 
         // A borderless window lost his animation, with this we bring it back.
         private bool MinimizeAnimation => SystemParameters.MinimizeAnimation
-                                          && this.IgnoreTaskbarOnMaximize == false
+                                          && IgnoreTaskbarOnMaximize == false
                                           && NativeMethods.DwmIsCompositionEnabled();
 
         #region WindowProc and Message Handlers
@@ -132,17 +132,17 @@ namespace Crystal.Themes.Behaviors
         private IntPtr WindowProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
             // Only expecting messages for our cached HWND.
-            Assert.AreEqual(hwnd, this.windowHandle);
+            Assert.AreEqual(hwnd, windowHandle);
 
             // Check if window has a RootVisual to workaround issue #13 (Win32Exception on closing window).
             // RootVisual gets cleared when the window is closing. This happens in CloseWindowFromWmClose of the Window class.
-            if (this.hwndSource?.RootVisual is null)
+            if (hwndSource?.RootVisual is null)
             {
                 return IntPtr.Zero;
             }
 
             var message = (WM)msg;
-            foreach (var handlePair in this.messageTable)
+            foreach (var handlePair in messageTable)
             {
                 if (handlePair.Key == message)
                 {
@@ -159,20 +159,20 @@ namespace Crystal.Themes.Behaviors
         [SecurityCritical]
         private IntPtr _HandleNCUAHDRAWCAPTION(WM uMsg, IntPtr wParam, IntPtr lParam, out bool handled)
         {
-            if (this.AssociatedObject.ShowInTaskbar == false
-                && this._GetHwndState() == WindowState.Minimized)
+            if (AssociatedObject.ShowInTaskbar == false
+                && _GetHwndState() == WindowState.Minimized)
             {
-                var modified = this._ModifyStyle(WS.VISIBLE, 0);
+                var modified = _ModifyStyle(WS.VISIBLE, 0);
 
                 // Minimize the window with ShowInTaskbar == false cause Windows to redraw the caption.
                 // Letting the default WndProc handle the message without the WS_VISIBLE
                 // style applied bypasses the redraw.
-                var lRet = NativeMethods.DefWindowProc(this.windowHandle, uMsg, wParam, lParam);
+                var lRet = NativeMethods.DefWindowProc(windowHandle, uMsg, wParam, lParam);
 
                 // Put back the style we removed.
                 if (modified)
                 {
-                    this._ModifyStyle(0, WS.VISIBLE);
+                    _ModifyStyle(0, WS.VISIBLE);
                 }
 
                 handled = true;
@@ -187,17 +187,17 @@ namespace Crystal.Themes.Behaviors
 
         private IntPtr _HandleSETICONOrSETTEXT(WM uMsg, IntPtr wParam, IntPtr lParam, out bool handled)
         {
-            var modified = this._ModifyStyle(WS.VISIBLE, 0);
+            var modified = _ModifyStyle(WS.VISIBLE, 0);
 
             // Setting the caption text and icon cause Windows to redraw the caption.
             // Letting the default WndProc handle the message without the WS_VISIBLE
             // style applied bypasses the redraw.
-            var lRet = NativeMethods.DefWindowProc(this.windowHandle, uMsg, wParam, lParam);
+            var lRet = NativeMethods.DefWindowProc(windowHandle, uMsg, wParam, lParam);
 
             // Put back the style we removed.
             if (modified)
             {
-                this._ModifyStyle(0, WS.VISIBLE);
+                _ModifyStyle(0, WS.VISIBLE);
             }
 
             handled = true;
@@ -210,22 +210,22 @@ namespace Crystal.Themes.Behaviors
         [SecurityCritical]
         private IntPtr _HandleSYSCOMMAND(WM uMsg, IntPtr wParam, IntPtr lParam, out bool handled)
         {
-            var wpl = NativeMethods.GetWindowPlacement(this.windowHandle);
+            var wpl = NativeMethods.GetWindowPlacement(windowHandle);
             var currentState = wpl.showCmd;
             var systemCommand = (SC)(Environment.Is64BitProcess ? wParam.ToInt64() : wParam.ToInt32());
 
-            if (this.MinimizeAnimation
+            if (MinimizeAnimation
                 && systemCommand == SC.RESTORE
                 && currentState == SW.SHOWMAXIMIZED)
             {
-                var modified = this._ModifyStyle(WS.SYSMENU, 0);
+                var modified = _ModifyStyle(WS.SYSMENU, 0);
 
-                var lRet = NativeMethods.DefWindowProc(this.windowHandle, uMsg, wParam, lParam);
+                var lRet = NativeMethods.DefWindowProc(windowHandle, uMsg, wParam, lParam);
 
                 // Put back the style we removed.
                 if (modified)
                 {
-                    this._ModifyStyle(0, WS.SYSMENU);
+                    _ModifyStyle(0, WS.SYSMENU);
                 }
 
                 handled = true;
@@ -249,11 +249,11 @@ namespace Crystal.Themes.Behaviors
 
             // Directly call DefWindowProc with a custom parameter 
             // which bypasses any other handling of the message. 
-            var lRet = NativeMethods.DefWindowProc(this.windowHandle, WM.NCACTIVATE, wParam, new IntPtr(-1));
+            var lRet = NativeMethods.DefWindowProc(windowHandle, WM.NCACTIVATE, wParam, new IntPtr(-1));
             // We don't have any non client area, so we can just discard this message by handling it 
             handled = true;
 
-            this.IsNCActive = wParam.ToInt32() != 0;
+            IsNCActive = wParam.ToInt32() != 0;
 
             return lRet;
         }
@@ -322,19 +322,19 @@ namespace Crystal.Themes.Behaviors
             // Since the first field of NCCALCSIZE_PARAMS is a RECT and is the only field we care about
             // we can unconditionally treat it as a RECT.
 
-            if (this.dpiChanged)
+            if (dpiChanged)
             {
-                this.dpiChanged = false;
-                handled = this.IgnoreTaskbarOnMaximize == false;
+                dpiChanged = false;
+                handled = IgnoreTaskbarOnMaximize == false;
                 return IntPtr.Zero;
             }
 
-            if (this.MinimizeAnimation
-                && this._GetHwndState() == WindowState.Maximized)
+            if (MinimizeAnimation
+                && _GetHwndState() == WindowState.Maximized)
             {
-                var monitor = NativeMethods.MonitorFromWindow(this.windowHandle, MonitorOptions.MONITOR_DEFAULTTONEAREST);
+                var monitor = NativeMethods.MonitorFromWindow(windowHandle, MonitorOptions.MONITOR_DEFAULTTONEAREST);
                 var monitorInfo = NativeMethods.GetMonitorInfo(monitor);
-                var monitorRect = this.IgnoreTaskbarOnMaximize ? monitorInfo.rcMonitor : monitorInfo.rcWork;
+                var monitorRect = IgnoreTaskbarOnMaximize ? monitorInfo.rcMonitor : monitorInfo.rcWork;
 
                 var rc = (RECT)Marshal.PtrToStructure(lParam, typeof(RECT))!;
                 rc.Left = monitorRect.Left;
@@ -351,8 +351,8 @@ namespace Crystal.Themes.Behaviors
 
                 Marshal.StructureToPtr(rc, lParam, true);
             }
-            else if (this.TryToBeFlickerFree
-                     && this._GetHwndState() == WindowState.Normal
+            else if (TryToBeFlickerFree
+                     && _GetHwndState() == WindowState.Normal
                      && wParam.ToInt32() != 0)
             {
                 var rc = (RECT)Marshal.PtrToStructure(lParam, typeof(RECT))!;
@@ -386,7 +386,7 @@ namespace Crystal.Themes.Behaviors
 
         private HT _GetHTFromResizeGripDirection(ResizeGripDirection direction)
         {
-            var compliment = this.AssociatedObject.FlowDirection == FlowDirection.RightToLeft;
+            var compliment = AssociatedObject.FlowDirection == FlowDirection.RightToLeft;
             switch (direction)
             {
                 case ResizeGripDirection.Bottom:
@@ -432,26 +432,26 @@ namespace Crystal.Themes.Behaviors
             // We always want to handle hit-testing
             handled = true;
 
-            var dpi = this.AssociatedObject.GetDpi();
+            var dpi = AssociatedObject.GetDpi();
 
             // Let the system know if we consider the mouse to be in our effective non-client area.
             var mousePosScreen = Utility.GetPoint(lParam); //new Point(Utility.GET_X_LPARAM(lParam), Utility.GET_Y_LPARAM(lParam));
-            var windowPosition = this._GetWindowRect();
+            var windowPosition = _GetWindowRect();
 
             var mousePosWindow = mousePosScreen;
             mousePosWindow.Offset(-windowPosition.X, -windowPosition.Y);
             mousePosWindow = DpiHelper.DevicePixelsToLogical(mousePosWindow, dpi.DpiScaleX, dpi.DpiScaleY);
 
-            var ht = this._HitTestNca(DpiHelper.DeviceRectToLogical(windowPosition, dpi.DpiScaleX, dpi.DpiScaleY),
+            var ht = _HitTestNca(DpiHelper.DeviceRectToLogical(windowPosition, dpi.DpiScaleX, dpi.DpiScaleY),
                                       DpiHelper.DevicePixelsToLogical(mousePosScreen, dpi.DpiScaleX, dpi.DpiScaleY));
 
             if (ht != HT.CLIENT
-                || this.AssociatedObject.ResizeMode == ResizeMode.CanResizeWithGrip)
+                || AssociatedObject.ResizeMode == ResizeMode.CanResizeWithGrip)
             {
                 // If the app is asking for content to be treated as client then that takes precedence over _everything_, even DWM caption buttons.
                 // This allows apps to set the glass frame to be non-empty, still cover it with WPF content to hide all the glass,
                 // yet still get DWM to draw a drop shadow.
-                var inputElement = this.AssociatedObject.InputHitTest(mousePosWindow);
+                var inputElement = AssociatedObject.InputHitTest(mousePosWindow);
                 if (inputElement is not null)
                 {
                     if (WindowChrome.GetIsHitTestVisibleInChrome(inputElement))
@@ -462,7 +462,7 @@ namespace Crystal.Themes.Behaviors
                     var direction = WindowChrome.GetResizeGripDirection(inputElement);
                     if (direction != ResizeGripDirection.None)
                     {
-                        return new IntPtr((int)this._GetHTFromResizeGripDirection(direction));
+                        return new IntPtr((int)_GetHTFromResizeGripDirection(direction));
                     }
                 }
             }
@@ -481,7 +481,7 @@ namespace Crystal.Themes.Behaviors
             if ((HT)(Environment.Is64BitProcess ? wParam.ToInt64() : wParam.ToInt32()) == HT.CAPTION)
             {
                 //SystemCommands.ShowSystemMenuPhysicalCoordinates(_window, new Point(Utility.GET_X_LPARAM(lParam), Utility.GET_Y_LPARAM(lParam)));
-                Windows.Shell.SystemCommands.ShowSystemMenuPhysicalCoordinates(this.AssociatedObject, Utility.GetPoint(lParam));
+                Windows.Shell.SystemCommands.ShowSystemMenuPhysicalCoordinates(AssociatedObject, Utility.GetPoint(lParam));
             }
 
             handled = false;
@@ -506,7 +506,7 @@ namespace Crystal.Themes.Behaviors
                 state = WindowState.Maximized;
             }
 
-            this._UpdateSystemMenu(state);
+            _UpdateSystemMenu(state);
 
             // Still let the default WndProc handle this.
             handled = false;
@@ -524,8 +524,8 @@ namespace Crystal.Themes.Behaviors
 
             // we don't do bitwise operations cuz we're checking for this flag being the only one there
             // I have no clue why this works, I tried this because VS2013 has this flag removed on fullscreen window movws
-            if (this.IgnoreTaskbarOnMaximize
-                && this._GetHwndState() == WindowState.Maximized
+            if (IgnoreTaskbarOnMaximize
+                && _GetHwndState() == WindowState.Maximized
                 && wp.flags == SWP.FRAMECHANGED)
             {
                 wp.flags = 0;
@@ -541,9 +541,9 @@ namespace Crystal.Themes.Behaviors
                 return IntPtr.Zero;
             }
 
-            var wnd = this.AssociatedObject;
+            var wnd = AssociatedObject;
             if (wnd is null
-                || this.hwndSource?.CompositionTarget is null)
+                || hwndSource?.CompositionTarget is null)
             {
                 handled = false;
                 return IntPtr.Zero;
@@ -552,7 +552,7 @@ namespace Crystal.Themes.Behaviors
             var changedPos = false;
 
             // Convert the original to original size based on DPI setting. Need for x% screen DPI.
-            var matrix = this.hwndSource.CompositionTarget.TransformToDevice;
+            var matrix = hwndSource.CompositionTarget.TransformToDevice;
 
             var minWidth = wnd.MinWidth * matrix.M11;
             var minHeight = wnd.MinHeight * matrix.M22;
@@ -609,18 +609,18 @@ namespace Crystal.Themes.Behaviors
             // suffer from the same limitations as WM_SHOWWINDOW, so you can
             // reliably use it to react to the window being shown or hidden.
 
-            this._UpdateSystemMenu(null);
+            _UpdateSystemMenu(null);
 
             Assert.IsNotDefault(lParam);
             var wp = (WINDOWPOS)Marshal.PtrToStructure(lParam, typeof(WINDOWPOS))!;
 
-            if (wp.Equals(this.previousWp) == false)
+            if (wp.Equals(previousWp) == false)
             {
-                this.previousWp = wp;
-                this._SetRegion(wp);
+                previousWp = wp;
+                _SetRegion(wp);
             }
 
-            this.previousWp = wp;
+            previousWp = wp;
 
             //                if (wp.Equals(_previousWP) && wp.flags.Equals(_previousWP.flags))
             //                {
@@ -647,11 +647,11 @@ namespace Crystal.Themes.Behaviors
              * This fix is not really a full fix. Moving the Window back gives us the wrong size, because
              * MonitorFromWindow gives us the wrong (old) monitor! This is fixed in _HandleMoveForRealSize.
              */
-            if (this.IgnoreTaskbarOnMaximize
-                && NativeMethods.IsZoomed(this.windowHandle))
+            if (IgnoreTaskbarOnMaximize
+                && NativeMethods.IsZoomed(windowHandle))
             {
                 var mmi = (MINMAXINFO)Marshal.PtrToStructure(lParam, typeof(MINMAXINFO))!;
-                var monitor = NativeMethods.MonitorFromWindow(this.windowHandle, MonitorOptions.MONITOR_DEFAULTTONEAREST);
+                var monitor = NativeMethods.MonitorFromWindow(windowHandle, MonitorOptions.MONITOR_DEFAULTTONEAREST);
                 if (monitor != IntPtr.Zero)
                 {
                     var monitorInfo = NativeMethods.GetMonitorInfo(monitor);
@@ -682,7 +682,7 @@ namespace Crystal.Themes.Behaviors
         [SecurityCritical]
         private IntPtr _HandleDWMCOMPOSITIONCHANGED(WM uMsg, IntPtr wParam, IntPtr lParam, out bool handled)
         {
-            this._UpdateFrameState(false);
+            _UpdateFrameState(false);
 
             handled = false;
             return IntPtr.Zero;
@@ -694,7 +694,7 @@ namespace Crystal.Themes.Behaviors
         [SecurityCritical]
         private IntPtr _HandleENTERSIZEMOVEForAnimation(WM uMsg, IntPtr wParam, IntPtr lParam, out bool handled)
         {
-            if (this.MinimizeAnimation) // && _GetHwndState() != WindowState.Minimized)
+            if (MinimizeAnimation) // && _GetHwndState() != WindowState.Minimized)
             {
                 /* we only need to remove DLGFRAME ( CAPTION = BORDER | DLGFRAME )
                  * to prevent nasty drawing
@@ -703,7 +703,7 @@ namespace Crystal.Themes.Behaviors
                  * will call this method, resulting in a 2px black border on the side
                  * when maximized.
                  */
-                this._ModifyStyle(WS.CAPTION, 0);
+                _ModifyStyle(WS.CAPTION, 0);
             }
 
             handled = false;
@@ -716,10 +716,10 @@ namespace Crystal.Themes.Behaviors
         [SecurityCritical]
         private IntPtr _HandleEXITSIZEMOVEForAnimation(WM uMsg, IntPtr wParam, IntPtr lParam, out bool handled)
         {
-            if (this.MinimizeAnimation)
+            if (MinimizeAnimation)
             {
                 // restore DLGFRAME
-                this._ModifyStyle(0, WS.CAPTION);
+                _ModifyStyle(0, WS.CAPTION);
             }
 
             handled = false;
@@ -738,13 +738,13 @@ namespace Crystal.Themes.Behaviors
              * we can move the Window to different monitor with maybe different dimension.
              * But after moving to the previous monitor we got a wrong size (from the old monitor dimension).
              */
-            var state = this._GetHwndState();
+            var state = _GetHwndState();
             if (state == WindowState.Maximized)
             {
-                var monitorFromWindow = NativeMethods.MonitorFromWindow(this.windowHandle, MonitorOptions.MONITOR_DEFAULTTONEAREST);
+                var monitorFromWindow = NativeMethods.MonitorFromWindow(windowHandle, MonitorOptions.MONITOR_DEFAULTTONEAREST);
                 if (monitorFromWindow != IntPtr.Zero)
                 {
-                    var ignoreTaskBar = this.IgnoreTaskbarOnMaximize;
+                    var ignoreTaskBar = IgnoreTaskbarOnMaximize;
                     var monitorInfo = NativeMethods.GetMonitorInfo(monitorFromWindow);
                     var rcMonitorArea = ignoreTaskBar ? monitorInfo.rcMonitor : monitorInfo.rcWork;
                     /*
@@ -763,7 +763,7 @@ namespace Crystal.Themes.Behaviors
                      * area are saved and copied back into the client area after the window is sized or repositioned.
                      * 
                      */
-                    NativeMethods.SetWindowPos(this.windowHandle, IntPtr.Zero, rcMonitorArea.Left, rcMonitorArea.Top, rcMonitorArea.Width, rcMonitorArea.Height, SWP.ASYNCWINDOWPOS | SWP.FRAMECHANGED | SWP.NOCOPYBITS);
+                    NativeMethods.SetWindowPos(windowHandle, IntPtr.Zero, rcMonitorArea.Left, rcMonitorArea.Top, rcMonitorArea.Width, rcMonitorArea.Height, SWP.ASYNCWINDOWPOS | SWP.FRAMECHANGED | SWP.NOCOPYBITS);
                 }
             }
 
@@ -777,9 +777,9 @@ namespace Crystal.Themes.Behaviors
         [SecurityCritical]
         private IntPtr _HandleDPICHANGED(WM uMsg, IntPtr wParam, IntPtr lParam, out bool handled)
         {
-            this.dpiChanged = true;
+            dpiChanged = true;
 
-            if (this._GetHwndState() == WindowState.Normal)
+            if (_GetHwndState() == WindowState.Normal)
             {
                 var rect = (RECT)Marshal.PtrToStructure(lParam, typeof(RECT))!;
                 rect.Bottom += 1;
@@ -802,15 +802,15 @@ namespace Crystal.Themes.Behaviors
         [SecurityCritical]
         private bool _ModifyStyle(WS removeStyle, WS addStyle)
         {
-            Assert.IsNotDefault(this.windowHandle);
-            var dwStyle = NativeMethods.GetWindowStyle(this.windowHandle);
+            Assert.IsNotDefault(windowHandle);
+            var dwStyle = NativeMethods.GetWindowStyle(windowHandle);
             var dwNewStyle = (dwStyle & ~removeStyle) | addStyle;
             if (dwStyle == dwNewStyle)
             {
                 return false;
             }
 
-            NativeMethods.SetWindowStyle(this.windowHandle, dwNewStyle);
+            NativeMethods.SetWindowStyle(windowHandle, dwNewStyle);
             return true;
         }
 
@@ -823,7 +823,7 @@ namespace Crystal.Themes.Behaviors
         [SecurityCritical]
         private WindowState _GetHwndState()
         {
-            var wpl = NativeMethods.GetWindowPlacement(this.windowHandle);
+            var wpl = NativeMethods.GetWindowPlacement(windowHandle);
             switch (wpl.showCmd)
             {
                 case SW.SHOWMINIMIZED:
@@ -847,7 +847,7 @@ namespace Crystal.Themes.Behaviors
         private Rect _GetWindowRect()
         {
             // Get the window rectangle.
-            var windowPosition = NativeMethods.GetWindowRect(this.windowHandle);
+            var windowPosition = NativeMethods.GetWindowRect(windowHandle);
             return new Rect(windowPosition.Left, windowPosition.Top, windowPosition.Width, windowPosition.Height);
         }
 
@@ -869,17 +869,17 @@ namespace Crystal.Themes.Behaviors
             const MF MF_ENABLED = MF.ENABLED | MF.BYCOMMAND;
             const MF MF_DISABLED = MF.GRAYED | MF.DISABLED | MF.BYCOMMAND;
 
-            var state = assumeState ?? this._GetHwndState();
+            var state = assumeState ?? _GetHwndState();
 
             if (assumeState is not null
-                || this.lastMenuState != state)
+                || lastMenuState != state)
             {
-                this.lastMenuState = state;
+                lastMenuState = state;
 
-                var hmenu = NativeMethods.GetSystemMenu(this.windowHandle, false);
+                var hmenu = NativeMethods.GetSystemMenu(windowHandle, false);
                 if (hmenu != IntPtr.Zero)
                 {
-                    var dwStyle = NativeMethods.GetWindowStyle(this.windowHandle);
+                    var dwStyle = NativeMethods.GetWindowStyle(windowHandle);
 
                     var canMinimize = Utility.IsFlagSet((int)dwStyle, (int)WS.MINIMIZEBOX);
                     var canMaximize = Utility.IsFlagSet((int)dwStyle, (int)WS.MAXIMIZEBOX);
@@ -921,35 +921,35 @@ namespace Crystal.Themes.Behaviors
         [SecurityCritical]
         private void _UpdateFrameState(bool force)
         {
-            if (this.windowHandle == IntPtr.Zero
-                || this.hwndSource is null
-                || this.hwndSource.IsDisposed)
+            if (windowHandle == IntPtr.Zero
+                || hwndSource is null
+                || hwndSource.IsDisposed)
             {
                 return;
             }
 
             if (force)
             {
-                if (this.hwndSource.IsDisposed)
+                if (hwndSource.IsDisposed)
                 {
                     // If the window got closed very early
                     return;
                 }
 
-                if (this.MinimizeAnimation)
+                if (MinimizeAnimation)
                 {
                     // allow animation
-                    this._ModifyStyle(0, WS.CAPTION);
+                    _ModifyStyle(0, WS.CAPTION);
                 }
                 else
                 {
                     // no animation
-                    this._ModifyStyle(WS.CAPTION, 0);
+                    _ModifyStyle(WS.CAPTION, 0);
                 }
 
                 //if (this.AssociatedObject.IsLoaded)
                 {
-                    NativeMethods.SetWindowPos(this.windowHandle, IntPtr.Zero, 0, 0, 0, 0, SwpFlags);
+                    NativeMethods.SetWindowPos(windowHandle, IntPtr.Zero, 0, 0, 0, 0, SwpFlags);
                 }
             }
         }
@@ -960,7 +960,7 @@ namespace Crystal.Themes.Behaviors
         [SecurityCritical]
         private void _ClearRegion()
         {
-            NativeMethods.SetWindowRgn(this.windowHandle, IntPtr.Zero, NativeMethods.IsWindowVisible(this.windowHandle));
+            NativeMethods.SetWindowRgn(windowHandle, IntPtr.Zero, NativeMethods.IsWindowVisible(windowHandle));
         }
 
         /// <SecurityNote>
@@ -974,7 +974,7 @@ namespace Crystal.Themes.Behaviors
 
             var test = new POINT { X = 0, Y = 0 };
             NativeMethods.ClientToScreen(hWnd, ref test);
-            if (this.AssociatedObject.FlowDirection == FlowDirection.RightToLeft)
+            if (AssociatedObject.FlowDirection == FlowDirection.RightToLeft)
             {
                 clientRect.Offset(windowRect.Right - test.X, test.Y - windowRect.Top);
             }
@@ -994,14 +994,14 @@ namespace Crystal.Themes.Behaviors
         {
             // We're early - WPF hasn't necessarily updated the state of the window.
             // Need to query it ourselves.
-            var wpl = NativeMethods.GetWindowPlacement(this.windowHandle);
+            var wpl = NativeMethods.GetWindowPlacement(windowHandle);
 
             if (wpl.showCmd == SW.SHOWMAXIMIZED)
             {
                 RECT rcMax;
-                if (this.MinimizeAnimation)
+                if (MinimizeAnimation)
                 {
-                    rcMax = this._GetClientRectRelativeToWindowRect(this.windowHandle);
+                    rcMax = _GetClientRectRelativeToWindowRect(windowHandle);
                 }
                 else
                 {
@@ -1015,15 +1015,15 @@ namespace Crystal.Themes.Behaviors
                     }
                     else
                     {
-                        var r = this._GetWindowRect();
+                        var r = _GetWindowRect();
                         left = (int)r.Left;
                         top = (int)r.Top;
                     }
 
-                    var hMon = NativeMethods.MonitorFromWindow(this.windowHandle, MonitorOptions.MONITOR_DEFAULTTONEAREST);
+                    var hMon = NativeMethods.MonitorFromWindow(windowHandle, MonitorOptions.MONITOR_DEFAULTTONEAREST);
 
                     var mi = NativeMethods.GetMonitorInfo(hMon);
-                    rcMax = this.IgnoreTaskbarOnMaximize
+                    rcMax = IgnoreTaskbarOnMaximize
                         ? mi.rcMonitor
                         : mi.rcWork;
                     // The location of maximized window takes into account the border that Windows was
@@ -1035,7 +1035,7 @@ namespace Crystal.Themes.Behaviors
                 try
                 {
                     hrgn = NativeMethods.CreateRectRgnIndirect(rcMax);
-                    NativeMethods.SetWindowRgn(this.windowHandle, hrgn, NativeMethods.IsWindowVisible(this.windowHandle));
+                    NativeMethods.SetWindowRgn(windowHandle, hrgn, NativeMethods.IsWindowVisible(windowHandle));
                     hrgn = IntPtr.Zero;
                 }
                 finally
@@ -1054,17 +1054,17 @@ namespace Crystal.Themes.Behaviors
                 {
                     windowSize = new Size(wp.Value.cx, wp.Value.cy);
                 }
-                else if (wp is not null && (this.lastRegionWindowState == this.AssociatedObject.WindowState))
+                else if (wp is not null && (lastRegionWindowState == AssociatedObject.WindowState))
                 {
                     return;
                 }
                 else
                 {
-                    windowSize = this._GetWindowRect().Size;
+                    windowSize = _GetWindowRect().Size;
                 }
 
-                var windowStateChanged = this.lastRegionWindowState != this.AssociatedObject.WindowState;
-                this.lastRegionWindowState = this.AssociatedObject.WindowState;
+                var windowStateChanged = lastRegionWindowState != AssociatedObject.WindowState;
+                lastRegionWindowState = AssociatedObject.WindowState;
 
                 var hrgn = IntPtr.Zero;
                 try
@@ -1074,7 +1074,7 @@ namespace Crystal.Themes.Behaviors
                         hrgn = _CreateRectRgn(new Rect(windowSize));
                     }
 
-                    NativeMethods.SetWindowRgn(this.windowHandle, hrgn, NativeMethods.IsWindowVisible(this.windowHandle));
+                    NativeMethods.SetWindowRgn(windowHandle, hrgn, NativeMethods.IsWindowVisible(windowHandle));
                     // After a successful call to SetWindowRgn, the system owns the region specified by the region handle hRgn.
                     // The system does not make a copy of the region. Thus, you should not make any further function calls with this region handle.
                     // In particular, do not delete this region handle. The system deletes the region handle when it no longer needed.
@@ -1119,7 +1119,7 @@ namespace Crystal.Themes.Behaviors
             var onResizeBorder = false;
 
             // Only get this once from the property to improve performance
-            var resizeBorderThickness = this.ResizeBorderThickness;
+            var resizeBorderThickness = ResizeBorderThickness;
 
             // Determine if the point is at the top or bottom of the window.
             if (mousePosition.Y >= windowPosition.Top
@@ -1174,19 +1174,19 @@ namespace Crystal.Themes.Behaviors
         [SecurityCritical]
         private void _RestoreStandardChromeState(bool isClosing)
         {
-            this.VerifyAccess();
+            VerifyAccess();
 
             if (isClosing
-                || this.hwndSource is null
-                || this.hwndSource.IsDisposed
-                || this.hwndSource.RootVisual is null)
+                || hwndSource is null
+                || hwndSource.IsDisposed
+                || hwndSource.RootVisual is null)
             {
                 return;
             }
 
-            this._RestoreHrgn();
+            _RestoreHrgn();
 
-            this.AssociatedObject.InvalidateMeasure();
+            AssociatedObject.InvalidateMeasure();
         }
 
         /// <SecurityNote>
@@ -1195,8 +1195,8 @@ namespace Crystal.Themes.Behaviors
         [SecurityCritical]
         private void _RestoreHrgn()
         {
-            this._ClearRegion();
-            NativeMethods.SetWindowPos(this.windowHandle, IntPtr.Zero, 0, 0, 0, 0, SwpFlags);
+            _ClearRegion();
+            NativeMethods.SetWindowPos(windowHandle, IntPtr.Zero, 0, 0, 0, 0, SwpFlags);
         }
 
         #endregion

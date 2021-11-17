@@ -30,8 +30,8 @@ namespace Crystal.Themes.Controls
         /// </summary>
         public bool CloseOnMouseLeftButtonDown
         {
-            get { return (bool)this.GetValue(CloseOnMouseLeftButtonDownProperty); }
-            set { this.SetValue(CloseOnMouseLeftButtonDownProperty, value); }
+            get { return (bool)GetValue(CloseOnMouseLeftButtonDownProperty); }
+            set { SetValue(CloseOnMouseLeftButtonDownProperty, value); }
         }
 
         /// <summary>Identifies the <see cref="AllowTopMost"/> dependency property.</summary>
@@ -46,14 +46,14 @@ namespace Crystal.Themes.Controls
         /// </summary>
         public bool AllowTopMost
         {
-            get { return (bool)this.GetValue(AllowTopMostProperty); }
-            set { this.SetValue(AllowTopMostProperty, value); }
+            get { return (bool)GetValue(AllowTopMostProperty); }
+            set { SetValue(AllowTopMostProperty, value); }
         }
 
         public PopupEx()
         {
-            this.Loaded += this.PopupEx_Loaded;
-            this.Opened += this.PopupEx_Opened;
+            Loaded += PopupEx_Loaded;
+            Opened += PopupEx_Opened;
         }
 
         /// <summary>
@@ -61,91 +61,91 @@ namespace Crystal.Themes.Controls
         /// </summary>
         public void RefreshPosition()
         {
-            var offset = this.HorizontalOffset;
+            var offset = HorizontalOffset;
             // "bump" the offset to cause the popup to reposition itself on its own
-            this.SetCurrentValue(HorizontalOffsetProperty, offset + 1);
-            this.SetCurrentValue(HorizontalOffsetProperty, offset);
+            SetCurrentValue(HorizontalOffsetProperty, offset + 1);
+            SetCurrentValue(HorizontalOffsetProperty, offset);
         }
 
         private void PopupEx_Loaded(object? sender, RoutedEventArgs e)
         {
-            var target = this.PlacementTarget as FrameworkElement;
+            var target = PlacementTarget as FrameworkElement;
             if (target is null)
             {
                 return;
             }
 
-            this.hostWindow = Window.GetWindow(target);
-            if (this.hostWindow is null)
+            hostWindow = Window.GetWindow(target);
+            if (hostWindow is null)
             {
                 return;
             }
 
-            this.hostWindow.LocationChanged -= this.HostWindow_SizeOrLocationChanged;
-            this.hostWindow.LocationChanged += this.HostWindow_SizeOrLocationChanged;
-            this.hostWindow.SizeChanged -= this.HostWindow_SizeOrLocationChanged;
-            this.hostWindow.SizeChanged += this.HostWindow_SizeOrLocationChanged;
-            target.SizeChanged -= this.HostWindow_SizeOrLocationChanged;
-            target.SizeChanged += this.HostWindow_SizeOrLocationChanged;
-            this.hostWindow.StateChanged -= this.HostWindow_StateChanged;
-            this.hostWindow.StateChanged += this.HostWindow_StateChanged;
-            this.hostWindow.Activated -= this.HostWindow_Activated;
-            this.hostWindow.Activated += this.HostWindow_Activated;
-            this.hostWindow.Deactivated -= this.HostWindow_Deactivated;
-            this.hostWindow.Deactivated += this.HostWindow_Deactivated;
+            hostWindow.LocationChanged -= HostWindow_SizeOrLocationChanged;
+            hostWindow.LocationChanged += HostWindow_SizeOrLocationChanged;
+            hostWindow.SizeChanged -= HostWindow_SizeOrLocationChanged;
+            hostWindow.SizeChanged += HostWindow_SizeOrLocationChanged;
+            target.SizeChanged -= HostWindow_SizeOrLocationChanged;
+            target.SizeChanged += HostWindow_SizeOrLocationChanged;
+            hostWindow.StateChanged -= HostWindow_StateChanged;
+            hostWindow.StateChanged += HostWindow_StateChanged;
+            hostWindow.Activated -= HostWindow_Activated;
+            hostWindow.Activated += HostWindow_Activated;
+            hostWindow.Deactivated -= HostWindow_Deactivated;
+            hostWindow.Deactivated += HostWindow_Deactivated;
 
-            this.Unloaded -= this.PopupEx_Unloaded;
-            this.Unloaded += this.PopupEx_Unloaded;
+            Unloaded -= PopupEx_Unloaded;
+            Unloaded += PopupEx_Unloaded;
         }
 
         private void PopupEx_Opened(object? sender, EventArgs e)
         {
-            this.SetTopmostState(this.hostWindow?.IsActive ?? true);
+            SetTopmostState(hostWindow?.IsActive ?? true);
         }
 
         private void HostWindow_Activated(object? sender, EventArgs e)
         {
-            this.SetTopmostState(true);
+            SetTopmostState(true);
         }
 
         private void HostWindow_Deactivated(object? sender, EventArgs e)
         {
-            this.SetTopmostState(false);
+            SetTopmostState(false);
         }
 
         private void PopupEx_Unloaded(object? sender, RoutedEventArgs e)
         {
-            var target = this.PlacementTarget as FrameworkElement;
+            var target = PlacementTarget as FrameworkElement;
             if (target is not null)
             {
-                target.SizeChanged -= this.HostWindow_SizeOrLocationChanged;
+                target.SizeChanged -= HostWindow_SizeOrLocationChanged;
             }
 
-            if (this.hostWindow is not null)
+            if (hostWindow is not null)
             {
-                this.hostWindow.LocationChanged -= this.HostWindow_SizeOrLocationChanged;
-                this.hostWindow.SizeChanged -= this.HostWindow_SizeOrLocationChanged;
-                this.hostWindow.StateChanged -= this.HostWindow_StateChanged;
-                this.hostWindow.Activated -= this.HostWindow_Activated;
-                this.hostWindow.Deactivated -= this.HostWindow_Deactivated;
+                hostWindow.LocationChanged -= HostWindow_SizeOrLocationChanged;
+                hostWindow.SizeChanged -= HostWindow_SizeOrLocationChanged;
+                hostWindow.StateChanged -= HostWindow_StateChanged;
+                hostWindow.Activated -= HostWindow_Activated;
+                hostWindow.Deactivated -= HostWindow_Deactivated;
             }
 
-            this.Unloaded -= this.PopupEx_Unloaded;
-            this.Opened -= this.PopupEx_Opened;
-            this.hostWindow = null;
+            Unloaded -= PopupEx_Unloaded;
+            Opened -= PopupEx_Opened;
+            hostWindow = null;
         }
 
         private void HostWindow_StateChanged(object? sender, EventArgs e)
         {
-            if (this.hostWindow is not null && this.hostWindow.WindowState != WindowState.Minimized)
+            if (hostWindow is not null && hostWindow.WindowState != WindowState.Minimized)
             {
                 // special handling for validation popup
-                var holder = this.PlacementTarget is FrameworkElement target ? target.DataContext as AdornedElementPlaceholder : null;
+                var holder = PlacementTarget is FrameworkElement target ? target.DataContext as AdornedElementPlaceholder : null;
                 var adornedElement = holder?.AdornedElement;
                 if (adornedElement is not null)
                 {
-                    this.SetCurrentValue(PopupAnimationProperty, PopupAnimation.None);
-                    this.SetCurrentValue(IsOpenProperty, false);
+                    SetCurrentValue(PopupAnimationProperty, PopupAnimation.None);
+                    SetCurrentValue(IsOpenProperty, false);
                     var errorTemplate = adornedElement.GetValue(Validation.ErrorTemplateProperty);
                     adornedElement.SetCurrentValue(Validation.ErrorTemplateProperty, null);
                     adornedElement.SetCurrentValue(Validation.ErrorTemplateProperty, errorTemplate);
@@ -155,25 +155,25 @@ namespace Crystal.Themes.Controls
 
         private void HostWindow_SizeOrLocationChanged(object? sender, EventArgs e)
         {
-            this.RefreshPosition();
+            RefreshPosition();
         }
 
         private void SetTopmostState(bool isTop)
         {
-            isTop &= this.AllowTopMost;
+            isTop &= AllowTopMost;
 
             // Don’t apply state if it’s the same as incoming state
-            if (this.appliedTopMost.HasValue && this.appliedTopMost == isTop)
+            if (appliedTopMost.HasValue && appliedTopMost == isTop)
             {
                 return;
             }
 
-            if (this.Child is null)
+            if (Child is null)
             {
                 return;
             }
 
-            var hwndSource = PresentationSource.FromVisual(this.Child) as HwndSource;
+            var hwndSource = PresentationSource.FromVisual(Child) as HwndSource;
             if (hwndSource is null)
             {
                 return;
@@ -208,14 +208,14 @@ namespace Crystal.Themes.Controls
                 SetWindowPos(hwnd, HWND_NOTOPMOST, left, top, width, height, SWP.TOPMOST);
             }
 
-            this.appliedTopMost = isTop;
+            appliedTopMost = isTop;
         }
 
         protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)
         {
-            if (this.CloseOnMouseLeftButtonDown)
+            if (CloseOnMouseLeftButtonDown)
             {
-                this.SetCurrentValue(IsOpenProperty, false);
+                SetCurrentValue(IsOpenProperty, false);
             }
         }
 
@@ -285,54 +285,54 @@ namespace Crystal.Themes.Controls
 
             public void Offset(int dx, int dy)
             {
-                this.left += dx;
-                this.top += dy;
-                this.right += dx;
-                this.bottom += dy;
+                left += dx;
+                top += dy;
+                right += dx;
+                bottom += dy;
             }
 
             public int Left
             {
-                get { return this.left; }
-                set { this.left = value; }
+                get { return left; }
+                set { left = value; }
             }
 
             public int Right
             {
-                get { return this.right; }
-                set { this.right = value; }
+                get { return right; }
+                set { right = value; }
             }
 
             public int Top
             {
-                get { return this.top; }
-                set { this.top = value; }
+                get { return top; }
+                set { top = value; }
             }
 
             public int Bottom
             {
-                get { return this.bottom; }
-                set { this.bottom = value; }
+                get { return bottom; }
+                set { bottom = value; }
             }
 
             public int Width
             {
-                get { return this.right - this.left; }
+                get { return right - left; }
             }
 
             public int Height
             {
-                get { return this.bottom - this.top; }
+                get { return bottom - top; }
             }
 
             public POINT Position
             {
-                get { return new POINT { x = this.left, y = this.top }; }
+                get { return new POINT { x = left, y = top }; }
             }
 
             public SIZE Size
             {
-                get { return new SIZE { cx = this.Width, cy = this.Height }; }
+                get { return new SIZE { cx = Width, cy = Height }; }
             }
 
             public static RECT Union(RECT rect1, RECT rect2)
@@ -351,10 +351,10 @@ namespace Crystal.Themes.Controls
                 try
                 {
                     var rc = (RECT)obj!;
-                    return rc.bottom == this.bottom
-                           && rc.left == this.left
-                           && rc.right == this.right
-                           && rc.top == this.top;
+                    return rc.bottom == bottom
+                           && rc.left == left
+                           && rc.right == right
+                           && rc.top == top;
                 }
                 catch (InvalidCastException)
                 {
@@ -364,7 +364,7 @@ namespace Crystal.Themes.Controls
 
             public override int GetHashCode()
             {
-                return (this.left << 16 | LOWORD(this.right)) ^ (this.top << 16 | LOWORD(this.bottom));
+                return (left << 16 | LOWORD(right)) ^ (top << 16 | LOWORD(bottom));
             }
         }
         

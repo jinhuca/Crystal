@@ -19,9 +19,9 @@
     <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/MetroAnimatedTabControl.xaml" />
     <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/CrystalContentControl.xaml" />
     <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/CrystalHeader.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/MetroProgressBar.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/MetroTabControl.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/MetroTabItem.xaml" />
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/CrystalProgressBar.xaml" />
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/CrystalTabControl.xaml" />
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/CrystalTabItem.xaml" />
     <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/CrystalWindow.xaml" />
     <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/NumericUpDown.xaml" />
     <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/Pivot.xaml" />
@@ -58,7 +58,7 @@
   <Style BasedOn="{StaticResource Crystal.Styles.Flyout}" TargetType="{x:Type crystal:Flyout}" />
   <Style BasedOn="{StaticResource Crystal.Styles.ToggleSwitch}" TargetType="{x:Type crystal:ToggleSwitch}" />
   <Style BasedOn="{StaticResource Crystal.Styles.ContentControlEx}" TargetType="{x:Type crystal:ContentControlEx}" />
-  <Style BasedOn="{StaticResource Crystal.Styles.MetroThumbContentControl}" TargetType="{x:Type crystal:MetroThumbContentControl}" />
+  <Style BasedOn="{StaticResource Crystal.Styles.CrystalThumbContentControl}" TargetType="{x:Type crystal:CrystalThumbContentControl}" />
   <Style BasedOn="{StaticResource Crystal.Styles.WindowCommandsItem}" TargetType="{x:Type crystal:WindowCommandsItem}" />
   <Style BasedOn="{StaticResource Crystal.Styles.WindowCommands}" TargetType="{x:Type crystal:WindowCommands}" />
   <Style BasedOn="{StaticResource Crystal.Styles.WindowButtonCommands.Win10}" TargetType="{x:Type crystal:WindowButtonCommands}" />
@@ -68,7 +68,7 @@
   <Style BasedOn="{StaticResource Crystal.Styles.BaseMetroDialog}" TargetType="{x:Type dialogs:BaseMetroDialog}" />
   <Style BasedOn="{StaticResource Crystal.Styles.RangeSlider.Win10}" TargetType="{x:Type crystal:RangeSlider}" />
   <Style BasedOn="{StaticResource Crystal.Styles.RevealImage}" TargetType="{x:Type crystal:RevealImage}" />
-  <Style BasedOn="{StaticResource Crystal.Styles.MetroProgressBar}" TargetType="{x:Type crystal:MetroProgressBar}" />
+  <Style BasedOn="{StaticResource Crystal.Styles.CrystalProgressBar}" TargetType="{x:Type crystal:CrystalProgressBar}" />
   <Style BasedOn="{StaticResource Crystal.Styles.FlipViewItem}" TargetType="{x:Type crystal:FlipViewItem}" />
   <Style BasedOn="{StaticResource Crystal.Styles.FlipView}" TargetType="{x:Type crystal:FlipView}" />
   <!--#region ColorPicker-->

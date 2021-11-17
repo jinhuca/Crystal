@@ -3,7 +3,7 @@ using Crystal.Themes.ValueBoxes;
 
 namespace Crystal.Themes.Controls
 {
-  [StyleTypedProperty(Property = nameof(ResizeThumbStyle), StyleTargetType = typeof(MetroThumb))]
+  [StyleTypedProperty(Property = nameof(ResizeThumbStyle), StyleTargetType = typeof(CrystalThumb))]
   [StyleTypedProperty(Property = nameof(ItemContainerStyle), StyleTargetType = typeof(ListBoxItem))]
   [StyleTypedProperty(Property = nameof(HeaderItemContainerStyle), StyleTargetType = typeof(ListBoxItem))]
   [StyleTypedProperty(Property = nameof(SeparatorItemContainerStyle), StyleTargetType = typeof(ListBoxItem))]

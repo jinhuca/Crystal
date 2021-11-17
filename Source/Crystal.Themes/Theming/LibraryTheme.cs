@@ -50,23 +50,23 @@ namespace Crystal.Themes.Theming
                 throw new ArgumentNullException(nameof(resourceDictionary));
             }
 
-            this.LibraryThemeProvider = libraryThemeProvider;
+            LibraryThemeProvider = libraryThemeProvider;
 
-            this.IsRuntimeGenerated = (bool)(resourceDictionary[Theme.ThemeIsRuntimeGeneratedKey] ?? false);
-            this.IsHighContrast = (bool)(resourceDictionary[Theme.ThemeIsHighContrastKey] ?? false);
+            IsRuntimeGenerated = (bool)(resourceDictionary[Theme.ThemeIsRuntimeGeneratedKey] ?? false);
+            IsHighContrast = (bool)(resourceDictionary[Theme.ThemeIsHighContrastKey] ?? false);
 
-            this.Name = (string)resourceDictionary[Theme.ThemeNameKey];
-            this.Origin = (string)resourceDictionary[Theme.ThemeOriginKey];
-            this.DisplayName = (string)resourceDictionary[Theme.ThemeDisplayNameKey];
-            this.BaseColorScheme = (string)resourceDictionary[Theme.ThemeBaseColorSchemeKey];
-            this.ColorScheme = (string)resourceDictionary[Theme.ThemeColorSchemeKey];
-            this.AlternativeColorScheme = (string)resourceDictionary[LibraryTheme.LibraryThemeAlternativeColorSchemeKey];
-            this.PrimaryAccentColor = resourceDictionary[Theme.ThemePrimaryAccentColorKey] as Color? ?? throw new ArgumentException($"Resource key \"{Theme.ThemePrimaryAccentColorKey}\" is missing, is null or is not a color.");
-            this.ShowcaseBrush = (Brush)resourceDictionary[Theme.ThemeShowcaseBrushKey] ?? new SolidColorBrush(this.PrimaryAccentColor);
+            Name = (string)resourceDictionary[Theme.ThemeNameKey];
+            Origin = (string)resourceDictionary[Theme.ThemeOriginKey];
+            DisplayName = (string)resourceDictionary[Theme.ThemeDisplayNameKey];
+            BaseColorScheme = (string)resourceDictionary[Theme.ThemeBaseColorSchemeKey];
+            ColorScheme = (string)resourceDictionary[Theme.ThemeColorSchemeKey];
+            AlternativeColorScheme = (string)resourceDictionary[LibraryTheme.LibraryThemeAlternativeColorSchemeKey];
+            PrimaryAccentColor = resourceDictionary[Theme.ThemePrimaryAccentColorKey] as Color? ?? throw new ArgumentException($"Resource key \"{Theme.ThemePrimaryAccentColorKey}\" is missing, is null or is not a color.");
+            ShowcaseBrush = (Brush)resourceDictionary[Theme.ThemeShowcaseBrushKey] ?? new SolidColorBrush(PrimaryAccentColor);
 
-            this.AddResource(resourceDictionary);
+            AddResource(resourceDictionary);
 
-            this.Resources[LibraryThemeInstanceKey] = this;
+            Resources[LibraryThemeInstanceKey] = this;
         }
 
         /// <inheritdoc cref="Theme.IsRuntimeGenerated"/>
@@ -114,23 +114,23 @@ namespace Crystal.Themes.Theming
 
         public virtual bool Matches(LibraryTheme libraryTheme)
         {
-            return this.BaseColorScheme == libraryTheme.BaseColorScheme
-                   && this.ColorScheme == libraryTheme.ColorScheme
-                   && this.IsHighContrast == libraryTheme.IsHighContrast;
+            return BaseColorScheme == libraryTheme.BaseColorScheme
+                   && ColorScheme == libraryTheme.ColorScheme
+                   && IsHighContrast == libraryTheme.IsHighContrast;
         }
 
         public virtual bool MatchesSecondTry(LibraryTheme libraryTheme)
         {
-            return this.BaseColorScheme == libraryTheme.BaseColorScheme
-                   && this.AlternativeColorScheme == libraryTheme.ColorScheme
-                   && this.IsHighContrast == libraryTheme.IsHighContrast;
+            return BaseColorScheme == libraryTheme.BaseColorScheme
+                   && AlternativeColorScheme == libraryTheme.ColorScheme
+                   && IsHighContrast == libraryTheme.IsHighContrast;
         }
 
         public virtual bool MatchesThirdTry(LibraryTheme libraryTheme)
         {
-            return this.BaseColorScheme == libraryTheme.BaseColorScheme
-                   && this.ShowcaseBrush.ToString() == libraryTheme.ShowcaseBrush.ToString()
-                   && this.IsHighContrast == libraryTheme.IsHighContrast;
+            return BaseColorScheme == libraryTheme.BaseColorScheme
+                   && ShowcaseBrush.ToString() == libraryTheme.ShowcaseBrush.ToString()
+                   && IsHighContrast == libraryTheme.IsHighContrast;
         }
 
         public LibraryTheme AddResource(ResourceDictionary resourceDictionary)
@@ -140,14 +140,14 @@ namespace Crystal.Themes.Theming
                 throw new ArgumentNullException(nameof(resourceDictionary));
             }
 
-            this.Resources.MergedDictionaries.Add(resourceDictionary);
+            Resources.MergedDictionaries.Add(resourceDictionary);
 
             return this;
         }
 
         public override string ToString()
         {
-            return $"DisplayName={this.DisplayName}, Name={this.Name}, Origin={this.Origin}, IsHighContrast={this.IsHighContrast}";
+            return $"DisplayName={DisplayName}, Name={Name}, Origin={Origin}, IsHighContrast={IsHighContrast}";
         }
 
         public static string? GetThemeName(ResourceDictionary resourceDictionary)

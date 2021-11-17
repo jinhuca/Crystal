@@ -852,7 +852,7 @@ namespace Crystal.Themes.Controls
 
       flyoutContent = GetTemplateChild("PART_Content") as FrameworkElement;
 
-      if (flyoutHeader is IMetroThumb thumb)
+      if (flyoutHeader is ICrystalThumb thumb)
       {
         thumb.PreviewMouseLeftButtonUp -= HeaderThumbOnPreviewMouseLeftButtonUp;
         thumb.DragDelta -= HeaderThumbMoveOnDragDelta;
@@ -885,7 +885,7 @@ namespace Crystal.Themes.Controls
 
     internal void CleanUp()
     {
-      if (flyoutHeader is IMetroThumb thumb)
+      if (flyoutHeader is ICrystalThumb thumb)
       {
         thumb.PreviewMouseLeftButtonUp -= HeaderThumbOnPreviewMouseLeftButtonUp;
         thumb.DragDelta -= HeaderThumbMoveOnDragDelta;
@@ -910,7 +910,7 @@ namespace Crystal.Themes.Controls
       var window = ParentWindow;
       if (window != null && Position != Position.Bottom)
       {
-        CrystalWindow.DoWindowTitleThumbMoveOnDragDelta(sender as IMetroThumb, window, dragDeltaEventArgs);
+        CrystalWindow.DoWindowTitleThumbMoveOnDragDelta(sender as ICrystalThumb, window, dragDeltaEventArgs);
       }
     }
 

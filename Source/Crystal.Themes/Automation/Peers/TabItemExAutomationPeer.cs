@@ -26,13 +26,13 @@
             var headerChildren = base.GetChildrenCore();
 
             // Only if the TabItem is selected we need to add its visual children
-            if (!(this.GetWrapper() is TabItem tabItem)
+            if (!(GetWrapper() is TabItem tabItem)
                 || tabItem.IsSelected == false)
             {
                 return headerChildren;
             }
 
-            if (!(this.ItemsControlAutomationPeer.Owner is TabControlEx parentTabControl))
+            if (!(ItemsControlAutomationPeer.Owner is TabControlEx parentTabControl))
             {
                 return headerChildren;
             }
@@ -65,7 +65,7 @@
         /// </summary>
         private UIElement? GetWrapper()
         {
-            var itemsControlAutomationPeer = this.ItemsControlAutomationPeer;
+            var itemsControlAutomationPeer = ItemsControlAutomationPeer;
 
             var owner = (TabControlEx?)itemsControlAutomationPeer?.Owner;
 
@@ -74,12 +74,12 @@
                 return null;
             }
 
-            if (owner.IsItemItsOwnContainer(this.Item))
+            if (owner.IsItemItsOwnContainer(Item))
             {
-                return this.Item as UIElement;
+                return Item as UIElement;
             }
 
-            return owner.ItemContainerGenerator.ContainerFromItem(this.Item) as UIElement;
+            return owner.ItemContainerGenerator.ContainerFromItem(Item) as UIElement;
         }
     }
 }

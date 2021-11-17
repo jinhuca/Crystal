@@ -7,7 +7,7 @@ namespace Crystal.Themes.Theming
     {
         public RuntimeThemeColorValues(RuntimeThemeOptions options)
         {
-            this.Options = options;
+            Options = options;
         }
 
         public RuntimeThemeOptions Options { get; }

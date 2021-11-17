@@ -15,9 +15,9 @@
             <Item Type="Crystal.Themes.Controls.MetroAnimatedTabControl" />
             <Item Type="Crystal.Themes.Controls.CrystalContentControl" />
             <Item Type="Crystal.Themes.Controls.CrystalHeader" />
-            <Item Type="Crystal.Themes.Controls.MetroProgressBar" />
-            <Item Type="Crystal.Themes.Controls.MetroTabControl" />
-            <Item Type="Crystal.Themes.Controls.MetroThumbContentControl" />
+            <Item Type="Crystal.Themes.Controls.CrystalProgressBar" />
+            <Item Type="Crystal.Themes.Controls.CrystalTabControl" />
+            <Item Type="Crystal.Themes.Controls.CrystalThumbContentControl" />
             <Item Type="Crystal.Themes.Controls.MultiSelectionComboBox" />
             <Item Type="Crystal.Themes.Controls.MultiFrameImage" />
             <Item Type="Crystal.Themes.Controls.NumericUpDown" />

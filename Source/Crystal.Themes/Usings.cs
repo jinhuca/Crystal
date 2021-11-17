@@ -18,3 +18,4 @@ global using System.Windows.Controls.Primitives;
 global using System.Collections.Specialized;
 global using System.Diagnostics;
 global using System.Windows.Documents;
+global using System.Collections.ObjectModel;

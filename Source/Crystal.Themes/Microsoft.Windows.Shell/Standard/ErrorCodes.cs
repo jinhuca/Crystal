@@ -91,10 +91,10 @@ namespace Crystal.Themes.Standard
         /// <param name="i">The integer value of the error.</param>
         public Win32Error(int i)
         {
-            this.value = i;
+            value = i;
         }
 
-        public int Error => this.value;
+        public int Error => value;
 
         /// <summary>Performs HRESULT_FROM_WIN32 conversion.</summary>
         /// <param name="error">The Win32 error being converted to an HRESULT.</param>
@@ -129,7 +129,7 @@ namespace Crystal.Themes.Standard
         {
             try
             {
-                return ((Win32Error)obj!).value == this.value;
+                return ((Win32Error)obj!).value == value;
             }
             catch (InvalidCastException)
             {
@@ -139,7 +139,7 @@ namespace Crystal.Themes.Standard
 
         public override int GetHashCode()
         {
-            return this.value.GetHashCode();
+            return value.GetHashCode();
         }
 
         /// <summary>
@@ -334,12 +334,12 @@ namespace Crystal.Themes.Standard
         /// </summary>
         public HRESULT(uint i)
         {
-            this.value = i;
+            value = i;
         }
 
         public HRESULT(int i)
         {
-            this.value = unchecked((uint)i);
+            value = unchecked((uint)i);
         }
 
         /// <summary>
@@ -354,7 +354,7 @@ namespace Crystal.Themes.Standard
         {
             unchecked
             {
-                return (int)this.value;
+                return (int)value;
             }
         }
 
@@ -383,7 +383,7 @@ namespace Crystal.Themes.Standard
         {
             get
             {
-                return GetFacility((int)this.value);
+                return GetFacility((int)value);
             }
         }
 
@@ -400,7 +400,7 @@ namespace Crystal.Themes.Standard
         {
             get
             {
-                return GetCode((int)this.value);
+                return GetCode((int)value);
             }
         }
 
@@ -441,7 +441,7 @@ namespace Crystal.Themes.Standard
             }
 
             // Try Win32 error codes also
-            if (this.Facility == Facility.Win32)
+            if (Facility == Facility.Win32)
             {
                 foreach (FieldInfo publicStaticField in typeof(Win32Error).GetFields(BindingFlags.Static | BindingFlags.Public))
                 {
@@ -458,14 +458,14 @@ namespace Crystal.Themes.Standard
 
             // If there's no good name for this HRESULT,
             // return the string as readable hex (0x########) format.
-            return string.Format(CultureInfo.InvariantCulture, "0x{0:X8}", this.value);
+            return string.Format(CultureInfo.InvariantCulture, "0x{0:X8}", value);
         }
 
         public override bool Equals(object? obj)
         {
             try
             {
-                return ((HRESULT)obj!).value == this.value;
+                return ((HRESULT)obj!).value == value;
             }
             catch (InvalidCastException)
             {
@@ -475,7 +475,7 @@ namespace Crystal.Themes.Standard
 
         public override int GetHashCode()
         {
-            return this.value.GetHashCode();
+            return value.GetHashCode();
         }
 
         #endregion
@@ -492,31 +492,31 @@ namespace Crystal.Themes.Standard
 
         public bool Succeeded
         {
-            get { return (int)this.value >= 0; }
+            get { return (int)value >= 0; }
         }
 
         public bool Failed
         {
-            get { return (int)this.value < 0; }
+            get { return (int)value < 0; }
         }
 
         public void ThrowIfFailed()
         {
-            this.ThrowIfFailed(null);
+            ThrowIfFailed(null);
         }
 
         public void ThrowIfFailed(string? message)
         {
-            if (this.Failed)
+            if (Failed)
             {
                 if (string.IsNullOrEmpty(message))
                 {
-                    message = this.ToString();
+                    message = ToString();
                 }
 #if DEBUG
                 else
                 {
-                    message += " (" + this.ToString() + ")";
+                    message += " (" + ToString() + ")";
                 }
 #endif
                 // Wow.  Reflection in a throw call.  Later on this may turn out to have been a bad idea.
@@ -530,7 +530,7 @@ namespace Crystal.Themes.Standard
                 // the process of implementing an IErrorInfo and then use that.  There's no stock
                 // implementations of IErrorInfo available and I don't think it's worth the maintenance
                 // overhead of doing it, nor would it have significant value over this approach.
-                var e = Marshal.GetExceptionForHR((int)this.value, new IntPtr(-1));
+                var e = Marshal.GetExceptionForHR((int)value, new IntPtr(-1));
                 Assert.IsNotNull(e);
                 // ArgumentNullException doesn't have the right constructor parameters,
                 // (nor does Win32Exception...)
@@ -542,13 +542,13 @@ namespace Crystal.Themes.Standard
                 // then at least check the facility and attempt to do better ourselves.
                 if (e!.GetType() == typeof(COMException))
                 {
-                    switch (this.Facility)
+                    switch (Facility)
                     {
                         case Facility.Win32:
-                            e = new Win32Exception(this.Code, message);
+                            e = new Win32Exception(Code, message);
                             break;
                         default:
-                            e = new COMException(message, (int)this.value);
+                            e = new COMException(message, (int)value);
                             break;
                     }
                 }

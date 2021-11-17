@@ -75,7 +75,7 @@
             </Border.RenderTransform>
             <AdornerDecorator>
                 <DockPanel FocusVisualStyle="{x:Null}" Focusable="False">
-                    <crystal:MetroThumbContentControl x:Name="PART_Header"
+                    <crystal:CrystalThumbContentControl x:Name="PART_Header"
                                                   Padding="{TemplateBinding crystal:HeaderedControlHelper.HeaderMargin}"
                                                   Content="{TemplateBinding Header}"
                                                   ContentCharacterCasing="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.ContentCharacterCasing)}"

@@ -44,8 +44,8 @@
     /// </summary>
     public object Badge
     {
-      get => (object)this.GetValue(BadgeProperty);
-      set => this.SetValue(BadgeProperty, value);
+      get => (object)GetValue(BadgeProperty);
+      set => SetValue(BadgeProperty, value);
     }
 
     /// <summary>Identifies the <see cref="BadgeFontFamily"/> dependency property.</summary>
@@ -64,8 +64,8 @@
     [Localizability(LocalizationCategory.Font)]
     public FontFamily BadgeFontFamily
     {
-      get => (FontFamily)this.GetValue(BadgeFontFamilyProperty);
-      set => this.SetValue(BadgeFontFamilyProperty, value);
+      get => (FontFamily)GetValue(BadgeFontFamilyProperty);
+      set => SetValue(BadgeFontFamilyProperty, value);
     }
 
     /// <summary>Identifies the <see cref="BadgeFontStyle"/> dependency property.</summary>
@@ -83,8 +83,8 @@
     [Bindable(true)]
     public FontStyle BadgeFontStyle
     {
-      get => (FontStyle)this.GetValue(BadgeFontStyleProperty);
-      set => this.SetValue(BadgeFontStyleProperty, value);
+      get => (FontStyle)GetValue(BadgeFontStyleProperty);
+      set => SetValue(BadgeFontStyleProperty, value);
     }
 
     /// <summary>Identifies the <see cref="BadgeFontWeight"/> dependency property.</summary>
@@ -102,8 +102,8 @@
     [Bindable(true)]
     public FontWeight BadgeFontWeight
     {
-      get => (FontWeight)this.GetValue(BadgeFontWeightProperty);
-      set => this.SetValue(BadgeFontWeightProperty, value);
+      get => (FontWeight)GetValue(BadgeFontWeightProperty);
+      set => SetValue(BadgeFontWeightProperty, value);
     }
 
     /// <summary>Identifies the <see cref="BadgeFontStretch"/> dependency property.</summary>
@@ -121,8 +121,8 @@
     [Bindable(true)]
     public FontStretch BadgeFontStretch
     {
-      get => (FontStretch)this.GetValue(BadgeFontStretchProperty);
-      set => this.SetValue(BadgeFontStretchProperty, value);
+      get => (FontStretch)GetValue(BadgeFontStretchProperty);
+      set => SetValue(BadgeFontStretchProperty, value);
     }
 
     /// <summary>Identifies the <see cref="BadgeFontSize"/> dependency property.</summary>
@@ -141,8 +141,8 @@
     [Localizability(LocalizationCategory.None)]
     public double BadgeFontSize
     {
-      get => (double)this.GetValue(BadgeFontSizeProperty);
-      set => this.SetValue(BadgeFontSizeProperty, value);
+      get => (double)GetValue(BadgeFontSizeProperty);
+      set => SetValue(BadgeFontSizeProperty, value);
     }
 
     /// <summary>Identifies the <see cref="BadgeBackground"/> dependency property.</summary>
@@ -157,8 +157,8 @@
     /// </summary>
     public Brush? BadgeBackground
     {
-      get => (Brush?)this.GetValue(BadgeBackgroundProperty);
-      set => this.SetValue(BadgeBackgroundProperty, value);
+      get => (Brush?)GetValue(BadgeBackgroundProperty);
+      set => SetValue(BadgeBackgroundProperty, value);
     }
 
     /// <summary>Identifies the <see cref="BadgeForeground"/> dependency property.</summary>
@@ -173,8 +173,8 @@
     /// </summary>
     public Brush? BadgeForeground
     {
-      get => (Brush?)this.GetValue(BadgeForegroundProperty);
-      set => this.SetValue(BadgeForegroundProperty, value);
+      get => (Brush?)GetValue(BadgeForegroundProperty);
+      set => SetValue(BadgeForegroundProperty, value);
     }
 
     /// <summary>Identifies the <see cref="BadgeBorderBrush"/> dependency property.</summary>
@@ -189,8 +189,8 @@
     /// </summary>
     public Brush? BadgeBorderBrush
     {
-      get => (Brush?)this.GetValue(BadgeBorderBrushProperty);
-      set => this.SetValue(BadgeBorderBrushProperty, value);
+      get => (Brush?)GetValue(BadgeBorderBrushProperty);
+      set => SetValue(BadgeBorderBrushProperty, value);
     }
 
     /// <summary>Identifies the <see cref="BadgeBorderThickness"/> dependency property.</summary>
@@ -205,8 +205,8 @@
     /// </summary>
     public Thickness BadgeBorderThickness
     {
-      get => (Thickness)this.GetValue(BadgeBorderThicknessProperty);
-      set => this.SetValue(BadgeBorderThicknessProperty, value);
+      get => (Thickness)GetValue(BadgeBorderThicknessProperty);
+      set => SetValue(BadgeBorderThicknessProperty, value);
     }
 
     /// <summary>Identifies the <see cref="BadgePlacementMode"/> dependency property.</summary>
@@ -221,8 +221,8 @@
     /// </summary>
     public BadgePlacementMode BadgePlacementMode
     {
-      get => (BadgePlacementMode)this.GetValue(BadgePlacementModeProperty);
-      set => this.SetValue(BadgePlacementModeProperty, value);
+      get => (BadgePlacementMode)GetValue(BadgePlacementModeProperty);
+      set => SetValue(BadgePlacementModeProperty, value);
     }
 
     /// <summary>Identifies the <see cref="BadgeMargin"/> dependency property.</summary>
@@ -237,8 +237,8 @@
     /// </summary>
     public Thickness BadgeMargin
     {
-      get => (Thickness)this.GetValue(BadgeMarginProperty);
-      set => this.SetValue(BadgeMarginProperty, value);
+      get => (Thickness)GetValue(BadgeMarginProperty);
+      set => SetValue(BadgeMarginProperty, value);
     }
 
     /// <summary>Identifies the <see cref="BadgeTemplate"/> dependency property.</summary>
@@ -253,8 +253,8 @@
     /// </summary>
     public DataTemplate? BadgeTemplate
     {
-      get => (DataTemplate?)this.GetValue(BadgeTemplateProperty);
-      set => this.SetValue(BadgeTemplateProperty, value);
+      get => (DataTemplate?)GetValue(BadgeTemplateProperty);
+      set => SetValue(BadgeTemplateProperty, value);
     }
 
     /// <summary>Identifies the <see cref="BadgeTemplateSelector"/> dependency property.</summary>
@@ -269,8 +269,8 @@
     /// </summary>
     public DataTemplateSelector? BadgeTemplateSelector
     {
-      get => (DataTemplateSelector?)this.GetValue(BadgeTemplateSelectorProperty);
-      set => this.SetValue(BadgeTemplateSelectorProperty, value);
+      get => (DataTemplateSelector?)GetValue(BadgeTemplateSelectorProperty);
+      set => SetValue(BadgeTemplateSelectorProperty, value);
     }
 
     /// <summary>Identifies the <see cref="BadgeStringFormat"/> dependency property.</summary>
@@ -288,8 +288,8 @@
     /// </remarks>
     public string? BadgeStringFormat
     {
-      get => (string?)this.GetValue(BadgeStringFormatProperty);
-      set => this.SetValue(BadgeStringFormatProperty, value);
+      get => (string?)GetValue(BadgeStringFormatProperty);
+      set => SetValue(BadgeStringFormatProperty, value);
     }
 
     public static readonly RoutedEvent BadgeChangedEvent
@@ -300,8 +300,8 @@
 
     public event RoutedPropertyChangedEventHandler<object> BadgeChanged
     {
-      add => this.AddHandler(BadgeChangedEvent, value);
-      remove => this.RemoveHandler(BadgeChangedEvent, value);
+      add => AddHandler(BadgeChangedEvent, value);
+      remove => RemoveHandler(BadgeChangedEvent, value);
     }
 
     private static readonly DependencyPropertyKey IsBadgeSetPropertyKey
@@ -318,8 +318,8 @@
     /// </summary>
     public bool IsBadgeSet
     {
-      get => (bool)this.GetValue(IsBadgeSetProperty);
-      private set => this.SetValue(IsBadgeSetPropertyKey, value);
+      get => (bool)GetValue(IsBadgeSetProperty);
+      private set => SetValue(IsBadgeSetPropertyKey, value);
     }
 
     private static void OnBadgeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -341,32 +341,32 @@
     {
       base.OnApplyTemplate();
 
-      this._badgeContainer = this.GetTemplateChild(BadgeContainerPartName) as FrameworkElement;
+      _badgeContainer = GetTemplateChild(BadgeContainerPartName) as FrameworkElement;
     }
 
     protected override Size ArrangeOverride(Size arrangeBounds)
     {
       var result = base.ArrangeOverride(arrangeBounds);
 
-      if (this._badgeContainer is null)
+      if (_badgeContainer is null)
       {
         return result;
       }
 
-      var containerDesiredSize = this._badgeContainer.DesiredSize;
+      var containerDesiredSize = _badgeContainer.DesiredSize;
       if ((containerDesiredSize.Width <= 0.0 || containerDesiredSize.Height <= 0.0)
-          && !double.IsNaN(this._badgeContainer.ActualWidth)
-          && !double.IsInfinity(this._badgeContainer.ActualWidth)
-          && !double.IsNaN(this._badgeContainer.ActualHeight)
-          && !double.IsInfinity(this._badgeContainer.ActualHeight))
+          && !double.IsNaN(_badgeContainer.ActualWidth)
+          && !double.IsInfinity(_badgeContainer.ActualWidth)
+          && !double.IsNaN(_badgeContainer.ActualHeight)
+          && !double.IsInfinity(_badgeContainer.ActualHeight))
       {
-        containerDesiredSize = new Size(this._badgeContainer.ActualWidth, this._badgeContainer.ActualHeight);
+        containerDesiredSize = new Size(_badgeContainer.ActualWidth, _badgeContainer.ActualHeight);
       }
 
       var h = 0 - (containerDesiredSize.Width / 2);
       var v = 0 - (containerDesiredSize.Height / 2);
-      this._badgeContainer.Margin = new Thickness(0);
-      this._badgeContainer.Margin = new Thickness(h, v, h, v);
+      _badgeContainer.Margin = new Thickness(0);
+      _badgeContainer.Margin = new Thickness(h, v, h, v);
 
       return result;
     }

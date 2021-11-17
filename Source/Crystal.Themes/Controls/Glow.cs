@@ -6,10 +6,29 @@ namespace Crystal.Themes.Controls
 {
   public class Glow : Control
   {
-    public static readonly DependencyProperty GlowBrushProperty = DependencyProperty.Register(nameof(GlowBrush), typeof(Brush), typeof(Glow), new UIPropertyMetadata(Brushes.Transparent));
-    public static readonly DependencyProperty NonActiveGlowBrushProperty = DependencyProperty.Register(nameof(NonActiveGlowBrush), typeof(Brush), typeof(Glow), new UIPropertyMetadata(Brushes.Transparent));
-    public static readonly DependencyProperty IsGlowProperty = DependencyProperty.Register(nameof(IsGlow), typeof(bool), typeof(Glow), new UIPropertyMetadata(true));
-    public static readonly DependencyProperty DirectionProperty = DependencyProperty.Register(nameof(Direction), typeof(GlowDirection), typeof(Glow), new UIPropertyMetadata(GlowDirection.Top));
+    public static readonly DependencyProperty GlowBrushProperty = DependencyProperty.Register(
+      nameof(GlowBrush), 
+      typeof(Brush), 
+      typeof(Glow), 
+      new UIPropertyMetadata(Brushes.Transparent));
+
+    public static readonly DependencyProperty NonActiveGlowBrushProperty = DependencyProperty.Register(
+      nameof(NonActiveGlowBrush), 
+      typeof(Brush), 
+      typeof(Glow), 
+      new UIPropertyMetadata(Brushes.Transparent));
+    
+    public static readonly DependencyProperty IsGlowProperty = DependencyProperty.Register(
+      nameof(IsGlow), 
+      typeof(bool), 
+      typeof(Glow), 
+      new UIPropertyMetadata(true));
+
+    public static readonly DependencyProperty DirectionProperty = DependencyProperty.Register(
+      nameof(Direction), 
+      typeof(GlowDirection), 
+      typeof(Glow), 
+      new UIPropertyMetadata(GlowDirection.Top));
 
     static Glow()
     {
@@ -18,26 +37,26 @@ namespace Crystal.Themes.Controls
 
     public Brush GlowBrush
     {
-      get => (Brush)this.GetValue(GlowBrushProperty);
-      set => this.SetValue(GlowBrushProperty, value);
+      get => (Brush)GetValue(GlowBrushProperty);
+      set => SetValue(GlowBrushProperty, value);
     }
 
     public Brush NonActiveGlowBrush
     {
-      get => (Brush)this.GetValue(NonActiveGlowBrushProperty);
-      set => this.SetValue(NonActiveGlowBrushProperty, value);
+      get => (Brush)GetValue(NonActiveGlowBrushProperty);
+      set => SetValue(NonActiveGlowBrushProperty, value);
     }
 
     public bool IsGlow
     {
-      get => (bool)this.GetValue(IsGlowProperty);
-      set => this.SetValue(IsGlowProperty, value);
+      get => (bool)GetValue(IsGlowProperty);
+      set => SetValue(IsGlowProperty, value);
     }
 
     public GlowDirection Direction
     {
-      get => (GlowDirection)this.GetValue(DirectionProperty);
-      set => this.SetValue(DirectionProperty, value);
+      get => (GlowDirection)GetValue(DirectionProperty);
+      set => SetValue(DirectionProperty, value);
     }
   }
 }

@@ -1551,7 +1551,7 @@ namespace Crystal.Themes.Controls
         windowTitleThumb.MouseRightButtonUp -= WindowTitleThumbSystemMenuOnMouseRightButtonUp;
       }
 
-      if (titleBar is IMetroThumb thumbContentControl)
+      if (titleBar is ICrystalThumb thumbContentControl)
       {
         thumbContentControl.PreviewMouseLeftButtonUp -= WindowTitleThumbOnPreviewMouseLeftButtonUp;
         thumbContentControl.DragDelta -= WindowTitleThumbMoveOnDragDelta;
@@ -1594,7 +1594,7 @@ namespace Crystal.Themes.Controls
         windowTitleThumb.MouseRightButtonUp += WindowTitleThumbSystemMenuOnMouseRightButtonUp;
       }
 
-      if (titleBar is IMetroThumb thumbContentControl)
+      if (titleBar is ICrystalThumb thumbContentControl)
       {
         thumbContentControl.PreviewMouseLeftButtonUp += WindowTitleThumbOnPreviewMouseLeftButtonUp;
         thumbContentControl.DragDelta += WindowTitleThumbMoveOnDragDelta;
@@ -1641,7 +1641,7 @@ namespace Crystal.Themes.Controls
 
     private void WindowTitleThumbMoveOnDragDelta(object sender, DragDeltaEventArgs dragDeltaEventArgs)
     {
-      DoWindowTitleThumbMoveOnDragDelta(sender as IMetroThumb, this, dragDeltaEventArgs);
+      DoWindowTitleThumbMoveOnDragDelta(sender as ICrystalThumb, this, dragDeltaEventArgs);
     }
 
     private void WindowTitleThumbChangeWindowStateOnMouseDoubleClick(object sender, MouseButtonEventArgs mouseButtonEventArgs)
@@ -1662,7 +1662,7 @@ namespace Crystal.Themes.Controls
       }
     }
 
-    internal static void DoWindowTitleThumbMoveOnDragDelta(IMetroThumb? thumb, CrystalWindow? window, DragDeltaEventArgs dragDeltaEventArgs)
+    internal static void DoWindowTitleThumbMoveOnDragDelta(ICrystalThumb? thumb, CrystalWindow? window, DragDeltaEventArgs dragDeltaEventArgs)
     {
       if (thumb is null)
       {

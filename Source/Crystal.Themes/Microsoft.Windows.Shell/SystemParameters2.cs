@@ -56,13 +56,13 @@ namespace Crystal.Themes.Windows.Shell
 
         private void _InitializeIsGlassEnabled()
         {
-            this.IsGlassEnabled = NativeMethods.DwmIsCompositionEnabled();
+            IsGlassEnabled = NativeMethods.DwmIsCompositionEnabled();
         }
 
         private void _UpdateIsGlassEnabled(IntPtr wParam, IntPtr lParam)
         {
             // Neither the wParam or lParam are used in this case.
-            this._InitializeIsGlassEnabled();
+            _InitializeIsGlassEnabled();
         }
 
         private void _InitializeGlassColor()
@@ -72,12 +72,12 @@ namespace Crystal.Themes.Windows.Shell
             NativeMethods.DwmGetColorizationColor(out color, out isOpaque);
             color |= isOpaque ? 0xFF000000 : 0;
 
-            this.WindowGlassColor = Utility.ColorFromArgbDword(color);
+            WindowGlassColor = Utility.ColorFromArgbDword(color);
 
-            var glassBrush = new SolidColorBrush(this.WindowGlassColor);
+            var glassBrush = new SolidColorBrush(WindowGlassColor);
             glassBrush.Freeze();
 
-            this.WindowGlassBrush = glassBrush;
+            WindowGlassBrush = glassBrush;
         }
 
         private void _UpdateGlassColor(IntPtr wParam, IntPtr lParam)
@@ -85,21 +85,21 @@ namespace Crystal.Themes.Windows.Shell
             bool isOpaque = lParam != IntPtr.Zero;
             uint color = unchecked((uint)(int)wParam.ToInt64());
             color |= isOpaque ? 0xFF000000 : 0;
-            this.WindowGlassColor = Utility.ColorFromArgbDword(color);
-            var glassBrush = new SolidColorBrush(this.WindowGlassColor);
+            WindowGlassColor = Utility.ColorFromArgbDword(color);
+            var glassBrush = new SolidColorBrush(WindowGlassColor);
             glassBrush.Freeze();
-            this.WindowGlassBrush = glassBrush;
+            WindowGlassBrush = glassBrush;
         }
 
         private void _InitializeCaptionHeight()
         {
             Point ptCaption = new Point(0, NativeMethods.GetSystemMetrics(SM.CYCAPTION));
-            this.WindowCaptionHeight = DpiHelper.DevicePixelsToLogical(ptCaption, SystemParameters2.DpiX / 96.0, SystemParameters2.Dpi / 96.0).Y;
+            WindowCaptionHeight = DpiHelper.DevicePixelsToLogical(ptCaption, SystemParameters2.DpiX / 96.0, SystemParameters2.Dpi / 96.0).Y;
         }
 
         private void _UpdateCaptionHeight(IntPtr wParam, IntPtr lParam)
         {
-            this._InitializeCaptionHeight();
+            _InitializeCaptionHeight();
         }
 
         private void _InitializeWindowResizeBorderThickness()
@@ -108,12 +108,12 @@ namespace Crystal.Themes.Windows.Shell
                 NativeMethods.GetSystemMetrics(SM.CXSIZEFRAME),
                 NativeMethods.GetSystemMetrics(SM.CYSIZEFRAME));
             Size frameSizeInDips = DpiHelper.DeviceSizeToLogical(frameSize, SystemParameters2.DpiX / 96.0, SystemParameters2.Dpi / 96.0);
-            this.WindowResizeBorderThickness = new Thickness(frameSizeInDips.Width, frameSizeInDips.Height, frameSizeInDips.Width, frameSizeInDips.Height);
+            WindowResizeBorderThickness = new Thickness(frameSizeInDips.Width, frameSizeInDips.Height, frameSizeInDips.Width, frameSizeInDips.Height);
         }
 
         private void _UpdateWindowResizeBorderThickness(IntPtr wParam, IntPtr lParam)
         {
-            this._InitializeWindowResizeBorderThickness();
+            _InitializeWindowResizeBorderThickness();
         }
 
         private void _InitializeWindowNonClientFrameThickness()
@@ -124,24 +124,24 @@ namespace Crystal.Themes.Windows.Shell
             Size frameSizeInDips = DpiHelper.DeviceSizeToLogical(frameSize, SystemParameters2.DpiX / 96.0, SystemParameters2.Dpi / 96.0);
             int captionHeight = NativeMethods.GetSystemMetrics(SM.CYCAPTION);
             double captionHeightInDips = DpiHelper.DevicePixelsToLogical(new Point(0, captionHeight), SystemParameters2.DpiX / 96.0, SystemParameters2.Dpi / 96.0).Y;
-            this.WindowNonClientFrameThickness = new Thickness(frameSizeInDips.Width, frameSizeInDips.Height + captionHeightInDips, frameSizeInDips.Width, frameSizeInDips.Height);
+            WindowNonClientFrameThickness = new Thickness(frameSizeInDips.Width, frameSizeInDips.Height + captionHeightInDips, frameSizeInDips.Width, frameSizeInDips.Height);
         }
 
         private void _UpdateWindowNonClientFrameThickness(IntPtr wParam, IntPtr lParam)
         {
-            this._InitializeWindowNonClientFrameThickness();
+            _InitializeWindowNonClientFrameThickness();
         }
 
         private void _InitializeSmallIconSize()
         {
-            this.SmallIconSize = new Size(
+            SmallIconSize = new Size(
                 NativeMethods.GetSystemMetrics(SM.CXSMICON),
                 NativeMethods.GetSystemMetrics(SM.CYSMICON));
         }
 
         private void _UpdateSmallIconSize(IntPtr wParam, IntPtr lParam)
         {
-            this._InitializeSmallIconSize();
+            _InitializeSmallIconSize();
         }
 
         private void _LegacyInitializeCaptionButtonLocation()
@@ -157,7 +157,7 @@ namespace Crystal.Themes.Windows.Shell
             Rect captionRect = new Rect(0, 0, captionX * 3, captionY);
             captionRect.Offset(-frameX - captionRect.Width, frameY);
 
-            this.WindowCaptionButtonsLocation = captionRect;
+            WindowCaptionButtonsLocation = captionRect;
         }
 
         private void _InitializeCaptionButtonLocation()
@@ -165,7 +165,7 @@ namespace Crystal.Themes.Windows.Shell
             // There is a completely different way to do this on XP.
             if (!Utility.IsOSVistaOrNewer || !NativeMethods.IsThemeActive())
             {
-                this._LegacyInitializeCaptionButtonLocation();
+                _LegacyInitializeCaptionButtonLocation();
                 return;
             }
 
@@ -177,13 +177,13 @@ namespace Crystal.Themes.Windows.Shell
                 // This might flash a window in the taskbar while being calculated.
                 // WM_GETTITLEBARINFOEX doesn't work correctly unless the window is visible while processing.
                 // use SW.SHOWNA instead SW.SHOW to avoid some brief flashing when launched the window
-                NativeMethods.ShowWindow(this._messageHwnd!.Handle, SW.SHOWNA);
-                NativeMethods.SendMessage(this._messageHwnd.Handle, WM.GETTITLEBARINFOEX, IntPtr.Zero, lParam);
+                NativeMethods.ShowWindow(_messageHwnd!.Handle, SW.SHOWNA);
+                NativeMethods.SendMessage(_messageHwnd.Handle, WM.GETTITLEBARINFOEX, IntPtr.Zero, lParam);
                 tbix = (TITLEBARINFOEX)Marshal.PtrToStructure(lParam, typeof(TITLEBARINFOEX))!;
             }
             finally
             {
-                NativeMethods.ShowWindow(this._messageHwnd!.Handle, SW.HIDE);
+                NativeMethods.ShowWindow(_messageHwnd!.Handle, SW.HIDE);
                 Utility.SafeFreeHGlobal(ref lParam);
             }
 
@@ -193,7 +193,7 @@ namespace Crystal.Themes.Windows.Shell
             // For all known themes, the RECT for the maximize box shouldn't add anything to the union of the minimize and close boxes.
             Assert.AreEqual(rcAllCaptionButtons, RECT.Union(rcAllCaptionButtons, tbix.rgrect_MaximizeButton));
 
-            RECT rcWindow = NativeMethods.GetWindowRect(this._messageHwnd.Handle);
+            RECT rcWindow = NativeMethods.GetWindowRect(_messageHwnd.Handle);
 
             // Reorient the Top/Right to be relative to the top right edge of the Window.
             var deviceCaptionLocation = new Rect(
@@ -204,31 +204,31 @@ namespace Crystal.Themes.Windows.Shell
 
             Rect logicalCaptionLocation = DpiHelper.DeviceRectToLogical(deviceCaptionLocation, SystemParameters2.DpiX / 96.0, SystemParameters2.Dpi / 96.0);
 
-            this.WindowCaptionButtonsLocation = logicalCaptionLocation;
+            WindowCaptionButtonsLocation = logicalCaptionLocation;
         }
 
         private void _UpdateCaptionButtonLocation(IntPtr wParam, IntPtr lParam)
         {
-            this._InitializeCaptionButtonLocation();
+            _InitializeCaptionButtonLocation();
         }
 
         private void _InitializeHighContrast()
         {
             HIGHCONTRAST hc = NativeMethods.SystemParameterInfo_GetHIGHCONTRAST();
-            this.HighContrast = (hc.dwFlags & HCF.HIGHCONTRASTON) != 0;
+            HighContrast = (hc.dwFlags & HCF.HIGHCONTRASTON) != 0;
         }
 
         private void _UpdateHighContrast(IntPtr wParam, IntPtr lParam)
         {
-            this._InitializeHighContrast();
+            _InitializeHighContrast();
         }
 
         private void _InitializeThemeInfo()
         {
             if (!NativeMethods.IsThemeActive())
             {
-                this.UxThemeName = "Classic";
-                this.UxThemeColor = string.Empty;
+                UxThemeName = "Classic";
+                UxThemeColor = string.Empty;
                 return;
             }
 
@@ -244,19 +244,19 @@ namespace Crystal.Themes.Windows.Shell
                 NativeMethods.GetCurrentThemeName(out name, out color, out size);
 
                 // Consider whether this is the most useful way to expose this...
-                this.UxThemeName = System.IO.Path.GetFileNameWithoutExtension(name);
-                this.UxThemeColor = color;
+                UxThemeName = System.IO.Path.GetFileNameWithoutExtension(name);
+                UxThemeColor = color;
             }
             catch (Exception)
             {
-                this.UxThemeName = "Classic";
-                this.UxThemeColor = string.Empty;
+                UxThemeName = "Classic";
+                UxThemeColor = string.Empty;
             }
         }
 
         private void _UpdateThemeInfo(IntPtr wParam, IntPtr lParam)
         {
-            this._InitializeThemeInfo();
+            _InitializeThemeInfo();
         }
 
         private void _InitializeWindowCornerRadius()
@@ -264,7 +264,7 @@ namespace Crystal.Themes.Windows.Shell
             // The radius of window corners isn't exposed as a true system parameter.
             // It instead is a logical size that we're approximating based on the current theme.
             // There aren't any known variations based on theme color.
-            Assert.IsNeitherNullNorEmpty(this.UxThemeName);
+            Assert.IsNeitherNullNorEmpty(UxThemeName);
 
             // These radii are approximate.  The way WPF does rounding is different than how
             //     rounded-rectangle HRGNs are created, which is also different than the actual
@@ -277,7 +277,7 @@ namespace Crystal.Themes.Windows.Shell
             // "Zune" and "Royale", but WPF doesn't know about these either.
             // If a new theme was to replace Aero, then this will fall back on "classic" behaviors.
             // This isn't ideal, but it's not the end of the world.  WPF will generally have problems anyways.
-            switch (this.UxThemeName.ToUpperInvariant())
+            switch (UxThemeName.ToUpperInvariant())
             {
                 case "LUNA":
                     cornerRadius = new CornerRadius(6, 6, 0, 0);
@@ -302,13 +302,13 @@ namespace Crystal.Themes.Windows.Shell
                     break;
             }
 
-            this.WindowCornerRadius = cornerRadius;
+            WindowCornerRadius = cornerRadius;
         }
 
         private void _UpdateWindowCornerRadius(IntPtr wParam, IntPtr lParam)
         {
             // Neither the wParam or lParam are used in this case.
-            this._InitializeWindowCornerRadius();
+            _InitializeWindowCornerRadius();
         }
 
         #endregion
@@ -323,49 +323,49 @@ namespace Crystal.Themes.Windows.Shell
             // This window gets used for calculations about standard caption button locations
             // so it has WS_OVERLAPPEDWINDOW as a style to give it normal caption buttons.
             // This window may be shown during calculations of caption bar information, so create it at a location that's likely offscreen.
-            this._messageHwnd = new MessageWindow((CS)0, WS.OVERLAPPEDWINDOW | WS.DISABLED, (WS_EX)0, new Rect(-16000, -16000, 100, 100), string.Empty, this._WndProc);
-            this._messageHwnd.Dispatcher.ShutdownStarted += (sender, e) => Utility.SafeDispose(ref this._messageHwnd);
+            _messageHwnd = new MessageWindow((CS)0, WS.OVERLAPPEDWINDOW | WS.DISABLED, (WS_EX)0, new Rect(-16000, -16000, 100, 100), string.Empty, _WndProc);
+            _messageHwnd.Dispatcher.ShutdownStarted += (sender, e) => Utility.SafeDispose(ref _messageHwnd);
 
             // Fixup the default values of the DPs.
-            this._InitializeIsGlassEnabled();
-            this._InitializeGlassColor();
-            this._InitializeCaptionHeight();
-            this._InitializeWindowNonClientFrameThickness();
-            this._InitializeWindowResizeBorderThickness();
-            this._InitializeCaptionButtonLocation();
-            this._InitializeSmallIconSize();
-            this._InitializeHighContrast();
-            this._InitializeThemeInfo();
+            _InitializeIsGlassEnabled();
+            _InitializeGlassColor();
+            _InitializeCaptionHeight();
+            _InitializeWindowNonClientFrameThickness();
+            _InitializeWindowResizeBorderThickness();
+            _InitializeCaptionButtonLocation();
+            _InitializeSmallIconSize();
+            _InitializeHighContrast();
+            _InitializeThemeInfo();
             // WindowCornerRadius isn't exposed by true system parameters, so it requires the theme to be initialized first.
-            this._InitializeWindowCornerRadius();
+            _InitializeWindowCornerRadius();
 
-            this._UpdateTable = new Dictionary<WM, List<_SystemMetricUpdate>>
+            _UpdateTable = new Dictionary<WM, List<_SystemMetricUpdate>>
             {
                 {
                     WM.THEMECHANGED,
                     new List<_SystemMetricUpdate>
                     {
-                        this._UpdateThemeInfo,
-                        this._UpdateHighContrast,
-                        this._UpdateWindowCornerRadius,
-                        this._UpdateCaptionButtonLocation,
+                        _UpdateThemeInfo,
+                        _UpdateHighContrast,
+                        _UpdateWindowCornerRadius,
+                        _UpdateCaptionButtonLocation,
                     }
                 },
                 {
                     WM.SETTINGCHANGE,
                     new List<_SystemMetricUpdate>
                     {
-                        this._UpdateCaptionHeight,
-                        this._UpdateWindowResizeBorderThickness,
-                        this._UpdateSmallIconSize,
-                        this._UpdateHighContrast,
-                        this._UpdateWindowNonClientFrameThickness,
-                        this._UpdateCaptionButtonLocation,
+                        _UpdateCaptionHeight,
+                        _UpdateWindowResizeBorderThickness,
+                        _UpdateSmallIconSize,
+                        _UpdateHighContrast,
+                        _UpdateWindowNonClientFrameThickness,
+                        _UpdateCaptionButtonLocation,
                     }
                 },
-                { WM.DWMNCRENDERINGCHANGED, new List<_SystemMetricUpdate> { this._UpdateIsGlassEnabled } },
-                { WM.DWMCOMPOSITIONCHANGED, new List<_SystemMetricUpdate> { this._UpdateIsGlassEnabled } },
-                { WM.DWMCOLORIZATIONCOLORCHANGED, new List<_SystemMetricUpdate> { this._UpdateGlassColor } },
+                { WM.DWMNCRENDERINGCHANGED, new List<_SystemMetricUpdate> { _UpdateIsGlassEnabled } },
+                { WM.DWMCOMPOSITIONCHANGED, new List<_SystemMetricUpdate> { _UpdateIsGlassEnabled } },
+                { WM.DWMCOLORIZATIONCOLORCHANGED, new List<_SystemMetricUpdate> { _UpdateGlassColor } },
             };
         }
 
@@ -385,10 +385,10 @@ namespace Crystal.Themes.Windows.Shell
         private IntPtr _WndProc(IntPtr hwnd, WM msg, IntPtr wParam, IntPtr lParam)
         {
             // Don't do this if called within the SystemParameters2 constructor
-            if (this._UpdateTable is not null)
+            if (_UpdateTable is not null)
             {
                 List<_SystemMetricUpdate>? handlers;
-                if (this._UpdateTable.TryGetValue(msg, out handlers))
+                if (_UpdateTable.TryGetValue(msg, out handlers))
                 {
                     Assert.IsNotNull(handlers);
                     foreach (var handler in handlers)
@@ -413,166 +413,166 @@ namespace Crystal.Themes.Windows.Shell
             
             private set
             {
-                if (value != this._isGlassEnabled)
+                if (value != _isGlassEnabled)
                 {
-                    this._isGlassEnabled = value;
-                    this._NotifyPropertyChanged("IsGlassEnabled");
+                    _isGlassEnabled = value;
+                    _NotifyPropertyChanged("IsGlassEnabled");
                 }
             }
         }
 
         public Color WindowGlassColor
         {
-            get { return this._glassColor; }
+            get { return _glassColor; }
             
             private set
             {
-                if (value != this._glassColor)
+                if (value != _glassColor)
                 {
-                    this._glassColor = value;
-                    this._NotifyPropertyChanged("WindowGlassColor");
+                    _glassColor = value;
+                    _NotifyPropertyChanged("WindowGlassColor");
                 }
             }
         }
 
         public SolidColorBrush WindowGlassBrush
         {
-            get { return this._glassColorBrush; }
+            get { return _glassColorBrush; }
             
             private set
             {
                 Assert.IsNotNull(value);
                 Assert.IsTrue(value.IsFrozen);
-                if (this._glassColorBrush is null || value.Color != this._glassColorBrush.Color)
+                if (_glassColorBrush is null || value.Color != _glassColorBrush.Color)
                 {
-                    this._glassColorBrush = value;
-                    this._NotifyPropertyChanged("WindowGlassBrush");
+                    _glassColorBrush = value;
+                    _NotifyPropertyChanged("WindowGlassBrush");
                 }
             }
         }
 
         public Thickness WindowResizeBorderThickness
         {
-            get { return this._windowResizeBorderThickness; }
+            get { return _windowResizeBorderThickness; }
 
             private set
             {
-                if (value != this._windowResizeBorderThickness)
+                if (value != _windowResizeBorderThickness)
                 {
-                    this._windowResizeBorderThickness = value;
-                    this._NotifyPropertyChanged("WindowResizeBorderThickness");
+                    _windowResizeBorderThickness = value;
+                    _NotifyPropertyChanged("WindowResizeBorderThickness");
                 }
             }
         }
 
         public Thickness WindowNonClientFrameThickness
         {
-            get { return this._windowNonClientFrameThickness; }
+            get { return _windowNonClientFrameThickness; }
 
             private set
             {
-                if (value != this._windowNonClientFrameThickness)
+                if (value != _windowNonClientFrameThickness)
                 {
-                    this._windowNonClientFrameThickness = value;
-                    this._NotifyPropertyChanged("WindowNonClientFrameThickness");
+                    _windowNonClientFrameThickness = value;
+                    _NotifyPropertyChanged("WindowNonClientFrameThickness");
                 }
             }
         }
 
         public double WindowCaptionHeight
         {
-            get { return this._captionHeight; }
+            get { return _captionHeight; }
 
             private set
             {
-                if (value != this._captionHeight)
+                if (value != _captionHeight)
                 {
-                    this._captionHeight = value;
-                    this._NotifyPropertyChanged("WindowCaptionHeight");
+                    _captionHeight = value;
+                    _NotifyPropertyChanged("WindowCaptionHeight");
                 }
             }
         }
 
         public Size SmallIconSize
         {
-            get { return new Size(this._smallIconSize.Width, this._smallIconSize.Height); }
+            get { return new Size(_smallIconSize.Width, _smallIconSize.Height); }
 
             private set
             {
-                if (value != this._smallIconSize)
+                if (value != _smallIconSize)
                 {
-                    this._smallIconSize = value;
-                    this._NotifyPropertyChanged("SmallIconSize");
+                    _smallIconSize = value;
+                    _NotifyPropertyChanged("SmallIconSize");
                 }
             }
         }
 
         public string UxThemeName
         {
-            get { return this._uxThemeName; }
+            get { return _uxThemeName; }
 
             private set
             {
-                if (value != this._uxThemeName)
+                if (value != _uxThemeName)
                 {
-                    this._uxThemeName = value;
-                    this._NotifyPropertyChanged("UxThemeName");
+                    _uxThemeName = value;
+                    _NotifyPropertyChanged("UxThemeName");
                 }
             }
         }
 
         public string UxThemeColor
         {
-            get { return this._uxThemeColor; }
+            get { return _uxThemeColor; }
 
             private set
             {
-                if (value != this._uxThemeColor)
+                if (value != _uxThemeColor)
                 {
-                    this._uxThemeColor = value;
-                    this._NotifyPropertyChanged("UxThemeColor");
+                    _uxThemeColor = value;
+                    _NotifyPropertyChanged("UxThemeColor");
                 }
             }
         }
 
         public bool HighContrast
         {
-            get { return this._isHighContrast; }
+            get { return _isHighContrast; }
 
             private set
             {
-                if (value != this._isHighContrast)
+                if (value != _isHighContrast)
                 {
-                    this._isHighContrast = value;
-                    this._NotifyPropertyChanged("HighContrast");
+                    _isHighContrast = value;
+                    _NotifyPropertyChanged("HighContrast");
                 }
             }
         }
 
         public CornerRadius WindowCornerRadius
         {
-            get { return this._windowCornerRadius; }
+            get { return _windowCornerRadius; }
 
             private set
             {
-                if (value != this._windowCornerRadius)
+                if (value != _windowCornerRadius)
                 {
-                    this._windowCornerRadius = value;
-                    this._NotifyPropertyChanged("WindowCornerRadius");
+                    _windowCornerRadius = value;
+                    _NotifyPropertyChanged("WindowCornerRadius");
                 }
             }
         }
 
         public Rect WindowCaptionButtonsLocation
         {
-            get { return this._captionButtonLocation; }
+            get { return _captionButtonLocation; }
 
             private set
             {
-                if (value != this._captionButtonLocation)
+                if (value != _captionButtonLocation)
                 {
-                    this._captionButtonLocation = value;
-                    this._NotifyPropertyChanged("WindowCaptionButtonsLocation");
+                    _captionButtonLocation = value;
+                    _NotifyPropertyChanged("WindowCaptionButtonsLocation");
                 }
             }
         }
@@ -673,7 +673,7 @@ namespace Crystal.Themes.Windows.Shell
         private void _NotifyPropertyChanged(string propertyName)
         {
             Assert.IsNeitherNullNorEmpty(propertyName);
-            var handler = this.PropertyChanged;
+            var handler = PropertyChanged;
             if (handler is not null)
             {
                 handler(this, new PropertyChangedEventArgs(propertyName));

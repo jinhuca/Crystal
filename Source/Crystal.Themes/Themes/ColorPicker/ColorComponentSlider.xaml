@@ -2,110 +2,110 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:crystal="clr-namespace:Crystal.Themes.Controls">
 
-    <Style x:Key="Crystal.Styles.Slider.ColorComponent" TargetType="{x:Type Slider}">
-        <Setter Property="Background" Value="Transparent" />
-        <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="Focusable" Value="True" />
-        <Setter Property="IsMoveToPointEnabled" Value="True" />
-        <Setter Property="Margin" Value="0" />
-        <Setter Property="MinHeight" Value="26" />
-        <Setter Property="Orientation" Value="Horizontal" />
-        <Setter Property="SnapsToDevicePixels" Value="True" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate>
-                    <Grid>
-                        <Border Margin="5 2"
+  <Style x:Key="Crystal.Styles.Slider.ColorComponent" TargetType="{x:Type Slider}">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="Focusable" Value="True" />
+    <Setter Property="IsMoveToPointEnabled" Value="True" />
+    <Setter Property="Margin" Value="0" />
+    <Setter Property="MinHeight" Value="26" />
+    <Setter Property="Orientation" Value="Horizontal" />
+    <Setter Property="SnapsToDevicePixels" Value="True" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate>
+          <Grid>
+            <Border Margin="5 2"
                                 Background="{DynamicResource Crystal.Brushes.Tile.Small}"
                                 BorderBrush="{DynamicResource Crystal.Brushes.ThemeForeground}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
-                            <Grid Background="{TemplateBinding Background}" />
-                        </Border>
-                        <Track x:Name="PART_Track" Margin="{TemplateBinding BorderThickness}">
-                            <Track.DecreaseRepeatButton>
-                                <RepeatButton Command="{x:Static Slider.DecreaseLarge}"
+              <Grid Background="{TemplateBinding Background}" />
+            </Border>
+            <Track x:Name="PART_Track" Margin="{TemplateBinding BorderThickness}">
+              <Track.DecreaseRepeatButton>
+                <RepeatButton Command="{x:Static Slider.DecreaseLarge}"
                                               Foreground="Transparent"
                                               Style="{DynamicResource Crystal.Styles.RepeatButton.Slider.HorizontalTrack.Win10}" />
-                            </Track.DecreaseRepeatButton>
-                            <Track.IncreaseRepeatButton>
-                                <RepeatButton x:Name="VerticalTrackIncrease"
+              </Track.DecreaseRepeatButton>
+              <Track.IncreaseRepeatButton>
+                <RepeatButton x:Name="VerticalTrackIncrease"
                                               Command="{x:Static Slider.IncreaseLarge}"
                                               Foreground="Transparent"
                                               Style="{DynamicResource Crystal.Styles.RepeatButton.Slider.HorizontalTrack.Win10}" />
-                            </Track.IncreaseRepeatButton>
-                            <Track.Thumb>
-                                <crystal:MetroThumb x:Name="VerticalThumb"
+              </Track.IncreaseRepeatButton>
+              <Track.Thumb>
+                <crystal:CrystalThumb x:Name="VerticalThumb"
                                                 Width="10"
                                                 Margin="0"
                                                 HorizontalAlignment="Stretch"
                                                 Background="Transparent"
                                                 IsTabStop="True"
                                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
-                                    <crystal:MetroThumb.Template>
-                                        <ControlTemplate>
-                                            <Grid Width="10" Background="Transparent">
-                                                <Path VerticalAlignment="Top"
+                  <crystal:CrystalThumb.Template>
+                    <ControlTemplate>
+                      <Grid Width="10" Background="Transparent">
+                        <Path VerticalAlignment="Top"
                                                       Data="M 0 0 5 10 10 0 Z"
                                                       Fill="{DynamicResource Crystal.Brushes.ThemeBackground}"
                                                       Stretch="Uniform"
                                                       Stroke="{DynamicResource Crystal.Brushes.ThemeForeground}"
                                                       StrokeThickness="1" />
-                                                <Path VerticalAlignment="Bottom"
+                        <Path VerticalAlignment="Bottom"
                                                       Data="M 0 10 5 0 10 10 Z"
                                                       Fill="{DynamicResource Crystal.Brushes.ThemeBackground}"
                                                       SnapsToDevicePixels="False"
                                                       Stretch="Uniform"
                                                       Stroke="{DynamicResource Crystal.Brushes.ThemeForeground}"
                                                       StrokeThickness="1" />
-                                            </Grid>
-                                        </ControlTemplate>
-                                    </crystal:MetroThumb.Template>
-                                </crystal:MetroThumb>
-                            </Track.Thumb>
-                        </Track>
-                    </Grid>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-        <Setter Property="VerticalAlignment" Value="Center" />
-    </Style>
+                      </Grid>
+                    </ControlTemplate>
+                  </crystal:CrystalThumb.Template>
+                </crystal:CrystalThumb>
+              </Track.Thumb>
+            </Track>
+          </Grid>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+    <Setter Property="VerticalAlignment" Value="Center" />
+  </Style>
 
-    <Style x:Key="Crystal.Styles.Slider.ColorComponent.Hue"
+  <Style x:Key="Crystal.Styles.Slider.ColorComponent.Hue"
            BasedOn="{StaticResource Crystal.Styles.Slider.ColorComponent}"
            TargetType="{x:Type Slider}">
-        <Setter Property="Background">
-            <Setter.Value>
-                <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
-                    <GradientStop Offset="0.00000000000000000" Color="#FFFF0000" />
-                    <GradientStop Offset="0.16666666666666666" Color="#FFFFFF00" />
-                    <GradientStop Offset="0.33333333333333333" Color="#FF00FF00" />
-                    <GradientStop Offset="0.50000000000000000" Color="#FF00FFFF" />
-                    <GradientStop Offset="0.66666666666666666" Color="#FF0000FF" />
-                    <GradientStop Offset="0.83333333333333333" Color="#FFFF00FF" />
-                    <GradientStop Offset="1.00000000000000000" Color="#FFFF0000" />
-                </LinearGradientBrush>
-            </Setter.Value>
-        </Setter>
-        <Setter Property="Maximum" Value="360" />
-        <Setter Property="Minimum" Value="0" />
-    </Style>
+    <Setter Property="Background">
+      <Setter.Value>
+        <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+          <GradientStop Offset="0.00000000000000000" Color="#FFFF0000" />
+          <GradientStop Offset="0.16666666666666666" Color="#FFFFFF00" />
+          <GradientStop Offset="0.33333333333333333" Color="#FF00FF00" />
+          <GradientStop Offset="0.50000000000000000" Color="#FF00FFFF" />
+          <GradientStop Offset="0.66666666666666666" Color="#FF0000FF" />
+          <GradientStop Offset="0.83333333333333333" Color="#FFFF00FF" />
+          <GradientStop Offset="1.00000000000000000" Color="#FFFF0000" />
+        </LinearGradientBrush>
+      </Setter.Value>
+    </Setter>
+    <Setter Property="Maximum" Value="360" />
+    <Setter Property="Minimum" Value="0" />
+  </Style>
 
-    <Style x:Key="Crystal.Styles.Slider.ColorComponent.SV"
+  <Style x:Key="Crystal.Styles.Slider.ColorComponent.SV"
            BasedOn="{StaticResource Crystal.Styles.Slider.ColorComponent}"
            TargetType="{x:Type Slider}">
-        <Setter Property="LargeChange" Value="0.05" />
-        <Setter Property="Maximum" Value="1" />
-        <Setter Property="Minimum" Value="0" />
-        <Setter Property="SmallChange" Value="0.01" />
-    </Style>
+    <Setter Property="LargeChange" Value="0.05" />
+    <Setter Property="Maximum" Value="1" />
+    <Setter Property="Minimum" Value="0" />
+    <Setter Property="SmallChange" Value="0.01" />
+  </Style>
 
 
-    <Style x:Key="Crystal.Styles.Slider.ColorComponent.ARGB"
+  <Style x:Key="Crystal.Styles.Slider.ColorComponent.ARGB"
            BasedOn="{StaticResource Crystal.Styles.Slider.ColorComponent}"
            TargetType="{x:Type Slider}">
-        <Setter Property="Maximum" Value="255" />
-        <Setter Property="Minimum" Value="0" />
-    </Style>
+    <Setter Property="Maximum" Value="255" />
+    <Setter Property="Minimum" Value="0" />
+  </Style>
 
 </ResourceDictionary>

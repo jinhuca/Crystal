@@ -3,19 +3,19 @@
 namespace Crystal.Themes.Controls
 {
   /// <summary>
-  /// A base class for every MetroTabControl (Pivot).
+  /// A base class for every CrystalTabControl (Pivot).
   /// </summary>
-  public abstract class BaseMetroTabControl : TabControlEx
+  public abstract class CrystalTabControlBase : TabControlEx
   {
-    static BaseMetroTabControl()
+    static CrystalTabControlBase()
     {
-      DefaultStyleKeyProperty.OverrideMetadata(typeof(BaseMetroTabControl), new FrameworkPropertyMetadata(typeof(BaseMetroTabControl)));
+      DefaultStyleKeyProperty.OverrideMetadata(typeof(CrystalTabControlBase), new FrameworkPropertyMetadata(typeof(CrystalTabControlBase)));
     }
 
     public static readonly DependencyProperty TabStripMarginProperty = DependencyProperty.Register(
       nameof(TabStripMargin),
       typeof(Thickness),
-      typeof(BaseMetroTabControl),
+      typeof(CrystalTabControlBase),
       new PropertyMetadata(new Thickness(0)));
 
     public Thickness TabStripMargin
@@ -27,7 +27,7 @@ namespace Crystal.Themes.Controls
     public static readonly DependencyProperty CloseTabCommandProperty = DependencyProperty.Register(
       nameof(CloseTabCommand),
       typeof(ICommand),
-      typeof(BaseMetroTabControl),
+      typeof(CrystalTabControlBase),
       new PropertyMetadata(null));
 
     public ICommand? CloseTabCommand
@@ -43,7 +43,7 @@ namespace Crystal.Themes.Controls
 
     protected override DependencyObject GetContainerForItemOverride()
     {
-      return new MetroTabItem(); //Overrides the TabControl's default behavior and returns a MetroTabItem instead of a regular one.
+      return new CrystalTabItem(); //Overrides the TabControl's default behavior and returns a CrystalTabItem instead of a regular one.
     }
 
     protected override void PrepareContainerForItemOverride(DependencyObject element, object item)
@@ -60,7 +60,7 @@ namespace Crystal.Themes.Controls
 
     public event TabItemClosingEventHandler? TabItemClosingEvent;
 
-    internal bool RaiseTabItemClosingEvent(MetroTabItem closingItem)
+    internal bool RaiseTabItemClosingEvent(CrystalTabItem closingItem)
     {
       var tabItemClosingEvent = TabItemClosingEvent;
       if (tabItemClosingEvent != null)
@@ -81,15 +81,15 @@ namespace Crystal.Themes.Controls
 
     public class TabItemClosingEventArgs : CancelEventArgs
     {
-      internal TabItemClosingEventArgs(MetroTabItem item)
+      internal TabItemClosingEventArgs(CrystalTabItem item)
       {
         ClosingTabItem = item;
       }
 
-      public MetroTabItem ClosingTabItem { get; private set; }
+      public CrystalTabItem ClosingTabItem { get; private set; }
     }
 
-    internal void CloseThisTabItem([NotNull] MetroTabItem tabItem)
+    internal void CloseThisTabItem([NotNull] CrystalTabItem tabItem)
     {
       if (tabItem is null)
       {

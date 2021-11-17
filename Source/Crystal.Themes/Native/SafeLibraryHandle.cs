@@ -16,7 +16,7 @@ namespace Crystal.Themes.Native
 
         protected override bool ReleaseHandle()
         {
-            return UnsafeNativeMethods.FreeLibrary(this.handle);
+            return UnsafeNativeMethods.FreeLibrary(handle);
         }
     }
 }

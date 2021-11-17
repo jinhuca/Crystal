@@ -77,24 +77,24 @@ namespace Crystal.Themes.Theming
                 throw new ArgumentNullException(nameof(libraryTheme));
             }
 
-            this.AddLibraryTheme(libraryTheme);
+            AddLibraryTheme(libraryTheme);
         }
 
         public Theme(string name, string displayName, string baseColorScheme, string colorScheme, Color primaryAccentColor, Brush showcaseBrush, bool isRuntimeGenerated, bool isHighContrast)
         {
-            this.IsRuntimeGenerated = isRuntimeGenerated;
-            this.IsHighContrast = isHighContrast;
+            IsRuntimeGenerated = isRuntimeGenerated;
+            IsHighContrast = isHighContrast;
 
-            this.Name = name;
-            this.DisplayName = displayName;
-            this.BaseColorScheme = baseColorScheme;
-            this.ColorScheme = colorScheme;
-            this.PrimaryAccentColor = primaryAccentColor;
-            this.ShowcaseBrush = showcaseBrush;
+            Name = name;
+            DisplayName = displayName;
+            BaseColorScheme = baseColorScheme;
+            ColorScheme = colorScheme;
+            PrimaryAccentColor = primaryAccentColor;
+            ShowcaseBrush = showcaseBrush;
 
-            this.LibraryThemes = new ReadOnlyObservableCollection<LibraryTheme>(this.LibraryThemesInternal);
+            LibraryThemes = new ReadOnlyObservableCollection<LibraryTheme>(LibraryThemesInternal);
 
-            this.Resources[ThemeInstanceKey] = this;
+            Resources[ThemeInstanceKey] = this;
         }
 
         public static readonly Dictionary<Uri, bool> ThemeDictionaryCache = new Dictionary<Uri, bool>();
@@ -160,7 +160,7 @@ namespace Crystal.Themes.Theming
         /// <returns>This instance for fluent call usage.</returns>
         public Theme EnsureAllLibraryThemeProvidersProvided()
         {
-            var libraryThemeProvidersWhichDidNotProvideLibraryTheme = ThemeManager.Current.LibraryThemeProviders.Except(this.LibraryThemes.Select(x => x.LibraryThemeProvider));
+            var libraryThemeProvidersWhichDidNotProvideLibraryTheme = ThemeManager.Current.LibraryThemeProviders.Except(LibraryThemes.Select(x => x.LibraryThemeProvider));
 
             foreach (var libraryThemeProvider in libraryThemeProvidersWhichDidNotProvideLibraryTheme)
             {
@@ -171,7 +171,7 @@ namespace Crystal.Themes.Theming
                     continue;
                 }
 
-                this.AddLibraryTheme(libraryTheme);
+                AddLibraryTheme(libraryTheme);
             }
 
             return this;
@@ -183,9 +183,9 @@ namespace Crystal.Themes.Theming
         /// <returns>A flat list of all <see cref="ResourceDictionary"/> from all library themes.</returns>
         public IEnumerable<ResourceDictionary> GetAllResources()
         {
-            this.EnsureAllLibraryThemeProvidersProvided();
+            EnsureAllLibraryThemeProvidersProvided();
 
-            foreach (var libraryTheme in this.LibraryThemes)
+            foreach (var libraryTheme in LibraryThemes)
             {
                 foreach (var libraryThemeResource in libraryTheme.Resources.MergedDictionaries)
                 {
@@ -211,12 +211,12 @@ namespace Crystal.Themes.Theming
                 throw new ArgumentException("The theme already has a parent.");
             }
 
-            if (this.LibraryThemesInternal.Contains(libraryTheme) == false)
+            if (LibraryThemesInternal.Contains(libraryTheme) == false)
             {
-                this.LibraryThemesInternal.Add(libraryTheme);
+                LibraryThemesInternal.Add(libraryTheme);
                 libraryTheme.ParentTheme = this;
 
-                this.Resources.MergedDictionaries.Add(libraryTheme.Resources);
+                Resources.MergedDictionaries.Add(libraryTheme.Resources);
             }
 
             return this;
@@ -225,7 +225,7 @@ namespace Crystal.Themes.Theming
         /// <inheritdoc />
         public override string ToString()
         {
-            return $"DisplayName={this.DisplayName}, Name={this.Name}, IsHighContrast={this.IsHighContrast}, IsRuntimeGenerated={this.IsRuntimeGenerated}";
+            return $"DisplayName={DisplayName}, Name={Name}, IsHighContrast={IsHighContrast}, IsRuntimeGenerated={IsRuntimeGenerated}";
         }
 
         public static string? GetThemeName(ResourceDictionary resourceDictionary)

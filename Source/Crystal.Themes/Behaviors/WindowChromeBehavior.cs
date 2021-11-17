@@ -57,8 +57,8 @@ namespace Crystal.Themes.Behaviors
     /// </summary>
     public Thickness ResizeBorderThickness
     {
-      get { return (Thickness)this.GetValue(ResizeBorderThicknessProperty); }
-      set { this.SetValue(ResizeBorderThicknessProperty, value); }
+      get { return (Thickness)GetValue(ResizeBorderThicknessProperty); }
+      set { SetValue(ResizeBorderThicknessProperty, value); }
     }
 
     /// <summary>
@@ -73,8 +73,8 @@ namespace Crystal.Themes.Behaviors
     /// </summary>
     public bool IgnoreTaskbarOnMaximize
     {
-      get { return (bool)this.GetValue(IgnoreTaskbarOnMaximizeProperty); }
-      set { this.SetValue(IgnoreTaskbarOnMaximizeProperty, value); }
+      get { return (bool)GetValue(IgnoreTaskbarOnMaximizeProperty); }
+      set { SetValue(IgnoreTaskbarOnMaximizeProperty, value); }
     }
 
     /// <summary>
@@ -89,8 +89,8 @@ namespace Crystal.Themes.Behaviors
     /// </summary>
     public bool KeepBorderOnMaximize
     {
-      get { return (bool)this.GetValue(KeepBorderOnMaximizeProperty); }
-      set { this.SetValue(KeepBorderOnMaximizeProperty, value); }
+      get { return (bool)GetValue(KeepBorderOnMaximizeProperty); }
+      set { SetValue(KeepBorderOnMaximizeProperty, value); }
     }
 
     /// <summary>
@@ -106,8 +106,8 @@ namespace Crystal.Themes.Behaviors
     /// </remarks>
     public bool TryToBeFlickerFree
     {
-      get { return (bool)this.GetValue(TryToBeFlickerFreeProperty); }
-      set { this.SetValue(TryToBeFlickerFreeProperty, value); }
+      get { return (bool)GetValue(TryToBeFlickerFreeProperty); }
+      set { SetValue(TryToBeFlickerFreeProperty, value); }
     }
 
     /// <summary>
@@ -127,8 +127,8 @@ namespace Crystal.Themes.Behaviors
     /// </summary>
     public bool IsNCActive
     {
-      get { return (bool)this.GetValue(IsNCActiveProperty); }
-      private set { this.SetValue(IsNCActivePropertyKey, value); }
+      get { return (bool)GetValue(IsNCActiveProperty); }
+      private set { SetValue(IsNCActivePropertyKey, value); }
     }
 
     public static readonly DependencyProperty EnableMinimizeProperty = DependencyProperty.Register(nameof(EnableMinimize), typeof(bool), typeof(WindowChromeBehavior), new PropertyMetadata(true, OnEnableMinimizeChanged));
@@ -145,23 +145,23 @@ namespace Crystal.Themes.Behaviors
 
     private void UpdateMinimizeSystemMenu(bool isVisible)
     {
-      if (this.windowHandle != IntPtr.Zero)
+      if (windowHandle != IntPtr.Zero)
       {
-        if (this.hwndSource?.IsDisposed == true || this.hwndSource?.RootVisual is null)
+        if (hwndSource?.IsDisposed == true || hwndSource?.RootVisual is null)
         {
           return;
         }
 
         if (isVisible)
         {
-          this._ModifyStyle(0, WS.MINIMIZEBOX);
+          _ModifyStyle(0, WS.MINIMIZEBOX);
         }
         else
         {
-          this._ModifyStyle(WS.MINIMIZEBOX, 0);
+          _ModifyStyle(WS.MINIMIZEBOX, 0);
         }
 
-        this._UpdateSystemMenu(this.AssociatedObject?.WindowState);
+        _UpdateSystemMenu(AssociatedObject?.WindowState);
       }
     }
 
@@ -170,8 +170,8 @@ namespace Crystal.Themes.Behaviors
     /// </summary>
     public bool EnableMinimize
     {
-      get { return (bool)this.GetValue(EnableMinimizeProperty); }
-      set { this.SetValue(EnableMinimizeProperty, value); }
+      get { return (bool)GetValue(EnableMinimizeProperty); }
+      set { SetValue(EnableMinimizeProperty, value); }
     }
 
     public static readonly DependencyProperty EnableMaxRestoreProperty = DependencyProperty.Register(nameof(EnableMaxRestore), typeof(bool), typeof(WindowChromeBehavior), new PropertyMetadata(true, OnEnableMaxRestoreChanged));
@@ -188,23 +188,23 @@ namespace Crystal.Themes.Behaviors
 
     private void UpdateMaxRestoreSystemMenu(bool isVisible)
     {
-      if (this.windowHandle != IntPtr.Zero)
+      if (windowHandle != IntPtr.Zero)
       {
-        if (this.hwndSource?.IsDisposed == true || this.hwndSource?.RootVisual is null)
+        if (hwndSource?.IsDisposed == true || hwndSource?.RootVisual is null)
         {
           return;
         }
 
         if (isVisible)
         {
-          this._ModifyStyle(0, WS.MAXIMIZEBOX);
+          _ModifyStyle(0, WS.MAXIMIZEBOX);
         }
         else
         {
-          this._ModifyStyle(WS.MAXIMIZEBOX, 0);
+          _ModifyStyle(WS.MAXIMIZEBOX, 0);
         }
 
-        this._UpdateSystemMenu(this.AssociatedObject?.WindowState);
+        _UpdateSystemMenu(AssociatedObject?.WindowState);
       }
     }
 
@@ -213,21 +213,21 @@ namespace Crystal.Themes.Behaviors
     /// </summary>
     public bool EnableMaxRestore
     {
-      get { return (bool)this.GetValue(EnableMaxRestoreProperty); }
-      set { this.SetValue(EnableMaxRestoreProperty, value); }
+      get { return (bool)GetValue(EnableMaxRestoreProperty); }
+      set { SetValue(EnableMaxRestoreProperty, value); }
     }
 
     /// <inheritdoc />
     protected override void OnAttached()
     {
       // no transparency, because it has more then one unwanted issues
-      if (this.AssociatedObject.AllowsTransparency
-          && this.AssociatedObject.IsLoaded == false
-          && new WindowInteropHelper(this.AssociatedObject).Handle == IntPtr.Zero)
+      if (AssociatedObject.AllowsTransparency
+          && AssociatedObject.IsLoaded == false
+          && new WindowInteropHelper(AssociatedObject).Handle == IntPtr.Zero)
       {
         try
         {
-          this.AssociatedObject.SetCurrentValue(Window.AllowsTransparencyProperty, false);
+          AssociatedObject.SetCurrentValue(Window.AllowsTransparencyProperty, false);
         }
         catch (Exception)
         {
@@ -235,43 +235,43 @@ namespace Crystal.Themes.Behaviors
         }
       }
 
-      if (this.AssociatedObject.WindowStyle != WindowStyle.None)
+      if (AssociatedObject.WindowStyle != WindowStyle.None)
       {
-        this.AssociatedObject.SetCurrentValue(Window.WindowStyleProperty, WindowStyle.None);
+        AssociatedObject.SetCurrentValue(Window.WindowStyleProperty, WindowStyle.None);
       }
 
-      this.savedBorderThickness = this.AssociatedObject.BorderThickness;
-      this.borderThicknessChangeNotifier = new PropertyChangeNotifier(this.AssociatedObject, Control.BorderThicknessProperty);
-      this.borderThicknessChangeNotifier.ValueChanged += this.BorderThicknessChangeNotifierOnValueChanged;
+      savedBorderThickness = AssociatedObject.BorderThickness;
+      borderThicknessChangeNotifier = new PropertyChangeNotifier(AssociatedObject, Control.BorderThicknessProperty);
+      borderThicknessChangeNotifier.ValueChanged += BorderThicknessChangeNotifierOnValueChanged;
 
-      this.savedResizeBorderThickness = this.ResizeBorderThickness;
-      this.resizeBorderThicknessChangeNotifier = new PropertyChangeNotifier(this, ResizeBorderThicknessProperty);
-      this.resizeBorderThicknessChangeNotifier.ValueChanged += this.ResizeBorderThicknessChangeNotifierOnValueChanged;
+      savedResizeBorderThickness = ResizeBorderThickness;
+      resizeBorderThicknessChangeNotifier = new PropertyChangeNotifier(this, ResizeBorderThicknessProperty);
+      resizeBorderThicknessChangeNotifier.ValueChanged += ResizeBorderThicknessChangeNotifierOnValueChanged;
 
-      this.savedTopMost = this.AssociatedObject.Topmost;
-      this.topMostChangeNotifier = new PropertyChangeNotifier(this.AssociatedObject, Window.TopmostProperty);
-      this.topMostChangeNotifier.ValueChanged += this.TopMostChangeNotifierOnValueChanged;
+      savedTopMost = AssociatedObject.Topmost;
+      topMostChangeNotifier = new PropertyChangeNotifier(AssociatedObject, Window.TopmostProperty);
+      topMostChangeNotifier.ValueChanged += TopMostChangeNotifierOnValueChanged;
 
-      this.AssociatedObject.SourceInitialized += this.AssociatedObject_SourceInitialized;
-      this.AssociatedObject.Loaded += this.AssociatedObject_Loaded;
-      this.AssociatedObject.Unloaded += this.AssociatedObject_Unloaded;
-      this.AssociatedObject.Closed += this.AssociatedObject_Closed;
-      this.AssociatedObject.StateChanged += this.AssociatedObject_StateChanged;
-      this.AssociatedObject.LostFocus += this.AssociatedObject_LostFocus;
-      this.AssociatedObject.Deactivated += this.AssociatedObject_Deactivated;
+      AssociatedObject.SourceInitialized += AssociatedObject_SourceInitialized;
+      AssociatedObject.Loaded += AssociatedObject_Loaded;
+      AssociatedObject.Unloaded += AssociatedObject_Unloaded;
+      AssociatedObject.Closed += AssociatedObject_Closed;
+      AssociatedObject.StateChanged += AssociatedObject_StateChanged;
+      AssociatedObject.LostFocus += AssociatedObject_LostFocus;
+      AssociatedObject.Deactivated += AssociatedObject_Deactivated;
 
       base.OnAttached();
     }
 
     private void TopMostHack()
     {
-      if (this.AssociatedObject.Topmost)
+      if (AssociatedObject.Topmost)
       {
-        var raiseValueChanged = this.topMostChangeNotifier!.RaiseValueChanged;
-        this.topMostChangeNotifier.RaiseValueChanged = false;
-        this.AssociatedObject.SetCurrentValue(Window.TopmostProperty, false);
-        this.AssociatedObject.SetCurrentValue(Window.TopmostProperty, true);
-        this.topMostChangeNotifier.RaiseValueChanged = raiseValueChanged;
+        var raiseValueChanged = topMostChangeNotifier!.RaiseValueChanged;
+        topMostChangeNotifier.RaiseValueChanged = false;
+        AssociatedObject.SetCurrentValue(Window.TopmostProperty, false);
+        AssociatedObject.SetCurrentValue(Window.TopmostProperty, true);
+        topMostChangeNotifier.RaiseValueChanged = raiseValueChanged;
       }
     }
 
@@ -286,25 +286,25 @@ namespace Crystal.Themes.Behaviors
     private void BorderThicknessChangeNotifierOnValueChanged(object? sender, EventArgs e)
     {
       // It's bad if the window is null at this point, but we check this here to prevent the possible occurred exception
-      var window = this.AssociatedObject;
+      var window = AssociatedObject;
       if (window is not null)
       {
-        this.savedBorderThickness = window.BorderThickness;
+        savedBorderThickness = window.BorderThickness;
       }
     }
 
     private void ResizeBorderThicknessChangeNotifierOnValueChanged(object? sender, EventArgs e)
     {
-      this.savedResizeBorderThickness = this.ResizeBorderThickness;
+      savedResizeBorderThickness = ResizeBorderThickness;
     }
 
     private void TopMostChangeNotifierOnValueChanged(object? sender, EventArgs e)
     {
       // It's bad if the window is null at this point, but we check this here to prevent the possible occurred exception
-      var window = this.AssociatedObject;
+      var window = AssociatedObject;
       if (window is not null)
       {
-        this.savedTopMost = window.Topmost;
+        savedTopMost = window.Topmost;
       }
     }
 
@@ -345,27 +345,27 @@ namespace Crystal.Themes.Behaviors
     [SecuritySafeCritical]
     private void Cleanup(bool isClosing)
     {
-      if (this.isCleanedUp)
+      if (isCleanedUp)
       {
         return;
       }
 
-      this.isCleanedUp = true;
+      isCleanedUp = true;
 
-      this.OnCleanup();
+      OnCleanup();
 
       // clean up events
-      this.AssociatedObject.SourceInitialized -= this.AssociatedObject_SourceInitialized;
-      this.AssociatedObject.Loaded -= this.AssociatedObject_Loaded;
-      this.AssociatedObject.Unloaded -= this.AssociatedObject_Unloaded;
-      this.AssociatedObject.Closed -= this.AssociatedObject_Closed;
-      this.AssociatedObject.StateChanged -= this.AssociatedObject_StateChanged;
-      this.AssociatedObject.LostFocus -= this.AssociatedObject_LostFocus;
-      this.AssociatedObject.Deactivated -= this.AssociatedObject_Deactivated;
+      AssociatedObject.SourceInitialized -= AssociatedObject_SourceInitialized;
+      AssociatedObject.Loaded -= AssociatedObject_Loaded;
+      AssociatedObject.Unloaded -= AssociatedObject_Unloaded;
+      AssociatedObject.Closed -= AssociatedObject_Closed;
+      AssociatedObject.StateChanged -= AssociatedObject_StateChanged;
+      AssociatedObject.LostFocus -= AssociatedObject_LostFocus;
+      AssociatedObject.Deactivated -= AssociatedObject_Deactivated;
 
-      this.hwndSource?.RemoveHook(this.WindowProc);
+      hwndSource?.RemoveHook(WindowProc);
 
-      this._RestoreStandardChromeState(isClosing);
+      _RestoreStandardChromeState(isClosing);
     }
 
     /// <summary>
@@ -379,28 +379,28 @@ namespace Crystal.Themes.Behaviors
     /// <inheritdoc />
     protected override void OnDetaching()
     {
-      this.Cleanup(false);
+      Cleanup(false);
 
       base.OnDetaching();
     }
 
     private void AssociatedObject_SourceInitialized(object? sender, EventArgs e)
     {
-      this.windowHandle = new WindowInteropHelper(this.AssociatedObject).Handle;
+      windowHandle = new WindowInteropHelper(AssociatedObject).Handle;
 
-      if (this.windowHandle == IntPtr.Zero)
+      if (windowHandle == IntPtr.Zero)
       {
         throw new Exception("Uups, at this point we really need the Handle from the associated object!");
       }
 
-      if (this.AssociatedObject.SizeToContent != SizeToContent.Manual
-          && this.AssociatedObject.WindowState == WindowState.Normal)
+      if (AssociatedObject.SizeToContent != SizeToContent.Manual
+          && AssociatedObject.WindowState == WindowState.Normal)
       {
         // Another try to fix SizeToContent
         // without this we get nasty glitches at the borders
-        Invoke(this.AssociatedObject, () =>
+        Invoke(AssociatedObject, () =>
                                       {
-                                        this.AssociatedObject.InvalidateMeasure();
+                                        AssociatedObject.InvalidateMeasure();
                                                 //                                                  if (UnsafeNativeMethods.GetWindowRect(this.windowHandle, out var rect))
                                                 //                                                  {
                                                 //                                                      var flags = SWP.SHOWWINDOW;
@@ -413,13 +413,13 @@ namespace Crystal.Themes.Behaviors
                                               });
       }
 
-      this.hwndSource = HwndSource.FromHwnd(this.windowHandle);
-      this.hwndSource?.AddHook(this.WindowProc);
+      hwndSource = HwndSource.FromHwnd(windowHandle);
+      hwndSource?.AddHook(WindowProc);
 
-      this._ApplyNewCustomChrome();
+      _ApplyNewCustomChrome();
 
       // handle the maximized state here too (to handle the border in a correct way)
-      this.HandleMaximize();
+      HandleMaximize();
     }
 
 #pragma warning disable CA2109
@@ -434,63 +434,63 @@ namespace Crystal.Themes.Behaviors
 
     private void AssociatedObject_Unloaded(object? sender, RoutedEventArgs e)
     {
-      this.Cleanup(false);
+      Cleanup(false);
     }
 
     private void AssociatedObject_Closed(object? sender, EventArgs e)
     {
-      this.Cleanup(true);
+      Cleanup(true);
     }
 
     private void AssociatedObject_StateChanged(object? sender, EventArgs e)
     {
-      this.HandleMaximize();
+      HandleMaximize();
     }
 
     private void AssociatedObject_Deactivated(object? sender, EventArgs e)
     {
-      this.TopMostHack();
+      TopMostHack();
     }
 
     private void AssociatedObject_LostFocus(object? sender, RoutedEventArgs e)
     {
-      this.TopMostHack();
+      TopMostHack();
     }
 
     private void HandleMaximize()
     {
-      var raiseValueChanged = this.topMostChangeNotifier!.RaiseValueChanged;
-      this.topMostChangeNotifier.RaiseValueChanged = false;
+      var raiseValueChanged = topMostChangeNotifier!.RaiseValueChanged;
+      topMostChangeNotifier.RaiseValueChanged = false;
 
-      this.HandleBorderAndResizeBorderThicknessDuringMaximize();
+      HandleBorderAndResizeBorderThicknessDuringMaximize();
 
-      if (this.AssociatedObject.WindowState == WindowState.Maximized)
+      if (AssociatedObject.WindowState == WindowState.Maximized)
       {
         // Workaround for:
         // MaxWidth="someValue"
         // SizeToContent = "WidthAndHeight"
         // Dragging the window to the top with those things set does not change the height of the Window
-        if (this.AssociatedObject.SizeToContent != SizeToContent.Manual)
+        if (AssociatedObject.SizeToContent != SizeToContent.Manual)
         {
-          this.AssociatedObject.SetCurrentValue(Window.SizeToContentProperty, SizeToContent.Manual);
+          AssociatedObject.SetCurrentValue(Window.SizeToContentProperty, SizeToContent.Manual);
         }
 
-        if (this.windowHandle != IntPtr.Zero)
+        if (windowHandle != IntPtr.Zero)
         {
           // WindowChrome handles the size false if the main monitor is lesser the monitor where the window is maximized
           // so set the window pos/size twice
-          var monitor = UnsafeNativeMethods.MonitorFromWindow(this.windowHandle, MonitorOptions.MONITOR_DEFAULTTONEAREST);
+          var monitor = UnsafeNativeMethods.MonitorFromWindow(windowHandle, MonitorOptions.MONITOR_DEFAULTTONEAREST);
           if (monitor != IntPtr.Zero)
           {
             var monitorInfo = NativeMethods.GetMonitorInfo(monitor);
-            var monitorRect = this.IgnoreTaskbarOnMaximize ? monitorInfo.rcMonitor : monitorInfo.rcWork;
+            var monitorRect = IgnoreTaskbarOnMaximize ? monitorInfo.rcMonitor : monitorInfo.rcWork;
 
             var x = monitorRect.Left;
             var y = monitorRect.Top;
             var cx = monitorRect.Width;
             var cy = monitorRect.Height;
 
-            NativeMethods.SetWindowPos(this.windowHandle, Constants.HWND_NOTOPMOST, x, y, cx, cy, SWP.SHOWWINDOW);
+            NativeMethods.SetWindowPos(windowHandle, Constants.HWND_NOTOPMOST, x, y, cx, cy, SWP.SHOWWINDOW);
           }
         }
       }
@@ -509,10 +509,10 @@ namespace Crystal.Themes.Behaviors
       // Note that the minimize animation in this case does actually run, but somehow the other
       // application (Google Chrome in this example) is instantly switched to being the top window,
       // and so blocking the animation view.
-      this.AssociatedObject.SetCurrentValue(Window.TopmostProperty, false);
-      this.AssociatedObject.SetCurrentValue(Window.TopmostProperty, this.AssociatedObject.WindowState == WindowState.Minimized || this.savedTopMost);
+      AssociatedObject.SetCurrentValue(Window.TopmostProperty, false);
+      AssociatedObject.SetCurrentValue(Window.TopmostProperty, AssociatedObject.WindowState == WindowState.Minimized || savedTopMost);
 
-      this.topMostChangeNotifier.RaiseValueChanged = raiseValueChanged;
+      topMostChangeNotifier.RaiseValueChanged = raiseValueChanged;
     }
 
     /// <summary>
@@ -520,66 +520,66 @@ namespace Crystal.Themes.Behaviors
     /// </summary>
     private void HandleBorderAndResizeBorderThicknessDuringMaximize()
     {
-      this.borderThicknessChangeNotifier!.RaiseValueChanged = false;
-      this.resizeBorderThicknessChangeNotifier!.RaiseValueChanged = false;
+      borderThicknessChangeNotifier!.RaiseValueChanged = false;
+      resizeBorderThicknessChangeNotifier!.RaiseValueChanged = false;
 
-      if (this.AssociatedObject.WindowState == WindowState.Maximized)
+      if (AssociatedObject.WindowState == WindowState.Maximized)
       {
         var monitor = IntPtr.Zero;
 
-        if (this.windowHandle != IntPtr.Zero)
+        if (windowHandle != IntPtr.Zero)
         {
-          monitor = UnsafeNativeMethods.MonitorFromWindow(this.windowHandle, MonitorOptions.MONITOR_DEFAULTTONEAREST);
+          monitor = UnsafeNativeMethods.MonitorFromWindow(windowHandle, MonitorOptions.MONITOR_DEFAULTTONEAREST);
         }
 
         if (monitor != IntPtr.Zero)
         {
           var monitorInfo = NativeMethods.GetMonitorInfo(monitor);
-          var monitorRect = this.IgnoreTaskbarOnMaximize ? monitorInfo.rcMonitor : monitorInfo.rcWork;
+          var monitorRect = IgnoreTaskbarOnMaximize ? monitorInfo.rcMonitor : monitorInfo.rcWork;
 
           var rightBorderThickness = 0D;
           var bottomBorderThickness = 0D;
 
-          if (this.KeepBorderOnMaximize
-              && this.savedBorderThickness.HasValue)
+          if (KeepBorderOnMaximize
+              && savedBorderThickness.HasValue)
           {
             // If the maximized window will have a width less than the monitor size, show the right border.
-            if (this.AssociatedObject.MaxWidth < monitorRect.Width)
+            if (AssociatedObject.MaxWidth < monitorRect.Width)
             {
-              rightBorderThickness = this.savedBorderThickness.Value.Right;
+              rightBorderThickness = savedBorderThickness.Value.Right;
             }
 
             // If the maximized window will have a height less than the monitor size, show the bottom border.
-            if (this.AssociatedObject.MaxHeight < monitorRect.Height)
+            if (AssociatedObject.MaxHeight < monitorRect.Height)
             {
-              bottomBorderThickness = this.savedBorderThickness.Value.Bottom;
+              bottomBorderThickness = savedBorderThickness.Value.Bottom;
             }
           }
 
           // set window border, so we can move the window from top monitor position
-          this.AssociatedObject.SetCurrentValue(Control.BorderThicknessProperty, new Thickness(0, 0, rightBorderThickness, bottomBorderThickness));
+          AssociatedObject.SetCurrentValue(Control.BorderThicknessProperty, new Thickness(0, 0, rightBorderThickness, bottomBorderThickness));
         }
         else // Can't get monitor info, so just remove all border thickness
         {
-          this.AssociatedObject.SetCurrentValue(Control.BorderThicknessProperty, new Thickness(0));
+          AssociatedObject.SetCurrentValue(Control.BorderThicknessProperty, new Thickness(0));
         }
 
-        this.SetCurrentValue(ResizeBorderThicknessProperty, new Thickness(0));
+        SetCurrentValue(ResizeBorderThicknessProperty, new Thickness(0));
       }
       else
       {
-        this.AssociatedObject.SetCurrentValue(Control.BorderThicknessProperty, this.savedBorderThickness.GetValueOrDefault(new Thickness(0)));
+        AssociatedObject.SetCurrentValue(Control.BorderThicknessProperty, savedBorderThickness.GetValueOrDefault(new Thickness(0)));
 
-        var resizeBorderThickness = this.savedResizeBorderThickness.GetValueOrDefault(new Thickness(0));
+        var resizeBorderThickness = savedResizeBorderThickness.GetValueOrDefault(new Thickness(0));
 
-        if (this.ResizeBorderThickness != resizeBorderThickness)
+        if (ResizeBorderThickness != resizeBorderThickness)
         {
-          this.SetCurrentValue(ResizeBorderThicknessProperty, resizeBorderThickness);
+          SetCurrentValue(ResizeBorderThicknessProperty, resizeBorderThickness);
         }
       }
 
-      this.borderThicknessChangeNotifier.RaiseValueChanged = true;
-      this.resizeBorderThicknessChangeNotifier.RaiseValueChanged = true;
+      borderThicknessChangeNotifier.RaiseValueChanged = true;
+      resizeBorderThicknessChangeNotifier.RaiseValueChanged = true;
     }
 
     private static void Invoke(DispatcherObject dispatcherObject, Action invokeAction)

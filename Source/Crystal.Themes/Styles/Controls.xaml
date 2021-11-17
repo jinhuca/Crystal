@@ -46,7 +46,7 @@
         <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/Dialogs/BaseMetroDialog.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/HamburgerMenu.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/RangeSlider.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/MetroProgressBar.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/CrystalProgressBar.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/ToggleSwitch.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/FlipView.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/ColorPicker/ColorEyeDropper.xaml" />

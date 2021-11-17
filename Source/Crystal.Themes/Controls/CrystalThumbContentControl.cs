@@ -12,39 +12,39 @@ using Crystal.Themes.ValueBoxes;
 namespace Crystal.Themes.Controls
 {
   /// <summary>
-  /// The MetroThumbContentControl control can be used for titles or something else and enables basic drag movement functionality.
+  /// The CrystalThumbContentControl control can be used for titles or something else and enables basic drag movement functionality.
   /// </summary>
-  public class MetroThumbContentControl : ContentControlEx, IMetroThumb
+  public class CrystalThumbContentControl : ContentControlEx, ICrystalThumb
     {
         private TouchDevice? currentDevice = null;
         private Point startDragPoint;
         private Point startDragScreenPoint;
         private Point oldDragScreenPoint;
 
-        static MetroThumbContentControl()
+        static CrystalThumbContentControl()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(MetroThumbContentControl), new FrameworkPropertyMetadata(typeof(MetroThumbContentControl)));
-            FocusableProperty.OverrideMetadata(typeof(MetroThumbContentControl), new FrameworkPropertyMetadata(default(bool)));
-            EventManager.RegisterClassHandler(typeof(MetroThumbContentControl), Mouse.LostMouseCaptureEvent, new MouseEventHandler(OnLostMouseCapture));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(CrystalThumbContentControl), new FrameworkPropertyMetadata(typeof(CrystalThumbContentControl)));
+            FocusableProperty.OverrideMetadata(typeof(CrystalThumbContentControl), new FrameworkPropertyMetadata(default(bool)));
+            EventManager.RegisterClassHandler(typeof(CrystalThumbContentControl), Mouse.LostMouseCaptureEvent, new MouseEventHandler(OnLostMouseCapture));
         }
 
         public static readonly RoutedEvent DragStartedEvent
             = EventManager.RegisterRoutedEvent(nameof(DragStarted),
                                                RoutingStrategy.Bubble,
                                                typeof(DragStartedEventHandler),
-                                               typeof(MetroThumbContentControl));
+                                               typeof(CrystalThumbContentControl));
 
         public static readonly RoutedEvent DragDeltaEvent
             = EventManager.RegisterRoutedEvent(nameof(DragDelta),
                                                RoutingStrategy.Bubble,
                                                typeof(DragDeltaEventHandler),
-                                               typeof(MetroThumbContentControl));
+                                               typeof(CrystalThumbContentControl));
 
         public static readonly RoutedEvent DragCompletedEvent
             = EventManager.RegisterRoutedEvent(nameof(DragCompleted),
                                                RoutingStrategy.Bubble,
                                                typeof(DragCompletedEventHandler),
-                                               typeof(MetroThumbContentControl));
+                                               typeof(CrystalThumbContentControl));
 
         /// <summary>
         /// Adds or remove a DragStartedEvent handler
@@ -76,7 +76,7 @@ namespace Crystal.Themes.Controls
         private static readonly DependencyPropertyKey IsDraggingPropertyKey
             = DependencyProperty.RegisterReadOnly(nameof(IsDragging),
                                                   typeof(bool),
-                                                  typeof(MetroThumbContentControl),
+                                                  typeof(CrystalThumbContentControl),
                                                   new FrameworkPropertyMetadata(BooleanBoxes.FalseBox));
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace Crystal.Themes.Controls
         public static readonly DependencyProperty IsDraggingProperty = IsDraggingPropertyKey.DependencyProperty;
 
         /// <summary>
-        /// Indicates that the left mouse button is pressed and is over the MetroThumbContentControl.
+        /// Indicates that the left mouse button is pressed and is over the CrystalThumbContentControl.
         /// </summary>
         public bool IsDragging
         {
@@ -108,7 +108,7 @@ namespace Crystal.Themes.Controls
             ClearValue(IsDraggingPropertyKey);
             var horizontalChange = oldDragScreenPoint.X - startDragScreenPoint.X;
             var verticalChange = oldDragScreenPoint.Y - startDragScreenPoint.Y;
-            RaiseEvent(new MetroThumbContentControlDragCompletedEventArgs(horizontalChange, verticalChange, true));
+            RaiseEvent(new CrystalThumbContentControlDragCompletedEventArgs(horizontalChange, verticalChange, true));
         }
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
@@ -153,7 +153,7 @@ namespace Crystal.Themes.Controls
                 Point currentMouseScreenPoint = PointToScreen(e.MouseDevice.GetPosition(this));
                 var horizontalChange = currentMouseScreenPoint.X - startDragScreenPoint.X;
                 var verticalChange = currentMouseScreenPoint.Y - startDragScreenPoint.Y;
-                RaiseEvent(new MetroThumbContentControlDragCompletedEventArgs(horizontalChange, verticalChange, false));
+                RaiseEvent(new CrystalThumbContentControlDragCompletedEventArgs(horizontalChange, verticalChange, false));
             }
 
             base.OnMouseLeftButtonUp(e);
@@ -162,7 +162,7 @@ namespace Crystal.Themes.Controls
         private static void OnLostMouseCapture(object sender, MouseEventArgs e)
         {
             // Cancel the drag action if we lost capture
-            MetroThumbContentControl thumb = (MetroThumbContentControl)sender;
+            CrystalThumbContentControl thumb = (CrystalThumbContentControl)sender;
             if (!ReferenceEquals(Mouse.Captured, thumb))
             {
                 thumb.CancelDragAction();
@@ -189,7 +189,7 @@ namespace Crystal.Themes.Controls
                     e.Handled = true;
                     var horizontalChange = currentDragPoint.X - startDragPoint.X;
                     var verticalChange = currentDragPoint.Y - startDragPoint.Y;
-                    RaiseEvent(new DragDeltaEventArgs(horizontalChange, verticalChange) { RoutedEvent = MetroThumbContentControl.DragDeltaEvent });
+                    RaiseEvent(new DragDeltaEventArgs(horizontalChange, verticalChange) { RoutedEvent = CrystalThumbContentControl.DragDeltaEvent });
                 }
             }
             else

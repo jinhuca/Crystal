@@ -55,8 +55,8 @@ namespace Crystal.Themes
         /// </summary>
         public TKind Kind
         {
-            get { return (TKind)this.GetValue(KindProperty); }
-            set { this.SetValue(KindProperty, value); }
+            get { return (TKind)GetValue(KindProperty); }
+            set { SetValue(KindProperty, value); }
         }
 
         private static readonly DependencyPropertyKey DataPropertyKey
@@ -78,22 +78,22 @@ namespace Crystal.Themes
         public string? Data
 #pragma warning restore WPF0012 // CLR property type should match registered type.
         {
-            get { return (string?)this.GetValue(DataProperty); }
-            private set { this.SetValue(DataPropertyKey, value); }
+            get { return (string?)GetValue(DataProperty); }
+            private set { SetValue(DataPropertyKey, value); }
         }
 
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
 
-            this.UpdateData();
+            UpdateData();
         }
 
         internal override void UpdateData()
         {
             string? data = null;
-            dataIndex?.Value?.TryGetValue(this.Kind, out data);
-            this.Data = data;
+            dataIndex?.Value?.TryGetValue(Kind, out data);
+            Data = data;
         }
     }
 }

@@ -20,10 +20,10 @@ namespace Crystal.Themes.Theming
         public HSLColor(Color color)
         {
             // Init Parameters
-            this.A = 0;
-            this.H = 0;
-            this.L = 0;
-            this.S = 0;
+            A = 0;
+            H = 0;
+            L = 0;
+            S = 0;
 
             var r = color.R;
             var g = color.G;
@@ -38,41 +38,41 @@ namespace Crystal.Themes.Theming
             // Calculate H
             if (delta == 0)
             {
-                this.H = 0;
+                H = 0;
             }
             else if (r == max)
             {
-                this.H = 60 * (((double)(g - b) / delta) % 6);
+                H = 60 * (((double)(g - b) / delta) % 6);
             }
             else if (g == max)
             {
-                this.H = 60 * (((double)(b - r) / delta) + 2);
+                H = 60 * (((double)(b - r) / delta) + 2);
             }
             else if (b == max)
             {
-                this.H = 60 * (((double)(r - g) / delta) + 4);
+                H = 60 * (((double)(r - g) / delta) + 4);
             }
 
-            if (this.H < 0)
+            if (H < 0)
             {
-                this.H += 360;
+                H += 360;
             }
 
             // Calculate L 
-            this.L = (1d / 2d * (max + min)) / 255d;
+            L = (1d / 2d * (max + min)) / 255d;
 
             // Calculate S
-            if (DoubleUtilities.AreClose(this.L, 0) || DoubleUtilities.AreClose(this.L, 1))
+            if (DoubleUtilities.AreClose(L, 0) || DoubleUtilities.AreClose(L, 1))
             {
-                this.S = 0;
+                S = 0;
             }
             else
             {
-                this.S = delta / (255d * (1 - Math.Abs((2 * this.L) - 1)));
+                S = delta / (255d * (1 - Math.Abs((2 * L) - 1)));
             }
 
             // Calculate Alpha
-            this.A = a / 255d;
+            A = a / 255d;
         }
 
         /// <summary>
@@ -84,10 +84,10 @@ namespace Crystal.Themes.Theming
         /// <param name="l">Luminance Channel [0;1]</param>
         public HSLColor(double a, double h, double s, double l)
         {
-            this.A = a;
-            this.H = h;
-            this.S = s;
-            this.L = l;
+            A = a;
+            H = h;
+            S = s;
+            L = l;
         }
 
         /// <summary>
@@ -116,10 +116,10 @@ namespace Crystal.Themes.Theming
         /// <returns>System.Windows.Media.Color</returns>
         public Color ToColor()
         {
-            var r = this.GetColorComponent(0);
-            var g = this.GetColorComponent(8);
-            var b = this.GetColorComponent(4);
-            return Color.FromArgb((byte)Math.Round(this.A * 255), r, g, b);
+            var r = GetColorComponent(0);
+            var g = GetColorComponent(8);
+            var b = GetColorComponent(4);
+            return Color.FromArgb((byte)Math.Round(A * 255), r, g, b);
         }
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace Crystal.Themes.Theming
         /// <returns>a new <see cref="Color"/> which is lighter or darker.</returns>
         public Color GetTintedColor(double tint)
         {
-            var lum = this.L * 255;
+            var lum = L * 255;
 
             if (tint < 0)
             {
@@ -140,7 +140,7 @@ namespace Crystal.Themes.Theming
                 lum = (lum * (1.0 - tint)) + (255 - (255 * (1.0 - tint)));
             }
 
-            return new HSLColor(this.A, this.H, this.S, lum / 255d)
+            return new HSLColor(A, H, S, lum / 255d)
                 .ToColor();
         }
 
@@ -158,28 +158,28 @@ namespace Crystal.Themes.Theming
 
         private byte GetColorComponent(int n)
         {
-            double a = this.S * Math.Min(this.L, 1 - this.L);
-            double k = (n + (this.H / 30)) % 12;
+            double a = S * Math.Min(L, 1 - L);
+            double k = (n + (H / 30)) % 12;
 
-            return (byte)Math.Round(255 * (this.L - (a * Math.Max(-1, Math.Min(k - 3, Math.Min(9 - k, 1))))));
+            return (byte)Math.Round(255 * (L - (a * Math.Max(-1, Math.Min(k - 3, Math.Min(9 - k, 1))))));
         }
 
         public override bool Equals(object? obj)
         {
             return obj is HSLColor color
-                   && DoubleUtilities.AreClose(this.A, color.A)
-                   && DoubleUtilities.AreClose(this.H, color.H)
-                   && DoubleUtilities.AreClose(this.S, color.S)
-                   && DoubleUtilities.AreClose(this.L, color.L);
+                   && DoubleUtilities.AreClose(A, color.A)
+                   && DoubleUtilities.AreClose(H, color.H)
+                   && DoubleUtilities.AreClose(S, color.S)
+                   && DoubleUtilities.AreClose(L, color.L);
         }
 
         public override int GetHashCode()
         {
             int hashCode = -1795249040;
-            hashCode = (hashCode * -1521134295) + this.A.GetHashCode();
-            hashCode = (hashCode * -1521134295) + this.H.GetHashCode();
-            hashCode = (hashCode * -1521134295) + this.S.GetHashCode();
-            hashCode = (hashCode * -1521134295) + this.L.GetHashCode();
+            hashCode = (hashCode * -1521134295) + A.GetHashCode();
+            hashCode = (hashCode * -1521134295) + H.GetHashCode();
+            hashCode = (hashCode * -1521134295) + S.GetHashCode();
+            hashCode = (hashCode * -1521134295) + L.GetHashCode();
             return hashCode;
         }
 

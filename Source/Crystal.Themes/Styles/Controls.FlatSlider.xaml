@@ -78,7 +78,7 @@
                                   Style="{DynamicResource Crystal.Styles.RepeatButton.SliderTrack.Flat}" />
                 </Track.DecreaseRepeatButton>
                 <Track.Thumb>
-                    <crystal:MetroThumb Width="{TemplateBinding Slider.MinHeight}"
+                    <crystal:CrystalThumb Width="{TemplateBinding Slider.MinHeight}"
                                     Background="{TemplateBinding Slider.BorderBrush}"
                                     Style="{DynamicResource Crystal.Styles.Thumb.Slider.Flat}" />
                 </Track.Thumb>
@@ -125,7 +125,7 @@
                                   Style="{DynamicResource Crystal.Styles.RepeatButton.SliderTrack.Flat}" />
                 </Track.DecreaseRepeatButton>
                 <Track.Thumb>
-                    <crystal:MetroThumb Height="{TemplateBinding Slider.MinWidth}"
+                    <crystal:CrystalThumb Height="{TemplateBinding Slider.MinWidth}"
                                     Background="{TemplateBinding Slider.BorderBrush}"
                                     Style="{DynamicResource Crystal.Styles.Thumb.Slider.Flat}" />
                 </Track.Thumb>

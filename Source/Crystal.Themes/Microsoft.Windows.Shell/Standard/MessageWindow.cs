@@ -28,8 +28,8 @@ namespace Crystal.Themes.Standard
         public MessageWindow(CS classStyle, WS style, WS_EX exStyle, Rect location, string name, WndProc callback)
         {
             // A null callback means just use DefWindowProc.
-            this._wndProcCallback = callback;
-            this._className = "MessageWindowClass+" + Guid.NewGuid().ToString();
+            _wndProcCallback = callback;
+            _className = "MessageWindowClass+" + Guid.NewGuid().ToString();
 
             var wc = new WNDCLASSEX
             {
@@ -39,7 +39,7 @@ namespace Crystal.Themes.Standard
                 hInstance = NativeMethods.GetModuleHandle(null),
                 hbrBackground = NativeMethods.GetStockObject(StockObject.NULL_BRUSH),
                 lpszMenuName = string.Empty,
-                lpszClassName = this._className,
+                lpszClassName = _className,
             };
 
             NativeMethods.RegisterClassEx(ref wc);
@@ -50,9 +50,9 @@ namespace Crystal.Themes.Standard
                 gcHandle = GCHandle.Alloc(this);
                 IntPtr pinnedThisPtr = (IntPtr)gcHandle;
 
-                this.Handle = NativeMethods.CreateWindowEx(
+                Handle = NativeMethods.CreateWindowEx(
                     exStyle,
-                    this._className,
+                    _className,
                     name,
                     style,
                     (int)location.X,
@@ -72,12 +72,12 @@ namespace Crystal.Themes.Standard
 
         ~MessageWindow()
         {
-            this._Dispose(false, false);
+            _Dispose(false, false);
         }
 
         public void Dispose()
         {
-            this._Dispose(true, false);
+            _Dispose(true, false);
             GC.SuppressFinalize(this);
         }
 
@@ -86,37 +86,37 @@ namespace Crystal.Themes.Standard
         // The HWND itself will get cleaned up on thread completion, but it will wind up leaking the class ATOM...
         private void _Dispose(bool disposing, bool isHwndBeingDestroyed)
         {
-            if (this._isDisposed)
+            if (_isDisposed)
             {
                 // Block against reentrancy.
                 return;
             }
 
-            this._isDisposed = true;
+            _isDisposed = true;
 
-            IntPtr hwnd = this.Handle;
-            string className = this._className;
+            IntPtr hwnd = Handle;
+            string className = _className;
 
             if (isHwndBeingDestroyed)
             {
-                this.Dispatcher.BeginInvoke(DispatcherPriority.Normal, (DispatcherOperationCallback)(arg => _DestroyWindow(IntPtr.Zero, className)));
+                Dispatcher.BeginInvoke(DispatcherPriority.Normal, (DispatcherOperationCallback)(arg => _DestroyWindow(IntPtr.Zero, className)));
             }
-            else if (this.Handle != IntPtr.Zero)
+            else if (Handle != IntPtr.Zero)
             {
-                if (this.CheckAccess())
+                if (CheckAccess())
                 {
                     _DestroyWindow(hwnd, className);
                 }
                 else
                 {
-                    this.Dispatcher.BeginInvoke(DispatcherPriority.Normal, (DispatcherOperationCallback)(arg => _DestroyWindow(hwnd, className)));
+                    Dispatcher.BeginInvoke(DispatcherPriority.Normal, (DispatcherOperationCallback)(arg => _DestroyWindow(hwnd, className)));
                 }
             }
 
             s_windowLookup.Remove(hwnd);
 
-            this._className = null!;
-            this.Handle = IntPtr.Zero;
+            _className = null!;
+            Handle = IntPtr.Zero;
         }
 
         private static IntPtr _WndProc(IntPtr hwnd, WM msg, IntPtr wParam, IntPtr lParam)

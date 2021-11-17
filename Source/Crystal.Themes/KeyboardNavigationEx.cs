@@ -28,8 +28,8 @@
         private KeyboardNavigationEx()
         {
             var type = typeof(KeyboardNavigation);
-            this.alwaysShowFocusVisual = type.GetProperty("AlwaysShowFocusVisual", BindingFlags.NonPublic | BindingFlags.Static);
-            this.showFocusVisual = type.GetMethod("ShowFocusVisual", BindingFlags.NonPublic | BindingFlags.Static);
+            alwaysShowFocusVisual = type.GetProperty("AlwaysShowFocusVisual", BindingFlags.NonPublic | BindingFlags.Static);
+            showFocusVisual = type.GetMethod("ShowFocusVisual", BindingFlags.NonPublic | BindingFlags.Static);
         }
 
         /// <summary>
@@ -43,13 +43,13 @@
         /// </summary>
         internal void ShowFocusVisualInternal()
         {
-            this.showFocusVisual?.Invoke(null, null);
+            showFocusVisual?.Invoke(null, null);
         }
 
         internal bool AlwaysShowFocusVisualInternal
         {
-            get { return (bool?)this.alwaysShowFocusVisual?.GetValue(null, null) ?? false; }
-            set { this.alwaysShowFocusVisual?.SetValue(null, value, null); }
+            get { return (bool?)alwaysShowFocusVisual?.GetValue(null, null) ?? false; }
+            set { alwaysShowFocusVisual?.SetValue(null, value, null); }
         }
 
         /// <summary>
