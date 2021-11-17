@@ -35,8 +35,8 @@ namespace Crystal.Themes.Controls
   [TemplatePart(Name = PART_RightWindowCommands, Type = typeof(ContentPresenter))]
   [TemplatePart(Name = PART_WindowButtonCommands, Type = typeof(ContentPresenter))]
   [TemplatePart(Name = PART_OverlayBox, Type = typeof(Grid))]
-  [TemplatePart(Name = PART_MetroActiveDialogContainer, Type = typeof(Grid))]
-  [TemplatePart(Name = PART_MetroInactiveDialogsContainer, Type = typeof(Grid))]
+  [TemplatePart(Name = PART_CrystalActiveDialogContainer, Type = typeof(Grid))]
+  [TemplatePart(Name = PART_CrystalInactiveDialogsContainer, Type = typeof(Grid))]
   [TemplatePart(Name = PART_FlyoutModal, Type = typeof(Rectangle))]
   [TemplatePart(Name = PART_Content, Type = typeof(CrystalContentControl))]
   public class CrystalWindow : Window
@@ -50,8 +50,8 @@ namespace Crystal.Themes.Controls
     private const string PART_RightWindowCommands = "PART_RightWindowCommands";
     private const string PART_WindowButtonCommands = "PART_WindowButtonCommands";
     private const string PART_OverlayBox = "PART_OverlayBox";
-    private const string PART_MetroActiveDialogContainer = "PART_MetroActiveDialogContainer";
-    private const string PART_MetroInactiveDialogsContainer = "PART_MetroInactiveDialogsContainer";
+    private const string PART_CrystalActiveDialogContainer = "PART_CrystalActiveDialogContainer";
+    private const string PART_CrystalInactiveDialogsContainer = "PART_CrystalInactiveDialogsContainer";
     private const string PART_FlyoutModal = "PART_FlyoutModal";
     private const string PART_Content = "PART_Content";
 
@@ -66,8 +66,8 @@ namespace Crystal.Themes.Controls
     internal ContentPresenter? WindowButtonCommandsPresenter;
 
     internal Grid? overlayBox;
-    internal Grid? metroActiveDialogContainer;
-    internal Grid? metroInactiveDialogContainer;
+    internal Grid? crystalActiveDialogContainer;
+    internal Grid? crystalInactiveDialogContainer;
     private Storyboard? overlayStoryboard;
     Rectangle? flyoutModal;
 
@@ -1498,8 +1498,8 @@ namespace Crystal.Themes.Controls
       WindowButtonCommands.SetValue(WindowButtonCommands.ParentWindowPropertyKey, this);
 
       overlayBox = GetTemplateChild(PART_OverlayBox) as Grid;
-      metroActiveDialogContainer = GetTemplateChild(PART_MetroActiveDialogContainer) as Grid;
-      metroInactiveDialogContainer = GetTemplateChild(PART_MetroInactiveDialogsContainer) as Grid;
+      crystalActiveDialogContainer = GetTemplateChild(PART_CrystalActiveDialogContainer) as Grid;
+      crystalInactiveDialogContainer = GetTemplateChild(PART_CrystalInactiveDialogsContainer) as Grid;
       flyoutModal = GetTemplateChild(PART_FlyoutModal) as Rectangle;
 
       if (flyoutModal is not null)

@@ -274,13 +274,13 @@ namespace Crystal.Themes.Controls.Dialogs
 
     private static Task HandleOverlayOnHide(CrystalDialogSettings? settings, CrystalWindow window)
     {
-      if (window.metroActiveDialogContainer is null)
+      if (window.crystalActiveDialogContainer is null)
       {
         throw new InvalidOperationException("Active dialog container could not be found.");
       }
 
       Task? result = null;
-      if (!window.metroActiveDialogContainer.Children.OfType<CrystalDialogBase>().Any())
+      if (!window.crystalActiveDialogContainer.Children.OfType<CrystalDialogBase>().Any())
       {
         result = (settings is null || settings.AnimateHide ? window.HideOverlayAsync() : Task.Factory.StartNew(() => window.Dispatcher.Invoke(new Action(window.HideOverlay))));
       }
@@ -295,14 +295,14 @@ namespace Crystal.Themes.Controls.Dialogs
           {
             window.Invoke(() =>
                       {
-                        if (window.metroActiveDialogContainer.Children.Count == 0)
+                        if (window.crystalActiveDialogContainer.Children.Count == 0)
                         {
                           window.SetValue(CrystalWindow.IsCloseButtonEnabledWithDialogPropertyKey, BooleanBoxes.TrueBox);
                           window.RestoreFocus();
                         }
                         else
                         {
-                          var onTopShownDialogSettings = window.metroActiveDialogContainer.Children.OfType<CrystalDialogBase>().LastOrDefault()?.DialogSettings;
+                          var onTopShownDialogSettings = window.crystalActiveDialogContainer.Children.OfType<CrystalDialogBase>().LastOrDefault()?.DialogSettings;
                           var isCloseButtonEnabled = window.ShowDialogsOverTitleBar || onTopShownDialogSettings is null || onTopShownDialogSettings.OwnerCanCloseWithDialog;
                           window.SetValue(CrystalWindow.IsCloseButtonEnabledWithDialogPropertyKey, BooleanBoxes.Box(isCloseButtonEnabled));
                         }
@@ -326,12 +326,12 @@ namespace Crystal.Themes.Controls.Dialogs
                      {
                        return window.Invoke(() =>
                                  {
-                                   if (window.metroActiveDialogContainer is null)
+                                   if (window.crystalActiveDialogContainer is null)
                                    {
                                      throw new InvalidOperationException("Active dialog container could not be found.");
                                    }
 
-                                   if (!window.metroActiveDialogContainer.Children.OfType<CrystalDialogBase>().Any())
+                                   if (!window.crystalActiveDialogContainer.Children.OfType<CrystalDialogBase>().Any())
                                    {
                                      return (settings is null || settings.AnimateShow ? window.ShowOverlayAsync() : Task.Factory.StartNew(() => window.Dispatcher.Invoke(new Action(window.ShowOverlay))));
                                    }
@@ -370,17 +370,17 @@ namespace Crystal.Themes.Controls.Dialogs
         throw new ArgumentNullException(nameof(dialog));
       }
 
-      if (window.metroActiveDialogContainer is null)
+      if (window.crystalActiveDialogContainer is null)
       {
         throw new InvalidOperationException("Active dialog container could not be found.");
       }
 
-      if (window.metroInactiveDialogContainer is null)
+      if (window.crystalInactiveDialogContainer is null)
       {
         throw new InvalidOperationException("Inactive dialog container could not be found.");
       }
 
-      if (window.metroActiveDialogContainer.Children.Contains(dialog) || window.metroInactiveDialogContainer.Children.Contains(dialog))
+      if (window.crystalActiveDialogContainer.Children.Contains(dialog) || window.crystalInactiveDialogContainer.Children.Contains(dialog))
       {
         throw new InvalidOperationException("The provided dialog is already visible in the specified window.");
       }
@@ -466,17 +466,17 @@ namespace Crystal.Themes.Controls.Dialogs
     {
       window.Dispatcher.VerifyAccess();
 
-      if (window.metroActiveDialogContainer is null)
+      if (window.crystalActiveDialogContainer is null)
       {
         throw new InvalidOperationException("Active dialog container could not be found.");
       }
 
-      if (window.metroInactiveDialogContainer is null)
+      if (window.crystalInactiveDialogContainer is null)
       {
         throw new InvalidOperationException("Inactive dialog container could not be found.");
       }
 
-      if (!window.metroActiveDialogContainer.Children.Contains(dialog) && !window.metroInactiveDialogContainer.Children.Contains(dialog))
+      if (!window.crystalActiveDialogContainer.Children.Contains(dialog) && !window.crystalInactiveDialogContainer.Children.Contains(dialog))
       {
         throw new InvalidOperationException("The provided dialog is not visible in the specified window.");
       }
@@ -514,7 +514,7 @@ namespace Crystal.Themes.Controls.Dialogs
       var t = new TaskCompletionSource<TDialog?>();
       window.Dispatcher.Invoke((Action)(() =>
           {
-            var dialog = window.metroActiveDialogContainer?.Children.OfType<TDialog>().LastOrDefault();
+            var dialog = window.crystalActiveDialogContainer?.Children.OfType<TDialog>().LastOrDefault();
             t.TrySetResult(dialog);
           }));
       return t.Task;
@@ -562,12 +562,12 @@ namespace Crystal.Themes.Controls.Dialogs
 
     private static void AddDialog(this CrystalWindow window, CrystalDialogBase dialog)
     {
-      if (window.metroActiveDialogContainer is null)
+      if (window.crystalActiveDialogContainer is null)
       {
         throw new InvalidOperationException("Active dialog container could not be found.");
       }
 
-      if (window.metroInactiveDialogContainer is null)
+      if (window.crystalInactiveDialogContainer is null)
       {
         throw new InvalidOperationException("Inactive dialog container could not be found.");
       }
@@ -575,48 +575,48 @@ namespace Crystal.Themes.Controls.Dialogs
       window.StoreFocus();
 
       // if there's already an active dialog, move to the background
-      var activeDialog = window.metroActiveDialogContainer.Children.OfType<CrystalDialogBase>().SingleOrDefault();
+      var activeDialog = window.crystalActiveDialogContainer.Children.OfType<CrystalDialogBase>().SingleOrDefault();
       if (activeDialog != null)
       {
-        window.metroActiveDialogContainer.Children.Remove(activeDialog);
-        window.metroInactiveDialogContainer.Children.Add(activeDialog);
+        window.crystalActiveDialogContainer.Children.Remove(activeDialog);
+        window.crystalInactiveDialogContainer.Children.Add(activeDialog);
       }
 
-      window.metroActiveDialogContainer.Children.Add(dialog); //add the dialog to the container}
+      window.crystalActiveDialogContainer.Children.Add(dialog); //add the dialog to the container}
 
       window.SetValue(CrystalWindow.IsAnyDialogOpenPropertyKey, BooleanBoxes.TrueBox);
     }
 
     private static void RemoveDialog(this CrystalWindow window, CrystalDialogBase dialog)
     {
-      if (window.metroActiveDialogContainer is null)
+      if (window.crystalActiveDialogContainer is null)
       {
         throw new InvalidOperationException("Active dialog container could not be found.");
       }
 
-      if (window.metroInactiveDialogContainer is null)
+      if (window.crystalInactiveDialogContainer is null)
       {
         throw new InvalidOperationException("Inactive dialog container could not be found.");
       }
 
-      if (window.metroActiveDialogContainer.Children.Contains(dialog))
+      if (window.crystalActiveDialogContainer.Children.Contains(dialog))
       {
-        window.metroActiveDialogContainer.Children.Remove(dialog); //remove the dialog from the container
+        window.crystalActiveDialogContainer.Children.Remove(dialog); //remove the dialog from the container
 
         // if there's an inactive dialog, bring it to the front
-        var dlg = window.metroInactiveDialogContainer.Children.OfType<CrystalDialogBase>().LastOrDefault();
+        var dlg = window.crystalInactiveDialogContainer.Children.OfType<CrystalDialogBase>().LastOrDefault();
         if (dlg != null)
         {
-          window.metroInactiveDialogContainer.Children.Remove(dlg);
-          window.metroActiveDialogContainer.Children.Add(dlg);
+          window.crystalInactiveDialogContainer.Children.Remove(dlg);
+          window.crystalActiveDialogContainer.Children.Add(dlg);
         }
       }
       else
       {
-        window.metroInactiveDialogContainer.Children.Remove(dialog);
+        window.crystalInactiveDialogContainer.Children.Remove(dialog);
       }
 
-      window.SetValue(CrystalWindow.IsAnyDialogOpenPropertyKey, BooleanBoxes.Box(window.metroActiveDialogContainer.Children.Count > 0));
+      window.SetValue(CrystalWindow.IsAnyDialogOpenPropertyKey, BooleanBoxes.Box(window.crystalActiveDialogContainer.Children.Count > 0));
     }
 
     /// <summary>
