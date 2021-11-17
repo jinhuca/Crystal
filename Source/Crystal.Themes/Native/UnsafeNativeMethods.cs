@@ -1,13 +1,13 @@
-﻿#pragma warning disable SA1604 // Element documentation should have summary
+﻿using System;
+using System.Runtime.InteropServices;
+using System.Security;
+using System.Text;
+using Crystal.Themes.Controls;
+using Crystal.Themes.Standard;
+
+#pragma warning disable SA1604 // Element documentation should have summary
 namespace Crystal.Themes.Native
 {
-    using System;
-    using System.Runtime.InteropServices;
-    using System.Security;
-    using System.Text;
-    using Crystal.Themes.Controls;
-    using Crystal.Themes.Standard;
-
     /// <devdoc>http://msdn.microsoft.com/en-us/library/ms182161.aspx</devdoc>
     [SuppressUnmanagedCodeSecurity]
     [Obsolete(DesignerConstants.Win32ElementWarning)]

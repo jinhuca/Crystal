@@ -1,3 +1,21 @@
+using System;
+using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Runtime.CompilerServices;
+using System.Runtime.ConstrainedExecution;
+using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ComTypes;
+using System.Security;
+using System.Text;
+using Crystal.Themes.Controls;
+using JetBrains.Annotations;
+using Microsoft.Win32.SafeHandles;
+
+// Some COM interfaces and Win32 structures are already declared in the framework.
+// Interesting ones to remember in System.Runtime.InteropServices.ComTypes are:
+using IStream = System.Runtime.InteropServices.ComTypes.IStream;
+
 #pragma warning disable 1591, 618, CA1815, CA1028, CA1008
 #pragma warning disable SA1303 // Const field names should begin with upper-case letter
 #pragma warning disable SA1307 // Accessible fields should begin with upper-case letter
@@ -7,24 +25,6 @@
 #pragma warning disable SA1602 // Enumeration items should be documented
 namespace Crystal.Themes.Standard
 {
-  using System;
-  using System.ComponentModel;
-  using System.Diagnostics.CodeAnalysis;
-  using System.IO;
-  using System.Runtime.CompilerServices;
-  using System.Runtime.ConstrainedExecution;
-  using System.Runtime.InteropServices;
-  using System.Runtime.InteropServices.ComTypes;
-  using System.Security;
-  using System.Text;
-  using Crystal.Themes.Controls;
-  using JetBrains.Annotations;
-  using Microsoft.Win32.SafeHandles;
-
-  // Some COM interfaces and Win32 structures are already declared in the framework.
-  // Interesting ones to remember in System.Runtime.InteropServices.ComTypes are:
-  using IStream = System.Runtime.InteropServices.ComTypes.IStream;
-
   #region Native Values
 
   internal static class Win32Value

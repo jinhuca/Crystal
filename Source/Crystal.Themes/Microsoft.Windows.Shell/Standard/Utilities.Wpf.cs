@@ -1,3 +1,6 @@
+using System.Windows;
+using System.Windows.Media;
+
 #pragma warning disable 1591, 618
 // This file contains general utilities to aid in development.
 // Classes here generally shouldn't be exposed publicly since
@@ -6,9 +9,6 @@
 // might be included in multiple assemblies.
 namespace Crystal.Themes.Standard
 {
-    using System.Windows;
-    using System.Windows.Media;
-
     internal static partial class Utility
     {
         /// <summary>Convert a native integer that represent a color with an alpha channel into a Color struct.</summary>

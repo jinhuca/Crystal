@@ -1,7 +1,7 @@
-﻿namespace Crystal.Themes.Standard
-{
-    using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 
+namespace Crystal.Themes.Standard
+{
     /// <summary>
     /// DoubleUtil uses fixed eps to provide fuzzy comparison functionality for doubles.
     /// Note that FP noise is a big problem and using any of these compare 

@@ -1,26 +1,17 @@
-﻿namespace Crystal.Themes.Automation.Peers
+﻿using System.Windows.Automation.Peers;
+
+namespace Crystal.Themes.Automation.Peers
 {
-    using System.Windows.Automation.Peers;
-    using System.Windows.Controls;
-    using Crystal.Themes.Controls;
-
-    /// <summary>
-    ///     Automation-Peer for <see cref="TabControlEx" />.
-    /// </summary>
-    public class TabControlExAutomationPeer : TabControlAutomationPeer
+  public class TabControlExAutomationPeer : TabControlAutomationPeer
+  {
+    public TabControlExAutomationPeer(TabControl owner)
+        : base(owner)
     {
-        /// <summary>
-        ///     Initializes a new instance.
-        /// </summary>
-        public TabControlExAutomationPeer(TabControl owner)
-            : base(owner)
-        {
-        }
-
-        /// <inheritdoc />
-        protected override ItemAutomationPeer CreateItemAutomationPeer(object item)
-        {
-            return new TabItemExAutomationPeer(item, this);
-        }
     }
+
+    protected override ItemAutomationPeer CreateItemAutomationPeer(object item)
+    {
+      return new TabItemExAutomationPeer(item, this);
+    }
+  }
 }

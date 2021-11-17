@@ -158,12 +158,11 @@ namespace Crystal.Themes.Behaviors
       }
     }
 
-    internal static readonly DependencyProperty ContentControlProperty
-        = DependencyProperty.RegisterAttached(
-            "ContentControl",
-            typeof(ContentControl),
-            typeof(ReloadBehavior),
-            new PropertyMetadata(default(ContentControl)));
+    internal static readonly DependencyProperty ContentControlProperty = DependencyProperty.RegisterAttached(
+      "ContentControl",
+      typeof(ContentControl),
+      typeof(ReloadBehavior),
+      new PropertyMetadata(default(ContentControl)));
 
     internal static ContentControl? GetContentControl(UIElement element)
     {

@@ -13,60 +13,40 @@ namespace Crystal.Themes.Actions
   /// </summary>
   public class CommandTriggerAction : TriggerAction<FrameworkElement>
   {
-    /// <summary>
-    /// Identifies the <see cref="Command" /> dependency property
-    /// </summary>
-    public static readonly DependencyProperty CommandProperty
-        = DependencyProperty.Register(nameof(Command),
-                                      typeof(ICommand),
-                                      typeof(CommandTriggerAction),
-                                      new PropertyMetadata(null, (s, e) => OnCommandChanged(s as CommandTriggerAction, e)));
+    public static readonly DependencyProperty CommandProperty = DependencyProperty.Register(
+      nameof(Command),
+      typeof(ICommand),
+      typeof(CommandTriggerAction),
+      new PropertyMetadata(null, (s, e) => OnCommandChanged(s as CommandTriggerAction, e)));
 
-    /// <summary>
-    /// Gets or sets the command that this trigger is bound to.
-    /// </summary>
     public ICommand? Command
     {
       get => (ICommand?)GetValue(CommandProperty);
       set => SetValue(CommandProperty, value);
     }
 
-    /// <summary>
-    /// Identifies the <see cref="CommandParameter" /> dependency property
-    /// </summary>
-    public static readonly DependencyProperty CommandParameterProperty
-        = DependencyProperty.Register(nameof(CommandParameter),
-                                      typeof(object),
-                                      typeof(CommandTriggerAction),
-                                      new PropertyMetadata(null,
-                                                           (s, e) =>
-                                                               {
-                                                                 var sender = s as CommandTriggerAction;
-                                                                 if (sender?.AssociatedObject != null)
-                                                                 {
-                                                                   sender.EnableDisableElement();
-                                                                 }
-                                                               }));
+    public static readonly DependencyProperty CommandParameterProperty = DependencyProperty.Register(
+      nameof(CommandParameter),
+      typeof(object),
+      typeof(CommandTriggerAction),
+      new PropertyMetadata(null, (s, e) =>
+      {
+        var sender = s as CommandTriggerAction;
+        if (sender?.AssociatedObject != null)
+        {
+          sender.EnableDisableElement();
+        }
+      }));
 
-    /// <summary>
-    /// Gets or sets an object that will be passed to the <see cref="Command" /> attached to this trigger.
-    /// </summary>
     public object? CommandParameter
     {
       get => GetValue(CommandParameterProperty);
       set => SetValue(CommandParameterProperty, value);
     }
 
-    /// <summary>
-    /// Specifies whether the AssociatedObject should be passed to the bound RelayCommand.
-    /// This happens only if the <see cref="CommandParameter"/> is not set.
-    /// </summary>
     public bool PassAssociatedObjectToCommand { get; set; }
 
-    public CommandTriggerAction()
-    {
-      PassAssociatedObjectToCommand = true;
-    }
+    public CommandTriggerAction() => PassAssociatedObjectToCommand = true;
 
     protected override void OnAttached()
     {

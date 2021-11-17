@@ -1,22 +1,22 @@
-﻿#nullable enable
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Linq;
+using System.Security;
+using System.Windows;
+using System.Windows.Data;
+using System.Windows.Media;
+using System.Windows.Threading;
+using JetBrains.Annotations;
+using Microsoft.Win32;
+
+#nullable enable
 namespace Crystal.Themes.Theming
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Collections.Specialized;
-    using System.ComponentModel;
-    using System.Diagnostics;
-    using System.Linq;
-    using System.Security;
-    using System.Windows;
-    using System.Windows.Data;
-    using System.Windows.Media;
-    using System.Windows.Threading;
-    using JetBrains.Annotations;
-    using Microsoft.Win32;
-
     /// <summary>
     /// A class that allows for the detection and alteration of a theme.
     /// </summary>

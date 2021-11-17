@@ -1,22 +1,22 @@
+using System;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
+using System.Windows;
+using System.Windows.Data;
+using System.Windows.Interop;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
+using System.Windows.Threading;
+using Crystal.Themes.Behaviors;
+using Crystal.Themes.Internal;
+using Crystal.Themes.Native;
+using Crystal.Themes.Standard;
+using JetBrains.Annotations;
+
 #pragma warning disable 618, CA1001, CA1060
 
 namespace Crystal.Themes.Controls
 {
-    using System;
-    using System.Diagnostics;
-    using System.Runtime.InteropServices;
-    using System.Windows;
-    using System.Windows.Data;
-    using System.Windows.Interop;
-    using System.Windows.Media;
-    using System.Windows.Media.Animation;
-    using System.Windows.Threading;
-    using Crystal.Themes.Behaviors;
-    using Crystal.Themes.Internal;
-    using Crystal.Themes.Native;
-    using Crystal.Themes.Standard;
-    using JetBrains.Annotations;
-
     [DebuggerDisplay("{" + nameof(Title) + "}")]
     public partial class GlowWindow
     {

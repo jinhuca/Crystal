@@ -1,5 +1,4 @@
-﻿using System.Windows.Data;
-using Crystal.Themes.Controls;
+﻿using Crystal.Themes.Controls;
 using Crystal.Themes.Windows.Shell;
 
 namespace Crystal.Themes.Behaviors

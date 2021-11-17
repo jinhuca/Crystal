@@ -1,5 +1,4 @@
-﻿using System.Windows.Controls.Primitives;
-using Crystal.Behaviors;
+﻿using Crystal.Behaviors;
 using Crystal.Themes.Controls;
 using Crystal.Themes.ValueBoxes;
 

@@ -1,4 +1,15 @@
-﻿#pragma warning disable 1591, 618
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.InteropServices;
+using System.Security;
+using System.Windows;
+using System.Windows.Media;
+using Crystal.Themes.Standard;
+
+#pragma warning disable 1591, 618
 #pragma warning disable CA1001
 #pragma warning disable SA1300 // Element should begin with upper-case letter
 #pragma warning disable SA1306 // Field names should begin with lower-case letter
@@ -11,17 +22,6 @@
 
 namespace Crystal.Themes.Windows.Shell
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Runtime.InteropServices;
-    using System.Security;
-    using System.Windows;
-    using System.Windows.Media;
-    using Crystal.Themes.Standard;
-
     internal class SystemParameters2 : INotifyPropertyChanged
     {
         private delegate void _SystemMetricUpdate(IntPtr wParam, IntPtr lParam);

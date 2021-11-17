@@ -1,9 +1,9 @@
-﻿#pragma warning disable 1591, 618
+﻿using System;
+using System.Diagnostics;
+
+#pragma warning disable 1591, 618
 namespace Crystal.Themes.Standard
 {
-    using System;
-    using System.Diagnostics;
-
     internal static class MonitorHelper
     {
         /// <summary>

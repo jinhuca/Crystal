@@ -1,4 +1,11 @@
-﻿#pragma warning disable 1591, 618
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.InteropServices;
+using System.Windows;
+using System.Windows.Threading;
+
+#pragma warning disable 1591, 618
 #pragma warning disable CA1816
 #pragma warning disable SA1300 // Element should begin with upper-case letter
 #pragma warning disable SA1308 // Variable names should not be prefixed
@@ -6,13 +13,6 @@
 #pragma warning disable SA1310 // Field names should not contain underscore
 namespace Crystal.Themes.Standard
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Runtime.InteropServices;
-    using System.Windows;
-    using System.Windows.Threading;
-
     internal sealed class MessageWindow : DispatcherObject, IDisposable
     {
         // Alias this to a static so the wrapper doesn't get GC'd

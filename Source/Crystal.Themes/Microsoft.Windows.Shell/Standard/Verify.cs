@@ -1,3 +1,10 @@
+using System;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.IO;
+using System.Threading;
+
 #pragma warning disable 1591, 618
 // This file contains general utilities to aid in development.
 // Classes here generally shouldn't be exposed publicly since
@@ -6,13 +13,6 @@
 // might be included in multiple assemblies.
 namespace Crystal.Themes.Standard
 {
-    using System;
-    using System.Diagnostics;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Globalization;
-    using System.IO;
-    using System.Threading;
-
     /// <summary>
     /// A static class for retail validated assertions.
     /// Instead of breaking into the debugger an exception is thrown.

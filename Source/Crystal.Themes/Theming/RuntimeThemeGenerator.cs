@@ -1,13 +1,13 @@
-﻿#nullable enable
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
+using System.Windows.Markup;
+using System.Windows.Media;
+
+#nullable enable
 namespace Crystal.Themes.Theming
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Windows;
-    using System.Windows.Markup;
-    using System.Windows.Media;
-
     public class RuntimeThemeGenerator
     {
         public static RuntimeThemeGenerator Current { get; set; }

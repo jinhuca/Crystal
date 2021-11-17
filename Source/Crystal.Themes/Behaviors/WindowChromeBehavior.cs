@@ -1,20 +1,12 @@
 ﻿#pragma warning disable 618, CA1001
+using System.Security;
+using System.Windows.Interop;
+using Crystal.Behaviors;
+using Crystal.Themes.Native;
+using Crystal.Themes.Standard;
 
 namespace Crystal.Themes.Behaviors
 {
-  using System;
-  using System.Collections.Generic;
-  using System.Security;
-  using System.Windows;
-  using System.Windows.Controls;
-  using System.Windows.Interop;
-  using System.Windows.Threading;
-  using Crystal.Behaviors;
-  using Crystal.Themes.Controls;
-  using Crystal.Themes.Native;
-  using Crystal.Themes.Standard;
-
-
   /// <summary>
   /// With this class we can make custom window styles.
   /// </summary>

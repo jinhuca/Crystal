@@ -1,10 +1,10 @@
-﻿#nullable enable
+﻿using System;
+using System.Windows.Media;
+using Crystal.Themes.Standard;
+
+#nullable enable
 namespace Crystal.Themes.Theming
 {
-    using System;
-    using System.Windows.Media;
-    using Crystal.Themes.Standard;
-
     /// <summary>
     /// This struct represent a Color in HSL (Hue, Saturation, Luminance)
     /// 

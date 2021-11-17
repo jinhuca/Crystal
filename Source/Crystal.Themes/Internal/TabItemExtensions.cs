@@ -1,8 +1,8 @@
-﻿namespace Crystal.Themes.Internal
-{
-    using System.Reflection;
-    using System.Windows.Controls;
+﻿using System.Reflection;
+using System.Windows.Controls;
 
+namespace Crystal.Themes.Internal
+{
     internal static class TabItemExtensions
     {
         private static readonly MethodInfo? SetFocusMethodInfo = typeof(TabItem).GetMethod("SetFocus", BindingFlags.NonPublic | BindingFlags.Instance);

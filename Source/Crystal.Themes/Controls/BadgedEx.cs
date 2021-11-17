@@ -1,11 +1,11 @@
-﻿namespace Crystal.Themes.Controls
-{
-  using System;
-  using System.ComponentModel;
-  using System.Windows;
-  using System.Windows.Controls;
-  using System.Windows.Media;
+﻿using System;
+using System.ComponentModel;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 
+namespace Crystal.Themes.Controls
+{
 #pragma warning disable SA1602 // Enumeration items should be documented
   public enum BadgePlacementMode
   {

@@ -1,15 +1,14 @@
-﻿#nullable enable
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows;
+using System.Windows.Media;
+using Crystal.Themes.Internal;
+
+#nullable enable
 namespace Crystal.Themes.Theming
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Linq;
-    using System.Windows;
-    using System.Windows.Media;
-    using Crystal.Themes.Internal;
-    
-
     /// <summary>
     /// Represents a theme.
     /// </summary>

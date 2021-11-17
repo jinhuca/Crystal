@@ -1,16 +1,16 @@
-﻿namespace Crystal.Themes.Windows.Shell
-{
-    using System;
-    using System.Security;
-    using System.Windows;
-    using System.Windows.Input;
-    using System.Windows.Interop;
-    using System.Windows.Media;
-    using Crystal.Themes.Controls;
-    using Crystal.Themes.Internal;
-    using Crystal.Themes.Native;
-    using Crystal.Themes.Standard;
+﻿using System;
+using System.Security;
+using System.Windows;
+using System.Windows.Input;
+using System.Windows.Interop;
+using System.Windows.Media;
+using Crystal.Themes.Controls;
+using Crystal.Themes.Internal;
+using Crystal.Themes.Native;
+using Crystal.Themes.Standard;
 
+namespace Crystal.Themes.Windows.Shell
+{
     [Obsolete(DesignerConstants.Win32ElementWarning)]
     public static class SystemCommands
     {

@@ -1,7 +1,7 @@
-﻿namespace Crystal.Themes.Internal
-{
-  using System.Reflection;
+﻿using System.Reflection;
 
+namespace Crystal.Themes.Internal
+{
   internal static class FrameworkAppContextSwitches
   {
     private static readonly PropertyInfo? SelectionPropertiesCanLagBehindSelectionChangedEventPropertyInfo = typeof(System.Windows.Controls.TabControl).Assembly.GetType("MS.Internal.FrameworkAppContextSwitches")?.GetProperty("SelectionPropertiesCanLagBehindSelectionChangedEvent", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);

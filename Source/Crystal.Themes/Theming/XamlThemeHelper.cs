@@ -1,10 +1,10 @@
-﻿#nullable enable
+﻿using System;
+using System.Linq;
+using System.Text.RegularExpressions;
+
+#nullable enable
 namespace Crystal.Themes.Theming
 {
-  using System;
-  using System.Linq;
-  using System.Text.RegularExpressions;
-
   public static class XamlThemeHelper
   {
     /// <summary>

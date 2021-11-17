@@ -1,14 +1,14 @@
+using System;
+using System.Runtime.InteropServices;
+using System.Security;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Input;
+using System.Windows.Interop;
+
 namespace Crystal.Themes.Controls
 {
-    using System;
-    using System.Runtime.InteropServices;
-    using System.Security;
-    using System.Windows;
-    using System.Windows.Controls;
-    using System.Windows.Controls.Primitives;
-    using System.Windows.Input;
-    using System.Windows.Interop;
-
     /// <summary>
     /// This custom popup can be used by validation error templates or something else.
     /// It provides some additional nice features:

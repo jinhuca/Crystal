@@ -1,15 +1,15 @@
-﻿#nullable enable
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Resources;
+using System.Windows;
+
+#nullable enable
 namespace Crystal.Themes.Theming
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Reflection;
-    using System.Resources;
-    using System.Windows;
-
     public abstract class LibraryThemeProvider : DependencyObject
     {
         private readonly Assembly assembly;

@@ -1,11 +1,11 @@
-﻿#pragma warning disable 1591, 1573, 618
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Windows;
+using System.Windows.Media;
+
+#pragma warning disable 1591, 1573, 618
 namespace Crystal.Themes.Standard
 {
-    using System;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Windows;
-    using System.Windows.Media;
-
     internal static class DpiHelper
     {
         [ThreadStatic]
