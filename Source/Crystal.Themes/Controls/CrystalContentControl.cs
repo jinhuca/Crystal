@@ -91,11 +91,11 @@ namespace Crystal.Themes.Controls
     public CrystalContentControl()
     {
       DefaultStyleKey = typeof(CrystalContentControl);
-      Loaded += MetroContentControlLoaded;
-      Unloaded += MetroContentControlUnloaded;
+      Loaded += CrystalContentControlLoaded;
+      Unloaded += CrystalContentControlUnloaded;
     }
 
-    private void MetroContentControlIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+    private void CrystalContentControlIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
     {
       if (TransitionsEnabled && !transitionLoaded)
       {
@@ -110,7 +110,7 @@ namespace Crystal.Themes.Controls
       }
     }
 
-    private void MetroContentControlUnloaded(object sender, RoutedEventArgs e)
+    private void CrystalContentControlUnloaded(object sender, RoutedEventArgs e)
     {
       if (TransitionsEnabled)
       {
@@ -120,11 +120,11 @@ namespace Crystal.Themes.Controls
           VisualStateManager.GoToState(this, ReverseTransition ? "AfterUnLoadedReverse" : "AfterUnLoaded", false);
         }
 
-        IsVisibleChanged -= MetroContentControlIsVisibleChanged;
+        IsVisibleChanged -= CrystalContentControlIsVisibleChanged;
       }
     }
 
-    private void MetroContentControlLoaded(object sender, RoutedEventArgs e)
+    private void CrystalContentControlLoaded(object sender, RoutedEventArgs e)
     {
       if (TransitionsEnabled)
       {
@@ -135,8 +135,8 @@ namespace Crystal.Themes.Controls
           VisualStateManager.GoToState(this, ReverseTransition ? "AfterLoadedReverse" : "AfterLoaded", true);
         }
 
-        IsVisibleChanged -= MetroContentControlIsVisibleChanged;
-        IsVisibleChanged += MetroContentControlIsVisibleChanged;
+        IsVisibleChanged -= CrystalContentControlIsVisibleChanged;
+        IsVisibleChanged += CrystalContentControlIsVisibleChanged;
       }
       else
       {

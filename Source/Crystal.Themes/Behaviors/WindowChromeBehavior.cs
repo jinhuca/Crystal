@@ -497,7 +497,7 @@ namespace Crystal.Themes.Behaviors
 
       // fix nasty TopMost bug
       // - set TopMost="True"
-      // - start mahapps demo
+      // - start demo
       // - TopMost works
       // - maximize window and back to normal
       // - TopMost is gone

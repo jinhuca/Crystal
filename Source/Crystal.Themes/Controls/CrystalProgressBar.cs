@@ -1,7 +1,7 @@
 ﻿namespace Crystal.Themes.Controls
 {
   /// <summary>
-  /// A metrofied ProgressBar.
+  /// A styled ProgressBar.
   /// <see cref="ProgressBar"/>
   /// </summary>
   public class CrystalProgressBar : ProgressBar

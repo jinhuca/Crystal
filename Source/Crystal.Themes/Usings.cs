@@ -19,3 +19,5 @@ global using System.Collections.Specialized;
 global using System.Diagnostics;
 global using System.Windows.Documents;
 global using System.Collections.ObjectModel;
+global using System.Windows.Markup;
+global using JetBrains.Annotations;

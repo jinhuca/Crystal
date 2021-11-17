@@ -1,0 +1,46 @@
+﻿<crystal:CrystalWindow x:Class="Crystal.Themes.Controls.CrystalNavigationWindow"
+                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                       xmlns:crystal="clr-namespace:Crystal.Themes.Controls"
+                       GlowBrush="{DynamicResource Crystal.Brushes.Accent}">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" MinHeight="50"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+
+    <StackPanel Grid.Row="0" Orientation="Horizontal">
+      <Button x:Name="PART_BackButton"
+              Width="34"
+              Height="34"
+              Margin="4 2 2 2"
+              VerticalAlignment="Center"
+              Style="{DynamicResource Crystal.Styles.Button.Circle}">
+        <crystal:FontIcon FlowDirection="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=FlowDirection, Mode=OneWay}"
+                          FontFamily="{DynamicResource Crystal.Fonts.Family.SymbolTheme}"
+                          FontSize="20"
+                          Glyph="&#xF0B0;"/>
+      </Button>
+      <Button x:Name="PART_ForwardButton"
+              Width="34"
+              Height="34"
+              Margin="2 2 4 2"
+              VerticalAlignment="Center"
+              IsEnabled="False"
+              Style="{DynamicResource Crystal.Styles.Button.Circle}">
+        <crystal:FontIcon FlowDirection="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=FlowDirection, Mode=OneWay}"
+                          FontFamily="{DynamicResource Crystal.Fonts.Family.SymbolTheme}"
+                          FontSize="20"
+                          Glyph="&#xF0AF;"/>
+      </Button>
+      <Label x:Name="PART_Title"
+             VerticalAlignment="Center"
+             FontSize="25"/>
+    </StackPanel>
+
+    <Grid Grid.Row="1">
+      <ContentPresenter Panel.ZIndex="1" Content="{Binding OverlayContent, RelativeSource={RelativeSource AncestorType=crystal:CrystalNavigationWindow, Mode=FindAncestor}}"/>
+      <Frame x:Name="PART_Frame" NavigationUIVisibility="Hidden"/>
+    </Grid>
+  </Grid>
+</crystal:CrystalWindow>

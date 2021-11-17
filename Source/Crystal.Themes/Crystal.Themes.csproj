@@ -54,6 +54,7 @@
     <Resource Remove="Resources\CrystalTheme.png" />
   </ItemGroup>
   <ItemGroup>
+    <UpToDateCheckInput Remove="Controls\CrystalNavigationWindow.xaml" />
     <UpToDateCheckInput Remove="Controls\GlowWindow.xaml" />
     <UpToDateCheckInput Remove="Themes\BadgedEx.xaml" />
     <UpToDateCheckInput Remove="Themes\CrystalAnimatedSingleRowTabControl.xaml" />
