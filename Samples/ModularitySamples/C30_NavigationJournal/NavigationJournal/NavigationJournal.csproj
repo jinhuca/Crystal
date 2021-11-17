@@ -9,7 +9,7 @@
     <PackageReference Include="Crystal.Behaviors" Version="2.2.3.6" />
     <PackageReference Include="Crystal.Core" Version="2.2.3.6" />
     <PackageReference Include="Crystal.Desktop" Version="2.2.3.6" />
-    <PackageReference Include="Crystal.Themes" Version="2.2.4.2" />
+    <PackageReference Include="Crystal.Themes" Version="2.2.4.3" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ModuleA\ModuleA.csproj" />
