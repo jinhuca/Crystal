@@ -11,10 +11,8 @@
     [AttachedPropertyBrowsableForType(typeof(ToggleButton))]
     [AttachedPropertyBrowsableForType(typeof(RadioButton))]
     [Category(AppName.CrystalThemes)]
-    public static FlowDirection GetContentDirection(UIElement element) 
-      => (FlowDirection)element.GetValue(ContentDirectionProperty);
+    public static FlowDirection GetContentDirection(UIElement element) => (FlowDirection)element.GetValue(ContentDirectionProperty);
 
-    public static void SetContentDirection(UIElement element, FlowDirection value) 
-      => element.SetValue(ContentDirectionProperty, value);
+    public static void SetContentDirection(UIElement element, FlowDirection value) => element.SetValue(ContentDirectionProperty, value);
   }
 }
