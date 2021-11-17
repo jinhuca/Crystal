@@ -1,7 +1,5 @@
-using System.Windows.Controls;
 using Crystal.Themes.Theming;
 using Crystal.Themes.ValueBoxes;
-using JetBrains.Annotations;
 
 namespace Crystal.Themes.Controls.Dialogs
 {
@@ -25,51 +23,51 @@ namespace Crystal.Themes.Controls.Dialogs
           {
             return (Task<LoginDialogData?>)window.Dispatcher.Invoke(new Func<Task<LoginDialogData?>>(() =>
                       {
-                          //create the dialog control
-                          LoginDialog dialog = new LoginDialog(window, settings)
-                    {
-                      Title = title,
-                      Message = message
-                    };
+                        //create the dialog control
+                        LoginDialog dialog = new LoginDialog(window, settings)
+                        {
+                          Title = title,
+                          Message = message
+                        };
 
-                    SetDialogFontSizes(settings, dialog);
+                        SetDialogFontSizes(settings, dialog);
 
-                    SizeChangedEventHandler sizeHandler = SetupAndOpenDialog(window, dialog);
-                    dialog.SizeChangedHandler = sizeHandler;
+                        SizeChangedEventHandler sizeHandler = SetupAndOpenDialog(window, dialog);
+                        dialog.SizeChangedHandler = sizeHandler;
 
-                    return dialog.WaitForLoadAsync().ContinueWith(x =>
-                              {
-                            if (DialogOpened != null)
-                            {
-                              window.Dispatcher.BeginInvoke(new Action(() => DialogOpened(window, new DialogStateChangedEventArgs())));
-                            }
-
-                            return dialog.WaitForButtonPressAsync().ContinueWith(y =>
-                                      {
-                                          //once a button as been clicked, begin removing the dialog.
-
-                                          dialog.OnClose();
-
-                                    if (DialogClosed != null)
+                        return dialog.WaitForLoadAsync().ContinueWith(x =>
+                                  {
+                                    if (DialogOpened != null)
                                     {
-                                      window.Dispatcher.BeginInvoke(new Action(() => DialogClosed(window, new DialogStateChangedEventArgs())));
+                                      window.Dispatcher.BeginInvoke(new Action(() => DialogOpened(window, new DialogStateChangedEventArgs())));
                                     }
 
-                                    Task closingTask = (Task)window.Dispatcher.Invoke(new Func<Task>(() => dialog.WaitForCloseAsync()));
-                                    return closingTask.ContinueWith(a =>
-                                              {
-                                            return ((Task)window.Dispatcher.Invoke(new Func<Task>(() =>
-                                                      {
-                                                    window.SizeChanged -= sizeHandler;
+                                    return dialog.WaitForButtonPressAsync().ContinueWith(y =>
+                                          {
+                                            //once a button as been clicked, begin removing the dialog.
 
-                                                    window.RemoveDialog(dialog);
+                                            dialog.OnClose();
 
-                                                    return HandleOverlayOnHide(settings, window);
-                                                  }))).ContinueWith(y3 => y).Unwrap();
-                                          });
-                                  }).Unwrap();
-                          }).Unwrap().Unwrap();
-                  }));
+                                            if (DialogClosed != null)
+                                            {
+                                              window.Dispatcher.BeginInvoke(new Action(() => DialogClosed(window, new DialogStateChangedEventArgs())));
+                                            }
+
+                                            Task closingTask = (Task)window.Dispatcher.Invoke(new Func<Task>(() => dialog.WaitForCloseAsync()));
+                                            return closingTask.ContinueWith(a =>
+                                                  {
+                                                    return ((Task)window.Dispatcher.Invoke(new Func<Task>(() =>
+                                                          {
+                                                            window.SizeChanged -= sizeHandler;
+
+                                                            window.RemoveDialog(dialog);
+
+                                                            return HandleOverlayOnHide(settings, window);
+                                                          }))).ContinueWith(y3 => y).Unwrap();
+                                                  });
+                                          }).Unwrap();
+                                  }).Unwrap().Unwrap();
+                      }));
           }).Unwrap();
     }
 
@@ -91,52 +89,52 @@ namespace Crystal.Themes.Controls.Dialogs
           {
             return (Task<string?>)window.Dispatcher.Invoke(new Func<Task<string?>>(() =>
                       {
-                          //create the dialog control
-                          var dialog = new InputDialog(window, settings)
-                    {
-                      Title = title,
-                      Message = message,
-                      Input = settings?.DefaultText,
-                    };
+                        //create the dialog control
+                        var dialog = new InputDialog(window, settings)
+                        {
+                          Title = title,
+                          Message = message,
+                          Input = settings?.DefaultText,
+                        };
 
-                    SetDialogFontSizes(settings, dialog);
+                        SetDialogFontSizes(settings, dialog);
 
-                    SizeChangedEventHandler sizeHandler = SetupAndOpenDialog(window, dialog);
-                    dialog.SizeChangedHandler = sizeHandler;
+                        SizeChangedEventHandler sizeHandler = SetupAndOpenDialog(window, dialog);
+                        dialog.SizeChangedHandler = sizeHandler;
 
-                    return dialog.WaitForLoadAsync().ContinueWith(x =>
-                              {
-                            if (DialogOpened != null)
-                            {
-                              window.Dispatcher.BeginInvoke(new Action(() => DialogOpened(window, new DialogStateChangedEventArgs())));
-                            }
-
-                            return dialog.WaitForButtonPressAsync().ContinueWith(y =>
-                                      {
-                                          //once a button as been clicked, begin removing the dialog.
-
-                                          dialog.OnClose();
-
-                                    if (DialogClosed != null)
+                        return dialog.WaitForLoadAsync().ContinueWith(x =>
+                                  {
+                                    if (DialogOpened != null)
                                     {
-                                      window.Dispatcher.BeginInvoke(new Action(() => DialogClosed(window, new DialogStateChangedEventArgs())));
+                                      window.Dispatcher.BeginInvoke(new Action(() => DialogOpened(window, new DialogStateChangedEventArgs())));
                                     }
 
-                                    Task closingTask = (Task)window.Dispatcher.Invoke(new Func<Task>(() => dialog.WaitForCloseAsync()));
-                                    return closingTask.ContinueWith(a =>
-                                              {
-                                            return ((Task)window.Dispatcher.Invoke(new Func<Task>(() =>
-                                                      {
-                                                    window.SizeChanged -= sizeHandler;
+                                    return dialog.WaitForButtonPressAsync().ContinueWith(y =>
+                                          {
+                                            //once a button as been clicked, begin removing the dialog.
 
-                                                    window.RemoveDialog(dialog);
+                                            dialog.OnClose();
 
-                                                    return HandleOverlayOnHide(settings, window);
-                                                  }))).ContinueWith(y3 => y).Unwrap();
-                                          });
-                                  }).Unwrap();
-                          }).Unwrap().Unwrap();
-                  }));
+                                            if (DialogClosed != null)
+                                            {
+                                              window.Dispatcher.BeginInvoke(new Action(() => DialogClosed(window, new DialogStateChangedEventArgs())));
+                                            }
+
+                                            Task closingTask = (Task)window.Dispatcher.Invoke(new Func<Task>(() => dialog.WaitForCloseAsync()));
+                                            return closingTask.ContinueWith(a =>
+                                                  {
+                                                    return ((Task)window.Dispatcher.Invoke(new Func<Task>(() =>
+                                                          {
+                                                            window.SizeChanged -= sizeHandler;
+
+                                                            window.RemoveDialog(dialog);
+
+                                                            return HandleOverlayOnHide(settings, window);
+                                                          }))).ContinueWith(y3 => y).Unwrap();
+                                                  });
+                                          }).Unwrap();
+                                  }).Unwrap().Unwrap();
+                      }));
           }).Unwrap();
     }
 
@@ -159,52 +157,52 @@ namespace Crystal.Themes.Controls.Dialogs
           {
             return (Task<MessageDialogResult>)window.Dispatcher.Invoke(new Func<Task<MessageDialogResult>>(() =>
                       {
-                          //create the dialog control
-                          var dialog = new MessageDialog(window, settings)
-                    {
-                      Message = message,
-                      Title = title,
-                      ButtonStyle = style
-                    };
+                        //create the dialog control
+                        var dialog = new MessageDialog(window, settings)
+                        {
+                          Message = message,
+                          Title = title,
+                          ButtonStyle = style
+                        };
 
-                    SetDialogFontSizes(settings, dialog);
+                        SetDialogFontSizes(settings, dialog);
 
-                    SizeChangedEventHandler sizeHandler = SetupAndOpenDialog(window, dialog);
-                    dialog.SizeChangedHandler = sizeHandler;
+                        SizeChangedEventHandler sizeHandler = SetupAndOpenDialog(window, dialog);
+                        dialog.SizeChangedHandler = sizeHandler;
 
-                    return dialog.WaitForLoadAsync().ContinueWith(x =>
-                              {
-                            if (DialogOpened != null)
-                            {
-                              window.Dispatcher.BeginInvoke(new Action(() => DialogOpened(window, new DialogStateChangedEventArgs())));
-                            }
-
-                            return dialog.WaitForButtonPressAsync().ContinueWith(y =>
-                                      {
-                                          //once a button as been clicked, begin removing the dialog.
-
-                                          dialog.OnClose();
-
-                                    if (DialogClosed != null)
+                        return dialog.WaitForLoadAsync().ContinueWith(x =>
+                                  {
+                                    if (DialogOpened != null)
                                     {
-                                      window.Dispatcher.BeginInvoke(new Action(() => DialogClosed(window, new DialogStateChangedEventArgs())));
+                                      window.Dispatcher.BeginInvoke(new Action(() => DialogOpened(window, new DialogStateChangedEventArgs())));
                                     }
 
-                                    Task closingTask = (Task)window.Dispatcher.Invoke(new Func<Task>(() => dialog.WaitForCloseAsync()));
-                                    return closingTask.ContinueWith(a =>
-                                              {
-                                            return ((Task)window.Dispatcher.Invoke(new Func<Task>(() =>
-                                                      {
-                                                    window.SizeChanged -= sizeHandler;
+                                    return dialog.WaitForButtonPressAsync().ContinueWith(y =>
+                                          {
+                                            //once a button as been clicked, begin removing the dialog.
 
-                                                    window.RemoveDialog(dialog);
+                                            dialog.OnClose();
 
-                                                    return HandleOverlayOnHide(settings, window);
-                                                  }))).ContinueWith(y3 => y).Unwrap();
-                                          });
-                                  }).Unwrap();
-                          }).Unwrap().Unwrap();
-                  }));
+                                            if (DialogClosed != null)
+                                            {
+                                              window.Dispatcher.BeginInvoke(new Action(() => DialogClosed(window, new DialogStateChangedEventArgs())));
+                                            }
+
+                                            Task closingTask = (Task)window.Dispatcher.Invoke(new Func<Task>(() => dialog.WaitForCloseAsync()));
+                                            return closingTask.ContinueWith(a =>
+                                                  {
+                                                    return ((Task)window.Dispatcher.Invoke(new Func<Task>(() =>
+                                                          {
+                                                            window.SizeChanged -= sizeHandler;
+
+                                                            window.RemoveDialog(dialog);
+
+                                                            return HandleOverlayOnHide(settings, window);
+                                                          }))).ContinueWith(y3 => y).Unwrap();
+                                                  });
+                                          }).Unwrap();
+                                  }).Unwrap().Unwrap();
+                      }));
           }).Unwrap();
     }
 
@@ -227,50 +225,50 @@ namespace Crystal.Themes.Controls.Dialogs
           {
             return ((Task<ProgressDialogController>)window.Dispatcher.Invoke(new Func<Task<ProgressDialogController>>(() =>
                       {
-                          //create the dialog control
-                          var dialog = new ProgressDialog(window, settings)
-                    {
-                      Title = title,
-                      Message = message,
-                      IsCancelable = isCancelable
-                    };
+                        //create the dialog control
+                        var dialog = new ProgressDialog(window, settings)
+                        {
+                          Title = title,
+                          Message = message,
+                          IsCancelable = isCancelable
+                        };
 
-                    SetDialogFontSizes(settings, dialog);
+                        SetDialogFontSizes(settings, dialog);
 
-                    SizeChangedEventHandler sizeHandler = SetupAndOpenDialog(window, dialog);
-                    dialog.SizeChangedHandler = sizeHandler;
+                        SizeChangedEventHandler sizeHandler = SetupAndOpenDialog(window, dialog);
+                        dialog.SizeChangedHandler = sizeHandler;
 
-                    return dialog.WaitForLoadAsync().ContinueWith(x =>
-                              {
-                            if (DialogOpened != null)
-                            {
-                              window.Dispatcher.BeginInvoke(new Action(() => DialogOpened(window, new DialogStateChangedEventArgs())));
-                            }
-
-                            return new ProgressDialogController(dialog, () =>
-                                      {
-                                    dialog.OnClose();
-
-                                    if (DialogClosed != null)
+                        return dialog.WaitForLoadAsync().ContinueWith(x =>
+                                  {
+                                    if (DialogOpened != null)
                                     {
-                                      window.Dispatcher.BeginInvoke(new Action(() => DialogClosed(window, new DialogStateChangedEventArgs())));
+                                      window.Dispatcher.BeginInvoke(new Action(() => DialogOpened(window, new DialogStateChangedEventArgs())));
                                     }
 
-                                    Task closingTask = (Task)window.Dispatcher.Invoke(new Func<Task>(() => dialog.WaitForCloseAsync()));
-                                    return closingTask.ContinueWith(a =>
-                                              {
-                                            return (Task)window.Dispatcher.Invoke(new Func<Task>(() =>
-                                                      {
-                                                    window.SizeChanged -= sizeHandler;
+                                    return new ProgressDialogController(dialog, () =>
+                                          {
+                                            dialog.OnClose();
 
-                                                    window.RemoveDialog(dialog);
+                                            if (DialogClosed != null)
+                                            {
+                                              window.Dispatcher.BeginInvoke(new Action(() => DialogClosed(window, new DialogStateChangedEventArgs())));
+                                            }
 
-                                                    return HandleOverlayOnHide(settings, window);
-                                                  }));
-                                          }).Unwrap();
+                                            Task closingTask = (Task)window.Dispatcher.Invoke(new Func<Task>(() => dialog.WaitForCloseAsync()));
+                                            return closingTask.ContinueWith(a =>
+                                                  {
+                                                    return (Task)window.Dispatcher.Invoke(new Func<Task>(() =>
+                                                          {
+                                                            window.SizeChanged -= sizeHandler;
+
+                                                            window.RemoveDialog(dialog);
+
+                                                            return HandleOverlayOnHide(settings, window);
+                                                          }));
+                                                  }).Unwrap();
+                                          });
                                   });
-                          });
-                  })));
+                      })));
           }).Unwrap();
     }
 
@@ -297,18 +295,18 @@ namespace Crystal.Themes.Controls.Dialogs
           {
             window.Invoke(() =>
                       {
-                    if (window.metroActiveDialogContainer.Children.Count == 0)
-                    {
-                      window.SetValue(CrystalWindow.IsCloseButtonEnabledWithDialogPropertyKey, BooleanBoxes.TrueBox);
-                      window.RestoreFocus();
-                    }
-                    else
-                    {
-                      var onTopShownDialogSettings = window.metroActiveDialogContainer.Children.OfType<BaseMetroDialog>().LastOrDefault()?.DialogSettings;
-                      var isCloseButtonEnabled = window.ShowDialogsOverTitleBar || onTopShownDialogSettings is null || onTopShownDialogSettings.OwnerCanCloseWithDialog;
-                      window.SetValue(CrystalWindow.IsCloseButtonEnabledWithDialogPropertyKey, BooleanBoxes.Box(isCloseButtonEnabled));
-                    }
-                  });
+                        if (window.metroActiveDialogContainer.Children.Count == 0)
+                        {
+                          window.SetValue(CrystalWindow.IsCloseButtonEnabledWithDialogPropertyKey, BooleanBoxes.TrueBox);
+                          window.RestoreFocus();
+                        }
+                        else
+                        {
+                          var onTopShownDialogSettings = window.metroActiveDialogContainer.Children.OfType<BaseMetroDialog>().LastOrDefault()?.DialogSettings;
+                          var isCloseButtonEnabled = window.ShowDialogsOverTitleBar || onTopShownDialogSettings is null || onTopShownDialogSettings.OwnerCanCloseWithDialog;
+                          window.SetValue(CrystalWindow.IsCloseButtonEnabledWithDialogPropertyKey, BooleanBoxes.Box(isCloseButtonEnabled));
+                        }
+                      });
           });
 
       return result;
@@ -320,30 +318,30 @@ namespace Crystal.Themes.Controls.Dialogs
                      {
                        window.Invoke(() =>
                                  {
-                               var isCloseButtonEnabled = window.ShowDialogsOverTitleBar || settings is null || settings.OwnerCanCloseWithDialog;
-                               window.SetValue(CrystalWindow.IsCloseButtonEnabledWithDialogPropertyKey, BooleanBoxes.Box(isCloseButtonEnabled));
-                             });
+                                   var isCloseButtonEnabled = window.ShowDialogsOverTitleBar || settings is null || settings.OwnerCanCloseWithDialog;
+                                   window.SetValue(CrystalWindow.IsCloseButtonEnabledWithDialogPropertyKey, BooleanBoxes.Box(isCloseButtonEnabled));
+                                 });
                      })
                  .ContinueWith(task =>
                      {
                        return window.Invoke(() =>
                                  {
-                               if (window.metroActiveDialogContainer is null)
-                               {
-                                 throw new InvalidOperationException("Active dialog container could not be found.");
-                               }
+                                   if (window.metroActiveDialogContainer is null)
+                                   {
+                                     throw new InvalidOperationException("Active dialog container could not be found.");
+                                   }
 
-                               if (!window.metroActiveDialogContainer.Children.OfType<BaseMetroDialog>().Any())
-                               {
-                                 return (settings is null || settings.AnimateShow ? window.ShowOverlayAsync() : Task.Factory.StartNew(() => window.Dispatcher.Invoke(new Action(window.ShowOverlay))));
-                               }
-                               else
-                               {
-                                 var tcs = new TaskCompletionSource<object>();
-                                 tcs.SetResult(null!);
-                                 return tcs.Task;
-                               }
-                             });
+                                   if (!window.metroActiveDialogContainer.Children.OfType<BaseMetroDialog>().Any())
+                                   {
+                                     return (settings is null || settings.AnimateShow ? window.ShowOverlayAsync() : Task.Factory.StartNew(() => window.Dispatcher.Invoke(new Action(window.ShowOverlay))));
+                                   }
+                                   else
+                                   {
+                                     var tcs = new TaskCompletionSource<object>();
+                                     tcs.SetResult(null!);
+                                     return tcs.Task;
+                                   }
+                                 });
                      })
                  .Unwrap();
     }
@@ -393,21 +391,21 @@ namespace Crystal.Themes.Controls.Dialogs
           {
             return (Task)window.Dispatcher.Invoke(new Func<Task>(() =>
                       {
-                    SetDialogFontSizes(settings, dialog);
+                        SetDialogFontSizes(settings, dialog);
 
-                    SizeChangedEventHandler sizeHandler = SetupAndOpenDialog(window, dialog);
-                    dialog.SizeChangedHandler = sizeHandler;
+                        SizeChangedEventHandler sizeHandler = SetupAndOpenDialog(window, dialog);
+                        dialog.SizeChangedHandler = sizeHandler;
 
-                    return dialog.WaitForLoadAsync().ContinueWith(x =>
-                              {
-                            dialog.OnShown();
+                        return dialog.WaitForLoadAsync().ContinueWith(x =>
+                                  {
+                                    dialog.OnShown();
 
-                            if (DialogOpened != null)
-                            {
-                              window.Dispatcher.BeginInvoke(new Action(() => DialogOpened(window, new DialogStateChangedEventArgs())));
-                            }
-                          });
-                  }));
+                                    if (DialogOpened != null)
+                                    {
+                                      window.Dispatcher.BeginInvoke(new Action(() => DialogOpened(window, new DialogStateChangedEventArgs())));
+                                    }
+                                  });
+                      }));
           }).Unwrap();
     }
 
@@ -435,21 +433,21 @@ namespace Crystal.Themes.Controls.Dialogs
           {
             return (Task<TDialog>)window.Dispatcher.Invoke(new Func<Task<TDialog>>(() =>
                       {
-                    SetDialogFontSizes(dialog.DialogSettings, dialog);
+                        SetDialogFontSizes(dialog.DialogSettings, dialog);
 
-                    SizeChangedEventHandler sizeHandler = SetupAndOpenDialog(window, dialog);
-                    dialog.SizeChangedHandler = sizeHandler;
+                        SizeChangedEventHandler sizeHandler = SetupAndOpenDialog(window, dialog);
+                        dialog.SizeChangedHandler = sizeHandler;
 
-                    return dialog.WaitForLoadAsync().ContinueWith(x =>
-                              {
-                            dialog.OnShown();
+                        return dialog.WaitForLoadAsync().ContinueWith(x =>
+                                  {
+                                    dialog.OnShown();
 
-                            if (DialogOpened != null)
-                            {
-                              window.Dispatcher.BeginInvoke(new Action(() => DialogOpened(window, new DialogStateChangedEventArgs())));
-                            }
-                          }).ContinueWith(x => dialog);
-                  }));
+                                    if (DialogOpened != null)
+                                    {
+                                      window.Dispatcher.BeginInvoke(new Action(() => DialogOpened(window, new DialogStateChangedEventArgs())));
+                                    }
+                                  }).ContinueWith(x => dialog);
+                      }));
           }).Unwrap();
     }
 
@@ -497,11 +495,11 @@ namespace Crystal.Themes.Controls.Dialogs
 
             return (Task)window.Dispatcher.Invoke(new Func<Task>(() =>
                       {
-                    window.RemoveDialog(dialog);
+                        window.RemoveDialog(dialog);
 
-                    settings ??= (dialog.DialogSettings ?? window.MetroDialogOptions);
-                    return HandleOverlayOnHide(settings, window);
-                  }));
+                        settings ??= (dialog.DialogSettings ?? window.MetroDialogOptions);
+                        return HandleOverlayOnHide(settings, window);
+                      }));
           }).Unwrap();
     }
 

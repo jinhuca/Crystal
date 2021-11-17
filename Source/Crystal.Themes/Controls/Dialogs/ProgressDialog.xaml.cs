@@ -1,5 +1,4 @@
 ﻿using System.Threading;
-using System.Windows.Media;
 using Crystal.Themes.ValueBoxes;
 
 namespace Crystal.Themes.Controls.Dialogs
