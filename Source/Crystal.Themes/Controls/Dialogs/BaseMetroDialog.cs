@@ -150,7 +150,7 @@ namespace Crystal.Themes.Controls.Dialogs
       set => SetValue(DialogButtonFontSizeProperty, value);
     }
 
-    public MetroDialogSettings DialogSettings { get; private set; } = null!;
+    public CrystalDialogSettings DialogSettings { get; private set; } = null!;
 
     internal SizeChangedEventHandler? SizeChangedHandler { get; set; }
 
@@ -164,7 +164,7 @@ namespace Crystal.Themes.Controls.Dialogs
     /// </summary>
     /// <param name="owningWindow">The window that is the parent of the dialog.</param>
     /// <param name="settings">The settings for the message dialog.</param>
-    protected BaseMetroDialog(CrystalWindow? owningWindow, MetroDialogSettings? settings)
+    protected BaseMetroDialog(CrystalWindow? owningWindow, CrystalDialogSettings? settings)
     {
       Initialize(owningWindow, settings);
     }
@@ -173,7 +173,7 @@ namespace Crystal.Themes.Controls.Dialogs
     /// Initializes a new <see cref="BaseMetroDialog"/>.
     /// </summary>
     protected BaseMetroDialog()
-        : this(null, new MetroDialogSettings())
+        : this(null, new CrystalDialogSettings())
     {
     }
 
@@ -230,15 +230,15 @@ namespace Crystal.Themes.Controls.Dialogs
     /// The default is a new created settings.
     /// </param>
     /// <returns></returns>
-    protected virtual MetroDialogSettings ConfigureSettings(MetroDialogSettings settings)
+    protected virtual CrystalDialogSettings ConfigureSettings(CrystalDialogSettings settings)
     {
       return settings;
     }
 
-    private void Initialize(CrystalWindow? owningWindow, MetroDialogSettings? settings)
+    private void Initialize(CrystalWindow? owningWindow, CrystalDialogSettings? settings)
     {
       OwningWindow = owningWindow;
-      DialogSettings = ConfigureSettings(settings ?? (owningWindow?.MetroDialogOptions ?? new MetroDialogSettings()));
+      DialogSettings = ConfigureSettings(settings ?? (owningWindow?.MetroDialogOptions ?? new CrystalDialogSettings()));
 
       if (DialogSettings.CustomResourceDictionary != null)
       {
@@ -301,12 +301,12 @@ namespace Crystal.Themes.Controls.Dialogs
 
       switch (DialogSettings.ColorScheme)
       {
-        case MetroDialogColorScheme.Theme:
+        case CrystalDialogColorScheme.Theme:
           ThemeManager.Current.ChangeTheme(this, Resources, theme);
           SetCurrentValue(BackgroundProperty, TryGetResource(theme, "Crystal.Brushes.Dialog.Background"));
           SetCurrentValue(ForegroundProperty, TryGetResource(theme, "Crystal.Brushes.Dialog.Foreground"));
           break;
-        case MetroDialogColorScheme.Inverted:
+        case CrystalDialogColorScheme.Inverted:
           theme = ThemeManager.Current.GetInverseTheme(theme);
           if (theme is null)
           {
@@ -318,7 +318,7 @@ namespace Crystal.Themes.Controls.Dialogs
           SetCurrentValue(BackgroundProperty, TryGetResource(theme, "Crystal.Brushes.Dialog.Background"));
           SetCurrentValue(ForegroundProperty, TryGetResource(theme, "Crystal.Brushes.Dialog.Foreground"));
           break;
-        case MetroDialogColorScheme.Accented:
+        case CrystalDialogColorScheme.Accented:
           ThemeManager.Current.ChangeTheme(this, Resources, theme);
           SetCurrentValue(BackgroundProperty, TryGetResource(theme, "Crystal.Brushes.Dialog.Background.Accent"));
           SetCurrentValue(ForegroundProperty, TryGetResource(theme, "Crystal.Brushes.Dialog.Foreground.Accent"));
@@ -518,7 +518,7 @@ namespace Crystal.Themes.Controls.Dialogs
 
     protected override AutomationPeer OnCreateAutomationPeer()
     {
-      return new MetroDialogAutomationPeer(this);
+      return new CrystalDialogAutomationPeer(this);
     }
   }
 }

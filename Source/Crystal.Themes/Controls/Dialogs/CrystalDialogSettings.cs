@@ -5,16 +5,16 @@ namespace Crystal.Themes.Controls.Dialogs
   /// <summary>
   /// A class that represents the settings used by Metro Dialogs.
   /// </summary>
-  public class MetroDialogSettings
+  public class CrystalDialogSettings
   {
-    public MetroDialogSettings()
+    public CrystalDialogSettings()
     {
       OwnerCanCloseWithDialog = false;
 
       AffirmativeButtonText = "OK";
       NegativeButtonText = "Cancel";
 
-      ColorScheme = MetroDialogColorScheme.Theme;
+      ColorScheme = CrystalDialogColorScheme.Theme;
       AnimateShow = AnimateHide = true;
 
       MaximumBodyHeight = double.NaN;
@@ -60,7 +60,7 @@ namespace Crystal.Themes.Controls.Dialogs
     /// <summary>
     /// Gets or sets whether the metro dialog should use the default black/white appearance (theme) or try to use the current accent.
     /// </summary>
-    public MetroDialogColorScheme ColorScheme { get; set; }
+    public CrystalDialogColorScheme ColorScheme { get; set; }
 
     /// <summary>
     /// Gets or sets a custom resource dictionary which can contains custom styles, brushes or something else.

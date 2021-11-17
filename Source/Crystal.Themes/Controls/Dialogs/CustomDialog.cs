@@ -15,12 +15,12 @@
     {
     }
 
-    public CustomDialog(MetroDialogSettings? settings)
+    public CustomDialog(CrystalDialogSettings? settings)
         : this(null, settings)
     {
     }
 
-    public CustomDialog(CrystalWindow? parentWindow, MetroDialogSettings? settings)
+    public CustomDialog(CrystalWindow? parentWindow, CrystalDialogSettings? settings)
         : base(parentWindow, settings)
     {
     }

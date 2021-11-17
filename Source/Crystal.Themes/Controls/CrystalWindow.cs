@@ -303,7 +303,7 @@ namespace Crystal.Themes.Controls
 
     /// <summary>
     /// Gets whether if the close button is enabled if a dialog is open.
-    /// It's true if <see cref="ShowDialogsOverTitleBar"/> or the <see cref="MetroDialogSettings.OwnerCanCloseWithDialog"/> is set to true
+    /// It's true if <see cref="ShowDialogsOverTitleBar"/> or the <see cref="CrystalDialogSettings.OwnerCanCloseWithDialog"/> is set to true
     /// otherwise false.
     /// </summary>
     public bool IsCloseButtonEnabledWithDialog
@@ -673,16 +673,16 @@ namespace Crystal.Themes.Controls
     /// <summary>Identifies the <see cref="MetroDialogOptions"/> dependency property.</summary>
     public static readonly DependencyProperty MetroDialogOptionsProperty
         = DependencyProperty.Register(nameof(MetroDialogOptions),
-                                      typeof(MetroDialogSettings),
+                                      typeof(CrystalDialogSettings),
                                       typeof(CrystalWindow),
-                                      new PropertyMetadata(default(MetroDialogSettings)));
+                                      new PropertyMetadata(default(CrystalDialogSettings)));
 
     /// <summary>
     /// Gets or sets the default settings for the dialogs.
     /// </summary>
-    public MetroDialogSettings? MetroDialogOptions
+    public CrystalDialogSettings? MetroDialogOptions
     {
-      get => (MetroDialogSettings?)GetValue(MetroDialogOptionsProperty);
+      get => (CrystalDialogSettings?)GetValue(MetroDialogOptionsProperty);
       set => SetValue(MetroDialogOptionsProperty, value);
     }
 
@@ -1222,7 +1222,7 @@ namespace Crystal.Themes.Controls
     /// </summary>
     public CrystalWindow()
     {
-      SetCurrentValue(MetroDialogOptionsProperty, new MetroDialogSettings());
+      SetCurrentValue(MetroDialogOptionsProperty, new CrystalDialogSettings());
 
       // BorderlessWindowBehavior initialization has to occur in constructor. Otherwise the load event is fired early and performance of the window is degraded.
       InitializeWindowChromeBehavior();
@@ -1528,7 +1528,7 @@ namespace Crystal.Themes.Controls
     /// </summary>
     protected override AutomationPeer OnCreateAutomationPeer()
     {
-      return new MetroWindowAutomationPeer(this);
+      return new CrystalWindowAutomationPeer(this);
     }
 
     protected internal IntPtr CriticalHandle

@@ -1,6 +1,6 @@
 ﻿namespace Crystal.Themes.Controls.Dialogs
 {
-  public class LoginDialogSettings : MetroDialogSettings
+  public class LoginDialogSettings : CrystalDialogSettings
   {
     private const string DefaultUsernameWatermark = "Username...";
     private const string DefaultPasswordWatermark = "Password...";

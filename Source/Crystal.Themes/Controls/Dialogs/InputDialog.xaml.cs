@@ -69,7 +69,7 @@ namespace Crystal.Themes.Controls.Dialogs
     {
     }
 
-    internal InputDialog(CrystalWindow? parentWindow, MetroDialogSettings? settings)
+    internal InputDialog(CrystalWindow? parentWindow, CrystalDialogSettings? settings)
         : base(parentWindow, settings)
     {
       InitializeComponent();
@@ -185,7 +185,7 @@ namespace Crystal.Themes.Controls.Dialogs
 
       switch (DialogSettings.ColorScheme)
       {
-        case MetroDialogColorScheme.Accented:
+        case CrystalDialogColorScheme.Accented:
           PART_NegativeButton.SetResourceReference(StyleProperty, "Crystal.Styles.Button.Dialogs.AccentHighlight");
           PART_TextBox.SetResourceReference(ForegroundProperty, "Crystal.Brushes.ThemeForeground");
           PART_TextBox.SetResourceReference(ControlsHelper.FocusBorderBrushProperty, "Crystal.Brushes.TextBox.Border.Focus");

@@ -7,13 +7,13 @@
     /// </summary>
     public static readonly IDialogCoordinator Instance = new DialogCoordinator();
 
-    public Task<string?> ShowInputAsync(object context, string title, string message, MetroDialogSettings? settings = null)
+    public Task<string?> ShowInputAsync(object context, string title, string message, CrystalDialogSettings? settings = null)
     {
       var metroWindow = GetMetroWindow(context);
       return metroWindow.Invoke(() => metroWindow.ShowInputAsync(title, message, settings));
     }
 
-    public string? ShowModalInputExternal(object context, string title, string message, MetroDialogSettings? metroDialogSettings = null)
+    public string? ShowModalInputExternal(object context, string title, string message, CrystalDialogSettings? metroDialogSettings = null)
     {
       var metroWindow = GetMetroWindow(context);
       return metroWindow.ShowModalInputExternal(title, message, metroDialogSettings);
@@ -31,31 +31,31 @@
       return metroWindow.ShowModalLoginExternal(title, message, settings);
     }
 
-    public Task<MessageDialogResult> ShowMessageAsync(object context, string title, string message, MessageDialogStyle style = MessageDialogStyle.Affirmative, MetroDialogSettings? settings = null)
+    public Task<MessageDialogResult> ShowMessageAsync(object context, string title, string message, MessageDialogStyle style = MessageDialogStyle.Affirmative, CrystalDialogSettings? settings = null)
     {
       var metroWindow = GetMetroWindow(context);
       return metroWindow.Invoke(() => metroWindow.ShowMessageAsync(title, message, style, settings));
     }
 
-    public MessageDialogResult ShowModalMessageExternal(object context, string title, string message, MessageDialogStyle style = MessageDialogStyle.Affirmative, MetroDialogSettings? settings = null)
+    public MessageDialogResult ShowModalMessageExternal(object context, string title, string message, MessageDialogStyle style = MessageDialogStyle.Affirmative, CrystalDialogSettings? settings = null)
     {
       var metroWindow = GetMetroWindow(context);
       return metroWindow.ShowModalMessageExternal(title, message, style, settings);
     }
 
-    public Task<ProgressDialogController> ShowProgressAsync(object context, string title, string message, bool isCancelable = false, MetroDialogSettings? settings = null)
+    public Task<ProgressDialogController> ShowProgressAsync(object context, string title, string message, bool isCancelable = false, CrystalDialogSettings? settings = null)
     {
       var metroWindow = GetMetroWindow(context);
       return metroWindow.Invoke(() => metroWindow.ShowProgressAsync(title, message, isCancelable, settings));
     }
 
-    public Task ShowMetroDialogAsync(object context, BaseMetroDialog dialog, MetroDialogSettings? settings = null)
+    public Task ShowMetroDialogAsync(object context, BaseMetroDialog dialog, CrystalDialogSettings? settings = null)
     {
       var metroWindow = GetMetroWindow(context);
       return metroWindow.Invoke(() => metroWindow.ShowMetroDialogAsync(dialog, settings));
     }
 
-    public Task HideMetroDialogAsync(object context, BaseMetroDialog dialog, MetroDialogSettings? settings = null)
+    public Task HideMetroDialogAsync(object context, BaseMetroDialog dialog, CrystalDialogSettings? settings = null)
     {
       var metroWindow = GetMetroWindow(context);
       return metroWindow.Invoke(() => metroWindow.HideMetroDialogAsync(dialog, settings));

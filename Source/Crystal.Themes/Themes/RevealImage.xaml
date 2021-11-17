@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:crystal="clr-namespace:Crystal.Themes.Controls"
-                    xmlns:mahConverters="clr-namespace:Crystal.Themes.Converters">
+                    xmlns:crystalConverters="clr-namespace:Crystal.Themes.Converters">
 
     <Style x:Key="Crystal.Styles.RevealImage" TargetType="{x:Type crystal:RevealImage}">
         <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Control.Background}" />
@@ -42,7 +42,7 @@
                         <Image Margin="0"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Top"
-                               Source="{Binding Image, RelativeSource={RelativeSource TemplatedParent}, Converter={mahConverters:NullToUnsetValueConverter}}"
+                               Source="{Binding Image, RelativeSource={RelativeSource TemplatedParent}, Converter={crystalConverters:NullToUnsetValueConverter}}"
                                Stretch="Fill" />
 
                         <Border x:Name="Border"

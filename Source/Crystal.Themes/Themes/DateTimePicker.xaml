@@ -4,15 +4,15 @@
                     xmlns:controlzex="urn:controlzex"
                     xmlns:i="http://schemas.crystal.com/behaviors"
                     xmlns:crystal="clr-namespace:Crystal.Themes.Controls"
-                    xmlns:mahConverters="clr-namespace:Crystal.Themes.Converters"
+                    xmlns:crystalConverters="clr-namespace:Crystal.Themes.Converters"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.Shared.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <mahConverters:ClockDegreeConverter x:Key="ClockDegreeConverter" TotalParts="60" />
-    <mahConverters:ClockDegreeConverter x:Key="HourDegreeConverter" TotalParts="12" />
+    <crystalConverters:ClockDegreeConverter x:Key="ClockDegreeConverter" TotalParts="60" />
+    <crystalConverters:ClockDegreeConverter x:Key="HourDegreeConverter" TotalParts="12" />
 
     <DataTemplate x:Key="Crystal.Templates.DateTimePicker.FiveMinuteIndicator">
         <StackPanel Height="57"
@@ -173,7 +173,7 @@
                                             Margin="4 0"
                                             Style="{DynamicResource Crystal.Styles.ContentControl.FloatingMessageContainer}">
                                 <ContentControl.Height>
-                                    <MultiBinding Converter="{mahConverters:MathMultiplyConverter}">
+                                    <MultiBinding Converter="{crystalConverters:MathMultiplyConverter}">
                                         <Binding ElementName="PART_FloatingMessage"
                                                  Mode="OneWay"
                                                  Path="ActualHeight" />
@@ -193,7 +193,7 @@
                                     <TextBlock.RenderTransform>
                                         <TranslateTransform x:Name="FloatingMessageTransform">
                                             <TranslateTransform.Y>
-                                                <MultiBinding Converter="{mahConverters:MathSubtractConverter}">
+                                                <MultiBinding Converter="{crystalConverters:MathSubtractConverter}">
                                                     <Binding ElementName="PART_FloatingMessage"
                                                              Mode="OneWay"
                                                              Path="ActualHeight" />
@@ -470,7 +470,7 @@
                                 <Condition Binding="{Binding Path=IsVisible, RelativeSource={RelativeSource Self}}" Value="True" />
                                 <Condition Binding="{Binding Path=(crystal:TextBoxHelper.UseFloatingWatermark), RelativeSource={RelativeSource Self}}" Value="True" />
                                 <Condition Binding="{Binding Path=(crystal:TextBoxHelper.HasText), RelativeSource={RelativeSource Self}}" Value="True" />
-                                <Condition Binding="{Binding Path=(crystal:TextBoxHelper.Watermark), RelativeSource={RelativeSource Self}, Converter={x:Static mahConverters:StringIsNullOrEmptyConverter.Default}}" Value="False" />
+                                <Condition Binding="{Binding Path=(crystal:TextBoxHelper.Watermark), RelativeSource={RelativeSource Self}, Converter={x:Static crystalConverters:StringIsNullOrEmptyConverter.Default}}" Value="False" />
                             </MultiDataTrigger.Conditions>
                             <MultiDataTrigger.EnterActions>
                                 <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ShowFloatingMessage}" />

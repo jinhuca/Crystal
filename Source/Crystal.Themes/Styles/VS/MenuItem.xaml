@@ -1,11 +1,11 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:crystal="clr-namespace:Crystal.Themes.Controls"
-                    xmlns:mahConverters="clr-namespace:Crystal.Themes.Converters">
+                    xmlns:crystalConverters="clr-namespace:Crystal.Themes.Converters">
 
-    <mahConverters:ThicknessFilterConverter x:Key="ThicknessFilterConverter" />
-    <mahConverters:ThicknessBindingConverter x:Key="ThicknessBindingConverter" />
-    <mahConverters:CornerRadiusBindingConverter x:Key="CornerRadiusBindingConverter" />
+    <crystalConverters:ThicknessFilterConverter x:Key="ThicknessFilterConverter" />
+    <crystalConverters:ThicknessBindingConverter x:Key="ThicknessBindingConverter" />
+    <crystalConverters:CornerRadiusBindingConverter x:Key="CornerRadiusBindingConverter" />
 
     <Geometry x:Key="Checkmark">F1M5,11L3,7 5,7 6,9 9,3 11,3 7,11 5,11z</Geometry>
 
@@ -115,7 +115,7 @@
                                     <Border x:Name="TransitionBorder"
                                             Width="0"
                                             Height="2"
-                                            Margin="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessFilterConverter}, ConverterParameter={x:Static mahConverters:ThicknessSideType.Left}}"
+                                            Margin="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessFilterConverter}, ConverterParameter={x:Static crystalConverters:ThicknessSideType.Left}}"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Top"
                                             Background="{DynamicResource Crystal.Brushes.SubmenuItem.Background}"
@@ -207,9 +207,9 @@
                             </MultiTrigger.Conditions>
                             <Setter TargetName="Border" Property="Background" Value="{DynamicResource Crystal.Brushes.SubmenuItem.Background}" />
                             <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.MenuSeparator.Border}" />
-                            <Setter TargetName="Border" Property="BorderThickness" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessBindingConverter}, ConverterParameter={x:Static mahConverters:ThicknessSideType.Bottom}}" />
-                            <Setter TargetName="Border" Property="CornerRadius" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.CornerRadius), Converter={StaticResource CornerRadiusBindingConverter}, ConverterParameter={x:Static mahConverters:RadiusType.Bottom}}" />
-                            <Setter TargetName="SubMenuBorder" Property="CornerRadius" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.CornerRadius), Converter={StaticResource CornerRadiusBindingConverter}, ConverterParameter={x:Static mahConverters:RadiusType.TopLeft}}" />
+                            <Setter TargetName="Border" Property="BorderThickness" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessBindingConverter}, ConverterParameter={x:Static crystalConverters:ThicknessSideType.Bottom}}" />
+                            <Setter TargetName="Border" Property="CornerRadius" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.CornerRadius), Converter={StaticResource CornerRadiusBindingConverter}, ConverterParameter={x:Static crystalConverters:RadiusType.Bottom}}" />
+                            <Setter TargetName="SubMenuBorder" Property="CornerRadius" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.CornerRadius), Converter={StaticResource CornerRadiusBindingConverter}, ConverterParameter={x:Static crystalConverters:RadiusType.TopLeft}}" />
                         </MultiTrigger>
 
                         <Trigger Property="IsSubmenuOpen" Value="true">

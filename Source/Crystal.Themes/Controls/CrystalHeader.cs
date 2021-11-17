@@ -16,7 +16,7 @@ namespace Crystal.Themes.Controls
     /// </summary>
     protected override AutomationPeer OnCreateAutomationPeer()
     {
-      return new MetroHeaderAutomationPeer(this);
+      return new CrystalHeaderAutomationPeer(this);
     }
   }
 }

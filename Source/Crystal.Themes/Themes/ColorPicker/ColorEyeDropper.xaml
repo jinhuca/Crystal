@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:crystal="clr-namespace:Crystal.Themes.Controls"
-                    xmlns:mahConverters="clr-namespace:Crystal.Themes.Converters"
+                    xmlns:crystalConverters="clr-namespace:Crystal.Themes.Converters"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:po="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
                     mc:Ignorable="po d">
@@ -47,7 +47,7 @@
                                        RenderOptions.BitmapScalingMode="NearestNeighbor"
                                        Source="{Binding PreviewImage}" />
 
-                                <Path Stroke="{Binding PreviewBrush, Converter={x:Static mahConverters:BackgroundToForegroundConverter.Instance}}" StrokeThickness="1">
+                                <Path Stroke="{Binding PreviewBrush, Converter={x:Static crystalConverters:BackgroundToForegroundConverter.Instance}}" StrokeThickness="1">
                                     <Path.Data>
                                         <PathGeometry Figures=" m 0 25 20 0  m 5 5 0 20  m 5 -25 20 0  m -25 -25 0 20 m -5 0 H20 H30 V30 H20 z" po:Freeze="true" />
                                     </Path.Data>

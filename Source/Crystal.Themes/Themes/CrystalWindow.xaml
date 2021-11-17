@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:controlzEx="urn:controlzex"
                     xmlns:crystal="clr-namespace:Crystal.Themes.Controls"
-                    xmlns:mahConverters="clr-namespace:Crystal.Themes.Converters">
+                    xmlns:crystalConverters="clr-namespace:Crystal.Themes.Converters">
 
   <ResourceDictionary.MergedDictionaries>
     <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.TextBlock.xaml" />
@@ -10,8 +10,8 @@
   </ResourceDictionary.MergedDictionaries>
 
   <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-  <mahConverters:ThicknessBindingConverter x:Key="ThicknessBindingConverter" />
-  <mahConverters:ThicknessToDoubleConverter x:Key="ThicknessToDoubleConverter" />
+  <crystalConverters:ThicknessBindingConverter x:Key="ThicknessBindingConverter" />
+  <crystalConverters:ThicknessToDoubleConverter x:Key="ThicknessToDoubleConverter" />
 
   <ControlTemplate x:Key="Crystal.Templates.MetroWindow" TargetType="{x:Type crystal:CrystalWindow}">
     <Grid Background="{TemplateBinding Background}" LayoutTransform="{Binding LayoutTransform, RelativeSource={RelativeSource TemplatedParent}}" UseLayoutRounding="True"
@@ -19,17 +19,17 @@
       <AdornerDecorator>
         <Grid UseLayoutRounding="False">
           <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessToDoubleConverter}, ConverterParameter={x:Static mahConverters:ThicknessSideType.Left}}" />
+            <ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessToDoubleConverter}, ConverterParameter={x:Static crystalConverters:ThicknessSideType.Left}}" />
             <!--  icon  -->
             <ColumnDefinition Width="Auto" />
             <!--  left window commands, title, right window commands  -->
             <ColumnDefinition Width="*" />
             <!--  min,max,close buttons  -->
             <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessToDoubleConverter}, ConverterParameter={x:Static mahConverters:ThicknessSideType.Right}}" />
+            <ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessToDoubleConverter}, ConverterParameter={x:Static crystalConverters:ThicknessSideType.Right}}" />
           </Grid.ColumnDefinitions>
           <Grid.RowDefinitions>
-            <RowDefinition Height="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessToDoubleConverter}, ConverterParameter={x:Static mahConverters:ThicknessSideType.Top}}" />
+            <RowDefinition Height="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessToDoubleConverter}, ConverterParameter={x:Static crystalConverters:ThicknessSideType.Top}}" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
           </Grid.RowDefinitions>
@@ -71,7 +71,7 @@
                                                       ContentTemplate="{TemplateBinding TitleTemplate}"
                                                       Focusable="False">
               <ContentControl.Foreground>
-                <MultiBinding Converter="{x:Static mahConverters:BackgroundToForegroundConverter.Instance}">
+                <MultiBinding Converter="{x:Static crystalConverters:BackgroundToForegroundConverter.Instance}">
                   <Binding ElementName="PART_WindowTitleBackground"
                                              Mode="OneWay"
                                              Path="Fill" />
@@ -106,7 +106,7 @@
                                              TransitionsEnabled="{TemplateBinding WindowTransitionsEnabled}"
                                              UseLayoutRounding="True">
             <crystal:ContentPresenterEx x:Name="PART_ContentPresenter"
-                                                Margin="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessBindingConverter}, ConverterParameter={x:Static mahConverters:ThicknessSideType.Top}}"
+                                                Margin="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessBindingConverter}, ConverterParameter={x:Static crystalConverters:ThicknessSideType.Top}}"
                                                 WindowChrome.IsHitTestVisibleInChrome="True"
                                                 UseLayoutRounding="False" />
           </crystal:CrystalContentControl>
@@ -267,17 +267,17 @@
       <AdornerDecorator>
         <Grid UseLayoutRounding="False">
           <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessToDoubleConverter}, ConverterParameter={x:Static mahConverters:ThicknessSideType.Left}}" />
+            <ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessToDoubleConverter}, ConverterParameter={x:Static crystalConverters:ThicknessSideType.Left}}" />
             <!--  icon  -->
             <ColumnDefinition Width="Auto" />
             <!--  left window commands, title, right window commands  -->
             <ColumnDefinition Width="*" />
             <!--  min,max,close buttons  -->
             <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessToDoubleConverter}, ConverterParameter={x:Static mahConverters:ThicknessSideType.Right}}" />
+            <ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessToDoubleConverter}, ConverterParameter={x:Static crystalConverters:ThicknessSideType.Right}}" />
           </Grid.ColumnDefinitions>
           <Grid.RowDefinitions>
-            <RowDefinition Height="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessToDoubleConverter}, ConverterParameter={x:Static mahConverters:ThicknessSideType.Top}}" />
+            <RowDefinition Height="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessToDoubleConverter}, ConverterParameter={x:Static crystalConverters:ThicknessSideType.Top}}" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
           </Grid.RowDefinitions>
@@ -325,7 +325,7 @@
                                                   ContentTemplate="{TemplateBinding TitleTemplate}"
                                                   Focusable="False">
             <ContentControl.Foreground>
-              <MultiBinding Converter="{x:Static mahConverters:BackgroundToForegroundConverter.Instance}">
+              <MultiBinding Converter="{x:Static crystalConverters:BackgroundToForegroundConverter.Instance}">
                 <Binding ElementName="PART_WindowTitleBackground"
                                          Mode="OneWay"
                                          Path="Fill" />
@@ -384,7 +384,7 @@
                                              TransitionsEnabled="{TemplateBinding WindowTransitionsEnabled}"
                                              UseLayoutRounding="True">
             <crystal:ContentPresenterEx x:Name="PART_ContentPresenter"
-                                                Margin="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessBindingConverter}, ConverterParameter={x:Static mahConverters:ThicknessSideType.Top}}"
+                                                Margin="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessBindingConverter}, ConverterParameter={x:Static crystalConverters:ThicknessSideType.Top}}"
                                                 WindowChrome.IsHitTestVisibleInChrome="True"
                                                 UseLayoutRounding="False" />
           </crystal:CrystalContentControl>
@@ -598,7 +598,7 @@
     </Setter>
     <Setter Property="WindowTitleBrush" Value="{DynamicResource Crystal.Brushes.WindowTitle}" />
     <Style.Triggers>
-      <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Icon, Mode=OneWay, Converter={x:Static mahConverters:IsNullConverter.Instance}}" Value="False">
+      <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Icon, Mode=OneWay, Converter={x:Static crystalConverters:IsNullConverter.Instance}}" Value="False">
         <Setter Property="IconTemplate">
           <Setter.Value>
             <DataTemplate>

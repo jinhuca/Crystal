@@ -100,7 +100,7 @@ namespace Crystal.Themes.Controls.Dialogs
     {
     }
 
-    internal MessageDialog(CrystalWindow? parentWindow, MetroDialogSettings? settings) : base(parentWindow, settings)
+    internal MessageDialog(CrystalWindow? parentWindow, CrystalDialogSettings? settings) : base(parentWindow, settings)
     {
       InitializeComponent();
 
@@ -325,7 +325,7 @@ namespace Crystal.Themes.Controls.Dialogs
 
       switch (md.DialogSettings.ColorScheme)
       {
-        case MetroDialogColorScheme.Accented:
+        case CrystalDialogColorScheme.Accented:
           md.PART_AffirmativeButton.SetResourceReference(StyleProperty, ACCENT_HIGHLIGHT_BUTTON_STYLE);
           md.PART_NegativeButton.SetResourceReference(StyleProperty, ACCENT_HIGHLIGHT_BUTTON_STYLE);
           md.PART_FirstAuxiliaryButton.SetResourceReference(StyleProperty, ACCENT_HIGHLIGHT_BUTTON_STYLE);

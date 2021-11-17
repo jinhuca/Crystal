@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:crystal="clr-namespace:Crystal.Themes.Controls"
-                    xmlns:mahConverters="clr-namespace:Crystal.Themes.Converters">
+                    xmlns:crystalConverters="clr-namespace:Crystal.Themes.Converters">
 
     <Style TargetType="crystal:Tile">
         <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Accent}" />
@@ -49,7 +49,7 @@
                     <ControlTemplate.Triggers>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(crystal:ControlsHelper.MouseOverBorderBrush), Mode=OneWay, Converter={x:Static mahConverters:IsNullConverter.Instance}}" Value="False" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(crystal:ControlsHelper.MouseOverBorderBrush), Mode=OneWay, Converter={x:Static crystalConverters:IsNullConverter.Instance}}" Value="False" />
                                 <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver, Mode=OneWay}" Value="True" />
                             </MultiDataTrigger.Conditions>
                             <Setter TargetName="PART_HoverBorder" Property="Opacity" Value="0.6" />

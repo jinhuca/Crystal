@@ -3,7 +3,7 @@
                     xmlns:actions="clr-namespace:Crystal.Themes.Actions"
                     xmlns:i="http://schemas.crystal.com/behaviors"
                     xmlns:crystal="clr-namespace:Crystal.Themes.Controls"
-                    xmlns:mahConverters="clr-namespace:Crystal.Themes.Converters">
+                    xmlns:crystalConverters="clr-namespace:Crystal.Themes.Converters">
 
   <ResourceDictionary.MergedDictionaries>
     <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.TabControl.xaml"/>
@@ -56,7 +56,7 @@
                                           SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                 <Button x:Name="PART_CloseButton"
                         Grid.Column="1"
-                        Width="{TemplateBinding crystal:HeaderedControlHelper.HeaderFontSize, Converter={mahConverters:MathMultiplyConverter}, ConverterParameter=0.5}"
+                        Width="{TemplateBinding crystal:HeaderedControlHelper.HeaderFontSize, Converter={crystalConverters:MathMultiplyConverter}, ConverterParameter=0.5}"
                         Height="{Binding RelativeSource={RelativeSource Self}, Path=Width, Mode=OneWay}"
                         Margin="{TemplateBinding CloseButtonMargin}"
                         VerticalAlignment="Top"
@@ -277,7 +277,7 @@
 
             <MultiDataTrigger>
               <MultiDataTrigger.Conditions>
-                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement), Converter={x:Static mahConverters:IsNullConverter.Instance}}" Value="True" />
+                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement), Converter={x:Static crystalConverters:IsNullConverter.Instance}}" Value="True" />
                 <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Top" />
               </MultiDataTrigger.Conditions>
               <Setter TargetName="Underline" Property="Grid.Column" Value="0" />
@@ -288,7 +288,7 @@
             </MultiDataTrigger>
             <MultiDataTrigger>
               <MultiDataTrigger.Conditions>
-                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement), Converter={x:Static mahConverters:IsNullConverter.Instance}}" Value="True" />
+                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement), Converter={x:Static crystalConverters:IsNullConverter.Instance}}" Value="True" />
                 <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Bottom" />
               </MultiDataTrigger.Conditions>
               <Setter TargetName="Underline" Property="Grid.Column" Value="0" />
@@ -299,7 +299,7 @@
             </MultiDataTrigger>
             <MultiDataTrigger>
               <MultiDataTrigger.Conditions>
-                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement), Converter={x:Static mahConverters:IsNullConverter.Instance}}" Value="True" />
+                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement), Converter={x:Static crystalConverters:IsNullConverter.Instance}}" Value="True" />
                 <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Left" />
               </MultiDataTrigger.Conditions>
               <Setter TargetName="Underline" Property="Grid.Column" Value="0" />
@@ -310,7 +310,7 @@
             </MultiDataTrigger>
             <MultiDataTrigger>
               <MultiDataTrigger.Conditions>
-                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement), Converter={x:Static mahConverters:IsNullConverter.Instance}}" Value="True" />
+                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement), Converter={x:Static crystalConverters:IsNullConverter.Instance}}" Value="True" />
                 <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Right" />
               </MultiDataTrigger.Conditions>
               <Setter TargetName="Underline" Property="Grid.Column" Value="0" />

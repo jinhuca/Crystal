@@ -81,7 +81,7 @@ namespace Crystal.Themes.Controls.Dialogs
     /// <param name="message">The message contained within the MessageDialog.</param>
     /// <param name="settings">Optional settings that override the global metro dialog settings.</param>
     /// <returns>The text that was entered or null (Nothing in Visual Basic) if the user cancelled the operation.</returns>
-    public static Task<string?> ShowInputAsync(this CrystalWindow window, string title, string message, MetroDialogSettings? settings = null)
+    public static Task<string?> ShowInputAsync(this CrystalWindow window, string title, string message, CrystalDialogSettings? settings = null)
     {
       window.Dispatcher.VerifyAccess();
 
@@ -149,7 +149,7 @@ namespace Crystal.Themes.Controls.Dialogs
     /// <param name="style">The type of buttons to use.</param>
     /// <param name="settings">Optional settings that override the global metro dialog settings.</param>
     /// <returns>A task promising the result of which button was pressed.</returns>
-    public static Task<MessageDialogResult> ShowMessageAsync(this CrystalWindow window, string title, string message, MessageDialogStyle style = MessageDialogStyle.Affirmative, MetroDialogSettings? settings = null)
+    public static Task<MessageDialogResult> ShowMessageAsync(this CrystalWindow window, string title, string message, MessageDialogStyle style = MessageDialogStyle.Affirmative, CrystalDialogSettings? settings = null)
     {
       window.Dispatcher.VerifyAccess();
 
@@ -217,7 +217,7 @@ namespace Crystal.Themes.Controls.Dialogs
     /// <param name="isCancelable">Determines if the cancel button is visible.</param>
     /// <param name="settings">Optional Settings that override the global metro dialog settings.</param>
     /// <returns>A task promising the instance of ProgressDialogController for this operation.</returns>
-    public static Task<ProgressDialogController> ShowProgressAsync(this CrystalWindow window, string title, string message, bool isCancelable = false, MetroDialogSettings? settings = null)
+    public static Task<ProgressDialogController> ShowProgressAsync(this CrystalWindow window, string title, string message, bool isCancelable = false, CrystalDialogSettings? settings = null)
     {
       window.Dispatcher.VerifyAccess();
 
@@ -274,7 +274,7 @@ namespace Crystal.Themes.Controls.Dialogs
           }).Unwrap();
     }
 
-    private static Task HandleOverlayOnHide(MetroDialogSettings? settings, CrystalWindow window)
+    private static Task HandleOverlayOnHide(CrystalDialogSettings? settings, CrystalWindow window)
     {
       if (window.metroActiveDialogContainer is null)
       {
@@ -314,7 +314,7 @@ namespace Crystal.Themes.Controls.Dialogs
       return result;
     }
 
-    private static Task HandleOverlayOnShow(MetroDialogSettings? settings, CrystalWindow window)
+    private static Task HandleOverlayOnShow(CrystalDialogSettings? settings, CrystalWindow window)
     {
       return Task.Factory.StartNew(() =>
                      {
@@ -358,7 +358,7 @@ namespace Crystal.Themes.Controls.Dialogs
     /// <param name="settings">An optional pre-defined settings instance.</param>
     /// <returns>A task representing the operation.</returns>
     /// <exception cref="InvalidOperationException">The <paramref name="dialog"/> is already visible in the window.</exception>
-    public static Task ShowMetroDialogAsync(this CrystalWindow window, BaseMetroDialog dialog, MetroDialogSettings? settings = null)
+    public static Task ShowMetroDialogAsync(this CrystalWindow window, BaseMetroDialog dialog, CrystalDialogSettings? settings = null)
     {
       if (window is null)
       {
@@ -419,7 +419,7 @@ namespace Crystal.Themes.Controls.Dialogs
     /// <param name="window">The owning window of the dialog.</param>
     /// <param name="settings">An optional pre-defined settings instance.</param>
     /// <returns>A task with the dialog representing the operation.</returns>
-    public static Task<TDialog> ShowMetroDialogAsync<TDialog>([NotNull] this CrystalWindow window, MetroDialogSettings? settings = null)
+    public static Task<TDialog> ShowMetroDialogAsync<TDialog>([NotNull] this CrystalWindow window, CrystalDialogSettings? settings = null)
         where TDialog : BaseMetroDialog
     {
       if (window is null)
@@ -464,7 +464,7 @@ namespace Crystal.Themes.Controls.Dialogs
     /// The <paramref name="dialog"/> is not visible in the window.
     /// This happens if <see cref="ShowMetroDialogAsync"/> hasn't been called before.
     /// </exception>
-    public static Task HideMetroDialogAsync(this CrystalWindow window, BaseMetroDialog dialog, MetroDialogSettings? settings = null)
+    public static Task HideMetroDialogAsync(this CrystalWindow window, BaseMetroDialog dialog, CrystalDialogSettings? settings = null)
     {
       window.Dispatcher.VerifyAccess();
 
@@ -832,7 +832,7 @@ namespace Crystal.Themes.Controls.Dialogs
     /// <param name="message">The message contained within the MessageDialog.</param>
     /// <param name="settings">Optional settings that override the global metro dialog settings.</param>
     /// <returns>The text that was entered or null (Nothing in Visual Basic) if the user cancelled the operation.</returns>
-    public static string? ShowModalInputExternal(this CrystalWindow window, string title, string message, MetroDialogSettings? settings = null)
+    public static string? ShowModalInputExternal(this CrystalWindow window, string title, string message, CrystalDialogSettings? settings = null)
     {
       var win = CreateModalExternalWindow(window);
 
@@ -873,7 +873,7 @@ namespace Crystal.Themes.Controls.Dialogs
     /// <param name="style">The type of buttons to use.</param>
     /// <param name="settings">Optional settings that override the global metro dialog settings.</param>
     /// <returns>A task promising the result of which button was pressed.</returns>
-    public static MessageDialogResult ShowModalMessageExternal(this CrystalWindow window, string title, string message, MessageDialogStyle style = MessageDialogStyle.Affirmative, MetroDialogSettings? settings = null)
+    public static MessageDialogResult ShowModalMessageExternal(this CrystalWindow window, string title, string message, MessageDialogStyle style = MessageDialogStyle.Affirmative, CrystalDialogSettings? settings = null)
     {
       var win = CreateModalExternalWindow(window);
 
@@ -905,7 +905,7 @@ namespace Crystal.Themes.Controls.Dialogs
       return result;
     }
 
-    private static void SetDialogFontSizes(MetroDialogSettings? settings, BaseMetroDialog dialog)
+    private static void SetDialogFontSizes(CrystalDialogSettings? settings, BaseMetroDialog dialog)
     {
       if (settings is null)
       {

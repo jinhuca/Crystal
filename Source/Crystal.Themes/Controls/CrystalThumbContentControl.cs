@@ -244,7 +244,7 @@ namespace Crystal.Themes.Controls
 
     protected override AutomationPeer OnCreateAutomationPeer()
     {
-      return new MetroThumbContentControlAutomationPeer(this);
+      return new CrystalThumbContentControlAutomationPeer(this);
     }
   }
 }

@@ -65,7 +65,7 @@ namespace Crystal.Themes.Controls.Dialogs
     {
     }
 
-    internal ProgressDialog(CrystalWindow? parentWindow, MetroDialogSettings? settings) : base(parentWindow, settings)
+    internal ProgressDialog(CrystalWindow? parentWindow, CrystalDialogSettings? settings) : base(parentWindow, settings)
     {
       InitializeComponent();
     }
@@ -73,7 +73,7 @@ namespace Crystal.Themes.Controls.Dialogs
     protected override void OnLoaded()
     {
       NegativeButtonText = DialogSettings.NegativeButtonText;
-      SetResourceReference(ProgressBarForegroundProperty, DialogSettings.ColorScheme == MetroDialogColorScheme.Theme ? "Crystal.Brushes.Accent" : "Crystal.Brushes.ThemeForeground");
+      SetResourceReference(ProgressBarForegroundProperty, DialogSettings.ColorScheme == CrystalDialogColorScheme.Theme ? "Crystal.Brushes.Accent" : "Crystal.Brushes.ThemeForeground");
     }
 
     internal CancellationToken CancellationToken => DialogSettings.CancellationToken;
