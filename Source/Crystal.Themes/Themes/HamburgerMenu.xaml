@@ -35,7 +35,7 @@
         <Setter Property="PaneForeground" Value="{DynamicResource Crystal.HamburgerMenu.Pane.Foreground}" />
         <Setter Property="PaneHeaderMargin" Value="0 0 0 8" />
         <Setter Property="PaneMargin" Value="0 0 0 8" />
-        <Setter Property="ResizeThumbStyle" Value="{DynamicResource Crystal.Styles.MetroThumb.SplitView.Resize}" />
+        <Setter Property="ResizeThumbStyle" Value="{DynamicResource Crystal.Styles.CrystalThumb.SplitView.Resize}" />
         <Setter Property="SeparatorItemContainerStyle" Value="{StaticResource Crystal.Styles.ListBoxItem.HamburgerMenuSeparator}" />
         <Setter Property="Template" Value="{DynamicResource Crystal.Templates.HamburgerMenu}" />
         <Setter Property="VerticalContentAlignment" Value="Stretch" />

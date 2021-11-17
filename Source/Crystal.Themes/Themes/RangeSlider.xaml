@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:crystal="clr-namespace:Crystal.Themes.Controls">
 
-  <Style x:Key="Crystal.Styles.MetroThumb.RangeSlider.Horizontal.Middle" TargetType="{x:Type crystal:CrystalThumb}">
+  <Style x:Key="Crystal.Styles.CrystalThumb.RangeSlider.Horizontal.Middle" TargetType="{x:Type crystal:CrystalThumb}">
     <Setter Property="Background" Value="Transparent" />
     <Setter Property="BorderThickness" Value="0" />
     <Setter Property="IsTabStop" Value="True" />
@@ -18,8 +18,8 @@
     </Setter>
   </Style>
 
-  <Style x:Key="Crystal.Styles.MetroThumb.RangeSlider.Vertical.Middle"
-           BasedOn="{StaticResource Crystal.Styles.MetroThumb.RangeSlider.Horizontal.Middle}"
+  <Style x:Key="Crystal.Styles.CrystalThumb.RangeSlider.Vertical.Middle"
+           BasedOn="{StaticResource Crystal.Styles.CrystalThumb.RangeSlider.Horizontal.Middle}"
            TargetType="{x:Type crystal:CrystalThumb}">
     <Setter Property="Template">
       <Setter.Value>
@@ -88,7 +88,7 @@
                                 MinWidth="{TemplateBinding MinRangeWidth}"
                                 Cursor="Hand"
                                 Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackValueFillBrush)}"
-                                Style="{DynamicResource Crystal.Styles.MetroThumb.RangeSlider.Horizontal.Middle}" />
+                                Style="{DynamicResource Crystal.Styles.CrystalThumb.RangeSlider.Horizontal.Middle}" />
         <crystal:CrystalThumb x:Name="PART_RightThumb"
                                 Width="{DynamicResource Crystal.Sizes.Slider.HorizontalThumb.Width}"
                                 Height="{DynamicResource Crystal.Sizes.Slider.HorizontalThumb.Height}"
@@ -208,7 +208,7 @@
                                 MinHeight="{TemplateBinding MinRangeWidth}"
                                 Cursor="Hand"
                                 Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackValueFillBrush)}"
-                                Style="{DynamicResource Crystal.Styles.MetroThumb.RangeSlider.Vertical.Middle}" />
+                                Style="{DynamicResource Crystal.Styles.CrystalThumb.RangeSlider.Vertical.Middle}" />
         <crystal:CrystalThumb x:Name="PART_LeftThumb"
                                 Width="{DynamicResource Crystal.Sizes.Slider.VerticalThumb.Width}"
                                 Height="{DynamicResource Crystal.Sizes.Slider.VerticalThumb.Height}"
@@ -299,7 +299,7 @@
 
   <!--  Win10 RangeSlider style  -->
 
-  <Style x:Key="Crystal.Styles.MetroThumb.RangeSlider.Horizontal.Middle.Win10" TargetType="{x:Type crystal:CrystalThumb}">
+  <Style x:Key="Crystal.Styles.CrystalThumb.RangeSlider.Horizontal.Middle.Win10" TargetType="{x:Type crystal:CrystalThumb}">
     <Setter Property="Background" Value="Transparent" />
     <Setter Property="BorderThickness" Value="0" />
     <Setter Property="IsTabStop" Value="True" />
@@ -315,8 +315,8 @@
     </Setter>
   </Style>
 
-  <Style x:Key="Crystal.Styles.MetroThumb.RangeSlider.Vertical.Middle.Win10"
-           BasedOn="{StaticResource Crystal.Styles.MetroThumb.RangeSlider.Horizontal.Middle.Win10}"
+  <Style x:Key="Crystal.Styles.CrystalThumb.RangeSlider.Vertical.Middle.Win10"
+           BasedOn="{StaticResource Crystal.Styles.CrystalThumb.RangeSlider.Horizontal.Middle.Win10}"
            TargetType="{x:Type crystal:CrystalThumb}">
     <Setter Property="Template">
       <Setter.Value>
@@ -385,7 +385,7 @@
                                 MinWidth="{TemplateBinding MinRangeWidth}"
                                 Cursor="Hand"
                                 Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackValueFillBrush)}"
-                                Style="{DynamicResource Crystal.Styles.MetroThumb.RangeSlider.Horizontal.Middle.Win10}" />
+                                Style="{DynamicResource Crystal.Styles.CrystalThumb.RangeSlider.Horizontal.Middle.Win10}" />
         <crystal:CrystalThumb x:Name="PART_RightThumb"
                                 Width="8"
                                 Height="24"
@@ -520,7 +520,7 @@
                                 MinHeight="{TemplateBinding MinRangeWidth}"
                                 Cursor="Hand"
                                 Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:SliderHelper.TrackValueFillBrush)}"
-                                Style="{DynamicResource Crystal.Styles.MetroThumb.RangeSlider.Vertical.Middle.Win10}" />
+                                Style="{DynamicResource Crystal.Styles.CrystalThumb.RangeSlider.Vertical.Middle.Win10}" />
         <crystal:CrystalThumb x:Name="PART_LeftThumb"
                                 Width="24"
                                 Height="8"

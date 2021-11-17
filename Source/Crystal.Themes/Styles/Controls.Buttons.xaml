@@ -848,7 +848,7 @@
     </Style.Triggers>
   </Style>
 
-  <Style x:Key="Crystal.Styles.Button.MetroSquare" TargetType="{x:Type ButtonBase}">
+  <Style x:Key="Crystal.Styles.Button.CrystalSquare" TargetType="{x:Type ButtonBase}">
     <Setter Property="Background" Value="Transparent" />
     <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
     <Setter Property="BorderThickness" Value="2" />
@@ -962,8 +962,8 @@
     <Setter Property="VerticalAlignment" Value="Center" />
   </Style>
 
-  <Style x:Key="Crystal.Styles.Button.MetroSquare.Accent"
-           BasedOn="{StaticResource Crystal.Styles.Button.MetroSquare}"
+  <Style x:Key="Crystal.Styles.Button.CrystalSquare.Accent"
+           BasedOn="{StaticResource Crystal.Styles.Button.Crystalquare}"
            TargetType="{x:Type ButtonBase}">
     <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Accent}" />
     <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Selected.Foreground}" />
