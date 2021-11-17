@@ -1,13 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-// See the LICENSE file in the project root for more information.
-
-using System.ComponentModel;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Input;
-using System.Windows.Media;
-using Crystal.Themes.ValueBoxes;
+﻿using Crystal.Themes.ValueBoxes;
 
 namespace Crystal.Themes.Controls
 {
@@ -15,295 +6,180 @@ namespace Crystal.Themes.Controls
   /// Specifies the underline position of a TabControl.
   /// </summary>
   public enum UnderlinedType
+  {
+    None,
+    TabItems,
+    SelectedTabItem,
+    TabPanel
+  }
+
+  public static class TabControlHelper
+  {
+    /// Sets the Style and Template property to null.
+    ///
+    /// Removing a TabItem in code behind can produce such nasty output
+    /// System.Windows.Data Warning: 4 : Cannot find source for binding with reference 'RelativeSource FindAncestor, AncestorType='System.Windows.Controls.TabControl', AncestorLevel='1''. BindingExpression:Path=Background; DataItem=null; target element is 'TabItem' (Name=''); target property is 'Background' (type 'Brush')
+    /// or
+    /// System.Windows.Data Error: 4 : Cannot find source for binding with reference 'RelativeSource FindAncestor, AncestorType='System.Windows.Controls.TabControl', AncestorLevel='1''. BindingExpression:Path=(0); DataItem=null; target element is 'TabItem' (Name=''); target property is 'UnderlineBrush' (type 'Brush')
+    ///
+    /// This is a timing problem in WPF of the binding mechanism itself.
+    ///
+    /// To avoid this, we can set the Style and Template to null.
+    public static void ClearStyle(this TabItem? tabItem)
     {
-        None,
-        TabItems,
-        SelectedTabItem,
-        TabPanel
+      if (tabItem is null)
+      {
+        return;
+      }
+
+      tabItem.Template = null;
+      tabItem.Style = null;
     }
 
-    public static class TabControlHelper
+    public static readonly DependencyProperty CloseButtonEnabledProperty = DependencyProperty.RegisterAttached(
+      "CloseButtonEnabled",
+      typeof(bool),
+      typeof(TabControlHelper),
+      new FrameworkPropertyMetadata(BooleanBoxes.FalseBox, FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.Inherits));
+
+    [Category(AppName.CrystalThemes)]
+    [AttachedPropertyBrowsableForType(typeof(TabItem))]
+    public static bool GetCloseButtonEnabled(UIElement element) => (bool)element.GetValue(CloseButtonEnabledProperty);
+
+    [Category(AppName.CrystalThemes)]
+    [AttachedPropertyBrowsableForType(typeof(TabItem))]
+    public static void SetCloseButtonEnabled(UIElement element, bool value) => element.SetValue(CloseButtonEnabledProperty, BooleanBoxes.Box(value));
+
+    public static readonly DependencyProperty CloseTabCommandProperty = DependencyProperty.RegisterAttached(
+      "CloseTabCommand",
+      typeof(ICommand),
+      typeof(TabControlHelper),
+      new PropertyMetadata(null));
+
+    [Category(AppName.CrystalThemes)]
+    [AttachedPropertyBrowsableForType(typeof(TabItem))]
+    public static ICommand? GetCloseTabCommand(UIElement element) => (ICommand?)element.GetValue(CloseTabCommandProperty);
+
+    [Category(AppName.CrystalThemes)]
+    [AttachedPropertyBrowsableForType(typeof(TabItem))]
+    public static void SetCloseTabCommand(UIElement element, ICommand? value) => element.SetValue(CloseTabCommandProperty, value);
+
+    public static readonly DependencyProperty CloseTabCommandParameterProperty = DependencyProperty.RegisterAttached(
+      "CloseTabCommandParameter",
+      typeof(object),
+      typeof(TabControlHelper),
+      new PropertyMetadata(null));
+
+    [Category(AppName.CrystalThemes)]
+    [AttachedPropertyBrowsableForType(typeof(TabItem))]
+    public static object? GetCloseTabCommandParameter(UIElement element) => element.GetValue(CloseTabCommandParameterProperty);
+
+    [Category(AppName.CrystalThemes)]
+    [AttachedPropertyBrowsableForType(typeof(TabItem))]
+    public static void SetCloseTabCommandParameter(UIElement element, object? value) => element.SetValue(CloseTabCommandParameterProperty, value);
+
+    public static readonly DependencyProperty UnderlinedProperty = DependencyProperty.RegisterAttached(
+      "Underlined",
+      typeof(UnderlinedType),
+      typeof(TabControlHelper),
+      new PropertyMetadata(UnderlinedType.None));
+
+    [Category(AppName.CrystalThemes)]
+    [AttachedPropertyBrowsableForType(typeof(TabControl))]
+    public static UnderlinedType GetUnderlined(UIElement element) => (UnderlinedType)element.GetValue(UnderlinedProperty);
+
+    [Category(AppName.CrystalThemes)]
+    [AttachedPropertyBrowsableForType(typeof(TabControl))]
+    public static void SetUnderlined(UIElement element, UnderlinedType value)
     {
-        /// Sets the Style and Template property to null.
-        ///
-        /// Removing a TabItem in code behind can produce such nasty output
-        /// System.Windows.Data Warning: 4 : Cannot find source for binding with reference 'RelativeSource FindAncestor, AncestorType='System.Windows.Controls.TabControl', AncestorLevel='1''. BindingExpression:Path=Background; DataItem=null; target element is 'TabItem' (Name=''); target property is 'Background' (type 'Brush')
-        /// or
-        /// System.Windows.Data Error: 4 : Cannot find source for binding with reference 'RelativeSource FindAncestor, AncestorType='System.Windows.Controls.TabControl', AncestorLevel='1''. BindingExpression:Path=(0); DataItem=null; target element is 'TabItem' (Name=''); target property is 'UnderlineBrush' (type 'Brush')
-        ///
-        /// This is a timing problem in WPF of the binding mechanism itself.
-        ///
-        /// To avoid this, we can set the Style and Template to null.
-        public static void ClearStyle(this TabItem? tabItem)
-        {
-            if (tabItem is null)
-            {
-                return;
-            }
-
-            tabItem.Template = null;
-            tabItem.Style = null;
-        }
-
-        /// <summary>
-        /// Identifies the CloseButtonEnabled attached property.
-        /// </summary>
-        public static readonly DependencyProperty CloseButtonEnabledProperty =
-            DependencyProperty.RegisterAttached(
-                "CloseButtonEnabled",
-                typeof(bool),
-                typeof(TabControlHelper),
-                new FrameworkPropertyMetadata(BooleanBoxes.FalseBox, FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.Inherits));
-
-        /// <summary>
-        /// Gets whether a close button should be visible or not.
-        /// </summary>
-        [Category(AppName.CrystalThemes)]
-        [AttachedPropertyBrowsableForType(typeof(TabItem))]
-        public static bool GetCloseButtonEnabled(UIElement element)
-        {
-            return (bool)element.GetValue(CloseButtonEnabledProperty);
-        }
-
-        /// <summary>
-        /// Sets whether a close button should be visible or not.
-        /// </summary>
-        [Category(AppName.CrystalThemes)]
-        [AttachedPropertyBrowsableForType(typeof(TabItem))]
-        public static void SetCloseButtonEnabled(UIElement element, bool value)
-        {
-            element.SetValue(CloseButtonEnabledProperty, BooleanBoxes.Box(value));
-        }
-
-        /// <summary>
-        /// Identifies the CloseTabCommand attached property.
-        /// </summary>
-        public static readonly DependencyProperty CloseTabCommandProperty =
-            DependencyProperty.RegisterAttached(
-                "CloseTabCommand",
-                typeof(ICommand),
-                typeof(TabControlHelper),
-                new PropertyMetadata(null));
-
-        /// <summary>
-        /// Gets a command for the TabItem which executes if the TabItem will be closed.
-        /// </summary>
-        [Category(AppName.CrystalThemes)]
-        [AttachedPropertyBrowsableForType(typeof(TabItem))]
-        public static ICommand? GetCloseTabCommand(UIElement element)
-        {
-            return (ICommand?)element.GetValue(CloseTabCommandProperty);
-        }
-
-        /// <summary>
-        /// Sets a command for the TabItem which executes if the TabItem will be closed.
-        /// </summary>
-        [Category(AppName.CrystalThemes)]
-        [AttachedPropertyBrowsableForType(typeof(TabItem))]
-        public static void SetCloseTabCommand(UIElement element, ICommand? value)
-        {
-            element.SetValue(CloseTabCommandProperty, value);
-        }
-
-        /// <summary>
-        /// Identifies the CloseTabCommandParameter attached property.
-        /// </summary>
-        public static readonly DependencyProperty CloseTabCommandParameterProperty =
-            DependencyProperty.RegisterAttached(
-                "CloseTabCommandParameter",
-                typeof(object),
-                typeof(TabControlHelper),
-                new PropertyMetadata(null));
-
-        /// <summary>
-        /// Gets a command parameter for the TabItem that will be passed to the CloseTabCommand.
-        /// </summary>
-        [Category(AppName.CrystalThemes)]
-        [AttachedPropertyBrowsableForType(typeof(TabItem))]
-        public static object? GetCloseTabCommandParameter(UIElement element)
-        {
-            return (object?)element.GetValue(CloseTabCommandParameterProperty);
-        }
-
-        /// <summary>
-        /// Sets a command parameter for the TabItem that will be passed to the CloseTabCommand.
-        /// </summary>
-        [Category(AppName.CrystalThemes)]
-        [AttachedPropertyBrowsableForType(typeof(TabItem))]
-        public static void SetCloseTabCommandParameter(UIElement element, object? value)
-        {
-            element.SetValue(CloseTabCommandParameterProperty, value);
-        }
-
-        /// <summary>
-        /// Defines whether the underline below the <see cref="TabItem"/> or <see cref="TabPanel"/> is shown or not.
-        /// </summary>
-        public static readonly DependencyProperty UnderlinedProperty =
-            DependencyProperty.RegisterAttached(
-                "Underlined",
-                typeof(UnderlinedType),
-                typeof(TabControlHelper),
-                new PropertyMetadata(UnderlinedType.None));
-
-        [Category(AppName.CrystalThemes)]
-        [AttachedPropertyBrowsableForType(typeof(TabControl))]
-        public static UnderlinedType GetUnderlined(UIElement element)
-        {
-            return (UnderlinedType)element.GetValue(UnderlinedProperty);
-        }
-
-        [Category(AppName.CrystalThemes)]
-        [AttachedPropertyBrowsableForType(typeof(TabControl))]
-        public static void SetUnderlined(UIElement element, UnderlinedType value)
-        {
-            element.SetValue(UnderlinedProperty, value);
-        }
-
-        /// <summary>
-        /// Defines the underline brush below the <see cref="TabItem"/> or <see cref="TabPanel"/>.
-        /// </summary>
-        public static readonly DependencyProperty UnderlineBrushProperty =
-            DependencyProperty.RegisterAttached(
-                "UnderlineBrush",
-                typeof(Brush),
-                typeof(TabControlHelper),
-                new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
-
-        [Category(AppName.CrystalThemes)]
-        [AttachedPropertyBrowsableForType(typeof(TabControl))]
-        [AttachedPropertyBrowsableForType(typeof(TabItem))]
-        public static Brush? GetUnderlineBrush(UIElement element)
-        {
-            return (Brush?)element.GetValue(UnderlineBrushProperty);
-        }
-
-        [Category(AppName.CrystalThemes)]
-        [AttachedPropertyBrowsableForType(typeof(TabControl))]
-        [AttachedPropertyBrowsableForType(typeof(TabItem))]
-        public static void SetUnderlineBrush(UIElement element, Brush? value)
-        {
-            element.SetValue(UnderlineBrushProperty, value);
-        }
-
-        /// <summary>
-        /// Defines the underline brush below the <see cref="TabItem"/> or <see cref="TabPanel"/> of an selected item.
-        /// </summary>
-        public static readonly DependencyProperty UnderlineSelectedBrushProperty =
-            DependencyProperty.RegisterAttached(
-                "UnderlineSelectedBrush",
-                typeof(Brush),
-                typeof(TabControlHelper),
-                new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
-
-        [Category(AppName.CrystalThemes)]
-        [AttachedPropertyBrowsableForType(typeof(TabControl))]
-        [AttachedPropertyBrowsableForType(typeof(TabItem))]
-        public static Brush? GetUnderlineSelectedBrush(UIElement element)
-        {
-            return (Brush?)element.GetValue(UnderlineSelectedBrushProperty);
-        }
-
-        [Category(AppName.CrystalThemes)]
-        [AttachedPropertyBrowsableForType(typeof(TabControl))]
-        [AttachedPropertyBrowsableForType(typeof(TabItem))]
-        public static void SetUnderlineSelectedBrush(UIElement element, Brush? value)
-        {
-            element.SetValue(UnderlineSelectedBrushProperty, value);
-        }
-
-        /// <summary>
-        /// Defines the underline brush below the <see cref="TabItem"/> or <see cref="TabPanel"/> if the mouse is over an item.
-        /// </summary>
-        public static readonly DependencyProperty UnderlineMouseOverBrushProperty =
-            DependencyProperty.RegisterAttached(
-                "UnderlineMouseOverBrush",
-                typeof(Brush),
-                typeof(TabControlHelper),
-                new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
-
-        [Category(AppName.CrystalThemes)]
-        [AttachedPropertyBrowsableForType(typeof(TabControl))]
-        [AttachedPropertyBrowsableForType(typeof(TabItem))]
-        public static Brush? GetUnderlineMouseOverBrush(UIElement element)
-        {
-            return (Brush?)element.GetValue(UnderlineMouseOverBrushProperty);
-        }
-
-        [Category(AppName.CrystalThemes)]
-        [AttachedPropertyBrowsableForType(typeof(TabControl))]
-        [AttachedPropertyBrowsableForType(typeof(TabItem))]
-        public static void SetUnderlineMouseOverBrush(UIElement element, Brush? value)
-        {
-            element.SetValue(UnderlineMouseOverBrushProperty, value);
-        }
-
-        /// <summary>
-        /// Defines the underline brush below the <see cref="TabItem"/> or <see cref="TabPanel"/> if the mouse is over a selected item.
-        /// </summary>
-        public static readonly DependencyProperty UnderlineMouseOverSelectedBrushProperty =
-            DependencyProperty.RegisterAttached(
-                "UnderlineMouseOverSelectedBrush",
-                typeof(Brush),
-                typeof(TabControlHelper),
-                new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
-
-        [Category(AppName.CrystalThemes)]
-        [AttachedPropertyBrowsableForType(typeof(TabControl))]
-        [AttachedPropertyBrowsableForType(typeof(TabItem))]
-        public static Brush? GetUnderlineMouseOverSelectedBrush(UIElement element)
-        {
-            return (Brush?)element.GetValue(UnderlineMouseOverSelectedBrushProperty);
-        }
-
-        [Category(AppName.CrystalThemes)]
-        [AttachedPropertyBrowsableForType(typeof(TabControl))]
-        [AttachedPropertyBrowsableForType(typeof(TabItem))]
-        public static void SetUnderlineMouseOverSelectedBrush(UIElement element, Brush? value)
-        {
-            element.SetValue(UnderlineMouseOverSelectedBrushProperty, value);
-        }
-
-        /// <summary>
-        /// This property can be used to set the Transition for animated TabControls
-        /// </summary>
-        public static readonly DependencyProperty TransitionProperty =
-            DependencyProperty.RegisterAttached(
-                "Transition",
-                typeof(TransitionType),
-                typeof(TabControlHelper),
-                new FrameworkPropertyMetadata(TransitionType.Default, FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.Inherits));
-
-        [Category(AppName.CrystalThemes)]
-        public static TransitionType GetTransition(DependencyObject obj)
-        {
-            return (TransitionType)obj.GetValue(TransitionProperty);
-        }
-
-        public static void SetTransition(DependencyObject obj, TransitionType value)
-        {
-            obj.SetValue(TransitionProperty, value);
-        }
-
-        /// <summary>
-        /// Defines the position of the <see cref="TabItem"/> Underline
-        /// </summary>
-        public static readonly DependencyProperty UnderlinePlacementProperty =
-            DependencyProperty.RegisterAttached(
-                "UnderlinePlacement",
-                typeof(Dock?),
-                typeof(TabControlHelper),
-                new PropertyMetadata(null));
-
-        [Category(AppName.CrystalThemes)]
-        [AttachedPropertyBrowsableForType(typeof(TabControl))]
-        public static Dock? GetUnderlinePlacement(UIElement element)
-        {
-            return (Dock?)element.GetValue(UnderlinePlacementProperty);
-        }
-
-        public static void SetUnderlinePlacement(UIElement element, Dock? value)
-        {
-            element.SetValue(UnderlinePlacementProperty, value);
-        }
+      element.SetValue(UnderlinedProperty, value);
     }
+
+    public static readonly DependencyProperty UnderlineBrushProperty = DependencyProperty.RegisterAttached(
+      "UnderlineBrush",
+      typeof(Brush),
+      typeof(TabControlHelper),
+      new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
+
+    [Category(AppName.CrystalThemes)]
+    [AttachedPropertyBrowsableForType(typeof(TabControl))]
+    [AttachedPropertyBrowsableForType(typeof(TabItem))]
+    public static Brush? GetUnderlineBrush(UIElement element) => (Brush?)element.GetValue(UnderlineBrushProperty);
+
+    [Category(AppName.CrystalThemes)]
+    [AttachedPropertyBrowsableForType(typeof(TabControl))]
+    [AttachedPropertyBrowsableForType(typeof(TabItem))]
+    public static void SetUnderlineBrush(UIElement element, Brush? value) => element.SetValue(UnderlineBrushProperty, value);
+
+    public static readonly DependencyProperty UnderlineSelectedBrushProperty = DependencyProperty.RegisterAttached(
+      "UnderlineSelectedBrush",
+      typeof(Brush),
+      typeof(TabControlHelper),
+      new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
+
+    [Category(AppName.CrystalThemes)]
+    [AttachedPropertyBrowsableForType(typeof(TabControl))]
+    [AttachedPropertyBrowsableForType(typeof(TabItem))]
+    public static Brush? GetUnderlineSelectedBrush(UIElement element) => (Brush?)element.GetValue(UnderlineSelectedBrushProperty);
+
+    [Category(AppName.CrystalThemes)]
+    [AttachedPropertyBrowsableForType(typeof(TabControl))]
+    [AttachedPropertyBrowsableForType(typeof(TabItem))]
+    public static void SetUnderlineSelectedBrush(UIElement element, Brush? value) => element.SetValue(UnderlineSelectedBrushProperty, value);
+
+    public static readonly DependencyProperty UnderlineMouseOverBrushProperty = DependencyProperty.RegisterAttached(
+      "UnderlineMouseOverBrush",
+      typeof(Brush),
+      typeof(TabControlHelper),
+      new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
+
+    [Category(AppName.CrystalThemes)]
+    [AttachedPropertyBrowsableForType(typeof(TabControl))]
+    [AttachedPropertyBrowsableForType(typeof(TabItem))]
+    public static Brush? GetUnderlineMouseOverBrush(UIElement element) => (Brush?)element.GetValue(UnderlineMouseOverBrushProperty);
+
+    [Category(AppName.CrystalThemes)]
+    [AttachedPropertyBrowsableForType(typeof(TabControl))]
+    [AttachedPropertyBrowsableForType(typeof(TabItem))]
+    public static void SetUnderlineMouseOverBrush(UIElement element, Brush? value) => element.SetValue(UnderlineMouseOverBrushProperty, value);
+
+    public static readonly DependencyProperty UnderlineMouseOverSelectedBrushProperty = DependencyProperty.RegisterAttached(
+      "UnderlineMouseOverSelectedBrush",
+      typeof(Brush),
+      typeof(TabControlHelper),
+      new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
+
+    [Category(AppName.CrystalThemes)]
+    [AttachedPropertyBrowsableForType(typeof(TabControl))]
+    [AttachedPropertyBrowsableForType(typeof(TabItem))]
+    public static Brush? GetUnderlineMouseOverSelectedBrush(UIElement element) => (Brush?)element.GetValue(UnderlineMouseOverSelectedBrushProperty);
+
+    [Category(AppName.CrystalThemes)]
+    [AttachedPropertyBrowsableForType(typeof(TabControl))]
+    [AttachedPropertyBrowsableForType(typeof(TabItem))]
+    public static void SetUnderlineMouseOverSelectedBrush(UIElement element, Brush? value) => element.SetValue(UnderlineMouseOverSelectedBrushProperty, value);
+
+    public static readonly DependencyProperty TransitionProperty = DependencyProperty.RegisterAttached(
+      "Transition",
+      typeof(TransitionType),
+      typeof(TabControlHelper),
+      new FrameworkPropertyMetadata(TransitionType.Default, FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.Inherits));
+
+    [Category(AppName.CrystalThemes)]
+    public static TransitionType GetTransition(DependencyObject obj) => (TransitionType)obj.GetValue(TransitionProperty);
+
+    public static void SetTransition(DependencyObject obj, TransitionType value) => obj.SetValue(TransitionProperty, value);
+
+    public static readonly DependencyProperty UnderlinePlacementProperty = DependencyProperty.RegisterAttached(
+      "UnderlinePlacement",
+      typeof(Dock?),
+      typeof(TabControlHelper),
+      new PropertyMetadata(null));
+
+    [Category(AppName.CrystalThemes)]
+    [AttachedPropertyBrowsableForType(typeof(TabControl))]
+    public static Dock? GetUnderlinePlacement(UIElement element) => (Dock?)element.GetValue(UnderlinePlacementProperty);
+
+    public static void SetUnderlinePlacement(UIElement element, Dock? value) => element.SetValue(UnderlinePlacementProperty, value);
+  }
 }

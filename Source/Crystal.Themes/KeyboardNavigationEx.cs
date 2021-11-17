@@ -1,8 +1,4 @@
-﻿using System;
-using System.Reflection;
-using System.Windows;
-using System.Windows.Input;
-using System.Windows.Threading;
+﻿using System.Reflection;
 
 namespace Crystal.Themes
 {

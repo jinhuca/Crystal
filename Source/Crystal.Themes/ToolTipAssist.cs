@@ -4,11 +4,11 @@ namespace Crystal.Themes
 {
   public static class ToolTipAssist
   {
-    public static readonly DependencyProperty AutoMoveProperty
-        = DependencyProperty.RegisterAttached("AutoMove",
-                                              typeof(bool),
-                                              typeof(ToolTipAssist),
-                                              new FrameworkPropertyMetadata(false, OnAutoMoveChanged));
+    public static readonly DependencyProperty AutoMoveProperty = DependencyProperty.RegisterAttached(
+      "AutoMove",
+      typeof(bool),
+      typeof(ToolTipAssist),
+      new FrameworkPropertyMetadata(false, OnAutoMoveChanged));
 
     /// <summary>
     /// Indicates whether a tooltip should follow the mouse cursor.
@@ -19,57 +19,42 @@ namespace Crystal.Themes
       return (bool)element.GetValue(AutoMoveProperty);
     }
 
-    /// <summary>
-    /// Sets whether a tooltip should follow the mouse cursor.
-    /// </summary>
     [AttachedPropertyBrowsableForType(typeof(ToolTip))]
     public static void SetAutoMove(ToolTip element, bool value)
     {
       element.SetValue(AutoMoveProperty, value);
     }
 
-    public static readonly DependencyProperty AutoMoveHorizontalOffsetProperty
-        = DependencyProperty.RegisterAttached("AutoMoveHorizontalOffset",
-                                              typeof(double),
-                                              typeof(ToolTipAssist),
-                                              new FrameworkPropertyMetadata(16d));
+    public static readonly DependencyProperty AutoMoveHorizontalOffsetProperty = DependencyProperty.RegisterAttached(
+      "AutoMoveHorizontalOffset",
+      typeof(double),
+      typeof(ToolTipAssist),
+      new FrameworkPropertyMetadata(16d));
 
-    /// <summary>
-    /// Gets the horizontal offset for the relative placement of the Tooltip.
-    /// </summary>
     [AttachedPropertyBrowsableForType(typeof(ToolTip))]
     public static double GetAutoMoveHorizontalOffset(ToolTip element)
     {
       return (double)element.GetValue(AutoMoveHorizontalOffsetProperty);
     }
 
-    /// <summary>
-    /// Sets the horizontal offset for the relative placement of the Tooltip.
-    /// </summary>
     [AttachedPropertyBrowsableForType(typeof(ToolTip))]
     public static void SetAutoMoveHorizontalOffset(ToolTip element, double value)
     {
       element.SetValue(AutoMoveHorizontalOffsetProperty, value);
     }
 
-    public static readonly DependencyProperty AutoMoveVerticalOffsetProperty
-        = DependencyProperty.RegisterAttached("AutoMoveVerticalOffset",
-                                              typeof(double),
-                                              typeof(ToolTipAssist),
-                                              new FrameworkPropertyMetadata(16d));
+    public static readonly DependencyProperty AutoMoveVerticalOffsetProperty = DependencyProperty.RegisterAttached(
+      "AutoMoveVerticalOffset",
+      typeof(double),
+      typeof(ToolTipAssist),
+      new FrameworkPropertyMetadata(16d));
 
-    /// <summary>
-    /// Gets the vertical offset for the relative placement of the Tooltip.
-    /// </summary>
     [AttachedPropertyBrowsableForType(typeof(ToolTip))]
     public static double GetAutoMoveVerticalOffset(ToolTip element)
     {
       return (double)element.GetValue(AutoMoveVerticalOffsetProperty);
     }
 
-    /// <summary>
-    /// Sets the vertical offset for the relative placement of the Tooltip.
-    /// </summary>
     [AttachedPropertyBrowsableForType(typeof(ToolTip))]
     public static void SetAutoMoveVerticalOffset(ToolTip element, double value)
     {
@@ -79,8 +64,7 @@ namespace Crystal.Themes
     private static void OnAutoMoveChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs eventArgs)
     {
       var toolTip = (ToolTip)dependencyObject;
-      if (eventArgs.OldValue != eventArgs.NewValue
-          && eventArgs.NewValue is not null)
+      if (eventArgs.OldValue != eventArgs.NewValue && eventArgs.NewValue is not null)
       {
         var autoMove = (bool)eventArgs.NewValue;
         if (autoMove)
@@ -120,17 +104,13 @@ namespace Crystal.Themes
 
     private static void ToolTipTargetPreviewMouseMove(object sender, MouseEventArgs e)
     {
-      var toolTip = (sender is FrameworkElement target
-          ? target.ToolTip
-          : null) as ToolTip;
+      var toolTip = (sender is FrameworkElement target ? target.ToolTip : null) as ToolTip;
       MoveToolTip(sender as IInputElement, toolTip);
     }
 
     private static void MoveToolTip(IInputElement? target, ToolTip? toolTip)
     {
-      if (toolTip is null
-          || target is null
-          || toolTip.PlacementTarget is null)
+      if (toolTip is null || target is null || toolTip.PlacementTarget is null)
       {
         return;
       }
