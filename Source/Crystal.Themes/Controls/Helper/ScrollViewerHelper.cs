@@ -13,7 +13,7 @@ namespace Crystal.Themes.Controls
     {
         /// <summary>
         /// Identifies the VerticalScrollBarOnLeftSide attached property.
-        /// This property can be used to set vertical scrollbar left side from the tabpanel (look at MetroAnimatedSingleRowTabControl)
+        /// This property can be used to set vertical scrollbar left side from the tabpanel (look at CrystalAnimatedSingleRowTabControl)
         /// </summary>
         public static readonly DependencyProperty VerticalScrollBarOnLeftSideProperty =
             DependencyProperty.RegisterAttached(

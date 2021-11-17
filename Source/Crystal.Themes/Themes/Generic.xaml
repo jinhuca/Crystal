@@ -15,8 +15,8 @@
     <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/FlyoutsControl.xaml" />
     <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/FontIcon.xaml" />
     <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/PathIcon.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/MetroAnimatedSingleRowTabControl.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/MetroAnimatedTabControl.xaml" />
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/CrystalAnimatedSingleRowTabControl.xaml" />
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/CrystalAnimatedTabControl.xaml" />
     <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/CrystalContentControl.xaml" />
     <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/CrystalHeader.xaml" />
     <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/CrystalProgressBar.xaml" />
