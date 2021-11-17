@@ -1,5 +1,3 @@
-using System.ComponentModel;
-using System.Windows.Controls;
 using Crystal.Themes.Controls;
 using Crystal.Themes.ValueBoxes;
 
@@ -10,15 +8,14 @@ namespace Crystal.Themes.Behaviors
     /// <summary>
     /// The DependencyProperty for the <see cref="CrystalContentControl"/>' OnDataContextChanged property.
     ///
-    /// With the OnDataContextChanged property the Reload behavior of the MetroContentControl can be switched on or off.
+    /// With the OnDataContextChanged property the Reload behavior of the CrystalContentControl can be switched on or off.
     /// If the property is set to true, the transition of the <see cref="CrystalContentControl"/> is triggered again when the DataContext is changed.
     /// </summary>
-    public static readonly DependencyProperty OnDataContextChangedProperty
-        = DependencyProperty.RegisterAttached(
-            "OnDataContextChanged",
-            typeof(bool),
-            typeof(ReloadBehavior),
-            new PropertyMetadata(BooleanBoxes.FalseBox, OnOnDataContextChanged));
+    public static readonly DependencyProperty OnDataContextChangedProperty = DependencyProperty.RegisterAttached(
+      "OnDataContextChanged",
+      typeof(bool),
+      typeof(ReloadBehavior),
+      new PropertyMetadata(BooleanBoxes.FalseBox, OnOnDataContextChanged));
 
     /// <summary>
     /// Helper for getting <see cref="OnDataContextChangedProperty"/> from <paramref name="element"/>.
@@ -50,10 +47,10 @@ namespace Crystal.Themes.Behaviors
 
     private static void OnOnDataContextChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
     {
-      if (e.OldValue != e.NewValue && dependencyObject is CrystalContentControl metroContentControl)
+      if (e.OldValue != e.NewValue && dependencyObject is CrystalContentControl crystalContentControl)
       {
-        metroContentControl.DataContextChanged -= ReloadOnDataContextChanged;
-        metroContentControl.DataContextChanged += ReloadOnDataContextChanged;
+        crystalContentControl.DataContextChanged -= ReloadOnDataContextChanged;
+        crystalContentControl.DataContextChanged += ReloadOnDataContextChanged;
       }
     }
 
@@ -109,10 +106,10 @@ namespace Crystal.Themes.Behaviors
     {
       if (e.OldValue != e.NewValue)
       {
-        if (dependencyObject is CrystalContentControl metroContentControl)
+        if (dependencyObject is CrystalContentControl crystalContentControl)
         {
-          metroContentControl.Loaded -= ReloadOnLoaded;
-          metroContentControl.Loaded += ReloadOnLoaded;
+          crystalContentControl.Loaded -= ReloadOnLoaded;
+          crystalContentControl.Loaded += ReloadOnLoaded;
         }
         else if (dependencyObject is TransitioningContentControl transitioningContentControl)
         {
@@ -150,9 +147,9 @@ namespace Crystal.Themes.Behaviors
       {
         var contentControl = GetContentControl(tabControl);
 
-        if (contentControl is CrystalContentControl metroContentControl)
+        if (contentControl is CrystalContentControl crystalContentControl)
         {
-          metroContentControl.Reload();
+          crystalContentControl.Reload();
         }
         else if (contentControl is TransitioningContentControl transitioningContentControl)
         {

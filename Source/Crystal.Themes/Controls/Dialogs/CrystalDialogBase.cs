@@ -5,8 +5,6 @@ using Crystal.Themes.Theming;
 namespace Crystal.Themes.Controls.Dialogs
 {
   /// <summary>
-  /// The base class for dialogs.
-  ///
   /// You probably don't want to use this class, if you want to add arbitrary content to your dialog,
   /// use the <see cref="CustomDialog"/> class.
   /// </summary>
@@ -19,128 +17,96 @@ namespace Crystal.Themes.Controls.Dialogs
     private const string PART_Content = "PART_Content";
     private const string PART_Bottom = "PART_Bottom";
 
-    /// <summary>Identifies the <see cref="DialogContentMargin"/> dependency property.</summary>
-    public static readonly DependencyProperty DialogContentMarginProperty
-        = DependencyProperty.Register(nameof(DialogContentMargin),
-                                      typeof(GridLength),
-                                      typeof(CrystalDialogBase),
-                                      new PropertyMetadata(new GridLength(25, GridUnitType.Star)));
+    public static readonly DependencyProperty DialogContentMarginProperty = DependencyProperty.Register(
+      nameof(DialogContentMargin),
+      typeof(GridLength),
+      typeof(CrystalDialogBase),
+      new PropertyMetadata(new GridLength(25, GridUnitType.Star)));
 
-    /// <summary>
-    /// Gets or sets the left and right margin for the dialog content.
-    /// </summary>
     public GridLength DialogContentMargin
     {
       get => (GridLength)GetValue(DialogContentMarginProperty);
       set => SetValue(DialogContentMarginProperty, value);
     }
 
-    /// <summary>Identifies the <see cref="DialogContentWidth"/> dependency property.</summary>
-    public static readonly DependencyProperty DialogContentWidthProperty
-        = DependencyProperty.Register(nameof(DialogContentWidth),
-                                      typeof(GridLength),
-                                      typeof(CrystalDialogBase),
-                                      new PropertyMetadata(new GridLength(50, GridUnitType.Star)));
+    public static readonly DependencyProperty DialogContentWidthProperty = DependencyProperty.Register(
+      nameof(DialogContentWidth),
+      typeof(GridLength),
+      typeof(CrystalDialogBase),
+      new PropertyMetadata(new GridLength(50, GridUnitType.Star)));
 
-    /// <summary>
-    /// Gets or sets the width for the dialog content.
-    /// </summary>
     public GridLength DialogContentWidth
     {
       get => (GridLength)GetValue(DialogContentWidthProperty);
       set => SetValue(DialogContentWidthProperty, value);
     }
 
-    /// <summary>Identifies the <see cref="Title"/> dependency property.</summary>
-    public static readonly DependencyProperty TitleProperty
-        = DependencyProperty.Register(nameof(Title),
-                                      typeof(string),
-                                      typeof(CrystalDialogBase),
-                                      new PropertyMetadata(default(string)));
+    public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
+      nameof(Title),
+      typeof(string),
+      typeof(CrystalDialogBase),
+      new PropertyMetadata(default(string)));
 
-    /// <summary>
-    /// Gets or sets the title of the dialog.
-    /// </summary>
     public string? Title
     {
       get => (string?)GetValue(TitleProperty);
       set => SetValue(TitleProperty, value);
     }
 
-    /// <summary>Identifies the <see cref="DialogTop"/> dependency property.</summary>
-    public static readonly DependencyProperty DialogTopProperty
-        = DependencyProperty.Register(nameof(DialogTop),
-                                      typeof(object),
-                                      typeof(CrystalDialogBase),
-                                      new PropertyMetadata(null, UpdateLogicalChild));
+    public static readonly DependencyProperty DialogTopProperty = DependencyProperty.Register(
+      nameof(DialogTop),
+      typeof(object),
+      typeof(CrystalDialogBase),
+      new PropertyMetadata(null, UpdateLogicalChild));
 
-    /// <summary>
-    /// Gets or sets the content above the dialog.
-    /// </summary>
     public object? DialogTop
     {
       get => GetValue(DialogTopProperty);
       set => SetValue(DialogTopProperty, value);
     }
 
-    /// <summary>Identifies the <see cref="DialogBottom"/> dependency property.</summary>
-    public static readonly DependencyProperty DialogBottomProperty
-        = DependencyProperty.Register(nameof(DialogBottom),
-                                      typeof(object),
-                                      typeof(CrystalDialogBase),
-                                      new PropertyMetadata(null, UpdateLogicalChild));
+    public static readonly DependencyProperty DialogBottomProperty = DependencyProperty.Register(
+      nameof(DialogBottom),
+      typeof(object),
+      typeof(CrystalDialogBase),
+      new PropertyMetadata(null, UpdateLogicalChild));
 
-    /// <summary>
-    /// Gets or sets the content below the dialog.
-    /// </summary>
     public object? DialogBottom
     {
       get => GetValue(DialogBottomProperty);
       set => SetValue(DialogBottomProperty, value);
     }
 
-    /// <summary>Identifies the <see cref="DialogTitleFontSize"/> dependency property.</summary>
-    public static readonly DependencyProperty DialogTitleFontSizeProperty
-        = DependencyProperty.Register(nameof(DialogTitleFontSize),
-                                      typeof(double),
-                                      typeof(CrystalDialogBase),
-                                      new PropertyMetadata(26D));
+    public static readonly DependencyProperty DialogTitleFontSizeProperty = DependencyProperty.Register(
+      nameof(DialogTitleFontSize),
+      typeof(double),
+      typeof(CrystalDialogBase),
+      new PropertyMetadata(26D));
 
-    /// <summary>
-    /// Gets or sets the font size of the dialog title.
-    /// </summary>
     public double DialogTitleFontSize
     {
       get => (double)GetValue(DialogTitleFontSizeProperty);
       set => SetValue(DialogTitleFontSizeProperty, value);
     }
 
-    /// <summary>Identifies the <see cref="DialogMessageFontSize"/> dependency property.</summary>
-    public static readonly DependencyProperty DialogMessageFontSizeProperty
-        = DependencyProperty.Register(nameof(DialogMessageFontSize),
-                                      typeof(double),
-                                      typeof(CrystalDialogBase),
-                                      new PropertyMetadata(15D));
+    public static readonly DependencyProperty DialogMessageFontSizeProperty = DependencyProperty.Register(
+      nameof(DialogMessageFontSize),
+      typeof(double),
+      typeof(CrystalDialogBase),
+      new PropertyMetadata(15D));
 
-    /// <summary>
-    /// Gets or sets the font size of the dialog message text.
-    /// </summary>
     public double DialogMessageFontSize
     {
       get => (double)GetValue(DialogMessageFontSizeProperty);
       set => SetValue(DialogMessageFontSizeProperty, value);
     }
 
-    /// <summary>Identifies the <see cref="DialogButtonFontSize"/> dependency property.</summary>
-    public static readonly DependencyProperty DialogButtonFontSizeProperty
-        = DependencyProperty.Register(nameof(DialogButtonFontSize),
-                                      typeof(double),
-                                      typeof(CrystalDialogBase),
-                                      new PropertyMetadata(SystemFonts.MessageFontSize));
+    public static readonly DependencyProperty DialogButtonFontSizeProperty = DependencyProperty.Register(
+      nameof(DialogButtonFontSize),
+      typeof(double),
+      typeof(CrystalDialogBase),
+      new PropertyMetadata(SystemFonts.MessageFontSize));
 
-    /// <summary>
-    /// Gets or sets the font size of any dialog buttons.
-    /// </summary>
     public double DialogButtonFontSize
     {
       get => (double)GetValue(DialogButtonFontSizeProperty);
@@ -156,21 +122,12 @@ namespace Crystal.Themes.Controls.Dialogs
       DefaultStyleKeyProperty.OverrideMetadata(typeof(CrystalDialogBase), new FrameworkPropertyMetadata(typeof(CrystalDialogBase)));
     }
 
-    /// <summary>
-    /// Initializes a new <see cref="CrystalDialogBase"/>.
-    /// </summary>
-    /// <param name="owningWindow">The window that is the parent of the dialog.</param>
-    /// <param name="settings">The settings for the message dialog.</param>
     protected CrystalDialogBase(CrystalWindow? owningWindow, CrystalDialogSettings? settings)
     {
       Initialize(owningWindow, settings);
     }
 
-    /// <summary>
-    /// Initializes a new <see cref="CrystalDialogBase"/>.
-    /// </summary>
-    protected CrystalDialogBase()
-        : this(null, new CrystalDialogSettings())
+    protected CrystalDialogBase() : this(null, new CrystalDialogSettings())
     {
     }
 
@@ -290,8 +247,7 @@ namespace Crystal.Themes.Controls.Dialogs
     {
       var theme = DetectTheme(this);
 
-      if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(this)
-          || theme is null)
+      if (DesignerProperties.GetIsInDesignMode(this) || theme is null)
       {
         return;
       }
@@ -333,9 +289,6 @@ namespace Crystal.Themes.Controls.Dialogs
       }
     }
 
-    /// <summary>
-    /// This is called in the loaded event.
-    /// </summary>
     protected virtual void OnLoaded()
     {
       // nothing here
@@ -494,14 +447,12 @@ namespace Crystal.Themes.Controls.Dialogs
 
         EventHandler? completedHandler = null;
         completedHandler = (_, _) =>
-            {
-              closingStoryboard.Completed -= completedHandler;
-
-              tcs.TrySetResult(null!);
-            };
+        {
+          closingStoryboard.Completed -= completedHandler;
+          tcs.TrySetResult(null!);
+        };
 
         closingStoryboard.Completed += completedHandler;
-
         closingStoryboard.Begin(this);
       }
       else
