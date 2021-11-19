@@ -18,12 +18,11 @@ The Crystal have been created for modern applications targeting .NET 5.0 and abo
 `Testability`: UI and business logic are to be tested.
 
 #### Packages ####
-Crystal library is built into two packages for two kinds of modules in .NET: `Crystal.Core` is designed for modules which refer to Microsoft.NETCore.App, and `Crystal.Desktop` is designed for modules which refer to Microsoft.WindowsDesktop.App.WPF:</br>
+Crystal library is built into two packages for two kinds of modules in .NET: `Crystal.Core` is designed for modules which refer to `Microsoft.NETCore.App`, and `Crystal.Desktop` is designed for modules which refer to `Microsoft.WindowsDesktop.App.WPF`:</br>
 
-| Assembly | Nuget | License | Target |
-| ----- | ----- | ----- | ----- | 
-| <a href="https://www.nuget.org/packages/Crystal.Core/">![](https://img.shields.io/badge/Crystal-Core-orange)</a> | [![NuGet Badge](https://buildstats.info/nuget/Crystal.Core)](https://www.nuget.org/packages/Crystal.Core/) | ![License: MIT](https://img.shields.io/badge/license-MIT-blue) | `Microsoft.NETCore.App` |
-| <a href="https://www.nuget.org/packages/Crystal.Desktop/">![](https://img.shields.io/badge/Crystal-Desktop-blue)</a> | [![NuGet Badge](https://buildstats.info/nuget/Crystal.Desktop)](https://www.nuget.org/packages/Crystal.Desktop/) | ![License: MIT](https://img.shields.io/badge/license-MIT-blue) | `Microsoft.WindowsDesktop.App.WPF` |
+| <a href="https://www.nuget.org/packages/Crystal.Core/">![](https://img.shields.io/badge/Crystal-Core-orange)</a> | [![NuGet Badge](https://buildstats.info/nuget/Crystal.Core)](https://www.nuget.org/packages/Crystal.Core/) | ![License: MIT](https://img.shields.io/badge/license-MIT-blue) | 
+|:----- |:----- |:----- |
+| <a href="https://www.nuget.org/packages/Crystal.Desktop/">![](https://img.shields.io/badge/Crystal-Desktop-blue)</a> | [![NuGet Badge](https://buildstats.info/nuget/Crystal.Desktop)](https://www.nuget.org/packages/Crystal.Desktop/) | ![License: MIT](https://img.shields.io/badge/license-MIT-blue) |
 
 #### [`Wiki`](https://github.com/jinhuca/Crystal/wiki) contains more details about key design and implementation about Crystal library.
 #### [`Samples`](https://github.com/jinhuca/Crystal.Samples) contains sample applications using Crystal library.
