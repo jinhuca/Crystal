@@ -24,5 +24,11 @@ Crystal library is built into two packages for two kinds of modules in .NET: `Cr
 |:----- |:----- |:----- |
 | <a href="https://www.nuget.org/packages/Crystal.Desktop/">![](https://img.shields.io/badge/Crystal-Desktop-blue)</a> | [![NuGet Badge](https://buildstats.info/nuget/Crystal.Desktop)](https://www.nuget.org/packages/Crystal.Desktop/) | ![License: MIT](https://img.shields.io/badge/license-MIT-blue) |
 
+In this library, two packages are built to facilitate the UI customization:
+
+| <a href="https://www.nuget.org/packages/Crystal.Behaviors/">![](https://img.shields.io/badge/Crystal-Behaviors-brightgreen)</a> | [![NuGet Badge](https://buildstats.info/nuget/Crystal.Behaviors)](https://www.nuget.org/packages/Crystal.Behaviors/) | ![License: MIT](https://img.shields.io/badge/license-MIT-blue) |
+|:----- |:----- |:----- |
+| <a href="https://www.nuget.org/packages/Crystal.Themes/">![](https://img.shields.io/badge/Crystal-Themes-red)</a> | [![NuGet Badge](https://buildstats.info/nuget/Crystal.Themes)](https://www.nuget.org/packages/Crystal.Themes/) | ![License: MIT](https://img.shields.io/badge/license-MIT-blue) |
+
 #### [`Wiki`](https://github.com/jinhuca/Crystal/wiki) contains more details about key design and implementation about Crystal library.
 #### [`Samples`](https://github.com/jinhuca/Crystal.Samples) contains sample applications using Crystal library.
