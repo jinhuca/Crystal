@@ -4,7 +4,7 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <Version>2.2.3.6</Version>
+    <Version>2.2.3.7</Version>
     <Authors>Jin Hu</Authors>
     <Description>Behaviors library for building .NET desktop applications and components.</Description>
     <PackageProjectUrl>https://github.com/jinhuca/Crystal</PackageProjectUrl>
@@ -13,8 +13,8 @@
     <PackageTags>.NET WPF</PackageTags>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Company></Company>
-    <AssemblyVersion>2.2.3.6</AssemblyVersion>
-    <FileVersion>2.2.3.6</FileVersion>
+    <AssemblyVersion>2.2.3.7</AssemblyVersion>
+    <FileVersion>2.2.3.7</FileVersion>
     <PackageIcon>CrystalBehaviors.png</PackageIcon>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>

@@ -15,10 +15,10 @@
     <PackageIcon>CrystalTheme.png</PackageIcon>
     <PackageTags>WPF;.NET</PackageTags>
     <TargetFrameworks>net6.0-windows</TargetFrameworks>
-    <Version>2.2.4.3</Version>
+    <Version>2.2.4.4</Version>
     <Authors>Jin Hu</Authors>
-    <AssemblyVersion>2.2.4.3</AssemblyVersion>
-    <FileVersion>2.2.4.3</FileVersion>
+    <AssemblyVersion>2.2.4.4</AssemblyVersion>
+    <FileVersion>2.2.4.4</FileVersion>
     <Description>Library for modern WPF Controls</Description>
     <PackageReleaseNotes>https://github.com/jinhuca/Crystal/releases</PackageReleaseNotes>
   </PropertyGroup>
@@ -97,6 +97,10 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Crystal.Behaviors\Crystal.Behaviors.csproj" />
   </ItemGroup>
 
   <ItemGroup>
