@@ -3,14 +3,14 @@
 
     <!--  ProgressBar Style  -->
     <Style x:Key="Crystal.Styles.ProgressBar" TargetType="ProgressBar">
-        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Gray5}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Control.Border}" />
-        <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Highlight}" />
-        <Setter Property="IsTabStop" Value="False" />
-        <Setter Property="Maximum" Value="100" />
-        <Setter Property="MinHeight" Value="10" />
-        <Setter Property="MinWidth" Value="10" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Gray5}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Control.Border}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Highlight}"/>
+        <Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="Maximum" Value="100"/>
+        <Setter Property="MinHeight" Value="10"/>
+        <Setter Property="MinWidth" Value="10"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ProgressBar">
@@ -18,7 +18,7 @@
                         <Border x:Name="PART_Track"
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}" />
+                                BorderThickness="{TemplateBinding BorderThickness}"/>
                         <Grid x:Name="ProgressBarRootGrid">
                             <Grid x:Name="IndeterminateRoot" Visibility="Collapsed">
                                 <Rectangle x:Name="IndeterminateSolidFill"
@@ -26,7 +26,7 @@
                                            Fill="{DynamicResource Crystal.Brushes.Progress}"
                                            Opacity="1"
                                            RenderTransformOrigin="0.5,0.5"
-                                           StrokeThickness="0" />
+                                           StrokeThickness="0"/>
                                 <Rectangle x:Name="IndeterminateGradientFill"
                                            Margin="{TemplateBinding BorderThickness}"
                                            Opacity="0.7"
@@ -35,14 +35,14 @@
                                         <LinearGradientBrush MappingMode="Absolute" SpreadMethod="Repeat" StartPoint="20,1" EndPoint="0,1">
                                             <LinearGradientBrush.Transform>
                                                 <TransformGroup>
-                                                    <TranslateTransform x:Name="xTransform" X="0" />
-                                                    <SkewTransform AngleX="-30" />
+                                                    <TranslateTransform x:Name="xTransform" X="0"/>
+                                                    <SkewTransform AngleX="-30"/>
                                                 </TransformGroup>
                                             </LinearGradientBrush.Transform>
-                                            <GradientStop Offset="0" Color="{DynamicResource Crystal.Colors.ProgressIndeterminate1}" />
-                                            <GradientStop Offset="0.651" Color="{DynamicResource Crystal.Colors.ProgressIndeterminate2}" />
-                                            <GradientStop Offset="0.093" Color="{DynamicResource Crystal.Colors.ProgressIndeterminate3}" />
-                                            <GradientStop Offset="0.548" Color="{DynamicResource Crystal.Colors.ProgressIndeterminate4}" />
+                                            <GradientStop Offset="0" Color="{DynamicResource Crystal.Colors.ProgressIndeterminate1}"/>
+                                            <GradientStop Offset="0.651" Color="{DynamicResource Crystal.Colors.ProgressIndeterminate2}"/>
+                                            <GradientStop Offset="0.093" Color="{DynamicResource Crystal.Colors.ProgressIndeterminate3}"/>
+                                            <GradientStop Offset="0.548" Color="{DynamicResource Crystal.Colors.ProgressIndeterminate4}"/>
                                         </LinearGradientBrush>
                                     </Rectangle.Fill>
                                 </Rectangle>
@@ -59,14 +59,14 @@
                                             <LinearGradientBrush MappingMode="Absolute" SpreadMethod="Repeat" StartPoint="20,1" EndPoint="0,1">
                                                 <LinearGradientBrush.Transform>
                                                     <TransformGroup>
-                                                        <TranslateTransform X="0" />
-                                                        <SkewTransform AngleX="-30" />
+                                                        <TranslateTransform X="0"/>
+                                                        <SkewTransform AngleX="-30"/>
                                                     </TransformGroup>
                                                 </LinearGradientBrush.Transform>
-                                                <GradientStop Offset="0" Color="{DynamicResource Crystal.Colors.ProgressIndeterminate1}" />
-                                                <GradientStop Offset="0.651" Color="{DynamicResource Crystal.Colors.ProgressIndeterminate2}" />
-                                                <GradientStop Offset="0.093" Color="{DynamicResource Crystal.Colors.ProgressIndeterminate3}" />
-                                                <GradientStop Offset="0.548" Color="{DynamicResource Crystal.Colors.ProgressIndeterminate4}" />
+                                                <GradientStop Offset="0" Color="{DynamicResource Crystal.Colors.ProgressIndeterminate1}"/>
+                                                <GradientStop Offset="0.651" Color="{DynamicResource Crystal.Colors.ProgressIndeterminate2}"/>
+                                                <GradientStop Offset="0.093" Color="{DynamicResource Crystal.Colors.ProgressIndeterminate3}"/>
+                                                <GradientStop Offset="0.548" Color="{DynamicResource Crystal.Colors.ProgressIndeterminate4}"/>
                                             </LinearGradientBrush>
                                         </Rectangle.Fill>
                                     </Rectangle>
@@ -75,7 +75,7 @@
                         </Grid>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
-                                <VisualState x:Name="Determinate" />
+                                <VisualState x:Name="Determinate"/>
                                 <VisualState x:Name="Indeterminate">
                                     <Storyboard RepeatBehavior="Forever">
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="IndeterminateRoot"
@@ -97,8 +97,8 @@
                                             </DiscreteObjectKeyFrame>
                                         </ObjectAnimationUsingKeyFrames>
                                         <DoubleAnimationUsingKeyFrames Storyboard.TargetName="xTransform" Storyboard.TargetProperty="X">
-                                            <SplineDoubleKeyFrame KeyTime="0" Value="0" />
-                                            <SplineDoubleKeyFrame KeyTime="00:00:.35" Value="20" />
+                                            <SplineDoubleKeyFrame KeyTime="0" Value="0"/>
+                                            <SplineDoubleKeyFrame KeyTime="00:00:.35" Value="20"/>
                                         </DoubleAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
@@ -109,13 +109,13 @@
                         <Trigger Property="Orientation" Value="Vertical">
                             <Setter TargetName="Root" Property="LayoutTransform">
                                 <Setter.Value>
-                                    <RotateTransform Angle="-90" />
+                                    <RotateTransform Angle="-90"/>
                                 </Setter.Value>
                             </Setter>
                         </Trigger>
                         <Trigger Property="IsIndeterminate" Value="true">
-                            <Setter TargetName="DeterminateRoot" Property="Visibility" Value="Collapsed" />
-                            <Setter TargetName="IndeterminateRoot" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="DeterminateRoot" Property="Visibility" Value="Collapsed"/>
+                            <Setter TargetName="IndeterminateRoot" Property="Visibility" Value="Visible"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

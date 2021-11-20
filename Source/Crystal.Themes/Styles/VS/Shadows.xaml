@@ -8,6 +8,6 @@
                       x:Shared="False"
                       ShadowDepth="2"
                       Color="{DynamicResource Crystal.Colors.MenuShadow}"
-                      po:Freeze="True" />
+                      po:Freeze="True"/>
 
 </ResourceDictionary>

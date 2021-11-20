@@ -3,9 +3,9 @@
                     xmlns:crystal="clr-namespace:Crystal.Themes.Controls">
 
     <Style TargetType="crystal:TransitioningContentControl">
-        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Setter Property="IsTabStop" Value="False" />
-        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="crystal:TransitioningContentControl">
@@ -24,10 +24,10 @@
                                               SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                                 <ContentPresenter.RenderTransform>
                                     <TransformGroup>
-                                        <ScaleTransform />
-                                        <SkewTransform />
-                                        <RotateTransform />
-                                        <TranslateTransform />
+                                        <ScaleTransform/>
+                                        <SkewTransform/>
+                                        <RotateTransform/>
+                                        <TranslateTransform/>
                                     </TransformGroup>
                                 </ContentPresenter.RenderTransform>
                             </ContentPresenter>
@@ -41,10 +41,10 @@
                                               SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                                 <ContentPresenter.RenderTransform>
                                     <TransformGroup>
-                                        <ScaleTransform />
-                                        <SkewTransform />
-                                        <RotateTransform />
-                                        <TranslateTransform />
+                                        <ScaleTransform/>
+                                        <SkewTransform/>
+                                        <RotateTransform/>
+                                        <TranslateTransform/>
                                     </TransformGroup>
                                 </ContentPresenter.RenderTransform>
                             </ContentPresenter>
@@ -56,14 +56,14 @@
                                         <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
                                                                        Storyboard.TargetName="CurrentContentPresentationSite"
                                                                        Storyboard.TargetProperty="(UIElement.Opacity)">
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0" />
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="1" />
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="1"/>
                                         </DoubleAnimationUsingKeyFrames>
                                         <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
                                                                        Storyboard.TargetName="PreviousContentPresentationSite"
                                                                        Storyboard.TargetProperty="(UIElement.Opacity)">
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1" />
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="0" />
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="0"/>
                                         </DoubleAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
@@ -101,29 +101,29 @@
                                         <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
                                                                        Storyboard.TargetName="CurrentContentPresentationSite"
                                                                        Storyboard.TargetProperty="(UIElement.Opacity)">
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0" />
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="1" />
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="1"/>
                                         </DoubleAnimationUsingKeyFrames>
 
                                         <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
                                                                        Storyboard.TargetName="CurrentContentPresentationSite"
                                                                        Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="30" />
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="0" />
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="30"/>
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="0"/>
                                         </DoubleAnimationUsingKeyFrames>
 
                                         <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
                                                                        Storyboard.TargetName="PreviousContentPresentationSite"
                                                                        Storyboard.TargetProperty="(UIElement.Opacity)">
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1" />
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="0" />
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="0"/>
                                         </DoubleAnimationUsingKeyFrames>
 
                                         <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
                                                                        Storyboard.TargetName="PreviousContentPresentationSite"
                                                                        Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0" />
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="-30" />
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="-30"/>
                                         </DoubleAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
@@ -133,29 +133,29 @@
                                         <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
                                                                        Storyboard.TargetName="CurrentContentPresentationSite"
                                                                        Storyboard.TargetProperty="(UIElement.Opacity)">
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0" />
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="1" />
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="1"/>
                                         </DoubleAnimationUsingKeyFrames>
 
                                         <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
                                                                        Storyboard.TargetName="CurrentContentPresentationSite"
                                                                        Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="-40" />
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="0" />
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="-40"/>
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="0"/>
                                         </DoubleAnimationUsingKeyFrames>
 
                                         <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
                                                                        Storyboard.TargetName="PreviousContentPresentationSite"
                                                                        Storyboard.TargetProperty="(UIElement.Opacity)">
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1" />
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="0" />
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="0"/>
                                         </DoubleAnimationUsingKeyFrames>
 
                                         <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
                                                                        Storyboard.TargetName="PreviousContentPresentationSite"
                                                                        Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0" />
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="40" />
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="40"/>
                                         </DoubleAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
@@ -167,16 +167,16 @@
                                         <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
                                                                        Storyboard.TargetName="CurrentContentPresentationSite"
                                                                        Storyboard.TargetProperty="(UIElement.Opacity)">
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0" />
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00.400" Value="1" />
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00.400" Value="1"/>
                                         </DoubleAnimationUsingKeyFrames>
                                         <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
                                                                        Storyboard.TargetName="CurrentContentPresentationSite"
                                                                        Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="-30" />
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="-30"/>
                                             <EasingDoubleKeyFrame KeyTime="00:00:00.700" Value="0">
                                                 <EasingDoubleKeyFrame.EasingFunction>
-                                                    <CubicEase EasingMode="EaseOut" />
+                                                    <CubicEase EasingMode="EaseOut"/>
                                                 </EasingDoubleKeyFrame.EasingFunction>
                                             </EasingDoubleKeyFrame>
                                         </DoubleAnimationUsingKeyFrames>
@@ -184,16 +184,16 @@
                                         <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
                                                                        Storyboard.TargetName="PreviousContentPresentationSite"
                                                                        Storyboard.TargetProperty="(UIElement.Opacity)">
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1" />
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00.100" Value="0" />
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00.100" Value="0"/>
                                         </DoubleAnimationUsingKeyFrames>
                                         <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
                                                                        Storyboard.TargetName="PreviousContentPresentationSite"
                                                                        Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0" />
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
                                             <EasingDoubleKeyFrame KeyTime="00:00:00.700" Value="30">
                                                 <EasingDoubleKeyFrame.EasingFunction>
-                                                    <CubicEase EasingMode="EaseOut" />
+                                                    <CubicEase EasingMode="EaseOut"/>
                                                 </EasingDoubleKeyFrame.EasingFunction>
                                             </EasingDoubleKeyFrame>
                                         </DoubleAnimationUsingKeyFrames>
@@ -204,36 +204,36 @@
                                                                        Storyboard.TargetName="CurrentContentPresentationSite"
                                                                        Storyboard.TargetProperty="(UIElement.Opacity)">
                                             <SplineDoubleKeyFrame KeyTime="00:00:00"
-                                                                  Value="0" />
+                                                                  Value="0"/>
                                             <SplineDoubleKeyFrame KeyTime="00:00:00.300"
-                                                                  Value="1" />
+                                                                  Value="1"/>
                                         </DoubleAnimationUsingKeyFrames>
 
                                         <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
                                                                        Storyboard.TargetName="CurrentContentPresentationSite"
                                                                        Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
                                             <SplineDoubleKeyFrame KeyTime="00:00:00"
-                                                                  Value="-40" />
+                                                                  Value="-40"/>
                                             <SplineDoubleKeyFrame KeyTime="00:00:00.300"
-                                                                  Value="0" />
+                                                                  Value="0"/>
                                         </DoubleAnimationUsingKeyFrames>
 
                                         <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
                                                                        Storyboard.TargetName="PreviousContentPresentationSite"
                                                                        Storyboard.TargetProperty="(UIElement.Opacity)">
                                             <SplineDoubleKeyFrame KeyTime="00:00:00"
-                                                                  Value="1" />
+                                                                  Value="1"/>
                                             <SplineDoubleKeyFrame KeyTime="00:00:00.300"
-                                                                  Value="0" />
+                                                                  Value="0"/>
                                         </DoubleAnimationUsingKeyFrames>
 
                                         <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
                                                                        Storyboard.TargetName="PreviousContentPresentationSite"
                                                                        Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
                                             <SplineDoubleKeyFrame KeyTime="00:00:00"
-                                                                  Value="0" />
+                                                                  Value="0"/>
                                             <SplineDoubleKeyFrame KeyTime="00:00:00.300"
-                                                                  Value="40" />
+                                                                  Value="40"/>
                                         </DoubleAnimationUsingKeyFrames>-->
                                     </Storyboard>
                                 </VisualState>
@@ -245,16 +245,16 @@
                                         <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
                                                                        Storyboard.TargetName="CurrentContentPresentationSite"
                                                                        Storyboard.TargetProperty="(UIElement.Opacity)">
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0" />
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00.400" Value="1" />
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00.400" Value="1"/>
                                         </DoubleAnimationUsingKeyFrames>
                                         <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
                                                                        Storyboard.TargetName="CurrentContentPresentationSite"
                                                                        Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="30" />
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="30"/>
                                             <EasingDoubleKeyFrame KeyTime="00:00:00.700" Value="0">
                                                 <EasingDoubleKeyFrame.EasingFunction>
-                                                    <CubicEase EasingMode="EaseOut" />
+                                                    <CubicEase EasingMode="EaseOut"/>
                                                 </EasingDoubleKeyFrame.EasingFunction>
                                             </EasingDoubleKeyFrame>
                                         </DoubleAnimationUsingKeyFrames>
@@ -262,16 +262,16 @@
                                         <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
                                                                        Storyboard.TargetName="PreviousContentPresentationSite"
                                                                        Storyboard.TargetProperty="(UIElement.Opacity)">
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1" />
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00.100" Value="0" />
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00.100" Value="0"/>
                                         </DoubleAnimationUsingKeyFrames>
                                         <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
                                                                        Storyboard.TargetName="PreviousContentPresentationSite"
                                                                        Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0" />
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
                                             <EasingDoubleKeyFrame KeyTime="00:00:00.700" Value="-30">
                                                 <EasingDoubleKeyFrame.EasingFunction>
-                                                    <CubicEase EasingMode="EaseOut" />
+                                                    <CubicEase EasingMode="EaseOut"/>
                                                 </EasingDoubleKeyFrame.EasingFunction>
                                             </EasingDoubleKeyFrame>
                                         </DoubleAnimationUsingKeyFrames>
@@ -282,36 +282,36 @@
                                                                        Storyboard.TargetName="CurrentContentPresentationSite"
                                                                        Storyboard.TargetProperty="(UIElement.Opacity)">
                                             <SplineDoubleKeyFrame KeyTime="00:00:00"
-                                                                  Value="0" />
+                                                                  Value="0"/>
                                             <SplineDoubleKeyFrame KeyTime="00:00:00.300"
-                                                                  Value="1" />
+                                                                  Value="1"/>
                                         </DoubleAnimationUsingKeyFrames>
 
                                         <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
                                                                        Storyboard.TargetName="CurrentContentPresentationSite"
                                                                        Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
                                             <SplineDoubleKeyFrame KeyTime="00:00:00"
-                                                                  Value="40" />
+                                                                  Value="40"/>
                                             <SplineDoubleKeyFrame KeyTime="00:00:00.300"
-                                                                  Value="0" />
+                                                                  Value="0"/>
                                         </DoubleAnimationUsingKeyFrames>
 
                                         <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
                                                                        Storyboard.TargetName="PreviousContentPresentationSite"
                                                                        Storyboard.TargetProperty="(UIElement.Opacity)">
                                             <SplineDoubleKeyFrame KeyTime="00:00:00"
-                                                                  Value="1" />
+                                                                  Value="1"/>
                                             <SplineDoubleKeyFrame KeyTime="00:00:00.300"
-                                                                  Value="0" />
+                                                                  Value="0"/>
                                         </DoubleAnimationUsingKeyFrames>
 
                                         <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
                                                                        Storyboard.TargetName="PreviousContentPresentationSite"
                                                                        Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
                                             <SplineDoubleKeyFrame KeyTime="00:00:00"
-                                                                  Value="0" />
+                                                                  Value="0"/>
                                             <SplineDoubleKeyFrame KeyTime="00:00:00.300"
-                                                                  Value="-40" />
+                                                                  Value="-40"/>
                                         </DoubleAnimationUsingKeyFrames>-->
                                     </Storyboard>
                                 </VisualState>
@@ -321,22 +321,22 @@
                                         <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
                                                                        Storyboard.TargetName="CurrentContentPresentationSite"
                                                                        Storyboard.TargetProperty="(UIElement.Opacity)">
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0" />
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="1" />
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="1"/>
                                         </DoubleAnimationUsingKeyFrames>
 
                                         <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
                                                                        Storyboard.TargetName="CurrentContentPresentationSite"
                                                                        Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="-40" />
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="0" />
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="-40"/>
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="0"/>
                                         </DoubleAnimationUsingKeyFrames>
 
                                         <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
                                                                        Storyboard.TargetName="PreviousContentPresentationSite"
                                                                        Storyboard.TargetProperty="(UIElement.Opacity)">
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1" />
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="0" />
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="0"/>
                                         </DoubleAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
@@ -346,22 +346,22 @@
                                         <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
                                                                        Storyboard.TargetName="CurrentContentPresentationSite"
                                                                        Storyboard.TargetProperty="(UIElement.Opacity)">
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0" />
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="1" />
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="1"/>
                                         </DoubleAnimationUsingKeyFrames>
 
                                         <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
                                                                        Storyboard.TargetName="CurrentContentPresentationSite"
                                                                        Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="40" />
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="0" />
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="40"/>
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="0"/>
                                         </DoubleAnimationUsingKeyFrames>
 
                                         <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
                                                                        Storyboard.TargetName="PreviousContentPresentationSite"
                                                                        Storyboard.TargetProperty="(UIElement.Opacity)">
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1" />
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="0" />
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="0"/>
                                         </DoubleAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
@@ -371,8 +371,8 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="Transition" Value="Default" />
-        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="Transition" Value="Default"/>
+        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
     </Style>
 
 </ResourceDictionary>

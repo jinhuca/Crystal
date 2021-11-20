@@ -8,7 +8,7 @@ namespace Crystal.Themes.Behaviors
 {
   public class WindowsSettingBehavior : Behavior<CrystalWindow>
   {
-    /// <inheritdoc />
+    /// <inheritdoc/>
     protected override void OnAttached()
     {
       base.OnAttached();
@@ -16,7 +16,7 @@ namespace Crystal.Themes.Behaviors
       AssociatedObject.SourceInitialized += AssociatedObject_SourceInitialized;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     protected override void OnDetaching()
     {
       CleanUp("from OnDetaching");

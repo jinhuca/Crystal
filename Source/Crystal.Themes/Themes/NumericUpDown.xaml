@@ -3,8 +3,8 @@
                     xmlns:crystal="clr-namespace:Crystal.Themes.Controls">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.Shared.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.Buttons.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.Shared.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.Buttons.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
     <Thickness x:Key="NumericUpDownBorderThickness">1,1,1,1</Thickness>
@@ -13,12 +13,12 @@
     <Thickness x:Key="NumericUpDownSpinButtonLeftBorderThickness">0,0,0,0</Thickness>
 
     <Style x:Key="Crystal.Styles.Button.NumericUpDown.Spin" TargetType="{x:Type ButtonBase}">
-        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Transparent}" />
-        <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Text}" />
-        <Setter Property="HorizontalContentAlignment" Value="Center" />
-        <Setter Property="IsTabStop" Value="False" />
-        <Setter Property="Padding" Value="0" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Transparent}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Text}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="Padding" Value="0"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ButtonBase}">
@@ -39,39 +39,39 @@
                                               ContentTemplate="{TemplateBinding ContentTemplate}"
                                               ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
                                               RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}"
-                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                     </crystal:ClipBorder>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="PART_ContentPresenter" Property="Opacity" Value="1" />
+                            <Setter TargetName="PART_ContentPresenter" Property="Opacity" Value="1"/>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="False">
-                            <Setter TargetName="PART_ContentPresenter" Property="Opacity" Value="0.5" />
+                            <Setter TargetName="PART_ContentPresenter" Property="Opacity" Value="0.5"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.SystemControlForegroundChromeDisabledLow}" />
+                            <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.SystemControlForegroundChromeDisabledLow}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Gray8}" />
-                <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Accent}" />
+                <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Gray8}"/>
+                <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Accent}"/>
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
-                <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
+                <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeForeground}"/>
+                <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeBackground}"/>
             </Trigger>
         </Style.Triggers>
     </Style>
 
     <Style x:Key="Crystal.Styles.NumericUpDown" TargetType="{x:Type crystal:NumericUpDown}">
-        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Control.Background}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.TextBox.Border}" />
-        <Setter Property="BorderThickness" Value="{DynamicResource NumericUpDownBorderThickness}" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Control.Background}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.TextBox.Border}"/>
+        <Setter Property="BorderThickness" Value="{DynamicResource NumericUpDownBorderThickness}"/>
         <Setter Property="ButtonDownContentTemplate">
             <Setter.Value>
                 <DataTemplate>
@@ -79,7 +79,7 @@
                                   Height="14"
                                   HorizontalAlignment="Center"
                                   VerticalAlignment="Center"
-                                  Data="M19,13H5V11H19V13Z" />
+                                  Data="M19,13H5V11H19V13Z"/>
                 </DataTemplate>
             </Setter.Value>
         </Setter>
@@ -90,23 +90,23 @@
                                   Height="14"
                                   HorizontalAlignment="Center"
                                   VerticalAlignment="Center"
-                                  Data="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+                                  Data="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/>
                 </DataTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="ContextMenu" Value="{DynamicResource Crystal.TextBox.ContextMenu}" />
-        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-        <Setter Property="FontFamily" Value="{DynamicResource Crystal.Fonts.Family.Control}" />
-        <Setter Property="FontSize" Value="{DynamicResource Crystal.Font.Size.Content}" />
-        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Text}" />
-        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Setter Property="MinHeight" Value="26" />
-        <Setter Property="MinWidth" Value="62" />
-        <Setter Property="Padding" Value="4" />
-        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden" />
-        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Hidden" />
-        <Setter Property="SnapsToDevicePixels" Value="true" />
-        <Setter Property="SpinButtonStyle" Value="{DynamicResource Crystal.Styles.Button.NumericUpDown.Spin}" />
+        <Setter Property="ContextMenu" Value="{DynamicResource Crystal.TextBox.ContextMenu}"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource Crystal.Fonts.Family.Control}"/>
+        <Setter Property="FontSize" Value="{DynamicResource Crystal.Font.Size.Content}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Text}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="MinHeight" Value="26"/>
+        <Setter Property="MinWidth" Value="62"/>
+        <Setter Property="Padding" Value="4"/>
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden"/>
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Hidden"/>
+        <Setter Property="SnapsToDevicePixels" Value="true"/>
+        <Setter Property="SpinButtonStyle" Value="{DynamicResource Crystal.Styles.Button.NumericUpDown.Spin}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type crystal:NumericUpDown}">
@@ -116,12 +116,12 @@
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
-                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                         <Grid Margin="{TemplateBinding BorderThickness}">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition x:Name="PART_LeftColumn" Width="*" />
-                                <ColumnDefinition x:Name="PART_MiddleColumn" Width="Auto" />
-                                <ColumnDefinition x:Name="PART_RightColumn" Width="Auto" />
+                                <ColumnDefinition x:Name="PART_LeftColumn" Width="*"/>
+                                <ColumnDefinition x:Name="PART_MiddleColumn" Width="Auto"/>
+                                <ColumnDefinition x:Name="PART_RightColumn" Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <TextBox x:Name="PART_TextBox"
                                      Grid.Column="0"
@@ -159,7 +159,7 @@
                                      IsTabStop="{TemplateBinding IsTabStop}"
                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                      TabIndex="{TemplateBinding TabIndex}"
-                                     VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}" />
+                                     VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}"/>
                             <RepeatButton x:Name="PART_NumericUp"
                                           Grid.Column="1"
                                           Width="{TemplateBinding UpDownButtonsWidth}"
@@ -171,7 +171,7 @@
                                           ContentTemplate="{TemplateBinding ButtonUpContentTemplate}"
                                           Delay="{TemplateBinding Delay}"
                                           Focusable="{TemplateBinding UpDownButtonsFocusable}"
-                                          Style="{TemplateBinding SpinButtonStyle}" />
+                                          Style="{TemplateBinding SpinButtonStyle}"/>
                             <RepeatButton x:Name="PART_NumericDown"
                                           Grid.Column="2"
                                           Width="{TemplateBinding UpDownButtonsWidth}"
@@ -183,14 +183,14 @@
                                           ContentTemplate="{TemplateBinding ButtonDownContentTemplate}"
                                           Delay="{TemplateBinding Delay}"
                                           Focusable="{TemplateBinding UpDownButtonsFocusable}"
-                                          Style="{TemplateBinding SpinButtonStyle}" />
+                                          Style="{TemplateBinding SpinButtonStyle}"/>
                         </Grid>
                         <Border x:Name="FocusBorder"
                                 Background="{x:Null}"
                                 BorderBrush="{x:Null}"
                                 BorderThickness="0"
                                 CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
-                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                         <Border x:Name="DisabledVisualElement"
                                 Background="{DynamicResource Crystal.Brushes.Control.Disabled}"
                                 BorderBrush="{DynamicResource Crystal.Brushes.Control.Disabled}"
@@ -199,121 +199,121 @@
                                 IsHitTestVisible="False"
                                 Opacity="0"
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.DisabledVisualElementVisibility), Mode=OneWay}" />
+                                Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.DisabledVisualElementVisibility), Mode=OneWay}"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="ButtonsAlignment" Value="Left" />
-                                <Condition Property="SwitchUpDownButtons" Value="False" />
+                                <Condition Property="ButtonsAlignment" Value="Left"/>
+                                <Condition Property="SwitchUpDownButtons" Value="False"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="PART_LeftColumn" Property="Width" Value="Auto" />
-                            <Setter TargetName="PART_MiddleColumn" Property="Width" Value="Auto" />
-                            <Setter TargetName="PART_NumericDown" Property="BorderThickness" Value="{DynamicResource NumericUpDownSpinButtonLeftBorderThickness}" />
-                            <Setter TargetName="PART_NumericDown" Property="Grid.Column" Value="1" />
-                            <Setter TargetName="PART_NumericUp" Property="BorderThickness" Value="{DynamicResource NumericUpDownSpinButtonLeftBorderThickness}" />
-                            <Setter TargetName="PART_NumericUp" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="PART_RightColumn" Property="Width" Value="*" />
-                            <Setter TargetName="PART_TextBox" Property="Grid.Column" Value="2" />
+                            <Setter TargetName="PART_LeftColumn" Property="Width" Value="Auto"/>
+                            <Setter TargetName="PART_MiddleColumn" Property="Width" Value="Auto"/>
+                            <Setter TargetName="PART_NumericDown" Property="BorderThickness" Value="{DynamicResource NumericUpDownSpinButtonLeftBorderThickness}"/>
+                            <Setter TargetName="PART_NumericDown" Property="Grid.Column" Value="1"/>
+                            <Setter TargetName="PART_NumericUp" Property="BorderThickness" Value="{DynamicResource NumericUpDownSpinButtonLeftBorderThickness}"/>
+                            <Setter TargetName="PART_NumericUp" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="PART_RightColumn" Property="Width" Value="*"/>
+                            <Setter TargetName="PART_TextBox" Property="Grid.Column" Value="2"/>
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="ButtonsAlignment" Value="Left" />
-                                <Condition Property="SwitchUpDownButtons" Value="True" />
+                                <Condition Property="ButtonsAlignment" Value="Left"/>
+                                <Condition Property="SwitchUpDownButtons" Value="True"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="PART_LeftColumn" Property="Width" Value="Auto" />
-                            <Setter TargetName="PART_MiddleColumn" Property="Width" Value="Auto" />
-                            <Setter TargetName="PART_NumericDown" Property="BorderThickness" Value="{DynamicResource NumericUpDownSpinButtonLeftBorderThickness}" />
-                            <Setter TargetName="PART_NumericDown" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="PART_NumericUp" Property="BorderThickness" Value="{DynamicResource NumericUpDownSpinButtonLeftBorderThickness}" />
-                            <Setter TargetName="PART_NumericUp" Property="Grid.Column" Value="1" />
-                            <Setter TargetName="PART_RightColumn" Property="Width" Value="*" />
-                            <Setter TargetName="PART_TextBox" Property="Grid.Column" Value="2" />
-                        </MultiTrigger>
-
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="ButtonsAlignment" Value="Opposite" />
-                                <Condition Property="SwitchUpDownButtons" Value="False" />
-                            </MultiTrigger.Conditions>
-                            <Setter TargetName="PART_LeftColumn" Property="Width" Value="Auto" />
-                            <Setter TargetName="PART_MiddleColumn" Property="Width" Value="*" />
-                            <Setter TargetName="PART_NumericDown" Property="BorderThickness" Value="{DynamicResource NumericUpDownSpinButtonRightBorderThickness}" />
-                            <Setter TargetName="PART_NumericDown" Property="Grid.Column" Value="2" />
-                            <Setter TargetName="PART_NumericUp" Property="BorderThickness" Value="{DynamicResource NumericUpDownSpinButtonLeftBorderThickness}" />
-                            <Setter TargetName="PART_NumericUp" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="PART_RightColumn" Property="Width" Value="Auto" />
-                            <Setter TargetName="PART_TextBox" Property="Grid.Column" Value="1" />
-                        </MultiTrigger>
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="ButtonsAlignment" Value="Opposite" />
-                                <Condition Property="SwitchUpDownButtons" Value="True" />
-                            </MultiTrigger.Conditions>
-                            <Setter TargetName="PART_LeftColumn" Property="Width" Value="Auto" />
-                            <Setter TargetName="PART_MiddleColumn" Property="Width" Value="*" />
-                            <Setter TargetName="PART_NumericDown" Property="BorderThickness" Value="{DynamicResource NumericUpDownSpinButtonLeftBorderThickness}" />
-                            <Setter TargetName="PART_NumericDown" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="PART_NumericUp" Property="BorderThickness" Value="{DynamicResource NumericUpDownSpinButtonRightBorderThickness}" />
-                            <Setter TargetName="PART_NumericUp" Property="Grid.Column" Value="2" />
-                            <Setter TargetName="PART_RightColumn" Property="Width" Value="Auto" />
-                            <Setter TargetName="PART_TextBox" Property="Grid.Column" Value="1" />
+                            <Setter TargetName="PART_LeftColumn" Property="Width" Value="Auto"/>
+                            <Setter TargetName="PART_MiddleColumn" Property="Width" Value="Auto"/>
+                            <Setter TargetName="PART_NumericDown" Property="BorderThickness" Value="{DynamicResource NumericUpDownSpinButtonLeftBorderThickness}"/>
+                            <Setter TargetName="PART_NumericDown" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="PART_NumericUp" Property="BorderThickness" Value="{DynamicResource NumericUpDownSpinButtonLeftBorderThickness}"/>
+                            <Setter TargetName="PART_NumericUp" Property="Grid.Column" Value="1"/>
+                            <Setter TargetName="PART_RightColumn" Property="Width" Value="*"/>
+                            <Setter TargetName="PART_TextBox" Property="Grid.Column" Value="2"/>
                         </MultiTrigger>
 
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="ButtonsAlignment" Value="Right" />
-                                <Condition Property="SwitchUpDownButtons" Value="True" />
+                                <Condition Property="ButtonsAlignment" Value="Opposite"/>
+                                <Condition Property="SwitchUpDownButtons" Value="False"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="PART_LeftColumn" Property="Width" Value="*" />
-                            <Setter TargetName="PART_MiddleColumn" Property="Width" Value="Auto" />
-                            <Setter TargetName="PART_NumericDown" Property="Grid.Column" Value="1" />
-                            <Setter TargetName="PART_NumericUp" Property="Grid.Column" Value="2" />
-                            <Setter TargetName="PART_RightColumn" Property="Width" Value="Auto" />
-                            <Setter TargetName="PART_TextBox" Property="Grid.Column" Value="0" />
+                            <Setter TargetName="PART_LeftColumn" Property="Width" Value="Auto"/>
+                            <Setter TargetName="PART_MiddleColumn" Property="Width" Value="*"/>
+                            <Setter TargetName="PART_NumericDown" Property="BorderThickness" Value="{DynamicResource NumericUpDownSpinButtonRightBorderThickness}"/>
+                            <Setter TargetName="PART_NumericDown" Property="Grid.Column" Value="2"/>
+                            <Setter TargetName="PART_NumericUp" Property="BorderThickness" Value="{DynamicResource NumericUpDownSpinButtonLeftBorderThickness}"/>
+                            <Setter TargetName="PART_NumericUp" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="PART_RightColumn" Property="Width" Value="Auto"/>
+                            <Setter TargetName="PART_TextBox" Property="Grid.Column" Value="1"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ButtonsAlignment" Value="Opposite"/>
+                                <Condition Property="SwitchUpDownButtons" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="PART_LeftColumn" Property="Width" Value="Auto"/>
+                            <Setter TargetName="PART_MiddleColumn" Property="Width" Value="*"/>
+                            <Setter TargetName="PART_NumericDown" Property="BorderThickness" Value="{DynamicResource NumericUpDownSpinButtonLeftBorderThickness}"/>
+                            <Setter TargetName="PART_NumericDown" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="PART_NumericUp" Property="BorderThickness" Value="{DynamicResource NumericUpDownSpinButtonRightBorderThickness}"/>
+                            <Setter TargetName="PART_NumericUp" Property="Grid.Column" Value="2"/>
+                            <Setter TargetName="PART_RightColumn" Property="Width" Value="Auto"/>
+                            <Setter TargetName="PART_TextBox" Property="Grid.Column" Value="1"/>
+                        </MultiTrigger>
+
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ButtonsAlignment" Value="Right"/>
+                                <Condition Property="SwitchUpDownButtons" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="PART_LeftColumn" Property="Width" Value="*"/>
+                            <Setter TargetName="PART_MiddleColumn" Property="Width" Value="Auto"/>
+                            <Setter TargetName="PART_NumericDown" Property="Grid.Column" Value="1"/>
+                            <Setter TargetName="PART_NumericUp" Property="Grid.Column" Value="2"/>
+                            <Setter TargetName="PART_RightColumn" Property="Width" Value="Auto"/>
+                            <Setter TargetName="PART_TextBox" Property="Grid.Column" Value="0"/>
                         </MultiTrigger>
 
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="DisabledVisualElement" Property="Opacity" Value="0.6" />
+                            <Setter TargetName="DisabledVisualElement" Property="Opacity" Value="0.6"/>
                         </Trigger>
                         <Trigger Property="IsReadOnly" Value="True">
-                            <Setter Property="InterceptArrowKeys" Value="False" />
-                            <Setter Property="InterceptManualEnter" Value="False" />
-                            <Setter Property="InterceptMouseWheel" Value="False" />
-                            <Setter TargetName="PART_NumericDown" Property="IsEnabled" Value="False" />
-                            <Setter TargetName="PART_NumericUp" Property="IsEnabled" Value="False" />
+                            <Setter Property="InterceptArrowKeys" Value="False"/>
+                            <Setter Property="InterceptManualEnter" Value="False"/>
+                            <Setter Property="InterceptMouseWheel" Value="False"/>
+                            <Setter TargetName="PART_NumericDown" Property="IsEnabled" Value="False"/>
+                            <Setter TargetName="PART_NumericUp" Property="IsEnabled" Value="False"/>
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsReadOnly" Value="False" />
-                                <Condition Property="InterceptManualEnter" Value="False" />
+                                <Condition Property="IsReadOnly" Value="False"/>
+                                <Condition Property="InterceptManualEnter" Value="False"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="PART_TextBox" Property="IsReadOnly" Value="True" />
+                            <Setter TargetName="PART_TextBox" Property="IsReadOnly" Value="True"/>
                         </MultiTrigger>
                         <Trigger Property="IsMouseOver" Value="true">
-                            <Setter TargetName="Base" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.MouseOverBorderBrush)}" />
+                            <Setter TargetName="Base" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.MouseOverBorderBrush)}"/>
                         </Trigger>
                         <Trigger SourceName="PART_TextBox" Property="IsSelectionActive" Value="true">
-                            <Setter TargetName="FocusBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.FocusBorderBrush)}" />
-                            <Setter TargetName="FocusBorder" Property="BorderThickness" Value="{DynamicResource NumericUpDownSelectedBorderThickness}" />
+                            <Setter TargetName="FocusBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.FocusBorderBrush)}"/>
+                            <Setter TargetName="FocusBorder" Property="BorderThickness" Value="{DynamicResource NumericUpDownSelectedBorderThickness}"/>
                         </Trigger>
                         <Trigger Property="HideUpDownButtons" Value="True">
-                            <Setter TargetName="PART_NumericDown" Property="Visibility" Value="Collapsed" />
-                            <Setter TargetName="PART_NumericUp" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_NumericDown" Property="Visibility" Value="Collapsed"/>
+                            <Setter TargetName="PART_NumericUp" Property="Visibility" Value="Collapsed"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="TextAlignment" Value="Right" />
-        <Setter Property="UpDownButtonsWidth" Value="22" />
-        <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource Crystal.Templates.ValidationError}" />
-        <Setter Property="crystal:ControlsHelper.FocusBorderBrush" Value="{DynamicResource Crystal.Brushes.TextBox.Border.Focus}" />
-        <Setter Property="crystal:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource Crystal.Brushes.TextBox.Border.MouseOver}" />
-        <Setter Property="crystal:TextBoxHelper.ButtonFontSize" Value="{DynamicResource Crystal.Font.Size.Button.ClearText}" />
-        <Setter Property="crystal:TextBoxHelper.ButtonWidth" Value="22" />
-        <Setter Property="crystal:TextBoxHelper.IsMonitoring" Value="True" />
-        <Setter Property="crystal:TextBoxHelper.WatermarkAlignment" Value="Right" />
+        <Setter Property="TextAlignment" Value="Right"/>
+        <Setter Property="UpDownButtonsWidth" Value="22"/>
+        <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource Crystal.Templates.ValidationError}"/>
+        <Setter Property="crystal:ControlsHelper.FocusBorderBrush" Value="{DynamicResource Crystal.Brushes.TextBox.Border.Focus}"/>
+        <Setter Property="crystal:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource Crystal.Brushes.TextBox.Border.MouseOver}"/>
+        <Setter Property="crystal:TextBoxHelper.ButtonFontSize" Value="{DynamicResource Crystal.Font.Size.Button.ClearText}"/>
+        <Setter Property="crystal:TextBoxHelper.ButtonWidth" Value="22"/>
+        <Setter Property="crystal:TextBoxHelper.IsMonitoring" Value="True"/>
+        <Setter Property="crystal:TextBoxHelper.WatermarkAlignment" Value="Right"/>
     </Style>
 
     <Style x:Key="Crystal.Styles.NumericUpDown.Fluent"
@@ -331,7 +331,7 @@
                                   Height="14"
                                   HorizontalAlignment="Center"
                                   VerticalAlignment="Center"
-                                  Data="M 18.935547 4.560547 L 19.814453 5.439453 L 10 15.253906 L 0.185547 5.439453 L 1.064453 4.560547 L 10 13.496094 Z" />
+                                  Data="M 18.935547 4.560547 L 19.814453 5.439453 L 10 15.253906 L 0.185547 5.439453 L 1.064453 4.560547 L 10 13.496094 Z"/>
                 </DataTemplate>
             </Setter.Value>
         </Setter>
@@ -342,36 +342,36 @@
                                   Height="14"
                                   HorizontalAlignment="Center"
                                   VerticalAlignment="Center"
-                                  Data="M 19.091797 14.970703 L 10 5.888672 L 0.908203 14.970703 L 0.029297 14.091797 L 10 4.111328 L 19.970703 14.091797 Z" />
+                                  Data="M 19.091797 14.970703 L 10 5.888672 L 0.908203 14.970703 L 0.029297 14.091797 L 10 4.111328 L 19.970703 14.091797 Z"/>
                 </DataTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="FontSize" Value="{DynamicResource Crystal.Font.Size.Default}" />
-        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Setter Property="Padding" Value="10 5" />
+        <Setter Property="FontSize" Value="{DynamicResource Crystal.Font.Size.Default}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="Padding" Value="10 5"/>
         <Setter Property="SpinButtonStyle">
             <Setter.Value>
                 <Style BasedOn="{StaticResource Crystal.Styles.Button.NumericUpDown.Spin}" TargetType="{x:Type ButtonBase}">
-                    <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.TextBox.Border}" />
+                    <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.TextBox.Border}"/>
                     <Style.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Gray8}" />
-                            <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Text}" />
+                            <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Gray8}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Text}"/>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Gray2}" />
-                            <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Text}" />
+                            <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Gray2}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Text}"/>
                         </Trigger>
                     </Style.Triggers>
                 </Style>
             </Setter.Value>
         </Setter>
-        <Setter Property="TextAlignment" Value="Left" />
-        <Setter Property="UpDownButtonsFocusable" Value="False" />
-        <Setter Property="UpDownButtonsWidth" Value="34" />
-        <Setter Property="crystal:ControlsHelper.CornerRadius" Value="2" />
-        <Setter Property="crystal:ControlsHelper.FocusBorderBrush" Value="{DynamicResource Crystal.Brushes.AccentBase}" />
-        <Setter Property="crystal:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource Crystal.Brushes.TextBox.Border.MouseOver}" />
+        <Setter Property="TextAlignment" Value="Left"/>
+        <Setter Property="UpDownButtonsFocusable" Value="False"/>
+        <Setter Property="UpDownButtonsWidth" Value="34"/>
+        <Setter Property="crystal:ControlsHelper.CornerRadius" Value="2"/>
+        <Setter Property="crystal:ControlsHelper.FocusBorderBrush" Value="{DynamicResource Crystal.Brushes.AccentBase}"/>
+        <Setter Property="crystal:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource Crystal.Brushes.TextBox.Border.MouseOver}"/>
         <Setter Property="crystal:TextBoxHelper.ButtonContentTemplate">
             <Setter.Value>
                 <DataTemplate>
@@ -379,10 +379,10 @@
                                   Height="12"
                                   HorizontalAlignment="Center"
                                   VerticalAlignment="Center"
-                                  Data="F1 M 11.416016 10 L 20 18.583984 L 18.583984 20 L 10 11.416016 L 1.416016 20 L 0 18.583984 L 8.583984 10 L 0 1.416016 L 1.416016 0 L 10 8.583984 L 18.583984 0 L 20 1.416016 Z" />
+                                  Data="F1 M 11.416016 10 L 20 18.583984 L 18.583984 20 L 10 11.416016 L 1.416016 20 L 0 18.583984 L 8.583984 10 L 0 1.416016 L 1.416016 0 L 10 8.583984 L 18.583984 0 L 20 1.416016 Z"/>
                 </DataTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="crystal:TextBoxHelper.ButtonWidth" Value="34" />
+        <Setter Property="crystal:TextBoxHelper.ButtonWidth" Value="34"/>
     </Style>
 </ResourceDictionary>

@@ -2343,7 +2343,7 @@ namespace Crystal.Themes.Standard
     [CLSCompliant(false)]
     public SWP flags;
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override string ToString()
     {
       return $"x: {x}; y: {y}; cx: {cx}; cy: {cy}; flags: {flags}";

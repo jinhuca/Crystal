@@ -129,7 +129,7 @@ namespace Crystal.Themes.Controls
       set => SetValue(ChildContentVisibilityProperty, value);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override void OnApplyTemplate()
     {
       base.OnApplyTemplate();
@@ -150,7 +150,7 @@ namespace Crystal.Themes.Controls
       }
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     protected override void OnInitialized(EventArgs e)
     {
       base.OnInitialized(e);
@@ -159,7 +159,7 @@ namespace Crystal.Themes.Controls
       ItemContainerGenerator.ItemsChanged += OnGeneratorItemsChanged;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     /// <summary>
     /// When the items change we remove any generated panel children and add any new ones as necessary.
     /// </summary>
@@ -205,7 +205,7 @@ namespace Crystal.Themes.Controls
       }
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     protected override void OnSelectionChanged(SelectionChangedEventArgs e)
     {
       // If we don't have an items holder we can safely forward the call to base
@@ -253,7 +253,7 @@ namespace Crystal.Themes.Controls
 
     private void RaiseSelectionChangedEvent(SelectionChangedEventArgs e) => RaiseEvent(e);
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     protected override void OnKeyDown(KeyEventArgs e)
     {
       // We need this to prevent the base class to always accept CTRL + TAB navigation regardless of which keyboard navigation mode is set for this control
@@ -270,7 +270,7 @@ namespace Crystal.Themes.Controls
       base.OnKeyDown(e);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     protected override AutomationPeer OnCreateAutomationPeer()
     {
       // If we don't have an items holder we can safely forward the call to base

@@ -13,13 +13,13 @@ namespace Crystal.Themes.Converters
     [MarkupExtensionReturnType(typeof(SizeToCornerRadiusConverter))]
     public class SizeToCornerRadiusConverter : MarkupConverter
     {
-        /// <inheritdoc />
+        /// <inheritdoc/>
         protected override object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             return value is double dValue ? new CornerRadius(dValue / 2) : new CornerRadius();
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         protected override object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             return Binding.DoNothing;

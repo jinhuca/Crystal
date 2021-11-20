@@ -412,7 +412,7 @@ namespace Crystal.Themes.Controls
         }
 
         /// <summary>
-        /// Gets or sets a <see cref="T:System.Windows.Media.Brush" /> that is used to fill the banner.
+        /// Gets or sets a <see cref="T:System.Windows.Media.Brush"/> that is used to fill the banner.
         /// </summary>
         public Brush? BannerBackground
         {
@@ -428,7 +428,7 @@ namespace Crystal.Themes.Controls
                                           new FrameworkPropertyMetadata(SystemColors.ControlTextBrush));
 
         /// <summary>
-        /// Gets or sets a <see cref="T:System.Windows.Media.Brush" /> that describes the foreground color of the banner label.
+        /// Gets or sets a <see cref="T:System.Windows.Media.Brush"/> that describes the foreground color of the banner label.
         /// </summary>
         public Brush BannerForeground
         {

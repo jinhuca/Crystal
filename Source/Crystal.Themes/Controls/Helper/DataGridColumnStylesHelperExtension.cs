@@ -21,7 +21,7 @@
 
     private DataGrid? DataGrid => dataGridReference != null && dataGridReference.IsAlive ? dataGridReference.Target as DataGrid : null;
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void Attach(DataGrid aDataGrid)
     {
       var dataGrid = aDataGrid ?? throw new ArgumentNullException(nameof(aDataGrid));
@@ -43,7 +43,7 @@
       }
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void Detach()
     {
       var dataGrid = DataGrid;
@@ -224,7 +224,7 @@
       }
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     /// <remarks>Overriding classes should avoid returning 'this' as this would like result in <see cref="InvalidOperationException"/> in the <see cref="Attach"/> method</remarks>
     public override object ProvideValue(IServiceProvider serviceProvider)
     {

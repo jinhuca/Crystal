@@ -7,63 +7,63 @@
                     mc:Ignorable="po">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.Buttons.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.ListBox.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.Scrollbars.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.TextBlock.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/SplitView.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.Buttons.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.ListBox.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.Scrollbars.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.TextBlock.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/SplitView.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
     <system:Double x:Key="HamburgerMenuSelectionIndicatorThemeWidth">6</system:Double>
     <system:Double x:Key="HamburgerMenuSelectionIndicatorThemeHeight">24</system:Double>
 
-    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-    <crystal:HamburgerMenuItemStyleSelector x:Key="HamburgerMenuItemStyleSelector" />
-    <crystal:HamburgerMenuItemStyleSelector x:Key="HamburgerMenuItemOptionsStyleSelector" IsItemOptions="True" />
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    <crystal:HamburgerMenuItemStyleSelector x:Key="HamburgerMenuItemStyleSelector"/>
+    <crystal:HamburgerMenuItemStyleSelector x:Key="HamburgerMenuItemOptionsStyleSelector" IsItemOptions="True"/>
 
     <Style x:Key="Crystal.Styles.Button.Hamburger"
            BasedOn="{StaticResource Crystal.Styles.Button.Chromeless}"
            TargetType="{x:Type Button}">
-        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
-        <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="Margin" Value="0" />
-        <Setter Property="Padding" Value="0" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeForeground}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Padding" Value="0"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ButtonBase}">
                     <Grid Background="Transparent">
                         <Grid x:Name="PART_Background"
                               Background="{TemplateBinding Background}"
-                              Opacity="0" />
+                              Opacity="0"/>
                         <ContentPresenter x:Name="PART_ContentPresenter"
                                           Margin="{TemplateBinding Padding}"
                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                           RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}"
-                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="PART_Background" Property="Opacity" Value="0.3" />
-                            <Setter TargetName="PART_ContentPresenter" Property="Opacity" Value="1" />
+                            <Setter TargetName="PART_Background" Property="Opacity" Value="0.3"/>
+                            <Setter TargetName="PART_ContentPresenter" Property="Opacity" Value="1"/>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="False">
-                            <Setter TargetName="PART_Background" Property="Opacity" Value="0" />
-                            <Setter TargetName="PART_ContentPresenter" Property="Opacity" Value="0.5" />
+                            <Setter TargetName="PART_Background" Property="Opacity" Value="0"/>
+                            <Setter TargetName="PART_ContentPresenter" Property="Opacity" Value="0.5"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Foreground" Value="#ADADAD" />
+                            <Setter Property="Foreground" Value="#ADADAD"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
     </Style>
 
     <QuinticEase x:Key="ScrollBarEaseInOut"
                  EasingMode="EaseInOut"
-                 po:Freeze="true" />
+                 po:Freeze="true"/>
 
     <Style x:Key="Crystal.Styles.ScrollViewer.Hamburger"
            BasedOn="{StaticResource Crystal.Styles.ScrollViewer}"
@@ -73,12 +73,12 @@
                 <ControlTemplate TargetType="{x:Type ScrollViewer}">
                     <Grid x:Name="Grid" Background="{TemplateBinding Background}">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition x:Name="leftColumn" Width="*" />
-                            <ColumnDefinition x:Name="rightColumn" Width="Auto" />
+                            <ColumnDefinition x:Name="leftColumn" Width="*"/>
+                            <ColumnDefinition x:Name="rightColumn" Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <ScrollContentPresenter x:Name="PART_ScrollContentPresenter"
                                                 Grid.Row="0"
@@ -88,7 +88,7 @@
                                                 CanHorizontallyScroll="False"
                                                 CanVerticallyScroll="False"
                                                 Content="{TemplateBinding Content}"
-                                                ContentTemplate="{TemplateBinding ContentTemplate}" />
+                                                ContentTemplate="{TemplateBinding ContentTemplate}"/>
                         <ScrollBar x:Name="PART_VerticalScrollBar"
                                    Grid.Row="0"
                                    Grid.Column="0"
@@ -101,7 +101,7 @@
                                    Opacity="0"
                                    ViewportSize="{TemplateBinding ViewportHeight}"
                                    Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
-                                   Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
+                                   Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"/>
                         <ScrollBar x:Name="PART_HorizontalScrollBar"
                                    Grid.Row="0"
                                    Grid.RowSpan="2"
@@ -115,22 +115,22 @@
                                    Orientation="Horizontal"
                                    ViewportSize="{TemplateBinding ViewportWidth}"
                                    Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
-                                   Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
+                                   Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="crystal:ScrollViewerHelper.VerticalScrollBarOnLeftSide" Value="True">
-                            <Setter TargetName="PART_HorizontalScrollBar" Property="Grid.Column" Value="1" />
-                            <Setter TargetName="PART_ScrollContentPresenter" Property="Grid.Column" Value="1" />
-                            <Setter TargetName="PART_VerticalScrollBar" Property="HorizontalAlignment" Value="Left" />
-                            <Setter TargetName="leftColumn" Property="Width" Value="Auto" />
-                            <Setter TargetName="rightColumn" Property="Width" Value="*" />
+                            <Setter TargetName="PART_HorizontalScrollBar" Property="Grid.Column" Value="1"/>
+                            <Setter TargetName="PART_ScrollContentPresenter" Property="Grid.Column" Value="1"/>
+                            <Setter TargetName="PART_VerticalScrollBar" Property="HorizontalAlignment" Value="Left"/>
+                            <Setter TargetName="leftColumn" Property="Width" Value="Auto"/>
+                            <Setter TargetName="rightColumn" Property="Width" Value="*"/>
                         </Trigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsVisible}" Value="True" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="True" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=ComputedVerticalScrollBarVisibility}" Value="Visible" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type crystal:SplitView}}, Path=IsPaneOpen}" Value="True" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsVisible}" Value="True"/>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="True"/>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=ComputedVerticalScrollBarVisibility}" Value="Visible"/>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type crystal:SplitView}}, Path=IsPaneOpen}" Value="True"/>
                             </MultiDataTrigger.Conditions>
                             <TriggerBase.EnterActions>
                                 <BeginStoryboard>
@@ -139,12 +139,12 @@
                                                          Storyboard.TargetName="PART_VerticalScrollBar"
                                                          Storyboard.TargetProperty="Opacity"
                                                          To="1"
-                                                         Duration="0:0:0.2" />
+                                                         Duration="0:0:0.2"/>
                                         <DoubleAnimation EasingFunction="{StaticResource ScrollBarEaseInOut}"
                                                          Storyboard.TargetName="PART_HorizontalScrollBar"
                                                          Storyboard.TargetProperty="Opacity"
                                                          To="1"
-                                                         Duration="0:0:0.2" />
+                                                         Duration="0:0:0.2"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </TriggerBase.EnterActions>
@@ -156,13 +156,13 @@
                                                          Storyboard.TargetName="PART_VerticalScrollBar"
                                                          Storyboard.TargetProperty="Opacity"
                                                          To="0"
-                                                         Duration="0:0:0.5" />
+                                                         Duration="0:0:0.5"/>
                                         <DoubleAnimation BeginTime="0:0:1"
                                                          EasingFunction="{StaticResource ScrollBarEaseInOut}"
                                                          Storyboard.TargetName="PART_HorizontalScrollBar"
                                                          Storyboard.TargetProperty="Opacity"
                                                          To="0"
-                                                         Duration="0:0:0.5" />
+                                                         Duration="0:0:0.5"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </TriggerBase.ExitActions>
@@ -177,27 +177,27 @@
         <Rectangle SnapsToDevicePixels="True"
                    Stroke="Black"
                    StrokeThickness="2"
-                   UseLayoutRounding="True" />
+                   UseLayoutRounding="True"/>
     </ControlTemplate>
 
     <Style x:Key="Crystal.Styles.ListBoxItem.HamburgerBase"
            BasedOn="{StaticResource Crystal.Styles.ListBoxItem}"
            TargetType="{x:Type ListBoxItem}">
-        <Setter Property="Background" Value="Transparent" />
-        <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}, Path=Foreground, Mode=OneWay}" />
-        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Setter Property="Margin" Value="0" />
-        <Setter Property="MinHeight" Value="0" />
-        <Setter Property="Padding" Value="0" />
-        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}, Path=Foreground, Mode=OneWay}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="MinHeight" Value="0"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
     </Style>
 
     <Style x:Key="Crystal.Styles.ListBoxItem.HamburgerMenuItem"
            BasedOn="{StaticResource Crystal.Styles.ListBoxItem.HamburgerBase}"
            TargetType="{x:Type ListBoxItem}">
-        <Setter Property="FocusVisualStyle" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type crystal:HamburgerMenu}}, Path=ItemFocusVisualStyle, Mode=OneWay, FallbackValue={x:Null}}" />
-        <Setter Property="IsTabStop" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type crystal:HamburgerMenu}}, Path=IsTabStop, Mode=OneWay, FallbackValue=True}" />
+        <Setter Property="FocusVisualStyle" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type crystal:HamburgerMenu}}, Path=ItemFocusVisualStyle, Mode=OneWay, FallbackValue={x:Null}}"/>
+        <Setter Property="IsTabStop" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type crystal:HamburgerMenu}}, Path=IsTabStop, Mode=OneWay, FallbackValue=True}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
@@ -208,7 +208,7 @@
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                         <Grid Margin="{TemplateBinding BorderThickness}">
                             <Grid HorizontalAlignment="Left"
                                   VerticalAlignment="Center"
@@ -218,117 +218,117 @@
                                            Height="{DynamicResource HamburgerMenuSelectionIndicatorThemeHeight}"
                                            Fill="{TemplateBinding Foreground}"
                                            Focusable="False"
-                                           Opacity="0.0" />
+                                           Opacity="0.0"/>
                             </Grid>
                             <ContentPresenter x:Name="ContentPresenter"
                                               Margin="{TemplateBinding Padding}"
                                               HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                         </Grid>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.SelectedBackgroundBrush), Mode=OneWay}" />
-                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.SelectedForegroundBrush), Mode=OneWay}" />
-                            <Setter TargetName="SelectionIndicator" Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.SelectedForegroundBrush), Mode=OneWay}" />
-                            <Setter TargetName="SelectionIndicator" Property="Opacity" Value="1.0" />
+                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.SelectedBackgroundBrush), Mode=OneWay}"/>
+                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.SelectedForegroundBrush), Mode=OneWay}"/>
+                            <Setter TargetName="SelectionIndicator" Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.SelectedForegroundBrush), Mode=OneWay}"/>
+                            <Setter TargetName="SelectionIndicator" Property="Opacity" Value="1.0"/>
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsSelected" Value="True" />
-                                <Condition Property="Selector.IsSelectionActive" Value="True" />
+                                <Condition Property="IsSelected" Value="True"/>
+                                <Condition Property="Selector.IsSelectionActive" Value="True"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.ActiveSelectionBackgroundBrush), Mode=OneWay}" />
-                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.ActiveSelectionForegroundBrush), Mode=OneWay}" />
-                            <Setter TargetName="SelectionIndicator" Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.ActiveSelectionForegroundBrush), Mode=OneWay}" />
+                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.ActiveSelectionBackgroundBrush), Mode=OneWay}"/>
+                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.ActiveSelectionForegroundBrush), Mode=OneWay}"/>
+                            <Setter TargetName="SelectionIndicator" Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.ActiveSelectionForegroundBrush), Mode=OneWay}"/>
                         </MultiTrigger>
 
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsMouseOver" Value="True" />
-                                <Condition Property="IsSelected" Value="True" />
+                                <Condition Property="IsMouseOver" Value="True"/>
+                                <Condition Property="IsSelected" Value="True"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.HoverSelectedBackgroundBrush), Mode=OneWay}" />
-                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.HoverSelectedForegroundBrush), Mode=OneWay}" />
-                            <Setter TargetName="SelectionIndicator" Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.HoverSelectedForegroundBrush), Mode=OneWay}" />
+                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.HoverSelectedBackgroundBrush), Mode=OneWay}"/>
+                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.HoverSelectedForegroundBrush), Mode=OneWay}"/>
+                            <Setter TargetName="SelectionIndicator" Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.HoverSelectedForegroundBrush), Mode=OneWay}"/>
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsMouseOver" Value="True" />
-                                <Condition Property="IsSelected" Value="False" />
+                                <Condition Property="IsMouseOver" Value="True"/>
+                                <Condition Property="IsSelected" Value="False"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.HoverBackgroundBrush), Mode=OneWay}" />
-                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.HoverForegroundBrush), Mode=OneWay}" />
-                            <Setter TargetName="SelectionIndicator" Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.HoverForegroundBrush), Mode=OneWay}" />
+                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.HoverBackgroundBrush), Mode=OneWay}"/>
+                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.HoverForegroundBrush), Mode=OneWay}"/>
+                            <Setter TargetName="SelectionIndicator" Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.HoverForegroundBrush), Mode=OneWay}"/>
                         </MultiTrigger>
 
                         <Trigger Property="crystal:ItemHelper.IsMouseLeftButtonPressed" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.MouseLeftButtonPressedBackgroundBrush), Mode=OneWay}" />
-                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.MouseLeftButtonPressedForegroundBrush), Mode=OneWay}" />
-                            <Setter TargetName="SelectionIndicator" Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.MouseLeftButtonPressedForegroundBrush), Mode=OneWay}" />
+                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.MouseLeftButtonPressedBackgroundBrush), Mode=OneWay}"/>
+                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.MouseLeftButtonPressedForegroundBrush), Mode=OneWay}"/>
+                            <Setter TargetName="SelectionIndicator" Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.MouseLeftButtonPressedForegroundBrush), Mode=OneWay}"/>
                         </Trigger>
                         <Trigger Property="crystal:ItemHelper.IsMouseRightButtonPressed" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.MouseRightButtonPressedBackgroundBrush), Mode=OneWay}" />
-                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.MouseRightButtonPressedForegroundBrush), Mode=OneWay}" />
-                            <Setter TargetName="SelectionIndicator" Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.MouseRightButtonPressedForegroundBrush), Mode=OneWay}" />
+                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.MouseRightButtonPressedBackgroundBrush), Mode=OneWay}"/>
+                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.MouseRightButtonPressedForegroundBrush), Mode=OneWay}"/>
+                            <Setter TargetName="SelectionIndicator" Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.MouseRightButtonPressedForegroundBrush), Mode=OneWay}"/>
                         </Trigger>
 
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource Self}, Path=(crystal:ItemHelper.DisabledBackgroundBrush), Mode=OneWay}" />
-                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.DisabledForegroundBrush), Mode=OneWay}" />
-                            <Setter TargetName="RootGrid" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Background, Mode=OneWay}" />
-                            <Setter TargetName="SelectionIndicator" Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.DisabledForegroundBrush), Mode=OneWay}" />
+                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource Self}, Path=(crystal:ItemHelper.DisabledBackgroundBrush), Mode=OneWay}"/>
+                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.DisabledForegroundBrush), Mode=OneWay}"/>
+                            <Setter TargetName="RootGrid" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Background, Mode=OneWay}"/>
+                            <Setter TargetName="SelectionIndicator" Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.DisabledForegroundBrush), Mode=OneWay}"/>
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsEnabled" Value="False" />
-                                <Condition Property="IsSelected" Value="True" />
+                                <Condition Property="IsEnabled" Value="False"/>
+                                <Condition Property="IsSelected" Value="True"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource Self}, Path=(crystal:ItemHelper.DisabledSelectedBackgroundBrush), Mode=OneWay}" />
-                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.DisabledSelectedForegroundBrush), Mode=OneWay}" />
-                            <Setter TargetName="SelectionIndicator" Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.DisabledSelectedForegroundBrush), Mode=OneWay}" />
+                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource Self}, Path=(crystal:ItemHelper.DisabledSelectedBackgroundBrush), Mode=OneWay}"/>
+                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.DisabledSelectedForegroundBrush), Mode=OneWay}"/>
+                            <Setter TargetName="SelectionIndicator" Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.DisabledSelectedForegroundBrush), Mode=OneWay}"/>
                         </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="crystal:ItemHelper.HoverForegroundBrush" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}, Path=Foreground, Mode=OneWay}" />
-        <Setter Property="crystal:ItemHelper.SelectedBackgroundBrush" Value="{DynamicResource Crystal.Brushes.Accent}" />
+        <Setter Property="crystal:ItemHelper.HoverForegroundBrush" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}, Path=Foreground, Mode=OneWay}"/>
+        <Setter Property="crystal:ItemHelper.SelectedBackgroundBrush" Value="{DynamicResource Crystal.Brushes.Accent}"/>
     </Style>
 
     <Style x:Key="Crystal.Styles.ListBoxItem.HamburgerMenuItem.CreatorsUpdate"
            BasedOn="{StaticResource Crystal.Styles.ListBoxItem.HamburgerMenuItem}"
            TargetType="{x:Type ListBoxItem}">
-        <Setter Property="crystal:ItemHelper.ActiveSelectionBackgroundBrush" Value="Transparent" />
-        <Setter Property="crystal:ItemHelper.ActiveSelectionForegroundBrush" Value="{DynamicResource Crystal.Brushes.AccentBase}" />
-        <Setter Property="crystal:ItemHelper.DisabledForegroundBrush" Value="{DynamicResource Crystal.Brushes.Gray}" />
-        <Setter Property="crystal:ItemHelper.DisabledSelectedBackgroundBrush" Value="Transparent" />
-        <Setter Property="crystal:ItemHelper.DisabledSelectedForegroundBrush" Value="{DynamicResource Crystal.Brushes.Gray}" />
-        <Setter Property="crystal:ItemHelper.HoverBackgroundBrush" Value="{DynamicResource Crystal.Brushes.Gray9}" />
-        <Setter Property="crystal:ItemHelper.HoverSelectedBackgroundBrush" Value="{DynamicResource Crystal.Brushes.Gray9}" />
-        <Setter Property="crystal:ItemHelper.HoverSelectedForegroundBrush" Value="{DynamicResource Crystal.Brushes.AccentBase}" />
-        <Setter Property="crystal:ItemHelper.SelectedBackgroundBrush" Value="Transparent" />
-        <Setter Property="crystal:ItemHelper.SelectedForegroundBrush" Value="{DynamicResource Crystal.Brushes.AccentBase}" />
+        <Setter Property="crystal:ItemHelper.ActiveSelectionBackgroundBrush" Value="Transparent"/>
+        <Setter Property="crystal:ItemHelper.ActiveSelectionForegroundBrush" Value="{DynamicResource Crystal.Brushes.AccentBase}"/>
+        <Setter Property="crystal:ItemHelper.DisabledForegroundBrush" Value="{DynamicResource Crystal.Brushes.Gray}"/>
+        <Setter Property="crystal:ItemHelper.DisabledSelectedBackgroundBrush" Value="Transparent"/>
+        <Setter Property="crystal:ItemHelper.DisabledSelectedForegroundBrush" Value="{DynamicResource Crystal.Brushes.Gray}"/>
+        <Setter Property="crystal:ItemHelper.HoverBackgroundBrush" Value="{DynamicResource Crystal.Brushes.Gray9}"/>
+        <Setter Property="crystal:ItemHelper.HoverSelectedBackgroundBrush" Value="{DynamicResource Crystal.Brushes.Gray9}"/>
+        <Setter Property="crystal:ItemHelper.HoverSelectedForegroundBrush" Value="{DynamicResource Crystal.Brushes.AccentBase}"/>
+        <Setter Property="crystal:ItemHelper.SelectedBackgroundBrush" Value="Transparent"/>
+        <Setter Property="crystal:ItemHelper.SelectedForegroundBrush" Value="{DynamicResource Crystal.Brushes.AccentBase}"/>
     </Style>
 
     <Style x:Key="Crystal.Styles.TextBlock.HamburgerMenuHeader"
            BasedOn="{StaticResource Crystal.Styles.TextBlock}"
            TargetType="{x:Type TextBlock}">
-        <Setter Property="FontSize" Value="16" />
-        <Setter Property="FontWeight" Value="SemiBold" />
-        <Setter Property="TextWrapping" Value="NoWrap" />
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="TextWrapping" Value="NoWrap"/>
     </Style>
 
     <Style x:Key="Crystal.Styles.ListBoxItem.HamburgerMenuHeader"
            BasedOn="{StaticResource Crystal.Styles.ListBoxItem.HamburgerBase}"
            TargetType="{x:Type ListBoxItem}">
-        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-        <Setter Property="Focusable" Value="False" />
-        <Setter Property="HorizontalContentAlignment" Value="Left" />
-        <Setter Property="IsHitTestVisible" Value="False" />
-        <Setter Property="IsTabStop" Value="False" />
-        <Setter Property="Padding" Value="8 8 0 8" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="IsHitTestVisible" Value="False"/>
+        <Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="Padding" Value="8 8 0 8"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
@@ -338,11 +338,11 @@
                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                    Style="{DynamicResource Crystal.Styles.TextBlock.HamburgerMenuHeader}"
-                                   Text="{Binding Label}" />
+                                   Text="{Binding Label}"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <DataTrigger Binding="{Binding IsPaneOpen, RelativeSource={RelativeSource AncestorType=crystal:HamburgerMenu}}" Value="False">
-                            <Setter TargetName="PART_HeaderText" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_HeaderText" Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -353,11 +353,11 @@
     <Style x:Key="Crystal.Styles.ListBoxItem.HamburgerMenuSeparator"
            BasedOn="{StaticResource Crystal.Styles.ListBoxItem.HamburgerBase}"
            TargetType="{x:Type ListBoxItem}">
-        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-        <Setter Property="Focusable" Value="False" />
-        <Setter Property="IsHitTestVisible" Value="False" />
-        <Setter Property="IsTabStop" Value="False" />
-        <Setter Property="Padding" Value="0 5" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="IsHitTestVisible" Value="False"/>
+        <Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="Padding" Value="0 5"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
@@ -365,7 +365,7 @@
                         <Separator Margin="{TemplateBinding Padding}"
                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
@@ -375,11 +375,11 @@
     <Style x:Key="Crystal.Styles.ListBox.HamburgerMenu"
            BasedOn="{StaticResource Crystal.Styles.ListBox}"
            TargetType="{x:Type ListBox}">
-        <Setter Property="Background" Value="Transparent" />
-        <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Setter Property="ScrollViewer.CanContentScroll" Value="False" />
-        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="ScrollViewer.CanContentScroll" Value="False"/>
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ListBox}">
@@ -396,27 +396,27 @@
                                       SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                       Style="{StaticResource Crystal.Styles.ScrollViewer.Hamburger}"
                                       VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
-                            <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                         </ScrollViewer>
                     </Border>
                     <ControlTemplate.Triggers>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsGrouping" Value="true" />
-                                <Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="false" />
+                                <Condition Property="IsGrouping" Value="true"/>
+                                <Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="false"/>
                             </MultiTrigger.Conditions>
-                            <Setter Property="ScrollViewer.CanContentScroll" Value="false" />
+                            <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
                         </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="VirtualizingStackPanel.IsVirtualizing" Value="False" />
+        <Setter Property="VirtualizingStackPanel.IsVirtualizing" Value="False"/>
     </Style>
 
     <Style x:Key="Crystal.Styles.HamburgerMenuListBox"
            BasedOn="{StaticResource Crystal.Styles.ListBox.HamburgerMenu}"
-           TargetType="{x:Type crystal:HamburgerMenuListBox}" />
+           TargetType="{x:Type crystal:HamburgerMenuListBox}"/>
 
     <ControlTemplate x:Key="Crystal.Templates.HamburgerMenu" TargetType="{x:Type crystal:HamburgerMenu}">
         <Grid>
@@ -436,9 +436,9 @@
                 <crystal:SplitView.Pane>
                     <Grid x:Name="PaneGrid" Margin="{TemplateBinding PaneMargin}">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <DockPanel x:Name="PaneHeader"
                                    Grid.Row="0"
@@ -457,10 +457,10 @@
                                     IsTabStop="{TemplateBinding IsTabStop}"
                                     Style="{TemplateBinding HamburgerButtonStyle}"
                                     TabIndex="0"
-                                    Visibility="{TemplateBinding HamburgerVisibility}" />
+                                    Visibility="{TemplateBinding HamburgerVisibility}"/>
                             <ContentControl x:Name="PaneHeaderContent"
                                             ContentTemplate="{TemplateBinding HamburgerMenuHeaderTemplate}"
-                                            IsTabStop="False" />
+                                            IsTabStop="False"/>
                         </DockPanel>
                         <crystal:HamburgerMenuListBox x:Name="ButtonsListView"
                                                   Grid.Row="1"
@@ -477,7 +477,7 @@
                                                   SelectedIndex="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedIndex, Mode=TwoWay}"
                                                   SelectedItem="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedItem, Mode=TwoWay}"
                                                   SelectionMode="Single"
-                                                  TabIndex="1" />
+                                                  TabIndex="1"/>
                         <crystal:HamburgerMenuListBox x:Name="OptionsListView"
                                                   Grid.Row="2"
                                                   Width="{TemplateBinding OpenPaneLength}"
@@ -494,7 +494,7 @@
                                                   SelectedIndex="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedOptionsIndex, Mode=TwoWay}"
                                                   SelectedItem="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedOptionsItem, Mode=TwoWay}"
                                                   SelectionMode="Single"
-                                                  TabIndex="2" />
+                                                  TabIndex="2"/>
                     </Grid>
                 </crystal:SplitView.Pane>
                 <crystal:TransitioningContentControl x:Name="ContentPart"
@@ -508,12 +508,12 @@
                                                  ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
                                                  RestartTransitionOnContentChange="True"
                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                                 Transition="{TemplateBinding ContentTransition}" />
+                                                 Transition="{TemplateBinding ContentTransition}"/>
             </crystal:SplitView>
         </Grid>
         <ControlTemplate.Triggers>
             <Trigger Property="PanePlacement" Value="Right">
-                <Setter TargetName="HamburgerButton" Property="DockPanel.Dock" Value="Right" />
+                <Setter TargetName="HamburgerButton" Property="DockPanel.Dock" Value="Right"/>
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>

@@ -7,20 +7,20 @@
     <!--  ********************************** CheckBoxStyle **********************************  -->
     <system:Double x:Key="CheckBoxBorderThemeThickness">2</system:Double>
     <system:Double x:Key="CheckBoxCheckedStrokeThickness">0</system:Double>
-    <crystalConverters:CornerRadiusFilterConverter x:Key="CornerRadiusTopLeftConverter" Filter="TopLeft" />
-    <crystalConverters:CornerRadiusFilterConverter x:Key="CornerRadiusBottomRightConverter" Filter="BottomRight" />
+    <crystalConverters:CornerRadiusFilterConverter x:Key="CornerRadiusTopLeftConverter" Filter="TopLeft"/>
+    <crystalConverters:CornerRadiusFilterConverter x:Key="CornerRadiusBottomRightConverter" Filter="BottomRight"/>
 
     <Style x:Key="Crystal.Styles.CheckBox" TargetType="CheckBox">
-        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundUnchecked}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushUnchecked}" />
-        <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="FontFamily" Value="{DynamicResource Crystal.Fonts.Family.Control}" />
-        <Setter Property="FontSize" Value="{DynamicResource Crystal.Font.Size.Content}" />
-        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundUnchecked}" />
-        <Setter Property="HorizontalContentAlignment" Value="Left" />
-        <Setter Property="OverridesDefaultStyle" Value="True" />
-        <Setter Property="Padding" Value="6 0 0 0" />
-        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundUnchecked}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushUnchecked}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="FontFamily" Value="{DynamicResource Crystal.Fonts.Family.Control}"/>
+        <Setter Property="FontSize" Value="{DynamicResource Crystal.Font.Size.Content}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundUnchecked}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="Padding" Value="6 0 0 0"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="CheckBox">
@@ -30,11 +30,11 @@
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
-                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                         <Grid Margin="{TemplateBinding BorderThickness}">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition x:Name="LeftCol" Width="Auto" />
-                                <ColumnDefinition x:Name="RightCol" Width="*" />
+                                <ColumnDefinition x:Name="LeftCol" Width="Auto"/>
+                                <ColumnDefinition x:Name="RightCol" Width="*"/>
                             </Grid.ColumnDefinitions>
                             <Grid x:Name="Check"
                                   Grid.Column="0"
@@ -49,13 +49,13 @@
                                            RadiusY="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckCornerRadius), Mode=OneWay, Converter={StaticResource CornerRadiusBottomRightConverter}}"
                                            Stroke="{TemplateBinding crystal:CheckBoxHelper.CheckBackgroundStrokeUnchecked}"
                                            StrokeThickness="{TemplateBinding crystal:CheckBoxHelper.CheckStrokeThickness}"
-                                           UseLayoutRounding="False" />
+                                           UseLayoutRounding="False"/>
                                 <ContentControl x:Name="CheckGlyph"
                                                 Content="{TemplateBinding crystal:CheckBoxHelper.CheckGlyphUnchecked}"
                                                 ContentTemplate="{TemplateBinding crystal:CheckBoxHelper.CheckGlyphUncheckedTemplate}"
                                                 Focusable="False"
                                                 Foreground="{TemplateBinding crystal:CheckBoxHelper.CheckGlyphForegroundUnchecked}"
-                                                IsTabStop="False" />
+                                                IsTabStop="False"/>
                             </Grid>
                             <ContentPresenter x:Name="ContentPresenter"
                                               Grid.Column="1"
@@ -67,275 +67,275 @@
                                               ContentTemplate="{TemplateBinding ContentTemplate}"
                                               ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
                                               RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}"
-                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                         </Grid>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <!--  UncheckedNormal  -->
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsChecked" Value="False" />
-                                <Condition Property="IsMouseOver" Value="False" />
-                                <Condition Property="IsPressed" Value="False" />
-                                <Condition Property="IsEnabled" Value="True" />
+                                <Condition Property="IsChecked" Value="False"/>
+                                <Condition Property="IsMouseOver" Value="False"/>
+                                <Condition Property="IsPressed" Value="False"/>
+                                <Condition Property="IsEnabled" Value="True"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="CheckGlyph" Property="Content" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphUnchecked)}" />
-                            <Setter TargetName="CheckGlyph" Property="ContentTemplate" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphUncheckedTemplate)}" />
-                            <Setter TargetName="CheckGlyph" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphForegroundUnchecked)}" />
-                            <Setter TargetName="CheckGlyph" Property="Opacity" Value="1" />
-                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.ForegroundUnchecked)}" />
-                            <Setter TargetName="NormalRectangle" Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundFillUnchecked)}" />
-                            <Setter TargetName="NormalRectangle" Property="Stroke" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundStrokeUnchecked)}" />
-                            <Setter TargetName="RootBorder" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BackgroundUnchecked)}" />
-                            <Setter TargetName="RootBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BorderBrushUnchecked)}" />
+                            <Setter TargetName="CheckGlyph" Property="Content" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphUnchecked)}"/>
+                            <Setter TargetName="CheckGlyph" Property="ContentTemplate" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphUncheckedTemplate)}"/>
+                            <Setter TargetName="CheckGlyph" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphForegroundUnchecked)}"/>
+                            <Setter TargetName="CheckGlyph" Property="Opacity" Value="1"/>
+                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.ForegroundUnchecked)}"/>
+                            <Setter TargetName="NormalRectangle" Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundFillUnchecked)}"/>
+                            <Setter TargetName="NormalRectangle" Property="Stroke" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundStrokeUnchecked)}"/>
+                            <Setter TargetName="RootBorder" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BackgroundUnchecked)}"/>
+                            <Setter TargetName="RootBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BorderBrushUnchecked)}"/>
                         </MultiTrigger>
                         <!--  UncheckedMouseOver  -->
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsChecked" Value="False" />
-                                <Condition Property="IsMouseOver" Value="True" />
+                                <Condition Property="IsChecked" Value="False"/>
+                                <Condition Property="IsMouseOver" Value="True"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="CheckGlyph" Property="Content" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphUnchecked)}" />
-                            <Setter TargetName="CheckGlyph" Property="ContentTemplate" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphUncheckedTemplate)}" />
-                            <Setter TargetName="CheckGlyph" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphForegroundUncheckedMouseOver)}" />
-                            <Setter TargetName="CheckGlyph" Property="Opacity" Value="1" />
-                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.ForegroundUncheckedMouseOver)}" />
-                            <Setter TargetName="NormalRectangle" Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundFillUncheckedMouseOver)}" />
-                            <Setter TargetName="NormalRectangle" Property="Stroke" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundStrokeUncheckedMouseOver)}" />
-                            <Setter TargetName="RootBorder" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BackgroundUncheckedMouseOver)}" />
-                            <Setter TargetName="RootBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BorderBrushUncheckedMouseOver)}" />
+                            <Setter TargetName="CheckGlyph" Property="Content" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphUnchecked)}"/>
+                            <Setter TargetName="CheckGlyph" Property="ContentTemplate" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphUncheckedTemplate)}"/>
+                            <Setter TargetName="CheckGlyph" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphForegroundUncheckedMouseOver)}"/>
+                            <Setter TargetName="CheckGlyph" Property="Opacity" Value="1"/>
+                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.ForegroundUncheckedMouseOver)}"/>
+                            <Setter TargetName="NormalRectangle" Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundFillUncheckedMouseOver)}"/>
+                            <Setter TargetName="NormalRectangle" Property="Stroke" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundStrokeUncheckedMouseOver)}"/>
+                            <Setter TargetName="RootBorder" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BackgroundUncheckedMouseOver)}"/>
+                            <Setter TargetName="RootBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BorderBrushUncheckedMouseOver)}"/>
                         </MultiTrigger>
                         <!--  UncheckedPressed  -->
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsChecked" Value="False" />
-                                <Condition Property="IsPressed" Value="True" />
+                                <Condition Property="IsChecked" Value="False"/>
+                                <Condition Property="IsPressed" Value="True"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="CheckGlyph" Property="Content" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphUnchecked)}" />
-                            <Setter TargetName="CheckGlyph" Property="ContentTemplate" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphUncheckedTemplate)}" />
-                            <Setter TargetName="CheckGlyph" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphForegroundUncheckedPressed)}" />
-                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.ForegroundUncheckedPressed)}" />
-                            <Setter TargetName="NormalRectangle" Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundFillUncheckedPressed)}" />
-                            <Setter TargetName="NormalRectangle" Property="Stroke" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundStrokeUncheckedPressed)}" />
-                            <Setter TargetName="RootBorder" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BackgroundUncheckedPressed)}" />
-                            <Setter TargetName="RootBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BorderBrushUncheckedPressed)}" />
+                            <Setter TargetName="CheckGlyph" Property="Content" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphUnchecked)}"/>
+                            <Setter TargetName="CheckGlyph" Property="ContentTemplate" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphUncheckedTemplate)}"/>
+                            <Setter TargetName="CheckGlyph" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphForegroundUncheckedPressed)}"/>
+                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.ForegroundUncheckedPressed)}"/>
+                            <Setter TargetName="NormalRectangle" Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundFillUncheckedPressed)}"/>
+                            <Setter TargetName="NormalRectangle" Property="Stroke" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundStrokeUncheckedPressed)}"/>
+                            <Setter TargetName="RootBorder" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BackgroundUncheckedPressed)}"/>
+                            <Setter TargetName="RootBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BorderBrushUncheckedPressed)}"/>
                         </MultiTrigger>
                         <!--  UncheckedDisabled  -->
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsChecked" Value="False" />
-                                <Condition Property="IsEnabled" Value="False" />
+                                <Condition Property="IsChecked" Value="False"/>
+                                <Condition Property="IsEnabled" Value="False"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="CheckGlyph" Property="Content" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphUnchecked)}" />
-                            <Setter TargetName="CheckGlyph" Property="ContentTemplate" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphUncheckedTemplate)}" />
-                            <Setter TargetName="CheckGlyph" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphForegroundUncheckedDisabled)}" />
-                            <Setter TargetName="CheckGlyph" Property="Opacity" Value="1" />
-                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.ForegroundUncheckedDisabled)}" />
-                            <Setter TargetName="NormalRectangle" Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundFillUncheckedDisabled)}" />
-                            <Setter TargetName="NormalRectangle" Property="Stroke" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundStrokeUncheckedDisabled)}" />
-                            <Setter TargetName="RootBorder" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BackgroundUncheckedDisabled)}" />
-                            <Setter TargetName="RootBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BorderBrushUncheckedDisabled)}" />
+                            <Setter TargetName="CheckGlyph" Property="Content" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphUnchecked)}"/>
+                            <Setter TargetName="CheckGlyph" Property="ContentTemplate" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphUncheckedTemplate)}"/>
+                            <Setter TargetName="CheckGlyph" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphForegroundUncheckedDisabled)}"/>
+                            <Setter TargetName="CheckGlyph" Property="Opacity" Value="1"/>
+                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.ForegroundUncheckedDisabled)}"/>
+                            <Setter TargetName="NormalRectangle" Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundFillUncheckedDisabled)}"/>
+                            <Setter TargetName="NormalRectangle" Property="Stroke" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundStrokeUncheckedDisabled)}"/>
+                            <Setter TargetName="RootBorder" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BackgroundUncheckedDisabled)}"/>
+                            <Setter TargetName="RootBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BorderBrushUncheckedDisabled)}"/>
                         </MultiTrigger>
 
                         <!--  CheckedNormal  -->
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsChecked" Value="True" />
-                                <Condition Property="IsMouseOver" Value="False" />
-                                <Condition Property="IsPressed" Value="False" />
-                                <Condition Property="IsEnabled" Value="True" />
+                                <Condition Property="IsChecked" Value="True"/>
+                                <Condition Property="IsMouseOver" Value="False"/>
+                                <Condition Property="IsPressed" Value="False"/>
+                                <Condition Property="IsEnabled" Value="True"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="CheckGlyph" Property="Content" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphChecked)}" />
-                            <Setter TargetName="CheckGlyph" Property="ContentTemplate" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphCheckedTemplate)}" />
-                            <Setter TargetName="CheckGlyph" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphForegroundChecked)}" />
-                            <Setter TargetName="CheckGlyph" Property="Opacity" Value="1" />
-                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.ForegroundChecked)}" />
-                            <Setter TargetName="NormalRectangle" Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundFillChecked)}" />
-                            <Setter TargetName="NormalRectangle" Property="Stroke" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundStrokeChecked)}" />
-                            <Setter TargetName="RootBorder" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BackgroundChecked)}" />
-                            <Setter TargetName="RootBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BorderBrushChecked)}" />
+                            <Setter TargetName="CheckGlyph" Property="Content" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphChecked)}"/>
+                            <Setter TargetName="CheckGlyph" Property="ContentTemplate" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphCheckedTemplate)}"/>
+                            <Setter TargetName="CheckGlyph" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphForegroundChecked)}"/>
+                            <Setter TargetName="CheckGlyph" Property="Opacity" Value="1"/>
+                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.ForegroundChecked)}"/>
+                            <Setter TargetName="NormalRectangle" Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundFillChecked)}"/>
+                            <Setter TargetName="NormalRectangle" Property="Stroke" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundStrokeChecked)}"/>
+                            <Setter TargetName="RootBorder" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BackgroundChecked)}"/>
+                            <Setter TargetName="RootBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BorderBrushChecked)}"/>
                         </MultiTrigger>
                         <!--  CheckedMouseOver  -->
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsChecked" Value="True" />
-                                <Condition Property="IsMouseOver" Value="True" />
+                                <Condition Property="IsChecked" Value="True"/>
+                                <Condition Property="IsMouseOver" Value="True"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="CheckGlyph" Property="Content" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphChecked)}" />
-                            <Setter TargetName="CheckGlyph" Property="ContentTemplate" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphCheckedTemplate)}" />
-                            <Setter TargetName="CheckGlyph" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphForegroundCheckedMouseOver)}" />
-                            <Setter TargetName="CheckGlyph" Property="Opacity" Value="1" />
-                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.ForegroundCheckedMouseOver)}" />
-                            <Setter TargetName="NormalRectangle" Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundFillCheckedMouseOver)}" />
-                            <Setter TargetName="NormalRectangle" Property="Stroke" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundStrokeCheckedMouseOver)}" />
-                            <Setter TargetName="RootBorder" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BackgroundCheckedMouseOver)}" />
-                            <Setter TargetName="RootBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BorderBrushCheckedMouseOver)}" />
+                            <Setter TargetName="CheckGlyph" Property="Content" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphChecked)}"/>
+                            <Setter TargetName="CheckGlyph" Property="ContentTemplate" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphCheckedTemplate)}"/>
+                            <Setter TargetName="CheckGlyph" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphForegroundCheckedMouseOver)}"/>
+                            <Setter TargetName="CheckGlyph" Property="Opacity" Value="1"/>
+                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.ForegroundCheckedMouseOver)}"/>
+                            <Setter TargetName="NormalRectangle" Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundFillCheckedMouseOver)}"/>
+                            <Setter TargetName="NormalRectangle" Property="Stroke" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundStrokeCheckedMouseOver)}"/>
+                            <Setter TargetName="RootBorder" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BackgroundCheckedMouseOver)}"/>
+                            <Setter TargetName="RootBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BorderBrushCheckedMouseOver)}"/>
                         </MultiTrigger>
                         <!--  CheckedPressed  -->
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsChecked" Value="True" />
-                                <Condition Property="IsPressed" Value="True" />
+                                <Condition Property="IsChecked" Value="True"/>
+                                <Condition Property="IsPressed" Value="True"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="CheckGlyph" Property="Content" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphChecked)}" />
-                            <Setter TargetName="CheckGlyph" Property="ContentTemplate" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphCheckedTemplate)}" />
-                            <Setter TargetName="CheckGlyph" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphForegroundCheckedPressed)}" />
-                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.ForegroundCheckedPressed)}" />
-                            <Setter TargetName="NormalRectangle" Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundFillCheckedPressed)}" />
-                            <Setter TargetName="NormalRectangle" Property="Stroke" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundStrokeCheckedPressed)}" />
-                            <Setter TargetName="RootBorder" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BackgroundCheckedPressed)}" />
-                            <Setter TargetName="RootBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BorderBrushCheckedPressed)}" />
+                            <Setter TargetName="CheckGlyph" Property="Content" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphChecked)}"/>
+                            <Setter TargetName="CheckGlyph" Property="ContentTemplate" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphCheckedTemplate)}"/>
+                            <Setter TargetName="CheckGlyph" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphForegroundCheckedPressed)}"/>
+                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.ForegroundCheckedPressed)}"/>
+                            <Setter TargetName="NormalRectangle" Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundFillCheckedPressed)}"/>
+                            <Setter TargetName="NormalRectangle" Property="Stroke" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundStrokeCheckedPressed)}"/>
+                            <Setter TargetName="RootBorder" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BackgroundCheckedPressed)}"/>
+                            <Setter TargetName="RootBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BorderBrushCheckedPressed)}"/>
                         </MultiTrigger>
                         <!--  CheckedDisabled  -->
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsChecked" Value="True" />
-                                <Condition Property="IsEnabled" Value="False" />
+                                <Condition Property="IsChecked" Value="True"/>
+                                <Condition Property="IsEnabled" Value="False"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="CheckGlyph" Property="Content" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphChecked)}" />
-                            <Setter TargetName="CheckGlyph" Property="ContentTemplate" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphCheckedTemplate)}" />
-                            <Setter TargetName="CheckGlyph" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphForegroundCheckedDisabled)}" />
-                            <Setter TargetName="CheckGlyph" Property="Opacity" Value="1" />
-                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.ForegroundCheckedDisabled)}" />
-                            <Setter TargetName="NormalRectangle" Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundFillCheckedDisabled)}" />
-                            <Setter TargetName="NormalRectangle" Property="Stroke" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundStrokeCheckedDisabled)}" />
-                            <Setter TargetName="RootBorder" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BackgroundCheckedDisabled)}" />
-                            <Setter TargetName="RootBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BorderBrushCheckedDisabled)}" />
+                            <Setter TargetName="CheckGlyph" Property="Content" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphChecked)}"/>
+                            <Setter TargetName="CheckGlyph" Property="ContentTemplate" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphCheckedTemplate)}"/>
+                            <Setter TargetName="CheckGlyph" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphForegroundCheckedDisabled)}"/>
+                            <Setter TargetName="CheckGlyph" Property="Opacity" Value="1"/>
+                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.ForegroundCheckedDisabled)}"/>
+                            <Setter TargetName="NormalRectangle" Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundFillCheckedDisabled)}"/>
+                            <Setter TargetName="NormalRectangle" Property="Stroke" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundStrokeCheckedDisabled)}"/>
+                            <Setter TargetName="RootBorder" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BackgroundCheckedDisabled)}"/>
+                            <Setter TargetName="RootBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BorderBrushCheckedDisabled)}"/>
                         </MultiTrigger>
 
                         <!--  IndeterminateNormal  -->
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsChecked" Value="{x:Null}" />
-                                <Condition Property="IsMouseOver" Value="False" />
-                                <Condition Property="IsPressed" Value="False" />
-                                <Condition Property="IsEnabled" Value="True" />
+                                <Condition Property="IsChecked" Value="{x:Null}"/>
+                                <Condition Property="IsMouseOver" Value="False"/>
+                                <Condition Property="IsPressed" Value="False"/>
+                                <Condition Property="IsEnabled" Value="True"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="CheckGlyph" Property="Content" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphIndeterminate)}" />
-                            <Setter TargetName="CheckGlyph" Property="ContentTemplate" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphIndeterminateTemplate)}" />
-                            <Setter TargetName="CheckGlyph" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphForegroundIndeterminate)}" />
-                            <Setter TargetName="CheckGlyph" Property="Opacity" Value="1" />
-                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.ForegroundIndeterminate)}" />
-                            <Setter TargetName="NormalRectangle" Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundFillIndeterminate)}" />
-                            <Setter TargetName="NormalRectangle" Property="Stroke" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundStrokeIndeterminate)}" />
-                            <Setter TargetName="RootBorder" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BackgroundIndeterminate)}" />
-                            <Setter TargetName="RootBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BorderBrushIndeterminate)}" />
+                            <Setter TargetName="CheckGlyph" Property="Content" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphIndeterminate)}"/>
+                            <Setter TargetName="CheckGlyph" Property="ContentTemplate" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphIndeterminateTemplate)}"/>
+                            <Setter TargetName="CheckGlyph" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphForegroundIndeterminate)}"/>
+                            <Setter TargetName="CheckGlyph" Property="Opacity" Value="1"/>
+                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.ForegroundIndeterminate)}"/>
+                            <Setter TargetName="NormalRectangle" Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundFillIndeterminate)}"/>
+                            <Setter TargetName="NormalRectangle" Property="Stroke" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundStrokeIndeterminate)}"/>
+                            <Setter TargetName="RootBorder" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BackgroundIndeterminate)}"/>
+                            <Setter TargetName="RootBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BorderBrushIndeterminate)}"/>
                         </MultiTrigger>
                         <!--  IndeterminateMouseOver  -->
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsChecked" Value="{x:Null}" />
-                                <Condition Property="IsMouseOver" Value="True" />
+                                <Condition Property="IsChecked" Value="{x:Null}"/>
+                                <Condition Property="IsMouseOver" Value="True"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="CheckGlyph" Property="Content" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphIndeterminate)}" />
-                            <Setter TargetName="CheckGlyph" Property="ContentTemplate" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphIndeterminateTemplate)}" />
-                            <Setter TargetName="CheckGlyph" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphForegroundIndeterminateMouseOver)}" />
-                            <Setter TargetName="CheckGlyph" Property="Opacity" Value="1" />
-                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.ForegroundIndeterminateMouseOver)}" />
-                            <Setter TargetName="NormalRectangle" Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundFillIndeterminateMouseOver)}" />
-                            <Setter TargetName="NormalRectangle" Property="Stroke" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundStrokeIndeterminateMouseOver)}" />
-                            <Setter TargetName="RootBorder" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BackgroundIndeterminateMouseOver)}" />
-                            <Setter TargetName="RootBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BorderBrushIndeterminateMouseOver)}" />
+                            <Setter TargetName="CheckGlyph" Property="Content" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphIndeterminate)}"/>
+                            <Setter TargetName="CheckGlyph" Property="ContentTemplate" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphIndeterminateTemplate)}"/>
+                            <Setter TargetName="CheckGlyph" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphForegroundIndeterminateMouseOver)}"/>
+                            <Setter TargetName="CheckGlyph" Property="Opacity" Value="1"/>
+                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.ForegroundIndeterminateMouseOver)}"/>
+                            <Setter TargetName="NormalRectangle" Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundFillIndeterminateMouseOver)}"/>
+                            <Setter TargetName="NormalRectangle" Property="Stroke" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundStrokeIndeterminateMouseOver)}"/>
+                            <Setter TargetName="RootBorder" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BackgroundIndeterminateMouseOver)}"/>
+                            <Setter TargetName="RootBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BorderBrushIndeterminateMouseOver)}"/>
                         </MultiTrigger>
                         <!--  IndeterminatePressed  -->
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsChecked" Value="{x:Null}" />
-                                <Condition Property="IsPressed" Value="True" />
+                                <Condition Property="IsChecked" Value="{x:Null}"/>
+                                <Condition Property="IsPressed" Value="True"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="CheckGlyph" Property="Content" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphIndeterminate)}" />
-                            <Setter TargetName="CheckGlyph" Property="ContentTemplate" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphIndeterminateTemplate)}" />
-                            <Setter TargetName="CheckGlyph" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphForegroundIndeterminatePressed)}" />
-                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.ForegroundIndeterminatePressed)}" />
-                            <Setter TargetName="NormalRectangle" Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundFillIndeterminatePressed)}" />
-                            <Setter TargetName="NormalRectangle" Property="Stroke" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundStrokeIndeterminatePressed)}" />
-                            <Setter TargetName="RootBorder" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BackgroundIndeterminatePressed)}" />
-                            <Setter TargetName="RootBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BorderBrushIndeterminatePressed)}" />
+                            <Setter TargetName="CheckGlyph" Property="Content" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphIndeterminate)}"/>
+                            <Setter TargetName="CheckGlyph" Property="ContentTemplate" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphIndeterminateTemplate)}"/>
+                            <Setter TargetName="CheckGlyph" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphForegroundIndeterminatePressed)}"/>
+                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.ForegroundIndeterminatePressed)}"/>
+                            <Setter TargetName="NormalRectangle" Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundFillIndeterminatePressed)}"/>
+                            <Setter TargetName="NormalRectangle" Property="Stroke" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundStrokeIndeterminatePressed)}"/>
+                            <Setter TargetName="RootBorder" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BackgroundIndeterminatePressed)}"/>
+                            <Setter TargetName="RootBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BorderBrushIndeterminatePressed)}"/>
                         </MultiTrigger>
                         <!--  IndeterminateDisabled  -->
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsChecked" Value="{x:Null}" />
-                                <Condition Property="IsEnabled" Value="False" />
+                                <Condition Property="IsChecked" Value="{x:Null}"/>
+                                <Condition Property="IsEnabled" Value="False"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="CheckGlyph" Property="Content" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphIndeterminate)}" />
-                            <Setter TargetName="CheckGlyph" Property="ContentTemplate" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphIndeterminateTemplate)}" />
-                            <Setter TargetName="CheckGlyph" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphForegroundIndeterminateDisabled)}" />
-                            <Setter TargetName="CheckGlyph" Property="Opacity" Value="1" />
-                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.ForegroundIndeterminateDisabled)}" />
-                            <Setter TargetName="NormalRectangle" Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundFillIndeterminateDisabled)}" />
-                            <Setter TargetName="NormalRectangle" Property="Stroke" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundStrokeIndeterminateDisabled)}" />
-                            <Setter TargetName="RootBorder" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BackgroundIndeterminateDisabled)}" />
-                            <Setter TargetName="RootBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BorderBrushIndeterminateDisabled)}" />
+                            <Setter TargetName="CheckGlyph" Property="Content" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphIndeterminate)}"/>
+                            <Setter TargetName="CheckGlyph" Property="ContentTemplate" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphIndeterminateTemplate)}"/>
+                            <Setter TargetName="CheckGlyph" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckGlyphForegroundIndeterminateDisabled)}"/>
+                            <Setter TargetName="CheckGlyph" Property="Opacity" Value="1"/>
+                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.ForegroundIndeterminateDisabled)}"/>
+                            <Setter TargetName="NormalRectangle" Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundFillIndeterminateDisabled)}"/>
+                            <Setter TargetName="NormalRectangle" Property="Stroke" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.CheckBackgroundStrokeIndeterminateDisabled)}"/>
+                            <Setter TargetName="RootBorder" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BackgroundIndeterminateDisabled)}"/>
+                            <Setter TargetName="RootBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:CheckBoxHelper.BorderBrushIndeterminateDisabled)}"/>
                         </MultiTrigger>
 
                         <Trigger Property="FlowDirection" Value="RightToLeft">
                             <Setter TargetName="Check" Property="LayoutTransform">
                                 <Setter.Value>
-                                    <ScaleTransform ScaleX="-1" />
+                                    <ScaleTransform ScaleX="-1"/>
                                 </Setter.Value>
                             </Setter>
                         </Trigger>
 
                         <Trigger Property="crystal:ToggleButtonHelper.ContentDirection" Value="RightToLeft">
-                            <Setter TargetName="Check" Property="Grid.Column" Value="1" />
-                            <Setter TargetName="ContentPresenter" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="LeftCol" Property="Width" Value="*" />
-                            <Setter TargetName="RightCol" Property="Width" Value="Auto" />
+                            <Setter TargetName="Check" Property="Grid.Column" Value="1"/>
+                            <Setter TargetName="ContentPresenter" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="LeftCol" Property="Width" Value="*"/>
+                            <Setter TargetName="RightCol" Property="Width" Value="Auto"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="crystal:CheckBoxHelper.BackgroundChecked" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundChecked}" />
-        <Setter Property="crystal:CheckBoxHelper.BackgroundCheckedDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundCheckedDisabled}" />
-        <Setter Property="crystal:CheckBoxHelper.BackgroundCheckedMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundCheckedMouseOver}" />
-        <Setter Property="crystal:CheckBoxHelper.BackgroundCheckedPressed" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundCheckedPressed}" />
-        <Setter Property="crystal:CheckBoxHelper.BackgroundIndeterminate" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundIndeterminate}" />
-        <Setter Property="crystal:CheckBoxHelper.BackgroundIndeterminateDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundIndeterminateDisabled}" />
-        <Setter Property="crystal:CheckBoxHelper.BackgroundIndeterminateMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundIndeterminateMouseOver}" />
-        <Setter Property="crystal:CheckBoxHelper.BackgroundIndeterminatePressed" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundIndeterminatePressed}" />
-        <Setter Property="crystal:CheckBoxHelper.BackgroundUnchecked" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundUnchecked}" />
-        <Setter Property="crystal:CheckBoxHelper.BackgroundUncheckedDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundUncheckedDisabled}" />
-        <Setter Property="crystal:CheckBoxHelper.BackgroundUncheckedMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundUncheckedMouseOver}" />
-        <Setter Property="crystal:CheckBoxHelper.BackgroundUncheckedPressed" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundUncheckedPressed}" />
-        <Setter Property="crystal:CheckBoxHelper.BorderBrushChecked" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushChecked}" />
-        <Setter Property="crystal:CheckBoxHelper.BorderBrushCheckedDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushCheckedDisabled}" />
-        <Setter Property="crystal:CheckBoxHelper.BorderBrushCheckedMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushCheckedMouseOver}" />
-        <Setter Property="crystal:CheckBoxHelper.BorderBrushCheckedPressed" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushCheckedPressed}" />
-        <Setter Property="crystal:CheckBoxHelper.BorderBrushIndeterminate" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushIndeterminate}" />
-        <Setter Property="crystal:CheckBoxHelper.BorderBrushIndeterminateDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushIndeterminateDisabled}" />
-        <Setter Property="crystal:CheckBoxHelper.BorderBrushIndeterminateMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushIndeterminateMouseOver}" />
-        <Setter Property="crystal:CheckBoxHelper.BorderBrushIndeterminatePressed" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushIndeterminatePressed}" />
-        <Setter Property="crystal:CheckBoxHelper.BorderBrushUnchecked" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushUnchecked}" />
-        <Setter Property="crystal:CheckBoxHelper.BorderBrushUncheckedDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushUncheckedDisabled}" />
-        <Setter Property="crystal:CheckBoxHelper.BorderBrushUncheckedMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushUncheckedMouseOver}" />
-        <Setter Property="crystal:CheckBoxHelper.BorderBrushUncheckedPressed" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushUncheckedPressed}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillChecked" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillCheckedDisabled" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillCheckedMouseOver" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillCheckedPressed" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillIndeterminate" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillIndeterminateDisabled" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillIndeterminateMouseOver" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillIndeterminatePressed" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillUnchecked" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillUncheckedDisabled" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillUncheckedMouseOver" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillUncheckedPressed" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeChecked" Value="{DynamicResource Crystal.Brushes.CheckBox}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeCheckedDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeCheckedMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.MouseOver}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeCheckedPressed" Value="{DynamicResource Crystal.Brushes.CheckBox.MouseOver}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeIndeterminate" Value="{DynamicResource Crystal.Brushes.CheckBox}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeIndeterminateDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeIndeterminateMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.MouseOver}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeIndeterminatePressed" Value="{DynamicResource Crystal.Brushes.CheckBox.MouseOver}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeUnchecked" Value="{DynamicResource Crystal.Brushes.CheckBox}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeUncheckedDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeUncheckedMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.MouseOver}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeUncheckedPressed" Value="{DynamicResource Crystal.Brushes.CheckBox.MouseOver}" />
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="crystal:CheckBoxHelper.BackgroundChecked" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundChecked}"/>
+        <Setter Property="crystal:CheckBoxHelper.BackgroundCheckedDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundCheckedDisabled}"/>
+        <Setter Property="crystal:CheckBoxHelper.BackgroundCheckedMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundCheckedMouseOver}"/>
+        <Setter Property="crystal:CheckBoxHelper.BackgroundCheckedPressed" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundCheckedPressed}"/>
+        <Setter Property="crystal:CheckBoxHelper.BackgroundIndeterminate" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundIndeterminate}"/>
+        <Setter Property="crystal:CheckBoxHelper.BackgroundIndeterminateDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundIndeterminateDisabled}"/>
+        <Setter Property="crystal:CheckBoxHelper.BackgroundIndeterminateMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundIndeterminateMouseOver}"/>
+        <Setter Property="crystal:CheckBoxHelper.BackgroundIndeterminatePressed" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundIndeterminatePressed}"/>
+        <Setter Property="crystal:CheckBoxHelper.BackgroundUnchecked" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundUnchecked}"/>
+        <Setter Property="crystal:CheckBoxHelper.BackgroundUncheckedDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundUncheckedDisabled}"/>
+        <Setter Property="crystal:CheckBoxHelper.BackgroundUncheckedMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundUncheckedMouseOver}"/>
+        <Setter Property="crystal:CheckBoxHelper.BackgroundUncheckedPressed" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundUncheckedPressed}"/>
+        <Setter Property="crystal:CheckBoxHelper.BorderBrushChecked" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushChecked}"/>
+        <Setter Property="crystal:CheckBoxHelper.BorderBrushCheckedDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushCheckedDisabled}"/>
+        <Setter Property="crystal:CheckBoxHelper.BorderBrushCheckedMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushCheckedMouseOver}"/>
+        <Setter Property="crystal:CheckBoxHelper.BorderBrushCheckedPressed" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushCheckedPressed}"/>
+        <Setter Property="crystal:CheckBoxHelper.BorderBrushIndeterminate" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushIndeterminate}"/>
+        <Setter Property="crystal:CheckBoxHelper.BorderBrushIndeterminateDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushIndeterminateDisabled}"/>
+        <Setter Property="crystal:CheckBoxHelper.BorderBrushIndeterminateMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushIndeterminateMouseOver}"/>
+        <Setter Property="crystal:CheckBoxHelper.BorderBrushIndeterminatePressed" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushIndeterminatePressed}"/>
+        <Setter Property="crystal:CheckBoxHelper.BorderBrushUnchecked" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushUnchecked}"/>
+        <Setter Property="crystal:CheckBoxHelper.BorderBrushUncheckedDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushUncheckedDisabled}"/>
+        <Setter Property="crystal:CheckBoxHelper.BorderBrushUncheckedMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushUncheckedMouseOver}"/>
+        <Setter Property="crystal:CheckBoxHelper.BorderBrushUncheckedPressed" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushUncheckedPressed}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillChecked" Value="{DynamicResource Crystal.Brushes.ThemeBackground}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillCheckedDisabled" Value="{DynamicResource Crystal.Brushes.ThemeBackground}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillCheckedMouseOver" Value="{DynamicResource Crystal.Brushes.ThemeBackground}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillCheckedPressed" Value="{DynamicResource Crystal.Brushes.ThemeBackground}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillIndeterminate" Value="{DynamicResource Crystal.Brushes.ThemeBackground}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillIndeterminateDisabled" Value="{DynamicResource Crystal.Brushes.ThemeBackground}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillIndeterminateMouseOver" Value="{DynamicResource Crystal.Brushes.ThemeBackground}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillIndeterminatePressed" Value="{DynamicResource Crystal.Brushes.ThemeBackground}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillUnchecked" Value="{DynamicResource Crystal.Brushes.ThemeBackground}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillUncheckedDisabled" Value="{DynamicResource Crystal.Brushes.ThemeBackground}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillUncheckedMouseOver" Value="{DynamicResource Crystal.Brushes.ThemeBackground}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillUncheckedPressed" Value="{DynamicResource Crystal.Brushes.ThemeBackground}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeChecked" Value="{DynamicResource Crystal.Brushes.CheckBox}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeCheckedDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeCheckedMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.MouseOver}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeCheckedPressed" Value="{DynamicResource Crystal.Brushes.CheckBox.MouseOver}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeIndeterminate" Value="{DynamicResource Crystal.Brushes.CheckBox}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeIndeterminateDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeIndeterminateMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.MouseOver}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeIndeterminatePressed" Value="{DynamicResource Crystal.Brushes.CheckBox.MouseOver}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeUnchecked" Value="{DynamicResource Crystal.Brushes.CheckBox}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeUncheckedDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeUncheckedMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.MouseOver}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeUncheckedPressed" Value="{DynamicResource Crystal.Brushes.CheckBox.MouseOver}"/>
         <Setter Property="crystal:CheckBoxHelper.CheckGlyphCheckedTemplate">
             <Setter.Value>
                 <DataTemplate>
@@ -344,48 +344,48 @@
                           Data="M 1145.607177734375,430 C1145.607177734375,430 1141.449951171875,435.0772705078125 1141.449951171875,435.0772705078125 1141.449951171875,435.0772705078125 1139.232177734375,433.0999755859375 1139.232177734375,433.0999755859375 1139.232177734375,433.0999755859375 1138,434.5538330078125 1138,434.5538330078125 1138,434.5538330078125 1141.482177734375,438 1141.482177734375,438 1141.482177734375,438 1141.96875,437.9375 1141.96875,437.9375 1141.96875,437.9375 1147,431.34619140625 1147,431.34619140625 1147,431.34619140625 1145.607177734375,430 1145.607177734375,430 z"
                           Fill="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=Foreground}"
                           Stretch="Fill"
-                          UseLayoutRounding="False" />
+                          UseLayoutRounding="False"/>
                 </DataTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundChecked" Value="{DynamicResource Crystal.Brushes.Highlight}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundCheckedDisabled" Value="{DynamicResource Crystal.Brushes.Accent}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundCheckedMouseOver" Value="{DynamicResource Crystal.Brushes.Highlight}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundCheckedPressed" Value="{DynamicResource Crystal.Brushes.Highlight}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundIndeterminate" Value="{DynamicResource Crystal.Brushes.Gray3}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundIndeterminateDisabled" Value="{DynamicResource Crystal.Brushes.Gray3}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundIndeterminateMouseOver" Value="{DynamicResource Crystal.Brushes.Gray2}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundIndeterminatePressed" Value="{DynamicResource Crystal.Brushes.Gray2}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundUnchecked" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckGlyphForegroundUnchecked}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundUncheckedDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckGlyphForegroundUncheckedDisabled}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundUncheckedMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckGlyphForegroundUncheckedMouseOver}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundUncheckedPressed" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckGlyphForegroundUncheckedPressed}" />
+        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundChecked" Value="{DynamicResource Crystal.Brushes.Highlight}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundCheckedDisabled" Value="{DynamicResource Crystal.Brushes.Accent}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundCheckedMouseOver" Value="{DynamicResource Crystal.Brushes.Highlight}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundCheckedPressed" Value="{DynamicResource Crystal.Brushes.Highlight}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundIndeterminate" Value="{DynamicResource Crystal.Brushes.Gray3}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundIndeterminateDisabled" Value="{DynamicResource Crystal.Brushes.Gray3}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundIndeterminateMouseOver" Value="{DynamicResource Crystal.Brushes.Gray2}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundIndeterminatePressed" Value="{DynamicResource Crystal.Brushes.Gray2}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundUnchecked" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckGlyphForegroundUnchecked}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundUncheckedDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckGlyphForegroundUncheckedDisabled}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundUncheckedMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckGlyphForegroundUncheckedMouseOver}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundUncheckedPressed" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckGlyphForegroundUncheckedPressed}"/>
         <Setter Property="crystal:CheckBoxHelper.CheckGlyphIndeterminateTemplate">
             <Setter.Value>
                 <DataTemplate>
                     <Rectangle Width="8"
                                Height="3"
                                Fill="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=Foreground}"
-                               UseLayoutRounding="False" />
+                               UseLayoutRounding="False"/>
                 </DataTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="crystal:CheckBoxHelper.ForegroundChecked" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundChecked}" />
-        <Setter Property="crystal:CheckBoxHelper.ForegroundCheckedDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundCheckedDisabled}" />
-        <Setter Property="crystal:CheckBoxHelper.ForegroundCheckedMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundCheckedMouseOver}" />
-        <Setter Property="crystal:CheckBoxHelper.ForegroundCheckedPressed" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundCheckedPressed}" />
-        <Setter Property="crystal:CheckBoxHelper.ForegroundIndeterminate" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundIndeterminate}" />
-        <Setter Property="crystal:CheckBoxHelper.ForegroundIndeterminateDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundIndeterminateDisabled}" />
-        <Setter Property="crystal:CheckBoxHelper.ForegroundIndeterminateMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundIndeterminateMouseOver}" />
-        <Setter Property="crystal:CheckBoxHelper.ForegroundIndeterminatePressed" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundIndeterminatePressed}" />
-        <Setter Property="crystal:CheckBoxHelper.ForegroundUnchecked" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundUnchecked}" />
-        <Setter Property="crystal:CheckBoxHelper.ForegroundUncheckedDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundUncheckedDisabled}" />
-        <Setter Property="crystal:CheckBoxHelper.ForegroundUncheckedMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundUncheckedMouseOver}" />
-        <Setter Property="crystal:CheckBoxHelper.ForegroundUncheckedPressed" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundUncheckedPressed}" />
+        <Setter Property="crystal:CheckBoxHelper.ForegroundChecked" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundChecked}"/>
+        <Setter Property="crystal:CheckBoxHelper.ForegroundCheckedDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundCheckedDisabled}"/>
+        <Setter Property="crystal:CheckBoxHelper.ForegroundCheckedMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundCheckedMouseOver}"/>
+        <Setter Property="crystal:CheckBoxHelper.ForegroundCheckedPressed" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundCheckedPressed}"/>
+        <Setter Property="crystal:CheckBoxHelper.ForegroundIndeterminate" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundIndeterminate}"/>
+        <Setter Property="crystal:CheckBoxHelper.ForegroundIndeterminateDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundIndeterminateDisabled}"/>
+        <Setter Property="crystal:CheckBoxHelper.ForegroundIndeterminateMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundIndeterminateMouseOver}"/>
+        <Setter Property="crystal:CheckBoxHelper.ForegroundIndeterminatePressed" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundIndeterminatePressed}"/>
+        <Setter Property="crystal:CheckBoxHelper.ForegroundUnchecked" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundUnchecked}"/>
+        <Setter Property="crystal:CheckBoxHelper.ForegroundUncheckedDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundUncheckedDisabled}"/>
+        <Setter Property="crystal:CheckBoxHelper.ForegroundUncheckedMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundUncheckedMouseOver}"/>
+        <Setter Property="crystal:CheckBoxHelper.ForegroundUncheckedPressed" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundUncheckedPressed}"/>
         <Style.Triggers>
             <Trigger Property="crystal:ToggleButtonHelper.ContentDirection" Value="RightToLeft">
-                <Setter Property="HorizontalContentAlignment" Value="Right" />
-                <Setter Property="Padding" Value="0 0 6 0" />
+                <Setter Property="HorizontalContentAlignment" Value="Right"/>
+                <Setter Property="Padding" Value="0 0 6 0"/>
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -393,57 +393,57 @@
     <Style x:Key="Crystal.Styles.CheckBox.Win10"
            BasedOn="{StaticResource Crystal.Styles.CheckBox}"
            TargetType="CheckBox">
-        <Setter Property="MinHeight" Value="32" />
-        <Setter Property="MinWidth" Value="120" />
-        <Setter Property="Padding" Value="8 0 0 0" />
-        <Setter Property="crystal:CheckBoxHelper.BackgroundChecked" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundChecked}" />
-        <Setter Property="crystal:CheckBoxHelper.BackgroundCheckedDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundCheckedDisabled}" />
-        <Setter Property="crystal:CheckBoxHelper.BackgroundCheckedMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundCheckedMouseOver}" />
-        <Setter Property="crystal:CheckBoxHelper.BackgroundCheckedPressed" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundCheckedPressed}" />
-        <Setter Property="crystal:CheckBoxHelper.BackgroundIndeterminate" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundIndeterminate}" />
-        <Setter Property="crystal:CheckBoxHelper.BackgroundIndeterminateDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundIndeterminateDisabled}" />
-        <Setter Property="crystal:CheckBoxHelper.BackgroundIndeterminateMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundIndeterminateMouseOver}" />
-        <Setter Property="crystal:CheckBoxHelper.BackgroundIndeterminatePressed" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundIndeterminatePressed}" />
-        <Setter Property="crystal:CheckBoxHelper.BackgroundUnchecked" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundUnchecked}" />
-        <Setter Property="crystal:CheckBoxHelper.BackgroundUncheckedDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundUncheckedDisabled}" />
-        <Setter Property="crystal:CheckBoxHelper.BackgroundUncheckedMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundUncheckedMouseOver}" />
-        <Setter Property="crystal:CheckBoxHelper.BackgroundUncheckedPressed" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundUncheckedPressed}" />
-        <Setter Property="crystal:CheckBoxHelper.BorderBrushChecked" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushChecked}" />
-        <Setter Property="crystal:CheckBoxHelper.BorderBrushCheckedDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushCheckedDisabled}" />
-        <Setter Property="crystal:CheckBoxHelper.BorderBrushCheckedMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushCheckedMouseOver}" />
-        <Setter Property="crystal:CheckBoxHelper.BorderBrushCheckedPressed" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushCheckedPressed}" />
-        <Setter Property="crystal:CheckBoxHelper.BorderBrushIndeterminate" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushIndeterminate}" />
-        <Setter Property="crystal:CheckBoxHelper.BorderBrushIndeterminateDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushIndeterminateDisabled}" />
-        <Setter Property="crystal:CheckBoxHelper.BorderBrushIndeterminateMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushIndeterminateMouseOver}" />
-        <Setter Property="crystal:CheckBoxHelper.BorderBrushIndeterminatePressed" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushIndeterminatePressed}" />
-        <Setter Property="crystal:CheckBoxHelper.BorderBrushUnchecked" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushUnchecked}" />
-        <Setter Property="crystal:CheckBoxHelper.BorderBrushUncheckedDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushUncheckedDisabled}" />
-        <Setter Property="crystal:CheckBoxHelper.BorderBrushUncheckedMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushUncheckedMouseOver}" />
-        <Setter Property="crystal:CheckBoxHelper.BorderBrushUncheckedPressed" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushUncheckedPressed}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillChecked" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundFillChecked}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillCheckedDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundFillCheckedDisabled}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillCheckedMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundFillCheckedMouseOver}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillCheckedPressed" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundFillCheckedPressed}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillIndeterminate" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundFillIndeterminate}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillIndeterminateDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundFillIndeterminateDisabled}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillIndeterminateMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundFillIndeterminateMouseOver}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillIndeterminatePressed" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundFillIndeterminatePressed}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillUnchecked" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundFillUnchecked}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillUncheckedDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundFillUncheckedDisabled}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillUncheckedMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundFillUncheckedMouseOver}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillUncheckedPressed" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundFillUncheckedPressed}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeChecked" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundStrokeChecked}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeCheckedDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundStrokeCheckedDisabled}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeCheckedMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundStrokeCheckedMouseOver}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeCheckedPressed" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundStrokeCheckedPressed}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeIndeterminate" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundStrokeIndeterminate}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeIndeterminateDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundStrokeIndeterminateDisabled}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeIndeterminateMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundStrokeIndeterminateMouseOver}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeIndeterminatePressed" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundStrokeIndeterminatePressed}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeUnchecked" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundStrokeUnchecked}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeUncheckedDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundStrokeUncheckedDisabled}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeUncheckedMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundStrokeUncheckedMouseOver}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeUncheckedPressed" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundStrokeUncheckedPressed}" />
+        <Setter Property="MinHeight" Value="32"/>
+        <Setter Property="MinWidth" Value="120"/>
+        <Setter Property="Padding" Value="8 0 0 0"/>
+        <Setter Property="crystal:CheckBoxHelper.BackgroundChecked" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundChecked}"/>
+        <Setter Property="crystal:CheckBoxHelper.BackgroundCheckedDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundCheckedDisabled}"/>
+        <Setter Property="crystal:CheckBoxHelper.BackgroundCheckedMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundCheckedMouseOver}"/>
+        <Setter Property="crystal:CheckBoxHelper.BackgroundCheckedPressed" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundCheckedPressed}"/>
+        <Setter Property="crystal:CheckBoxHelper.BackgroundIndeterminate" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundIndeterminate}"/>
+        <Setter Property="crystal:CheckBoxHelper.BackgroundIndeterminateDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundIndeterminateDisabled}"/>
+        <Setter Property="crystal:CheckBoxHelper.BackgroundIndeterminateMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundIndeterminateMouseOver}"/>
+        <Setter Property="crystal:CheckBoxHelper.BackgroundIndeterminatePressed" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundIndeterminatePressed}"/>
+        <Setter Property="crystal:CheckBoxHelper.BackgroundUnchecked" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundUnchecked}"/>
+        <Setter Property="crystal:CheckBoxHelper.BackgroundUncheckedDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundUncheckedDisabled}"/>
+        <Setter Property="crystal:CheckBoxHelper.BackgroundUncheckedMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundUncheckedMouseOver}"/>
+        <Setter Property="crystal:CheckBoxHelper.BackgroundUncheckedPressed" Value="{DynamicResource Crystal.Brushes.CheckBox.BackgroundUncheckedPressed}"/>
+        <Setter Property="crystal:CheckBoxHelper.BorderBrushChecked" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushChecked}"/>
+        <Setter Property="crystal:CheckBoxHelper.BorderBrushCheckedDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushCheckedDisabled}"/>
+        <Setter Property="crystal:CheckBoxHelper.BorderBrushCheckedMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushCheckedMouseOver}"/>
+        <Setter Property="crystal:CheckBoxHelper.BorderBrushCheckedPressed" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushCheckedPressed}"/>
+        <Setter Property="crystal:CheckBoxHelper.BorderBrushIndeterminate" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushIndeterminate}"/>
+        <Setter Property="crystal:CheckBoxHelper.BorderBrushIndeterminateDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushIndeterminateDisabled}"/>
+        <Setter Property="crystal:CheckBoxHelper.BorderBrushIndeterminateMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushIndeterminateMouseOver}"/>
+        <Setter Property="crystal:CheckBoxHelper.BorderBrushIndeterminatePressed" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushIndeterminatePressed}"/>
+        <Setter Property="crystal:CheckBoxHelper.BorderBrushUnchecked" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushUnchecked}"/>
+        <Setter Property="crystal:CheckBoxHelper.BorderBrushUncheckedDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushUncheckedDisabled}"/>
+        <Setter Property="crystal:CheckBoxHelper.BorderBrushUncheckedMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushUncheckedMouseOver}"/>
+        <Setter Property="crystal:CheckBoxHelper.BorderBrushUncheckedPressed" Value="{DynamicResource Crystal.Brushes.CheckBox.BorderBrushUncheckedPressed}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillChecked" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundFillChecked}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillCheckedDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundFillCheckedDisabled}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillCheckedMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundFillCheckedMouseOver}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillCheckedPressed" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundFillCheckedPressed}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillIndeterminate" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundFillIndeterminate}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillIndeterminateDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundFillIndeterminateDisabled}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillIndeterminateMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundFillIndeterminateMouseOver}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillIndeterminatePressed" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundFillIndeterminatePressed}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillUnchecked" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundFillUnchecked}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillUncheckedDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundFillUncheckedDisabled}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillUncheckedMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundFillUncheckedMouseOver}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundFillUncheckedPressed" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundFillUncheckedPressed}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeChecked" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundStrokeChecked}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeCheckedDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundStrokeCheckedDisabled}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeCheckedMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundStrokeCheckedMouseOver}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeCheckedPressed" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundStrokeCheckedPressed}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeIndeterminate" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundStrokeIndeterminate}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeIndeterminateDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundStrokeIndeterminateDisabled}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeIndeterminateMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundStrokeIndeterminateMouseOver}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeIndeterminatePressed" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundStrokeIndeterminatePressed}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeUnchecked" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundStrokeUnchecked}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeUncheckedDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundStrokeUncheckedDisabled}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeUncheckedMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundStrokeUncheckedMouseOver}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckBackgroundStrokeUncheckedPressed" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckBackgroundStrokeUncheckedPressed}"/>
         <Setter Property="crystal:CheckBoxHelper.CheckGlyphCheckedTemplate">
             <Setter.Value>
                 <DataTemplate>
@@ -451,22 +451,22 @@
                                   FontFamily="{DynamicResource Crystal.Fonts.Family.SymbolTheme}"
                                   FontSize="20"
                                   Glyph="&#xE001;"
-                                  UseLayoutRounding="False" />
+                                  UseLayoutRounding="False"/>
                 </DataTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundChecked" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckGlyphForegroundChecked}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundCheckedDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckGlyphForegroundCheckedDisabled}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundCheckedMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckGlyphForegroundCheckedMouseOver}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundCheckedPressed" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckGlyphForegroundCheckedPressed}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundIndeterminate" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckGlyphForegroundIndeterminate}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundIndeterminateDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckGlyphForegroundIndeterminateDisabled}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundIndeterminateMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckGlyphForegroundIndeterminateMouseOver}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundIndeterminatePressed" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckGlyphForegroundIndeterminatePressed}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundUnchecked" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckGlyphForegroundUnchecked}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundUncheckedDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckGlyphForegroundUncheckedDisabled}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundUncheckedMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckGlyphForegroundUncheckedMouseOver}" />
-        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundUncheckedPressed" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckGlyphForegroundUncheckedPressed}" />
+        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundChecked" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckGlyphForegroundChecked}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundCheckedDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckGlyphForegroundCheckedDisabled}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundCheckedMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckGlyphForegroundCheckedMouseOver}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundCheckedPressed" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckGlyphForegroundCheckedPressed}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundIndeterminate" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckGlyphForegroundIndeterminate}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundIndeterminateDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckGlyphForegroundIndeterminateDisabled}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundIndeterminateMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckGlyphForegroundIndeterminateMouseOver}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundIndeterminatePressed" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckGlyphForegroundIndeterminatePressed}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundUnchecked" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckGlyphForegroundUnchecked}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundUncheckedDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckGlyphForegroundUncheckedDisabled}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundUncheckedMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckGlyphForegroundUncheckedMouseOver}"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckGlyphForegroundUncheckedPressed" Value="{DynamicResource Crystal.Brushes.CheckBox.CheckGlyphForegroundUncheckedPressed}"/>
         <Setter Property="crystal:CheckBoxHelper.CheckGlyphIndeterminateTemplate">
             <Setter.Value>
                 <DataTemplate>
@@ -474,55 +474,55 @@
                                   FontFamily="{DynamicResource Crystal.Fonts.Family.SymbolTheme}"
                                   FontSize="20"
                                   Glyph="&#xE73C;"
-                                  UseLayoutRounding="False" />
+                                  UseLayoutRounding="False"/>
                 </DataTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="crystal:CheckBoxHelper.CheckSize" Value="20" />
-        <Setter Property="crystal:CheckBoxHelper.CheckStrokeThickness" Value="{DynamicResource CheckBoxBorderThemeThickness}" />
-        <Setter Property="crystal:CheckBoxHelper.ForegroundChecked" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundChecked}" />
-        <Setter Property="crystal:CheckBoxHelper.ForegroundCheckedDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundCheckedDisabled}" />
-        <Setter Property="crystal:CheckBoxHelper.ForegroundCheckedMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundCheckedMouseOver}" />
-        <Setter Property="crystal:CheckBoxHelper.ForegroundCheckedPressed" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundCheckedPressed}" />
-        <Setter Property="crystal:CheckBoxHelper.ForegroundIndeterminate" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundIndeterminate}" />
-        <Setter Property="crystal:CheckBoxHelper.ForegroundIndeterminateDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundIndeterminateDisabled}" />
-        <Setter Property="crystal:CheckBoxHelper.ForegroundIndeterminateMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundIndeterminateMouseOver}" />
-        <Setter Property="crystal:CheckBoxHelper.ForegroundIndeterminatePressed" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundIndeterminatePressed}" />
-        <Setter Property="crystal:CheckBoxHelper.ForegroundUnchecked" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundUnchecked}" />
-        <Setter Property="crystal:CheckBoxHelper.ForegroundUncheckedDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundUncheckedDisabled}" />
-        <Setter Property="crystal:CheckBoxHelper.ForegroundUncheckedMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundUncheckedMouseOver}" />
-        <Setter Property="crystal:CheckBoxHelper.ForegroundUncheckedPressed" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundUncheckedPressed}" />
+        <Setter Property="crystal:CheckBoxHelper.CheckSize" Value="20"/>
+        <Setter Property="crystal:CheckBoxHelper.CheckStrokeThickness" Value="{DynamicResource CheckBoxBorderThemeThickness}"/>
+        <Setter Property="crystal:CheckBoxHelper.ForegroundChecked" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundChecked}"/>
+        <Setter Property="crystal:CheckBoxHelper.ForegroundCheckedDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundCheckedDisabled}"/>
+        <Setter Property="crystal:CheckBoxHelper.ForegroundCheckedMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundCheckedMouseOver}"/>
+        <Setter Property="crystal:CheckBoxHelper.ForegroundCheckedPressed" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundCheckedPressed}"/>
+        <Setter Property="crystal:CheckBoxHelper.ForegroundIndeterminate" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundIndeterminate}"/>
+        <Setter Property="crystal:CheckBoxHelper.ForegroundIndeterminateDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundIndeterminateDisabled}"/>
+        <Setter Property="crystal:CheckBoxHelper.ForegroundIndeterminateMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundIndeterminateMouseOver}"/>
+        <Setter Property="crystal:CheckBoxHelper.ForegroundIndeterminatePressed" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundIndeterminatePressed}"/>
+        <Setter Property="crystal:CheckBoxHelper.ForegroundUnchecked" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundUnchecked}"/>
+        <Setter Property="crystal:CheckBoxHelper.ForegroundUncheckedDisabled" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundUncheckedDisabled}"/>
+        <Setter Property="crystal:CheckBoxHelper.ForegroundUncheckedMouseOver" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundUncheckedMouseOver}"/>
+        <Setter Property="crystal:CheckBoxHelper.ForegroundUncheckedPressed" Value="{DynamicResource Crystal.Brushes.CheckBox.ForegroundUncheckedPressed}"/>
         <Style.Triggers>
             <!--  UncheckedPressed  -->
             <MultiTrigger>
                 <MultiTrigger.Conditions>
-                    <Condition Property="IsChecked" Value="False" />
-                    <Condition Property="IsPressed" Value="True" />
+                    <Condition Property="IsChecked" Value="False"/>
+                    <Condition Property="IsPressed" Value="True"/>
                 </MultiTrigger.Conditions>
-                <Setter Property="crystal:CheckBoxHelper.CheckStrokeThickness" Value="{DynamicResource CheckBoxCheckedStrokeThickness}" />
+                <Setter Property="crystal:CheckBoxHelper.CheckStrokeThickness" Value="{DynamicResource CheckBoxCheckedStrokeThickness}"/>
             </MultiTrigger>
             <!--  CheckedNormal  -->
             <MultiTrigger>
                 <MultiTrigger.Conditions>
-                    <Condition Property="IsChecked" Value="True" />
-                    <Condition Property="IsMouseOver" Value="False" />
-                    <Condition Property="IsPressed" Value="False" />
-                    <Condition Property="IsEnabled" Value="True" />
+                    <Condition Property="IsChecked" Value="True"/>
+                    <Condition Property="IsMouseOver" Value="False"/>
+                    <Condition Property="IsPressed" Value="False"/>
+                    <Condition Property="IsEnabled" Value="True"/>
                 </MultiTrigger.Conditions>
-                <Setter Property="crystal:CheckBoxHelper.CheckStrokeThickness" Value="{DynamicResource CheckBoxCheckedStrokeThickness}" />
+                <Setter Property="crystal:CheckBoxHelper.CheckStrokeThickness" Value="{DynamicResource CheckBoxCheckedStrokeThickness}"/>
             </MultiTrigger>
             <!--  CheckedPressed  -->
             <MultiTrigger>
                 <MultiTrigger.Conditions>
-                    <Condition Property="IsChecked" Value="True" />
-                    <Condition Property="IsPressed" Value="True" />
+                    <Condition Property="IsChecked" Value="True"/>
+                    <Condition Property="IsPressed" Value="True"/>
                 </MultiTrigger.Conditions>
-                <Setter Property="crystal:CheckBoxHelper.CheckStrokeThickness" Value="{DynamicResource CheckBoxCheckedStrokeThickness}" />
+                <Setter Property="crystal:CheckBoxHelper.CheckStrokeThickness" Value="{DynamicResource CheckBoxCheckedStrokeThickness}"/>
             </MultiTrigger>
 
             <Trigger Property="crystal:ToggleButtonHelper.ContentDirection" Value="RightToLeft">
-                <Setter Property="HorizontalContentAlignment" Value="Right" />
-                <Setter Property="Padding" Value="0 0 8 0" />
+                <Setter Property="HorizontalContentAlignment" Value="Right"/>
+                <Setter Property="Padding" Value="0 0 8 0"/>
             </Trigger>
         </Style.Triggers>
     </Style>

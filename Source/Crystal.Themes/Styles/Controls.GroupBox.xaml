@@ -3,26 +3,26 @@
                     xmlns:crystal="clr-namespace:Crystal.Themes.Controls"
                     xmlns:crystalConverters="clr-namespace:Crystal.Themes.Converters">
 
-    <crystalConverters:ThicknessBindingConverter x:Key="ThicknessBindingConverter" />
-    <crystalConverters:CornerRadiusBindingConverter x:Key="CornerRadiusBindingConverter" />
+  <crystalConverters:ThicknessBindingConverter x:Key="ThicknessBindingConverter"/>
+  <crystalConverters:CornerRadiusBindingConverter x:Key="CornerRadiusBindingConverter"/>
 
-    <Thickness x:Key="GroupBoxHeaderThemePadding">4</Thickness>
+  <Thickness x:Key="GroupBoxHeaderThemePadding">4</Thickness>
 
-    <Style x:Key="Crystal.Styles.GroupBox" TargetType="{x:Type GroupBox}">
-        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Accent}" />
-        <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
-        <Setter Property="Padding" Value="4" />
-        <Setter Property="SnapsToDevicePixels" Value="True" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type GroupBox}">
-                    <Grid x:Name="GroupBoxRoot">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-                        <Border x:Name="HeaderSite"
+  <Style x:Key="Crystal.Styles.GroupBox" TargetType="{x:Type GroupBox}">
+    <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Accent}"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeForeground}"/>
+    <Setter Property="Padding" Value="4"/>
+    <Setter Property="SnapsToDevicePixels" Value="True"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type GroupBox}">
+          <Grid x:Name="GroupBoxRoot">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Border x:Name="HeaderSite"
                                 Grid.Row="0"
                                 Background="{TemplateBinding crystal:HeaderedControlHelper.HeaderBackground}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
@@ -30,7 +30,7 @@
                                 CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.CornerRadius), Converter={StaticResource CornerRadiusBindingConverter}, ConverterParameter={x:Static crystalConverters:RadiusType.Bottom}}"
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                 UseLayoutRounding="True">
-                            <crystal:ContentControlEx x:Name="HeaderContent"
+              <crystal:ContentControlEx x:Name="HeaderContent"
                                                   Margin="{DynamicResource GroupBoxHeaderThemePadding}"
                                                   HorizontalAlignment="{TemplateBinding crystal:HeaderedControlHelper.HeaderHorizontalContentAlignment}"
                                                   VerticalAlignment="{TemplateBinding crystal:HeaderedControlHelper.HeaderVerticalContentAlignment}"
@@ -46,38 +46,38 @@
                                                   RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}"
                                                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                                   UseLayoutRounding="False">
-                                <TextElement.Foreground>
-                                    <MultiBinding Converter="{x:Static crystalConverters:BackgroundToForegroundConverter.Instance}">
-                                        <Binding Mode="OneWay"
+                <TextElement.Foreground>
+                  <MultiBinding Converter="{x:Static crystalConverters:BackgroundToForegroundConverter.Instance}">
+                    <Binding Mode="OneWay"
                                                  Path="(crystal:HeaderedControlHelper.HeaderBackground)"
-                                                 RelativeSource="{RelativeSource TemplatedParent}" />
-                                        <Binding Mode="OneWay"
+                                                 RelativeSource="{RelativeSource TemplatedParent}"/>
+                    <Binding Mode="OneWay"
                                                  Path="(crystal:HeaderedControlHelper.HeaderForeground)"
-                                                 RelativeSource="{RelativeSource TemplatedParent}" />
-                                    </MultiBinding>
-                                </TextElement.Foreground>
-                            </crystal:ContentControlEx>
-                        </Border>
-                        <Border Grid.Row="1"
+                                                 RelativeSource="{RelativeSource TemplatedParent}"/>
+                  </MultiBinding>
+                </TextElement.Foreground>
+              </crystal:ContentControlEx>
+            </Border>
+            <Border Grid.Row="1"
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessBindingConverter}, ConverterParameter={x:Static crystalConverters:ThicknessSideType.Top}}"
                                 CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.CornerRadius), Converter={StaticResource CornerRadiusBindingConverter}, ConverterParameter={x:Static crystalConverters:RadiusType.Top}}"
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                 UseLayoutRounding="True">
-                            <ContentPresenter Margin="{TemplateBinding Padding}"
+              <ContentPresenter Margin="{TemplateBinding Padding}"
                                               Content="{TemplateBinding Content}"
                                               ContentTemplate="{TemplateBinding ContentTemplate}"
                                               Cursor="{TemplateBinding Cursor}"
-                                              UseLayoutRounding="False" />
-                        </Border>
-                    </Grid>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-        <Setter Property="crystal:ControlsHelper.ContentCharacterCasing" Value="{DynamicResource Crystal.CharacterCasing.GroupBox}" />
-        <Setter Property="crystal:HeaderedControlHelper.HeaderBackground" Value="{DynamicResource Crystal.Brushes.Accent}" />
-        <Setter Property="crystal:HeaderedControlHelper.HeaderFontSize" Value="{DynamicResource Crystal.Font.Size.Content}" />
-        <Setter Property="crystal:HeaderedControlHelper.HeaderForeground" Value="{x:Null}" />
-    </Style>
+                                              UseLayoutRounding="False"/>
+            </Border>
+          </Grid>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+    <Setter Property="crystal:ControlsHelper.ContentCharacterCasing" Value="{DynamicResource Crystal.CharacterCasing.GroupBox}"/>
+    <Setter Property="crystal:HeaderedControlHelper.HeaderBackground" Value="{DynamicResource Crystal.Brushes.Accent}"/>
+    <Setter Property="crystal:HeaderedControlHelper.HeaderFontSize" Value="{DynamicResource Crystal.Font.Size.Content}"/>
+    <Setter Property="crystal:HeaderedControlHelper.HeaderForeground" Value="{x:Null}"/>
+  </Style>
 </ResourceDictionary>

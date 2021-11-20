@@ -3,21 +3,21 @@
                     xmlns:crystal="clr-namespace:Crystal.Themes.Controls"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
-    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 
     <system:Double x:Key="FlipViewIndexItemSize">15</system:Double>
 
     <Style x:Key="Crystal.Styles.Button.FlipView.Navigation" TargetType="{x:Type Button}">
-        <Setter Property="Background" Value="Transparent" />
-        <Setter Property="BorderBrush" Value="Transparent" />
-        <Setter Property="Focusable" Value="True" />
-        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Text}" />
-        <Setter Property="Height" Value="30" />
-        <Setter Property="HorizontalContentAlignment" Value="Center" />
-        <Setter Property="IsTabStop" Value="True" />
-        <Setter Property="Opacity" Value="0.4" />
-        <Setter Property="Padding" Value="1" />
-        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="Focusable" Value="True"/>
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Text}"/>
+        <Setter Property="Height" Value="30"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="IsTabStop" Value="True"/>
+        <Setter Property="Opacity" Value="0.4"/>
+        <Setter Property="Padding" Value="1"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
@@ -30,28 +30,28 @@
                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                           RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}"
-                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="Width" Value="50" />
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Width" Value="50"/>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Opacity" Value="0.8" />
+                <Setter Property="Opacity" Value="0.8"/>
             </Trigger>
             <DataTrigger Binding="{Binding NavigationButtonsPosition, FallbackValue={x:Static crystal:NavigationButtonsPosition.Inside}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type crystal:FlipView}}}" Value="{x:Static crystal:NavigationButtonsPosition.Inside}">
-                <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
+                <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeBackground}"/>
             </DataTrigger>
         </Style.Triggers>
     </Style>
 
     <Style x:Key="Crystal.Styles.ListBoxItem.FlipView.Index" TargetType="ListBoxItem">
-        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-        <Setter Property="HorizontalContentAlignment" Value="Center" />
-        <Setter Property="Margin" Value="10" />
-        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="10"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListBoxItem">
@@ -62,14 +62,14 @@
                              Fill="{DynamicResource Crystal.Brushes.SystemControlTransparent}"
                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                              Stroke="{DynamicResource Crystal.Brushes.SystemControlForegroundBaseMedium}"
-                             StrokeThickness="1" />
+                             StrokeThickness="1"/>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsSelected" Value="true">
-                            <Setter TargetName="Bd" Property="Fill" Value="{DynamicResource Crystal.Brushes.SystemControlHighlightListAccentMedium}" />
+                            <Setter TargetName="Bd" Property="Fill" Value="{DynamicResource Crystal.Brushes.SystemControlHighlightListAccentMedium}"/>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="true">
-                            <Setter Property="Cursor" Value="Hand" />
-                            <Setter TargetName="Bd" Property="Fill" Value="{DynamicResource Crystal.Brushes.SystemControlHighlightListAccentHigh}" />
+                            <Setter Property="Cursor" Value="Hand"/>
+                            <Setter TargetName="Bd" Property="Fill" Value="{DynamicResource Crystal.Brushes.SystemControlHighlightListAccentHigh}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -89,14 +89,14 @@
                     SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                 <Grid Margin="{TemplateBinding Padding}">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
                     <ListBox x:Name="PART_Index"
@@ -113,14 +113,14 @@
                              Visibility="{Binding ShowIndex, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <ListBox.Template>
                             <ControlTemplate TargetType="{x:Type ListBox}">
-                                <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                             </ControlTemplate>
                         </ListBox.Template>
                         <ListBox.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <UniformGrid HorizontalAlignment="Center"
                                              IsItemsHost="True"
-                                             Rows="1" />
+                                             Rows="1"/>
                             </ItemsPanelTemplate>
                         </ListBox.ItemsPanel>
                     </ListBox>
@@ -135,7 +135,7 @@
                             ContentStringFormat="{TemplateBinding ButtonBackContentStringFormat}"
                             ContentTemplate="{TemplateBinding ButtonBackContentTemplate}"
                             Style="{TemplateBinding NavigationButtonStyle}"
-                            Visibility="Hidden" />
+                            Visibility="Hidden"/>
                     <Button x:Name="PART_ForwardButton"
                             Grid.Row="1"
                             Grid.Column="1"
@@ -146,7 +146,7 @@
                             ContentStringFormat="{TemplateBinding ButtonForwardContentStringFormat}"
                             ContentTemplate="{TemplateBinding ButtonForwardContentTemplate}"
                             Style="{TemplateBinding NavigationButtonStyle}"
-                            Visibility="Hidden" />
+                            Visibility="Hidden"/>
 
                     <Button x:Name="PART_UpButton"
                             Grid.Row="1"
@@ -158,7 +158,7 @@
                             ContentStringFormat="{TemplateBinding ButtonUpContentStringFormat}"
                             ContentTemplate="{TemplateBinding ButtonUpContentTemplate}"
                             Style="{TemplateBinding NavigationButtonStyle}"
-                            Visibility="Hidden" />
+                            Visibility="Hidden"/>
                     <Button x:Name="PART_DownButton"
                             Grid.Row="1"
                             Grid.Column="1"
@@ -169,7 +169,7 @@
                             ContentStringFormat="{TemplateBinding ButtonDownContentStringFormat}"
                             ContentTemplate="{TemplateBinding ButtonDownContentTemplate}"
                             Style="{TemplateBinding NavigationButtonStyle}"
-                            Visibility="Hidden" />
+                            Visibility="Hidden"/>
 
                     <Grid x:Name="PART_BannerGrid"
                           Grid.Row="1"
@@ -186,7 +186,7 @@
                                FontFamily="{TemplateBinding FontFamily}"
                                FontSize="{TemplateBinding FontSize}"
                                Foreground="{TemplateBinding BannerForeground}"
-                               IsTabStop="False" />
+                               IsTabStop="False"/>
                     </Grid>
 
                     <crystal:TransitioningContentControl x:Name="PART_Presenter"
@@ -197,147 +197,147 @@
                                                      ContentStringFormat="{TemplateBinding ItemStringFormat}"
                                                      ContentTemplate="{TemplateBinding ItemTemplate}"
                                                      ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
-                                                     IsTabStop="False" />
+                                                     IsTabStop="False"/>
                 </Grid>
             </Border>
         </Border>
         <ControlTemplate.Triggers>
             <Trigger Property="IndexPlacement" Value="{x:Static crystal:NavigationIndexPlacement.Top}">
-                <Setter TargetName="PART_Index" Property="Grid.Column" Value="0" />
-                <Setter TargetName="PART_Index" Property="Grid.ColumnSpan" Value="3" />
-                <Setter TargetName="PART_Index" Property="Grid.Row" Value="0" />
-                <Setter TargetName="PART_Index" Property="Grid.RowSpan" Value="1" />
-                <Setter TargetName="PART_Index" Property="HorizontalAlignment" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IndexHorizontalAlignment}" />
-                <Setter TargetName="PART_Index" Property="VerticalAlignment" Value="Center" />
+                <Setter TargetName="PART_Index" Property="Grid.Column" Value="0"/>
+                <Setter TargetName="PART_Index" Property="Grid.ColumnSpan" Value="3"/>
+                <Setter TargetName="PART_Index" Property="Grid.Row" Value="0"/>
+                <Setter TargetName="PART_Index" Property="Grid.RowSpan" Value="1"/>
+                <Setter TargetName="PART_Index" Property="HorizontalAlignment" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IndexHorizontalAlignment}"/>
+                <Setter TargetName="PART_Index" Property="VerticalAlignment" Value="Center"/>
             </Trigger>
             <Trigger Property="IndexPlacement" Value="{x:Static crystal:NavigationIndexPlacement.Bottom}">
-                <Setter TargetName="PART_Index" Property="Grid.Column" Value="0" />
-                <Setter TargetName="PART_Index" Property="Grid.ColumnSpan" Value="3" />
-                <Setter TargetName="PART_Index" Property="Grid.Row" Value="2" />
-                <Setter TargetName="PART_Index" Property="Grid.RowSpan" Value="1" />
-                <Setter TargetName="PART_Index" Property="HorizontalAlignment" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IndexHorizontalAlignment}" />
-                <Setter TargetName="PART_Index" Property="VerticalAlignment" Value="Center" />
+                <Setter TargetName="PART_Index" Property="Grid.Column" Value="0"/>
+                <Setter TargetName="PART_Index" Property="Grid.ColumnSpan" Value="3"/>
+                <Setter TargetName="PART_Index" Property="Grid.Row" Value="2"/>
+                <Setter TargetName="PART_Index" Property="Grid.RowSpan" Value="1"/>
+                <Setter TargetName="PART_Index" Property="HorizontalAlignment" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IndexHorizontalAlignment}"/>
+                <Setter TargetName="PART_Index" Property="VerticalAlignment" Value="Center"/>
             </Trigger>
             <Trigger Property="IndexPlacement" Value="{x:Static crystal:NavigationIndexPlacement.Left}">
-                <Setter TargetName="PART_Index" Property="Grid.Column" Value="0" />
-                <Setter TargetName="PART_Index" Property="Grid.ColumnSpan" Value="1" />
-                <Setter TargetName="PART_Index" Property="Grid.Row" Value="0" />
-                <Setter TargetName="PART_Index" Property="Grid.RowSpan" Value="3" />
-                <Setter TargetName="PART_Index" Property="HorizontalAlignment" Value="Center" />
+                <Setter TargetName="PART_Index" Property="Grid.Column" Value="0"/>
+                <Setter TargetName="PART_Index" Property="Grid.ColumnSpan" Value="1"/>
+                <Setter TargetName="PART_Index" Property="Grid.Row" Value="0"/>
+                <Setter TargetName="PART_Index" Property="Grid.RowSpan" Value="3"/>
+                <Setter TargetName="PART_Index" Property="HorizontalAlignment" Value="Center"/>
                 <Setter TargetName="PART_Index" Property="ItemsPanel">
                     <Setter.Value>
                         <ItemsPanelTemplate>
                             <UniformGrid VerticalAlignment="Center"
                                          Columns="1"
-                                         IsItemsHost="True" />
+                                         IsItemsHost="True"/>
                         </ItemsPanelTemplate>
                     </Setter.Value>
                 </Setter>
-                <Setter TargetName="PART_Index" Property="VerticalAlignment" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IndexVerticalAlignment}" />
+                <Setter TargetName="PART_Index" Property="VerticalAlignment" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IndexVerticalAlignment}"/>
             </Trigger>
             <Trigger Property="IndexPlacement" Value="{x:Static crystal:NavigationIndexPlacement.Right}">
-                <Setter TargetName="PART_Index" Property="Grid.Column" Value="2" />
-                <Setter TargetName="PART_Index" Property="Grid.ColumnSpan" Value="1" />
-                <Setter TargetName="PART_Index" Property="Grid.Row" Value="0" />
-                <Setter TargetName="PART_Index" Property="Grid.RowSpan" Value="3" />
-                <Setter TargetName="PART_Index" Property="HorizontalAlignment" Value="Center" />
+                <Setter TargetName="PART_Index" Property="Grid.Column" Value="2"/>
+                <Setter TargetName="PART_Index" Property="Grid.ColumnSpan" Value="1"/>
+                <Setter TargetName="PART_Index" Property="Grid.Row" Value="0"/>
+                <Setter TargetName="PART_Index" Property="Grid.RowSpan" Value="3"/>
+                <Setter TargetName="PART_Index" Property="HorizontalAlignment" Value="Center"/>
                 <Setter TargetName="PART_Index" Property="ItemsPanel">
                     <Setter.Value>
                         <ItemsPanelTemplate>
                             <UniformGrid VerticalAlignment="Center"
                                          Columns="1"
-                                         IsItemsHost="True" />
+                                         IsItemsHost="True"/>
                         </ItemsPanelTemplate>
                     </Setter.Value>
                 </Setter>
-                <Setter TargetName="PART_Index" Property="VerticalAlignment" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IndexVerticalAlignment}" />
+                <Setter TargetName="PART_Index" Property="VerticalAlignment" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IndexVerticalAlignment}"/>
             </Trigger>
 
             <Trigger Property="IndexPlacement" Value="{x:Static crystal:NavigationIndexPlacement.TopOverItem}">
-                <Setter TargetName="PART_Index" Property="Grid.Column" Value="0" />
-                <Setter TargetName="PART_Index" Property="Grid.ColumnSpan" Value="3" />
-                <Setter TargetName="PART_Index" Property="Grid.Row" Value="1" />
-                <Setter TargetName="PART_Index" Property="Grid.RowSpan" Value="1" />
-                <Setter TargetName="PART_Index" Property="HorizontalAlignment" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IndexHorizontalAlignment}" />
-                <Setter TargetName="PART_Index" Property="VerticalAlignment" Value="Top" />
+                <Setter TargetName="PART_Index" Property="Grid.Column" Value="0"/>
+                <Setter TargetName="PART_Index" Property="Grid.ColumnSpan" Value="3"/>
+                <Setter TargetName="PART_Index" Property="Grid.Row" Value="1"/>
+                <Setter TargetName="PART_Index" Property="Grid.RowSpan" Value="1"/>
+                <Setter TargetName="PART_Index" Property="HorizontalAlignment" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IndexHorizontalAlignment}"/>
+                <Setter TargetName="PART_Index" Property="VerticalAlignment" Value="Top"/>
             </Trigger>
             <Trigger Property="IndexPlacement" Value="{x:Static crystal:NavigationIndexPlacement.BottomOverItem}">
-                <Setter TargetName="PART_Index" Property="Grid.Column" Value="0" />
-                <Setter TargetName="PART_Index" Property="Grid.ColumnSpan" Value="3" />
-                <Setter TargetName="PART_Index" Property="Grid.Row" Value="1" />
-                <Setter TargetName="PART_Index" Property="Grid.RowSpan" Value="1" />
-                <Setter TargetName="PART_Index" Property="HorizontalAlignment" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IndexHorizontalAlignment}" />
-                <Setter TargetName="PART_Index" Property="VerticalAlignment" Value="Bottom" />
+                <Setter TargetName="PART_Index" Property="Grid.Column" Value="0"/>
+                <Setter TargetName="PART_Index" Property="Grid.ColumnSpan" Value="3"/>
+                <Setter TargetName="PART_Index" Property="Grid.Row" Value="1"/>
+                <Setter TargetName="PART_Index" Property="Grid.RowSpan" Value="1"/>
+                <Setter TargetName="PART_Index" Property="HorizontalAlignment" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IndexHorizontalAlignment}"/>
+                <Setter TargetName="PART_Index" Property="VerticalAlignment" Value="Bottom"/>
             </Trigger>
             <Trigger Property="IndexPlacement" Value="{x:Static crystal:NavigationIndexPlacement.LeftOverItem}">
-                <Setter TargetName="PART_Index" Property="Grid.Column" Value="1" />
-                <Setter TargetName="PART_Index" Property="Grid.ColumnSpan" Value="1" />
-                <Setter TargetName="PART_Index" Property="Grid.Row" Value="0" />
-                <Setter TargetName="PART_Index" Property="Grid.RowSpan" Value="3" />
-                <Setter TargetName="PART_Index" Property="HorizontalAlignment" Value="Left" />
+                <Setter TargetName="PART_Index" Property="Grid.Column" Value="1"/>
+                <Setter TargetName="PART_Index" Property="Grid.ColumnSpan" Value="1"/>
+                <Setter TargetName="PART_Index" Property="Grid.Row" Value="0"/>
+                <Setter TargetName="PART_Index" Property="Grid.RowSpan" Value="3"/>
+                <Setter TargetName="PART_Index" Property="HorizontalAlignment" Value="Left"/>
                 <Setter TargetName="PART_Index" Property="ItemsPanel">
                     <Setter.Value>
                         <ItemsPanelTemplate>
                             <UniformGrid VerticalAlignment="Center"
                                          Columns="1"
-                                         IsItemsHost="True" />
+                                         IsItemsHost="True"/>
                         </ItemsPanelTemplate>
                     </Setter.Value>
                 </Setter>
-                <Setter TargetName="PART_Index" Property="VerticalAlignment" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IndexVerticalAlignment}" />
+                <Setter TargetName="PART_Index" Property="VerticalAlignment" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IndexVerticalAlignment}"/>
             </Trigger>
             <Trigger Property="IndexPlacement" Value="{x:Static crystal:NavigationIndexPlacement.RightOverItem}">
-                <Setter TargetName="PART_Index" Property="Grid.Column" Value="1" />
-                <Setter TargetName="PART_Index" Property="Grid.ColumnSpan" Value="1" />
-                <Setter TargetName="PART_Index" Property="Grid.Row" Value="0" />
-                <Setter TargetName="PART_Index" Property="Grid.RowSpan" Value="3" />
-                <Setter TargetName="PART_Index" Property="HorizontalAlignment" Value="Right" />
+                <Setter TargetName="PART_Index" Property="Grid.Column" Value="1"/>
+                <Setter TargetName="PART_Index" Property="Grid.ColumnSpan" Value="1"/>
+                <Setter TargetName="PART_Index" Property="Grid.Row" Value="0"/>
+                <Setter TargetName="PART_Index" Property="Grid.RowSpan" Value="3"/>
+                <Setter TargetName="PART_Index" Property="HorizontalAlignment" Value="Right"/>
                 <Setter TargetName="PART_Index" Property="ItemsPanel">
                     <Setter.Value>
                         <ItemsPanelTemplate>
                             <UniformGrid VerticalAlignment="Center"
                                          Columns="1"
-                                         IsItemsHost="True" />
+                                         IsItemsHost="True"/>
                         </ItemsPanelTemplate>
                     </Setter.Value>
                 </Setter>
-                <Setter TargetName="PART_Index" Property="VerticalAlignment" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IndexVerticalAlignment}" />
+                <Setter TargetName="PART_Index" Property="VerticalAlignment" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IndexVerticalAlignment}"/>
             </Trigger>
 
             <MultiTrigger>
                 <MultiTrigger.Conditions>
-                    <Condition Property="IsMouseOver" Value="True" />
-                    <Condition Property="MouseHoverBorderEnabled" Value="True" />
+                    <Condition Property="IsMouseOver" Value="True"/>
+                    <Condition Property="MouseHoverBorderEnabled" Value="True"/>
                 </MultiTrigger.Conditions>
-                <Setter TargetName="PART_HoverBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=MouseHoverBorderBrush, Mode=OneWay}" />
+                <Setter TargetName="PART_HoverBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=MouseHoverBorderBrush, Mode=OneWay}"/>
             </MultiTrigger>
 
             <Trigger Property="MouseHoverBorderEnabled" Value="False">
-                <Setter TargetName="PART_HoverBorder" Property="BorderThickness" Value="0" />
+                <Setter TargetName="PART_HoverBorder" Property="BorderThickness" Value="0"/>
             </Trigger>
 
             <MultiTrigger>
                 <MultiTrigger.Conditions>
-                    <Condition Property="IsNavigationEnabled" Value="True" />
-                    <Condition Property="Orientation" Value="Vertical" />
-                    <Condition Property="NavigationButtonsPosition" Value="Outside" />
+                    <Condition Property="IsNavigationEnabled" Value="True"/>
+                    <Condition Property="Orientation" Value="Vertical"/>
+                    <Condition Property="NavigationButtonsPosition" Value="Outside"/>
                 </MultiTrigger.Conditions>
-                <Setter TargetName="PART_BackButton" Property="Grid.Column" Value="1" />
-                <Setter TargetName="PART_DownButton" Property="Grid.Row" Value="2" />
-                <Setter TargetName="PART_ForwardButton" Property="Grid.Column" Value="1" />
-                <Setter TargetName="PART_UpButton" Property="Grid.Row" Value="0" />
+                <Setter TargetName="PART_BackButton" Property="Grid.Column" Value="1"/>
+                <Setter TargetName="PART_DownButton" Property="Grid.Row" Value="2"/>
+                <Setter TargetName="PART_ForwardButton" Property="Grid.Column" Value="1"/>
+                <Setter TargetName="PART_UpButton" Property="Grid.Row" Value="0"/>
             </MultiTrigger>
 
             <MultiTrigger>
                 <MultiTrigger.Conditions>
-                    <Condition Property="IsNavigationEnabled" Value="True" />
-                    <Condition Property="Orientation" Value="Horizontal" />
-                    <Condition Property="NavigationButtonsPosition" Value="Outside" />
+                    <Condition Property="IsNavigationEnabled" Value="True"/>
+                    <Condition Property="Orientation" Value="Horizontal"/>
+                    <Condition Property="NavigationButtonsPosition" Value="Outside"/>
                 </MultiTrigger.Conditions>
-                <Setter TargetName="PART_BackButton" Property="Grid.Column" Value="0" />
-                <Setter TargetName="PART_DownButton" Property="Grid.Row" Value="1" />
-                <Setter TargetName="PART_ForwardButton" Property="Grid.Column" Value="2" />
-                <Setter TargetName="PART_UpButton" Property="Grid.Row" Value="1" />
+                <Setter TargetName="PART_BackButton" Property="Grid.Column" Value="0"/>
+                <Setter TargetName="PART_DownButton" Property="Grid.Row" Value="1"/>
+                <Setter TargetName="PART_ForwardButton" Property="Grid.Column" Value="2"/>
+                <Setter TargetName="PART_UpButton" Property="Grid.Row" Value="1"/>
             </MultiTrigger>
         </ControlTemplate.Triggers>
         <ControlTemplate.Resources>
@@ -345,36 +345,36 @@
                 <DoubleAnimation AccelerationRatio="1.0"
                                  SpeedRatio="2.5"
                                  Storyboard.TargetProperty="Height"
-                                 To="30.0" />
+                                 To="30.0"/>
             </Storyboard>
             <Storyboard x:Key="HideBannerStoryboard">
                 <DoubleAnimation AccelerationRatio="1.0"
                                  SpeedRatio="2.5"
                                  Storyboard.TargetProperty="Height"
-                                 To="0.0" />
+                                 To="0.0"/>
             </Storyboard>
             <Storyboard x:Key="HideControlStoryboard">
                 <DoubleAnimation AccelerationRatio="1.0"
                                  SpeedRatio="2.5"
                                  Storyboard.TargetProperty="Opacity"
-                                 To="0.0" />
+                                 To="0.0"/>
             </Storyboard>
             <Storyboard x:Key="ShowControlStoryboard">
                 <DoubleAnimation AccelerationRatio="1.0"
                                  SpeedRatio="2.5"
                                  Storyboard.TargetProperty="Opacity"
-                                 To="1.0" />
+                                 To="1.0"/>
             </Storyboard>
         </ControlTemplate.Resources>
     </ControlTemplate>
 
     <Style x:Key="Crystal.Styles.FlipViewItem" TargetType="{x:Type crystal:FlipViewItem}">
-        <Setter Property="Background" Value="{x:Null}" />
-        <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource Self}, Path=Owner.Foreground, Mode=OneWay}" />
-        <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, Mode=OneWay, FallbackValue=Stretch, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
-        <Setter Property="RenderOptions.ClearTypeHint" Value="{Binding Path=(RenderOptions.ClearTypeHint), Mode=OneWay, FallbackValue=Auto, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" />
-        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Background" Value="{x:Null}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource Self}, Path=Owner.Foreground, Mode=OneWay}"/>
+        <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, Mode=OneWay, FallbackValue=Stretch, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+        <Setter Property="RenderOptions.ClearTypeHint" Value="{Binding Path=(RenderOptions.ClearTypeHint), Mode=OneWay, FallbackValue=Auto, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type crystal:FlipViewItem}">
@@ -385,49 +385,49 @@
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                         <Grid Margin="{TemplateBinding BorderThickness}">
                             <ContentPresenter x:Name="ContentPresenter"
                                               Margin="{TemplateBinding Padding}"
                                               HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                         </Grid>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.HoverBackgroundBrush), Mode=OneWay}" />
-                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.HoverForegroundBrush), Mode=OneWay}" />
+                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.HoverBackgroundBrush), Mode=OneWay}"/>
+                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.HoverForegroundBrush), Mode=OneWay}"/>
                         </Trigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=Owner.IsMouseOver, Mode=OneWay}" Value="True" />
-                                <Condition Binding="{Binding NavigationButtonsPosition, FallbackValue={x:Static crystal:NavigationButtonsPosition.Inside}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type crystal:FlipView}}}" Value="{x:Static crystal:NavigationButtonsPosition.Inside}" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=Owner.IsMouseOver, Mode=OneWay}" Value="True"/>
+                                <Condition Binding="{Binding NavigationButtonsPosition, FallbackValue={x:Static crystal:NavigationButtonsPosition.Inside}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type crystal:FlipView}}}" Value="{x:Static crystal:NavigationButtonsPosition.Inside}"/>
                             </MultiDataTrigger.Conditions>
-                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.HoverBackgroundBrush), Mode=OneWay}" />
-                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.HoverForegroundBrush), Mode=OneWay}" />
+                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.HoverBackgroundBrush), Mode=OneWay}"/>
+                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.HoverForegroundBrush), Mode=OneWay}"/>
                         </MultiDataTrigger>
 
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.DisabledBackgroundBrush), Mode=OneWay}" />
-                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.DisabledForegroundBrush), Mode=OneWay}" />
-                            <Setter TargetName="RootGrid" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Background, Mode=OneWay}" />
+                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.DisabledBackgroundBrush), Mode=OneWay}"/>
+                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.DisabledForegroundBrush), Mode=OneWay}"/>
+                            <Setter TargetName="RootGrid" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Background, Mode=OneWay}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, Mode=OneWay, FallbackValue=Stretch, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
-        <Setter Property="crystal:ItemHelper.DisabledBackgroundBrush" Value="{Binding RelativeSource={RelativeSource Self}, Path=Background, Mode=OneWay}" />
-        <Setter Property="crystal:ItemHelper.DisabledForegroundBrush" Value="{Binding RelativeSource={RelativeSource Self}, Path=Owner.Foreground, Mode=OneWay}" />
-        <Setter Property="crystal:ItemHelper.HoverBackgroundBrush" Value="{Binding RelativeSource={RelativeSource Self}, Path=Background, Mode=OneWay}" />
-        <Setter Property="crystal:ItemHelper.HoverForegroundBrush" Value="{Binding RelativeSource={RelativeSource Self}, Path=Owner.Foreground, Mode=OneWay}" />
+        <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, Mode=OneWay, FallbackValue=Stretch, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+        <Setter Property="crystal:ItemHelper.DisabledBackgroundBrush" Value="{Binding RelativeSource={RelativeSource Self}, Path=Background, Mode=OneWay}"/>
+        <Setter Property="crystal:ItemHelper.DisabledForegroundBrush" Value="{Binding RelativeSource={RelativeSource Self}, Path=Owner.Foreground, Mode=OneWay}"/>
+        <Setter Property="crystal:ItemHelper.HoverBackgroundBrush" Value="{Binding RelativeSource={RelativeSource Self}, Path=Background, Mode=OneWay}"/>
+        <Setter Property="crystal:ItemHelper.HoverForegroundBrush" Value="{Binding RelativeSource={RelativeSource Self}, Path=Owner.Foreground, Mode=OneWay}"/>
     </Style>
 
     <Style x:Key="Crystal.Styles.FlipView" TargetType="{x:Type crystal:FlipView}">
-        <Setter Property="BannerBackground" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
-        <Setter Property="BannerForeground" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
-        <Setter Property="BannerOpacity" Value="0.8" />
+        <Setter Property="BannerBackground" Value="{DynamicResource Crystal.Brushes.ThemeForeground}"/>
+        <Setter Property="BannerForeground" Value="{DynamicResource Crystal.Brushes.ThemeBackground}"/>
+        <Setter Property="BannerOpacity" Value="0.8"/>
         <Setter Property="ButtonBackContentTemplate">
             <Setter.Value>
                 <DataTemplate>
@@ -435,7 +435,7 @@
                           Height="18"
                           Data="F1 M 22.6563,23.75L 24.6563,25.75L 31.9063,32.75L 25.4063,32.75L 15.9063,23.75L 25.4063,14.75L 31.9063,14.75L 24.6563,21.75L 22.6563,23.75 Z "
                           Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
-                          Stretch="Fill" />
+                          Stretch="Fill"/>
                 </DataTemplate>
             </Setter.Value>
         </Setter>
@@ -446,7 +446,7 @@
                           Height="16"
                           Data="F1 M 23.9063,25L 25.9063,23L 32.9063,15.75L 32.9063,22.25L 23.9062,31.75L 14.9063,22.25L 14.9063,15.75L 21.9063,23L 23.9063,25 Z "
                           Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
-                          Stretch="Fill" />
+                          Stretch="Fill"/>
                 </DataTemplate>
             </Setter.Value>
         </Setter>
@@ -457,7 +457,7 @@
                           Height="18"
                           Data="F1 M 25.1563,23.75L 23.1563,21.75L 15.9063,14.75L 22.4063,14.75L 31.9063,23.75L 22.4063,32.75L 15.9063,32.75L 23.1563,25.75L 25.1563,23.75 Z "
                           Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
-                          Stretch="Fill" />
+                          Stretch="Fill"/>
                 </DataTemplate>
             </Setter.Value>
         </Setter>
@@ -468,21 +468,21 @@
                           Height="16"
                           Data="F1 M 23.9063,22.5L 21.9063,24.5L 14.9063,31.75L 14.9063,25.25L 23.9063,15.75L 32.9063,25.25L 32.9063,31.75L 25.9063,24.5L 23.9063,22.5 Z "
                           Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
-                          Stretch="Fill" />
+                          Stretch="Fill"/>
                 </DataTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-        <Setter Property="FontSize" Value="16" />
-        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Setter Property="IndexItemContainerStyle" Value="{DynamicResource Crystal.Styles.ListBoxItem.FlipView.Index}" />
-        <Setter Property="IsSynchronizedWithCurrentItem" Value="True" />
-        <Setter Property="KeyboardNavigation.DirectionalNavigation" Value="Cycle" />
-        <Setter Property="MinHeight" Value="100" />
-        <Setter Property="MinWidth" Value="100" />
-        <Setter Property="NavigationButtonStyle" Value="{DynamicResource Crystal.Styles.Button.FlipView.Navigation}" />
-        <Setter Property="Template" Value="{StaticResource Crystal.Templates.FlipView}" />
-        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="IndexItemContainerStyle" Value="{DynamicResource Crystal.Styles.ListBoxItem.FlipView.Index}"/>
+        <Setter Property="IsSynchronizedWithCurrentItem" Value="True"/>
+        <Setter Property="KeyboardNavigation.DirectionalNavigation" Value="Cycle"/>
+        <Setter Property="MinHeight" Value="100"/>
+        <Setter Property="MinWidth" Value="100"/>
+        <Setter Property="NavigationButtonStyle" Value="{DynamicResource Crystal.Styles.Button.FlipView.Navigation}"/>
+        <Setter Property="Template" Value="{StaticResource Crystal.Templates.FlipView}"/>
+        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
     </Style>
 
 </ResourceDictionary>

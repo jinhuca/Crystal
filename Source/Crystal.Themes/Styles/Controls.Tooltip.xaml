@@ -4,13 +4,13 @@
 
     <!--  Tooltip Style  -->
     <Style x:Key="Crystal.Styles.ToolTip" TargetType="ToolTip">
-        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Control.Background}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Gray7}" />
-        <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="FontSize" Value="{DynamicResource Crystal.Font.Size.Tooltip}" />
-        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
-        <Setter Property="Padding" Value="6 3" />
-        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Control.Background}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Gray7}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="FontSize" Value="{DynamicResource Crystal.Font.Size.Tooltip}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeForeground}"/>
+        <Setter Property="Padding" Value="6 3"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ToolTip">
@@ -28,25 +28,25 @@
                                               ContentStringFormat="{TemplateBinding ContentStringFormat}"
                                               ContentTemplate="{TemplateBinding ContentTemplate}"
                                               ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
-                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="OpenStates">
                                 <VisualStateGroup.Transitions>
                                     <VisualTransition GeneratedDuration="0:0:0.3"
                                                       From="Open"
-                                                      To="Closed" />
+                                                      To="Closed"/>
                                 </VisualStateGroup.Transitions>
                                 <VisualState x:Name="Closed">
                                     <Storyboard>
                                         <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Root" Storyboard.TargetProperty="(UIElement.Opacity)">
-                                            <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="0" />
+                                            <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="0"/>
                                         </DoubleAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Open">
                                     <Storyboard>
                                         <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Root" Storyboard.TargetProperty="(UIElement.Opacity)">
-                                            <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="1" />
+                                            <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="1"/>
                                         </DoubleAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>

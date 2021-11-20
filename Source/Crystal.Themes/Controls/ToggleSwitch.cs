@@ -679,7 +679,7 @@ namespace Crystal.Themes.Controls
             CanExecute = Command == null || CommandHelpers.CanExecuteCommandSource(this);
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         protected override bool IsEnabledCore => base.IsEnabledCore && CanExecute;
 
         private bool canExecute = true;

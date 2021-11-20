@@ -6,7 +6,7 @@
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.TabControl.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.TabControl.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
     <system:Double x:Key="Crystal.Font.Size.TabItem">12</system:Double>
@@ -14,21 +14,21 @@
     <Style x:Key="Crystal.Styles.TabControl.VisualStudio"
            BasedOn="{StaticResource Crystal.Styles.TabControl}"
            TargetType="{x:Type TabControl}">
-        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Background}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.BackgroundSelected}" />
-        <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Foreground}" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Background}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.BackgroundSelected}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Foreground}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TabControl}">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition x:Name="ColumnDefinition0" />
-                            <ColumnDefinition x:Name="ColumnDefinition1" Width="0" />
+                            <ColumnDefinition x:Name="ColumnDefinition0"/>
+                            <ColumnDefinition x:Name="ColumnDefinition1" Width="0"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition x:Name="RowDefinition0" Height="Auto" />
-                            <RowDefinition x:Name="RowDefinition1" Height="*" />
+                            <RowDefinition x:Name="RowDefinition0" Height="Auto"/>
+                            <RowDefinition x:Name="RowDefinition1" Height="*"/>
                         </Grid.RowDefinitions>
                         <Border x:Name="HeaderPanel"
                                 Grid.Row="0"
@@ -42,7 +42,7 @@
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                             <TabPanel Panel.ZIndex="1"
                                       IsItemsHost="true"
-                                      KeyboardNavigation.TabIndex="1" />
+                                      KeyboardNavigation.TabIndex="1"/>
                         </Border>
                         <Border x:Name="ContentPanel"
                                 Grid.Row="1"
@@ -57,41 +57,41 @@
                             <ContentPresenter x:Name="PART_SelectedContentHost"
                                               Margin="{TemplateBinding Padding}"
                                               ContentSource="SelectedContent"
-                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                         </Border>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="TabStripPlacement" Value="Bottom">
-                            <Setter TargetName="ContentPanel" Property="Grid.Row" Value="0" />
-                            <Setter TargetName="HeaderPanel" Property="BorderThickness" Value="0 3 0 0" />
-                            <Setter TargetName="HeaderPanel" Property="Grid.Row" Value="1" />
-                            <Setter TargetName="HeaderPanel" Property="Margin" Value="2 0 2 2" />
-                            <Setter TargetName="RowDefinition0" Property="Height" Value="*" />
-                            <Setter TargetName="RowDefinition1" Property="Height" Value="Auto" />
+                            <Setter TargetName="ContentPanel" Property="Grid.Row" Value="0"/>
+                            <Setter TargetName="HeaderPanel" Property="BorderThickness" Value="0 3 0 0"/>
+                            <Setter TargetName="HeaderPanel" Property="Grid.Row" Value="1"/>
+                            <Setter TargetName="HeaderPanel" Property="Margin" Value="2 0 2 2"/>
+                            <Setter TargetName="RowDefinition0" Property="Height" Value="*"/>
+                            <Setter TargetName="RowDefinition1" Property="Height" Value="Auto"/>
                         </Trigger>
                         <Trigger Property="TabStripPlacement" Value="Left">
-                            <Setter TargetName="ColumnDefinition0" Property="Width" Value="Auto" />
-                            <Setter TargetName="ColumnDefinition1" Property="Width" Value="*" />
-                            <Setter TargetName="ContentPanel" Property="Grid.Column" Value="1" />
-                            <Setter TargetName="ContentPanel" Property="Grid.Row" Value="0" />
-                            <Setter TargetName="HeaderPanel" Property="BorderThickness" Value="0 0 3 0" />
-                            <Setter TargetName="HeaderPanel" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="HeaderPanel" Property="Grid.Row" Value="0" />
-                            <Setter TargetName="HeaderPanel" Property="Margin" Value="2 2 0 2" />
-                            <Setter TargetName="RowDefinition0" Property="Height" Value="*" />
-                            <Setter TargetName="RowDefinition1" Property="Height" Value="0" />
+                            <Setter TargetName="ColumnDefinition0" Property="Width" Value="Auto"/>
+                            <Setter TargetName="ColumnDefinition1" Property="Width" Value="*"/>
+                            <Setter TargetName="ContentPanel" Property="Grid.Column" Value="1"/>
+                            <Setter TargetName="ContentPanel" Property="Grid.Row" Value="0"/>
+                            <Setter TargetName="HeaderPanel" Property="BorderThickness" Value="0 0 3 0"/>
+                            <Setter TargetName="HeaderPanel" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="HeaderPanel" Property="Grid.Row" Value="0"/>
+                            <Setter TargetName="HeaderPanel" Property="Margin" Value="2 2 0 2"/>
+                            <Setter TargetName="RowDefinition0" Property="Height" Value="*"/>
+                            <Setter TargetName="RowDefinition1" Property="Height" Value="0"/>
                         </Trigger>
                         <Trigger Property="TabStripPlacement" Value="Right">
-                            <Setter TargetName="ColumnDefinition0" Property="Width" Value="*" />
-                            <Setter TargetName="ColumnDefinition1" Property="Width" Value="Auto" />
-                            <Setter TargetName="ContentPanel" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="ContentPanel" Property="Grid.Row" Value="0" />
-                            <Setter TargetName="HeaderPanel" Property="BorderThickness" Value="3 0 0 0" />
-                            <Setter TargetName="HeaderPanel" Property="Grid.Column" Value="1" />
-                            <Setter TargetName="HeaderPanel" Property="Grid.Row" Value="0" />
-                            <Setter TargetName="HeaderPanel" Property="Margin" Value="0 2 2 2" />
-                            <Setter TargetName="RowDefinition0" Property="Height" Value="*" />
-                            <Setter TargetName="RowDefinition1" Property="Height" Value="0" />
+                            <Setter TargetName="ColumnDefinition0" Property="Width" Value="*"/>
+                            <Setter TargetName="ColumnDefinition1" Property="Width" Value="Auto"/>
+                            <Setter TargetName="ContentPanel" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="ContentPanel" Property="Grid.Row" Value="0"/>
+                            <Setter TargetName="HeaderPanel" Property="BorderThickness" Value="3 0 0 0"/>
+                            <Setter TargetName="HeaderPanel" Property="Grid.Column" Value="1"/>
+                            <Setter TargetName="HeaderPanel" Property="Grid.Row" Value="0"/>
+                            <Setter TargetName="HeaderPanel" Property="Margin" Value="0 2 2 2"/>
+                            <Setter TargetName="RowDefinition0" Property="Height" Value="*"/>
+                            <Setter TargetName="RowDefinition1" Property="Height" Value="0"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -100,11 +100,11 @@
     </Style>
 
     <Style x:Key="Crystal.Styles.Button.TabItemClose.VisualStudio" TargetType="{x:Type Button}">
-        <Setter Property="Background" Value="Transparent" />
-        <Setter Property="Cursor" Value="Hand" />
-        <Setter Property="Focusable" Value="False" />
-        <Setter Property="Height" Value="15" />
-        <Setter Property="Margin" Value="0 0 5 0" />
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="Height" Value="15"/>
+        <Setter Property="Margin" Value="0 0 5 0"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
@@ -118,32 +118,32 @@
                               Stroke="{DynamicResource Crystal.Brushes.CloseButton.Stroke}"
                               StrokeEndLineCap="Flat"
                               StrokeStartLineCap="Flat"
-                              StrokeThickness="2" />
+                              StrokeThickness="2"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Visibility" Value="Hidden" />
+                            <Setter Property="Visibility" Value="Hidden"/>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.CloseButton.BackgroundHighlighted}" />
-                            <Setter TargetName="ButtonPath" Property="Stroke" Value="{DynamicResource Crystal.Brushes.CloseButton.StrokeHighlighted}" />
+                            <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.CloseButton.BackgroundHighlighted}"/>
+                            <Setter TargetName="ButtonPath" Property="Stroke" Value="{DynamicResource Crystal.Brushes.CloseButton.StrokeHighlighted}"/>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="true">
-                            <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.CloseButton.BackgroundPressed}" />
-                            <Setter TargetName="ButtonPath" Property="Stroke" Value="{DynamicResource Crystal.Brushes.CloseButton.Stroke}" />
+                            <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.CloseButton.BackgroundPressed}"/>
+                            <Setter TargetName="ButtonPath" Property="Stroke" Value="{DynamicResource Crystal.Brushes.CloseButton.Stroke}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="Width" Value="15" />
+        <Setter Property="Width" Value="15"/>
     </Style>
 
     <Style x:Key="Crystal.Styles.TabItem.VisualStudio"
            BasedOn="{StaticResource Crystal.Styles.TabItem}"
            TargetType="{x:Type TabItem}">
-        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Border.Normal}" />
-        <Setter Property="Padding" Value="12 5 12 5" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Border.Normal}"/>
+        <Setter Property="Padding" Value="12 5 12 5"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TabItem}">
@@ -171,7 +171,7 @@
                                                   FontWeight="{TemplateBinding crystal:HeaderedControlHelper.HeaderFontWeight}"
                                                   Foreground="{TemplateBinding Foreground}"
                                                   RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}"
-                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                             <Button x:Name="PART_CloseButton"
                                     VerticalAlignment="Center"
                                     IsTabStop="False"
@@ -179,7 +179,7 @@
                                     Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:TabControlHelper.CloseButtonEnabled), Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Click">
-                                        <actions:CloseTabItemAction Command="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:TabControlHelper.CloseTabCommand), Mode=OneWay}" CommandParameter="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:TabControlHelper.CloseTabCommandParameter), Mode=OneWay}" />
+                                        <actions:CloseTabItemAction Command="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:TabControlHelper.CloseTabCommand), Mode=OneWay}" CommandParameter="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:TabControlHelper.CloseTabCommandParameter), Mode=OneWay}"/>
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </Button>
@@ -190,10 +190,10 @@
                             <Setter TargetName="PART_Content" Property="LayoutTransform">
                                 <Setter.Value>
                                     <TransformGroup>
-                                        <ScaleTransform />
-                                        <SkewTransform />
-                                        <RotateTransform Angle="-90" />
-                                        <TranslateTransform />
+                                        <ScaleTransform/>
+                                        <SkewTransform/>
+                                        <RotateTransform Angle="-90"/>
+                                        <TranslateTransform/>
                                     </TransformGroup>
                                 </Setter.Value>
                             </Setter>
@@ -202,43 +202,43 @@
                             <Setter TargetName="PART_Content" Property="LayoutTransform">
                                 <Setter.Value>
                                     <TransformGroup>
-                                        <ScaleTransform />
-                                        <SkewTransform />
-                                        <RotateTransform Angle="90" />
-                                        <TranslateTransform />
+                                        <ScaleTransform/>
+                                        <SkewTransform/>
+                                        <RotateTransform Angle="90"/>
+                                        <TranslateTransform/>
                                     </TransformGroup>
                                 </Setter.Value>
                             </Setter>
                         </Trigger>
                         <Trigger Property="IsSelected" Value="true">
-                            <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.BackgroundSelected}" />
-                            <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Border.Selected}" />
+                            <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.BackgroundSelected}"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Border.Selected}"/>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.BackgroundHighlighted}" />
-                            <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Border.Highlighted}" />
+                            <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.BackgroundHighlighted}"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Border.Highlighted}"/>
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsMouseOver" Value="False" />
-                                <Condition Property="IsSelected" Value="False" />
-                                <Condition Property="crystal:TabControlHelper.CloseButtonEnabled" Value="True" />
+                                <Condition Property="IsMouseOver" Value="False"/>
+                                <Condition Property="IsSelected" Value="False"/>
+                                <Condition Property="crystal:TabControlHelper.CloseButtonEnabled" Value="True"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="PART_CloseButton" Property="Visibility" Value="Hidden" />
+                            <Setter TargetName="PART_CloseButton" Property="Visibility" Value="Hidden"/>
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsMouseOver" Value="True" />
-                                <Condition Property="IsSelected" Value="True" />
+                                <Condition Property="IsMouseOver" Value="True"/>
+                                <Condition Property="IsSelected" Value="True"/>
                             </MultiTrigger.Conditions>
-                            <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.BackgroundSelected}" />
-                            <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Border.Selected}" />
+                            <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.BackgroundSelected}"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Border.Selected}"/>
                         </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="crystal:TabControlHelper.CloseButtonEnabled" Value="True" />
+        <Setter Property="crystal:TabControlHelper.CloseButtonEnabled" Value="True"/>
     </Style>
 
     <DataTemplate x:Key="Crystal.Templates.TabItem.Closable.VisualStudio">
@@ -246,8 +246,8 @@
             <ContentPresenter VerticalAlignment="Center" Content="{Binding DisplayName}">
                 <ContentPresenter.Resources>
                     <Style TargetType="TextBlock">
-                        <Setter Property="FontSize" Value="20" />
-                        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Foreground}" />
+                        <Setter Property="FontSize" Value="20"/>
+                        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Foreground}"/>
                     </Style>
                 </ContentPresenter.Resources>
             </ContentPresenter>
@@ -260,7 +260,7 @@
                     IsSynchronizedWithCurrentItem="True"
                     ItemTemplate="{StaticResource Crystal.Templates.TabItem.Closable.VisualStudio}"
                     ItemsSource="{Binding}"
-                    Style="{DynamicResource Crystal.Styles.TabControl.VisualStudio}" />
+                    Style="{DynamicResource Crystal.Styles.TabControl.VisualStudio}"/>
     </DataTemplate>
 
 </ResourceDictionary>

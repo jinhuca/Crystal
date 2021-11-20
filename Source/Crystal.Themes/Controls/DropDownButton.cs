@@ -383,7 +383,7 @@ namespace Crystal.Themes.Controls
             CanExecute = Command == null || CommandHelpers.CanExecuteCommandSource(this);
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         protected override bool IsEnabledCore => base.IsEnabledCore && CanExecute;
 
         private bool canExecute = true;
@@ -477,7 +477,7 @@ namespace Crystal.Themes.Controls
             }
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         protected override void OnMouseRightButtonUp(MouseButtonEventArgs e)
         {
             base.OnMouseRightButtonUp(e);
@@ -497,7 +497,7 @@ namespace Crystal.Themes.Controls
             }
         }
 
-        /// <summary>Invoked when the <see cref="P:System.Windows.Controls.ItemsControl.Items" /> property changes.</summary>
+        /// <summary>Invoked when the <see cref="P:System.Windows.Controls.ItemsControl.Items"/> property changes.</summary>
         /// <param name="e">Information about the change.</param>
         protected override void OnItemsChanged(NotifyCollectionChangedEventArgs e)
         {

@@ -1437,7 +1437,7 @@ namespace Crystal.Themes.Controls
       }
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     protected override IEnumerator LogicalChildren
     {
       get

@@ -16,7 +16,7 @@ namespace Crystal.Themes.Controls
     /// This RangeSelectionChangedEventArgs class contains old and new value when 
     /// RangeSelectionChanged is raised.
     /// </summary>
-    /// <seealso cref="RoutedEventArgs" />
+    /// <seealso cref="RoutedEventArgs"/>
     /// <typeparam name="T"></typeparam>
     public class RangeSelectionChangedEventArgs<T> : RoutedEventArgs
     {

@@ -2,31 +2,31 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/VS/Shadows.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/VS/CrystalWindow.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/VS/Button.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/VS/ListBox.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/VS/MenuItem.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/VS/Menu.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/VS/ContextMenu.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/VS/ScrollBar.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/VS/TabControl.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/VS/TextBox.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/VS/GroupBox.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/VS/Expander.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/VS/Shadows.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/VS/CrystalWindow.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/VS/Button.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/VS/ListBox.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/VS/MenuItem.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/VS/Menu.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/VS/ContextMenu.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/VS/ScrollBar.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/VS/TabControl.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/VS/TextBox.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/VS/GroupBox.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/VS/Expander.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
-    <Style BasedOn="{StaticResource Crystal.Styles.MenuItem.VisualStudio}" TargetType="MenuItem" />
-    <Style BasedOn="{StaticResource Crystal.Styles.Menu.VisualStudio}" TargetType="Menu" />
-    <Style BasedOn="{StaticResource Crystal.Styles.ContextMenu.VisualStudio}" TargetType="ContextMenu" />
-    <Style BasedOn="{StaticResource Crystal.Styles.Button.VisualStudio}" TargetType="Button" />
-    <Style BasedOn="{StaticResource Crystal.Styles.ListBox.VisualStudio}" TargetType="ListBox" />
-    <Style BasedOn="{StaticResource Crystal.Styles.ListBoxItem.VisualStudio}" TargetType="ListBoxItem" />
-    <Style BasedOn="{StaticResource Crystal.Styles.ScrollBar.VisualStudio}" TargetType="ScrollBar" />
-    <Style BasedOn="{StaticResource Crystal.Styles.TabItem.VisualStudio}" TargetType="TabItem" />
-    <Style BasedOn="{StaticResource Crystal.Styles.TabControl.VisualStudio}" TargetType="TabControl" />
-    <Style BasedOn="{StaticResource Crystal.Styles.TextBox.VisualStudio}" TargetType="TextBox" />
-    <Style BasedOn="{StaticResource Crystal.Styles.GroupBox.VisualStudio}" TargetType="GroupBox" />
-    <Style BasedOn="{StaticResource Crystal.Styles.Expander.VisualStudio}" TargetType="Expander" />
+    <Style BasedOn="{StaticResource Crystal.Styles.MenuItem.VisualStudio}" TargetType="MenuItem"/>
+    <Style BasedOn="{StaticResource Crystal.Styles.Menu.VisualStudio}" TargetType="Menu"/>
+    <Style BasedOn="{StaticResource Crystal.Styles.ContextMenu.VisualStudio}" TargetType="ContextMenu"/>
+    <Style BasedOn="{StaticResource Crystal.Styles.Button.VisualStudio}" TargetType="Button"/>
+    <Style BasedOn="{StaticResource Crystal.Styles.ListBox.VisualStudio}" TargetType="ListBox"/>
+    <Style BasedOn="{StaticResource Crystal.Styles.ListBoxItem.VisualStudio}" TargetType="ListBoxItem"/>
+    <Style BasedOn="{StaticResource Crystal.Styles.ScrollBar.VisualStudio}" TargetType="ScrollBar"/>
+    <Style BasedOn="{StaticResource Crystal.Styles.TabItem.VisualStudio}" TargetType="TabItem"/>
+    <Style BasedOn="{StaticResource Crystal.Styles.TabControl.VisualStudio}" TargetType="TabControl"/>
+    <Style BasedOn="{StaticResource Crystal.Styles.TextBox.VisualStudio}" TargetType="TextBox"/>
+    <Style BasedOn="{StaticResource Crystal.Styles.GroupBox.VisualStudio}" TargetType="GroupBox"/>
+    <Style BasedOn="{StaticResource Crystal.Styles.Expander.VisualStudio}" TargetType="Expander"/>
 
 </ResourceDictionary>

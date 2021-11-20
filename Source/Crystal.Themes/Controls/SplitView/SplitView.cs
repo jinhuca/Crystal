@@ -49,7 +49,7 @@ namespace Crystal.Themes.Controls
     }
 
     /// <summary>
-    ///     Gets or sets the width of the <see cref="SplitView" /> pane in its compact display mode.
+    ///     Gets or sets the width of the <see cref="SplitView"/> pane in its compact display mode.
     /// </summary>
     /// <returns>
     ///     The width of the pane in it's compact display mode. The default is 48 device-independent pixel (DIP) (defined
@@ -69,9 +69,9 @@ namespace Crystal.Themes.Controls
                                       new PropertyMetadata(null));
 
     /// <summary>
-    ///     Gets or sets the contents of the main panel of a <see cref="SplitView" />.
+    ///     Gets or sets the contents of the main panel of a <see cref="SplitView"/>.
     /// </summary>
-    /// <returns>The contents of the main panel of a <see cref="SplitView" />. The default is null.</returns>
+    /// <returns>The contents of the main panel of a <see cref="SplitView"/>. The default is null.</returns>
     public UIElement? Content
     {
       get => (UIElement?)GetValue(ContentProperty);
@@ -95,11 +95,11 @@ namespace Crystal.Themes.Controls
     }
 
     /// <summary>
-    ///     Gets of sets a value that specifies how the pane and content areas of a <see cref="SplitView" /> are shown.
+    ///     Gets of sets a value that specifies how the pane and content areas of a <see cref="SplitView"/> are shown.
     /// </summary>
     /// <returns>
-    ///     A value of the enumeration that specifies how the pane and content areas of a <see cref="SplitView" /> are
-    ///     shown. The default is <see cref="SplitViewDisplayMode.Overlay" />.
+    ///     A value of the enumeration that specifies how the pane and content areas of a <see cref="SplitView"/> are
+    ///     shown. The default is <see cref="SplitViewDisplayMode.Overlay"/>.
     /// </returns>
     public SplitViewDisplayMode DisplayMode
     {
@@ -130,7 +130,7 @@ namespace Crystal.Themes.Controls
     }
 
     /// <summary>
-    ///     Gets or sets a value that specifies whether the <see cref="SplitView" /> pane is expanded to its full width.
+    ///     Gets or sets a value that specifies whether the <see cref="SplitView"/> pane is expanded to its full width.
     /// </summary>
     /// <returns>true if the pane is expanded to its full width; otherwise, false. The default is true.</returns>
     public bool IsPaneOpen
@@ -214,10 +214,10 @@ namespace Crystal.Themes.Controls
     }
 
     /// <summary>
-    ///     Gets or sets the width of the <see cref="SplitView" /> pane when it's fully expanded.
+    ///     Gets or sets the width of the <see cref="SplitView"/> pane when it's fully expanded.
     /// </summary>
     /// <returns>
-    ///     The width of the <see cref="SplitView" /> pane when it's fully expanded. The default is 320 device-independent
+    ///     The width of the <see cref="SplitView"/> pane when it's fully expanded. The default is 320 device-independent
     ///     pixel (DIP).
     /// </returns>
     public double OpenPaneLength
@@ -244,10 +244,10 @@ namespace Crystal.Themes.Controls
     }
 
     /// <summary>
-    ///     Gets or sets the minimum width of the <see cref="SplitView" /> pane when it's fully expanded.
+    ///     Gets or sets the minimum width of the <see cref="SplitView"/> pane when it's fully expanded.
     /// </summary>
     /// <returns>
-    ///     The minimum width of the <see cref="SplitView" /> pane when it's fully expanded. The default is 320 device-independent
+    ///     The minimum width of the <see cref="SplitView"/> pane when it's fully expanded. The default is 320 device-independent
     ///     pixel (DIP).
     /// </returns>
     public double MinimumOpenPaneLength
@@ -274,10 +274,10 @@ namespace Crystal.Themes.Controls
     }
 
     /// <summary>
-    ///     Gets or sets the maximum width of the <see cref="SplitView" /> pane when it's fully expanded.
+    ///     Gets or sets the maximum width of the <see cref="SplitView"/> pane when it's fully expanded.
     /// </summary>
     /// <returns>
-    ///     The maximum width of the <see cref="SplitView" /> pane when it's fully expanded. The default is 320 device-independent
+    ///     The maximum width of the <see cref="SplitView"/> pane when it's fully expanded. The default is 320 device-independent
     ///     pixel (DIP).
     /// </returns>
     public double MaximumOpenPaneLength
@@ -334,9 +334,9 @@ namespace Crystal.Themes.Controls
                                       new PropertyMetadata(null, UpdateLogicalChild));
 
     /// <summary>
-    ///     Gets or sets the contents of the pane of a <see cref="SplitView" />.
+    ///     Gets or sets the contents of the pane of a <see cref="SplitView"/>.
     /// </summary>
-    /// <returns>The contents of the pane of a <see cref="SplitView" />. The default is null.</returns>
+    /// <returns>The contents of the pane of a <see cref="SplitView"/>. The default is null.</returns>
     public UIElement? Pane
     {
       get => (UIElement?)GetValue(PaneProperty);
@@ -351,9 +351,9 @@ namespace Crystal.Themes.Controls
                                       new PropertyMetadata(null));
 
     /// <summary>
-    ///     Gets or sets the Brush to apply to the background of the <see cref="Pane" /> area of the control.
+    ///     Gets or sets the Brush to apply to the background of the <see cref="Pane"/> area of the control.
     /// </summary>
-    /// <returns>The Brush to apply to the background of the <see cref="Pane" /> area of the control.</returns>
+    /// <returns>The Brush to apply to the background of the <see cref="Pane"/> area of the control.</returns>
     public Brush? PaneBackground
     {
       get => (Brush?)GetValue(PaneBackgroundProperty);
@@ -368,9 +368,9 @@ namespace Crystal.Themes.Controls
                                       new PropertyMetadata(null));
 
     /// <summary>
-    ///     Gets or sets the Brush to apply to the foreground of the <see cref="Pane" /> area of the control.
+    ///     Gets or sets the Brush to apply to the foreground of the <see cref="Pane"/> area of the control.
     /// </summary>
-    /// <returns>The Brush to apply to the background of the <see cref="Pane" /> area of the control.</returns>
+    /// <returns>The Brush to apply to the background of the <see cref="Pane"/> area of the control.</returns>
     public Brush? PaneForeground
     {
       get => (Brush?)GetValue(PaneForegroundProperty);
@@ -395,11 +395,11 @@ namespace Crystal.Themes.Controls
 
     /// <summary>
     ///     Gets or sets a value that specifies whether the pane is shown on the right or left side of the
-    ///     <see cref="SplitView" />.
+    ///     <see cref="SplitView"/>.
     /// </summary>
     /// <returns>
     ///     A value of the enumeration that specifies whether the pane is shown on the right or left side of the
-    ///     <see cref="SplitView" />. The default is <see cref="SplitViewPanePlacement.Left" />.
+    ///     <see cref="SplitView"/>. The default is <see cref="SplitViewPanePlacement.Left"/>.
     /// </returns>
     public SplitViewPanePlacement PanePlacement
     {
@@ -416,7 +416,7 @@ namespace Crystal.Themes.Controls
 
     /// <summary>
     ///     Gets an object that provides calculated values that can be referenced as TemplateBinding sources when defining
-    ///     templates for a <see cref="SplitView" /> control.
+    ///     templates for a <see cref="SplitView"/> control.
     /// </summary>
     /// <returns>An object that provides calculated values for templates.</returns>
     public SplitViewTemplateSettings? TemplateSettings
@@ -426,7 +426,7 @@ namespace Crystal.Themes.Controls
     }
 
     /// <summary>
-    ///     Initializes a new instance of the <see cref="SplitView" /> class.
+    ///     Initializes a new instance of the <see cref="SplitView"/> class.
     /// </summary>
     public SplitView()
     {
@@ -446,16 +446,16 @@ namespace Crystal.Themes.Controls
     }
 
     /// <summary>
-    ///     Occurs when the <see cref="SplitView" /> pane is closed.
+    ///     Occurs when the <see cref="SplitView"/> pane is closed.
     /// </summary>
     public event EventHandler? PaneClosed;
 
     /// <summary>
-    ///     Occurs when the <see cref="SplitView" /> pane is closing.
+    ///     Occurs when the <see cref="SplitView"/> pane is closing.
     /// </summary>
     public event EventHandler<SplitViewPaneClosingEventArgs>? PaneClosing;
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override void OnApplyTemplate()
     {
       if (lightDismissLayer != null)
@@ -515,7 +515,7 @@ namespace Crystal.Themes.Controls
       }
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     protected override IEnumerator LogicalChildren
     {
       get
@@ -536,7 +536,7 @@ namespace Crystal.Themes.Controls
       }
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     protected override void OnRenderSizeChanged(SizeChangedInfo info)
     {
       base.OnRenderSizeChanged(info);

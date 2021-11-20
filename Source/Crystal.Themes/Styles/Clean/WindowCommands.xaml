@@ -1,17 +1,13 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:crystal="clr-namespace:Crystal.Themes.Controls">
-
   <ResourceDictionary.MergedDictionaries>
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/WindowCommands.xaml" />
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/WindowCommands.xaml"/>
   </ResourceDictionary.MergedDictionaries>
 
-  <Style x:Key="Crystal.Styles.WindowCommands.Clean"
-         BasedOn="{StaticResource Crystal.Styles.WindowCommands.Base}"
-         TargetType="{x:Type crystal:WindowCommands}">
-    <Setter Property="SeparatorHeight" Value="11" />
-    <Setter Property="ShowLastSeparator" Value="False" />
-    <Setter Property="crystal:ControlsHelper.ContentCharacterCasing" Value="{DynamicResource Crystal.CharacterCasing.WindowCommands.Clean}" />
+  <Style x:Key="Crystal.Styles.WindowCommands.Clean" BasedOn="{StaticResource Crystal.Styles.WindowCommands.Base}" TargetType="{x:Type crystal:WindowCommands}">
+    <Setter Property="SeparatorHeight" Value="11"/>
+    <Setter Property="ShowLastSeparator" Value="False"/>
+    <Setter Property="crystal:ControlsHelper.ContentCharacterCasing" Value="{DynamicResource Crystal.CharacterCasing.WindowCommands.Clean}"/>
   </Style>
-
 </ResourceDictionary>

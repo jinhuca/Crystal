@@ -3,15 +3,15 @@
                     xmlns:crystal="clr-namespace:Crystal.Themes.Controls">
 
     <Style TargetType="{x:Type crystal:FontIcon}">
-        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-        <Setter Property="Focusable" Value="False" />
-        <Setter Property="FontFamily" Value="{DynamicResource Crystal.Fonts.Family.SymbolTheme}" />
-        <Setter Property="FontSize" Value="20" />
-        <Setter Property="FontStyle" Value="Normal" />
-        <Setter Property="FontWeight" Value="Normal" />
-        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Setter Property="IsTabStop" Value="False" />
-        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="FontFamily" Value="{DynamicResource Crystal.Fonts.Family.SymbolTheme}"/>
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="FontStyle" Value="Normal"/>
+        <Setter Property="FontWeight" Value="Normal"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type crystal:FontIcon}">
@@ -26,14 +26,14 @@
                                    Foreground="{TemplateBinding Foreground}"
                                    Style="{x:Null}"
                                    Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Glyph}"
-                                   TextAlignment="Center" />
+                                   TextAlignment="Center"/>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="TextOptions.TextRenderingMode" Value="Aliased" />
-        <Setter Property="UseLayoutRounding" Value="False" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="TextOptions.TextRenderingMode" Value="Aliased"/>
+        <Setter Property="UseLayoutRounding" Value="False"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
     </Style>
 
 </ResourceDictionary>

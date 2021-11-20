@@ -21,7 +21,7 @@ namespace Crystal.Themes.Controls
             IsDatePickerVisible = false;
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         protected override void FocusElementAfterIsDropDownOpenChanged()
         {
             if (hourInput is null)
@@ -41,7 +41,7 @@ namespace Crystal.Themes.Controls
                 });
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         protected override void SetSelectedDateTime()
         {
             if (textBox is null)

@@ -384,7 +384,7 @@ namespace Crystal.Themes.Theming
         }
 
         /// <summary>
-        /// Gets the inverse <see cref="Theme" /> of the given <see cref="Theme"/>.
+        /// Gets the inverse <see cref="Theme"/> of the given <see cref="Theme"/>.
         /// This method relies on the "Dark" or "Light" affix to be present.
         /// </summary>
         /// <param name="theme">The app theme.</param>
@@ -428,7 +428,7 @@ namespace Crystal.Themes.Theming
 
         /// <summary>
         /// Determines whether the specified resource dictionary represents a <see cref="Theme"/>.
-        /// <para />
+        /// <para/>
         /// This might include runtime themes which do not have a resource uri.
         /// </summary>
         /// <param name="resourceDictionary">The resources.</param>
@@ -441,7 +441,7 @@ namespace Crystal.Themes.Theming
 
         /// <summary>
         /// Determines whether the specified resource dictionary represents a <see cref="Theme"/> and was generated at runtime.
-        /// <para />
+        /// <para/>
         /// This might include runtime themes which do not have a resource uri.
         /// </summary>
         /// <param name="resourceDictionary">The resources.</param>

@@ -4,26 +4,26 @@
                     xmlns:crystalConverters="clr-namespace:Crystal.Themes.Converters">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.Shared.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.Shared.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
-    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 
     <!--  TextBox Style  -->
     <Style x:Key="Crystal.Styles.TextBox" TargetType="{x:Type TextBox}">
-        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Control.Background}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.TextBox.Border}" />
-        <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="CaretBrush" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
-        <Setter Property="ContextMenu" Value="{DynamicResource Crystal.TextBox.ContextMenu}" />
-        <Setter Property="FontFamily" Value="{DynamicResource Crystal.Fonts.Family.Control}" />
-        <Setter Property="FontSize" Value="{DynamicResource Crystal.Font.Size.Content}" />
-        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Text}" />
-        <Setter Property="MinHeight" Value="26" />
-        <Setter Property="Padding" Value="4" />
-        <Setter Property="SelectionBrush" Value="{DynamicResource Crystal.Brushes.Highlight}" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Control.Background}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.TextBox.Border}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CaretBrush" Value="{DynamicResource Crystal.Brushes.ThemeForeground}"/>
+        <Setter Property="ContextMenu" Value="{DynamicResource Crystal.TextBox.ContextMenu}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource Crystal.Fonts.Family.Control}"/>
+        <Setter Property="FontSize" Value="{DynamicResource Crystal.Font.Size.Content}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Text}"/>
+        <Setter Property="MinHeight" Value="26"/>
+        <Setter Property="Padding" Value="4"/>
+        <Setter Property="SelectionBrush" Value="{DynamicResource Crystal.Brushes.Highlight}"/>
         <!--  change SnapsToDevicePixels to True to view a better border and validation error  -->
-        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TextBox}">
@@ -35,7 +35,7 @@
                                     BorderThickness="{TemplateBinding BorderThickness}"
                                     CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
                                     Effect="{DynamicResource Crystal.DropShadowEffect.WaitingForData}"
-                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                         </AdornerDecorator>
 
                         <Border x:Name="Base"
@@ -43,16 +43,16 @@
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
-                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
 
                         <Grid x:Name="PART_InnerGrid" Margin="{TemplateBinding BorderThickness}">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition x:Name="TextColumn" Width="*" />
-                                <ColumnDefinition x:Name="ButtonColumn" Width="Auto" />
+                                <ColumnDefinition x:Name="TextColumn" Width="*"/>
+                                <ColumnDefinition x:Name="ButtonColumn" Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition x:Name="ButtonRow" Height="*" />
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition x:Name="ButtonRow" Height="*"/>
                             </Grid.RowDefinitions>
 
                             <ScrollViewer x:Name="PART_ContentHost"
@@ -64,7 +64,7 @@
                                           Background="{x:Null}"
                                           BorderThickness="0"
                                           IsTabStop="False"
-                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
 
                             <TextBlock x:Name="PART_Message"
                                        Grid.Row="1"
@@ -79,7 +79,7 @@
                                        TextAlignment="{TemplateBinding crystal:TextBoxHelper.WatermarkAlignment}"
                                        TextTrimming="{TemplateBinding crystal:TextBoxHelper.WatermarkTrimming}"
                                        TextWrapping="{TemplateBinding crystal:TextBoxHelper.WatermarkWrapping}"
-                                       Visibility="Collapsed" />
+                                       Visibility="Collapsed"/>
 
                             <ContentControl x:Name="PART_FloatingMessageContainer"
                                             Grid.Row="0"
@@ -90,10 +90,10 @@
                                     <MultiBinding Converter="{crystalConverters:MathMultiplyConverter}">
                                         <Binding ElementName="PART_FloatingMessage"
                                                  Mode="OneWay"
-                                                 Path="ActualHeight" />
+                                                 Path="ActualHeight"/>
                                         <Binding ElementName="PART_FloatingMessageContainer"
                                                  Mode="OneWay"
-                                                 Path="Opacity" />
+                                                 Path="Opacity"/>
                                     </MultiBinding>
                                 </ContentControl.Height>
                                 <TextBlock x:Name="PART_FloatingMessage"
@@ -110,10 +110,10 @@
                                                 <MultiBinding Converter="{crystalConverters:MathSubtractConverter}">
                                                     <Binding ElementName="PART_FloatingMessage"
                                                              Mode="OneWay"
-                                                             Path="ActualHeight" />
+                                                             Path="ActualHeight"/>
                                                     <Binding ElementName="PART_FloatingMessageContainer"
                                                              Mode="OneWay"
-                                                             Path="ActualHeight" />
+                                                             Path="ActualHeight"/>
                                                 </MultiBinding>
                                             </TranslateTransform.Y>
                                         </TranslateTransform>
@@ -135,7 +135,7 @@
                                     Foreground="{TemplateBinding Foreground}"
                                     IsTabStop="False"
                                     Style="{DynamicResource Crystal.Styles.Button.Chromeless}"
-                                    Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:TextBoxHelper.ClearTextButton), Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                    Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:TextBoxHelper.ClearTextButton), Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                         </Grid>
 
                         <Border x:Name="DisabledVisualElement"
@@ -146,116 +146,116 @@
                                 IsHitTestVisible="False"
                                 Opacity="0"
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.DisabledVisualElementVisibility), Mode=OneWay}" />
+                                Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.DisabledVisualElementVisibility), Mode=OneWay}"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(crystal:TextBoxHelper.ButtonsAlignment)}" Value="Left">
-                            <Setter TargetName="ButtonColumn" Property="Width" Value="*" />
-                            <Setter TargetName="PART_ClearText" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="PART_ContentHost" Property="Grid.Column" Value="1" />
-                            <Setter TargetName="PART_FloatingMessageContainer" Property="Grid.Column" Value="1" />
-                            <Setter TargetName="PART_Message" Property="Grid.Column" Value="1" />
-                            <Setter TargetName="TextColumn" Property="Width" Value="Auto" />
+                            <Setter TargetName="ButtonColumn" Property="Width" Value="*"/>
+                            <Setter TargetName="PART_ClearText" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="PART_ContentHost" Property="Grid.Column" Value="1"/>
+                            <Setter TargetName="PART_FloatingMessageContainer" Property="Grid.Column" Value="1"/>
+                            <Setter TargetName="PART_Message" Property="Grid.Column" Value="1"/>
+                            <Setter TargetName="TextColumn" Property="Width" Value="Auto"/>
                         </DataTrigger>
 
                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Text}" Value="">
-                            <Setter TargetName="PART_Message" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_Message" Property="Visibility" Value="Visible"/>
                         </DataTrigger>
 
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding Path=IsVisible, RelativeSource={RelativeSource Self}}" Value="True" />
-                                <Condition Binding="{Binding Path=(crystal:TextBoxHelper.UseFloatingWatermark), RelativeSource={RelativeSource Self}}" Value="True" />
-                                <Condition Binding="{Binding Path=(crystal:TextBoxHelper.HasText), RelativeSource={RelativeSource Self}}" Value="True" />
-                                <Condition Binding="{Binding Path=(crystal:TextBoxHelper.Watermark), RelativeSource={RelativeSource Self}, Converter={x:Static crystalConverters:StringIsNullOrEmptyConverter.Default}}" Value="False" />
+                                <Condition Binding="{Binding Path=IsVisible, RelativeSource={RelativeSource Self}}" Value="True"/>
+                                <Condition Binding="{Binding Path=(crystal:TextBoxHelper.UseFloatingWatermark), RelativeSource={RelativeSource Self}}" Value="True"/>
+                                <Condition Binding="{Binding Path=(crystal:TextBoxHelper.HasText), RelativeSource={RelativeSource Self}}" Value="True"/>
+                                <Condition Binding="{Binding Path=(crystal:TextBoxHelper.Watermark), RelativeSource={RelativeSource Self}, Converter={x:Static crystalConverters:StringIsNullOrEmptyConverter.Default}}" Value="False"/>
                             </MultiDataTrigger.Conditions>
                             <MultiDataTrigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ShowFloatingMessage}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ShowFloatingMessage}"/>
                             </MultiDataTrigger.EnterActions>
                             <MultiDataTrigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.HideFloatingMessage}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.HideFloatingMessage}"/>
                             </MultiDataTrigger.ExitActions>
                         </MultiDataTrigger>
 
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(crystal:TextBoxHelper.ButtonsAlignment)}" Value="Right" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(crystal:TextBoxHelper.ClearTextButton)}" Value="False" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(crystal:TextBoxHelper.ButtonsAlignment)}" Value="Right"/>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(crystal:TextBoxHelper.ClearTextButton)}" Value="False"/>
                             </MultiDataTrigger.Conditions>
-                            <Setter TargetName="PART_ContentHost" Property="Grid.ColumnSpan" Value="2" />
-                            <Setter TargetName="PART_Message" Property="Grid.ColumnSpan" Value="2" />
+                            <Setter TargetName="PART_ContentHost" Property="Grid.ColumnSpan" Value="2"/>
+                            <Setter TargetName="PART_Message" Property="Grid.ColumnSpan" Value="2"/>
                         </MultiDataTrigger>
 
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Base" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.MouseOverBorderBrush)}" />
+                            <Setter TargetName="Base" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.MouseOverBorderBrush)}"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="DisabledVisualElement" Property="Opacity" Value="0.6" />
+                            <Setter TargetName="DisabledVisualElement" Property="Opacity" Value="0.6"/>
                         </Trigger>
                         <Trigger Property="IsReadOnly" Value="True">
-                            <Setter TargetName="PART_ClearText" Property="IsEnabled" Value="False" />
+                            <Setter TargetName="PART_ClearText" Property="IsEnabled" Value="False"/>
                         </Trigger>
                         <Trigger Property="IsFocused" Value="True">
-                            <Setter TargetName="Base" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.FocusBorderBrush)}" />
-                            <Setter TargetName="PART_FloatingMessage" Property="Foreground" Value="{DynamicResource Crystal.Brushes.TextBlock.FloatingMessage}" />
-                            <Setter TargetName="PART_FloatingMessage" Property="Opacity" Value="1" />
+                            <Setter TargetName="Base" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.FocusBorderBrush)}"/>
+                            <Setter TargetName="PART_FloatingMessage" Property="Foreground" Value="{DynamicResource Crystal.Brushes.TextBlock.FloatingMessage}"/>
+                            <Setter TargetName="PART_FloatingMessage" Property="Opacity" Value="1"/>
                         </Trigger>
                         <Trigger SourceName="PART_ClearText" Property="IsMouseOver" Value="True">
-                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray8}" />
-                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource Crystal.Brushes.Accent}" />
+                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray8}"/>
+                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource Crystal.Brushes.Accent}"/>
                         </Trigger>
                         <Trigger SourceName="PART_ClearText" Property="IsPressed" Value="True">
-                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
-                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
+                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeForeground}"/>
+                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeBackground}"/>
                         </Trigger>
 
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="crystal:TextBoxHelper.HasText" Value="False" />
-                                <Condition Property="IsFocused" Value="True" />
+                                <Condition Property="crystal:TextBoxHelper.HasText" Value="False"/>
+                                <Condition Property="IsFocused" Value="True"/>
                             </MultiTrigger.Conditions>
                             <MultiTrigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.EnterGotFocus}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.EnterGotFocus}"/>
                             </MultiTrigger.EnterActions>
                             <MultiTrigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ExitGotFocus}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ExitGotFocus}"/>
                             </MultiTrigger.ExitActions>
                         </MultiTrigger>
 
                         <Trigger Property="crystal:TextBoxHelper.HasText" Value="True">
                             <Trigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.EnterHasText}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.EnterHasText}"/>
                             </Trigger.EnterActions>
                             <Trigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ExitHasText}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ExitHasText}"/>
                             </Trigger.ExitActions>
                         </Trigger>
 
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsVisible" Value="True" />
-                                <Condition Property="crystal:TextBoxHelper.IsWaitingForData" Value="True" />
+                                <Condition Property="IsVisible" Value="True"/>
+                                <Condition Property="crystal:TextBoxHelper.IsWaitingForData" Value="True"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="PART_WaitingForDataEffectAdornerDecorator" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_WaitingForDataEffectAdornerDecorator" Property="Visibility" Value="Visible"/>
                             <MultiTrigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.WaitingForData}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.WaitingForData}"/>
                             </MultiTrigger.EnterActions>
                         </MultiTrigger>
                         <Trigger Property="crystal:TextBoxHelper.IsWaitingForData" Value="False">
-                            <Setter TargetName="PART_WaitingForDataEffectAdornerDecorator" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_WaitingForDataEffectAdornerDecorator" Property="Visibility" Value="Collapsed"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource Crystal.Templates.ValidationError}" />
-        <Setter Property="crystal:ControlsHelper.FocusBorderBrush" Value="{DynamicResource Crystal.Brushes.TextBox.Border.Focus}" />
-        <Setter Property="crystal:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource Crystal.Brushes.TextBox.Border.MouseOver}" />
-        <Setter Property="crystal:TextBoxHelper.ButtonFontSize" Value="{DynamicResource Crystal.Font.Size.Button.ClearText}" />
-        <Setter Property="crystal:TextBoxHelper.ButtonWidth" Value="22" />
-        <Setter Property="crystal:TextBoxHelper.IsMonitoring" Value="True" />
-        <Setter Property="crystal:TextBoxHelper.IsSpellCheckContextMenuEnabled" Value="{Binding RelativeSource={RelativeSource Self}, Path=(SpellCheck.IsEnabled)}" />
-        <Setter Property="crystal:TextBoxHelper.WatermarkWrapping" Value="{Binding RelativeSource={RelativeSource Self}, Path=TextWrapping, Mode=OneWay}" />
+        <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource Crystal.Templates.ValidationError}"/>
+        <Setter Property="crystal:ControlsHelper.FocusBorderBrush" Value="{DynamicResource Crystal.Brushes.TextBox.Border.Focus}"/>
+        <Setter Property="crystal:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource Crystal.Brushes.TextBox.Border.MouseOver}"/>
+        <Setter Property="crystal:TextBoxHelper.ButtonFontSize" Value="{DynamicResource Crystal.Font.Size.Button.ClearText}"/>
+        <Setter Property="crystal:TextBoxHelper.ButtonWidth" Value="22"/>
+        <Setter Property="crystal:TextBoxHelper.IsMonitoring" Value="True"/>
+        <Setter Property="crystal:TextBoxHelper.IsSpellCheckContextMenuEnabled" Value="{Binding RelativeSource={RelativeSource Self}, Path=(SpellCheck.IsEnabled)}"/>
+        <Setter Property="crystal:TextBoxHelper.WatermarkWrapping" Value="{Binding RelativeSource={RelativeSource Self}, Path=TextWrapping, Mode=OneWay}"/>
     </Style>
 
     <Style x:Key="Crystal.Styles.TextBox.Button"
@@ -273,7 +273,7 @@
                                     BorderThickness="{TemplateBinding BorderThickness}"
                                     CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
                                     Effect="{DynamicResource Crystal.DropShadowEffect.WaitingForData}"
-                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                         </AdornerDecorator>
 
                         <Border x:Name="Base"
@@ -281,16 +281,16 @@
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
-                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
 
                         <Grid x:Name="PART_InnerGrid" Margin="{TemplateBinding BorderThickness}">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition x:Name="TextColumn" Width="*" />
-                                <ColumnDefinition x:Name="ButtonColumn" Width="Auto" />
+                                <ColumnDefinition x:Name="TextColumn" Width="*"/>
+                                <ColumnDefinition x:Name="ButtonColumn" Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition x:Name="ButtonRow" Height="*" />
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition x:Name="ButtonRow" Height="*"/>
                             </Grid.RowDefinitions>
 
                             <ScrollViewer x:Name="PART_ContentHost"
@@ -301,7 +301,7 @@
                                           VerticalAlignment="Stretch"
                                           Background="{x:Null}"
                                           BorderThickness="0"
-                                          IsTabStop="False" />
+                                          IsTabStop="False"/>
 
                             <TextBlock x:Name="PART_Message"
                                        Grid.Row="1"
@@ -316,7 +316,7 @@
                                        TextAlignment="{TemplateBinding crystal:TextBoxHelper.WatermarkAlignment}"
                                        TextTrimming="{TemplateBinding crystal:TextBoxHelper.WatermarkTrimming}"
                                        TextWrapping="{TemplateBinding crystal:TextBoxHelper.WatermarkWrapping}"
-                                       Visibility="Collapsed" />
+                                       Visibility="Collapsed"/>
 
                             <ContentControl x:Name="PART_FloatingMessageContainer"
                                             Grid.Row="0"
@@ -327,10 +327,10 @@
                                     <MultiBinding Converter="{crystalConverters:MathMultiplyConverter}">
                                         <Binding ElementName="PART_FloatingMessage"
                                                  Mode="OneWay"
-                                                 Path="ActualHeight" />
+                                                 Path="ActualHeight"/>
                                         <Binding ElementName="PART_FloatingMessageContainer"
                                                  Mode="OneWay"
-                                                 Path="Opacity" />
+                                                 Path="Opacity"/>
                                     </MultiBinding>
                                 </ContentControl.Height>
                                 <TextBlock x:Name="PART_FloatingMessage"
@@ -347,10 +347,10 @@
                                                 <MultiBinding Converter="{crystalConverters:MathSubtractConverter}">
                                                     <Binding ElementName="PART_FloatingMessage"
                                                              Mode="OneWay"
-                                                             Path="ActualHeight" />
+                                                             Path="ActualHeight"/>
                                                     <Binding ElementName="PART_FloatingMessageContainer"
                                                              Mode="OneWay"
-                                                             Path="ActualHeight" />
+                                                             Path="ActualHeight"/>
                                                 </MultiBinding>
                                             </TranslateTransform.Y>
                                         </TranslateTransform>
@@ -373,7 +373,7 @@
                                     IsTabStop="False"
                                     Style="{DynamicResource Crystal.Styles.Button.Chromeless}"
                                     Template="{TemplateBinding crystal:TextBoxHelper.ButtonTemplate}"
-                                    Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:TextBoxHelper.TextButton), Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                    Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:TextBoxHelper.TextButton), Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                         </Grid>
 
                         <Border x:Name="DisabledVisualElement"
@@ -384,128 +384,128 @@
                                 IsHitTestVisible="False"
                                 Opacity="0"
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.DisabledVisualElementVisibility), Mode=OneWay}" />
+                                Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.DisabledVisualElementVisibility), Mode=OneWay}"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(crystal:TextBoxHelper.ButtonsAlignment)}" Value="Left">
-                            <Setter TargetName="ButtonColumn" Property="Width" Value="*" />
-                            <Setter TargetName="PART_ClearText" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="PART_ContentHost" Property="Grid.Column" Value="1" />
-                            <Setter TargetName="PART_FloatingMessageContainer" Property="Grid.Column" Value="1" />
-                            <Setter TargetName="PART_Message" Property="Grid.Column" Value="1" />
-                            <Setter TargetName="TextColumn" Property="Width" Value="Auto" />
+                            <Setter TargetName="ButtonColumn" Property="Width" Value="*"/>
+                            <Setter TargetName="PART_ClearText" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="PART_ContentHost" Property="Grid.Column" Value="1"/>
+                            <Setter TargetName="PART_FloatingMessageContainer" Property="Grid.Column" Value="1"/>
+                            <Setter TargetName="PART_Message" Property="Grid.Column" Value="1"/>
+                            <Setter TargetName="TextColumn" Property="Width" Value="Auto"/>
                         </DataTrigger>
 
                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Text}" Value="">
-                            <Setter TargetName="PART_Message" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_Message" Property="Visibility" Value="Visible"/>
                         </DataTrigger>
 
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding Path=IsVisible, RelativeSource={RelativeSource Self}}" Value="True" />
-                                <Condition Binding="{Binding Path=(crystal:TextBoxHelper.UseFloatingWatermark), RelativeSource={RelativeSource Self}}" Value="True" />
-                                <Condition Binding="{Binding Path=(crystal:TextBoxHelper.HasText), RelativeSource={RelativeSource Self}}" Value="True" />
-                                <Condition Binding="{Binding Path=(crystal:TextBoxHelper.Watermark), RelativeSource={RelativeSource Self}, Converter={x:Static crystalConverters:StringIsNullOrEmptyConverter.Default}}" Value="False" />
+                                <Condition Binding="{Binding Path=IsVisible, RelativeSource={RelativeSource Self}}" Value="True"/>
+                                <Condition Binding="{Binding Path=(crystal:TextBoxHelper.UseFloatingWatermark), RelativeSource={RelativeSource Self}}" Value="True"/>
+                                <Condition Binding="{Binding Path=(crystal:TextBoxHelper.HasText), RelativeSource={RelativeSource Self}}" Value="True"/>
+                                <Condition Binding="{Binding Path=(crystal:TextBoxHelper.Watermark), RelativeSource={RelativeSource Self}, Converter={x:Static crystalConverters:StringIsNullOrEmptyConverter.Default}}" Value="False"/>
                             </MultiDataTrigger.Conditions>
                             <MultiDataTrigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ShowFloatingMessage}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ShowFloatingMessage}"/>
                             </MultiDataTrigger.EnterActions>
                             <MultiDataTrigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.HideFloatingMessage}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.HideFloatingMessage}"/>
                             </MultiDataTrigger.ExitActions>
                         </MultiDataTrigger>
 
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(crystal:TextBoxHelper.ButtonsAlignment)}" Value="Right" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(crystal:TextBoxHelper.TextButton)}" Value="False" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(crystal:TextBoxHelper.ButtonsAlignment)}" Value="Right"/>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(crystal:TextBoxHelper.TextButton)}" Value="False"/>
                             </MultiDataTrigger.Conditions>
-                            <Setter TargetName="PART_ContentHost" Property="Grid.ColumnSpan" Value="2" />
-                            <Setter TargetName="PART_Message" Property="Grid.ColumnSpan" Value="2" />
+                            <Setter TargetName="PART_ContentHost" Property="Grid.ColumnSpan" Value="2"/>
+                            <Setter TargetName="PART_Message" Property="Grid.ColumnSpan" Value="2"/>
                         </MultiDataTrigger>
 
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Base" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.MouseOverBorderBrush)}" />
+                            <Setter TargetName="Base" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.MouseOverBorderBrush)}"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="DisabledVisualElement" Property="Opacity" Value="0.6" />
+                            <Setter TargetName="DisabledVisualElement" Property="Opacity" Value="0.6"/>
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsReadOnly" Value="True" />
-                                <Condition Property="crystal:TextBoxHelper.ButtonCommand" Value="{x:Null}" />
+                                <Condition Property="IsReadOnly" Value="True"/>
+                                <Condition Property="crystal:TextBoxHelper.ButtonCommand" Value="{x:Null}"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="PART_ClearText" Property="IsEnabled" Value="False" />
+                            <Setter TargetName="PART_ClearText" Property="IsEnabled" Value="False"/>
                         </MultiTrigger>
                         <Trigger Property="IsFocused" Value="True">
-                            <Setter TargetName="Base" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.FocusBorderBrush)}" />
-                            <Setter TargetName="PART_FloatingMessage" Property="Foreground" Value="{DynamicResource Crystal.Brushes.TextBlock.FloatingMessage}" />
-                            <Setter TargetName="PART_FloatingMessage" Property="Opacity" Value="1" />
+                            <Setter TargetName="Base" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.FocusBorderBrush)}"/>
+                            <Setter TargetName="PART_FloatingMessage" Property="Foreground" Value="{DynamicResource Crystal.Brushes.TextBlock.FloatingMessage}"/>
+                            <Setter TargetName="PART_FloatingMessage" Property="Opacity" Value="1"/>
                         </Trigger>
                         <Trigger SourceName="PART_ClearText" Property="IsMouseOver" Value="True">
-                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray8}" />
-                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource Crystal.Brushes.Accent}" />
+                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray8}"/>
+                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource Crystal.Brushes.Accent}"/>
                         </Trigger>
                         <Trigger SourceName="PART_ClearText" Property="IsPressed" Value="True">
-                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
-                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
+                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeForeground}"/>
+                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeBackground}"/>
                         </Trigger>
 
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="crystal:TextBoxHelper.HasText" Value="False" />
-                                <Condition Property="IsFocused" Value="True" />
+                                <Condition Property="crystal:TextBoxHelper.HasText" Value="False"/>
+                                <Condition Property="IsFocused" Value="True"/>
                             </MultiTrigger.Conditions>
                             <MultiTrigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.EnterGotFocus}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.EnterGotFocus}"/>
                             </MultiTrigger.EnterActions>
                             <MultiTrigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ExitGotFocus}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ExitGotFocus}"/>
                             </MultiTrigger.ExitActions>
                         </MultiTrigger>
 
                         <Trigger Property="crystal:TextBoxHelper.HasText" Value="True">
                             <Trigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.EnterHasText}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.EnterHasText}"/>
                             </Trigger.EnterActions>
                             <Trigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ExitHasText}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ExitHasText}"/>
                             </Trigger.ExitActions>
                         </Trigger>
 
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsVisible" Value="True" />
-                                <Condition Property="crystal:TextBoxHelper.IsWaitingForData" Value="True" />
+                                <Condition Property="IsVisible" Value="True"/>
+                                <Condition Property="crystal:TextBoxHelper.IsWaitingForData" Value="True"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="PART_WaitingForDataEffectAdornerDecorator" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_WaitingForDataEffectAdornerDecorator" Property="Visibility" Value="Visible"/>
                             <MultiTrigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.WaitingForData}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.WaitingForData}"/>
                             </MultiTrigger.EnterActions>
                         </MultiTrigger>
                         <Trigger Property="crystal:TextBoxHelper.IsWaitingForData" Value="False">
-                            <Setter TargetName="PART_WaitingForDataEffectAdornerDecorator" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_WaitingForDataEffectAdornerDecorator" Property="Visibility" Value="Collapsed"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="crystal:TextBoxHelper.ButtonTemplate" Value="{DynamicResource Crystal.Templates.Button.Chromeless}" />
-        <Setter Property="crystal:TextBoxHelper.TextButton" Value="True" />
+        <Setter Property="crystal:TextBoxHelper.ButtonTemplate" Value="{DynamicResource Crystal.Templates.Button.Chromeless}"/>
+        <Setter Property="crystal:TextBoxHelper.TextButton" Value="True"/>
     </Style>
 
     <Style x:Key="Crystal.Styles.TextBox.Search"
            BasedOn="{StaticResource Crystal.Styles.TextBox.Button}"
            TargetType="{x:Type TextBox}">
         <!--  Modern - Magnify  -->
-        <Setter Property="crystal:TextBoxHelper.ButtonContent" Value="M 42.5,22C 49.4036,22 55,27.5964 55,34.5C 55,41.4036 49.4036,47 42.5,47C 40.1356,47 37.9245,46.3435 36,45.2426L 26.9749,54.2678C 25.8033,55.4393 23.9038,55.4393 22.7322,54.2678C 21.5607,53.0962 21.5607,51.1967 22.7322,50.0251L 31.7971,40.961C 30.6565,39.0755 30,36.8644 30,34.5C 30,27.5964 35.5964,22 42.5,22 Z M 42.5,26C 37.8056,26 34,29.8056 34,34.5C 34,39.1944 37.8056,43 42.5,43C 47.1944,43 51,39.1944 51,34.5C 51,29.8056 47.1944,26 42.5,26 Z" />
+        <Setter Property="crystal:TextBoxHelper.ButtonContent" Value="M 42.5,22C 49.4036,22 55,27.5964 55,34.5C 55,41.4036 49.4036,47 42.5,47C 40.1356,47 37.9245,46.3435 36,45.2426L 26.9749,54.2678C 25.8033,55.4393 23.9038,55.4393 22.7322,54.2678C 21.5607,53.0962 21.5607,51.1967 22.7322,50.0251L 31.7971,40.961C 30.6565,39.0755 30,36.8644 30,34.5C 30,27.5964 35.5964,22 42.5,22 Z M 42.5,26C 37.8056,26 34,29.8056 34,34.5C 34,39.1944 37.8056,43 42.5,43C 47.1944,43 51,39.1944 51,34.5C 51,29.8056 47.1944,26 42.5,26 Z"/>
         <Setter Property="crystal:TextBoxHelper.ButtonContentTemplate">
             <Setter.Value>
                 <DataTemplate>
                     <crystal:PathIcon Width="{Binding RelativeSource={RelativeSource AncestorType=TextBox}, Path=(crystal:TextBoxHelper.ButtonWidth), Mode=OneWay}"
                                   Height="{Binding RelativeSource={RelativeSource AncestorType=TextBox}, Path=(crystal:TextBoxHelper.ButtonWidth), Mode=OneWay}"
                                   Padding="3"
-                                  Data="{Binding Mode=OneWay}" />
+                                  Data="{Binding Mode=OneWay}"/>
                 </DataTemplate>
             </Setter.Value>
         </Setter>
@@ -514,51 +514,51 @@
     <Style x:Key="Crystal.Styles.RichTextBox" TargetType="{x:Type RichTextBox}">
         <Style.Resources>
             <Style BasedOn="{StaticResource {x:Type Hyperlink}}" TargetType="{x:Type Hyperlink}">
-                <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Text}" />
-                <Setter Property="TextDecorations" Value="Underline" />
+                <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Text}"/>
+                <Setter Property="TextDecorations" Value="Underline"/>
                 <Style.Triggers>
                     <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Highlight}" />
+                        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Highlight}"/>
                     </Trigger>
                     <Trigger Property="IsEnabled" Value="False">
-                        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
                     </Trigger>
                     <Trigger Property="IsEnabled" Value="True">
-                        <Setter Property="Cursor" Value="Hand" />
-                        <Setter Property="ForceCursor" Value="True" />
+                        <Setter Property="Cursor" Value="Hand"/>
+                        <Setter Property="ForceCursor" Value="True"/>
                     </Trigger>
                 </Style.Triggers>
             </Style>
             <Style BasedOn="{StaticResource {x:Type FlowDocument}}" TargetType="{x:Type FlowDocument}">
-                <Setter Property="FlowDirection" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type RichTextBox}}, Path=FlowDirection}" />
-                <Setter Property="FontFamily" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type RichTextBox}}, Path=FontFamily}" />
-                <Setter Property="FontSize" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type RichTextBox}}, Path=FontSize}" />
-                <Setter Property="FontStretch" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type RichTextBox}}, Path=FontStretch}" />
-                <Setter Property="FontStyle" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type RichTextBox}}, Path=FontStyle}" />
-                <Setter Property="FontWeight" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type RichTextBox}}, Path=FontWeight}" />
-                <Setter Property="Language" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type RichTextBox}}, Path=Language}" />
-                <Setter Property="PageWidth" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type RichTextBox}}, Path=ActualWidth}" />
+                <Setter Property="FlowDirection" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type RichTextBox}}, Path=FlowDirection}"/>
+                <Setter Property="FontFamily" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type RichTextBox}}, Path=FontFamily}"/>
+                <Setter Property="FontSize" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type RichTextBox}}, Path=FontSize}"/>
+                <Setter Property="FontStretch" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type RichTextBox}}, Path=FontStretch}"/>
+                <Setter Property="FontStyle" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type RichTextBox}}, Path=FontStyle}"/>
+                <Setter Property="FontWeight" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type RichTextBox}}, Path=FontWeight}"/>
+                <Setter Property="Language" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type RichTextBox}}, Path=Language}"/>
+                <Setter Property="PageWidth" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type RichTextBox}}, Path=ActualWidth}"/>
             </Style>
         </Style.Resources>
-        <Setter Property="AllowDrop" Value="True" />
-        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Control.Background}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.TextBox.Border}" />
-        <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="CaretBrush" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
-        <Setter Property="ContextMenu" Value="{DynamicResource Crystal.TextBox.ContextMenu}" />
-        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-        <Setter Property="FontFamily" Value="{DynamicResource Crystal.Fonts.Family.Control}" />
-        <Setter Property="FontSize" Value="{DynamicResource Crystal.Font.Size.Content}" />
-        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Text}" />
-        <Setter Property="MinHeight" Value="26" />
-        <Setter Property="MinWidth" Value="10" />
-        <Setter Property="Padding" Value="2 4" />
-        <Setter Property="ScrollViewer.IsDeferredScrollingEnabled" Value="False" />
-        <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst" />
-        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
-        <Setter Property="SelectionBrush" Value="{DynamicResource Crystal.Brushes.Highlight}" />
-        <Setter Property="SnapsToDevicePixels" Value="True" />
-        <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
+        <Setter Property="AllowDrop" Value="True"/>
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Control.Background}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.TextBox.Border}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CaretBrush" Value="{DynamicResource Crystal.Brushes.ThemeForeground}"/>
+        <Setter Property="ContextMenu" Value="{DynamicResource Crystal.TextBox.ContextMenu}"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource Crystal.Fonts.Family.Control}"/>
+        <Setter Property="FontSize" Value="{DynamicResource Crystal.Font.Size.Content}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Text}"/>
+        <Setter Property="MinHeight" Value="26"/>
+        <Setter Property="MinWidth" Value="10"/>
+        <Setter Property="Padding" Value="2 4"/>
+        <Setter Property="ScrollViewer.IsDeferredScrollingEnabled" Value="False"/>
+        <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="SelectionBrush" Value="{DynamicResource Crystal.Brushes.Highlight}"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TextBoxBase}">
@@ -568,16 +568,16 @@
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
-                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
 
                         <Grid x:Name="PART_InnerGrid" Margin="{TemplateBinding BorderThickness}">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition x:Name="TextColumn" Width="*" />
-                                <ColumnDefinition x:Name="ButtonColumn" Width="Auto" />
+                                <ColumnDefinition x:Name="TextColumn" Width="*"/>
+                                <ColumnDefinition x:Name="ButtonColumn" Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
 
                             <ScrollViewer x:Name="PART_ContentHost"
@@ -589,7 +589,7 @@
                                           Background="{x:Null}"
                                           BorderThickness="0"
                                           IsTabStop="False"
-                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
 
                             <TextBlock x:Name="PART_Message"
                                        Grid.Row="1"
@@ -604,7 +604,7 @@
                                        TextAlignment="{TemplateBinding crystal:TextBoxHelper.WatermarkAlignment}"
                                        TextTrimming="{TemplateBinding crystal:TextBoxHelper.WatermarkTrimming}"
                                        TextWrapping="{TemplateBinding crystal:TextBoxHelper.WatermarkWrapping}"
-                                       Visibility="Collapsed" />
+                                       Visibility="Collapsed"/>
 
                             <ContentControl x:Name="PART_FloatingMessageContainer"
                                             Grid.Row="0"
@@ -615,10 +615,10 @@
                                     <MultiBinding Converter="{crystalConverters:MathMultiplyConverter}">
                                         <Binding ElementName="PART_FloatingMessage"
                                                  Mode="OneWay"
-                                                 Path="ActualHeight" />
+                                                 Path="ActualHeight"/>
                                         <Binding ElementName="PART_FloatingMessageContainer"
                                                  Mode="OneWay"
-                                                 Path="Opacity" />
+                                                 Path="Opacity"/>
                                     </MultiBinding>
                                 </ContentControl.Height>
                                 <TextBlock x:Name="PART_FloatingMessage"
@@ -635,10 +635,10 @@
                                                 <MultiBinding Converter="{crystalConverters:MathSubtractConverter}">
                                                     <Binding ElementName="PART_FloatingMessage"
                                                              Mode="OneWay"
-                                                             Path="ActualHeight" />
+                                                             Path="ActualHeight"/>
                                                     <Binding ElementName="PART_FloatingMessageContainer"
                                                              Mode="OneWay"
-                                                             Path="ActualHeight" />
+                                                             Path="ActualHeight"/>
                                                 </MultiBinding>
                                             </TranslateTransform.Y>
                                         </TranslateTransform>
@@ -660,7 +660,7 @@
                                     Foreground="{TemplateBinding Foreground}"
                                     IsTabStop="False"
                                     Style="{DynamicResource Crystal.Styles.Button.Chromeless}"
-                                    Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:TextBoxHelper.ClearTextButton), Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                    Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:TextBoxHelper.ClearTextButton), Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                         </Grid>
 
                         <Border x:Name="DisabledVisualElement"
@@ -671,101 +671,101 @@
                                 IsHitTestVisible="False"
                                 Opacity="0"
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.DisabledVisualElementVisibility), Mode=OneWay}" />
+                                Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.DisabledVisualElementVisibility), Mode=OneWay}"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(crystal:TextBoxHelper.ButtonsAlignment)}" Value="Left">
-                            <Setter TargetName="ButtonColumn" Property="Width" Value="*" />
-                            <Setter TargetName="PART_ClearText" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="PART_ContentHost" Property="Grid.Column" Value="1" />
-                            <Setter TargetName="PART_FloatingMessageContainer" Property="Grid.Column" Value="1" />
-                            <Setter TargetName="PART_Message" Property="Grid.Column" Value="1" />
-                            <Setter TargetName="TextColumn" Property="Width" Value="Auto" />
+                            <Setter TargetName="ButtonColumn" Property="Width" Value="*"/>
+                            <Setter TargetName="PART_ClearText" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="PART_ContentHost" Property="Grid.Column" Value="1"/>
+                            <Setter TargetName="PART_FloatingMessageContainer" Property="Grid.Column" Value="1"/>
+                            <Setter TargetName="PART_Message" Property="Grid.Column" Value="1"/>
+                            <Setter TargetName="TextColumn" Property="Width" Value="Auto"/>
                         </DataTrigger>
 
                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(crystal:TextBoxHelper.HasText)}" Value="False">
-                            <Setter TargetName="PART_Message" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_Message" Property="Visibility" Value="Visible"/>
                         </DataTrigger>
 
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding Path=IsVisible, RelativeSource={RelativeSource Self}}" Value="True" />
-                                <Condition Binding="{Binding Path=(crystal:TextBoxHelper.UseFloatingWatermark), RelativeSource={RelativeSource Self}}" Value="True" />
-                                <Condition Binding="{Binding Path=(crystal:TextBoxHelper.HasText), RelativeSource={RelativeSource Self}}" Value="True" />
-                                <Condition Binding="{Binding Path=(crystal:TextBoxHelper.Watermark), RelativeSource={RelativeSource Self}, Converter={x:Static crystalConverters:StringIsNullOrEmptyConverter.Default}}" Value="False" />
+                                <Condition Binding="{Binding Path=IsVisible, RelativeSource={RelativeSource Self}}" Value="True"/>
+                                <Condition Binding="{Binding Path=(crystal:TextBoxHelper.UseFloatingWatermark), RelativeSource={RelativeSource Self}}" Value="True"/>
+                                <Condition Binding="{Binding Path=(crystal:TextBoxHelper.HasText), RelativeSource={RelativeSource Self}}" Value="True"/>
+                                <Condition Binding="{Binding Path=(crystal:TextBoxHelper.Watermark), RelativeSource={RelativeSource Self}, Converter={x:Static crystalConverters:StringIsNullOrEmptyConverter.Default}}" Value="False"/>
                             </MultiDataTrigger.Conditions>
                             <MultiDataTrigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ShowFloatingMessage}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ShowFloatingMessage}"/>
                             </MultiDataTrigger.EnterActions>
                             <MultiDataTrigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.HideFloatingMessage}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.HideFloatingMessage}"/>
                             </MultiDataTrigger.ExitActions>
                         </MultiDataTrigger>
 
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(crystal:TextBoxHelper.ButtonsAlignment)}" Value="Right" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(crystal:TextBoxHelper.ClearTextButton)}" Value="False" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(crystal:TextBoxHelper.ButtonsAlignment)}" Value="Right"/>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(crystal:TextBoxHelper.ClearTextButton)}" Value="False"/>
                             </MultiDataTrigger.Conditions>
-                            <Setter TargetName="PART_ContentHost" Property="Grid.ColumnSpan" Value="2" />
-                            <Setter TargetName="PART_Message" Property="Grid.ColumnSpan" Value="2" />
+                            <Setter TargetName="PART_ContentHost" Property="Grid.ColumnSpan" Value="2"/>
+                            <Setter TargetName="PART_Message" Property="Grid.ColumnSpan" Value="2"/>
                         </MultiDataTrigger>
 
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="BorderElement" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.MouseOverBorderBrush)}" />
+                            <Setter TargetName="BorderElement" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.MouseOverBorderBrush)}"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="DisabledVisualElement" Property="Opacity" Value="0.6" />
+                            <Setter TargetName="DisabledVisualElement" Property="Opacity" Value="0.6"/>
                         </Trigger>
                         <Trigger Property="IsReadOnly" Value="True">
-                            <Setter TargetName="PART_ClearText" Property="IsEnabled" Value="False" />
+                            <Setter TargetName="PART_ClearText" Property="IsEnabled" Value="False"/>
                         </Trigger>
                         <Trigger Property="IsFocused" Value="True">
-                            <Setter TargetName="BorderElement" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.FocusBorderBrush)}" />
-                            <Setter TargetName="PART_FloatingMessage" Property="Foreground" Value="{DynamicResource Crystal.Brushes.TextBlock.FloatingMessage}" />
-                            <Setter TargetName="PART_FloatingMessage" Property="Opacity" Value="1" />
+                            <Setter TargetName="BorderElement" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.FocusBorderBrush)}"/>
+                            <Setter TargetName="PART_FloatingMessage" Property="Foreground" Value="{DynamicResource Crystal.Brushes.TextBlock.FloatingMessage}"/>
+                            <Setter TargetName="PART_FloatingMessage" Property="Opacity" Value="1"/>
                         </Trigger>
                         <Trigger SourceName="PART_ClearText" Property="IsMouseOver" Value="True">
-                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray8}" />
-                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource Crystal.Brushes.Accent}" />
+                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray8}"/>
+                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource Crystal.Brushes.Accent}"/>
                         </Trigger>
                         <Trigger SourceName="PART_ClearText" Property="IsPressed" Value="True">
-                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
-                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
+                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeForeground}"/>
+                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeBackground}"/>
                         </Trigger>
 
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="crystal:TextBoxHelper.HasText" Value="False" />
-                                <Condition Property="IsFocused" Value="True" />
+                                <Condition Property="crystal:TextBoxHelper.HasText" Value="False"/>
+                                <Condition Property="IsFocused" Value="True"/>
                             </MultiTrigger.Conditions>
                             <MultiTrigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.EnterGotFocus}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.EnterGotFocus}"/>
                             </MultiTrigger.EnterActions>
                             <MultiTrigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ExitGotFocus}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ExitGotFocus}"/>
                             </MultiTrigger.ExitActions>
                         </MultiTrigger>
 
                         <Trigger Property="crystal:TextBoxHelper.HasText" Value="True">
                             <Trigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.EnterHasText}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.EnterHasText}"/>
                             </Trigger.EnterActions>
                             <Trigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ExitHasText}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ExitHasText}"/>
                             </Trigger.ExitActions>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource Crystal.Templates.ValidationError}" />
-        <Setter Property="crystal:ControlsHelper.FocusBorderBrush" Value="{DynamicResource Crystal.Brushes.TextBox.Border.Focus}" />
-        <Setter Property="crystal:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource Crystal.Brushes.TextBox.Border.MouseOver}" />
-        <Setter Property="crystal:TextBoxHelper.ButtonFontSize" Value="{DynamicResource Crystal.Font.Size.Button.ClearText}" />
-        <Setter Property="crystal:TextBoxHelper.ButtonWidth" Value="22" />
-        <Setter Property="crystal:TextBoxHelper.IsMonitoring" Value="True" />
-        <Setter Property="crystal:TextBoxHelper.IsSpellCheckContextMenuEnabled" Value="{Binding RelativeSource={RelativeSource Self}, Path=(SpellCheck.IsEnabled)}" />
+        <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource Crystal.Templates.ValidationError}"/>
+        <Setter Property="crystal:ControlsHelper.FocusBorderBrush" Value="{DynamicResource Crystal.Brushes.TextBox.Border.Focus}"/>
+        <Setter Property="crystal:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource Crystal.Brushes.TextBox.Border.MouseOver}"/>
+        <Setter Property="crystal:TextBoxHelper.ButtonFontSize" Value="{DynamicResource Crystal.Font.Size.Button.ClearText}"/>
+        <Setter Property="crystal:TextBoxHelper.ButtonWidth" Value="22"/>
+        <Setter Property="crystal:TextBoxHelper.IsMonitoring" Value="True"/>
+        <Setter Property="crystal:TextBoxHelper.IsSpellCheckContextMenuEnabled" Value="{Binding RelativeSource={RelativeSource Self}, Path=(SpellCheck.IsEnabled)}"/>
     </Style>
 
     <Style x:Key="Crystal.Styles.RichTextBox.Button"
@@ -780,16 +780,16 @@
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
-                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
 
                         <Grid x:Name="PART_InnerGrid" Margin="{TemplateBinding BorderThickness}">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition x:Name="TextColumn" Width="*" />
-                                <ColumnDefinition x:Name="ButtonColumn" Width="Auto" />
+                                <ColumnDefinition x:Name="TextColumn" Width="*"/>
+                                <ColumnDefinition x:Name="ButtonColumn" Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
 
                             <ScrollViewer x:Name="PART_ContentHost"
@@ -801,7 +801,7 @@
                                           Background="{x:Null}"
                                           BorderThickness="0"
                                           IsTabStop="False"
-                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
 
                             <TextBlock x:Name="PART_Message"
                                        Grid.Row="1"
@@ -816,7 +816,7 @@
                                        TextAlignment="{TemplateBinding crystal:TextBoxHelper.WatermarkAlignment}"
                                        TextTrimming="{TemplateBinding crystal:TextBoxHelper.WatermarkTrimming}"
                                        TextWrapping="{TemplateBinding crystal:TextBoxHelper.WatermarkWrapping}"
-                                       Visibility="Collapsed" />
+                                       Visibility="Collapsed"/>
 
                             <ContentControl x:Name="PART_FloatingMessageContainer"
                                             Grid.Row="0"
@@ -827,10 +827,10 @@
                                     <MultiBinding Converter="{crystalConverters:MathMultiplyConverter}">
                                         <Binding ElementName="PART_FloatingMessage"
                                                  Mode="OneWay"
-                                                 Path="ActualHeight" />
+                                                 Path="ActualHeight"/>
                                         <Binding ElementName="PART_FloatingMessageContainer"
                                                  Mode="OneWay"
-                                                 Path="Opacity" />
+                                                 Path="Opacity"/>
                                     </MultiBinding>
                                 </ContentControl.Height>
                                 <TextBlock x:Name="PART_FloatingMessage"
@@ -847,10 +847,10 @@
                                                 <MultiBinding Converter="{crystalConverters:MathSubtractConverter}">
                                                     <Binding ElementName="PART_FloatingMessage"
                                                              Mode="OneWay"
-                                                             Path="ActualHeight" />
+                                                             Path="ActualHeight"/>
                                                     <Binding ElementName="PART_FloatingMessageContainer"
                                                              Mode="OneWay"
-                                                             Path="ActualHeight" />
+                                                             Path="ActualHeight"/>
                                                 </MultiBinding>
                                             </TranslateTransform.Y>
                                         </TranslateTransform>
@@ -875,7 +875,7 @@
                                     IsTabStop="False"
                                     Style="{DynamicResource Crystal.Styles.Button.Chromeless}"
                                     Template="{TemplateBinding crystal:TextBoxHelper.ButtonTemplate}"
-                                    Visibility="Visible" />
+                                    Visibility="Visible"/>
                         </Grid>
 
                         <Border x:Name="DisabledVisualElement"
@@ -886,91 +886,91 @@
                                 IsHitTestVisible="False"
                                 Opacity="0"
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.DisabledVisualElementVisibility), Mode=OneWay}" />
+                                Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.DisabledVisualElementVisibility), Mode=OneWay}"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(crystal:TextBoxHelper.ButtonsAlignment)}" Value="Left">
-                            <Setter TargetName="ButtonColumn" Property="Width" Value="*" />
-                            <Setter TargetName="PART_ClearText" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="PART_ContentHost" Property="Grid.Column" Value="1" />
-                            <Setter TargetName="PART_FloatingMessageContainer" Property="Grid.Column" Value="1" />
-                            <Setter TargetName="PART_Message" Property="Grid.Column" Value="1" />
-                            <Setter TargetName="TextColumn" Property="Width" Value="Auto" />
+                            <Setter TargetName="ButtonColumn" Property="Width" Value="*"/>
+                            <Setter TargetName="PART_ClearText" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="PART_ContentHost" Property="Grid.Column" Value="1"/>
+                            <Setter TargetName="PART_FloatingMessageContainer" Property="Grid.Column" Value="1"/>
+                            <Setter TargetName="PART_Message" Property="Grid.Column" Value="1"/>
+                            <Setter TargetName="TextColumn" Property="Width" Value="Auto"/>
                         </DataTrigger>
 
                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(crystal:TextBoxHelper.HasText)}" Value="False">
-                            <Setter TargetName="PART_Message" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_Message" Property="Visibility" Value="Visible"/>
                         </DataTrigger>
 
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding Path=IsVisible, RelativeSource={RelativeSource Self}}" Value="True" />
-                                <Condition Binding="{Binding Path=(crystal:TextBoxHelper.UseFloatingWatermark), RelativeSource={RelativeSource Self}}" Value="True" />
-                                <Condition Binding="{Binding Path=(crystal:TextBoxHelper.HasText), RelativeSource={RelativeSource Self}}" Value="True" />
-                                <Condition Binding="{Binding Path=(crystal:TextBoxHelper.Watermark), RelativeSource={RelativeSource Self}, Converter={x:Static crystalConverters:StringIsNullOrEmptyConverter.Default}}" Value="False" />
+                                <Condition Binding="{Binding Path=IsVisible, RelativeSource={RelativeSource Self}}" Value="True"/>
+                                <Condition Binding="{Binding Path=(crystal:TextBoxHelper.UseFloatingWatermark), RelativeSource={RelativeSource Self}}" Value="True"/>
+                                <Condition Binding="{Binding Path=(crystal:TextBoxHelper.HasText), RelativeSource={RelativeSource Self}}" Value="True"/>
+                                <Condition Binding="{Binding Path=(crystal:TextBoxHelper.Watermark), RelativeSource={RelativeSource Self}, Converter={x:Static crystalConverters:StringIsNullOrEmptyConverter.Default}}" Value="False"/>
                             </MultiDataTrigger.Conditions>
                             <MultiDataTrigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ShowFloatingMessage}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ShowFloatingMessage}"/>
                             </MultiDataTrigger.EnterActions>
                             <MultiDataTrigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.HideFloatingMessage}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.HideFloatingMessage}"/>
                             </MultiDataTrigger.ExitActions>
                         </MultiDataTrigger>
 
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="BorderElement" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.MouseOverBorderBrush)}" />
+                            <Setter TargetName="BorderElement" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.MouseOverBorderBrush)}"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="DisabledVisualElement" Property="Opacity" Value="0.6" />
+                            <Setter TargetName="DisabledVisualElement" Property="Opacity" Value="0.6"/>
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsReadOnly" Value="True" />
-                                <Condition Property="crystal:TextBoxHelper.ButtonCommand" Value="{x:Null}" />
+                                <Condition Property="IsReadOnly" Value="True"/>
+                                <Condition Property="crystal:TextBoxHelper.ButtonCommand" Value="{x:Null}"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="PART_ClearText" Property="IsEnabled" Value="False" />
+                            <Setter TargetName="PART_ClearText" Property="IsEnabled" Value="False"/>
                         </MultiTrigger>
                         <Trigger Property="IsFocused" Value="True">
-                            <Setter TargetName="BorderElement" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.FocusBorderBrush)}" />
-                            <Setter TargetName="PART_FloatingMessage" Property="Foreground" Value="{DynamicResource Crystal.Brushes.TextBlock.FloatingMessage}" />
-                            <Setter TargetName="PART_FloatingMessage" Property="Opacity" Value="1" />
+                            <Setter TargetName="BorderElement" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.FocusBorderBrush)}"/>
+                            <Setter TargetName="PART_FloatingMessage" Property="Foreground" Value="{DynamicResource Crystal.Brushes.TextBlock.FloatingMessage}"/>
+                            <Setter TargetName="PART_FloatingMessage" Property="Opacity" Value="1"/>
                         </Trigger>
                         <Trigger SourceName="PART_ClearText" Property="IsMouseOver" Value="True">
-                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray8}" />
-                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource Crystal.Brushes.Accent}" />
+                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray8}"/>
+                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource Crystal.Brushes.Accent}"/>
                         </Trigger>
                         <Trigger SourceName="PART_ClearText" Property="IsPressed" Value="True">
-                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
-                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
+                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeForeground}"/>
+                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeBackground}"/>
                         </Trigger>
 
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="crystal:TextBoxHelper.HasText" Value="False" />
-                                <Condition Property="IsFocused" Value="True" />
+                                <Condition Property="crystal:TextBoxHelper.HasText" Value="False"/>
+                                <Condition Property="IsFocused" Value="True"/>
                             </MultiTrigger.Conditions>
                             <MultiTrigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.EnterGotFocus}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.EnterGotFocus}"/>
                             </MultiTrigger.EnterActions>
                             <MultiTrigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ExitGotFocus}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ExitGotFocus}"/>
                             </MultiTrigger.ExitActions>
                         </MultiTrigger>
 
                         <Trigger Property="crystal:TextBoxHelper.HasText" Value="True">
                             <Trigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.EnterHasText}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.EnterHasText}"/>
                             </Trigger.EnterActions>
                             <Trigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ExitHasText}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ExitHasText}"/>
                             </Trigger.ExitActions>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="crystal:TextBoxHelper.ButtonCommandParameter" Value="{Binding RelativeSource={RelativeSource Self}}" />
-        <Setter Property="crystal:TextBoxHelper.ButtonTemplate" Value="{DynamicResource Crystal.Templates.Button.Chromeless}" />
+        <Setter Property="crystal:TextBoxHelper.ButtonCommandParameter" Value="{Binding RelativeSource={RelativeSource Self}}"/>
+        <Setter Property="crystal:TextBoxHelper.ButtonTemplate" Value="{DynamicResource Crystal.Templates.Button.Chromeless}"/>
     </Style>
 
 </ResourceDictionary>

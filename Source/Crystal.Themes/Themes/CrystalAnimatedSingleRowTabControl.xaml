@@ -10,8 +10,8 @@
   <ControlTemplate x:Key="Crystal.Templates.CrystalAnimatedSingleRowTabControl.Horizontal" TargetType="{x:Type crystal:CrystalAnimatedSingleRowTabControl}">
     <Grid KeyboardNavigation.TabNavigation="Local">
       <Grid.RowDefinitions>
-        <RowDefinition x:Name="RowDefinition0" Height="Auto" />
-        <RowDefinition x:Name="RowDefinition1" Height="*" />
+        <RowDefinition x:Name="RowDefinition0" Height="Auto"/>
+        <RowDefinition x:Name="RowDefinition1" Height="*"/>
       </Grid.RowDefinitions>
       <ScrollViewer x:Name="HeaderPanelScroll"
                           Grid.Row="0"
@@ -27,10 +27,10 @@
                                    LineThickness="1"
                                    Placement="Bottom"
                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                   Visibility="Collapsed" />
+                                   Visibility="Collapsed"/>
           <TabPanel x:Name="HeaderPanel"
                               IsItemsHost="true"
-                              KeyboardNavigation.TabIndex="1" />
+                              KeyboardNavigation.TabIndex="1"/>
         </Grid>
       </ScrollViewer>
       <crystal:TransitioningContentControl x:Name="ContentPanel"
@@ -43,26 +43,26 @@
                                   Margin="{TemplateBinding Padding}"
                                   ContentSource="SelectedContent"
                                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                  UseLayoutRounding="False" />
+                                  UseLayoutRounding="False"/>
       </crystal:TransitioningContentControl>
     </Grid>
     <ControlTemplate.Triggers>
       <Trigger Property="crystal:TabControlHelper.Underlined" Value="TabPanel">
-        <Setter TargetName="Underline" Property="Visibility" Value="Visible" />
+        <Setter TargetName="Underline" Property="Visibility" Value="Visible"/>
       </Trigger>
       <Trigger Property="TabStripPlacement" Value="Top">
-        <Setter TargetName="ContentPanel" Property="Grid.Row" Value="1" />
-        <Setter TargetName="HeaderPanelScroll" Property="Grid.Row" Value="0" />
-        <Setter TargetName="RowDefinition0" Property="Height" Value="Auto" />
-        <Setter TargetName="RowDefinition1" Property="Height" Value="*" />
-        <Setter TargetName="Underline" Property="Placement" Value="Bottom" />
+        <Setter TargetName="ContentPanel" Property="Grid.Row" Value="1"/>
+        <Setter TargetName="HeaderPanelScroll" Property="Grid.Row" Value="0"/>
+        <Setter TargetName="RowDefinition0" Property="Height" Value="Auto"/>
+        <Setter TargetName="RowDefinition1" Property="Height" Value="*"/>
+        <Setter TargetName="Underline" Property="Placement" Value="Bottom"/>
       </Trigger>
       <Trigger Property="TabStripPlacement" Value="Bottom">
-        <Setter TargetName="ContentPanel" Property="Grid.Row" Value="0" />
-        <Setter TargetName="HeaderPanelScroll" Property="Grid.Row" Value="1" />
-        <Setter TargetName="RowDefinition0" Property="Height" Value="*" />
-        <Setter TargetName="RowDefinition1" Property="Height" Value="Auto" />
-        <Setter TargetName="Underline" Property="Placement" Value="Top" />
+        <Setter TargetName="ContentPanel" Property="Grid.Row" Value="0"/>
+        <Setter TargetName="HeaderPanelScroll" Property="Grid.Row" Value="1"/>
+        <Setter TargetName="RowDefinition0" Property="Height" Value="*"/>
+        <Setter TargetName="RowDefinition1" Property="Height" Value="Auto"/>
+        <Setter TargetName="Underline" Property="Placement" Value="Top"/>
       </Trigger>
     </ControlTemplate.Triggers>
   </ControlTemplate>
@@ -70,8 +70,8 @@
   <ControlTemplate x:Key="Crystal.Templates.CrystalAnimatedSingleRowTabControl.Vertical" TargetType="{x:Type crystal:CrystalAnimatedSingleRowTabControl}">
     <Grid KeyboardNavigation.TabNavigation="Local">
       <Grid.ColumnDefinitions>
-        <ColumnDefinition x:Name="ColumnDefinition0" Width="*" />
-        <ColumnDefinition x:Name="ColumnDefinition1" Width="Auto" />
+        <ColumnDefinition x:Name="ColumnDefinition0" Width="*"/>
+        <ColumnDefinition x:Name="ColumnDefinition1" Width="Auto"/>
       </Grid.ColumnDefinitions>
       <ScrollViewer x:Name="HeaderPanelScroll"
                           Grid.Column="1"
@@ -86,10 +86,10 @@
                                    LineThickness="1"
                                    Placement="Bottom"
                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                   Visibility="Collapsed" />
+                                   Visibility="Collapsed"/>
           <TabPanel x:Name="HeaderPanel"
                               IsItemsHost="true"
-                              KeyboardNavigation.TabIndex="1" />
+                              KeyboardNavigation.TabIndex="1"/>
         </Grid>
       </ScrollViewer>
       <crystal:TransitioningContentControl x:Name="ContentPanel"
@@ -102,46 +102,46 @@
                                   Margin="{TemplateBinding Padding}"
                                   ContentSource="SelectedContent"
                                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                  UseLayoutRounding="False" />
+                                  UseLayoutRounding="False"/>
       </crystal:TransitioningContentControl>
     </Grid>
     <ControlTemplate.Triggers>
       <Trigger Property="crystal:TabControlHelper.Underlined" Value="TabPanel">
-        <Setter TargetName="Underline" Property="Visibility" Value="Visible" />
+        <Setter TargetName="Underline" Property="Visibility" Value="Visible"/>
       </Trigger>
       <Trigger Property="TabStripPlacement" Value="Left">
-        <Setter TargetName="ColumnDefinition0" Property="Width" Value="Auto" />
-        <Setter TargetName="ColumnDefinition1" Property="Width" Value="*" />
-        <Setter TargetName="ContentPanel" Property="Grid.Column" Value="1" />
-        <Setter TargetName="HeaderPanelScroll" Property="Grid.Column" Value="0" />
-        <Setter TargetName="Underline" Property="Placement" Value="Right" />
+        <Setter TargetName="ColumnDefinition0" Property="Width" Value="Auto"/>
+        <Setter TargetName="ColumnDefinition1" Property="Width" Value="*"/>
+        <Setter TargetName="ContentPanel" Property="Grid.Column" Value="1"/>
+        <Setter TargetName="HeaderPanelScroll" Property="Grid.Column" Value="0"/>
+        <Setter TargetName="Underline" Property="Placement" Value="Right"/>
       </Trigger>
       <Trigger Property="TabStripPlacement" Value="Right">
-        <Setter TargetName="ColumnDefinition0" Property="Width" Value="*" />
-        <Setter TargetName="ColumnDefinition1" Property="Width" Value="Auto" />
-        <Setter TargetName="ContentPanel" Property="Grid.Column" Value="0" />
-        <Setter TargetName="HeaderPanelScroll" Property="Grid.Column" Value="1" />
-        <Setter TargetName="Underline" Property="Placement" Value="Left" />
+        <Setter TargetName="ColumnDefinition0" Property="Width" Value="*"/>
+        <Setter TargetName="ColumnDefinition1" Property="Width" Value="Auto"/>
+        <Setter TargetName="ContentPanel" Property="Grid.Column" Value="0"/>
+        <Setter TargetName="HeaderPanelScroll" Property="Grid.Column" Value="1"/>
+        <Setter TargetName="Underline" Property="Placement" Value="Left"/>
       </Trigger>
     </ControlTemplate.Triggers>
   </ControlTemplate>
 
   <Style BasedOn="{StaticResource Crystal.Styles.TabControl}" TargetType="{x:Type crystal:CrystalAnimatedSingleRowTabControl}">
-    <Setter Property="Template" Value="{StaticResource Crystal.Templates.CrystalAnimatedSingleRowTabControl.Horizontal}" />
-    <Setter Property="crystal:ScrollViewerHelper.IsHorizontalScrollWheelEnabled" Value="True" />
-    <Setter Property="crystal:TabControlHelper.Transition" Value="Left" />
+    <Setter Property="Template" Value="{StaticResource Crystal.Templates.CrystalAnimatedSingleRowTabControl.Horizontal}"/>
+    <Setter Property="crystal:ScrollViewerHelper.IsHorizontalScrollWheelEnabled" Value="True"/>
+    <Setter Property="crystal:TabControlHelper.Transition" Value="Left"/>
     <Style.Triggers>
       <Trigger Property="TabStripPlacement" Value="Top">
-        <Setter Property="Template" Value="{StaticResource Crystal.Templates.CrystalAnimatedSingleRowTabControl.Horizontal}" />
+        <Setter Property="Template" Value="{StaticResource Crystal.Templates.CrystalAnimatedSingleRowTabControl.Horizontal}"/>
       </Trigger>
       <Trigger Property="TabStripPlacement" Value="Bottom">
-        <Setter Property="Template" Value="{StaticResource Crystal.Templates.CrystalAnimatedSingleRowTabControl.Horizontal}" />
+        <Setter Property="Template" Value="{StaticResource Crystal.Templates.CrystalAnimatedSingleRowTabControl.Horizontal}"/>
       </Trigger>
       <Trigger Property="TabStripPlacement" Value="Left">
-        <Setter Property="Template" Value="{StaticResource Crystal.Templates.CrystalAnimatedSingleRowTabControl.Vertical}" />
+        <Setter Property="Template" Value="{StaticResource Crystal.Templates.CrystalAnimatedSingleRowTabControl.Vertical}"/>
       </Trigger>
       <Trigger Property="TabStripPlacement" Value="Right">
-        <Setter Property="Template" Value="{StaticResource Crystal.Templates.CrystalAnimatedSingleRowTabControl.Vertical}" />
+        <Setter Property="Template" Value="{StaticResource Crystal.Templates.CrystalAnimatedSingleRowTabControl.Vertical}"/>
       </Trigger>
     </Style.Triggers>
   </Style>

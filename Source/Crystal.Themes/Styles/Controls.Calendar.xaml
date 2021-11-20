@@ -2,28 +2,28 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Style x:Key="Crystal.Styles.CalendarDayButton" TargetType="{x:Type CalendarDayButton}">
-        <Setter Property="FontFamily" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Calendar}}, Path=FontFamily, Mode=OneWay}" />
-        <Setter Property="FontSize" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Calendar}}, Path=FontSize, Mode=OneWay}" />
-        <Setter Property="HorizontalContentAlignment" Value="Center" />
-        <Setter Property="MinHeight" Value="5" />
-        <Setter Property="MinWidth" Value="5" />
-        <Setter Property="Padding" Value="5 1" />
+        <Setter Property="FontFamily" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Calendar}}, Path=FontFamily, Mode=OneWay}"/>
+        <Setter Property="FontSize" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Calendar}}, Path=FontSize, Mode=OneWay}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="MinHeight" Value="5"/>
+        <Setter Property="MinWidth" Value="5"/>
+        <Setter Property="Padding" Value="5 1"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type CalendarDayButton}">
                     <Grid>
                         <Rectangle x:Name="TodayBackground"
                                    Fill="{DynamicResource Crystal.Brushes.Accent}"
-                                   Opacity="0" />
+                                   Opacity="0"/>
                         <Rectangle x:Name="SelectedBackground"
                                    Fill="{DynamicResource Crystal.Brushes.Accent4}"
-                                   Opacity="0" />
+                                   Opacity="0"/>
                         <Border Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}" />
+                                BorderThickness="{TemplateBinding BorderThickness}"/>
                         <Rectangle x:Name="HighlightBackground"
                                    Fill="{DynamicResource Crystal.Brushes.Accent4}"
-                                   Opacity="0" />
+                                   Opacity="0"/>
                         <Path x:Name="Blackout"
                               Margin="3"
                               HorizontalAlignment="Stretch"
@@ -32,28 +32,28 @@
                               Fill="{DynamicResource Crystal.Brushes.Accent3}"
                               Opacity="0"
                               RenderTransformOrigin="0.5,0.5"
-                              Stretch="Fill" />
+                              Stretch="Fill"/>
                         <ContentPresenter x:Name="NormalText"
                                           Margin="{TemplateBinding Padding}"
                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                          TextElement.Foreground="{TemplateBinding Foreground}" />
+                                          TextElement.Foreground="{TemplateBinding Foreground}"/>
                         <Rectangle x:Name="DayButtonFocusVisual"
                                    IsHitTestVisible="false"
                                    Stroke="{DynamicResource Crystal.Brushes.Accent3}"
-                                   Visibility="Collapsed" />
+                                   Visibility="Collapsed"/>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
                                 <VisualStateGroup.Transitions>
-                                    <VisualTransition GeneratedDuration="0:0:0.1" />
+                                    <VisualTransition GeneratedDuration="0:0:0.1"/>
                                 </VisualStateGroup.Transitions>
-                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="Normal"/>
                                 <VisualState x:Name="MouseOver">
                                     <Storyboard>
                                         <DoubleAnimation Storyboard.TargetName="HighlightBackground"
                                                          Storyboard.TargetProperty="Opacity"
                                                          To="0.75"
-                                                         Duration="0" />
+                                                         Duration="0"/>
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Pressed">
@@ -61,7 +61,7 @@
                                         <DoubleAnimation Storyboard.TargetName="HighlightBackground"
                                                          Storyboard.TargetProperty="Opacity"
                                                          To="0.9"
-                                                         Duration="0" />
+                                                         Duration="0"/>
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Disabled">
@@ -69,84 +69,84 @@
                                         <DoubleAnimation Storyboard.TargetName="HighlightBackground"
                                                          Storyboard.TargetProperty="Opacity"
                                                          To="0"
-                                                         Duration="0" />
+                                                         Duration="0"/>
                                         <DoubleAnimation Storyboard.TargetName="NormalText"
                                                          Storyboard.TargetProperty="Opacity"
                                                          To=".35"
-                                                         Duration="0" />
+                                                         Duration="0"/>
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
                             <VisualStateGroup x:Name="ActiveStates">
-                                <VisualState x:Name="Active" />
-                                <VisualState x:Name="Inactive" />
+                                <VisualState x:Name="Active"/>
+                                <VisualState x:Name="Inactive"/>
                             </VisualStateGroup>
                             <VisualStateGroup x:Name="BlackoutDayStates">
-                                <VisualState x:Name="NormalDay" />
-                                <VisualState x:Name="BlackoutDay" />
+                                <VisualState x:Name="NormalDay"/>
+                                <VisualState x:Name="BlackoutDay"/>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <!--  IsInactive  -->
                         <Trigger Property="IsInactive" Value="True">
-                            <Setter TargetName="NormalText" Property="TextElement.Foreground" Value="{DynamicResource Crystal.Brushes.Gray2}" />
+                            <Setter TargetName="NormalText" Property="TextElement.Foreground" Value="{DynamicResource Crystal.Brushes.Gray2}"/>
                         </Trigger>
 
                         <!--  IsSelected  -->
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="DayButtonFocusVisual" Property="Visibility" Value="Visible" />
-                            <Setter TargetName="NormalText" Property="TextElement.Foreground" Value="{DynamicResource Crystal.Brushes.AccentBase}" />
+                            <Setter TargetName="DayButtonFocusVisual" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="NormalText" Property="TextElement.Foreground" Value="{DynamicResource Crystal.Brushes.AccentBase}"/>
                         </Trigger>
 
                         <!--  IsToday, IsTodayHighlighted and IsSelected  -->
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Calendar}}, Path=IsTodayHighlighted}" Value="True" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsToday}" Value="True" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsSelected}" Value="True" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Calendar}}, Path=IsTodayHighlighted}" Value="True"/>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsToday}" Value="True"/>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsSelected}" Value="True"/>
                             </MultiDataTrigger.Conditions>
-                            <Setter TargetName="DayButtonFocusVisual" Property="Stroke" Value="{DynamicResource Crystal.Brushes.Gray1}" />
-                            <Setter TargetName="DayButtonFocusVisual" Property="Visibility" Value="Visible" />
-                            <Setter TargetName="NormalText" Property="TextElement.Foreground" Value="{DynamicResource Crystal.Brushes.Accent}" />
+                            <Setter TargetName="DayButtonFocusVisual" Property="Stroke" Value="{DynamicResource Crystal.Brushes.Gray1}"/>
+                            <Setter TargetName="DayButtonFocusVisual" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="NormalText" Property="TextElement.Foreground" Value="{DynamicResource Crystal.Brushes.Accent}"/>
                         </MultiDataTrigger>
 
                         <!--  IsToday and IsTodayHighlighted  -->
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Calendar}}, Path=IsTodayHighlighted}" Value="True" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsToday}" Value="True" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Calendar}}, Path=IsTodayHighlighted}" Value="True"/>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsToday}" Value="True"/>
                             </MultiDataTrigger.Conditions>
-                            <Setter TargetName="NormalText" Property="TextElement.Foreground" Value="{DynamicResource Crystal.Brushes.Selected.Foreground}" />
-                            <Setter TargetName="TodayBackground" Property="Opacity" Value="1" />
+                            <Setter TargetName="NormalText" Property="TextElement.Foreground" Value="{DynamicResource Crystal.Brushes.Selected.Foreground}"/>
+                            <Setter TargetName="TodayBackground" Property="Opacity" Value="1"/>
                         </MultiDataTrigger>
 
                         <!--  IsBlackedOut  -->
                         <Trigger Property="IsBlackedOut" Value="True">
-                            <Setter TargetName="Blackout" Property="Opacity" Value="1" />
+                            <Setter TargetName="Blackout" Property="Opacity" Value="1"/>
                         </Trigger>
 
                         <!--  IsToday and IsBlackedOut  -->
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsToday" Value="True" />
-                                <Condition Property="IsBlackedOut" Value="True" />
+                                <Condition Property="IsToday" Value="True"/>
+                                <Condition Property="IsBlackedOut" Value="True"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="Blackout" Property="Fill" Value="{DynamicResource Crystal.Brushes.Accent}" />
-                            <Setter TargetName="TodayBackground" Property="Opacity" Value="0.5" />
+                            <Setter TargetName="Blackout" Property="Fill" Value="{DynamicResource Crystal.Brushes.Accent}"/>
+                            <Setter TargetName="TodayBackground" Property="Opacity" Value="0.5"/>
                         </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
     </Style>
 
     <ControlTemplate x:Key="Crystal.Templates.Button.Calendar.Previous" TargetType="{x:Type Button}">
         <Grid Cursor="Hand">
             <Rectangle Fill="{DynamicResource Crystal.Brushes.Accent}"
                        Opacity="0.1"
-                       Stretch="Fill" />
+                       Stretch="Fill"/>
             <Path x:Name="path"
                   Width="6"
                   Height="10"
@@ -156,16 +156,16 @@
                   Data="M288.75,232.25 L288.75,240.625 L283,236.625 z"
                   Fill="{TemplateBinding Foreground}"
                   Opacity="0.7"
-                  Stretch="Fill" />
+                  Stretch="Fill"/>
             <VisualStateManager.VisualStateGroups>
                 <VisualStateGroup x:Name="CommonStates">
-                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="Normal"/>
                     <VisualState x:Name="MouseOver">
                         <Storyboard>
                             <DoubleAnimation Storyboard.TargetName="path"
                                              Storyboard.TargetProperty="Opacity"
                                              To="1"
-                                             Duration="0" />
+                                             Duration="0"/>
                         </Storyboard>
                     </VisualState>
                     <VisualState x:Name="Disabled">
@@ -173,7 +173,7 @@
                             <DoubleAnimation Storyboard.TargetName="path"
                                              Storyboard.TargetProperty="Opacity"
                                              To=".5"
-                                             Duration="0" />
+                                             Duration="0"/>
                         </Storyboard>
                     </VisualState>
                 </VisualStateGroup>
@@ -185,7 +185,7 @@
         <Grid Cursor="Hand">
             <Rectangle Fill="{DynamicResource Crystal.Brushes.Accent}"
                        Opacity="0.1"
-                       Stretch="Fill" />
+                       Stretch="Fill"/>
             <Path x:Name="path"
                   Width="6"
                   Height="10"
@@ -195,16 +195,16 @@
                   Data="M282.875,231.875 L282.875,240.375 L288.625,236 z"
                   Fill="{TemplateBinding Foreground}"
                   Opacity="0.7"
-                  Stretch="Fill" />
+                  Stretch="Fill"/>
             <VisualStateManager.VisualStateGroups>
                 <VisualStateGroup x:Name="CommonStates">
-                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="Normal"/>
                     <VisualState x:Name="MouseOver">
                         <Storyboard>
                             <DoubleAnimation Storyboard.TargetName="path"
                                              Storyboard.TargetProperty="Opacity"
                                              To="1"
-                                             Duration="0" />
+                                             Duration="0"/>
                         </Storyboard>
                     </VisualState>
                     <VisualState x:Name="Disabled">
@@ -212,7 +212,7 @@
                             <DoubleAnimation Storyboard.TargetName="path"
                                              Storyboard.TargetProperty="Opacity"
                                              To=".2"
-                                             Duration="0" />
+                                             Duration="0"/>
                         </Storyboard>
                     </VisualState>
                 </VisualStateGroup>
@@ -228,16 +228,16 @@
                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                               Content="{TemplateBinding Content}"
                               ContentTemplate="{TemplateBinding ContentTemplate}"
-                              Opacity="0.7" />
+                              Opacity="0.7"/>
             <VisualStateManager.VisualStateGroups>
                 <VisualStateGroup x:Name="CommonStates">
-                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="Normal"/>
                     <VisualState x:Name="MouseOver">
                         <Storyboard>
                             <DoubleAnimation Storyboard.TargetName="buttonContent"
                                              Storyboard.TargetProperty="Opacity"
                                              To="1"
-                                             Duration="0" />
+                                             Duration="0"/>
                         </Storyboard>
                     </VisualState>
                     <VisualState x:Name="Disabled">
@@ -245,7 +245,7 @@
                             <DoubleAnimation Storyboard.TargetName="buttonContent"
                                              Storyboard.TargetProperty="Opacity"
                                              To=".5"
-                                             Duration="0" />
+                                             Duration="0"/>
                         </Storyboard>
                     </VisualState>
                 </VisualStateGroup>
@@ -254,31 +254,31 @@
     </ControlTemplate>
 
     <Style x:Key="Crystal.Styles.Button.Calendar.Previous" TargetType="{x:Type Button}">
-        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForeground}" />
-        <Setter Property="Height" Value="20" />
-        <Setter Property="HorizontalAlignment" Value="Left" />
-        <Setter Property="Template" Value="{StaticResource Crystal.Templates.Button.Calendar.Previous}" />
-        <Setter Property="Width" Value="28" />
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForeground}"/>
+        <Setter Property="Height" Value="20"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="Template" Value="{StaticResource Crystal.Templates.Button.Calendar.Previous}"/>
+        <Setter Property="Width" Value="28"/>
     </Style>
     <Style x:Key="Crystal.Styles.Button.Calendar.Next" TargetType="{x:Type Button}">
-        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForeground}" />
-        <Setter Property="Height" Value="20" />
-        <Setter Property="HorizontalAlignment" Value="Right" />
-        <Setter Property="Template" Value="{StaticResource Crystal.Templates.Button.Calendar.Next}" />
-        <Setter Property="Width" Value="28" />
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForeground}"/>
+        <Setter Property="Height" Value="20"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="Template" Value="{StaticResource Crystal.Templates.Button.Calendar.Next}"/>
+        <Setter Property="Width" Value="28"/>
     </Style>
     <Style x:Key="Crystal.Styles.Button.Calendar.Header" TargetType="{x:Type Button}">
-        <Setter Property="FontWeight" Value="Bold" />
-        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForeground}" />
-        <Setter Property="HorizontalAlignment" Value="Center" />
-        <Setter Property="Template" Value="{StaticResource Crystal.Templates.Button.Calendar.Header}" />
-        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForeground}"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Template" Value="{StaticResource Crystal.Templates.Button.Calendar.Header}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
 
     <Style x:Key="Crystal.Styles.CalendarItem" TargetType="{x:Type CalendarItem}">
-        <Setter Property="Margin" Value="0 3" />
-        <Setter Property="Padding" Value="2" />
-        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Margin" Value="0 3"/>
+        <Setter Property="Padding" Value="2"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type CalendarItem}">
@@ -291,7 +291,7 @@
                                        FontWeight="Bold"
                                        Foreground="{DynamicResource Crystal.Brushes.ThemeForeground}"
                                        Opacity="0.8"
-                                       Text="{Binding}" />
+                                       Text="{Binding}"/>
                         </DataTemplate>
                     </ControlTemplate.Resources>
                     <Grid x:Name="PART_Root">
@@ -301,11 +301,11 @@
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                             <Grid Margin="{TemplateBinding Padding}">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
 
                                 <Grid Grid.Row="0"
@@ -314,15 +314,15 @@
                                     <Button x:Name="PART_HeaderButton"
                                             Grid.Row="0"
                                             Focusable="False"
-                                            Style="{DynamicResource Crystal.Styles.Button.Calendar.Header}" />
+                                            Style="{DynamicResource Crystal.Styles.Button.Calendar.Header}"/>
                                     <Button x:Name="PART_PreviousButton"
                                             Grid.Row="0"
                                             Focusable="False"
-                                            Style="{DynamicResource Crystal.Styles.Button.Calendar.Previous}" />
+                                            Style="{DynamicResource Crystal.Styles.Button.Calendar.Previous}"/>
                                     <Button x:Name="PART_NextButton"
                                             Grid.Row="0"
                                             Focusable="False"
-                                            Style="{DynamicResource Crystal.Styles.Button.Calendar.Next}" />
+                                            Style="{DynamicResource Crystal.Styles.Button.Calendar.Next}"/>
                                 </Grid>
                                 <Grid x:Name="PART_MonthView"
                                       Grid.Row="1"
@@ -331,22 +331,22 @@
                                       VerticalAlignment="Stretch"
                                       Visibility="Visible">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="*" />
-                                        <RowDefinition Height="*" />
-                                        <RowDefinition Height="*" />
-                                        <RowDefinition Height="*" />
-                                        <RowDefinition Height="*" />
-                                        <RowDefinition Height="*" />
-                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
                                     </Grid.RowDefinitions>
                                 </Grid>
                                 <Grid x:Name="PART_YearView"
@@ -356,15 +356,15 @@
                                       VerticalAlignment="Stretch"
                                       Visibility="Hidden">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="*" />
-                                        <RowDefinition Height="*" />
-                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
                                     </Grid.RowDefinitions>
                                 </Grid>
                             </Grid>
@@ -375,16 +375,16 @@
                                    Stretch="Fill"
                                    Stroke="{DynamicResource Crystal.Brushes.Control.Disabled}"
                                    StrokeThickness="1"
-                                   Visibility="Collapsed" />
+                                   Visibility="Collapsed"/>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
-                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="Normal"/>
                                 <VisualState x:Name="Disabled">
                                     <Storyboard>
                                         <DoubleAnimation Storyboard.TargetName="PART_DisabledVisual"
                                                          Storyboard.TargetProperty="Opacity"
                                                          To="1"
-                                                         Duration="0" />
+                                                         Duration="0"/>
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
@@ -392,15 +392,15 @@
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="PART_DisabledVisual" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_DisabledVisual" Property="Visibility" Value="Visible"/>
                         </Trigger>
                         <DataTrigger Binding="{Binding DisplayMode, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Calendar}}}" Value="Year">
-                            <Setter TargetName="PART_MonthView" Property="Visibility" Value="Hidden" />
-                            <Setter TargetName="PART_YearView" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_MonthView" Property="Visibility" Value="Hidden"/>
+                            <Setter TargetName="PART_YearView" Property="Visibility" Value="Visible"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding DisplayMode, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Calendar}}}" Value="Decade">
-                            <Setter TargetName="PART_MonthView" Property="Visibility" Value="Hidden" />
-                            <Setter TargetName="PART_YearView" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_MonthView" Property="Visibility" Value="Hidden"/>
+                            <Setter TargetName="PART_YearView" Property="Visibility" Value="Visible"/>
                         </DataTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -410,44 +410,44 @@
 
     <!--  Style for Month and Year buttons  -->
     <Style x:Key="Crystal.Styles.CalendarButton" TargetType="{x:Type CalendarButton}">
-        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Accent4}" />
-        <Setter Property="FontFamily" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Calendar}}, Path=FontFamily, Mode=OneWay}" />
-        <Setter Property="FontSize" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Calendar}}, Path=FontSize, Mode=OneWay}" />
-        <Setter Property="HorizontalContentAlignment" Value="Center" />
-        <Setter Property="MinHeight" Value="42" />
-        <Setter Property="MinWidth" Value="40" />
-        <Setter Property="Padding" Value="1 0 1 1" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Accent4}"/>
+        <Setter Property="FontFamily" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Calendar}}, Path=FontFamily, Mode=OneWay}"/>
+        <Setter Property="FontSize" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Calendar}}, Path=FontSize, Mode=OneWay}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="MinHeight" Value="42"/>
+        <Setter Property="MinWidth" Value="40"/>
+        <Setter Property="Padding" Value="1 0 1 1"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type CalendarButton}">
                     <Grid>
                         <Rectangle x:Name="SelectedBackground"
                                    Fill="{TemplateBinding Background}"
-                                   Opacity="0" />
+                                   Opacity="0"/>
                         <Rectangle x:Name="Background"
                                    Fill="{TemplateBinding Background}"
-                                   Opacity="0" />
+                                   Opacity="0"/>
                         <ContentPresenter x:Name="NormalText"
                                           Margin="{TemplateBinding Padding}"
                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                          TextElement.Foreground="{TemplateBinding Foreground}" />
+                                          TextElement.Foreground="{TemplateBinding Foreground}"/>
                         <Rectangle x:Name="CalendarButtonFocusVisual"
                                    IsHitTestVisible="false"
                                    Stroke="{DynamicResource Crystal.Brushes.Accent3}"
-                                   Visibility="Collapsed" />
+                                   Visibility="Collapsed"/>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
                                 <VisualStateGroup.Transitions>
-                                    <VisualTransition GeneratedDuration="0:0:0.1" />
+                                    <VisualTransition GeneratedDuration="0:0:0.1"/>
                                 </VisualStateGroup.Transitions>
-                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="Normal"/>
                                 <VisualState x:Name="MouseOver">
                                     <Storyboard>
                                         <DoubleAnimation Storyboard.TargetName="Background"
                                                          Storyboard.TargetProperty="Opacity"
                                                          To=".5"
-                                                         Duration="0" />
+                                                         Duration="0"/>
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Pressed">
@@ -455,31 +455,31 @@
                                         <DoubleAnimation Storyboard.TargetName="Background"
                                                          Storyboard.TargetProperty="Opacity"
                                                          To=".5"
-                                                         Duration="0" />
+                                                         Duration="0"/>
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
                             <VisualStateGroup x:Name="SelectionStates">
                                 <VisualStateGroup.Transitions>
-                                    <VisualTransition GeneratedDuration="0" />
+                                    <VisualTransition GeneratedDuration="0"/>
                                 </VisualStateGroup.Transitions>
-                                <VisualState x:Name="Unselected" />
+                                <VisualState x:Name="Unselected"/>
                                 <VisualState x:Name="Selected">
                                     <Storyboard>
                                         <DoubleAnimation Storyboard.TargetName="SelectedBackground"
                                                          Storyboard.TargetProperty="Opacity"
                                                          To=".75"
-                                                         Duration="0" />
+                                                         Duration="0"/>
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
                             <VisualStateGroup x:Name="ActiveStates">
-                                <VisualState x:Name="Active" />
-                                <VisualState x:Name="Inactive" />
+                                <VisualState x:Name="Active"/>
+                                <VisualState x:Name="Inactive"/>
                             </VisualStateGroup>
                             <VisualStateGroup x:Name="CalendarButtonFocusStates">
                                 <VisualStateGroup.Transitions>
-                                    <VisualTransition GeneratedDuration="0" />
+                                    <VisualTransition GeneratedDuration="0"/>
                                 </VisualStateGroup.Transitions>
                                 <VisualState x:Name="CalendarButtonFocused">
                                     <Storyboard>
@@ -513,29 +513,29 @@
                     <ControlTemplate.Triggers>
                         <!--  IsInactive  -->
                         <Trigger Property="IsInactive" Value="True">
-                            <Setter TargetName="NormalText" Property="TextElement.Foreground" Value="{DynamicResource Crystal.Brushes.Gray2}" />
+                            <Setter TargetName="NormalText" Property="TextElement.Foreground" Value="{DynamicResource Crystal.Brushes.Gray2}"/>
                         </Trigger>
 
                         <Trigger Property="IsFocused" Value="True">
-                            <Setter TargetName="CalendarButtonFocusVisual" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="CalendarButtonFocusVisual" Property="Visibility" Value="Visible"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
     </Style>
 
     <Style x:Key="Crystal.Styles.Calendar.Base" TargetType="{x:Type Calendar}">
-        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
-        <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="CalendarButtonStyle" Value="{DynamicResource Crystal.Styles.CalendarButton}" />
-        <Setter Property="CalendarDayButtonStyle" Value="{DynamicResource Crystal.Styles.CalendarDayButton}" />
-        <Setter Property="CalendarItemStyle" Value="{DynamicResource Crystal.Styles.CalendarItem}" />
-        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Text}" />
-        <Setter Property="HorizontalContentAlignment" Value="Left" />
-        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeBackground}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.ThemeForeground}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CalendarButtonStyle" Value="{DynamicResource Crystal.Styles.CalendarButton}"/>
+        <Setter Property="CalendarDayButtonStyle" Value="{DynamicResource Crystal.Styles.CalendarDayButton}"/>
+        <Setter Property="CalendarItemStyle" Value="{DynamicResource Crystal.Styles.CalendarItem}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Text}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Calendar}">
@@ -547,7 +547,7 @@
                                       BorderBrush="{TemplateBinding BorderBrush}"
                                       BorderThickness="{TemplateBinding BorderThickness}"
                                       SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                      Style="{TemplateBinding CalendarItemStyle}" />
+                                      Style="{TemplateBinding CalendarItemStyle}"/>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
@@ -557,14 +557,14 @@
     <Style x:Key="Crystal.Styles.Calendar"
            BasedOn="{StaticResource Crystal.Styles.Calendar.Base}"
            TargetType="{x:Type Calendar}">
-        <Setter Property="FontFamily" Value="{DynamicResource Crystal.Fonts.Family.Control}" />
-        <Setter Property="FontSize" Value="{DynamicResource Crystal.Font.Size.Content}" />
+        <Setter Property="FontFamily" Value="{DynamicResource Crystal.Fonts.Family.Control}"/>
+        <Setter Property="FontSize" Value="{DynamicResource Crystal.Font.Size.Content}"/>
     </Style>
 
     <Style x:Key="Crystal.Styles.Calendar.DateTimePicker"
            BasedOn="{StaticResource Crystal.Styles.Calendar.Base}"
            TargetType="{x:Type Calendar}">
-        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Control.Border}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Control.Border}"/>
     </Style>
 
 </ResourceDictionary>

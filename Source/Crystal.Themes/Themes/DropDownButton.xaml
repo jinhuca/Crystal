@@ -10,30 +10,30 @@
                                SnapsToDevicePixels="true"
                                Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"
                                StrokeDashArray="1 2"
-                               StrokeThickness="1" />
+                               StrokeThickness="1"/>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
 
     <Style TargetType="{x:Type crystal:DropDownButton}">
-        <Setter Property="ArrowBrush" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
-        <Setter Property="ArrowMouseOverBrush" Value="{DynamicResource Crystal.Brushes.Accent}" />
-        <Setter Property="ArrowPressedBrush" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
-        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
-        <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="ButtonStyle" Value="{DynamicResource Crystal.Styles.Button.DropDown}" />
-        <Setter Property="FocusVisualStyle" Value="{StaticResource Crystal.Styles.DropDownButton.FocusVisualStyle}" />
-        <Setter Property="Focusable" Value="False" />
-        <Setter Property="FontFamily" Value="{DynamicResource Crystal.Fonts.Family.Control}" />
-        <Setter Property="FontSize" Value="{DynamicResource Crystal.Font.Size.Content}" />
-        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
-        <Setter Property="HorizontalContentAlignment" Value="Center" />
-        <Setter Property="MenuStyle" Value="{DynamicResource Crystal.Styles.ContextMenu}" />
-        <Setter Property="MinHeight" Value="26" />
-        <Setter Property="Padding" Value="3" />
-        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="ArrowBrush" Value="{DynamicResource Crystal.Brushes.ThemeForeground}"/>
+        <Setter Property="ArrowMouseOverBrush" Value="{DynamicResource Crystal.Brushes.Accent}"/>
+        <Setter Property="ArrowPressedBrush" Value="{DynamicResource Crystal.Brushes.ThemeForeground}"/>
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeBackground}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.ThemeForeground}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="ButtonStyle" Value="{DynamicResource Crystal.Styles.Button.DropDown}"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource Crystal.Styles.DropDownButton.FocusVisualStyle}"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="FontFamily" Value="{DynamicResource Crystal.Fonts.Family.Control}"/>
+        <Setter Property="FontSize" Value="{DynamicResource Crystal.Font.Size.Content}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeForeground}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="MenuStyle" Value="{DynamicResource Crystal.Styles.ContextMenu}"/>
+        <Setter Property="MinHeight" Value="26"/>
+        <Setter Property="Padding" Value="3"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type crystal:DropDownButton}">
@@ -72,7 +72,7 @@
                                                   Data="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"
                                                   DockPanel.Dock="Right"
                                                   Foreground="{TemplateBinding ArrowBrush}"
-                                                  Visibility="{TemplateBinding ArrowVisibility}" />
+                                                  Visibility="{TemplateBinding ArrowVisibility}"/>
                                     <StackPanel x:Name="PART_ContentOrientation"
                                                 HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                 VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
@@ -84,7 +84,7 @@
                                                           ContentTemplate="{TemplateBinding IconTemplate}"
                                                           Focusable="False"
                                                           RecognizesAccessKey="True"
-                                                          UseLayoutRounding="False" />
+                                                          UseLayoutRounding="False"/>
                                         <crystal:ContentControlEx x:Name="PART_ButtonContent"
                                                               Padding="{TemplateBinding Padding}"
                                                               HorizontalAlignment="Center"
@@ -98,7 +98,7 @@
                                                               ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
                                                               RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}"
                                                               SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                                              UseLayoutRounding="False" />
+                                                              UseLayoutRounding="False"/>
                                     </StackPanel>
                                 </DockPanel>
                                 <Button.ContextMenu>
@@ -117,47 +117,47 @@
                                                  Placement="Bottom"
                                                  StaysOpen="False"
                                                  Style="{TemplateBinding MenuStyle}"
-                                                 UseLayoutRounding="False" />
+                                                 UseLayoutRounding="False"/>
                                 </Button.ContextMenu>
                             </Button>
                         </crystal:ClipBorder>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="Content" Value="{x:Null}">
-                            <Setter TargetName="PART_ButtonContent" Property="Margin" Value="0" />
+                            <Setter TargetName="PART_ButtonContent" Property="Margin" Value="0"/>
                         </Trigger>
                         <Trigger Property="Orientation" Value="Vertical">
-                            <Setter TargetName="PART_Arrow" Property="DockPanel.Dock" Value="Bottom" />
-                            <Setter TargetName="PART_Arrow" Property="Margin" Value="0 0 0 3" />
-                            <Setter TargetName="PART_ContentOrientation" Property="Orientation" Value="Vertical" />
+                            <Setter TargetName="PART_Arrow" Property="DockPanel.Dock" Value="Bottom"/>
+                            <Setter TargetName="PART_Arrow" Property="Margin" Value="0 0 0 3"/>
+                            <Setter TargetName="PART_ContentOrientation" Property="Orientation" Value="Vertical"/>
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsMouseOver" Value="True" />
-                                <Condition SourceName="PART_Button" Property="IsEnabled" Value="True" />
+                                <Condition Property="IsMouseOver" Value="True"/>
+                                <Condition SourceName="PART_Button" Property="IsEnabled" Value="True"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="PART_Arrow" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ArrowMouseOverBrush, Mode=OneWay}" />
+                            <Setter TargetName="PART_Arrow" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ArrowMouseOverBrush, Mode=OneWay}"/>
                         </MultiTrigger>
                         <Trigger SourceName="PART_Button" Property="IsPressed" Value="True">
-                            <Setter TargetName="PART_Arrow" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ArrowPressedBrush, Mode=OneWay}" />
+                            <Setter TargetName="PART_Arrow" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ArrowPressedBrush, Mode=OneWay}"/>
                         </Trigger>
                         <Trigger SourceName="PART_Button" Property="IsEnabled" Value="False">
-                            <Setter Property="Opacity" Value=".55" />
+                            <Setter Property="Opacity" Value=".55"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Style.Triggers>
             <Trigger Property="IsFocused" Value="True">
-                <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Accent}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Accent}"/>
             </Trigger>
             <Trigger Property="IsKeyboardFocusWithin" Value="True">
-                <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Accent}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Accent}"/>
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Opacity" Value=".55" />
+                <Setter Property="Opacity" Value=".55"/>
             </Trigger>
         </Style.Triggers>
     </Style>

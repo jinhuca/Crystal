@@ -15,7 +15,7 @@ namespace Crystal.Themes.Controls
     {
         public static readonly DefaultStringToObjectParser Instance = new();
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public bool TryCreateObjectFromString(string? input,
                                               out object? result,
                                               CultureInfo? culture = null,

@@ -5,18 +5,18 @@ namespace Crystal.Themes.Controls
   /// </summary>
   public class ItemClickEventArgs : RoutedEventArgs
   {
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public ItemClickEventArgs()
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public ItemClickEventArgs(RoutedEvent routedEvent)
         : base(routedEvent)
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public ItemClickEventArgs(RoutedEvent routedEvent, object source)
         : base(routedEvent, source)
     {
@@ -38,18 +38,18 @@ namespace Crystal.Themes.Controls
   /// </summary>
   public class HamburgerMenuItemInvokedEventArgs : RoutedEventArgs
   {
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public HamburgerMenuItemInvokedEventArgs()
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public HamburgerMenuItemInvokedEventArgs(RoutedEvent routedEvent)
         : base(routedEvent)
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public HamburgerMenuItemInvokedEventArgs(RoutedEvent routedEvent, object source)
         : base(routedEvent, source)
     {

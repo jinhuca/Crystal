@@ -4,446 +4,417 @@
                     xmlns:crystalConverters="clr-namespace:Crystal.Themes.Converters"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
-    <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/ColorPicker/ColorComponentSlider.xaml" />
-    </ResourceDictionary.MergedDictionaries>
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/ColorPicker/ColorComponentSlider.xaml"/>
+  </ResourceDictionary.MergedDictionaries>
 
-    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+  <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 
-    <DrawingBrush x:Key="Crystal.Brushes.Tile"
-                  TileMode="Tile"
-                  Viewport="0,0,20,20"
-                  ViewportUnits="Absolute">
-        <DrawingBrush.Drawing>
-            <DrawingGroup>
-                <GeometryDrawing Brush="{DynamicResource Crystal.Brushes.ThemeBackground}">
-                    <GeometryDrawing.Geometry>
-                        <RectangleGeometry Rect="0,0,20,20" />
-                    </GeometryDrawing.Geometry>
-                </GeometryDrawing>
-                <GeometryDrawing Brush="{DynamicResource Crystal.Brushes.Gray7}">
-                    <GeometryDrawing.Geometry>
-                        <GeometryGroup>
-                            <RectangleGeometry Rect="0,0,10,10" />
-                            <RectangleGeometry Rect="10,10,10,10" />
-                        </GeometryGroup>
-                    </GeometryDrawing.Geometry>
-                </GeometryDrawing>
-            </DrawingGroup>
-        </DrawingBrush.Drawing>
-    </DrawingBrush>
+  <DrawingBrush x:Key="Crystal.Brushes.Tile"
+                TileMode="Tile"
+                Viewport="0,0,20,20"
+                ViewportUnits="Absolute">
+    <DrawingBrush.Drawing>
+      <DrawingGroup>
+        <GeometryDrawing Brush="{DynamicResource Crystal.Brushes.ThemeBackground}">
+          <GeometryDrawing.Geometry>
+            <RectangleGeometry Rect="0,0,20,20"/>
+          </GeometryDrawing.Geometry>
+        </GeometryDrawing>
+        <GeometryDrawing Brush="{DynamicResource Crystal.Brushes.Gray7}">
+          <GeometryDrawing.Geometry>
+            <GeometryGroup>
+              <RectangleGeometry Rect="0,0,10,10"/>
+              <RectangleGeometry Rect="10,10,10,10"/>
+            </GeometryGroup>
+          </GeometryDrawing.Geometry>
+        </GeometryDrawing>
+      </DrawingGroup>
+    </DrawingBrush.Drawing>
+  </DrawingBrush>
 
-    <DrawingBrush x:Key="Crystal.Brushes.Tile.Small"
-                  TileMode="Tile"
-                  Viewport="0,0,10,10"
-                  ViewportUnits="Absolute">
-        <DrawingBrush.Drawing>
-            <DrawingGroup>
-                <GeometryDrawing Brush="{DynamicResource Crystal.Brushes.ThemeBackground}">
-                    <GeometryDrawing.Geometry>
-                        <RectangleGeometry Rect="0,0,10,10" />
-                    </GeometryDrawing.Geometry>
-                </GeometryDrawing>
-                <GeometryDrawing Brush="{DynamicResource Crystal.Brushes.Gray7}">
-                    <GeometryDrawing.Geometry>
-                        <GeometryGroup>
-                            <RectangleGeometry Rect="0,0,5,5" />
-                            <RectangleGeometry Rect="5,5,5,5" />
-                        </GeometryGroup>
-                    </GeometryDrawing.Geometry>
-                </GeometryDrawing>
-            </DrawingGroup>
+  <DrawingBrush x:Key="Crystal.Brushes.Tile.Small"
+                TileMode="Tile"
+                Viewport="0,0,10,10"
+                ViewportUnits="Absolute">
+    <DrawingBrush.Drawing>
+      <DrawingGroup>
+        <GeometryDrawing Brush="{DynamicResource Crystal.Brushes.ThemeBackground}">
+          <GeometryDrawing.Geometry>
+            <RectangleGeometry Rect="0,0,10,10"/>
+          </GeometryDrawing.Geometry>
+        </GeometryDrawing>
+        <GeometryDrawing Brush="{DynamicResource Crystal.Brushes.Gray7}">
+          <GeometryDrawing.Geometry>
+            <GeometryGroup>
+              <RectangleGeometry Rect="0,0,5,5"/>
+              <RectangleGeometry Rect="5,5,5,5"/>
+            </GeometryGroup>
+          </GeometryDrawing.Geometry>
+        </GeometryDrawing>
+      </DrawingGroup>
+    </DrawingBrush.Drawing>
+  </DrawingBrush>
 
-        </DrawingBrush.Drawing>
-    </DrawingBrush>
+  <DataTemplate x:Key="Crystal.DataTemplates.ColorPicker.NoColor">
+    <Path Fill="{DynamicResource Crystal.Brushes.ThemeBackground}"
+          SnapsToDevicePixels="True"
+          Stretch="Fill"
+          Stroke="{DynamicResource Crystal.Brushes.ThemeForeground}"
+          StrokeThickness="1">
+      <Path.Data>
+        <GeometryGroup>
+          <RectangleGeometry Rect="0,0 1,1"/>
+          <LineGeometry StartPoint="0,0" EndPoint="1,1"/>
+          <LineGeometry StartPoint="0,1" EndPoint="1,0"/>
+        </GeometryGroup>
+      </Path.Data>
+    </Path>
+  </DataTemplate>
 
-    <DataTemplate x:Key="Crystal.DataTemplates.ColorPicker.NoColor">
-        <Path Fill="{DynamicResource Crystal.Brushes.ThemeBackground}"
-              SnapsToDevicePixels="True"
-              Stretch="Fill"
-              Stroke="{DynamicResource Crystal.Brushes.ThemeForeground}"
-              StrokeThickness="1">
-            <Path.Data>
-                <GeometryGroup>
-                    <RectangleGeometry Rect="0,0 1,1" />
-                    <LineGeometry StartPoint="0,0" EndPoint="1,1" />
-                    <LineGeometry StartPoint="0,1" EndPoint="1,0" />
-                </GeometryGroup>
-            </Path.Data>
-        </Path>
-    </DataTemplate>
+  <Style x:Key="Crystal.Styles.ColorCanvas" TargetType="{x:Type crystal:ColorCanvas}">
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type crystal:ColorCanvas}">
+          <Border Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+            <Grid Grid.IsSharedSizeScope="True" UseLayoutRounding="True">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"
+                                  MinWidth="110"
+                                  MaxWidth="310"/>
+                <ColumnDefinition Width="*"
+                                  MinWidth="110"
+                                  MaxWidth="310"/>
+              </Grid.ColumnDefinitions>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="*"
+                               MinHeight="110"
+                               MaxHeight="310"/>
+                <RowDefinition Height="Auto"/>
+              </Grid.RowDefinitions>
+              <Border x:Name="PART_SaturationValueBox"
+                      Grid.Row="0"
+                      Grid.Column="0"
+                      Margin="5"
+                      Background="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=SelectedHSVColor, Converter={x:Static crystalConverters:HSVColorChannel2BrushConverter.Default}, ConverterParameter={x:Static crystalConverters:HSVColorChannelType.SVMax}}"
+                      BorderBrush="{DynamicResource Crystal.Brushes.ThemeForeground}"
+                      BorderThickness="1">
+                <Grid SnapsToDevicePixels="True" UseLayoutRounding="False">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Saturation, Converter={x:Static crystalConverters:PercentageToGridLengthConverter.Default}}"/>
+                    <ColumnDefinition Width="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Saturation, Converter={x:Static crystalConverters:PercentageToGridLengthConverter.Default}, ConverterParameter={x:Static system:Boolean.TrueString}}"/>
+                  </Grid.ColumnDefinitions>
+                  <Grid.RowDefinitions>
+                    <RowDefinition Height="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Value, Converter={x:Static crystalConverters:PercentageToGridLengthConverter.Default}, ConverterParameter={x:Static system:Boolean.TrueString}}"/>
+                    <RowDefinition Height="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Value, Converter={x:Static crystalConverters:PercentageToGridLengthConverter.Default}}"/>
+                  </Grid.RowDefinitions>
+                  <!--  Gradients to display Saturation and Value  -->
+                  <Grid.Background>
+                    <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                      <GradientStop Offset="0" Color="White"/>
+                      <GradientStop Offset="1" Color="Transparent"/>
+                    </LinearGradientBrush>
+                  </Grid.Background>
+                  <Grid Grid.RowSpan="2" Grid.ColumnSpan="2">
+                    <Grid.Background>
+                      <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                        <GradientStop Offset="0" Color="#00000000"/>
+                        <GradientStop Offset="1" Color="Black"/>
+                      </LinearGradientBrush>
+                    </Grid.Background>
+                  </Grid>
+                  <!--  Fade  -->
+                  <Rectangle Grid.Row="0"
+                             Grid.RowSpan="2"
+                             Grid.Column="0"
+                             Width="3"
+                             Margin="-1.5 0"
+                             HorizontalAlignment="Right"
+                             VerticalAlignment="Stretch"
+                             Fill="White"/>
+                  <Rectangle Grid.Row="0"
+                             Grid.Column="0"
+                             Grid.ColumnSpan="2"
+                             Height="3"
+                             Margin="0 -1.5"
+                             HorizontalAlignment="Stretch"
+                             VerticalAlignment="Bottom"
+                             Fill="White"/>
+                  <Rectangle Grid.Row="0"
+                             Grid.RowSpan="2"
+                             Grid.Column="0"
+                             Width="1"
+                             Margin="-0.5 0"
+                             HorizontalAlignment="Right"
+                             VerticalAlignment="Stretch"
+                             Fill="Black"/>
+                  <Rectangle Grid.Row="0"
+                             Grid.Column="0"
+                             Grid.ColumnSpan="2"
+                             Height="1"
+                             Margin="0 -0.5"
+                             HorizontalAlignment="Stretch"
+                             VerticalAlignment="Bottom"
+                             Fill="Black"/>
+                </Grid>
+              </Border>
+              <!--  Selected Color Preview  -->
+              <Grid Grid.Row="1"
+                    Grid.Column="0"
+                    Margin="5 0 5 5">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="Auto"/>
+                  <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <ContentPresenter VerticalAlignment="Center" Content="{TemplateBinding LabelColorPreview}"/>
+                <Border Grid.Row="0"
+                        Grid.Column="1"
+                        Margin="5 0 0 0"
+                        Background="{DynamicResource Crystal.Brushes.Tile}"
+                        BorderBrush="{DynamicResource Crystal.Brushes.ThemeForeground}"
+                        BorderThickness="1">
+                  <Rectangle Fill="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedColor, Converter={x:Static crystalConverters:ColorToSolidColorBrushConverter.DefaultInstance}}"/>
+                </Border>
+                <ContentControl x:Name="PART_NoColorPreview"
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Margin="5 0 0 0"
+                                ContentTemplate="{DynamicResource Crystal.DataTemplates.ColorPicker.NoColor}"
+                                Visibility="Collapsed"/>
+              </Grid>
 
-    <Style x:Key="Crystal.Styles.ColorCanvas" TargetType="{x:Type crystal:ColorCanvas}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type crystal:ColorCanvas}">
-                    <Border Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
-
-                        <Grid Grid.IsSharedSizeScope="True" UseLayoutRounding="True">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"
-                                                  MinWidth="110"
-                                                  MaxWidth="310" />
-                                <ColumnDefinition Width="*"
-                                                  MinWidth="110"
-                                                  MaxWidth="310" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"
-                                               MinHeight="110"
-                                               MaxHeight="310" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-
-                            <!--  Saturation and Value  -->
-                            <Border x:Name="PART_SaturationValueBox"
-                                    Grid.Row="0"
-                                    Grid.Column="0"
-                                    Margin="5"
-                                    Background="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=SelectedHSVColor, Converter={x:Static crystalConverters:HSVColorChannel2BrushConverter.Default}, ConverterParameter={x:Static crystalConverters:HSVColorChannelType.SVMax}}"
-                                    BorderBrush="{DynamicResource Crystal.Brushes.ThemeForeground}"
-                                    BorderThickness="1">
-                                <Grid SnapsToDevicePixels="True" UseLayoutRounding="False">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Saturation, Converter={x:Static crystalConverters:PercentageToGridLengthConverter.Default}}" />
-                                        <ColumnDefinition Width="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Saturation, Converter={x:Static crystalConverters:PercentageToGridLengthConverter.Default}, ConverterParameter={x:Static system:Boolean.TrueString}}" />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Value, Converter={x:Static crystalConverters:PercentageToGridLengthConverter.Default}, ConverterParameter={x:Static system:Boolean.TrueString}}" />
-                                        <RowDefinition Height="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Value, Converter={x:Static crystalConverters:PercentageToGridLengthConverter.Default}}" />
-                                    </Grid.RowDefinitions>
-
-                                    <!--  Gradients to display Saturation and Value  -->
-                                    <Grid.Background>
-                                        <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
-                                            <GradientStop Offset="0" Color="White" />
-                                            <GradientStop Offset="1" Color="Transparent" />
-                                        </LinearGradientBrush>
-                                    </Grid.Background>
-                                    <Grid Grid.RowSpan="2" Grid.ColumnSpan="2">
-                                        <Grid.Background>
-                                            <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                                <GradientStop Offset="0" Color="#00000000" />
-                                                <GradientStop Offset="1" Color="Black" />
-                                            </LinearGradientBrush>
-                                        </Grid.Background>
-                                    </Grid>
-
-                                    <!--  Fade  -->
-                                    <Rectangle Grid.Row="0"
-                                               Grid.RowSpan="2"
-                                               Grid.Column="0"
-                                               Width="3"
-                                               Margin="-1.5 0"
-                                               HorizontalAlignment="Right"
-                                               VerticalAlignment="Stretch"
-                                               Fill="White" />
-                                    <Rectangle Grid.Row="0"
-                                               Grid.Column="0"
-                                               Grid.ColumnSpan="2"
-                                               Height="3"
-                                               Margin="0 -1.5"
-                                               HorizontalAlignment="Stretch"
-                                               VerticalAlignment="Bottom"
-                                               Fill="White" />
-
-                                    <Rectangle Grid.Row="0"
-                                               Grid.RowSpan="2"
-                                               Grid.Column="0"
-                                               Width="1"
-                                               Margin="-0.5 0"
-                                               HorizontalAlignment="Right"
-                                               VerticalAlignment="Stretch"
-                                               Fill="Black" />
-                                    <Rectangle Grid.Row="0"
-                                               Grid.Column="0"
-                                               Grid.ColumnSpan="2"
-                                               Height="1"
-                                               Margin="0 -0.5"
-                                               HorizontalAlignment="Stretch"
-                                               VerticalAlignment="Bottom"
-                                               Fill="Black" />
-
-                                </Grid>
-                            </Border>
-
-                            <!--  Selected Color Preview  -->
-                            <Grid Grid.Row="1"
-                                  Grid.Column="0"
-                                  Margin="5 0 5 5">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-
-                                <ContentPresenter VerticalAlignment="Center" Content="{TemplateBinding LabelColorPreview}" />
-
-                                <Border Grid.Row="0"
-                                        Grid.Column="1"
-                                        Margin="5 0 0 0"
-                                        Background="{DynamicResource Crystal.Brushes.Tile}"
-                                        BorderBrush="{DynamicResource Crystal.Brushes.ThemeForeground}"
-                                        BorderThickness="1">
-                                    <Rectangle Fill="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedColor, Converter={x:Static crystalConverters:ColorToSolidColorBrushConverter.DefaultInstance}}" />
-                                </Border>
-
-                                <ContentControl x:Name="PART_NoColorPreview"
-                                                Grid.Row="0"
-                                                Grid.Column="1"
-                                                Margin="5 0 0 0"
-                                                ContentTemplate="{DynamicResource Crystal.DataTemplates.ColorPicker.NoColor}"
-                                                Visibility="Collapsed" />
-                            </Grid>
-
-                            <!--  Sliders for Values  -->
-                            <ScrollViewer Grid.Row="0"
-                                          Grid.Column="1"
-                                          Margin="0 5 5 5"
-                                          HorizontalScrollBarVisibility="Auto"
-                                          VerticalScrollBarVisibility="Auto">
-                                <StackPanel UseLayoutRounding="True">
-                                    <Grid Visibility="{TemplateBinding AreRgbChannelsVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto"
-                                                              MinWidth="{DynamicResource Crystal.Font.Size.Content}"
-                                                              SharedSizeGroup="Label" />
-                                            <ColumnDefinition Width="*" MinWidth="50" />
-                                            <ColumnDefinition Width="Auto" MinWidth="100" />
-                                        </Grid.ColumnDefinitions>
-
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                        </Grid.RowDefinitions>
-
-                                        <!--  R  -->
-                                        <ContentPresenter Grid.Row="0"
+              <!--  Sliders for Values  -->
+              <ScrollViewer Grid.Row="0"
+                            Grid.Column="1"
+                            Margin="0 5 5 5"
+                            HorizontalScrollBarVisibility="Auto"
+                            VerticalScrollBarVisibility="Auto">
+                <StackPanel UseLayoutRounding="True">
+                  <Grid Visibility="{TemplateBinding AreRgbChannelsVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="Auto"
+                                        MinWidth="{DynamicResource Crystal.Font.Size.Content}"
+                                        SharedSizeGroup="Label"/>
+                      <ColumnDefinition Width="*" MinWidth="50"/>
+                      <ColumnDefinition Width="Auto" MinWidth="100"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                      <RowDefinition Height="Auto"/>
+                      <RowDefinition Height="Auto"/>
+                      <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <!--  R  -->
+                    <ContentPresenter Grid.Row="0"
+                                      Grid.Column="0"
+                                      VerticalAlignment="Center"
+                                      Content="{TemplateBinding LabelRedChannel}"/>
+                    <Slider Grid.Row="0"
+                            Grid.Column="1"
+                            Background="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=SelectedColor, Converter={x:Static crystalConverters:ColorChannel2GradientBrushConverter.Default}, ConverterParameter={x:Static crystalConverters:ColorChannelType.R}}"
+                            Style="{DynamicResource Crystal.Styles.Slider.ColorComponent.ARGB}"
+                            Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=R}"/>
+                    <crystal:NumericUpDown Grid.Row="0"
+                                           Grid.Column="2"
+                                           Margin="2"
+                                           Maximum="255"
+                                           Minimum="0"
+                                           Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=R}"/>
+                    <!--  G  -->
+                    <ContentPresenter Grid.Row="1"
+                                      Grid.Column="0"
+                                      VerticalAlignment="Center"
+                                      Content="{TemplateBinding LabelGreenChannel}"/>
+                    <Slider Grid.Row="1"
+                            Grid.Column="1"
+                            Background="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=SelectedColor, Converter={x:Static crystalConverters:ColorChannel2GradientBrushConverter.Default}, ConverterParameter={x:Static crystalConverters:ColorChannelType.G}}"
+                            Style="{DynamicResource Crystal.Styles.Slider.ColorComponent.ARGB}"
+                            Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=G}"/>
+                    <crystal:NumericUpDown Grid.Row="1"
+                                           Grid.Column="2"
+                                           Margin="2"
+                                           Maximum="255"
+                                           Minimum="0"
+                                           Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=G}"/>
+                    <!--  B  -->
+                    <ContentPresenter Grid.Row="2"
+                                      Grid.Column="0"
+                                      VerticalAlignment="Center"
+                                      Content="{TemplateBinding LabelBlueChannel}"/>
+                    <Slider Grid.Row="2"
+                            Grid.Column="1"
+                            Background="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=SelectedColor, Converter={x:Static crystalConverters:ColorChannel2GradientBrushConverter.Default}, ConverterParameter={x:Static crystalConverters:ColorChannelType.B}}"
+                            Style="{DynamicResource Crystal.Styles.Slider.ColorComponent.ARGB}"
+                            Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=B}"/>
+                    <crystal:NumericUpDown Grid.Row="2"
+                                           Grid.Column="2"
+                                           Margin="2"
+                                           Maximum="255"
+                                           Minimum="0"
+                                           Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=B}"/>
+                  </Grid>
+                  <Grid Margin="0 10 0 0" Visibility="{TemplateBinding AreHsvChannelsVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="Auto"
+                                        MinWidth="{DynamicResource Crystal.Font.Size.Content}"
+                                        SharedSizeGroup="Label"/>
+                      <ColumnDefinition Width="*" MinWidth="50"/>
+                      <ColumnDefinition Width="Auto" MinWidth="100"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                      <RowDefinition Height="Auto"/>
+                      <RowDefinition Height="Auto"/>
+                      <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <!--  H  -->
+                    <ContentPresenter Grid.Row="0"
+                                      Grid.Column="0"
+                                      VerticalAlignment="Center"
+                                      Content="{TemplateBinding LabelHueChannel}"/>
+                    <Slider Grid.Row="0"
+                            Grid.Column="1"
+                            Style="{DynamicResource Crystal.Styles.Slider.ColorComponent.Hue}"
+                            Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Hue, UpdateSourceTrigger=PropertyChanged}"/>
+                    <crystal:NumericUpDown Grid.Row="0"
+                                           Grid.Column="2"
+                                           Margin="2"
+                                           Maximum="360"
+                                           Minimum="0"
+                                           StringFormat="0.# °"
+                                           Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Hue}"/>
+                    <!--  S  -->
+                    <ContentPresenter Grid.Row="1"
+                                      Grid.Column="0"
+                                      VerticalAlignment="Center"
+                                      Content="{TemplateBinding LabelSaturationChannel}"/>
+                    <Slider Grid.Row="1"
+                            Grid.Column="1"
+                            Background="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=SelectedHSVColor, Converter={x:Static crystalConverters:HSVColorChannel2GradientBrushConverter.Default}, ConverterParameter={x:Static crystalConverters:HSVColorChannelType.S}}"
+                            Style="{DynamicResource Crystal.Styles.Slider.ColorComponent.SV}"
+                            Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Saturation}"/>
+                    <crystal:NumericUpDown Grid.Row="1"
+                                           Grid.Column="2"
+                                           Margin="2"
+                                           Interval="0.01"
+                                           Maximum="1"
+                                           Minimum="0"
+                                           StringFormat="p0"
+                                           Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Saturation}"/>
+                    <!--  Value  -->
+                    <ContentPresenter Grid.Row="2"
                                                           Grid.Column="0"
                                                           VerticalAlignment="Center"
-                                                          Content="{TemplateBinding LabelRedChannel}" />
-                                        <Slider Grid.Row="0"
-                                                Grid.Column="1"
-                                                Background="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=SelectedColor, Converter={x:Static crystalConverters:ColorChannel2GradientBrushConverter.Default}, ConverterParameter={x:Static crystalConverters:ColorChannelType.R}}"
-                                                Style="{DynamicResource Crystal.Styles.Slider.ColorComponent.ARGB}"
-                                                Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=R}" />
-                                        <crystal:NumericUpDown Grid.Row="0"
-                                                           Grid.Column="2"
-                                                           Margin="2"
-                                                           Maximum="255"
-                                                           Minimum="0"
-                                                           Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=R}" />
-
-                                        <!--  G  -->
-                                        <ContentPresenter Grid.Row="1"
-                                                          Grid.Column="0"
-                                                          VerticalAlignment="Center"
-                                                          Content="{TemplateBinding LabelGreenChannel}" />
-                                        <Slider Grid.Row="1"
-                                                Grid.Column="1"
-                                                Background="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=SelectedColor, Converter={x:Static crystalConverters:ColorChannel2GradientBrushConverter.Default}, ConverterParameter={x:Static crystalConverters:ColorChannelType.G}}"
-                                                Style="{DynamicResource Crystal.Styles.Slider.ColorComponent.ARGB}"
-                                                Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=G}" />
-                                        <crystal:NumericUpDown Grid.Row="1"
-                                                           Grid.Column="2"
-                                                           Margin="2"
-                                                           Maximum="255"
-                                                           Minimum="0"
-                                                           Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=G}" />
-
-                                        <!--  B  -->
-                                        <ContentPresenter Grid.Row="2"
-                                                          Grid.Column="0"
-                                                          VerticalAlignment="Center"
-                                                          Content="{TemplateBinding LabelBlueChannel}" />
-                                        <Slider Grid.Row="2"
-                                                Grid.Column="1"
-                                                Background="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=SelectedColor, Converter={x:Static crystalConverters:ColorChannel2GradientBrushConverter.Default}, ConverterParameter={x:Static crystalConverters:ColorChannelType.B}}"
-                                                Style="{DynamicResource Crystal.Styles.Slider.ColorComponent.ARGB}"
-                                                Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=B}" />
-                                        <crystal:NumericUpDown Grid.Row="2"
-                                                           Grid.Column="2"
-                                                           Margin="2"
-                                                           Maximum="255"
-                                                           Minimum="0"
-                                                           Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=B}" />
-                                    </Grid>
-
-                                    <Grid Margin="0 10 0 0" Visibility="{TemplateBinding AreHsvChannelsVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto"
-                                                              MinWidth="{DynamicResource Crystal.Font.Size.Content}"
-                                                              SharedSizeGroup="Label" />
-                                            <ColumnDefinition Width="*" MinWidth="50" />
-                                            <ColumnDefinition Width="Auto" MinWidth="100" />
-                                        </Grid.ColumnDefinitions>
-
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                        </Grid.RowDefinitions>
-
-                                        <!--  H  -->
-                                        <ContentPresenter Grid.Row="0"
-                                                          Grid.Column="0"
-                                                          VerticalAlignment="Center"
-                                                          Content="{TemplateBinding LabelHueChannel}" />
-                                        <Slider Grid.Row="0"
-                                                Grid.Column="1"
-                                                Style="{DynamicResource Crystal.Styles.Slider.ColorComponent.Hue}"
-                                                Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Hue, UpdateSourceTrigger=PropertyChanged}" />
-                                        <crystal:NumericUpDown Grid.Row="0"
-                                                           Grid.Column="2"
-                                                           Margin="2"
-                                                           Maximum="360"
-                                                           Minimum="0"
-                                                           StringFormat="0.# °"
-                                                           Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Hue}" />
-
-                                        <!--  S  -->
-                                        <ContentPresenter Grid.Row="1"
-                                                          Grid.Column="0"
-                                                          VerticalAlignment="Center"
-                                                          Content="{TemplateBinding LabelSaturationChannel}" />
-                                        <Slider Grid.Row="1"
-                                                Grid.Column="1"
-                                                Background="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=SelectedHSVColor, Converter={x:Static crystalConverters:HSVColorChannel2GradientBrushConverter.Default}, ConverterParameter={x:Static crystalConverters:HSVColorChannelType.S}}"
-                                                Style="{DynamicResource Crystal.Styles.Slider.ColorComponent.SV}"
-                                                Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Saturation}" />
-                                        <crystal:NumericUpDown Grid.Row="1"
-                                                           Grid.Column="2"
-                                                           Margin="2"
-                                                           Interval="0.01"
-                                                           Maximum="1"
-                                                           Minimum="0"
-                                                           StringFormat="p0"
-                                                           Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Saturation}" />
-
-                                        <!--  Value  -->
-                                        <ContentPresenter Grid.Row="2"
-                                                          Grid.Column="0"
-                                                          VerticalAlignment="Center"
-                                                          Content="{TemplateBinding LabelValueChannel}" />
-                                        <Slider Grid.Row="2"
-                                                Grid.Column="1"
-                                                Background="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=SelectedHSVColor, Converter={x:Static crystalConverters:HSVColorChannel2GradientBrushConverter.Default}, ConverterParameter={x:Static crystalConverters:HSVColorChannelType.V}}"
-                                                Style="{DynamicResource Crystal.Styles.Slider.ColorComponent.SV}"
-                                                Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Value}" />
-                                        <crystal:NumericUpDown Grid.Row="2"
-                                                           Grid.Column="2"
-                                                           Margin="2"
-                                                           Interval="0.01"
-                                                           Maximum="1"
-                                                           Minimum="0"
-                                                           StringFormat="p0"
-                                                           Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Value}" />
-                                    </Grid>
-
-                                    <Grid Margin="0 10 0 0" Visibility="{TemplateBinding IsAlphaChannelVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto"
-                                                              MinWidth="{DynamicResource Crystal.Font.Size.Content}"
-                                                              SharedSizeGroup="Label" />
-                                            <ColumnDefinition Width="*" MinWidth="50" />
-                                            <ColumnDefinition Width="Auto" MinWidth="100" />
-                                        </Grid.ColumnDefinitions>
-
-                                        <!--  A  -->
-                                        <ContentPresenter Grid.Row="0"
-                                                          Grid.Column="0"
-                                                          VerticalAlignment="Center"
-                                                          Content="{TemplateBinding LabelAlphaChannel}" />
-                                        <Slider Grid.Row="0"
-                                                Grid.Column="1"
-                                                Background="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=SelectedColor, Converter={x:Static crystalConverters:ColorChannel2GradientBrushConverter.Default}, ConverterParameter={x:Static crystalConverters:ColorChannelType.A}}"
-                                                Style="{DynamicResource Crystal.Styles.Slider.ColorComponent.ARGB}"
-                                                Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=A}" />
-                                        <crystal:NumericUpDown Grid.Row="0"
-                                                           Grid.Column="2"
-                                                           Margin="2"
-                                                           Maximum="255"
-                                                           Minimum="0"
-                                                           Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=A}" />
-                                    </Grid>
-                                </StackPanel>
-
-                            </ScrollViewer>
-
-                            <!--  HTML String und Name  -->
-
-                            <Grid x:Name="Part_ColorNameAndEyeDropperPresenter"
-                                  Grid.Row="1"
-                                  Grid.Column="1"
-                                  Margin="0 0 5 5"
-                                  VerticalAlignment="Top">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" SharedSizeGroup="Label" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-
-                                <ContentPresenter Grid.Column="0"
-                                                  VerticalAlignment="Center"
-                                                  Content="{TemplateBinding LabelColorName}" />
-
-                                <TextBox Grid.Column="1"
-                                         Margin="2 0"
-                                         crystal:TextBoxHelper.AutoWatermark="{TemplateBinding crystal:TextBoxHelper.AutoWatermark}"
-                                         crystal:TextBoxHelper.ButtonCommand="{TemplateBinding crystal:TextBoxHelper.ButtonCommand}"
-                                         crystal:TextBoxHelper.ButtonCommandParameter="{TemplateBinding crystal:TextBoxHelper.ButtonCommandParameter}"
-                                         crystal:TextBoxHelper.ButtonContent="{TemplateBinding crystal:TextBoxHelper.ButtonContent}"
-                                         crystal:TextBoxHelper.ButtonContentTemplate="{TemplateBinding crystal:TextBoxHelper.ButtonContentTemplate}"
-                                         crystal:TextBoxHelper.ButtonFontFamily="{TemplateBinding crystal:TextBoxHelper.ButtonFontFamily}"
-                                         crystal:TextBoxHelper.ButtonFontSize="{TemplateBinding crystal:TextBoxHelper.ButtonFontSize}"
-                                         crystal:TextBoxHelper.ButtonTemplate="{TemplateBinding crystal:TextBoxHelper.ButtonTemplate}"
-                                         crystal:TextBoxHelper.ButtonWidth="{TemplateBinding crystal:TextBoxHelper.ButtonWidth}"
-                                         crystal:TextBoxHelper.ButtonsAlignment="{TemplateBinding crystal:TextBoxHelper.ButtonsAlignment}"
-                                         crystal:TextBoxHelper.ClearTextButton="{TemplateBinding crystal:TextBoxHelper.ClearTextButton}"
-                                         crystal:TextBoxHelper.SelectAllOnFocus="{TemplateBinding crystal:TextBoxHelper.SelectAllOnFocus}"
-                                         crystal:TextBoxHelper.UseFloatingWatermark="{TemplateBinding crystal:TextBoxHelper.UseFloatingWatermark}"
-                                         crystal:TextBoxHelper.Watermark="{TemplateBinding crystal:TextBoxHelper.Watermark}"
-                                         crystal:TextBoxHelper.WatermarkAlignment="{TemplateBinding crystal:TextBoxHelper.WatermarkAlignment}"
-                                         crystal:TextBoxHelper.WatermarkTrimming="{TemplateBinding crystal:TextBoxHelper.WatermarkTrimming}"
-                                         crystal:TextBoxHelper.WatermarkWrapping="{TemplateBinding crystal:TextBoxHelper.WatermarkWrapping}"
-                                         Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=ColorName, ValidatesOnExceptions=True}"
-                                         Visibility="{TemplateBinding IsColorNameVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
-
-                                <crystal:ColorEyeDropper x:Name="PART_ColorEyeDropper"
-                                                     Grid.Column="2"
-                                                     Margin="0 0 2 0"
-                                                     SelectedColor="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=SelectedColor, TargetNullValue=Transparent}"
-                                                     Style="{DynamicResource Crystal.Styles.ColorEyeDropper.ColorCanvas}"
-                                                     Visibility="{TemplateBinding IsEyeDropperVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
-                            </Grid>
-                        </Grid>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="SelectedColor" Value="{x:Null}">
-                            <Setter TargetName="PART_NoColorPreview" Property="Visibility" Value="Visible" />
-                        </Trigger>
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="IsColorNameVisible" Value="False" />
-                                <Condition Property="IsEyeDropperVisible" Value="True" />
-                            </MultiTrigger.Conditions>
-                            <Setter TargetName="PART_ColorEyeDropper" Property="Grid.Column" Value="1" />
-                            <Setter TargetName="PART_ColorEyeDropper" Property="Margin" Value="2 0" />
-                        </MultiTrigger>
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="IsColorNameVisible" Value="False" />
-                                <Condition Property="IsEyeDropperVisible" Value="False" />
-                            </MultiTrigger.Conditions>
-                            <Setter TargetName="Part_ColorNameAndEyeDropperPresenter" Property="Visibility" Value="Collapsed" />
-                        </MultiTrigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
+                                                          Content="{TemplateBinding LabelValueChannel}"/>
+                    <Slider Grid.Row="2"
+                            Grid.Column="1"
+                            Background="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=SelectedHSVColor, Converter={x:Static crystalConverters:HSVColorChannel2GradientBrushConverter.Default}, ConverterParameter={x:Static crystalConverters:HSVColorChannelType.V}}"
+                            Style="{DynamicResource Crystal.Styles.Slider.ColorComponent.SV}"
+                            Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Value}"/>
+                    <crystal:NumericUpDown Grid.Row="2"
+                                           Grid.Column="2"
+                                           Margin="2"
+                                           Interval="0.01"
+                                           Maximum="1"
+                                           Minimum="0"
+                                           StringFormat="p0"
+                                           Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Value}"/>
+                  </Grid>
+                  <Grid Margin="0 10 0 0" Visibility="{TemplateBinding IsAlphaChannelVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="Auto"
+                                        MinWidth="{DynamicResource Crystal.Font.Size.Content}"
+                                        SharedSizeGroup="Label"/>
+                      <ColumnDefinition Width="*" MinWidth="50"/>
+                      <ColumnDefinition Width="Auto" MinWidth="100"/>
+                    </Grid.ColumnDefinitions>
+                    <!--  A  -->
+                    <ContentPresenter Grid.Row="0"
+                                      Grid.Column="0"
+                                      VerticalAlignment="Center"
+                                      Content="{TemplateBinding LabelAlphaChannel}"/>
+                    <Slider Grid.Row="0"
+                            Grid.Column="1"
+                            Background="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=SelectedColor, Converter={x:Static crystalConverters:ColorChannel2GradientBrushConverter.Default}, ConverterParameter={x:Static crystalConverters:ColorChannelType.A}}"
+                            Style="{DynamicResource Crystal.Styles.Slider.ColorComponent.ARGB}"
+                            Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=A}"/>
+                    <crystal:NumericUpDown Grid.Row="0"
+                                           Grid.Column="2"
+                                           Margin="2"
+                                           Maximum="255"
+                                           Minimum="0"
+                                           Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=A}"/>
+                  </Grid>
+                </StackPanel>
+              </ScrollViewer>
+              <!--  HTML String und Name  -->
+              <Grid x:Name="Part_ColorNameAndEyeDropperPresenter"
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Margin="0 0 5 5"
+                    VerticalAlignment="Top">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="Auto" SharedSizeGroup="Label"/>
+                  <ColumnDefinition Width="*"/>
+                  <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <ContentPresenter Grid.Column="0"
+                                  VerticalAlignment="Center"
+                                  Content="{TemplateBinding LabelColorName}"/>
+                <TextBox Grid.Column="1"
+                         Margin="2 0"
+                         crystal:TextBoxHelper.AutoWatermark="{TemplateBinding crystal:TextBoxHelper.AutoWatermark}"
+                         crystal:TextBoxHelper.ButtonCommand="{TemplateBinding crystal:TextBoxHelper.ButtonCommand}"
+                         crystal:TextBoxHelper.ButtonCommandParameter="{TemplateBinding crystal:TextBoxHelper.ButtonCommandParameter}"
+                         crystal:TextBoxHelper.ButtonContent="{TemplateBinding crystal:TextBoxHelper.ButtonContent}"
+                         crystal:TextBoxHelper.ButtonContentTemplate="{TemplateBinding crystal:TextBoxHelper.ButtonContentTemplate}"
+                         crystal:TextBoxHelper.ButtonFontFamily="{TemplateBinding crystal:TextBoxHelper.ButtonFontFamily}"
+                         crystal:TextBoxHelper.ButtonFontSize="{TemplateBinding crystal:TextBoxHelper.ButtonFontSize}"
+                         crystal:TextBoxHelper.ButtonTemplate="{TemplateBinding crystal:TextBoxHelper.ButtonTemplate}"
+                         crystal:TextBoxHelper.ButtonWidth="{TemplateBinding crystal:TextBoxHelper.ButtonWidth}"
+                         crystal:TextBoxHelper.ButtonsAlignment="{TemplateBinding crystal:TextBoxHelper.ButtonsAlignment}"
+                         crystal:TextBoxHelper.ClearTextButton="{TemplateBinding crystal:TextBoxHelper.ClearTextButton}"
+                         crystal:TextBoxHelper.SelectAllOnFocus="{TemplateBinding crystal:TextBoxHelper.SelectAllOnFocus}"
+                         crystal:TextBoxHelper.UseFloatingWatermark="{TemplateBinding crystal:TextBoxHelper.UseFloatingWatermark}"
+                         crystal:TextBoxHelper.Watermark="{TemplateBinding crystal:TextBoxHelper.Watermark}"
+                         crystal:TextBoxHelper.WatermarkAlignment="{TemplateBinding crystal:TextBoxHelper.WatermarkAlignment}"
+                         crystal:TextBoxHelper.WatermarkTrimming="{TemplateBinding crystal:TextBoxHelper.WatermarkTrimming}"
+                         crystal:TextBoxHelper.WatermarkWrapping="{TemplateBinding crystal:TextBoxHelper.WatermarkWrapping}"
+                         Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=ColorName, ValidatesOnExceptions=True}"
+                         Visibility="{TemplateBinding IsColorNameVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <crystal:ColorEyeDropper x:Name="PART_ColorEyeDropper"
+                                         Grid.Column="2"
+                                         Margin="0 0 2 0"
+                                         SelectedColor="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=SelectedColor, TargetNullValue=Transparent}"
+                                         Style="{DynamicResource Crystal.Styles.ColorEyeDropper.ColorCanvas}"
+                                         Visibility="{TemplateBinding IsEyeDropperVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+              </Grid>
+            </Grid>
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="SelectedColor" Value="{x:Null}">
+              <Setter TargetName="PART_NoColorPreview" Property="Visibility" Value="Visible"/>
+            </Trigger>
+            <MultiTrigger>
+              <MultiTrigger.Conditions>
+                <Condition Property="IsColorNameVisible" Value="False"/>
+                <Condition Property="IsEyeDropperVisible" Value="True"/>
+              </MultiTrigger.Conditions>
+              <Setter TargetName="PART_ColorEyeDropper" Property="Grid.Column" Value="1"/>
+              <Setter TargetName="PART_ColorEyeDropper" Property="Margin" Value="2 0"/>
+            </MultiTrigger>
+            <MultiTrigger>
+              <MultiTrigger.Conditions>
+                <Condition Property="IsColorNameVisible" Value="False"/>
+                <Condition Property="IsEyeDropperVisible" Value="False"/>
+              </MultiTrigger.Conditions>
+              <Setter TargetName="Part_ColorNameAndEyeDropperPresenter" Property="Visibility" Value="Collapsed"/>
+            </MultiTrigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
 
 </ResourceDictionary>

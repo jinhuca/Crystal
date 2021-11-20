@@ -4,16 +4,16 @@
                     xmlns:crystalConverters="clr-namespace:Crystal.Themes.Converters">
 
   <ResourceDictionary.MergedDictionaries>
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.ComboBox.xaml" />
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.ComboBox.xaml"/>
   </ResourceDictionary.MergedDictionaries>
 
-  <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+  <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 
   <DataTemplate x:Key="Crystal.Templates.ColorPickerContent.ColorAndName">
     <Grid x:Name="RootGrid">
       <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="Auto" />
-        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="*"/>
       </Grid.ColumnDefinitions>
 
       <Border Grid.Column="0"
@@ -21,16 +21,16 @@
                     Background="{DynamicResource Crystal.Brushes.Tile.Small}"
                     BorderBrush="{DynamicResource Crystal.Brushes.Control.Border}"
                     BorderThickness="1">
-        <Rectangle Fill="{Binding Converter={x:Static crystalConverters:ColorToSolidColorBrushConverter.DefaultInstance}}" />
+        <Rectangle Fill="{Binding Converter={x:Static crystalConverters:ColorToSolidColorBrushConverter.DefaultInstance}}"/>
       </Border>
 
       <TextBlock Grid.Column="1" Margin="2 0 0 0">
         <TextBlock.Text>
           <MultiBinding Converter="{crystalConverters:ColorToNameConverter}">
-            <Binding />
-            <Binding Path="ColorNamesDictionary" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=crystal:ColorPicker}" />
-            <Binding Path="ColorHelper" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=crystal:ColorPicker}" />
-            <Binding Path="IsAlphaChannelVisible" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=crystal:ColorPicker}" />
+            <Binding/>
+            <Binding Path="ColorNamesDictionary" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=crystal:ColorPicker}"/>
+            <Binding Path="ColorHelper" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=crystal:ColorPicker}"/>
+            <Binding Path="IsAlphaChannelVisible" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=crystal:ColorPicker}"/>
           </MultiBinding>
         </TextBlock.Text>
       </TextBlock>
@@ -38,7 +38,7 @@
     </Grid>
     <DataTemplate.Triggers>
       <DataTrigger Binding="{Binding}" Value="{x:Null}">
-        <Setter TargetName="RootGrid" Property="Visibility" Value="Collapsed" />
+        <Setter TargetName="RootGrid" Property="Visibility" Value="Collapsed"/>
       </DataTrigger>
     </DataTemplate.Triggers>
   </DataTemplate>
@@ -52,27 +52,27 @@
                 Background="{DynamicResource Crystal.Brushes.Tile.Small}"
                 BorderBrush="{DynamicResource Crystal.Brushes.Control.Border}"
                 BorderThickness="1">
-      <Rectangle Fill="{Binding Converter={x:Static crystalConverters:ColorToSolidColorBrushConverter.DefaultInstance}}" />
+      <Rectangle Fill="{Binding Converter={x:Static crystalConverters:ColorToSolidColorBrushConverter.DefaultInstance}}"/>
     </Border>
     <DataTemplate.Triggers>
       <DataTrigger Binding="{Binding}" Value="{x:Null}">
-        <Setter TargetName="Border" Property="Visibility" Value="Collapsed" />
+        <Setter TargetName="Border" Property="Visibility" Value="Collapsed"/>
       </DataTrigger>
     </DataTemplate.Triggers>
   </DataTemplate>
 
   <Style x:Key="Crystal.Styles.ToggleButton.ColorPickerDropDown" TargetType="{x:Type ToggleButton}">
-    <Setter Property="ClickMode" Value="Press" />
-    <Setter Property="Focusable" Value="False" />
-    <Setter Property="IsTabStop" Value="False" />
+    <Setter Property="ClickMode" Value="Press"/>
+    <Setter Property="Focusable" Value="False"/>
+    <Setter Property="IsTabStop" Value="False"/>
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type ToggleButton}">
           <Grid x:Name="ToggleButtonRootGrid" Background="{TemplateBinding Background}">
             <Grid.ColumnDefinitions>
-              <ColumnDefinition x:Name="TextColumn" Width="*" />
-              <ColumnDefinition x:Name="ButtonColumn" Width="Auto" />
-              <ColumnDefinition x:Name="ToggleButtonColumn" Width="Auto" />
+              <ColumnDefinition x:Name="TextColumn" Width="*"/>
+              <ColumnDefinition x:Name="ButtonColumn" Width="Auto"/>
+              <ColumnDefinition x:Name="ToggleButtonColumn" Width="Auto"/>
             </Grid.ColumnDefinitions>
 
             <Button x:Name="PART_ClearText"
@@ -87,7 +87,7 @@
                                 Foreground="{TemplateBinding Foreground}"
                                 IsTabStop="False"
                                 Style="{DynamicResource Crystal.Styles.Button.Chromeless}"
-                                Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type crystal:ColorPicker}}, Path=(crystal:TextBoxHelper.ClearTextButton), Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type crystal:ColorPicker}}, Path=(crystal:TextBoxHelper.ClearTextButton), Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
             <Grid x:Name="BtnArrowBackground"
                               Grid.Column="2"
@@ -101,25 +101,25 @@
                                   Fill="{DynamicResource Crystal.Brushes.Gray1}"
                                   IsHitTestVisible="false"
                                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                  Stretch="Uniform" />
+                                  Stretch="Uniform"/>
             </Grid>
           </Grid>
           <ControlTemplate.Triggers>
             <Trigger SourceName="BtnArrowBackground" Property="IsMouseOver" Value="True">
-              <Setter TargetName="BtnArrowBackground" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray5}" />
+              <Setter TargetName="BtnArrowBackground" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray5}"/>
             </Trigger>
             <Trigger SourceName="PART_ClearText" Property="IsMouseOver" Value="True">
-              <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray8}" />
-              <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource Crystal.Brushes.Accent}" />
+              <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray8}"/>
+              <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource Crystal.Brushes.Accent}"/>
             </Trigger>
             <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsPressed}" Value="True">
-              <Setter TargetName="BtnArrowBackground" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray3}" />
-              <Setter TargetName="ToggleButtonRootGrid" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray7}" />
+              <Setter TargetName="BtnArrowBackground" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray3}"/>
+              <Setter TargetName="ToggleButtonRootGrid" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray7}"/>
             </DataTrigger>
             <Trigger SourceName="PART_ClearText" Property="IsPressed" Value="True">
-              <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
-              <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
-              <Setter TargetName="ToggleButtonRootGrid" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray7}" />
+              <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeForeground}"/>
+              <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeBackground}"/>
+              <Setter TargetName="ToggleButtonRootGrid" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray7}"/>
             </Trigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
@@ -128,45 +128,45 @@
   </Style>
 
   <Style x:Key="Crystal.Styles.ColorPicker" TargetType="{x:Type crystal:ColorPicker}">
-    <Setter Property="AddToRecentColorsTrigger" Value="ColorPickerClosed" />
-    <Setter Property="AvailableColorPaletteHeader" Value="Available Colors" />
-    <Setter Property="AvailableColorPaletteItemsSource" Value="{x:Static crystal:BuildInColorPalettes.WpfColorsPalette}" />
-    <Setter Property="AvailableColorPaletteStyle" Value="{DynamicResource Crystal.Styles.ColorPalette.ColorPickerDropDown}" />
-    <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Control.Background}" />
-    <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.TextBox.Border}" />
-    <Setter Property="BorderThickness" Value="{DynamicResource ComboBoxBorderThemeThickness}" />
-    <Setter Property="CustomColorPalette01Header" Value="Custom Colors" />
-    <Setter Property="CustomColorPalette02Header" Value="Custom Colors 2" />
-    <Setter Property="CustomColorPalette02Style" Value="{DynamicResource Crystal.Styles.ColorPalette.ColorPickerDropDown}" />
-    <Setter Property="DropDownHeight" Value="360" />
-    <Setter Property="DropDownWidth" Value="500" />
-    <Setter Property="FontFamily" Value="{DynamicResource Crystal.Fonts.Family.Control}" />
-    <Setter Property="FontSize" Value="{DynamicResource Crystal.Font.Size.Content}" />
-    <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Text}" />
-    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-    <Setter Property="IsAdvancedTabVisible" Value="True" />
-    <Setter Property="IsAvailableColorPaletteVisible" Value="True" />
-    <Setter Property="IsColorPalettesTabVisible" Value="True" />
-    <Setter Property="IsCustomColorPalette01Visible" Value="False" />
-    <Setter Property="IsCustomColorPalette02Visible" Value="False" />
-    <Setter Property="IsRecentColorPaletteVisible" Value="True" />
-    <Setter Property="IsStandardColorPaletteVisible" Value="True" />
-    <Setter Property="MinHeight" Value="26" />
-    <Setter Property="Padding" Value="4" />
-    <Setter Property="RecentColorPaletteHeader" Value="Recent Colors" />
-    <Setter Property="RecentColorPaletteItemsSource" Value="{x:Static crystal:BuildInColorPalettes.RecentColors}" />
-    <Setter Property="RecentColorPaletteStyle" Value="{DynamicResource Crystal.Styles.ColorPalette.ColorPickerDropDown}" />
-    <Setter Property="RenderOptions.ClearTypeHint" Value="Enabled" />
-    <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
-    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
-    <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
-    <Setter Property="SelectedColorTemplate" Value="{DynamicResource Crystal.Templates.ColorPickerContent.ColorAndName}" />
+    <Setter Property="AddToRecentColorsTrigger" Value="ColorPickerClosed"/>
+    <Setter Property="AvailableColorPaletteHeader" Value="Available Colors"/>
+    <Setter Property="AvailableColorPaletteItemsSource" Value="{x:Static crystal:BuildInColorPalettes.WpfColorsPalette}"/>
+    <Setter Property="AvailableColorPaletteStyle" Value="{DynamicResource Crystal.Styles.ColorPalette.ColorPickerDropDown}"/>
+    <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Control.Background}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.TextBox.Border}"/>
+    <Setter Property="BorderThickness" Value="{DynamicResource ComboBoxBorderThemeThickness}"/>
+    <Setter Property="CustomColorPalette01Header" Value="Custom Colors"/>
+    <Setter Property="CustomColorPalette02Header" Value="Custom Colors 2"/>
+    <Setter Property="CustomColorPalette02Style" Value="{DynamicResource Crystal.Styles.ColorPalette.ColorPickerDropDown}"/>
+    <Setter Property="DropDownHeight" Value="360"/>
+    <Setter Property="DropDownWidth" Value="500"/>
+    <Setter Property="FontFamily" Value="{DynamicResource Crystal.Fonts.Family.Control}"/>
+    <Setter Property="FontSize" Value="{DynamicResource Crystal.Font.Size.Content}"/>
+    <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Text}"/>
+    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+    <Setter Property="IsAdvancedTabVisible" Value="True"/>
+    <Setter Property="IsAvailableColorPaletteVisible" Value="True"/>
+    <Setter Property="IsColorPalettesTabVisible" Value="True"/>
+    <Setter Property="IsCustomColorPalette01Visible" Value="False"/>
+    <Setter Property="IsCustomColorPalette02Visible" Value="False"/>
+    <Setter Property="IsRecentColorPaletteVisible" Value="True"/>
+    <Setter Property="IsStandardColorPaletteVisible" Value="True"/>
+    <Setter Property="MinHeight" Value="26"/>
+    <Setter Property="Padding" Value="4"/>
+    <Setter Property="RecentColorPaletteHeader" Value="Recent Colors"/>
+    <Setter Property="RecentColorPaletteItemsSource" Value="{x:Static crystal:BuildInColorPalettes.RecentColors}"/>
+    <Setter Property="RecentColorPaletteStyle" Value="{DynamicResource Crystal.Styles.ColorPalette.ColorPickerDropDown}"/>
+    <Setter Property="RenderOptions.ClearTypeHint" Value="Enabled"/>
+    <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+    <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+    <Setter Property="SelectedColorTemplate" Value="{DynamicResource Crystal.Templates.ColorPickerContent.ColorAndName}"/>
     <!--  change SnapsToDevicePixels to true to view a better border and validation error  -->
-    <Setter Property="SnapsToDevicePixels" Value="True" />
-    <Setter Property="StandardColorPaletteHeader" Value="Standard Colors" />
-    <Setter Property="StandardColorPaletteItemsSource" Value="{x:Static crystal:BuildInColorPalettes.StandardColorsPalette}" />
-    <Setter Property="StandardColorPaletteStyle" Value="{DynamicResource Crystal.Styles.ColorPalette.ColorPickerDropDown}" />
-    <Setter Property="TabControlStyle" Value="{DynamicResource Crystal.Styles.TabControl.ColorPicker}" />
+    <Setter Property="SnapsToDevicePixels" Value="True"/>
+    <Setter Property="StandardColorPaletteHeader" Value="Standard Colors"/>
+    <Setter Property="StandardColorPaletteItemsSource" Value="{x:Static crystal:BuildInColorPalettes.StandardColorsPalette}"/>
+    <Setter Property="StandardColorPaletteStyle" Value="{DynamicResource Crystal.Styles.ColorPalette.ColorPickerDropDown}"/>
+    <Setter Property="TabControlStyle" Value="{DynamicResource Crystal.Styles.TabControl.ColorPicker}"/>
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type crystal:ColorPicker}">
@@ -176,17 +176,17 @@
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
-                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
 
             <Grid Margin="{TemplateBinding BorderThickness}">
               <Grid.ColumnDefinitions>
-                <ColumnDefinition x:Name="TextColumn" Width="*" />
-                <ColumnDefinition x:Name="ButtonColumn" Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:TextBoxHelper.ButtonWidth), Mode=OneWay}" />
-                <ColumnDefinition x:Name="ToggleButtonColumn" Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:TextBoxHelper.ButtonWidth), Mode=OneWay}" />
+                <ColumnDefinition x:Name="TextColumn" Width="*"/>
+                <ColumnDefinition x:Name="ButtonColumn" Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:TextBoxHelper.ButtonWidth), Mode=OneWay}"/>
+                <ColumnDefinition x:Name="ToggleButtonColumn" Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:TextBoxHelper.ButtonWidth), Mode=OneWay}"/>
               </Grid.ColumnDefinitions>
               <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition x:Name="ButtonRow" Height="*" />
+                <RowDefinition Height="Auto"/>
+                <RowDefinition x:Name="ButtonRow" Height="*"/>
               </Grid.RowDefinitions>
 
               <ToggleButton x:Name="PART_DropDownToggle"
@@ -207,7 +207,7 @@
                                           IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
                                           KeyboardNavigation.IsTabStop="False"
                                           SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                          Style="{DynamicResource Crystal.Styles.ToggleButton.ColorPickerDropDown}" />
+                                          Style="{DynamicResource Crystal.Styles.ToggleButton.ColorPickerDropDown}"/>
 
               <Grid x:Name="ContentSite"
                                   Grid.Row="1"
@@ -219,7 +219,7 @@
                                                   Content="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=SelectedColor, ValidatesOnExceptions=True}"
                                                   ContentTemplate="{TemplateBinding SelectedColorTemplate}"
                                                   IsHitTestVisible="False"
-                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
               </Grid>
 
               <TextBlock x:Name="PART_Message"
@@ -234,7 +234,7 @@
                                        Text="{TemplateBinding crystal:TextBoxHelper.Watermark}"
                                        TextAlignment="{TemplateBinding crystal:TextBoxHelper.WatermarkAlignment}"
                                        TextTrimming="{TemplateBinding crystal:TextBoxHelper.WatermarkTrimming}"
-                                       Visibility="Collapsed" />
+                                       Visibility="Collapsed"/>
 
               <ContentControl x:Name="PART_FloatingMessageContainer"
                                             Grid.Row="0"
@@ -245,10 +245,10 @@
                   <MultiBinding Converter="{crystalConverters:MathMultiplyConverter}">
                     <Binding ElementName="PART_FloatingMessage"
                                                  Mode="OneWay"
-                                                 Path="ActualHeight" />
+                                                 Path="ActualHeight"/>
                     <Binding ElementName="PART_FloatingMessageContainer"
                                                  Mode="OneWay"
-                                                 Path="Opacity" />
+                                                 Path="Opacity"/>
                   </MultiBinding>
                 </ContentControl.Height>
                 <TextBlock x:Name="PART_FloatingMessage"
@@ -265,10 +265,10 @@
                         <MultiBinding Converter="{crystalConverters:MathSubtractConverter}">
                           <Binding ElementName="PART_FloatingMessage"
                                                              Mode="OneWay"
-                                                             Path="ActualHeight" />
+                                                             Path="ActualHeight"/>
                           <Binding ElementName="PART_FloatingMessageContainer"
                                                              Mode="OneWay"
-                                                             Path="ActualHeight" />
+                                                             Path="ActualHeight"/>
                         </MultiBinding>
                       </TranslateTransform.Y>
                     </TranslateTransform>
@@ -286,7 +286,7 @@
                                 IsHitTestVisible="False"
                                 Opacity="0.6"
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                Visibility="Collapsed" />
+                                Visibility="Collapsed"/>
 
             <!--  AllowsTransparency="true" fixes the redraw problem under windows vista/7 with a selected non aero theme  -->
             <crystal:PopupEx x:Name="PART_Popup"
@@ -327,7 +327,7 @@
                                                                       IsAlphaChannelVisible="{TemplateBinding IsAlphaChannelVisible}"
                                                                       ItemsSource="{TemplateBinding StandardColorPaletteItemsSource}"
                                                                       Style="{TemplateBinding StandardColorPaletteStyle}"
-                                                                      Visibility="{TemplateBinding IsStandardColorPaletteVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                                                      Visibility="{TemplateBinding IsStandardColorPaletteVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
                           <crystal:ColorPalette x:Name="PART_ColorPaletteAvailable"
                                                                       ColorHelper="{TemplateBinding ColorHelper}"
@@ -337,7 +337,7 @@
                                                                       IsAlphaChannelVisible="{TemplateBinding IsAlphaChannelVisible}"
                                                                       ItemsSource="{TemplateBinding AvailableColorPaletteItemsSource}"
                                                                       Style="{TemplateBinding AvailableColorPaletteStyle}"
-                                                                      Visibility="{TemplateBinding IsAvailableColorPaletteVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                                                      Visibility="{TemplateBinding IsAvailableColorPaletteVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
                           <crystal:ColorPalette x:Name="PART_ColorPaletteCustom01"
                                                                       ColorHelper="{TemplateBinding ColorHelper}"
@@ -347,7 +347,7 @@
                                                                       IsAlphaChannelVisible="{TemplateBinding IsAlphaChannelVisible}"
                                                                       ItemsSource="{TemplateBinding CustomColorPalette01ItemsSource}"
                                                                       Style="{TemplateBinding CustomColorPalette01Style}"
-                                                                      Visibility="{TemplateBinding IsCustomColorPalette01Visible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                                                      Visibility="{TemplateBinding IsCustomColorPalette01Visible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
                           <crystal:ColorPalette x:Name="PART_ColorPaletteCustom02"
                                                                       ColorHelper="{TemplateBinding ColorHelper}"
@@ -357,7 +357,7 @@
                                                                       IsAlphaChannelVisible="{TemplateBinding IsAlphaChannelVisible}"
                                                                       ItemsSource="{TemplateBinding CustomColorPalette02ItemsSource}"
                                                                       Style="{TemplateBinding CustomColorPalette02Style}"
-                                                                      Visibility="{TemplateBinding IsCustomColorPalette02Visible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                                                      Visibility="{TemplateBinding IsCustomColorPalette02Visible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
                           <crystal:ColorPalette x:Name="PART_ColorPaletteRecent"
                                                                       ColorHelper="{TemplateBinding ColorHelper}"
@@ -367,7 +367,7 @@
                                                                       IsAlphaChannelVisible="{TemplateBinding IsAlphaChannelVisible}"
                                                                       ItemsSource="{TemplateBinding RecentColorPaletteItemsSource}"
                                                                       Style="{TemplateBinding RecentColorPaletteStyle}"
-                                                                      Visibility="{TemplateBinding IsRecentColorPaletteVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                                                      Visibility="{TemplateBinding IsRecentColorPaletteVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                         </VirtualizingStackPanel>
                       </ScrollViewer>
 
@@ -408,7 +408,7 @@
                                                                  LabelRedChannel="{TemplateBinding LabelRedChannel}"
                                                                  LabelSaturationChannel="{TemplateBinding LabelSaturationChannel}"
                                                                  LabelValueChannel="{TemplateBinding LabelValueChannel}"
-                                                                 SelectedColor="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=SelectedColor}" />
+                                                                 SelectedColor="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=SelectedColor}"/>
                       </ScrollViewer>
                     </TabItem>
                   </TabControl>
@@ -417,8 +417,8 @@
             </crystal:PopupEx>
             <VisualStateManager.VisualStateGroups>
               <VisualStateGroup x:Name="FocusStates">
-                <VisualState x:Name="Focused" />
-                <VisualState x:Name="Unfocused" />
+                <VisualState x:Name="Focused"/>
+                <VisualState x:Name="Unfocused"/>
                 <VisualState x:Name="FocusedDropDown">
                   <Storyboard>
                     <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PopupBorder"
@@ -439,85 +439,85 @@
 
             <MultiDataTrigger>
               <MultiDataTrigger.Conditions>
-                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=SelectedColor}" Value="{x:Null}" />
+                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=SelectedColor}" Value="{x:Null}"/>
               </MultiDataTrigger.Conditions>
-              <Setter TargetName="PART_Message" Property="Visibility" Value="Visible" />
+              <Setter TargetName="PART_Message" Property="Visibility" Value="Visible"/>
             </MultiDataTrigger>
 
             <MultiDataTrigger>
               <MultiDataTrigger.Conditions>
-                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=SelectedColor, Mode=OneWay, Converter={x:Static crystalConverters:IsNullConverter.Instance}}" Value="True" />
-                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsKeyboardFocusWithin}" Value="True" />
+                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=SelectedColor, Mode=OneWay, Converter={x:Static crystalConverters:IsNullConverter.Instance}}" Value="True"/>
+                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsKeyboardFocusWithin}" Value="True"/>
               </MultiDataTrigger.Conditions>
               <MultiDataTrigger.EnterActions>
-                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.EnterGotFocus}" />
+                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.EnterGotFocus}"/>
               </MultiDataTrigger.EnterActions>
               <MultiDataTrigger.ExitActions>
-                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ExitGotFocus}" />
+                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ExitGotFocus}"/>
               </MultiDataTrigger.ExitActions>
             </MultiDataTrigger>
 
             <MultiDataTrigger>
               <MultiDataTrigger.Conditions>
-                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=SelectedColor, Mode=OneWay, Converter={x:Static crystalConverters:IsNullConverter.Instance}}" Value="False" />
+                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=SelectedColor, Mode=OneWay, Converter={x:Static crystalConverters:IsNullConverter.Instance}}" Value="False"/>
               </MultiDataTrigger.Conditions>
               <MultiDataTrigger.EnterActions>
-                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.EnterHasText}" />
+                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.EnterHasText}"/>
               </MultiDataTrigger.EnterActions>
               <MultiDataTrigger.ExitActions>
-                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ExitHasText}" />
+                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ExitHasText}"/>
               </MultiDataTrigger.ExitActions>
             </MultiDataTrigger>
 
             <MultiDataTrigger>
               <MultiDataTrigger.Conditions>
-                <Condition Binding="{Binding Path=IsVisible, RelativeSource={RelativeSource Self}}" Value="True" />
-                <Condition Binding="{Binding Path=(crystal:TextBoxHelper.UseFloatingWatermark), RelativeSource={RelativeSource Self}}" Value="True" />
-                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=SelectedColor, Mode=OneWay, Converter={x:Static crystalConverters:IsNullConverter.Instance}}" Value="False" />
-                <Condition Binding="{Binding Path=(crystal:TextBoxHelper.Watermark), RelativeSource={RelativeSource Self}, Converter={x:Static crystalConverters:StringIsNullOrEmptyConverter.Default}}" Value="False" />
+                <Condition Binding="{Binding Path=IsVisible, RelativeSource={RelativeSource Self}}" Value="True"/>
+                <Condition Binding="{Binding Path=(crystal:TextBoxHelper.UseFloatingWatermark), RelativeSource={RelativeSource Self}}" Value="True"/>
+                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=SelectedColor, Mode=OneWay, Converter={x:Static crystalConverters:IsNullConverter.Instance}}" Value="False"/>
+                <Condition Binding="{Binding Path=(crystal:TextBoxHelper.Watermark), RelativeSource={RelativeSource Self}, Converter={x:Static crystalConverters:StringIsNullOrEmptyConverter.Default}}" Value="False"/>
               </MultiDataTrigger.Conditions>
               <MultiDataTrigger.EnterActions>
-                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ShowFloatingMessage}" />
+                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ShowFloatingMessage}"/>
               </MultiDataTrigger.EnterActions>
               <MultiDataTrigger.ExitActions>
-                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.HideFloatingMessage}" />
+                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.HideFloatingMessage}"/>
               </MultiDataTrigger.ExitActions>
             </MultiDataTrigger>
 
             <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(crystal:TextBoxHelper.ClearTextButton)}" Value="False">
-              <Setter TargetName="ContentSite" Property="Grid.ColumnSpan" Value="2" />
-              <Setter TargetName="PART_Message" Property="Grid.ColumnSpan" Value="2" />
+              <Setter TargetName="ContentSite" Property="Grid.ColumnSpan" Value="2"/>
+              <Setter TargetName="PART_Message" Property="Grid.ColumnSpan" Value="2"/>
             </DataTrigger>
 
             <Trigger Property="IsMouseOver" Value="True">
-              <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Gray9}" />
-              <Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.MouseOverBorderBrush)}" />
+              <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Gray9}"/>
+              <Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.MouseOverBorderBrush)}"/>
             </Trigger>
 
             <Trigger Property="IsFocused" Value="True">
-              <Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.FocusBorderBrush)}" />
-              <Setter TargetName="PART_FloatingMessage" Property="Foreground" Value="{DynamicResource Crystal.Brushes.Accent}" />
-              <Setter TargetName="PART_FloatingMessage" Property="Opacity" Value="1" />
+              <Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.FocusBorderBrush)}"/>
+              <Setter TargetName="PART_FloatingMessage" Property="Foreground" Value="{DynamicResource Crystal.Brushes.Accent}"/>
+              <Setter TargetName="PART_FloatingMessage" Property="Opacity" Value="1"/>
             </Trigger>
             <Trigger Property="IsKeyboardFocusWithin" Value="True">
-              <Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.FocusBorderBrush)}" />
+              <Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.FocusBorderBrush)}"/>
             </Trigger>
 
             <Trigger Property="IsEnabled" Value="False">
-              <Setter TargetName="DisabledVisualElement" Property="Visibility" Value="Visible" />
+              <Setter TargetName="DisabledVisualElement" Property="Visibility" Value="Visible"/>
             </Trigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
       </Setter.Value>
     </Setter>
-    <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource Crystal.Templates.ValidationError}" />
-    <Setter Property="VerticalContentAlignment" Value="Center" />
-    <Setter Property="crystal:BuildInColorPalettes.MaximumRecentColorsCount" Value="18" />
-    <Setter Property="crystal:ControlsHelper.FocusBorderBrush" Value="{DynamicResource Crystal.Brushes.ComboBox.Border.Focus}" />
-    <Setter Property="crystal:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource Crystal.Brushes.ComboBox.Border.MouseOver}" />
-    <Setter Property="crystal:TextBoxHelper.ButtonFontSize" Value="{DynamicResource Crystal.Font.Size.Button.ClearText}" />
-    <Setter Property="crystal:TextBoxHelper.ButtonWidth" Value="22" />
-    <Setter Property="crystal:TextBoxHelper.ClearTextButton" Value="False" />
+    <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource Crystal.Templates.ValidationError}"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="crystal:BuildInColorPalettes.MaximumRecentColorsCount" Value="18"/>
+    <Setter Property="crystal:ControlsHelper.FocusBorderBrush" Value="{DynamicResource Crystal.Brushes.ComboBox.Border.Focus}"/>
+    <Setter Property="crystal:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource Crystal.Brushes.ComboBox.Border.MouseOver}"/>
+    <Setter Property="crystal:TextBoxHelper.ButtonFontSize" Value="{DynamicResource Crystal.Font.Size.Button.ClearText}"/>
+    <Setter Property="crystal:TextBoxHelper.ButtonWidth" Value="22"/>
+    <Setter Property="crystal:TextBoxHelper.ClearTextButton" Value="False"/>
   </Style>
 
 </ResourceDictionary>

@@ -3,145 +3,142 @@
                     xmlns:crystal="clr-namespace:Crystal.Themes.Controls"
                     xmlns:crystalConverters="clr-namespace:Crystal.Themes.Converters">
 
-  <crystalConverters:ThicknessToDoubleConverter x:Key="BorderThicknessToStrokeThicknessConverter" TakeThicknessSide="Left" />
+  <crystalConverters:ThicknessToDoubleConverter x:Key="BorderThicknessToStrokeThicknessConverter" TakeThicknessSide="Left"/>
 
   <Style x:Key="Crystal.Styles.Button.FocusVisualStyle.Flat">
     <Setter Property="Control.Template">
       <Setter.Value>
         <ControlTemplate>
           <Rectangle Margin="2"
-                               SnapsToDevicePixels="True"
-                               Stroke="{DynamicResource Crystal.Brushes.Button.Flat.Foreground}"
-                               StrokeDashArray="1 2"
-                               StrokeThickness="1"
-                               UseLayoutRounding="True" />
+                     SnapsToDevicePixels="True"
+                     Stroke="{DynamicResource Crystal.Brushes.Button.Flat.Foreground}"
+                     StrokeDashArray="1 2"
+                     StrokeThickness="1"
+                     UseLayoutRounding="True"/>
         </ControlTemplate>
       </Setter.Value>
     </Setter>
   </Style>
 
   <Style x:Key="Crystal.Styles.Button.Flat" TargetType="{x:Type ButtonBase}">
-    <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Button.Flat.Background}" />
-    <Setter Property="BorderThickness" Value="0" />
-    <Setter Property="FocusVisualStyle" Value="{DynamicResource Crystal.Styles.Button.FocusVisualStyle.Flat}" />
-    <Setter Property="FontSize" Value="{DynamicResource Crystal.Font.Size.Button.Flat}" />
-    <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Button.Flat.Foreground}" />
-    <Setter Property="Padding" Value="10 5 10 5" />
-    <Setter Property="SnapsToDevicePixels" Value="True" />
+    <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Button.Flat.Background}"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="FocusVisualStyle" Value="{DynamicResource Crystal.Styles.Button.FocusVisualStyle.Flat}"/>
+    <Setter Property="FontSize" Value="{DynamicResource Crystal.Font.Size.Button.Flat}"/>
+    <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Button.Flat.Foreground}"/>
+    <Setter Property="Padding" Value="10 5 10 5"/>
+    <Setter Property="SnapsToDevicePixels" Value="True"/>
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type ButtonBase}">
           <crystal:ClipBorder x:Name="Border"
-                                    Margin="0"
-                                    Background="{TemplateBinding Background}"
-                                    BorderBrush="{TemplateBinding BorderBrush}"
-                                    BorderThickness="{TemplateBinding BorderThickness}"
-                                    CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
-                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                              Margin="0"
+                              Background="{TemplateBinding Background}"
+                              BorderBrush="{TemplateBinding BorderBrush}"
+                              BorderThickness="{TemplateBinding BorderThickness}"
+                              CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
+                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
             <crystal:ContentControlEx x:Name="PART_ContentPresenter"
-                                              Padding="{TemplateBinding Padding}"
-                                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                              Content="{TemplateBinding Content}"
-                                              ContentCharacterCasing="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.ContentCharacterCasing)}"
-                                              ContentStringFormat="{TemplateBinding ContentStringFormat}"
-                                              ContentTemplate="{TemplateBinding ContentTemplate}"
-                                              ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
-                                              RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}"
-                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                      Padding="{TemplateBinding Padding}"
+                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                      Content="{TemplateBinding Content}"
+                                      ContentCharacterCasing="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.ContentCharacterCasing)}"
+                                      ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
+                                      RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}"
+                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
           </crystal:ClipBorder>
         </ControlTemplate>
       </Setter.Value>
     </Setter>
     <Style.Triggers>
       <Trigger Property="IsMouseOver" Value="True">
-        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Button.Flat.Background.MouseOver}" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Button.Flat.Background.MouseOver}"/>
       </Trigger>
       <Trigger Property="IsPressed" Value="True">
-        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Button.Flat.Background.Pressed}" />
-        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Button.Flat.Foreground.Pressed}" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Button.Flat.Background.Pressed}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Button.Flat.Foreground.Pressed}"/>
       </Trigger>
       <Trigger Property="IsEnabled" Value="False">
-        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Gray2}" />
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Gray2}"/>
       </Trigger>
     </Style.Triggers>
   </Style>
 
   <!--  style for flat toggle button like Crystal.Styles.ToggleButton.Flat  -->
   <Style x:Key="Crystal.Styles.ToggleButton.Flat" TargetType="{x:Type ToggleButton}">
-    <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Button.Flat.Background}" />
-    <Setter Property="BorderThickness" Value="0" />
-    <Setter Property="FocusVisualStyle" Value="{DynamicResource Crystal.Styles.Button.FocusVisualStyle.Flat}" />
-    <Setter Property="FontSize" Value="{DynamicResource Crystal.Font.Size.Button.Flat}" />
-    <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Button.Flat.Foreground}" />
-    <Setter Property="Padding" Value="10 5 10 5" />
-    <Setter Property="SnapsToDevicePixels" Value="True" />
+    <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Button.Flat.Background}"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="FocusVisualStyle" Value="{DynamicResource Crystal.Styles.Button.FocusVisualStyle.Flat}"/>
+    <Setter Property="FontSize" Value="{DynamicResource Crystal.Font.Size.Button.Flat}"/>
+    <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Button.Flat.Foreground}"/>
+    <Setter Property="Padding" Value="10 5 10 5"/>
+    <Setter Property="SnapsToDevicePixels" Value="True"/>
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type ToggleButton}">
           <crystal:ClipBorder x:Name="Border"
-                                    Margin="0"
-                                    Background="{TemplateBinding Background}"
-                                    BorderBrush="{TemplateBinding BorderBrush}"
-                                    BorderThickness="{TemplateBinding BorderThickness}"
-                                    CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
-                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                              Margin="0"
+                              Background="{TemplateBinding Background}"
+                              BorderBrush="{TemplateBinding BorderBrush}"
+                              BorderThickness="{TemplateBinding BorderThickness}"
+                              CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
+                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
             <crystal:ContentControlEx x:Name="PART_ContentPresenter"
-                                              Padding="{TemplateBinding Padding}"
-                                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                              Content="{TemplateBinding Content}"
-                                              ContentCharacterCasing="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.ContentCharacterCasing)}"
-                                              ContentStringFormat="{TemplateBinding ContentStringFormat}"
-                                              ContentTemplate="{TemplateBinding ContentTemplate}"
-                                              ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
-                                              RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}"
-                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                      Padding="{TemplateBinding Padding}"
+                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                      Content="{TemplateBinding Content}"
+                                      ContentCharacterCasing="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.ContentCharacterCasing)}"
+                                      ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
+                                      RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}"
+                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
           </crystal:ClipBorder>
         </ControlTemplate>
       </Setter.Value>
     </Setter>
     <Style.Triggers>
       <Trigger Property="IsChecked" Value="True">
-        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Accent}" />
-        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForeground}" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Accent}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForeground}"/>
       </Trigger>
-
       <MultiTrigger>
         <MultiTrigger.Conditions>
-          <Condition Property="IsMouseOver" Value="True" />
-          <Condition Property="IsChecked" Value="False" />
+          <Condition Property="IsMouseOver" Value="True"/>
+          <Condition Property="IsChecked" Value="False"/>
         </MultiTrigger.Conditions>
-        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Button.Flat.Background.MouseOver}" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Button.Flat.Background.MouseOver}"/>
       </MultiTrigger>
       <MultiTrigger>
         <MultiTrigger.Conditions>
-          <Condition Property="IsMouseOver" Value="True" />
-          <Condition Property="IsChecked" Value="True" />
+          <Condition Property="IsMouseOver" Value="True"/>
+          <Condition Property="IsChecked" Value="True"/>
         </MultiTrigger.Conditions>
-        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Accent2}" />
-        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForeground}" />
-      </MultiTrigger>
-
-      <MultiTrigger>
-        <MultiTrigger.Conditions>
-          <Condition Property="IsPressed" Value="True" />
-          <Condition Property="IsChecked" Value="False" />
-        </MultiTrigger.Conditions>
-        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Button.Flat.Background.Pressed}" />
-        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Button.Flat.Foreground.Pressed}" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Accent2}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForeground}"/>
       </MultiTrigger>
       <MultiTrigger>
         <MultiTrigger.Conditions>
-          <Condition Property="IsPressed" Value="True" />
-          <Condition Property="IsChecked" Value="True" />
+          <Condition Property="IsPressed" Value="True"/>
+          <Condition Property="IsChecked" Value="False"/>
         </MultiTrigger.Conditions>
-        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Highlight}" />
-        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForeground}" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Button.Flat.Background.Pressed}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Button.Flat.Foreground.Pressed}"/>
       </MultiTrigger>
-
+      <MultiTrigger>
+        <MultiTrigger.Conditions>
+          <Condition Property="IsPressed" Value="True"/>
+          <Condition Property="IsChecked" Value="True"/>
+        </MultiTrigger.Conditions>
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Highlight}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForeground}"/>
+      </MultiTrigger>
       <Trigger Property="IsEnabled" Value="False">
-        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Gray2}" />
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Gray2}"/>
       </Trigger>
     </Style.Triggers>
   </Style>
@@ -151,11 +148,11 @@
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type Control}">
           <Ellipse Margin="3"
-                             SnapsToDevicePixels="True"
-                             Stroke="{DynamicResource Crystal.Brushes.ThemeForeground}"
-                             StrokeDashArray="2 2"
-                             StrokeThickness="1"
-                             UseLayoutRounding="True" />
+                   SnapsToDevicePixels="True"
+                   Stroke="{DynamicResource Crystal.Brushes.ThemeForeground}"
+                   StrokeDashArray="2 2"
+                   StrokeThickness="1"
+                   UseLayoutRounding="True"/>
         </ControlTemplate>
       </Setter.Value>
     </Setter>
@@ -163,30 +160,30 @@
 
   <!--  style for WP7/Circle button  -->
   <Style x:Key="Crystal.Styles.Button.Circle" TargetType="{x:Type ButtonBase}">
-    <Setter Property="Background" Value="Transparent" />
-    <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Gray3}" />
-    <Setter Property="BorderThickness" Value="2" />
-    <Setter Property="FocusVisualStyle" Value="{StaticResource Crystal.Styles.Button.FocusVisualStyle.Circle}" />
-    <Setter Property="HorizontalContentAlignment" Value="Center" />
-    <Setter Property="Padding" Value="1" />
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Gray3}"/>
+    <Setter Property="BorderThickness" Value="2"/>
+    <Setter Property="FocusVisualStyle" Value="{StaticResource Crystal.Styles.Button.FocusVisualStyle.Circle}"/>
+    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    <Setter Property="Padding" Value="1"/>
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type ButtonBase}">
           <Grid>
-            <Ellipse Fill="{TemplateBinding Background}" StrokeThickness="0" />
+            <Ellipse Fill="{TemplateBinding Background}" StrokeThickness="0"/>
             <Ellipse x:Name="ellipsebg"
-                                 Fill="{DynamicResource Crystal.Brushes.ThemeForeground}"
-                                 Opacity="0"
-                                 StrokeThickness="0" />
+                     Fill="{DynamicResource Crystal.Brushes.ThemeForeground}"
+                     Opacity="0"
+                     StrokeThickness="0"/>
             <Ellipse x:Name="ellipse"
-                                 Stroke="{TemplateBinding BorderBrush}"
-                                 StrokeThickness="{Binding RelativeSource={x:Static RelativeSource.TemplatedParent}, Path=BorderThickness, Converter={StaticResource BorderThicknessToStrokeThicknessConverter}}" />
+                     Stroke="{TemplateBinding BorderBrush}"
+                     StrokeThickness="{Binding RelativeSource={x:Static RelativeSource.TemplatedParent}, Path=BorderThickness, Converter={StaticResource BorderThicknessToStrokeThicknessConverter}}"/>
             <ContentPresenter x:Name="PART_ContentPresenter"
-                                          Margin="{TemplateBinding Padding}"
-                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                          RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}"
-                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                              Margin="{TemplateBinding Padding}"
+                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                              RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}"
+                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
           </Grid>
           <ControlTemplate.Triggers>
             <Trigger Property="IsPressed" Value="True">
@@ -194,10 +191,10 @@
                 <BeginStoryboard>
                   <Storyboard>
                     <DoubleAnimation Storyboard.TargetName="ellipsebg"
-                                                         Storyboard.TargetProperty="Opacity"
-                                                         From="0"
-                                                         To="0.3"
-                                                         Duration="0:0:0" />
+                                     Storyboard.TargetProperty="Opacity"
+                                     From="0"
+                                     To="0.3"
+                                     Duration="0:0:0"/>
                   </Storyboard>
                 </BeginStoryboard>
               </Trigger.EnterActions>
@@ -206,31 +203,31 @@
                 <BeginStoryboard>
                   <Storyboard>
                     <DoubleAnimation Storyboard.TargetName="ellipsebg"
-                                                         Storyboard.TargetProperty="Opacity"
-                                                         To="0"
-                                                         Duration="0:0:0.5" />
+                                     Storyboard.TargetProperty="Opacity"
+                                     To="0"
+                                     Duration="0:0:0.5"/>
                   </Storyboard>
                 </BeginStoryboard>
               </Trigger.ExitActions>
             </Trigger>
             <Trigger Property="IsMouseOver" Value="True">
-              <Setter TargetName="ellipse" Property="Opacity" Value="1" />
+              <Setter TargetName="ellipse" Property="Opacity" Value="1"/>
             </Trigger>
             <Trigger Property="IsMouseOver" Value="False">
-              <Setter TargetName="ellipse" Property="Opacity" Value="0.7" />
+              <Setter TargetName="ellipse" Property="Opacity" Value="0.7"/>
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
-              <Setter TargetName="PART_ContentPresenter" Property="TextElement.Foreground" Value="{DynamicResource Crystal.Brushes.Gray7}" />
-              <Setter TargetName="ellipse" Property="Opacity" Value="0.3" />
+              <Setter TargetName="PART_ContentPresenter" Property="TextElement.Foreground" Value="{DynamicResource Crystal.Brushes.Gray7}"/>
+              <Setter TargetName="ellipse" Property="Opacity" Value="0.3"/>
             </Trigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
       </Setter.Value>
     </Setter>
-    <Setter Property="VerticalContentAlignment" Value="Center" />
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
     <Style.Triggers>
       <Trigger Property="IsEnabled" Value="False">
-        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Gray7}" />
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Gray7}"/>
       </Trigger>
     </Style.Triggers>
   </Style>
@@ -239,369 +236,357 @@
   <ControlTemplate x:Key="Crystal.Templates.Button.Chromeless" TargetType="{x:Type ButtonBase}">
     <Grid Background="{TemplateBinding Background}">
       <ContentPresenter x:Name="PART_ContentPresenter"
-                              Margin="{TemplateBinding Padding}"
-                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                              RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}"
-                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        Margin="{TemplateBinding Padding}"
+                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                        RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}"
+                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
     </Grid>
     <ControlTemplate.Triggers>
       <Trigger Property="IsMouseOver" Value="True">
-        <Setter TargetName="PART_ContentPresenter" Property="Opacity" Value="1" />
+        <Setter TargetName="PART_ContentPresenter" Property="Opacity" Value="1"/>
       </Trigger>
       <Trigger Property="IsMouseOver" Value="False">
-        <Setter TargetName="PART_ContentPresenter" Property="Opacity" Value="0.5" />
+        <Setter TargetName="PART_ContentPresenter" Property="Opacity" Value="0.5"/>
       </Trigger>
       <Trigger Property="IsEnabled" Value="False">
-        <Setter Property="Foreground" Value="#ADADAD" />
+        <Setter Property="Foreground" Value="#ADADAD"/>
       </Trigger>
     </ControlTemplate.Triggers>
   </ControlTemplate>
 
   <Style x:Key="Crystal.Styles.Button.Chromeless" TargetType="{x:Type ButtonBase}">
-    <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Transparent}" />
-    <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Text}" />
-    <Setter Property="HorizontalContentAlignment" Value="Center" />
-    <Setter Property="Padding" Value="0" />
-    <Setter Property="Template" Value="{StaticResource Crystal.Templates.Button.Chromeless}" />
-    <Setter Property="VerticalContentAlignment" Value="Center" />
+    <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Transparent}"/>
+    <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Text}"/>
+    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    <Setter Property="Padding" Value="0"/>
+    <Setter Property="Template" Value="{StaticResource Crystal.Templates.Button.Chromeless}"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
   </Style>
 
   <!--  base button style for min, max and close window buttons  -->
   <Style x:Key="Crystal.Styles.Button.CrystalWindow.Base" TargetType="{x:Type Button}">
-    <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Transparent}" />
-    <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type FrameworkElement}}, Path=(TextElement.Foreground)}" />
-    <Setter Property="HorizontalContentAlignment" Value="Center" />
-    <Setter Property="Opacity" Value="0.8" />
-    <Setter Property="Padding" Value="1" />
+    <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Transparent}"/>
+    <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type FrameworkElement}}, Path=(TextElement.Foreground)}"/>
+    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    <Setter Property="Opacity" Value="0.8"/>
+    <Setter Property="Padding" Value="1"/>
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type Button}">
           <Grid Background="{TemplateBinding Background}">
             <crystal:ContentControlEx x:Name="PART_ContentPresenter"
-                                              Padding="{TemplateBinding Padding}"
-                                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                              Content="{TemplateBinding Content}"
-                                              ContentCharacterCasing="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.ContentCharacterCasing)}"
-                                              ContentStringFormat="{TemplateBinding ContentStringFormat}"
-                                              ContentTemplate="{TemplateBinding ContentTemplate}"
-                                              ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
-                                              RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}"
-                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                      Padding="{TemplateBinding Padding}"
+                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                      Content="{TemplateBinding Content}"
+                                      ContentCharacterCasing="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.ContentCharacterCasing)}"
+                                      ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
+                                      RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}"
+                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
           </Grid>
         </ControlTemplate>
       </Setter.Value>
     </Setter>
-    <Setter Property="VerticalContentAlignment" Value="Center" />
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
     <Style.Triggers>
       <Trigger Property="IsMouseOver" Value="True">
-        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.SemiTransparent}" />
-        <Setter Property="Opacity" Value="1" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.SemiTransparent}"/>
+        <Setter Property="Opacity" Value="1"/>
       </Trigger>
       <Trigger Property="IsPressed" Value="True">
-        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.AccentBase}" />
-        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForeground}" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.AccentBase}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForeground}"/>
       </Trigger>
       <Trigger Property="IsEnabled" Value="False">
-        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForegroundDisabled}" />
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForegroundDisabled}"/>
       </Trigger>
     </Style.Triggers>
   </Style>
 
   <!--  light button style for min, max and close window buttons  -->
-  <Style x:Key="Crystal.Styles.Button.CrystalWindow.Light"
-           BasedOn="{StaticResource Crystal.Styles.Button.CrystalWindow.Base}"
-           TargetType="{x:Type Button}">
-    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-    <Setter Property="Focusable" Value="False" />
-    <Setter Property="IsTabStop" Value="False" />
-    <Setter Property="MaxHeight" Value="34" />
-    <Setter Property="Padding" Value="0" />
-    <Setter Property="Width" Value="34" />
+  <Style x:Key="Crystal.Styles.Button.CrystalWindow.Light" BasedOn="{StaticResource Crystal.Styles.Button.CrystalWindow.Base}" TargetType="{x:Type Button}">
+    <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+    <Setter Property="Focusable" Value="False"/>
+    <Setter Property="IsTabStop" Value="False"/>
+    <Setter Property="MaxHeight" Value="34"/>
+    <Setter Property="Padding" Value="0"/>
+    <Setter Property="Width" Value="34"/>
     <Style.Triggers>
       <Trigger Property="IsMouseOver" Value="True">
-        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.WindowButtonCommands.Background.MouseOver}" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.WindowButtonCommands.Background.MouseOver}"/>
       </Trigger>
       <Trigger Property="IsPressed" Value="True">
-        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.AccentBase}" />
-        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForeground}" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.AccentBase}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForeground}"/>
       </Trigger>
       <Trigger Property="IsEnabled" Value="False">
-        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForegroundDisabled}" />
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForegroundDisabled}"/>
       </Trigger>
     </Style.Triggers>
   </Style>
 
   <!--  dark button style for min, max and close window buttons  -->
-  <Style x:Key="Crystal.Styles.Button.CrystalWindow.Dark"
-           BasedOn="{StaticResource Crystal.Styles.Button.CrystalWindow.Light}"
-           TargetType="{x:Type Button}">
+  <Style x:Key="Crystal.Styles.Button.CrystalWindow.Dark" BasedOn="{StaticResource Crystal.Styles.Button.CrystalWindow.Light}" TargetType="{x:Type Button}">
     <Style.Triggers>
       <Trigger Property="IsMouseOver" Value="True">
-        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.WindowButtonCommands.Background.MouseOver}" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.WindowButtonCommands.Background.MouseOver}"/>
       </Trigger>
       <Trigger Property="IsPressed" Value="True">
-        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.AccentBase}" />
-        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForeground}" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.AccentBase}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForeground}"/>
       </Trigger>
       <Trigger Property="IsEnabled" Value="False">
-        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForegroundDisabled}" />
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForegroundDisabled}"/>
       </Trigger>
     </Style.Triggers>
   </Style>
 
-  <Style x:Key="Crystal.Styles.Button.CrystalWindow.Close.Light.Win10"
-           BasedOn="{StaticResource Crystal.Styles.Button.CrystalWindow.Light}"
-           TargetType="{x:Type Button}">
+  <Style x:Key="Crystal.Styles.Button.CrystalWindow.Close.Light.Win10" BasedOn="{StaticResource Crystal.Styles.Button.CrystalWindow.Light}" TargetType="{x:Type Button}">
     <Style.Triggers>
       <Trigger Property="IsMouseOver" Value="True">
-        <Setter Property="Background" Value="#E81123" />
-        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Background" Value="#E81123"/>
+        <Setter Property="Foreground" Value="White"/>
       </Trigger>
       <Trigger Property="IsPressed" Value="True">
-        <Setter Property="Background" Value="#F1707A" />
-        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="Background" Value="#F1707A"/>
+        <Setter Property="Foreground" Value="Black"/>
       </Trigger>
     </Style.Triggers>
   </Style>
 
-  <Style x:Key="Crystal.Styles.Button.CrystalWindow.Close.Dark.Win10"
-           BasedOn="{StaticResource Crystal.Styles.Button.CrystalWindow.Dark}"
-           TargetType="{x:Type Button}">
+  <Style x:Key="Crystal.Styles.Button.CrystalWindow.Close.Dark.Win10" BasedOn="{StaticResource Crystal.Styles.Button.CrystalWindow.Dark}" TargetType="{x:Type Button}">
     <Style.Triggers>
       <Trigger Property="IsMouseOver" Value="True">
-        <Setter Property="Background" Value="#E81123" />
-        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Background" Value="#E81123"/>
+        <Setter Property="Foreground" Value="White"/>
       </Trigger>
       <Trigger Property="IsPressed" Value="True">
-        <Setter Property="Background" Value="#F1707A" />
-        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="Background" Value="#F1707A"/>
+        <Setter Property="Foreground" Value="Black"/>
       </Trigger>
     </Style.Triggers>
   </Style>
 
   <!--  style for default button  -->
   <Style x:Key="Crystal.Styles.Button" TargetType="{x:Type ButtonBase}">
-    <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Gray10}" />
-    <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Button.Border}" />
-    <Setter Property="BorderThickness" Value="1" />
-    <Setter Property="FontFamily" Value="{DynamicResource Crystal.Fonts.Family.Button}" />
-    <Setter Property="FontSize" Value="{DynamicResource Crystal.Font.Size.Button}" />
-    <Setter Property="FontWeight" Value="Bold" />
-    <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
-    <Setter Property="MinHeight" Value="25" />
-    <Setter Property="Padding" Value="5 6" />
-    <Setter Property="SnapsToDevicePixels" Value="True" />
+    <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Gray10}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Button.Border}"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="FontFamily" Value="{DynamicResource Crystal.Fonts.Family.Button}"/>
+    <Setter Property="FontSize" Value="{DynamicResource Crystal.Font.Size.Button}"/>
+    <Setter Property="FontWeight" Value="Bold"/>
+    <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeForeground}"/>
+    <Setter Property="MinHeight" Value="25"/>
+    <Setter Property="Padding" Value="5 6"/>
+    <Setter Property="SnapsToDevicePixels" Value="True"/>
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type ButtonBase}">
           <Grid>
             <crystal:ClipBorder x:Name="Border"
-                                        Background="{TemplateBinding Background}"
-                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                        BorderThickness="{TemplateBinding BorderThickness}"
-                                        CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
-                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
             <crystal:ClipBorder x:Name="DisabledVisualElement"
-                                        Background="{DynamicResource Crystal.Brushes.Control.Disabled}"
-                                        CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
-                                        IsHitTestVisible="False"
-                                        Opacity="0"
-                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                Background="{DynamicResource Crystal.Brushes.Control.Disabled}"
+                                CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
+                                IsHitTestVisible="False"
+                                Opacity="0"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
             <crystal:ContentControlEx x:Name="PART_ContentPresenter"
-                                              Margin="{TemplateBinding BorderThickness}"
-                                              Padding="{TemplateBinding Padding}"
-                                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                              Content="{TemplateBinding Content}"
-                                              ContentCharacterCasing="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.ContentCharacterCasing)}"
-                                              ContentStringFormat="{TemplateBinding ContentStringFormat}"
-                                              ContentTemplate="{TemplateBinding ContentTemplate}"
-                                              ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
-                                              RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}"
-                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                      Margin="{TemplateBinding BorderThickness}"
+                                      Padding="{TemplateBinding Padding}"
+                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                      Content="{TemplateBinding Content}"
+                                      ContentCharacterCasing="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.ContentCharacterCasing)}"
+                                      ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
+                                      RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}"
+                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
           </Grid>
           <ControlTemplate.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-              <Setter TargetName="Border" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray8}" />
-              <Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.MouseOverBorderBrush), Mode=OneWay}" />
+              <Setter TargetName="Border" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray8}"/>
+              <Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.MouseOverBorderBrush), Mode=OneWay}"/>
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
-              <Setter TargetName="Border" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray7}" />
+              <Setter TargetName="Border" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray7}"/>
             </Trigger>
             <Trigger Property="IsKeyboardFocusWithin" Value="True">
-              <Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.FocusBorderBrush), Mode=OneWay}" />
-              <Setter TargetName="Border" Property="BorderThickness" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.FocusBorderThickness), Mode=OneWay}" />
+              <Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.FocusBorderBrush), Mode=OneWay}"/>
+              <Setter TargetName="Border" Property="BorderThickness" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.FocusBorderThickness), Mode=OneWay}"/>
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
-              <Setter TargetName="DisabledVisualElement" Property="Opacity" Value="0.7" />
-              <Setter TargetName="PART_ContentPresenter" Property="Opacity" Value="0.3" />
+              <Setter TargetName="DisabledVisualElement" Property="Opacity" Value="0.7"/>
+              <Setter TargetName="PART_ContentPresenter" Property="Opacity" Value="0.3"/>
             </Trigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
       </Setter.Value>
     </Setter>
-    <Setter Property="crystal:ControlsHelper.ContentCharacterCasing" Value="{DynamicResource Crystal.CharacterCasing.Button}" />
-    <Setter Property="crystal:ControlsHelper.CornerRadius" Value="3" />
-    <Setter Property="crystal:ControlsHelper.FocusBorderBrush" Value="{DynamicResource Crystal.Brushes.Button.Border.Focus}" />
-    <Setter Property="crystal:ControlsHelper.FocusBorderThickness" Value="2" />
-    <Setter Property="crystal:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource Crystal.Brushes.Button.Border.MouseOver}" />
+    <Setter Property="crystal:ControlsHelper.ContentCharacterCasing" Value="{DynamicResource Crystal.CharacterCasing.Button}"/>
+    <Setter Property="crystal:ControlsHelper.CornerRadius" Value="3"/>
+    <Setter Property="crystal:ControlsHelper.FocusBorderBrush" Value="{DynamicResource Crystal.Brushes.Button.Border.Focus}"/>
+    <Setter Property="crystal:ControlsHelper.FocusBorderThickness" Value="2"/>
+    <Setter Property="crystal:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource Crystal.Brushes.Button.Border.MouseOver}"/>
   </Style>
 
   <Style x:Key="Crystal.Styles.Button.Square" TargetType="{x:Type ButtonBase}">
-    <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
-    <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
-    <Setter Property="BorderThickness" Value="2" />
-    <Setter Property="FontFamily" Value="{DynamicResource Crystal.Fonts.Family.Button}" />
-    <Setter Property="FontWeight" Value="SemiBold" />
-    <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
-    <Setter Property="MinHeight" Value="25" />
-    <Setter Property="Padding" Value="3 4" />
-    <Setter Property="SnapsToDevicePixels" Value="True" />
+    <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeBackground}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.ThemeForeground}"/>
+    <Setter Property="BorderThickness" Value="2"/>
+    <Setter Property="FontFamily" Value="{DynamicResource Crystal.Fonts.Family.Button}"/>
+    <Setter Property="FontWeight" Value="SemiBold"/>
+    <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeForeground}"/>
+    <Setter Property="MinHeight" Value="25"/>
+    <Setter Property="Padding" Value="3 4"/>
+    <Setter Property="SnapsToDevicePixels" Value="True"/>
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type ButtonBase}">
           <Grid>
             <crystal:ClipBorder x:Name="Background"
-                                        Background="{TemplateBinding Background}"
-                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                        BorderThickness="{TemplateBinding BorderThickness}"
-                                        CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
-                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
             <crystal:ClipBorder x:Name="DisabledVisualElement"
-                                        Background="{DynamicResource Crystal.Brushes.Control.Disabled}"
-                                        CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
-                                        IsHitTestVisible="False"
-                                        Opacity="0"
-                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                Background="{DynamicResource Crystal.Brushes.Control.Disabled}"
+                                CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
+                                IsHitTestVisible="False"
+                                Opacity="0"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
             <Grid Margin="{TemplateBinding BorderThickness}">
               <crystal:ContentControlEx x:Name="PART_ContentPresenter"
-                                                  Padding="{TemplateBinding Padding}"
-                                                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                  Content="{TemplateBinding Content}"
-                                                  ContentCharacterCasing="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.ContentCharacterCasing)}"
-                                                  ContentStringFormat="{TemplateBinding ContentStringFormat}"
-                                                  ContentTemplate="{TemplateBinding ContentTemplate}"
-                                                  ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
-                                                  RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}"
-                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                        Padding="{TemplateBinding Padding}"
+                                        HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                        Content="{TemplateBinding Content}"
+                                        ContentCharacterCasing="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.ContentCharacterCasing)}"
+                                        ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                        ContentTemplate="{TemplateBinding ContentTemplate}"
+                                        ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
+                                        RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}"
+                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
             </Grid>
             <VisualStateManager.VisualStateGroups>
               <VisualStateGroup x:Name="CommonStates">
-                <VisualState x:Name="Normal" />
+                <VisualState x:Name="Normal"/>
                 <VisualState x:Name="Disabled">
                   <Storyboard>
                     <DoubleAnimationUsingKeyFrames Storyboard.TargetName="DisabledVisualElement" Storyboard.TargetProperty="Opacity">
-                      <SplineDoubleKeyFrame KeyTime="0" Value="0.7" />
+                      <SplineDoubleKeyFrame KeyTime="0" Value="0.7"/>
                     </DoubleAnimationUsingKeyFrames>
                     <DoubleAnimationUsingKeyFrames Storyboard.TargetName="PART_ContentPresenter" Storyboard.TargetProperty="(UIElement.Opacity)">
-                      <EasingDoubleKeyFrame KeyTime="0" Value="0.3" />
+                      <EasingDoubleKeyFrame KeyTime="0" Value="0.3"/>
                     </DoubleAnimationUsingKeyFrames>
                   </Storyboard>
                 </VisualState>
               </VisualStateGroup>
               <VisualStateGroup x:Name="FocusStates">
-                <VisualState x:Name="Focused" />
-                <VisualState x:Name="Unfocused" />
+                <VisualState x:Name="Focused"/>
+                <VisualState x:Name="Unfocused"/>
               </VisualStateGroup>
               <VisualStateGroup x:Name="ValidationStates">
-                <VisualState x:Name="Valid" />
-                <VisualState x:Name="InvalidFocused" />
-                <VisualState x:Name="InvalidUnfocused" />
+                <VisualState x:Name="Valid"/>
+                <VisualState x:Name="InvalidFocused"/>
+                <VisualState x:Name="InvalidUnfocused"/>
               </VisualStateGroup>
             </VisualStateManager.VisualStateGroups>
           </Grid>
-
           <ControlTemplate.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-              <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Button.Square.Background.MouseOver}" />
-              <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Button.Square.Foreground.MouseOver}" />
+              <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Button.Square.Background.MouseOver}"/>
+              <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Button.Square.Foreground.MouseOver}"/>
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
-              <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
-              <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
+              <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeForeground}"/>
+              <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeBackground}"/>
             </Trigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
       </Setter.Value>
     </Setter>
-    <Setter Property="crystal:ControlsHelper.ContentCharacterCasing" Value="{DynamicResource Crystal.CharacterCasing.Button.Square}" />
+    <Setter Property="crystal:ControlsHelper.ContentCharacterCasing" Value="{DynamicResource Crystal.CharacterCasing.Button.Square}"/>
   </Style>
 
-  <Style x:Key="Crystal.Styles.Button.Square.Accent"
-           BasedOn="{StaticResource Crystal.Styles.Button.Square}"
-           TargetType="{x:Type ButtonBase}">
-    <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Accent}" />
-    <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForeground}" />
+  <Style x:Key="Crystal.Styles.Button.Square.Accent" BasedOn="{StaticResource Crystal.Styles.Button.Square}" TargetType="{x:Type ButtonBase}">
+    <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Accent}"/>
+    <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForeground}"/>
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type ButtonBase}">
           <Grid>
             <crystal:ClipBorder x:Name="Background"
-                                        Background="{TemplateBinding Background}"
-                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                        BorderThickness="{TemplateBinding BorderThickness}"
-                                        CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
-                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
             <crystal:ClipBorder x:Name="DisabledVisualElement"
-                                        Background="{DynamicResource Crystal.Brushes.Control.Disabled}"
-                                        CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
-                                        IsHitTestVisible="False"
-                                        Opacity="0"
-                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                Background="{DynamicResource Crystal.Brushes.Control.Disabled}"
+                                CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
+                                IsHitTestVisible="False"
+                                Opacity="0"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
             <Grid Margin="{TemplateBinding BorderThickness}">
               <Rectangle x:Name="MouseOverRectangle"
-                                       Fill="{DynamicResource Crystal.Brushes.Button.AccentedSquare.Background.MouseOver}"
-                                       Opacity="0" />
+                         Fill="{DynamicResource Crystal.Brushes.Button.AccentedSquare.Background.MouseOver}"
+                         Opacity="0"/>
               <crystal:ContentControlEx x:Name="PART_ContentPresenter"
-                                                  Padding="{TemplateBinding Padding}"
-                                                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                  Content="{TemplateBinding Content}"
-                                                  ContentCharacterCasing="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.ContentCharacterCasing)}"
-                                                  ContentStringFormat="{TemplateBinding ContentStringFormat}"
-                                                  ContentTemplate="{TemplateBinding ContentTemplate}"
-                                                  ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
-                                                  RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}"
-                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                        Padding="{TemplateBinding Padding}"
+                                        HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                        Content="{TemplateBinding Content}"
+                                        ContentCharacterCasing="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.ContentCharacterCasing)}"
+                                        ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                        ContentTemplate="{TemplateBinding ContentTemplate}"
+                                        ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
+                                        RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}"
+                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
             </Grid>
             <VisualStateManager.VisualStateGroups>
               <VisualStateGroup x:Name="CommonStates">
-                <VisualState x:Name="Normal" />
+                <VisualState x:Name="Normal"/>
                 <VisualState x:Name="Disabled">
                   <Storyboard>
                     <DoubleAnimationUsingKeyFrames Storyboard.TargetName="DisabledVisualElement" Storyboard.TargetProperty="Opacity">
-                      <SplineDoubleKeyFrame KeyTime="0" Value="0.7" />
+                      <SplineDoubleKeyFrame KeyTime="0" Value="0.7"/>
                     </DoubleAnimationUsingKeyFrames>
                     <DoubleAnimationUsingKeyFrames Storyboard.TargetName="PART_ContentPresenter" Storyboard.TargetProperty="(UIElement.Opacity)">
-                      <EasingDoubleKeyFrame KeyTime="0" Value="0.3" />
+                      <EasingDoubleKeyFrame KeyTime="0" Value="0.3"/>
                     </DoubleAnimationUsingKeyFrames>
                   </Storyboard>
                 </VisualState>
               </VisualStateGroup>
               <VisualStateGroup x:Name="FocusStates">
-                <VisualState x:Name="Focused" />
-                <VisualState x:Name="Unfocused" />
+                <VisualState x:Name="Focused"/>
+                <VisualState x:Name="Unfocused"/>
               </VisualStateGroup>
               <VisualStateGroup x:Name="ValidationStates">
-                <VisualState x:Name="Valid" />
-                <VisualState x:Name="InvalidFocused" />
-                <VisualState x:Name="InvalidUnfocused" />
+                <VisualState x:Name="Valid"/>
+                <VisualState x:Name="InvalidFocused"/>
+                <VisualState x:Name="InvalidUnfocused"/>
               </VisualStateGroup>
             </VisualStateManager.VisualStateGroups>
           </Grid>
-
           <ControlTemplate.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-              <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Button.AccentedSquare.Foreground.MouseOver}" />
-              <Setter TargetName="MouseOverRectangle" Property="Opacity" Value="1" />
+              <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Button.AccentedSquare.Foreground.MouseOver}"/>
+              <Setter TargetName="MouseOverRectangle" Property="Opacity" Value="1"/>
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
-              <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
-              <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
-              <Setter TargetName="MouseOverRectangle" Property="Opacity" Value="0" />
+              <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeForeground}"/>
+              <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeBackground}"/>
+              <Setter TargetName="MouseOverRectangle" Property="Opacity" Value="0"/>
             </Trigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
@@ -609,72 +594,69 @@
     </Setter>
   </Style>
 
-  <Style x:Key="Crystal.Styles.Button.Square.Highlight"
-           BasedOn="{StaticResource Crystal.Styles.Button.Square}"
-           TargetType="{x:Type ButtonBase}">
-    <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Highlight}" />
-    <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForeground}" />
+  <Style x:Key="Crystal.Styles.Button.Square.Highlight" BasedOn="{StaticResource Crystal.Styles.Button.Square}" TargetType="{x:Type ButtonBase}">
+    <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Highlight}"/>
+    <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForeground}"/>
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type ButtonBase}">
           <Grid Background="{TemplateBinding Background}">
             <crystal:ClipBorder x:Name="Background"
-                                        Background="{x:Null}"
-                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                        BorderThickness="{TemplateBinding BorderThickness}"
-                                        CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
-                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                Background="{x:Null}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
             <crystal:ClipBorder x:Name="DisabledVisualElement"
-                                        Background="{DynamicResource Crystal.Brushes.Control.Disabled}"
-                                        CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
-                                        IsHitTestVisible="False"
-                                        Opacity="0"
-                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                Background="{DynamicResource Crystal.Brushes.Control.Disabled}"
+                                CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
+                                IsHitTestVisible="False"
+                                Opacity="0"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
             <crystal:ContentControlEx x:Name="PART_ContentPresenter"
-                                              Padding="{TemplateBinding Padding}"
-                                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                              Content="{TemplateBinding Content}"
-                                              ContentCharacterCasing="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.ContentCharacterCasing)}"
-                                              ContentStringFormat="{TemplateBinding ContentStringFormat}"
-                                              ContentTemplate="{TemplateBinding ContentTemplate}"
-                                              ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
-                                              RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}"
-                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                      Padding="{TemplateBinding Padding}"
+                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                      Content="{TemplateBinding Content}"
+                                      ContentCharacterCasing="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.ContentCharacterCasing)}"
+                                      ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
+                                      RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}"
+                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
             <VisualStateManager.VisualStateGroups>
               <VisualStateGroup x:Name="CommonStates">
-                <VisualState x:Name="Normal" />
+                <VisualState x:Name="Normal"/>
                 <VisualState x:Name="Disabled">
                   <Storyboard>
                     <DoubleAnimationUsingKeyFrames Storyboard.TargetName="DisabledVisualElement" Storyboard.TargetProperty="Opacity">
-                      <SplineDoubleKeyFrame KeyTime="0" Value="0.7" />
+                      <SplineDoubleKeyFrame KeyTime="0" Value="0.7"/>
                     </DoubleAnimationUsingKeyFrames>
                     <DoubleAnimationUsingKeyFrames Storyboard.TargetName="PART_ContentPresenter" Storyboard.TargetProperty="(UIElement.Opacity)">
-                      <EasingDoubleKeyFrame KeyTime="0" Value="0.3" />
+                      <EasingDoubleKeyFrame KeyTime="0" Value="0.3"/>
                     </DoubleAnimationUsingKeyFrames>
                   </Storyboard>
                 </VisualState>
               </VisualStateGroup>
               <VisualStateGroup x:Name="FocusStates">
-                <VisualState x:Name="Focused" />
-                <VisualState x:Name="Unfocused" />
+                <VisualState x:Name="Focused"/>
+                <VisualState x:Name="Unfocused"/>
               </VisualStateGroup>
               <VisualStateGroup x:Name="ValidationStates">
-                <VisualState x:Name="Valid" />
-                <VisualState x:Name="InvalidFocused" />
-                <VisualState x:Name="InvalidUnfocused" />
+                <VisualState x:Name="Valid"/>
+                <VisualState x:Name="InvalidFocused"/>
+                <VisualState x:Name="InvalidUnfocused"/>
               </VisualStateGroup>
             </VisualStateManager.VisualStateGroups>
           </Grid>
-
           <ControlTemplate.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-              <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Accent}" />
-              <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForeground}" />
+              <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Accent}"/>
+              <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForeground}"/>
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
-              <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
-              <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
+              <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeForeground}"/>
+              <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeBackground}"/>
             </Trigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
@@ -683,31 +665,31 @@
   </Style>
 
   <Style x:Key="Crystal.Styles.ToggleButton.Circle" TargetType="{x:Type ToggleButton}">
-    <Setter Property="Background" Value="Transparent" />
-    <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Gray3}" />
-    <Setter Property="BorderThickness" Value="2" />
-    <Setter Property="FocusVisualStyle" Value="{StaticResource Crystal.Styles.Button.FocusVisualStyle.Circle}" />
-    <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
-    <Setter Property="HorizontalContentAlignment" Value="Center" />
-    <Setter Property="Padding" Value="1" />
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Gray3}"/>
+    <Setter Property="BorderThickness" Value="2"/>
+    <Setter Property="FocusVisualStyle" Value="{StaticResource Crystal.Styles.Button.FocusVisualStyle.Circle}"/>
+    <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeForeground}"/>
+    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    <Setter Property="Padding" Value="1"/>
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type ToggleButton}">
           <Grid>
-            <Ellipse Fill="{TemplateBinding Background}" StrokeThickness="0" />
+            <Ellipse Fill="{TemplateBinding Background}" StrokeThickness="0"/>
             <Ellipse x:Name="ellipsebg"
-                                 Fill="{DynamicResource Crystal.Brushes.Accent}"
-                                 Opacity="0"
-                                 StrokeThickness="0" />
+                     Fill="{DynamicResource Crystal.Brushes.Accent}"
+                     Opacity="0"
+                     StrokeThickness="0"/>
             <Ellipse x:Name="ellipse"
-                                 Stroke="{TemplateBinding BorderBrush}"
-                                 StrokeThickness="{Binding RelativeSource={x:Static RelativeSource.TemplatedParent}, Path=BorderThickness, Converter={StaticResource BorderThicknessToStrokeThicknessConverter}}" />
+                     Stroke="{TemplateBinding BorderBrush}"
+                     StrokeThickness="{Binding RelativeSource={x:Static RelativeSource.TemplatedParent}, Path=BorderThickness, Converter={StaticResource BorderThicknessToStrokeThicknessConverter}}"/>
             <ContentPresenter x:Name="PART_ContentPresenter"
-                                          Margin="{TemplateBinding Padding}"
-                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                          RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}"
-                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                              Margin="{TemplateBinding Padding}"
+                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                              RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}"
+                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
           </Grid>
           <ControlTemplate.Triggers>
             <Trigger Property="ToggleButton.IsChecked" Value="True">
@@ -715,220 +697,217 @@
                 <BeginStoryboard>
                   <Storyboard>
                     <DoubleAnimation Storyboard.TargetName="ellipsebg"
-                                                         Storyboard.TargetProperty="Opacity"
-                                                         From="0"
-                                                         To="1"
-                                                         Duration="0:0:0.3" />
+                                     Storyboard.TargetProperty="Opacity"
+                                     From="0"
+                                     To="1"
+                                     Duration="0:0:0.3"/>
                   </Storyboard>
                 </BeginStoryboard>
               </Trigger.EnterActions>
-              <!--  some out fading  -->
               <Trigger.ExitActions>
                 <BeginStoryboard>
                   <Storyboard>
                     <DoubleAnimation Storyboard.TargetName="ellipsebg"
-                                                         Storyboard.TargetProperty="Opacity"
-                                                         To="0"
-                                                         Duration="0:0:0.3" />
+                                     Storyboard.TargetProperty="Opacity"
+                                     To="0"
+                                     Duration="0:0:0.3"/>
                   </Storyboard>
                 </BeginStoryboard>
               </Trigger.ExitActions>
-              <Setter TargetName="PART_ContentPresenter" Property="TextElement.Foreground" Value="{DynamicResource Crystal.Brushes.IdealForeground}" />
-              <Setter TargetName="ellipse" Property="Stroke" Value="{DynamicResource Crystal.Brushes.Accent}" />
+              <Setter TargetName="PART_ContentPresenter" Property="TextElement.Foreground" Value="{DynamicResource Crystal.Brushes.IdealForeground}"/>
+              <Setter TargetName="ellipse" Property="Stroke" Value="{DynamicResource Crystal.Brushes.Accent}"/>
             </Trigger>
             <Trigger Property="IsMouseOver" Value="True">
-              <Setter TargetName="ellipse" Property="Opacity" Value="1" />
+              <Setter TargetName="ellipse" Property="Opacity" Value="1"/>
             </Trigger>
             <Trigger Property="IsMouseOver" Value="False">
-              <Setter TargetName="ellipse" Property="Opacity" Value="0.7" />
+              <Setter TargetName="ellipse" Property="Opacity" Value="0.7"/>
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
-              <Setter TargetName="PART_ContentPresenter" Property="TextElement.Foreground" Value="{DynamicResource Crystal.Brushes.Gray7}" />
-              <Setter TargetName="ellipse" Property="Opacity" Value="0.3" />
+              <Setter TargetName="PART_ContentPresenter" Property="TextElement.Foreground" Value="{DynamicResource Crystal.Brushes.Gray7}"/>
+              <Setter TargetName="ellipse" Property="Opacity" Value="0.3"/>
             </Trigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
       </Setter.Value>
     </Setter>
-    <Setter Property="VerticalContentAlignment" Value="Center" />
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
     <Style.Triggers>
       <Trigger Property="ToggleButton.IsChecked" Value="True">
-        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForeground}" />
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForeground}"/>
       </Trigger>
       <Trigger Property="IsEnabled" Value="False">
-        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Gray7}" />
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Gray7}"/>
       </Trigger>
     </Style.Triggers>
   </Style>
 
   <Style x:Key="Crystal.Styles.ToggleButton" TargetType="{x:Type ToggleButton}">
-    <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Gray10}" />
-    <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Button.Border}" />
-    <Setter Property="BorderThickness" Value="1" />
-    <Setter Property="FontFamily" Value="{DynamicResource Crystal.Fonts.Family.Button}" />
-    <Setter Property="FontSize" Value="{DynamicResource Crystal.Font.Size.Button}" />
-    <Setter Property="FontWeight" Value="Bold" />
-    <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
-    <Setter Property="MinHeight" Value="25" />
-    <Setter Property="Padding" Value="5 6" />
-    <Setter Property="SnapsToDevicePixels" Value="True" />
+    <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Gray10}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Button.Border}"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="FontFamily" Value="{DynamicResource Crystal.Fonts.Family.Button}"/>
+    <Setter Property="FontSize" Value="{DynamicResource Crystal.Font.Size.Button}"/>
+    <Setter Property="FontWeight" Value="Bold"/>
+    <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeForeground}"/>
+    <Setter Property="MinHeight" Value="25"/>
+    <Setter Property="Padding" Value="5 6"/>
+    <Setter Property="SnapsToDevicePixels" Value="True"/>
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="ToggleButton">
           <Grid>
             <crystal:ClipBorder x:Name="Border"
-                                        Background="{TemplateBinding Background}"
-                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                        BorderThickness="{TemplateBinding BorderThickness}"
-                                        CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
-                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
             <crystal:ClipBorder x:Name="DisabledVisualElement"
-                                        Background="{DynamicResource Crystal.Brushes.Control.Disabled}"
-                                        CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
-                                        IsHitTestVisible="False"
-                                        Opacity="0"
-                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                Background="{DynamicResource Crystal.Brushes.Control.Disabled}"
+                                CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
+                                IsHitTestVisible="False"
+                                Opacity="0"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
             <crystal:ContentControlEx x:Name="PART_ContentPresenter"
-                                              Margin="{TemplateBinding BorderThickness}"
-                                              Padding="{TemplateBinding Padding}"
-                                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                              Content="{TemplateBinding Content}"
-                                              ContentCharacterCasing="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.ContentCharacterCasing)}"
-                                              ContentStringFormat="{TemplateBinding ContentStringFormat}"
-                                              ContentTemplate="{TemplateBinding ContentTemplate}"
-                                              ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
-                                              RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}"
-                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                      Margin="{TemplateBinding BorderThickness}"
+                                      Padding="{TemplateBinding Padding}"
+                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                      Content="{TemplateBinding Content}"
+                                      ContentCharacterCasing="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.ContentCharacterCasing)}"
+                                      ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
+                                      RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}"
+                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
           </Grid>
           <ControlTemplate.Triggers>
             <Trigger Property="IsChecked" Value="True">
-              <Setter TargetName="Border" Property="BorderThickness" Value="2" />
+              <Setter TargetName="Border" Property="BorderThickness" Value="2"/>
             </Trigger>
             <Trigger Property="IsMouseOver" Value="True">
-              <Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.MouseOverBorderBrush), Mode=OneWay}" />
+              <Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.MouseOverBorderBrush), Mode=OneWay}"/>
             </Trigger>
             <Trigger Property="IsKeyboardFocusWithin" Value="True">
-              <Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.FocusBorderBrush), Mode=OneWay}" />
-              <Setter TargetName="Border" Property="BorderThickness" Value="2" />
+              <Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.FocusBorderBrush), Mode=OneWay}"/>
+              <Setter TargetName="Border" Property="BorderThickness" Value="2"/>
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
-              <Setter TargetName="DisabledVisualElement" Property="Opacity" Value="0.7" />
-              <Setter TargetName="PART_ContentPresenter" Property="Opacity" Value="0.3" />
+              <Setter TargetName="DisabledVisualElement" Property="Opacity" Value="0.7"/>
+              <Setter TargetName="PART_ContentPresenter" Property="Opacity" Value="0.3"/>
             </Trigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
       </Setter.Value>
     </Setter>
-    <Setter Property="crystal:ControlsHelper.CornerRadius" Value="3" />
-    <Setter Property="crystal:ControlsHelper.FocusBorderBrush" Value="{DynamicResource Crystal.Brushes.Button.Border.Focus}" />
-    <Setter Property="crystal:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource Crystal.Brushes.Button.Border.MouseOver}" />
+    <Setter Property="crystal:ControlsHelper.CornerRadius" Value="3"/>
+    <Setter Property="crystal:ControlsHelper.FocusBorderBrush" Value="{DynamicResource Crystal.Brushes.Button.Border.Focus}"/>
+    <Setter Property="crystal:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource Crystal.Brushes.Button.Border.MouseOver}"/>
     <Style.Triggers>
       <Trigger Property="IsChecked" Value="True">
-        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Gray2}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Gray5}" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Gray2}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Gray5}"/>
       </Trigger>
       <MultiTrigger>
         <MultiTrigger.Conditions>
-          <Condition Property="IsMouseOver" Value="True" />
-          <Condition Property="IsChecked" Value="False" />
+          <Condition Property="IsMouseOver" Value="True"/>
+          <Condition Property="IsChecked" Value="False"/>
         </MultiTrigger.Conditions>
-        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Gray8}" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Gray8}"/>
       </MultiTrigger>
       <MultiTrigger>
         <MultiTrigger.Conditions>
-          <Condition Property="IsMouseOver" Value="True" />
-          <Condition Property="IsChecked" Value="True" />
+          <Condition Property="IsMouseOver" Value="True"/>
+          <Condition Property="IsChecked" Value="True"/>
         </MultiTrigger.Conditions>
-        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Gray3}" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Gray3}"/>
       </MultiTrigger>
       <Trigger Property="IsPressed" Value="True">
-        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Gray7}" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Gray7}"/>
       </Trigger>
     </Style.Triggers>
   </Style>
 
   <Style x:Key="Crystal.Styles.Button.CrystalSquare" TargetType="{x:Type ButtonBase}">
-    <Setter Property="Background" Value="Transparent" />
-    <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
-    <Setter Property="BorderThickness" Value="2" />
-    <Setter Property="FontFamily" Value="{DynamicResource Crystal.Fonts.Family.Button}" />
-    <Setter Property="FontWeight" Value="SemiBold" />
-    <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
-    <Setter Property="HorizontalAlignment" Value="Left" />
-    <Setter Property="Padding" Value="12 4 12 4" />
-    <Setter Property="SnapsToDevicePixels" Value="True" />
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.ThemeForeground}"/>
+    <Setter Property="BorderThickness" Value="2"/>
+    <Setter Property="FontFamily" Value="{DynamicResource Crystal.Fonts.Family.Button}"/>
+    <Setter Property="FontWeight" Value="SemiBold"/>
+    <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeForeground}"/>
+    <Setter Property="HorizontalAlignment" Value="Left"/>
+    <Setter Property="Padding" Value="12 4 12 4"/>
+    <Setter Property="SnapsToDevicePixels" Value="True"/>
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type ButtonBase}">
           <Grid>
             <crystal:ClipBorder x:Name="Border"
-                                        Background="{TemplateBinding Background}"
-                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                        BorderThickness="{TemplateBinding BorderThickness}"
-                                        CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
-                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
-
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
               <Grid>
                 <Rectangle x:Name="MouseOverRectangle"
-                                           Fill="{DynamicResource Crystal.Brushes.ThemeBackground}"
-                                           Opacity="0" />
+                           Fill="{DynamicResource Crystal.Brushes.ThemeBackground}"
+                           Opacity="0"/>
                 <Rectangle x:Name="PressedRectangle"
-                                           Fill="{DynamicResource Crystal.Brushes.ThemeForeground}"
-                                           Opacity="0" />
+                           Fill="{DynamicResource Crystal.Brushes.ThemeForeground}"
+                           Opacity="0"/>
                 <crystal:ContentControlEx x:Name="PART_ContentPresenter"
-                                                      Padding="{TemplateBinding Padding}"
-                                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                      Content="{TemplateBinding Content}"
-                                                      ContentCharacterCasing="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.ContentCharacterCasing)}"
-                                                      ContentStringFormat="{TemplateBinding ContentStringFormat}"
-                                                      ContentTemplate="{TemplateBinding ContentTemplate}"
-                                                      ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
-                                                      RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}"
-                                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                          Padding="{TemplateBinding Padding}"
+                                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          Content="{TemplateBinding Content}"
+                                          ContentCharacterCasing="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.ContentCharacterCasing)}"
+                                          ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
+                                          RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
               </Grid>
             </crystal:ClipBorder>
-
             <Rectangle x:Name="FocusVisualWhite"
-                                   IsHitTestVisible="False"
-                                   Opacity="0"
-                                   Stroke="White"
-                                   StrokeDashArray="1,1"
-                                   StrokeDashOffset="1.5"
-                                   StrokeEndLineCap="Square" />
+                       IsHitTestVisible="False"
+                       Opacity="0"
+                       Stroke="White"
+                       StrokeDashArray="1,1"
+                       StrokeDashOffset="1.5"
+                       StrokeEndLineCap="Square"/>
             <Rectangle x:Name="FocusVisualBlack"
-                                   IsHitTestVisible="False"
-                                   Opacity="0"
-                                   Stroke="Black"
-                                   StrokeDashArray="1,1"
-                                   StrokeDashOffset="0.5"
-                                   StrokeEndLineCap="Square" />
+                       IsHitTestVisible="False"
+                       Opacity="0"
+                       Stroke="Black"
+                       StrokeDashArray="1,1"
+                       StrokeDashOffset="0.5"
+                       StrokeEndLineCap="Square"/>
             <VisualStateManager.VisualStateGroups>
               <VisualStateGroup x:Name="CommonStates">
-                <VisualState x:Name="Normal" />
+                <VisualState x:Name="Normal"/>
                 <VisualState x:Name="MouseOver">
                   <Storyboard>
                     <DoubleAnimation Storyboard.TargetName="MouseOverRectangle"
-                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
-                                                         To="0.4"
-                                                         Duration="0" />
+                                     Storyboard.TargetProperty="(UIElement.Opacity)"
+                                     To="0.4"
+                                     Duration="0"/>
                   </Storyboard>
                 </VisualState>
                 <VisualState x:Name="Pressed">
                   <Storyboard>
                     <DoubleAnimation Storyboard.TargetName="PressedRectangle"
-                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
-                                                         To="1"
-                                                         Duration="0" />
+                                     Storyboard.TargetProperty="(UIElement.Opacity)"
+                                     To="1"
+                                     Duration="0"/>
                   </Storyboard>
                 </VisualState>
                 <VisualState x:Name="Disabled">
                   <Storyboard>
                     <DoubleAnimation Storyboard.TargetName="Border"
-                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
-                                                         To="0.5"
-                                                         Duration="0" />
+                                     Storyboard.TargetProperty="(UIElement.Opacity)"
+                                     To="0.5"
+                                     Duration="0"/>
                   </Storyboard>
                 </VisualState>
               </VisualStateGroup>
@@ -936,109 +915,104 @@
                 <VisualState x:Name="Focused">
                   <Storyboard>
                     <DoubleAnimation Storyboard.TargetName="FocusVisualWhite"
-                                                         Storyboard.TargetProperty="Opacity"
-                                                         To="1"
-                                                         Duration="0" />
+                                     Storyboard.TargetProperty="Opacity"
+                                     To="1"
+                                     Duration="0"/>
                     <DoubleAnimation Storyboard.TargetName="FocusVisualBlack"
-                                                         Storyboard.TargetProperty="Opacity"
-                                                         To="1"
-                                                         Duration="0" />
+                                     Storyboard.TargetProperty="Opacity"
+                                     To="1"
+                                     Duration="0"/>
                   </Storyboard>
                 </VisualState>
-                <VisualState x:Name="Unfocused" />
-                <VisualState x:Name="PointerFocused" />
+                <VisualState x:Name="Unfocused"/>
+                <VisualState x:Name="PointerFocused"/>
               </VisualStateGroup>
             </VisualStateManager.VisualStateGroups>
           </Grid>
-
           <ControlTemplate.Triggers>
             <Trigger Property="IsPressed" Value="True">
-              <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
+              <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeBackground}"/>
             </Trigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
       </Setter.Value>
     </Setter>
-    <Setter Property="VerticalAlignment" Value="Center" />
+    <Setter Property="VerticalAlignment" Value="Center"/>
   </Style>
 
-  <Style x:Key="Crystal.Styles.Button.CrystalSquare.Accent"
-           BasedOn="{StaticResource Crystal.Styles.Button.Crystalquare}"
-           TargetType="{x:Type ButtonBase}">
-    <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Accent}" />
-    <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Selected.Foreground}" />
-    <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Selected.Foreground}" />
+  <Style x:Key="Crystal.Styles.Button.CrystalSquare.Accent" BasedOn="{StaticResource Crystal.Styles.Button.Crystalquare}" TargetType="{x:Type ButtonBase}">
+    <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Accent}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Selected.Foreground}"/>
+    <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Selected.Foreground}"/>
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type ButtonBase}">
           <Grid>
             <crystal:ClipBorder x:Name="Border"
-                                        Background="{TemplateBinding Background}"
-                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                        BorderThickness="{TemplateBinding BorderThickness}"
-                                        CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
-                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
-
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
               <Grid>
                 <Rectangle x:Name="MouseOverRectangle"
-                                           Fill="{DynamicResource Crystal.Brushes.ThemeForeground}"
-                                           Opacity="0" />
+                           Fill="{DynamicResource Crystal.Brushes.ThemeForeground}"
+                           Opacity="0"/>
                 <Rectangle x:Name="PressedRectangle"
-                                           Fill="White"
-                                           Opacity="0" />
+                           Fill="White"
+                           Opacity="0"/>
                 <crystal:ContentControlEx x:Name="PART_ContentPresenter"
-                                                      Padding="{TemplateBinding Padding}"
-                                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                      Content="{TemplateBinding Content}"
-                                                      ContentCharacterCasing="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.ContentCharacterCasing)}"
-                                                      ContentStringFormat="{TemplateBinding ContentStringFormat}"
-                                                      ContentTemplate="{TemplateBinding ContentTemplate}"
-                                                      ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
-                                                      RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}"
-                                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                          Padding="{TemplateBinding Padding}"
+                                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          Content="{TemplateBinding Content}"
+                                          ContentCharacterCasing="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.ContentCharacterCasing)}"
+                                          ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
+                                          RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
               </Grid>
             </crystal:ClipBorder>
-
             <Rectangle x:Name="FocusVisualWhite"
-                                   IsHitTestVisible="False"
-                                   Opacity="0"
-                                   Stroke="White"
-                                   StrokeDashArray="1,1"
-                                   StrokeDashOffset="1.5"
-                                   StrokeEndLineCap="Square" />
+                       IsHitTestVisible="False"
+                       Opacity="0"
+                       Stroke="White"
+                       StrokeDashArray="1,1"
+                       StrokeDashOffset="1.5"
+                       StrokeEndLineCap="Square"/>
             <Rectangle x:Name="FocusVisualBlack"
-                                   IsHitTestVisible="False"
-                                   Opacity="0"
-                                   Stroke="Black"
-                                   StrokeDashArray="1,1"
-                                   StrokeDashOffset="0.5"
-                                   StrokeEndLineCap="Square" />
+                       IsHitTestVisible="False"
+                       Opacity="0"
+                       Stroke="Black"
+                       StrokeDashArray="1,1"
+                       StrokeDashOffset="0.5"
+                       StrokeEndLineCap="Square"/>
             <VisualStateManager.VisualStateGroups>
               <VisualStateGroup x:Name="CommonStates">
-                <VisualState x:Name="Normal" />
+                <VisualState x:Name="Normal"/>
                 <VisualState x:Name="MouseOver">
                   <Storyboard>
                     <DoubleAnimation Storyboard.TargetName="MouseOverRectangle"
-                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
-                                                         To="0.4"
-                                                         Duration="0" />
+                                     Storyboard.TargetProperty="(UIElement.Opacity)"
+                                     To="0.4"
+                                     Duration="0"/>
                   </Storyboard>
                 </VisualState>
                 <VisualState x:Name="Pressed">
                   <Storyboard>
                     <DoubleAnimation Storyboard.TargetName="PressedRectangle"
-                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
-                                                         To="1"
-                                                         Duration="0" />
+                                     Storyboard.TargetProperty="(UIElement.Opacity)"
+                                     To="1"
+                                     Duration="0"/>
                   </Storyboard>
                 </VisualState>
                 <VisualState x:Name="Disabled">
                   <Storyboard>
                     <DoubleAnimation Storyboard.TargetName="Border"
-                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
-                                                         To="0.5"
-                                                         Duration="0" />
+                                     Storyboard.TargetProperty="(UIElement.Opacity)"
+                                     To="0.5"
+                                     Duration="0"/>
                   </Storyboard>
                 </VisualState>
               </VisualStateGroup>
@@ -1046,24 +1020,23 @@
                 <VisualState x:Name="Focused">
                   <Storyboard>
                     <DoubleAnimation Storyboard.TargetName="FocusVisualWhite"
-                                                         Storyboard.TargetProperty="Opacity"
-                                                         To="1"
-                                                         Duration="0" />
+                                     Storyboard.TargetProperty="Opacity"
+                                     To="1"
+                                     Duration="0"/>
                     <DoubleAnimation Storyboard.TargetName="FocusVisualBlack"
-                                                         Storyboard.TargetProperty="Opacity"
-                                                         To="1"
-                                                         Duration="0" />
+                                     Storyboard.TargetProperty="Opacity"
+                                     To="1"
+                                     Duration="0"/>
                   </Storyboard>
                 </VisualState>
-                <VisualState x:Name="Unfocused" />
-                <VisualState x:Name="PointerFocused" />
+                <VisualState x:Name="Unfocused"/>
+                <VisualState x:Name="PointerFocused"/>
               </VisualStateGroup>
             </VisualStateManager.VisualStateGroups>
           </Grid>
-
           <ControlTemplate.Triggers>
             <Trigger Property="IsPressed" Value="True">
-              <Setter Property="Foreground" Value="Black" />
+              <Setter Property="Foreground" Value="Black"/>
             </Trigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
@@ -1071,41 +1044,39 @@
     </Setter>
   </Style>
 
-  <Style x:Key="Crystal.Styles.Button.DropDown"
-           BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
-           TargetType="{x:Type Button}">
-    <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
-    <Setter Property="BorderThickness" Value="0" />
-    <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
-    <Setter Property="Padding" Value="2" />
-    <Setter Property="SnapsToDevicePixels" Value="True" />
+  <Style x:Key="Crystal.Styles.Button.DropDown" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" TargetType="{x:Type Button}">
+    <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeBackground}"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeForeground}"/>
+    <Setter Property="Padding" Value="2"/>
+    <Setter Property="SnapsToDevicePixels" Value="True"/>
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type Button}">
           <crystal:ClipBorder x:Name="Border"
-                                    Background="{TemplateBinding Background}"
-                                    BorderBrush="{TemplateBinding BorderBrush}"
-                                    BorderThickness="{TemplateBinding BorderThickness}"
-                                    CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
-                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                              Background="{TemplateBinding Background}"
+                              BorderBrush="{TemplateBinding BorderBrush}"
+                              BorderThickness="{TemplateBinding BorderThickness}"
+                              CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
+                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
             <ContentPresenter x:Name="PART_ContentPresenter"
-                                          Margin="{TemplateBinding Padding}"
-                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                          RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}" />
+                              Margin="{TemplateBinding Padding}"
+                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                              RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}"/>
           </crystal:ClipBorder>
           <ControlTemplate.Triggers>
             <Trigger Property="IsKeyboardFocused" Value="True">
-              <Setter TargetName="Border" Property="BorderBrush" Value="Transparent" />
+              <Setter TargetName="Border" Property="BorderBrush" Value="Transparent"/>
             </Trigger>
             <Trigger Property="IsMouseOver" Value="True">
-              <Setter TargetName="Border" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray8}" />
+              <Setter TargetName="Border" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray8}"/>
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
-              <Setter TargetName="Border" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray5}" />
+              <Setter TargetName="Border" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray5}"/>
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
-              <Setter TargetName="Border" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray10}" />
+              <Setter TargetName="Border" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray10}"/>
             </Trigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
@@ -1113,18 +1084,14 @@
     </Setter>
   </Style>
 
-  <Style x:Key="Crystal.Styles.Button.Split"
-           BasedOn="{StaticResource Crystal.Styles.Button.DropDown}"
-           TargetType="{x:Type Button}">
-    <Setter Property="HorizontalAlignment" Value="Stretch" />
-    <Setter Property="VerticalAlignment" Value="Stretch" />
+  <Style x:Key="Crystal.Styles.Button.Split" BasedOn="{StaticResource Crystal.Styles.Button.DropDown}" TargetType="{x:Type Button}">
+    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+    <Setter Property="VerticalAlignment" Value="Stretch"/>
   </Style>
 
-  <Style x:Key="Crystal.Styles.Button.Split.Arrow"
-           BasedOn="{StaticResource Crystal.Styles.Button.Split}"
-           TargetType="{x:Type Button}">
-    <Setter Property="HorizontalContentAlignment" Value="Center" />
-    <Setter Property="VerticalContentAlignment" Value="Center" />
+  <Style x:Key="Crystal.Styles.Button.Split.Arrow" BasedOn="{StaticResource Crystal.Styles.Button.Split}" TargetType="{x:Type Button}">
+    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
   </Style>
 
 </ResourceDictionary>

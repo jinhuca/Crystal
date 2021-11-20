@@ -3,41 +3,41 @@
                     xmlns:crystal="clr-namespace:Crystal.Themes.Controls"
                     xmlns:crystalConverters="clr-namespace:Crystal.Themes.Converters">
 
-    <Style x:Key="Crystal.Styles.Label" TargetType="{x:Type Label}">
-        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Text}" />
-        <Setter Property="SnapsToDevicePixels" Value="True" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Label}">
-                    <Border Padding="{TemplateBinding Padding}"
+  <Style x:Key="Crystal.Styles.Label" TargetType="{x:Type Label}">
+    <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Text}"/>
+    <Setter Property="SnapsToDevicePixels" Value="True"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type Label}">
+          <Border Padding="{TemplateBinding Padding}"
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
                             SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
-                        <ContentPresenter x:Name="PART_ContentPresenter"
+            <ContentPresenter x:Name="PART_ContentPresenter"
                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                           RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}"
-                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="crystal:ControlsHelper.ContentCharacterCasing" Value="Normal">
-                            <Setter TargetName="PART_ContentPresenter" Property="Content" Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Content}" />
-                        </Trigger>
-                        <Trigger Property="crystal:ControlsHelper.ContentCharacterCasing" Value="Upper">
-                            <Setter TargetName="PART_ContentPresenter" Property="Content" Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Content, Converter={crystalConverters:ToUpperConverter}}" />
-                        </Trigger>
-                        <Trigger Property="crystal:ControlsHelper.ContentCharacterCasing" Value="Lower">
-                            <Setter TargetName="PART_ContentPresenter" Property="Content" Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Content, Converter={crystalConverters:ToLowerConverter}}" />
-                        </Trigger>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="crystal:ControlsHelper.ContentCharacterCasing" Value="Normal">
+              <Setter TargetName="PART_ContentPresenter" Property="Content" Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Content}"/>
+            </Trigger>
+            <Trigger Property="crystal:ControlsHelper.ContentCharacterCasing" Value="Upper">
+              <Setter TargetName="PART_ContentPresenter" Property="Content" Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Content, Converter={crystalConverters:ToUpperConverter}}"/>
+            </Trigger>
+            <Trigger Property="crystal:ControlsHelper.ContentCharacterCasing" Value="Lower">
+              <Setter TargetName="PART_ContentPresenter" Property="Content" Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Content, Converter={crystalConverters:ToLowerConverter}}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+              <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
 
 </ResourceDictionary>

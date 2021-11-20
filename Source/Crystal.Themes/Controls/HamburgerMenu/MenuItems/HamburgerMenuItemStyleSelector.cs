@@ -7,7 +7,7 @@
     /// </summary>
     public bool IsItemOptions { get; set; }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override Style SelectStyle(object? item, DependencyObject? container)
     {
       if (container != null)

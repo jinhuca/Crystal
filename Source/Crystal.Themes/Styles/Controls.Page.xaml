@@ -2,9 +2,9 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Style x:Key="Crystal.Styles.Page" TargetType="{x:Type Page}">
-        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
-        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
-        <Setter Property="TextElement.FontSize" Value="{DynamicResource Crystal.Font.Size.Content}" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeBackground}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeForeground}"/>
+        <Setter Property="TextElement.FontSize" Value="{DynamicResource Crystal.Font.Size.Content}"/>
     </Style>
 
 </ResourceDictionary>

@@ -7,15 +7,15 @@
   <!--  Crystal styled TreeView  -->
   <!--  ===============================================================================  -->
 
-  <PathGeometry x:Key="TreeArrow" Figures="M0,0 L0,6 L6,0 z" />
+  <PathGeometry x:Key="TreeArrow" Figures="M0,0 L0,6 L6,0 z"/>
 
   <Style x:Key="Crystal.Styles.ToggleButton.TreeViewItem.ExpandCollapse" TargetType="{x:Type ToggleButton}">
-    <Setter Property="Background" Value="Transparent" />
-    <Setter Property="Focusable" Value="False" />
-    <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
-    <Setter Property="Height" Value="16" />
-    <Setter Property="Margin" Value="1" />
-    <Setter Property="MinWidth" Value="19" />
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="Focusable" Value="False"/>
+    <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeForeground}"/>
+    <Setter Property="Height" Value="16"/>
+    <Setter Property="Margin" Value="1"/>
+    <Setter Property="MinWidth" Value="19"/>
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type ToggleButton}">
@@ -30,50 +30,50 @@
                               Fill="{TemplateBinding Background}"
                               Stroke="{TemplateBinding Foreground}">
               <Path.RenderTransform>
-                <RotateTransform Angle="135" CenterX="3" CenterY="3" />
+                <RotateTransform Angle="135" CenterX="3" CenterY="3"/>
               </Path.RenderTransform>
             </Path>
           </Grid>
           <ControlTemplate.Triggers>
             <Trigger Property="IsChecked" Value="True">
-              <Setter TargetName="ExpandPath" Property="Fill" Value="{DynamicResource Crystal.Brushes.Gray1}" />
+              <Setter TargetName="ExpandPath" Property="Fill" Value="{DynamicResource Crystal.Brushes.Gray1}"/>
               <Setter TargetName="ExpandPath" Property="RenderTransform">
                 <Setter.Value>
-                  <RotateTransform Angle="180" CenterX="3" CenterY="3" />
+                  <RotateTransform Angle="180" CenterX="3" CenterY="3"/>
                 </Setter.Value>
               </Setter>
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
-              <Setter TargetName="ExpandPath" Property="Stroke" Value="{DynamicResource Crystal.Brushes.Gray5}" />
+              <Setter TargetName="ExpandPath" Property="Stroke" Value="{DynamicResource Crystal.Brushes.Gray5}"/>
             </Trigger>
             <MultiTrigger>
               <MultiTrigger.Conditions>
-                <Condition Property="IsEnabled" Value="False" />
-                <Condition Property="IsChecked" Value="True" />
+                <Condition Property="IsEnabled" Value="False"/>
+                <Condition Property="IsChecked" Value="True"/>
               </MultiTrigger.Conditions>
-              <Setter TargetName="ExpandPath" Property="Fill" Value="{DynamicResource Crystal.Brushes.Gray5}" />
-              <Setter TargetName="ExpandPath" Property="Stroke" Value="{DynamicResource Crystal.Brushes.Gray5}" />
+              <Setter TargetName="ExpandPath" Property="Fill" Value="{DynamicResource Crystal.Brushes.Gray5}"/>
+              <Setter TargetName="ExpandPath" Property="Stroke" Value="{DynamicResource Crystal.Brushes.Gray5}"/>
             </MultiTrigger>
             <Trigger Property="IsMouseOver" Value="True">
-              <Setter TargetName="ExpandPath" Property="Fill" Value="{DynamicResource Crystal.Brushes.Accent}" />
-              <Setter TargetName="ExpandPath" Property="Stroke" Value="{DynamicResource Crystal.Brushes.Accent}" />
+              <Setter TargetName="ExpandPath" Property="Fill" Value="{DynamicResource Crystal.Brushes.Accent}"/>
+              <Setter TargetName="ExpandPath" Property="Stroke" Value="{DynamicResource Crystal.Brushes.Accent}"/>
             </Trigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
       </Setter.Value>
     </Setter>
-    <Setter Property="Width" Value="16" />
+    <Setter Property="Width" Value="16"/>
   </Style>
 
-  <crystalConverters:TreeViewMarginConverter x:Key="LengthConverter" Length="12" />
+  <crystalConverters:TreeViewMarginConverter x:Key="LengthConverter" Length="12"/>
 
   <Style x:Key="Crystal.Styles.TreeViewItem" TargetType="{x:Type TreeViewItem}">
-    <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
-    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-    <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Text}" />
-    <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, Mode=OneWay, FallbackValue=Stretch, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
-    <Setter Property="MinHeight" Value="25" />
-    <Setter Property="SnapsToDevicePixels" Value="True" />
+    <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeBackground}"/>
+    <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+    <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Text}"/>
+    <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, Mode=OneWay, FallbackValue=Stretch, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+    <Setter Property="MinHeight" Value="25"/>
+    <Setter Property="SnapsToDevicePixels" Value="True"/>
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type TreeViewItem}">
@@ -89,116 +89,116 @@
                                   VerticalAlignment="Stretch"
                                   Background="Transparent">
                 <Grid.ColumnDefinitions>
-                  <ColumnDefinition Width="Auto" />
-                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="Auto"/>
+                  <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <ToggleButton x:Name="Expander"
                                               Grid.Column="0"
                                               ClickMode="Press"
                                               IsChecked="{Binding Path=IsExpanded, RelativeSource={x:Static RelativeSource.TemplatedParent}, Mode=TwoWay}"
-                                              Style="{TemplateBinding crystal:TreeViewItemHelper.ToggleButtonStyle}" />
+                                              Style="{TemplateBinding crystal:TreeViewItemHelper.ToggleButtonStyle}"/>
                 <ContentPresenter x:Name="PART_Header"
                                                   Grid.Column="1"
                                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                                   ContentSource="Header"
-                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
               </Grid>
             </Border>
-            <ItemsPresenter x:Name="ItemsHost" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+            <ItemsPresenter x:Name="ItemsHost" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
           </StackPanel>
           <ControlTemplate.Triggers>
             <Trigger Property="IsExpanded" Value="False">
-              <Setter TargetName="ItemsHost" Property="Visibility" Value="Collapsed" />
+              <Setter TargetName="ItemsHost" Property="Visibility" Value="Collapsed"/>
             </Trigger>
             <Trigger Property="HasItems" Value="False">
-              <Setter TargetName="Expander" Property="Visibility" Value="Hidden" />
+              <Setter TargetName="Expander" Property="Visibility" Value="Hidden"/>
             </Trigger>
 
             <Trigger Property="IsSelected" Value="True">
-              <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.SelectedBackgroundBrush), Mode=OneWay}" />
-              <Setter TargetName="PART_Header" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.SelectedForegroundBrush), Mode=OneWay}" />
+              <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.SelectedBackgroundBrush), Mode=OneWay}"/>
+              <Setter TargetName="PART_Header" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.SelectedForegroundBrush), Mode=OneWay}"/>
             </Trigger>
             <MultiTrigger>
               <MultiTrigger.Conditions>
-                <Condition Property="IsSelected" Value="True" />
-                <Condition Property="Selector.IsSelectionActive" Value="True" />
+                <Condition Property="IsSelected" Value="True"/>
+                <Condition Property="Selector.IsSelectionActive" Value="True"/>
               </MultiTrigger.Conditions>
-              <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.ActiveSelectionBackgroundBrush), Mode=OneWay}" />
-              <Setter TargetName="PART_Header" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.ActiveSelectionForegroundBrush), Mode=OneWay}" />
+              <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.ActiveSelectionBackgroundBrush), Mode=OneWay}"/>
+              <Setter TargetName="PART_Header" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.ActiveSelectionForegroundBrush), Mode=OneWay}"/>
             </MultiTrigger>
 
             <MultiTrigger>
               <MultiTrigger.Conditions>
-                <Condition SourceName="Border" Property="IsMouseOver" Value="True" />
-                <Condition Property="IsSelected" Value="True" />
+                <Condition SourceName="Border" Property="IsMouseOver" Value="True"/>
+                <Condition Property="IsSelected" Value="True"/>
               </MultiTrigger.Conditions>
-              <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.HoverSelectedBackgroundBrush), Mode=OneWay}" />
-              <Setter TargetName="PART_Header" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.HoverSelectedForegroundBrush), Mode=OneWay}" />
+              <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.HoverSelectedBackgroundBrush), Mode=OneWay}"/>
+              <Setter TargetName="PART_Header" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.HoverSelectedForegroundBrush), Mode=OneWay}"/>
             </MultiTrigger>
             <MultiTrigger>
               <MultiTrigger.Conditions>
-                <Condition SourceName="Border" Property="IsMouseOver" Value="True" />
-                <Condition Property="IsSelected" Value="False" />
+                <Condition SourceName="Border" Property="IsMouseOver" Value="True"/>
+                <Condition Property="IsSelected" Value="False"/>
               </MultiTrigger.Conditions>
-              <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.HoverBackgroundBrush), Mode=OneWay}" />
-              <Setter TargetName="PART_Header" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.HoverForegroundBrush), Mode=OneWay}" />
+              <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.HoverBackgroundBrush), Mode=OneWay}"/>
+              <Setter TargetName="PART_Header" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.HoverForegroundBrush), Mode=OneWay}"/>
             </MultiTrigger>
 
             <MultiTrigger>
               <MultiTrigger.Conditions>
-                <Condition SourceName="Border" Property="IsMouseOver" Value="True" />
-                <Condition Property="crystal:ItemHelper.IsMouseLeftButtonPressed" Value="True" />
+                <Condition SourceName="Border" Property="IsMouseOver" Value="True"/>
+                <Condition Property="crystal:ItemHelper.IsMouseLeftButtonPressed" Value="True"/>
               </MultiTrigger.Conditions>
-              <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.MouseLeftButtonPressedBackgroundBrush), Mode=OneWay}" />
-              <Setter TargetName="PART_Header" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.MouseLeftButtonPressedForegroundBrush), Mode=OneWay}" />
+              <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.MouseLeftButtonPressedBackgroundBrush), Mode=OneWay}"/>
+              <Setter TargetName="PART_Header" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.MouseLeftButtonPressedForegroundBrush), Mode=OneWay}"/>
             </MultiTrigger>
             <MultiTrigger>
               <MultiTrigger.Conditions>
-                <Condition SourceName="Border" Property="IsMouseOver" Value="True" />
-                <Condition Property="crystal:ItemHelper.IsMouseRightButtonPressed" Value="True" />
+                <Condition SourceName="Border" Property="IsMouseOver" Value="True"/>
+                <Condition Property="crystal:ItemHelper.IsMouseRightButtonPressed" Value="True"/>
               </MultiTrigger.Conditions>
-              <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.MouseRightButtonPressedBackgroundBrush), Mode=OneWay}" />
-              <Setter TargetName="PART_Header" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.MouseRightButtonPressedForegroundBrush), Mode=OneWay}" />
+              <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.MouseRightButtonPressedBackgroundBrush), Mode=OneWay}"/>
+              <Setter TargetName="PART_Header" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.MouseRightButtonPressedForegroundBrush), Mode=OneWay}"/>
             </MultiTrigger>
 
             <Trigger Property="IsEnabled" Value="False">
-              <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.DisabledBackgroundBrush), Mode=OneWay}" />
-              <Setter TargetName="PART_Header" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.DisabledForegroundBrush), Mode=OneWay}" />
+              <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.DisabledBackgroundBrush), Mode=OneWay}"/>
+              <Setter TargetName="PART_Header" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.DisabledForegroundBrush), Mode=OneWay}"/>
             </Trigger>
             <MultiTrigger>
               <MultiTrigger.Conditions>
-                <Condition Property="IsEnabled" Value="False" />
-                <Condition Property="IsSelected" Value="True" />
+                <Condition Property="IsEnabled" Value="False"/>
+                <Condition Property="IsSelected" Value="True"/>
               </MultiTrigger.Conditions>
               <MultiTrigger.Setters>
-                <Setter TargetName="PART_Header" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.DisabledSelectedForegroundBrush), Mode=OneWay}" />
-                <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.DisabledSelectedBackgroundBrush), Mode=OneWay}" />
+                <Setter TargetName="PART_Header" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.DisabledSelectedForegroundBrush), Mode=OneWay}"/>
+                <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.DisabledSelectedBackgroundBrush), Mode=OneWay}"/>
               </MultiTrigger.Setters>
             </MultiTrigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
       </Setter.Value>
     </Setter>
-    <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, Mode=OneWay, FallbackValue=Center, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
-    <Setter Property="crystal:ItemHelper.ActiveSelectionBackgroundBrush" Value="{DynamicResource Crystal.Brushes.Accent}" />
-    <Setter Property="crystal:ItemHelper.ActiveSelectionForegroundBrush" Value="{DynamicResource Crystal.Brushes.Selected.Foreground}" />
-    <Setter Property="crystal:ItemHelper.DisabledForegroundBrush" Value="{DynamicResource Crystal.Brushes.Gray}" />
-    <Setter Property="crystal:ItemHelper.DisabledSelectedBackgroundBrush" Value="{DynamicResource Crystal.Brushes.Gray7}" />
-    <Setter Property="crystal:ItemHelper.DisabledSelectedForegroundBrush" Value="{DynamicResource Crystal.Brushes.Selected.Foreground}" />
-    <Setter Property="crystal:ItemHelper.HoverBackgroundBrush" Value="{DynamicResource Crystal.Brushes.Accent3}" />
-    <Setter Property="crystal:ItemHelper.HoverForegroundBrush" Value="{DynamicResource Crystal.Brushes.Text}" />
-    <Setter Property="crystal:ItemHelper.HoverSelectedBackgroundBrush" Value="{DynamicResource Crystal.Brushes.Accent}" />
-    <Setter Property="crystal:ItemHelper.HoverSelectedForegroundBrush" Value="{DynamicResource Crystal.Brushes.Selected.Foreground}" />
-    <Setter Property="crystal:ItemHelper.SelectedBackgroundBrush" Value="{DynamicResource Crystal.Brushes.Accent2}" />
-    <Setter Property="crystal:ItemHelper.SelectedForegroundBrush" Value="{DynamicResource Crystal.Brushes.Selected.Foreground}" />
-    <Setter Property="crystal:TreeViewItemHelper.ToggleButtonStyle" Value="{StaticResource Crystal.Styles.ToggleButton.TreeViewItem.ExpandCollapse}" />
+    <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, Mode=OneWay, FallbackValue=Center, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+    <Setter Property="crystal:ItemHelper.ActiveSelectionBackgroundBrush" Value="{DynamicResource Crystal.Brushes.Accent}"/>
+    <Setter Property="crystal:ItemHelper.ActiveSelectionForegroundBrush" Value="{DynamicResource Crystal.Brushes.Selected.Foreground}"/>
+    <Setter Property="crystal:ItemHelper.DisabledForegroundBrush" Value="{DynamicResource Crystal.Brushes.Gray}"/>
+    <Setter Property="crystal:ItemHelper.DisabledSelectedBackgroundBrush" Value="{DynamicResource Crystal.Brushes.Gray7}"/>
+    <Setter Property="crystal:ItemHelper.DisabledSelectedForegroundBrush" Value="{DynamicResource Crystal.Brushes.Selected.Foreground}"/>
+    <Setter Property="crystal:ItemHelper.HoverBackgroundBrush" Value="{DynamicResource Crystal.Brushes.Accent3}"/>
+    <Setter Property="crystal:ItemHelper.HoverForegroundBrush" Value="{DynamicResource Crystal.Brushes.Text}"/>
+    <Setter Property="crystal:ItemHelper.HoverSelectedBackgroundBrush" Value="{DynamicResource Crystal.Brushes.Accent}"/>
+    <Setter Property="crystal:ItemHelper.HoverSelectedForegroundBrush" Value="{DynamicResource Crystal.Brushes.Selected.Foreground}"/>
+    <Setter Property="crystal:ItemHelper.SelectedBackgroundBrush" Value="{DynamicResource Crystal.Brushes.Accent2}"/>
+    <Setter Property="crystal:ItemHelper.SelectedForegroundBrush" Value="{DynamicResource Crystal.Brushes.Selected.Foreground}"/>
+    <Setter Property="crystal:TreeViewItemHelper.ToggleButtonStyle" Value="{StaticResource Crystal.Styles.ToggleButton.TreeViewItem.ExpandCollapse}"/>
     <Style.Triggers>
       <Trigger Property="VirtualizingStackPanel.IsVirtualizing" Value="True">
         <Setter Property="ItemsPanel">
           <Setter.Value>
             <ItemsPanelTemplate>
-              <VirtualizingStackPanel />
+              <VirtualizingStackPanel/>
             </ItemsPanelTemplate>
           </Setter.Value>
         </Setter>
@@ -207,13 +207,13 @@
   </Style>
 
   <Style x:Key="Crystal.Styles.TreeView" TargetType="{x:Type TreeView}">
-    <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
-    <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
+    <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeBackground}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.ThemeForeground}"/>
     <!--  default to 0  -->
-    <Setter Property="BorderThickness" Value="0" />
-    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-    <Setter Property="Padding" Value="0" />
-    <Setter Property="SnapsToDevicePixels" Value="True" />
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+    <Setter Property="Padding" Value="0"/>
+    <Setter Property="SnapsToDevicePixels" Value="True"/>
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type TreeView}">
@@ -230,26 +230,26 @@
                                       HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
                                       SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                       VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
-              <ItemsPresenter />
+              <ItemsPresenter/>
             </ScrollViewer>
           </Border>
         </ControlTemplate>
       </Setter.Value>
     </Setter>
-    <Setter Property="VerticalContentAlignment" Value="Center" />
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
     <Style.Triggers>
       <Trigger Property="VirtualizingStackPanel.IsVirtualizing" Value="True">
         <Setter Property="ItemsPanel">
           <Setter.Value>
             <ItemsPanelTemplate>
-              <VirtualizingStackPanel />
+              <VirtualizingStackPanel/>
             </ItemsPanelTemplate>
           </Setter.Value>
         </Setter>
-        <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
+        <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
       </Trigger>
       <Trigger Property="IsEnabled" Value="False">
-        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Gray9}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Gray9}"/>
       </Trigger>
     </Style.Triggers>
   </Style>
@@ -257,8 +257,8 @@
   <Style x:Key="Crystal.Styles.TreeView.Virtualized"
            BasedOn="{StaticResource Crystal.Styles.TreeView}"
            TargetType="{x:Type TreeView}">
-    <Setter Property="VirtualizingStackPanel.IsVirtualizing" Value="True" />
-    <Setter Property="VirtualizingStackPanel.VirtualizationMode" Value="Recycling" />
+    <Setter Property="VirtualizingStackPanel.IsVirtualizing" Value="True"/>
+    <Setter Property="VirtualizingStackPanel.VirtualizationMode" Value="Recycling"/>
   </Style>
 
 </ResourceDictionary>

@@ -150,7 +150,7 @@ namespace Crystal.Themes.Controls.Dialogs
       }
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     protected override IEnumerator LogicalChildren
     {
       get

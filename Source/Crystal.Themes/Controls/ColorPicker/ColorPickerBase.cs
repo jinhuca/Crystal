@@ -554,7 +554,7 @@ namespace Crystal.Themes.Controls
                                                typeof(ColorPickerBase));
 
         /// <summary>
-        ///     Occurs when the <see cref="SelectedColor" /> property is changed.
+        ///     Occurs when the <see cref="SelectedColor"/> property is changed.
         /// </summary>
         public event RoutedPropertyChangedEventHandler<Color?> SelectedColorChanged
         {

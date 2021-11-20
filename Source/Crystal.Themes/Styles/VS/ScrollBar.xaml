@@ -3,10 +3,10 @@
                     xmlns:crystal="clr-namespace:Crystal.Themes.Controls">
 
   <Style x:Key="Crystal.Styles.RepeatButton.ScrollBarLine.VisualStudio" TargetType="{x:Type RepeatButton}">
-    <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Background.Normal}" />
-    <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Border.Normal}" />
-    <Setter Property="Focusable" Value="false" />
-    <Setter Property="SnapsToDevicePixels" Value="true" />
+    <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Background.Normal}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Border.Normal}"/>
+    <Setter Property="Focusable" Value="false"/>
+    <Setter Property="SnapsToDevicePixels" Value="true"/>
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type RepeatButton}">
@@ -16,16 +16,16 @@
             <Path HorizontalAlignment="Center"
                               VerticalAlignment="Center"
                               Data="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}"
-                              Fill="{DynamicResource Crystal.Brushes.Foreground}" />
+                              Fill="{DynamicResource Crystal.Brushes.Foreground}"/>
           </Border>
           <ControlTemplate.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-              <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.BackgroundHighlighted}" />
-              <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Border.Highlighted}" />
+              <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.BackgroundHighlighted}"/>
+              <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Border.Highlighted}"/>
             </Trigger>
             <Trigger Property="IsPressed" Value="true">
-              <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.BackgroundSelected}" />
-              <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Border.Selected}" />
+              <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.BackgroundSelected}"/>
+              <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Border.Selected}"/>
             </Trigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
@@ -34,42 +34,42 @@
   </Style>
 
   <Style x:Key="Crystal.Styles.RepeatButton.ScrollBarPage.VisualStudio" TargetType="{x:Type RepeatButton}">
-    <Setter Property="Background" Value="Transparent" />
-    <Setter Property="SnapsToDevicePixels" Value="True" />
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="SnapsToDevicePixels" Value="True"/>
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type RepeatButton}">
-          <Border Background="{TemplateBinding Background}" />
+          <Border Background="{TemplateBinding Background}"/>
         </ControlTemplate>
       </Setter.Value>
     </Setter>
     <Style.Triggers>
       <Trigger Property="IsMouseOver" Value="True">
-        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.ScrollBar.PageButtonBackgroundHighlighted}" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.ScrollBar.PageButtonBackgroundHighlighted}"/>
       </Trigger>
     </Style.Triggers>
   </Style>
 
   <Style x:Key="Crystal.Styles.Thumb.ScrollBar.VisualStudio" TargetType="{x:Type Thumb}">
-    <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Background.Normal}" />
-    <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Border.Normal}" />
-    <Setter Property="Focusable" Value="false" />
-    <Setter Property="IsTabStop" Value="false" />
-    <Setter Property="SnapsToDevicePixels" Value="true" />
+    <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Background.Normal}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Border.Normal}"/>
+    <Setter Property="Focusable" Value="false"/>
+    <Setter Property="IsTabStop" Value="false"/>
+    <Setter Property="SnapsToDevicePixels" Value="true"/>
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type Thumb}">
           <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="1" />
+                            BorderThickness="1"/>
           <ControlTemplate.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-              <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.BackgroundHighlighted}" />
-              <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Border.Highlighted}" />
+              <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.BackgroundHighlighted}"/>
+              <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Border.Highlighted}"/>
             </Trigger>
             <Trigger Property="IsDragging" Value="True">
-              <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.BackgroundSelected}" />
-              <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Border.Selected}" />
+              <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.BackgroundSelected}"/>
+              <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Border.Selected}"/>
             </Trigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
@@ -80,76 +80,76 @@
   <ControlTemplate x:Key="Crystal.Templates.ScrollBar.Horizontal.VisualStudio" TargetType="{x:Type ScrollBar}">
     <Grid>
       <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="18" />
-        <ColumnDefinition />
-        <ColumnDefinition Width="18" />
+        <ColumnDefinition Width="18"/>
+        <ColumnDefinition/>
+        <ColumnDefinition Width="18"/>
       </Grid.ColumnDefinitions>
       <RepeatButton Grid.Column="0"
                           Command="ScrollBar.LineLeftCommand"
                           Content="M 0 4 L 4 8 L 4 0 Z"
-                          Style="{StaticResource Crystal.Styles.RepeatButton.ScrollBarLine.VisualStudio}" />
+                          Style="{StaticResource Crystal.Styles.RepeatButton.ScrollBarLine.VisualStudio}"/>
       <Track Name="PART_Track" Grid.Column="1">
         <Track.DecreaseRepeatButton>
-          <RepeatButton Command="ScrollBar.PageLeftCommand" Style="{StaticResource Crystal.Styles.RepeatButton.ScrollBarPage.VisualStudio}" />
+          <RepeatButton Command="ScrollBar.PageLeftCommand" Style="{StaticResource Crystal.Styles.RepeatButton.ScrollBarPage.VisualStudio}"/>
         </Track.DecreaseRepeatButton>
         <Track.Thumb>
-          <crystal:CrystalThumb Style="{StaticResource Crystal.Styles.Thumb.ScrollBar.VisualStudio}" />
+          <crystal:CrystalThumb Style="{StaticResource Crystal.Styles.Thumb.ScrollBar.VisualStudio}"/>
         </Track.Thumb>
         <Track.IncreaseRepeatButton>
-          <RepeatButton Command="ScrollBar.PageRightCommand" Style="{StaticResource Crystal.Styles.RepeatButton.ScrollBarPage.VisualStudio}" />
+          <RepeatButton Command="ScrollBar.PageRightCommand" Style="{StaticResource Crystal.Styles.RepeatButton.ScrollBarPage.VisualStudio}"/>
         </Track.IncreaseRepeatButton>
       </Track>
       <RepeatButton Grid.Column="2"
                           Command="ScrollBar.LineRightCommand"
                           Content="M 0 0 L 0 8 L 4 4 Z"
-                          Style="{StaticResource Crystal.Styles.RepeatButton.ScrollBarLine.VisualStudio}" />
+                          Style="{StaticResource Crystal.Styles.RepeatButton.ScrollBarLine.VisualStudio}"/>
     </Grid>
   </ControlTemplate>
 
   <ControlTemplate x:Key="Crystal.Templates.ScrollBar.Vertical.VisualStudio" TargetType="{x:Type ScrollBar}">
     <Grid>
       <Grid.RowDefinitions>
-        <RowDefinition Height="18" />
-        <RowDefinition />
-        <RowDefinition Height="18" />
+        <RowDefinition Height="18"/>
+        <RowDefinition/>
+        <RowDefinition Height="18"/>
       </Grid.RowDefinitions>
       <RepeatButton Grid.Row="0"
                           Command="ScrollBar.LineUpCommand"
                           Content="M 0 4 L 8 4 L 4 0 Z"
-                          Style="{StaticResource Crystal.Styles.RepeatButton.ScrollBarLine.VisualStudio}" />
+                          Style="{StaticResource Crystal.Styles.RepeatButton.ScrollBarLine.VisualStudio}"/>
       <Track Name="PART_Track"
                    Grid.Row="1"
                    IsDirectionReversed="true">
         <Track.DecreaseRepeatButton>
-          <RepeatButton Command="ScrollBar.PageUpCommand" Style="{StaticResource Crystal.Styles.RepeatButton.ScrollBarPage.VisualStudio}" />
+          <RepeatButton Command="ScrollBar.PageUpCommand" Style="{StaticResource Crystal.Styles.RepeatButton.ScrollBarPage.VisualStudio}"/>
         </Track.DecreaseRepeatButton>
         <Track.Thumb>
-          <crystal:CrystalThumb Style="{StaticResource Crystal.Styles.Thumb.ScrollBar.VisualStudio}" />
+          <crystal:CrystalThumb Style="{StaticResource Crystal.Styles.Thumb.ScrollBar.VisualStudio}"/>
         </Track.Thumb>
         <Track.IncreaseRepeatButton>
-          <RepeatButton Command="ScrollBar.PageDownCommand" Style="{StaticResource Crystal.Styles.RepeatButton.ScrollBarPage.VisualStudio}" />
+          <RepeatButton Command="ScrollBar.PageDownCommand" Style="{StaticResource Crystal.Styles.RepeatButton.ScrollBarPage.VisualStudio}"/>
         </Track.IncreaseRepeatButton>
       </Track>
       <RepeatButton Grid.Row="2"
                           Command="ScrollBar.LineDownCommand"
                           Content="M 0 0 L 4 4 L 8 0 Z"
-                          Style="{StaticResource Crystal.Styles.RepeatButton.ScrollBarLine.VisualStudio}" />
+                          Style="{StaticResource Crystal.Styles.RepeatButton.ScrollBarLine.VisualStudio}"/>
     </Grid>
   </ControlTemplate>
 
   <Style x:Key="Crystal.Styles.ScrollBar.VisualStudio" TargetType="{x:Type ScrollBar}">
-    <Setter Property="OverridesDefaultStyle" Value="true" />
-    <Setter Property="SnapsToDevicePixels" Value="True" />
+    <Setter Property="OverridesDefaultStyle" Value="true"/>
+    <Setter Property="SnapsToDevicePixels" Value="True"/>
     <Style.Triggers>
       <Trigger Property="Orientation" Value="Vertical">
-        <Setter Property="Height" Value="Auto" />
-        <Setter Property="Template" Value="{StaticResource Crystal.Templates.ScrollBar.Vertical.VisualStudio}" />
-        <Setter Property="Width" Value="18" />
+        <Setter Property="Height" Value="Auto"/>
+        <Setter Property="Template" Value="{StaticResource Crystal.Templates.ScrollBar.Vertical.VisualStudio}"/>
+        <Setter Property="Width" Value="18"/>
       </Trigger>
       <Trigger Property="Orientation" Value="Horizontal">
-        <Setter Property="Height" Value="18" />
-        <Setter Property="Template" Value="{StaticResource Crystal.Templates.ScrollBar.Horizontal.VisualStudio}" />
-        <Setter Property="Width" Value="Auto" />
+        <Setter Property="Height" Value="18"/>
+        <Setter Property="Template" Value="{StaticResource Crystal.Templates.ScrollBar.Horizontal.VisualStudio}"/>
+        <Setter Property="Width" Value="Auto"/>
       </Trigger>
     </Style.Triggers>
   </Style>

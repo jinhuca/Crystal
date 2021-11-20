@@ -3,7 +3,7 @@
 namespace Crystal.Themes.Automation.Peers
 {
   /// <summary>
-  /// The CrystalHeaderAutomationPeer class exposes the <see cref="T:Crystal.Themes.Controls.CrystalHeader" /> type to UI Automation.
+  /// The CrystalHeaderAutomationPeer class exposes the <see cref="T:Crystal.Themes.Controls.CrystalHeader"/> type to UI Automation.
   /// </summary>
   public class CrystalHeaderAutomationPeer : GroupBoxAutomationPeer
   {

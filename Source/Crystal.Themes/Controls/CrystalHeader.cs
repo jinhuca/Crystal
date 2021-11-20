@@ -11,7 +11,7 @@ namespace Crystal.Themes.Controls
     }
 
     /// <summary>
-    /// Creates AutomationPeer (<see cref="M:System.Windows.UIElement.OnCreateAutomationPeer" />)
+    /// Creates AutomationPeer (<see cref="M:System.Windows.UIElement.OnCreateAutomationPeer"/>)
     /// </summary>
     protected override AutomationPeer OnCreateAutomationPeer()
     {

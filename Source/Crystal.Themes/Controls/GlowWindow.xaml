@@ -14,13 +14,13 @@
                              Storyboard.TargetName="glowWindow"
                              Storyboard.TargetProperty="(UIElement.Opacity)"
                              To="1"
-                             Duration="00:00:.3" />
+                             Duration="00:00:.3"/>
         </Storyboard>
     </Window.Resources>
 
     <Window.Template>
         <ControlTemplate TargetType="Window">
-            <ContentPresenter />
+            <ContentPresenter/>
         </ControlTemplate>
     </Window.Template>
 

@@ -7,7 +7,7 @@ namespace Crystal.Themes.Theming
   {
     public static readonly CrystalLibraryThemeProvider DefaultInstance = new CrystalLibraryThemeProvider();
 
-    /// <inheritdoc cref="LibraryThemeProvider" />
+    /// <inheritdoc cref="LibraryThemeProvider"/>
     public CrystalLibraryThemeProvider()
         : base(true)
     {

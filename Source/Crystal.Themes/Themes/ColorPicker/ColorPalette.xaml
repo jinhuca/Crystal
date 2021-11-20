@@ -5,7 +5,7 @@
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.ListBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.ListBox.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
     <system:Double x:Key="Crystal.Sizes.ColorListBox.ItemWidth">16</system:Double>
@@ -14,10 +14,10 @@
     <Style x:Key="Crystal.Styles.ListBoxItem.ColorPaletteItem"
            BasedOn="{StaticResource Crystal.Styles.ListBoxItem}"
            TargetType="{x:Type ListBoxItem}">
-        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Control.Border}" />
-        <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="MinHeight" Value="1" />
-        <Setter Property="Padding" Value="3" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Control.Border}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="MinHeight" Value="1"/>
+        <Setter Property="Padding" Value="3"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
@@ -26,7 +26,7 @@
                           RenderOptions.ClearTypeHint="{TemplateBinding RenderOptions.ClearTypeHint}">
                         <Border x:Name="Border"
                                 Background="{TemplateBinding Background}"
-                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                         <Border Margin="{TemplateBinding Padding}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
@@ -35,62 +35,62 @@
                                 <ContentPresenter x:Name="ContentPresenter"
                                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                             </Grid>
                         </Border>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.SelectedBackgroundBrush), Mode=OneWay}" />
-                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.SelectedForegroundBrush), Mode=OneWay}" />
+                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.SelectedBackgroundBrush), Mode=OneWay}"/>
+                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.SelectedForegroundBrush), Mode=OneWay}"/>
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsSelected" Value="True" />
-                                <Condition Property="Selector.IsSelectionActive" Value="True" />
+                                <Condition Property="IsSelected" Value="True"/>
+                                <Condition Property="Selector.IsSelectionActive" Value="True"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.ActiveSelectionBackgroundBrush), Mode=OneWay}" />
-                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.ActiveSelectionForegroundBrush), Mode=OneWay}" />
+                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.ActiveSelectionBackgroundBrush), Mode=OneWay}"/>
+                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.ActiveSelectionForegroundBrush), Mode=OneWay}"/>
                         </MultiTrigger>
 
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsMouseOver" Value="True" />
-                                <Condition Property="IsSelected" Value="True" />
+                                <Condition Property="IsMouseOver" Value="True"/>
+                                <Condition Property="IsSelected" Value="True"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.HoverSelectedBackgroundBrush), Mode=OneWay}" />
-                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.HoverSelectedForegroundBrush), Mode=OneWay}" />
+                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.HoverSelectedBackgroundBrush), Mode=OneWay}"/>
+                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.HoverSelectedForegroundBrush), Mode=OneWay}"/>
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsMouseOver" Value="True" />
-                                <Condition Property="IsSelected" Value="False" />
+                                <Condition Property="IsMouseOver" Value="True"/>
+                                <Condition Property="IsSelected" Value="False"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.HoverBackgroundBrush), Mode=OneWay}" />
-                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.HoverForegroundBrush), Mode=OneWay}" />
+                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.HoverBackgroundBrush), Mode=OneWay}"/>
+                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.HoverForegroundBrush), Mode=OneWay}"/>
                         </MultiTrigger>
 
                         <Trigger Property="crystal:ItemHelper.IsMouseLeftButtonPressed" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.MouseLeftButtonPressedBackgroundBrush), Mode=OneWay}" />
-                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.MouseLeftButtonPressedForegroundBrush), Mode=OneWay}" />
+                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.MouseLeftButtonPressedBackgroundBrush), Mode=OneWay}"/>
+                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.MouseLeftButtonPressedForegroundBrush), Mode=OneWay}"/>
                         </Trigger>
                         <Trigger Property="crystal:ItemHelper.IsMouseRightButtonPressed" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.MouseRightButtonPressedBackgroundBrush), Mode=OneWay}" />
-                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.MouseRightButtonPressedForegroundBrush), Mode=OneWay}" />
+                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.MouseRightButtonPressedBackgroundBrush), Mode=OneWay}"/>
+                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.MouseRightButtonPressedForegroundBrush), Mode=OneWay}"/>
                         </Trigger>
 
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.DisabledBackgroundBrush), Mode=OneWay}" />
-                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.DisabledForegroundBrush), Mode=OneWay}" />
-                            <Setter TargetName="RootGrid" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Background, Mode=OneWay}" />
+                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.DisabledBackgroundBrush), Mode=OneWay}"/>
+                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.DisabledForegroundBrush), Mode=OneWay}"/>
+                            <Setter TargetName="RootGrid" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Background, Mode=OneWay}"/>
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsEnabled" Value="False" />
-                                <Condition Property="IsSelected" Value="True" />
+                                <Condition Property="IsEnabled" Value="False"/>
+                                <Condition Property="IsSelected" Value="True"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.DisabledSelectedBackgroundBrush), Mode=OneWay}" />
-                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.DisabledSelectedForegroundBrush), Mode=OneWay}" />
+                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.DisabledSelectedBackgroundBrush), Mode=OneWay}"/>
+                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.DisabledSelectedForegroundBrush), Mode=OneWay}"/>
                         </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -107,32 +107,32 @@
                 Background="{DynamicResource Crystal.Brushes.Tile.Small}">
             <Border.ToolTip>
                 <MultiBinding Converter="{crystalConverters:ColorToNameConverter}">
-                    <Binding />
-                    <Binding Path="ColorNamesDictionary" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=crystal:ColorPalette}" />
-                    <Binding Path="ColorHelper" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=crystal:ColorPalette}" />
-                    <Binding Path="IsAlphaChannelVisible" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=crystal:ColorPalette}" />
+                    <Binding/>
+                    <Binding Path="ColorNamesDictionary" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=crystal:ColorPalette}"/>
+                    <Binding Path="ColorHelper" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=crystal:ColorPalette}"/>
+                    <Binding Path="IsAlphaChannelVisible" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=crystal:ColorPalette}"/>
                 </MultiBinding>
             </Border.ToolTip>
-            <Grid Background="{Binding Converter={x:Static crystalConverters:ColorToSolidColorBrushConverter.DefaultInstance}}" />
+            <Grid Background="{Binding Converter={x:Static crystalConverters:ColorToSolidColorBrushConverter.DefaultInstance}}"/>
         </Border>
     </DataTemplate>
 
     <Style x:Key="Crystal.Styles.ColorPalette" TargetType="{x:Type crystal:ColorPalette}">
-        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Accent}" />
-        <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="Focusable" Value="False" />
-        <Setter Property="Header" Value="Default Colors" />
-        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Setter Property="ItemContainerStyle" Value="{DynamicResource Crystal.Styles.ListBoxItem.ColorPaletteItem}" />
-        <Setter Property="ItemTemplate" Value="{DynamicResource Crystal.Templates.ColorPaletteItem}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Accent}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="Header" Value="Default Colors"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="ItemContainerStyle" Value="{DynamicResource Crystal.Styles.ListBoxItem.ColorPaletteItem}"/>
+        <Setter Property="ItemTemplate" Value="{DynamicResource Crystal.Templates.ColorPaletteItem}"/>
         <Setter Property="ItemsPanel">
             <Setter.Value>
                 <ItemsPanelTemplate>
-                    <WrapPanel IsItemsHost="True" />
+                    <WrapPanel IsItemsHost="True"/>
                 </ItemsPanelTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type crystal:ColorPalette}">
@@ -159,21 +159,21 @@
                                       HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
                                       SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                       VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
-                            <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                         </ScrollViewer>
                     </GroupBox>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="VerticalContentAlignment" Value="Stretch" />
-        <Setter Property="crystal:ControlsHelper.ContentCharacterCasing" Value="{DynamicResource Crystal.CharacterCasing.ColorPalette}" />
-        <Setter Property="crystal:HeaderedControlHelper.HeaderBackground" Value="{DynamicResource Crystal.Brushes.Accent}" />
-        <Setter Property="crystal:HeaderedControlHelper.HeaderFontSize" Value="{DynamicResource Crystal.Font.Size.Content}" />
-        <Setter Property="crystal:HeaderedControlHelper.HeaderForeground" Value="{DynamicResource Crystal.Brushes.IdealForeground}" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+        <Setter Property="crystal:ControlsHelper.ContentCharacterCasing" Value="{DynamicResource Crystal.CharacterCasing.ColorPalette}"/>
+        <Setter Property="crystal:HeaderedControlHelper.HeaderBackground" Value="{DynamicResource Crystal.Brushes.Accent}"/>
+        <Setter Property="crystal:HeaderedControlHelper.HeaderFontSize" Value="{DynamicResource Crystal.Font.Size.Content}"/>
+        <Setter Property="crystal:HeaderedControlHelper.HeaderForeground" Value="{DynamicResource Crystal.Brushes.IdealForeground}"/>
     </Style>
 
     <Style x:Key="Crystal.Styles.ColorPalette.ColorPickerDropDown"
            BasedOn="{StaticResource Crystal.Styles.ColorPalette}"
-           TargetType="{x:Type crystal:ColorPalette}" />
+           TargetType="{x:Type crystal:ColorPalette}"/>
 
 </ResourceDictionary>

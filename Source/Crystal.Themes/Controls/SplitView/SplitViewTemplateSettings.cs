@@ -6,7 +6,7 @@ namespace Crystal.Themes.Controls
 {
   /// <summary>
   ///     Provides calculated values that can be referenced as TemplatedParent sources when defining templates for a
-  ///     <see cref="SplitView" />.
+  ///     <see cref="SplitView"/>.
   ///     Not intended for general use.
   /// </summary>
   public sealed class SplitViewTemplateSettings : DependencyObject
@@ -19,7 +19,7 @@ namespace Crystal.Themes.Controls
                                           new PropertyMetadata(null));
 
         /// <summary>
-        ///     Gets the <see cref="SplitView.CompactPaneLength" /> value as a GridLength.
+        ///     Gets the <see cref="SplitView.CompactPaneLength"/> value as a GridLength.
         /// </summary>
         public GridLength CompactPaneGridLength
         {
@@ -35,7 +35,7 @@ namespace Crystal.Themes.Controls
                                           new PropertyMetadata(0d));
 
         /// <summary>
-        ///     Gets the negative of the <see cref="SplitView.OpenPaneLength" /> value.
+        ///     Gets the negative of the <see cref="SplitView.OpenPaneLength"/> value.
         /// </summary>
         public double NegativeOpenPaneLength
         {
@@ -51,8 +51,8 @@ namespace Crystal.Themes.Controls
                                           new PropertyMetadata(0d));
 
         /// <summary>
-        ///     Gets the negative of the value calculated by subtracting the <see cref="SplitView.CompactPaneLength" /> value from
-        ///     the <see cref="SplitView.OpenPaneLength" /> value.
+        ///     Gets the negative of the value calculated by subtracting the <see cref="SplitView.CompactPaneLength"/> value from
+        ///     the <see cref="SplitView.OpenPaneLength"/> value.
         /// </summary>
         public double NegativeOpenPaneLengthMinusCompactLength
         {
@@ -68,7 +68,7 @@ namespace Crystal.Themes.Controls
                                           new PropertyMetadata(null));
 
         /// <summary>
-        ///     Gets the <see cref="SplitView.OpenPaneLength" /> value as a GridLength.
+        ///     Gets the <see cref="SplitView.OpenPaneLength"/> value as a GridLength.
         /// </summary>
         public GridLength OpenPaneGridLength
         {
@@ -84,7 +84,7 @@ namespace Crystal.Themes.Controls
                                           new PropertyMetadata(0d));
 
         /// <summary>
-        ///     Gets the <see cref="SplitView.OpenPaneLength" /> value.
+        ///     Gets the <see cref="SplitView.OpenPaneLength"/> value.
         /// </summary>
         public double OpenPaneLength
         {
@@ -100,8 +100,8 @@ namespace Crystal.Themes.Controls
                                           new PropertyMetadata(0d));
 
         /// <summary>
-        ///     Gets a value calculated by subtracting the <see cref="SplitView.CompactPaneLength" /> value from the
-        ///     <see cref="SplitView.OpenPaneLength" /> value.
+        ///     Gets a value calculated by subtracting the <see cref="SplitView.CompactPaneLength"/> value from the
+        ///     <see cref="SplitView.OpenPaneLength"/> value.
         /// </summary>
         public double OpenPaneLengthMinusCompactLength
         {

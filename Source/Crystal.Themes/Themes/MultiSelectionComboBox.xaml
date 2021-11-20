@@ -5,30 +5,30 @@
                     xmlns:crystalConverters="clr-namespace:Crystal.Themes.Converters">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.TextBox.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.ComboBox.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.ListBox.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.Buttons.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.TextBox.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.ComboBox.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.ListBox.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.Buttons.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
-    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 
     <!--#region DataTemplates-->
 
     <DataTemplate x:Key="Crystal.DataTemplates.MultiSelectionComboBox.DisabledPopupOverlay">
         <Border>
             <Border.Background>
-                <SolidColorBrush Opacity="0.5" Color="{DynamicResource Crystal.Colors.ThemeForeground}" />
+                <SolidColorBrush Opacity="0.5" Color="{DynamicResource Crystal.Colors.ThemeForeground}"/>
             </Border.Background>
             <DockPanel LastChildFill="True">
                 <Button VerticalAlignment="Bottom"
                         Command="{x:Static crystal:MultiSelectionComboBox.ClearContentCommand}"
                         Content="{x:Static lang:MultiSelectionComboBox.ResetTextToSelectedItems}"
-                        DockPanel.Dock="Bottom" />
+                        DockPanel.Dock="Bottom"/>
                 <Path Margin="50"
                       Data="M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm0,18a8,8,0,0,1-8-8A7.92,7.92,0,0,1,5.69,7.1L16.9,18.31A7.92,7.92,0,0,1,12,20Zm6.31-3.1L7.1,5.69A7.92,7.92,0,0,1,12,4a8,8,0,0,1,8,8A7.92,7.92,0,0,1,18.31,16.9Z"
                       Fill="{DynamicResource Crystal.Brushes.Gray}"
-                      Stretch="Uniform" />
+                      Stretch="Uniform"/>
             </DockPanel>
         </Border>
     </DataTemplate>
@@ -39,7 +39,7 @@
 
     <Style x:Key="Crystal.Styles.MultiSelectionComboBoxItem"
            BasedOn="{StaticResource Crystal.Styles.ListBoxItem}"
-           TargetType="ListBoxItem" />
+           TargetType="ListBoxItem"/>
 
     <Style x:Key="Crystal.Styles.MultiSelectionComboBoxItem.CheckBox"
            BasedOn="{StaticResource Crystal.Styles.MultiSelectionComboBoxItem}"
@@ -52,58 +52,58 @@
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                         <CheckBox Margin="{TemplateBinding BorderThickness}" IsChecked="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=IsSelected, Mode=TwoWay}">
                             <ContentPresenter x:Name="ContentPresenter"
                                               Margin="{TemplateBinding Padding}"
                                               HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                         </CheckBox>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.SelectedBackgroundBrush), Mode=OneWay}" />
-                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.SelectedForegroundBrush), Mode=OneWay}" />
+                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.SelectedBackgroundBrush), Mode=OneWay}"/>
+                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.SelectedForegroundBrush), Mode=OneWay}"/>
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsSelected" Value="True" />
-                                <Condition Property="Selector.IsSelectionActive" Value="True" />
+                                <Condition Property="IsSelected" Value="True"/>
+                                <Condition Property="Selector.IsSelectionActive" Value="True"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.ActiveSelectionBackgroundBrush), Mode=OneWay}" />
-                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.ActiveSelectionForegroundBrush), Mode=OneWay}" />
+                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.ActiveSelectionBackgroundBrush), Mode=OneWay}"/>
+                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.ActiveSelectionForegroundBrush), Mode=OneWay}"/>
                         </MultiTrigger>
 
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsMouseOver" Value="True" />
-                                <Condition Property="IsSelected" Value="True" />
+                                <Condition Property="IsMouseOver" Value="True"/>
+                                <Condition Property="IsSelected" Value="True"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.HoverSelectedBackgroundBrush), Mode=OneWay}" />
-                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.HoverSelectedForegroundBrush), Mode=OneWay}" />
+                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.HoverSelectedBackgroundBrush), Mode=OneWay}"/>
+                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.HoverSelectedForegroundBrush), Mode=OneWay}"/>
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsMouseOver" Value="True" />
-                                <Condition Property="IsSelected" Value="False" />
+                                <Condition Property="IsMouseOver" Value="True"/>
+                                <Condition Property="IsSelected" Value="False"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.HoverBackgroundBrush), Mode=OneWay}" />
-                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.HoverForegroundBrush), Mode=OneWay}" />
+                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.HoverBackgroundBrush), Mode=OneWay}"/>
+                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.HoverForegroundBrush), Mode=OneWay}"/>
                         </MultiTrigger>
 
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.DisabledBackgroundBrush), Mode=OneWay}" />
-                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.DisabledForegroundBrush), Mode=OneWay}" />
-                            <Setter TargetName="RootGrid" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Background, Mode=OneWay}" />
+                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.DisabledBackgroundBrush), Mode=OneWay}"/>
+                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.DisabledForegroundBrush), Mode=OneWay}"/>
+                            <Setter TargetName="RootGrid" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Background, Mode=OneWay}"/>
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsEnabled" Value="False" />
-                                <Condition Property="IsSelected" Value="True" />
+                                <Condition Property="IsEnabled" Value="False"/>
+                                <Condition Property="IsSelected" Value="True"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.DisabledSelectedBackgroundBrush), Mode=OneWay}" />
-                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.DisabledSelectedForegroundBrush), Mode=OneWay}" />
+                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.DisabledSelectedBackgroundBrush), Mode=OneWay}"/>
+                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ItemHelper.DisabledSelectedForegroundBrush), Mode=OneWay}"/>
                         </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -112,12 +112,12 @@
     </Style>
 
     <Style x:Key="Crystal.Styles.MulitselectionComboBoxSelectedItem" TargetType="ListBoxItem">
-        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Gray8}" />
-        <Setter Property="HorizontalContentAlignment" Value="Left" />
-        <Setter Property="Margin" Value="0 0 2 0" />
-        <Setter Property="OverridesDefaultStyle" Value="true" />
-        <Setter Property="Padding" Value="5 2" />
-        <Setter Property="SnapsToDevicePixels" Value="true" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Gray8}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="Margin" Value="0 0 2 0"/>
+        <Setter Property="OverridesDefaultStyle" Value="true"/>
+        <Setter Property="Padding" Value="5 2"/>
+        <Setter Property="SnapsToDevicePixels" Value="true"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListBoxItem">
@@ -133,14 +133,14 @@
                             <ContentPresenter Margin="{TemplateBinding Padding}"
                                               HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                         </Border>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="crystal:ControlsHelper.CornerRadius" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=ActualHeight, Converter={crystalConverters:SizeToCornerRadiusConverter}}" />
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="crystal:ControlsHelper.CornerRadius" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=ActualHeight, Converter={crystalConverters:SizeToCornerRadiusConverter}}"/>
     </Style>
 
     <Style x:Key="Crystal.Styles.Button.MulitselectionComboBoxSelectedItem.RemoveItem"
@@ -151,23 +151,23 @@
                 <DataTemplate>
                     <Path Data="M10,1.6c-4.639,0-8.4,3.761-8.4,8.4c0,4.639,3.761,8.4,8.4,8.4s8.4-3.761,8.4-8.4C18.4,5.361,14.639,1.6,10,1.6z   M14.789,13.061l-1.729,1.729L10,11.729l-3.061,3.06l-1.729-1.729L8.272,10L5.211,6.939L6.94,5.211L10,8.271l3.061-3.061  l1.729,1.729L11.728,10L14.789,13.061z"
                           Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
-                          Stretch="Uniform" />
+                          Stretch="Uniform"/>
                 </DataTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="Height" Value="10" />
-        <Setter Property="IsHitTestVisible" Value="True" />
-        <Setter Property="Margin" Value="0 0 4 0" />
-        <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="Width" Value="10" />
-        <Setter Property="crystal:ControlsHelper.CornerRadius" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=ActualHeight, Converter={crystalConverters:SizeToCornerRadiusConverter}}" />
+        <Setter Property="Height" Value="10"/>
+        <Setter Property="IsHitTestVisible" Value="True"/>
+        <Setter Property="Margin" Value="0 0 4 0"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Width" Value="10"/>
+        <Setter Property="crystal:ControlsHelper.CornerRadius" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=ActualHeight, Converter={crystalConverters:SizeToCornerRadiusConverter}}"/>
 
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Accent2}" />
+                <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Accent2}"/>
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Highlight}" />
+                <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Highlight}"/>
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -186,17 +186,17 @@
                                 CornerRadius="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=(crystal:ControlsHelper.CornerRadius)}"
                                 IsHitTestVisible="{TemplateBinding IsHitTestVisible}"
                                 RenderOptions.ClearTypeHint="{TemplateBinding RenderOptions.ClearTypeHint}"
-                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                         <DockPanel Margin="{TemplateBinding Margin}" LastChildFill="True">
                             <Button x:Name="PART_RemoveButton"
                                     Command="crystal:MultiSelectionComboBox.RemoveItemCommand"
                                     CommandParameter="{Binding}"
                                     DockPanel.Dock="Right"
-                                    Style="{DynamicResource Crystal.Styles.Button.MulitselectionComboBoxSelectedItem.RemoveItem}" />
+                                    Style="{DynamicResource Crystal.Styles.Button.MulitselectionComboBoxSelectedItem.RemoveItem}"/>
                             <ContentPresenter Margin="{TemplateBinding Padding}"
                                               HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                         </DockPanel>
                     </Grid>
                 </ControlTemplate>
@@ -209,19 +209,19 @@
     <Style x:Key="Crystal.Styles.TextBox.MultiSelectionComboBox.Editable"
            BasedOn="{StaticResource Crystal.Styles.TextBox}"
            TargetType="{x:Type TextBox}">
-        <Setter Property="MinHeight" Value="0" />
+        <Setter Property="MinHeight" Value="0"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TextBox}">
                     <Grid Background="{TemplateBinding Background}">
                         <Grid x:Name="PART_InnerGrid">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition x:Name="TextColumn" Width="*" />
-                                <ColumnDefinition x:Name="ButtonColumn" Width="Auto" />
+                                <ColumnDefinition x:Name="TextColumn" Width="*"/>
+                                <ColumnDefinition x:Name="ButtonColumn" Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition x:Name="ButtonRow" Height="*" />
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition x:Name="ButtonRow" Height="*"/>
                             </Grid.RowDefinitions>
 
                             <ScrollViewer x:Name="PART_ContentHost"
@@ -233,7 +233,7 @@
                                           Background="{x:Null}"
                                           BorderThickness="0"
                                           IsTabStop="False"
-                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
 
                             <TextBlock x:Name="PART_Message"
                                        Grid.Row="1"
@@ -247,7 +247,7 @@
                                        Text="{TemplateBinding crystal:TextBoxHelper.Watermark}"
                                        TextAlignment="{TemplateBinding crystal:TextBoxHelper.WatermarkAlignment}"
                                        TextTrimming="{TemplateBinding crystal:TextBoxHelper.WatermarkTrimming}"
-                                       Visibility="Collapsed" />
+                                       Visibility="Collapsed"/>
 
                             <ContentControl x:Name="PART_FloatingMessageContainer"
                                             Grid.Row="0"
@@ -258,10 +258,10 @@
                                     <MultiBinding Converter="{crystalConverters:MathMultiplyConverter}">
                                         <Binding ElementName="PART_FloatingMessage"
                                                  Mode="OneWay"
-                                                 Path="ActualHeight" />
+                                                 Path="ActualHeight"/>
                                         <Binding ElementName="PART_FloatingMessageContainer"
                                                  Mode="OneWay"
-                                                 Path="Opacity" />
+                                                 Path="Opacity"/>
                                     </MultiBinding>
                                 </ContentControl.Height>
                                 <TextBlock x:Name="PART_FloatingMessage"
@@ -278,10 +278,10 @@
                                                 <MultiBinding Converter="{crystalConverters:MathSubtractConverter}">
                                                     <Binding ElementName="PART_FloatingMessage"
                                                              Mode="OneWay"
-                                                             Path="ActualHeight" />
+                                                             Path="ActualHeight"/>
                                                     <Binding ElementName="PART_FloatingMessageContainer"
                                                              Mode="OneWay"
-                                                             Path="ActualHeight" />
+                                                             Path="ActualHeight"/>
                                                 </MultiBinding>
                                             </TranslateTransform.Y>
                                         </TranslateTransform>
@@ -305,68 +305,68 @@
                                     Foreground="{TemplateBinding Foreground}"
                                     IsTabStop="False"
                                     Style="{DynamicResource Crystal.Styles.Button.Chromeless}"
-                                    Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:TextBoxHelper.ClearTextButton), Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                    Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:TextBoxHelper.ClearTextButton), Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                         </Grid>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Text}" Value="">
-                            <Setter TargetName="PART_Message" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_Message" Property="Visibility" Value="Visible"/>
                         </DataTrigger>
 
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding Path=IsVisible, RelativeSource={RelativeSource Self}}" Value="True" />
-                                <Condition Binding="{Binding Path=(crystal:TextBoxHelper.UseFloatingWatermark), RelativeSource={RelativeSource Self}}" Value="True" />
-                                <Condition Binding="{Binding Path=(crystal:TextBoxHelper.HasText), RelativeSource={RelativeSource Self}}" Value="True" />
-                                <Condition Binding="{Binding Path=(crystal:TextBoxHelper.Watermark), RelativeSource={RelativeSource Self}, Converter={x:Static crystalConverters:StringIsNullOrEmptyConverter.Default}}" Value="False" />
+                                <Condition Binding="{Binding Path=IsVisible, RelativeSource={RelativeSource Self}}" Value="True"/>
+                                <Condition Binding="{Binding Path=(crystal:TextBoxHelper.UseFloatingWatermark), RelativeSource={RelativeSource Self}}" Value="True"/>
+                                <Condition Binding="{Binding Path=(crystal:TextBoxHelper.HasText), RelativeSource={RelativeSource Self}}" Value="True"/>
+                                <Condition Binding="{Binding Path=(crystal:TextBoxHelper.Watermark), RelativeSource={RelativeSource Self}, Converter={x:Static crystalConverters:StringIsNullOrEmptyConverter.Default}}" Value="False"/>
                             </MultiDataTrigger.Conditions>
                             <MultiDataTrigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ShowFloatingMessage}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ShowFloatingMessage}"/>
                             </MultiDataTrigger.EnterActions>
                             <MultiDataTrigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.HideFloatingMessage}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.HideFloatingMessage}"/>
                             </MultiDataTrigger.ExitActions>
                         </MultiDataTrigger>
 
                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(crystal:TextBoxHelper.ClearTextButton)}" Value="False">
-                            <Setter TargetName="PART_ContentHost" Property="Grid.ColumnSpan" Value="2" />
-                            <Setter TargetName="PART_Message" Property="Grid.ColumnSpan" Value="2" />
+                            <Setter TargetName="PART_ContentHost" Property="Grid.ColumnSpan" Value="2"/>
+                            <Setter TargetName="PART_Message" Property="Grid.ColumnSpan" Value="2"/>
                         </DataTrigger>
                         <Trigger Property="IsReadOnly" Value="True">
-                            <Setter TargetName="PART_ClearText" Property="IsEnabled" Value="False" />
+                            <Setter TargetName="PART_ClearText" Property="IsEnabled" Value="False"/>
                         </Trigger>
                         <Trigger Property="IsFocused" Value="True">
-                            <Setter TargetName="PART_FloatingMessage" Property="Foreground" Value="{DynamicResource Crystal.Brushes.Accent}" />
-                            <Setter TargetName="PART_FloatingMessage" Property="Opacity" Value="1" />
+                            <Setter TargetName="PART_FloatingMessage" Property="Foreground" Value="{DynamicResource Crystal.Brushes.Accent}"/>
+                            <Setter TargetName="PART_FloatingMessage" Property="Opacity" Value="1"/>
                         </Trigger>
                         <Trigger SourceName="PART_ClearText" Property="IsMouseOver" Value="True">
-                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray8}" />
-                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource Crystal.Brushes.Accent}" />
+                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray8}"/>
+                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource Crystal.Brushes.Accent}"/>
                         </Trigger>
                         <Trigger SourceName="PART_ClearText" Property="IsPressed" Value="True">
-                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
-                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
+                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeForeground}"/>
+                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeBackground}"/>
                         </Trigger>
 
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="crystal:TextBoxHelper.HasText" Value="False" />
-                                <Condition Property="IsFocused" Value="True" />
+                                <Condition Property="crystal:TextBoxHelper.HasText" Value="False"/>
+                                <Condition Property="IsFocused" Value="True"/>
                             </MultiTrigger.Conditions>
                             <MultiTrigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.EnterGotFocus}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.EnterGotFocus}"/>
                             </MultiTrigger.EnterActions>
                             <MultiTrigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ExitGotFocus}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ExitGotFocus}"/>
                             </MultiTrigger.ExitActions>
                         </MultiTrigger>
 
                         <Trigger Property="crystal:TextBoxHelper.HasText" Value="True">
                             <Trigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.EnterHasText}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.EnterHasText}"/>
                             </Trigger.EnterActions>
                             <Trigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ExitHasText}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ExitHasText}"/>
                             </Trigger.ExitActions>
                         </Trigger>
 
@@ -379,17 +379,17 @@
     <Style x:Key="Crystal.Styles.ToggleButton.MultiSelectionComboBox.DropDown"
            BasedOn="{StaticResource Crystal.Styles.ToggleButton.ComboBoxDropDown}"
            TargetType="{x:Type ToggleButton}">
-        <Setter Property="ClickMode" Value="Press" />
-        <Setter Property="Focusable" Value="False" />
-        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="ClickMode" Value="Press"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="IsTabStop" Value="False"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ToggleButton}">
                     <Grid x:Name="ToggleButtonRootGrid" Background="{TemplateBinding Background}">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition x:Name="TextColumn" Width="*" />
-                            <ColumnDefinition x:Name="ButtonColumn" Width="Auto" />
-                            <ColumnDefinition x:Name="ToggleButtonColumn" Width="Auto" />
+                            <ColumnDefinition x:Name="TextColumn" Width="*"/>
+                            <ColumnDefinition x:Name="ButtonColumn" Width="Auto"/>
+                            <ColumnDefinition x:Name="ToggleButtonColumn" Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
                         <Button x:Name="PART_ClearText"
@@ -404,7 +404,7 @@
                                 Foreground="{TemplateBinding Foreground}"
                                 IsTabStop="False"
                                 Style="{DynamicResource Crystal.Styles.Button.Chromeless}"
-                                Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type crystal:MultiSelectionComboBox}}, Path=(crystal:TextBoxHelper.ClearTextButton), Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type crystal:MultiSelectionComboBox}}, Path=(crystal:TextBoxHelper.ClearTextButton), Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
                         <Grid x:Name="BtnArrowBackground"
                               Grid.Column="2"
@@ -418,25 +418,25 @@
                                   Fill="{DynamicResource Crystal.Brushes.Gray1}"
                                   IsHitTestVisible="false"
                                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                  Stretch="Uniform" />
+                                  Stretch="Uniform"/>
                         </Grid>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger SourceName="BtnArrowBackground" Property="IsMouseOver" Value="True">
-                            <Setter TargetName="BtnArrowBackground" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray5}" />
+                            <Setter TargetName="BtnArrowBackground" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray5}"/>
                         </Trigger>
                         <Trigger SourceName="PART_ClearText" Property="IsMouseOver" Value="True">
-                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray8}" />
-                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource Crystal.Brushes.Accent}" />
+                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray8}"/>
+                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource Crystal.Brushes.Accent}"/>
                         </Trigger>
                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsPressed}" Value="True">
-                            <Setter TargetName="BtnArrowBackground" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray3}" />
-                            <Setter TargetName="ToggleButtonRootGrid" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray7}" />
+                            <Setter TargetName="BtnArrowBackground" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray3}"/>
+                            <Setter TargetName="ToggleButtonRootGrid" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray7}"/>
                         </DataTrigger>
                         <Trigger SourceName="PART_ClearText" Property="IsPressed" Value="True">
-                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
-                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
-                            <Setter TargetName="ToggleButtonRootGrid" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray7}" />
+                            <Setter TargetName="PART_ClearText" Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeForeground}"/>
+                            <Setter TargetName="PART_ClearText" Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeBackground}"/>
+                            <Setter TargetName="ToggleButtonRootGrid" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray7}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -445,34 +445,34 @@
     </Style>
 
     <Style x:Key="Crystal.Styles.MultiSelectionComboBox" TargetType="{x:Type crystal:MultiSelectionComboBox}">
-        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Control.Background}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.TextBox.Border}" />
-        <Setter Property="BorderThickness" Value="{DynamicResource ComboBoxBorderThemeThickness}" />
-        <Setter Property="DisabledPopupOverlayContentTemplate" Value="{DynamicResource Crystal.DataTemplates.MultiSelectionComboBox.DisabledPopupOverlay}" />
-        <Setter Property="FontFamily" Value="{DynamicResource Crystal.Fonts.Family.Control}" />
-        <Setter Property="FontSize" Value="{DynamicResource Crystal.Font.Size.Content}" />
-        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Text}" />
-        <Setter Property="HorizontalContentAlignment" Value="Left" />
-        <Setter Property="HorizontalScrollBarVisibility" Value="Disabled" />
-        <Setter Property="IsDropDownOpen" Value="False" />
-        <Setter Property="IsTextSearchEnabled" Value="False" />
-        <Setter Property="ItemContainerStyle" Value="{DynamicResource Crystal.Styles.MultiSelectionComboBoxItem}" />
-        <Setter Property="MinHeight" Value="26" />
-        <Setter Property="Padding" Value="4" />
-        <Setter Property="RenderOptions.ClearTypeHint" Value="Enabled" />
-        <Setter Property="ScrollViewer.CanContentScroll" Value="False" />
-        <Setter Property="SelectItemsFromTextInputDelay" Value="-1" />
-        <Setter Property="SelectedItemContainerStyle" Value="{DynamicResource Crystal.Styles.MulitselectionComboBoxSelectedItem}" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Control.Background}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.TextBox.Border}"/>
+        <Setter Property="BorderThickness" Value="{DynamicResource ComboBoxBorderThemeThickness}"/>
+        <Setter Property="DisabledPopupOverlayContentTemplate" Value="{DynamicResource Crystal.DataTemplates.MultiSelectionComboBox.DisabledPopupOverlay}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource Crystal.Fonts.Family.Control}"/>
+        <Setter Property="FontSize" Value="{DynamicResource Crystal.Font.Size.Content}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Text}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="HorizontalScrollBarVisibility" Value="Disabled"/>
+        <Setter Property="IsDropDownOpen" Value="False"/>
+        <Setter Property="IsTextSearchEnabled" Value="False"/>
+        <Setter Property="ItemContainerStyle" Value="{DynamicResource Crystal.Styles.MultiSelectionComboBoxItem}"/>
+        <Setter Property="MinHeight" Value="26"/>
+        <Setter Property="Padding" Value="4"/>
+        <Setter Property="RenderOptions.ClearTypeHint" Value="Enabled"/>
+        <Setter Property="ScrollViewer.CanContentScroll" Value="False"/>
+        <Setter Property="SelectItemsFromTextInputDelay" Value="-1"/>
+        <Setter Property="SelectedItemContainerStyle" Value="{DynamicResource Crystal.Styles.MulitselectionComboBoxSelectedItem}"/>
         <Setter Property="SelectedItemsPanelTemplate">
             <Setter.Value>
                 <ItemsPanelTemplate>
-                    <WrapPanel VerticalAlignment="Center" Orientation="Horizontal" />
+                    <WrapPanel VerticalAlignment="Center" Orientation="Horizontal"/>
                 </ItemsPanelTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="SelectionMode" Value="Multiple" />
+        <Setter Property="SelectionMode" Value="Multiple"/>
         <!--  change SnapsToDevicePixels to true to view a better border and validation error  -->
-        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type crystal:MultiSelectionComboBox}">
@@ -482,17 +482,17 @@
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
-                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
 
                         <Grid Margin="{TemplateBinding BorderThickness}">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition x:Name="TextColumn" Width="*" />
-                                <ColumnDefinition x:Name="ButtonColumn" Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:TextBoxHelper.ButtonWidth), Mode=OneWay}" />
-                                <ColumnDefinition x:Name="ToggleButtonColumn" Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:TextBoxHelper.ButtonWidth), Mode=OneWay}" />
+                                <ColumnDefinition x:Name="TextColumn" Width="*"/>
+                                <ColumnDefinition x:Name="ButtonColumn" Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:TextBoxHelper.ButtonWidth), Mode=OneWay}"/>
+                                <ColumnDefinition x:Name="ToggleButtonColumn" Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:TextBoxHelper.ButtonWidth), Mode=OneWay}"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition x:Name="ButtonRow" Height="*" />
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition x:Name="ButtonRow" Height="*"/>
                             </Grid.RowDefinitions>
 
                             <ToggleButton x:Name="PART_DropDownToggle"
@@ -513,7 +513,7 @@
                                           IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
                                           KeyboardNavigation.IsTabStop="False"
                                           SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                          Style="{DynamicResource Crystal.Styles.ToggleButton.MultiSelectionComboBox.DropDown}" />
+                                          Style="{DynamicResource Crystal.Styles.ToggleButton.MultiSelectionComboBox.DropDown}"/>
 
                             <Grid x:Name="ContentSite"
                                   Grid.Row="1"
@@ -534,7 +534,7 @@
                                          ItemsSource="{TemplateBinding DisplaySelectedItems}"
                                          ScrollViewer.CanContentScroll="{TemplateBinding ScrollViewer.CanContentScroll}"
                                          ScrollViewer.HorizontalScrollBarVisibility="{TemplateBinding HorizontalScrollBarVisibility}"
-                                         ScrollViewer.VerticalScrollBarVisibility="{TemplateBinding VerticalScrollBarVisibility}" />
+                                         ScrollViewer.VerticalScrollBarVisibility="{TemplateBinding VerticalScrollBarVisibility}"/>
                             </Grid>
 
                             <TextBox x:Name="PART_EditableTextBox"
@@ -572,7 +572,7 @@
                                      Style="{DynamicResource Crystal.Styles.TextBox.MultiSelectionComboBox.Editable}"
                                      Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Text}"
                                      TextWrapping="{TemplateBinding TextWrapping}"
-                                     Visibility="Collapsed" />
+                                     Visibility="Collapsed"/>
 
                             <TextBlock x:Name="PART_Message"
                                        Grid.Row="1"
@@ -586,7 +586,7 @@
                                        Text="{TemplateBinding crystal:TextBoxHelper.Watermark}"
                                        TextAlignment="{TemplateBinding crystal:TextBoxHelper.WatermarkAlignment}"
                                        TextTrimming="{TemplateBinding crystal:TextBoxHelper.WatermarkTrimming}"
-                                       Visibility="Collapsed" />
+                                       Visibility="Collapsed"/>
 
                             <ContentControl x:Name="PART_FloatingMessageContainer"
                                             Grid.Row="0"
@@ -597,10 +597,10 @@
                                     <MultiBinding Converter="{crystalConverters:MathMultiplyConverter}">
                                         <Binding ElementName="PART_FloatingMessage"
                                                  Mode="OneWay"
-                                                 Path="ActualHeight" />
+                                                 Path="ActualHeight"/>
                                         <Binding ElementName="PART_FloatingMessageContainer"
                                                  Mode="OneWay"
-                                                 Path="Opacity" />
+                                                 Path="Opacity"/>
                                     </MultiBinding>
                                 </ContentControl.Height>
                                 <TextBlock x:Name="PART_FloatingMessage"
@@ -617,10 +617,10 @@
                                                 <MultiBinding Converter="{crystalConverters:MathSubtractConverter}">
                                                     <Binding ElementName="PART_FloatingMessage"
                                                              Mode="OneWay"
-                                                             Path="ActualHeight" />
+                                                             Path="ActualHeight"/>
                                                     <Binding ElementName="PART_FloatingMessageContainer"
                                                              Mode="OneWay"
-                                                             Path="ActualHeight" />
+                                                             Path="ActualHeight"/>
                                                 </MultiBinding>
                                             </TranslateTransform.Y>
                                         </TranslateTransform>
@@ -638,7 +638,7 @@
                                 IsHitTestVisible="False"
                                 Opacity="0.6"
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                Visibility="Collapsed" />
+                                Visibility="Collapsed"/>
 
                         <!--  AllowsTransparency="true" fixes the redraw problem under windows vista/7 with a selected non aero theme  -->
                         <Popup x:Name="PART_Popup"
@@ -658,9 +658,9 @@
                                         SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                                     <Grid>
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="*" />
-                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="Auto"/>
                                         </Grid.RowDefinitions>
 
                                         <ContentControl Grid.Row="0"
@@ -668,7 +668,7 @@
                                                         ContentStringFormat="{TemplateBinding DropDownHeaderContentStringFormat}"
                                                         ContentTemplate="{TemplateBinding DropDownHeaderContentTemplate}"
                                                         ContentTemplateSelector="{TemplateBinding DropDownHeaderContentTemplateSelector}"
-                                                        Visibility="{TemplateBinding IsDropDownHeaderVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                                        Visibility="{TemplateBinding IsDropDownHeaderVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
                                         <ListBox x:Name="PART_PopupListBox"
                                                  Grid.Row="1"
@@ -685,14 +685,14 @@
                                                  SelectedValue="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=SelectedValue, Mode=TwoWay}"
                                                  SelectedValuePath="{TemplateBinding SelectedValuePath}"
                                                  SelectionMode="{TemplateBinding SelectionMode}"
-                                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
 
                                         <ContentControl Grid.Row="2"
                                                         Content="{TemplateBinding DropDownFooterContent}"
                                                         ContentStringFormat="{TemplateBinding DropDownFooterContentStringFormat}"
                                                         ContentTemplate="{TemplateBinding DropDownFooterContentTemplate}"
                                                         ContentTemplateSelector="{TemplateBinding DropDownFooterContentTemplateSelector}"
-                                                        Visibility="{TemplateBinding IsDropDownFooterVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                                        Visibility="{TemplateBinding IsDropDownFooterVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
                                         <ContentControl x:Name="PART_PopupOverlay"
                                                         Grid.RowSpan="3"
@@ -700,15 +700,15 @@
                                                         VerticalAlignment="Stretch"
                                                         Content="{TemplateBinding DisabledPopupOverlayContent}"
                                                         ContentTemplate="{TemplateBinding DisabledPopupOverlayContentTemplate}"
-                                                        Visibility="Collapsed" />
+                                                        Visibility="Collapsed"/>
                                     </Grid>
                                 </Border>
                             </Grid>
                         </Popup>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="FocusStates">
-                                <VisualState x:Name="Focused" />
-                                <VisualState x:Name="Unfocused" />
+                                <VisualState x:Name="Focused"/>
+                                <VisualState x:Name="Unfocused"/>
                                 <VisualState x:Name="FocusedDropDown">
                                     <Storyboard>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PopupBorder"
@@ -728,128 +728,128 @@
                     <ControlTemplate.Triggers>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsEditable}" Value="True" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=ContextMenu, Converter={x:Static crystalConverters:IsNullConverter.Instance}}" Value="False" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsEditable}" Value="True"/>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=ContextMenu, Converter={x:Static crystalConverters:IsNullConverter.Instance}}" Value="False"/>
                             </MultiDataTrigger.Conditions>
-                            <Setter TargetName="PART_EditableTextBox" Property="ContextMenu" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ContextMenu}" />
+                            <Setter TargetName="PART_EditableTextBox" Property="ContextMenu" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ContextMenu}"/>
                         </MultiDataTrigger>
 
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsEditable}" Value="False" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=SelectedItem}" Value="{x:Null}" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsEditable}" Value="False"/>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=SelectedItem}" Value="{x:Null}"/>
                             </MultiDataTrigger.Conditions>
-                            <Setter TargetName="PART_Message" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_Message" Property="Visibility" Value="Visible"/>
                         </MultiDataTrigger>
 
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=SelectedItem, Mode=OneWay, Converter={x:Static crystalConverters:IsNullConverter.Instance}}" Value="True" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsKeyboardFocusWithin}" Value="True" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsEditable}" Value="False" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=SelectedItem, Mode=OneWay, Converter={x:Static crystalConverters:IsNullConverter.Instance}}" Value="True"/>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsKeyboardFocusWithin}" Value="True"/>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsEditable}" Value="False"/>
                             </MultiDataTrigger.Conditions>
                             <MultiDataTrigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.EnterGotFocus}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.EnterGotFocus}"/>
                             </MultiDataTrigger.EnterActions>
                             <MultiDataTrigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ExitGotFocus}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ExitGotFocus}"/>
                             </MultiDataTrigger.ExitActions>
                         </MultiDataTrigger>
 
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=SelectedItem, Mode=OneWay, Converter={x:Static crystalConverters:IsNullConverter.Instance}}" Value="False" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsEditable}" Value="False" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=SelectedItem, Mode=OneWay, Converter={x:Static crystalConverters:IsNullConverter.Instance}}" Value="False"/>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsEditable}" Value="False"/>
                             </MultiDataTrigger.Conditions>
                             <MultiDataTrigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.EnterHasText}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.EnterHasText}"/>
                             </MultiDataTrigger.EnterActions>
                             <MultiDataTrigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ExitHasText}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ExitHasText}"/>
                             </MultiDataTrigger.ExitActions>
                         </MultiDataTrigger>
 
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding Path=IsVisible, RelativeSource={RelativeSource Self}}" Value="True" />
-                                <Condition Binding="{Binding Path=(crystal:TextBoxHelper.UseFloatingWatermark), RelativeSource={RelativeSource Self}}" Value="True" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsEditable}" Value="False" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=SelectedItem, Mode=OneWay, Converter={x:Static crystalConverters:IsNullConverter.Instance}}" Value="False" />
-                                <Condition Binding="{Binding Path=(crystal:TextBoxHelper.Watermark), RelativeSource={RelativeSource Self}, Converter={x:Static crystalConverters:StringIsNullOrEmptyConverter.Default}}" Value="False" />
+                                <Condition Binding="{Binding Path=IsVisible, RelativeSource={RelativeSource Self}}" Value="True"/>
+                                <Condition Binding="{Binding Path=(crystal:TextBoxHelper.UseFloatingWatermark), RelativeSource={RelativeSource Self}}" Value="True"/>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsEditable}" Value="False"/>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=SelectedItem, Mode=OneWay, Converter={x:Static crystalConverters:IsNullConverter.Instance}}" Value="False"/>
+                                <Condition Binding="{Binding Path=(crystal:TextBoxHelper.Watermark), RelativeSource={RelativeSource Self}, Converter={x:Static crystalConverters:StringIsNullOrEmptyConverter.Default}}" Value="False"/>
                             </MultiDataTrigger.Conditions>
                             <MultiDataTrigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ShowFloatingMessage}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.ShowFloatingMessage}"/>
                             </MultiDataTrigger.EnterActions>
                             <MultiDataTrigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.HideFloatingMessage}" />
+                                <BeginStoryboard Storyboard="{StaticResource Crystal.Storyboard.HideFloatingMessage}"/>
                             </MultiDataTrigger.ExitActions>
                         </MultiDataTrigger>
 
                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(crystal:TextBoxHelper.ClearTextButton)}" Value="False">
-                            <Setter TargetName="ContentSite" Property="Grid.ColumnSpan" Value="2" />
-                            <Setter TargetName="PART_EditableTextBox" Property="Grid.ColumnSpan" Value="2" />
-                            <Setter TargetName="PART_Message" Property="Grid.ColumnSpan" Value="2" />
+                            <Setter TargetName="ContentSite" Property="Grid.ColumnSpan" Value="2"/>
+                            <Setter TargetName="PART_EditableTextBox" Property="Grid.ColumnSpan" Value="2"/>
+                            <Setter TargetName="PART_Message" Property="Grid.ColumnSpan" Value="2"/>
                         </DataTrigger>
                         <Trigger Property="IsEditable" Value="True">
-                            <Setter Property="IsTabStop" Value="false" />
-                            <Setter TargetName="ContentSite" Property="Visibility" Value="Collapsed" />
-                            <Setter TargetName="PART_DropDownToggle" Property="Background" Value="{x:Null}" />
-                            <Setter TargetName="PART_DropDownToggle" Property="Focusable" Value="False" />
-                            <Setter TargetName="PART_EditableTextBox" Property="Visibility" Value="Visible" />
+                            <Setter Property="IsTabStop" Value="false"/>
+                            <Setter TargetName="ContentSite" Property="Visibility" Value="Collapsed"/>
+                            <Setter TargetName="PART_DropDownToggle" Property="Background" Value="{x:Null}"/>
+                            <Setter TargetName="PART_DropDownToggle" Property="Focusable" Value="False"/>
+                            <Setter TargetName="PART_EditableTextBox" Property="Visibility" Value="Visible"/>
                         </Trigger>
 
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsEditable" Value="False" />
-                                <Condition Property="IsMouseOver" Value="True" />
+                                <Condition Property="IsEditable" Value="False"/>
+                                <Condition Property="IsMouseOver" Value="True"/>
                             </MultiTrigger.Conditions>
-                            <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Gray9}" />
+                            <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Gray9}"/>
                         </MultiTrigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.MouseOverBorderBrush)}" />
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.MouseOverBorderBrush)}"/>
                         </Trigger>
 
                         <Trigger SourceName="PART_EditableTextBox" Property="IsFocused" Value="True">
-                            <Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.FocusBorderBrush)}" />
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.FocusBorderBrush)}"/>
                         </Trigger>
                         <Trigger Property="IsFocused" Value="True">
-                            <Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.FocusBorderBrush)}" />
-                            <Setter TargetName="PART_FloatingMessage" Property="Foreground" Value="{DynamicResource Crystal.Brushes.Accent}" />
-                            <Setter TargetName="PART_FloatingMessage" Property="Opacity" Value="1" />
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.FocusBorderBrush)}"/>
+                            <Setter TargetName="PART_FloatingMessage" Property="Foreground" Value="{DynamicResource Crystal.Brushes.Accent}"/>
+                            <Setter TargetName="PART_FloatingMessage" Property="Opacity" Value="1"/>
                         </Trigger>
                         <Trigger Property="IsKeyboardFocusWithin" Value="True">
-                            <Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.FocusBorderBrush)}" />
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.FocusBorderBrush)}"/>
                         </Trigger>
 
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsGrouping" Value="true" />
-                                <Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="false" />
+                                <Condition Property="IsGrouping" Value="true"/>
+                                <Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="false"/>
                             </MultiTrigger.Conditions>
-                            <Setter Property="ScrollViewer.CanContentScroll" Value="false" />
+                            <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
                         </MultiTrigger>
 
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="DisabledVisualElement" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="DisabledVisualElement" Property="Visibility" Value="Visible"/>
                         </Trigger>
 
                         <Trigger Property="HasCustomText" Value="True">
-                            <Setter TargetName="PART_PopupListBox" Property="IsEnabled" Value="False" />
-                            <Setter TargetName="PART_PopupOverlay" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_PopupListBox" Property="IsEnabled" Value="False"/>
+                            <Setter TargetName="PART_PopupOverlay" Property="Visibility" Value="Visible"/>
                         </Trigger>
 
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource Crystal.Templates.ValidationError}" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
-        <Setter Property="crystal:ComboBoxHelper.InterceptMouseWheelSelection" Value="False" />
-        <Setter Property="crystal:ControlsHelper.FocusBorderBrush" Value="{DynamicResource Crystal.Brushes.ComboBox.Border.Focus}" />
-        <Setter Property="crystal:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource Crystal.Brushes.ComboBox.Border.MouseOver}" />
-        <Setter Property="crystal:TextBoxHelper.ButtonFontSize" Value="{DynamicResource Crystal.Font.Size.Button.ClearText}" />
-        <Setter Property="crystal:TextBoxHelper.ButtonWidth" Value="22" />
+        <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource Crystal.Templates.ValidationError}"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="crystal:ComboBoxHelper.InterceptMouseWheelSelection" Value="False"/>
+        <Setter Property="crystal:ControlsHelper.FocusBorderBrush" Value="{DynamicResource Crystal.Brushes.ComboBox.Border.Focus}"/>
+        <Setter Property="crystal:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource Crystal.Brushes.ComboBox.Border.MouseOver}"/>
+        <Setter Property="crystal:TextBoxHelper.ButtonFontSize" Value="{DynamicResource Crystal.Font.Size.Button.ClearText}"/>
+        <Setter Property="crystal:TextBoxHelper.ButtonWidth" Value="22"/>
         <Style.Triggers>
             <Trigger Property="VirtualizingStackPanel.IsVirtualizing" Value="True">
                 <Setter Property="ItemsPanel">
@@ -858,7 +858,7 @@
                             <VirtualizingStackPanel IsItemsHost="True"
                                                     IsVirtualizing="True"
                                                     IsVirtualizingWhenGrouping="True"
-                                                    VirtualizationMode="Recycling" />
+                                                    VirtualizationMode="Recycling"/>
                         </ItemsPanelTemplate>
                     </Setter.Value>
                 </Setter>
@@ -869,15 +869,15 @@
     <Style x:Key="Crystal.Styles.MultiSelectionComboBox.Horizontal"
            BasedOn="{StaticResource Crystal.Styles.MultiSelectionComboBox}"
            TargetType="crystal:MultiSelectionComboBox">
-        <Setter Property="HorizontalScrollBarVisibility" Value="Auto" />
+        <Setter Property="HorizontalScrollBarVisibility" Value="Auto"/>
         <Setter Property="SelectedItemsPanelTemplate">
             <Setter.Value>
                 <ItemsPanelTemplate>
-                    <StackPanel Orientation="Horizontal" />
+                    <StackPanel Orientation="Horizontal"/>
                 </ItemsPanelTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="crystal:ScrollViewerHelper.IsHorizontalScrollWheelEnabled" Value="True" />
+        <Setter Property="crystal:ScrollViewerHelper.IsHorizontalScrollWheelEnabled" Value="True"/>
     </Style>
 
 </ResourceDictionary>

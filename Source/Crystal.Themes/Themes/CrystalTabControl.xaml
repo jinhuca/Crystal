@@ -1,84 +1,83 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:crystal="clr-namespace:Crystal.Themes.Controls">
-
   <ResourceDictionary.MergedDictionaries>
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.TabControl.xaml" />
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.TabControl.xaml"/>
   </ResourceDictionary.MergedDictionaries>
 
   <!--  Keep the VisualTree in Memory when changing tabs  -->
   <ControlTemplate x:Key="Crystal.Templates.CrystalTabControl.KeepVisualTreeInMemory" TargetType="{x:Type crystal:CrystalTabControl}">
     <Grid>
       <Grid.ColumnDefinitions>
-        <ColumnDefinition x:Name="ColumnDefinition0" />
-        <ColumnDefinition x:Name="ColumnDefinition1" Width="0" />
+        <ColumnDefinition x:Name="ColumnDefinition0"/>
+        <ColumnDefinition x:Name="ColumnDefinition1" Width="0"/>
       </Grid.ColumnDefinitions>
       <Grid.RowDefinitions>
-        <RowDefinition x:Name="RowDefinition0" Height="Auto" />
-        <RowDefinition x:Name="RowDefinition1" Height="*" />
+        <RowDefinition x:Name="RowDefinition0" Height="Auto"/>
+        <RowDefinition x:Name="RowDefinition1" Height="*"/>
       </Grid.RowDefinitions>
       <Grid x:Name="HeaderPanelGrid"
-                  Grid.Row="0"
-                  Grid.Column="0"
-                  Margin="{TemplateBinding TabStripMargin}"
-                  Panel.ZIndex="1">
+            Grid.Row="0"
+            Grid.Column="0"
+            Margin="{TemplateBinding TabStripMargin}"
+            Panel.ZIndex="1">
         <crystal:Underline x:Name="Underline"
-                               Background="Transparent"
-                               BorderBrush="{TemplateBinding crystal:TabControlHelper.UnderlineBrush}"
-                               LineThickness="1"
-                               Placement="Bottom"
-                               SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                               Visibility="Collapsed" />
+                           Background="Transparent"
+                           BorderBrush="{TemplateBinding crystal:TabControlHelper.UnderlineBrush}"
+                           LineThickness="1"
+                           Placement="Bottom"
+                           SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                           Visibility="Collapsed"/>
         <TabPanel x:Name="HeaderPanel"
-                          IsItemsHost="true"
-                          KeyboardNavigation.TabIndex="1" />
+                  IsItemsHost="true"
+                  KeyboardNavigation.TabIndex="1"/>
       </Grid>
       <Border x:Name="ContentPanel"
-                    Grid.Row="1"
-                    Grid.Column="0"
-                    Background="{TemplateBinding Background}"
-                    BorderBrush="{TemplateBinding BorderBrush}"
-                    BorderThickness="{TemplateBinding BorderThickness}"
-                    KeyboardNavigation.DirectionalNavigation="Contained"
-                    KeyboardNavigation.TabIndex="2"
-                    KeyboardNavigation.TabNavigation="Local">
+              Grid.Row="1"
+              Grid.Column="0"
+              Background="{TemplateBinding Background}"
+              BorderBrush="{TemplateBinding BorderBrush}"
+              BorderThickness="{TemplateBinding BorderThickness}"
+              KeyboardNavigation.DirectionalNavigation="Contained"
+              KeyboardNavigation.TabIndex="2"
+              KeyboardNavigation.TabNavigation="Local">
         <Grid x:Name="PART_ItemsHolder"
-                      Margin="{TemplateBinding Padding}"
-                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+              Margin="{TemplateBinding Padding}"
+              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
       </Border>
     </Grid>
     <ControlTemplate.Triggers>
       <Trigger Property="crystal:TabControlHelper.Underlined" Value="TabPanel">
-        <Setter TargetName="Underline" Property="Visibility" Value="Visible" />
+        <Setter TargetName="Underline" Property="Visibility" Value="Visible"/>
       </Trigger>
       <Trigger Property="TabStripPlacement" Value="Bottom">
-        <Setter TargetName="ContentPanel" Property="Grid.Row" Value="0" />
-        <Setter TargetName="HeaderPanelGrid" Property="Grid.Row" Value="1" />
-        <Setter TargetName="RowDefinition0" Property="Height" Value="*" />
-        <Setter TargetName="RowDefinition1" Property="Height" Value="Auto" />
-        <Setter TargetName="Underline" Property="Placement" Value="Top" />
+        <Setter TargetName="ContentPanel" Property="Grid.Row" Value="0"/>
+        <Setter TargetName="HeaderPanelGrid" Property="Grid.Row" Value="1"/>
+        <Setter TargetName="RowDefinition0" Property="Height" Value="*"/>
+        <Setter TargetName="RowDefinition1" Property="Height" Value="Auto"/>
+        <Setter TargetName="Underline" Property="Placement" Value="Top"/>
       </Trigger>
       <Trigger Property="TabStripPlacement" Value="Left">
-        <Setter TargetName="ColumnDefinition0" Property="Width" Value="Auto" />
-        <Setter TargetName="ColumnDefinition1" Property="Width" Value="*" />
-        <Setter TargetName="ContentPanel" Property="Grid.Column" Value="1" />
-        <Setter TargetName="ContentPanel" Property="Grid.Row" Value="0" />
-        <Setter TargetName="HeaderPanelGrid" Property="Grid.Column" Value="0" />
-        <Setter TargetName="HeaderPanelGrid" Property="Grid.Row" Value="0" />
-        <Setter TargetName="RowDefinition0" Property="Height" Value="*" />
-        <Setter TargetName="RowDefinition1" Property="Height" Value="0" />
-        <Setter TargetName="Underline" Property="Placement" Value="Right" />
+        <Setter TargetName="ColumnDefinition0" Property="Width" Value="Auto"/>
+        <Setter TargetName="ColumnDefinition1" Property="Width" Value="*"/>
+        <Setter TargetName="ContentPanel" Property="Grid.Column" Value="1"/>
+        <Setter TargetName="ContentPanel" Property="Grid.Row" Value="0"/>
+        <Setter TargetName="HeaderPanelGrid" Property="Grid.Column" Value="0"/>
+        <Setter TargetName="HeaderPanelGrid" Property="Grid.Row" Value="0"/>
+        <Setter TargetName="RowDefinition0" Property="Height" Value="*"/>
+        <Setter TargetName="RowDefinition1" Property="Height" Value="0"/>
+        <Setter TargetName="Underline" Property="Placement" Value="Right"/>
       </Trigger>
       <Trigger Property="TabStripPlacement" Value="Right">
-        <Setter TargetName="ColumnDefinition0" Property="Width" Value="*" />
-        <Setter TargetName="ColumnDefinition1" Property="Width" Value="Auto" />
-        <Setter TargetName="ContentPanel" Property="Grid.Column" Value="0" />
-        <Setter TargetName="ContentPanel" Property="Grid.Row" Value="0" />
-        <Setter TargetName="HeaderPanelGrid" Property="Grid.Column" Value="1" />
-        <Setter TargetName="HeaderPanelGrid" Property="Grid.Row" Value="0" />
-        <Setter TargetName="RowDefinition0" Property="Height" Value="*" />
-        <Setter TargetName="RowDefinition1" Property="Height" Value="0" />
-        <Setter TargetName="Underline" Property="Placement" Value="Left" />
+        <Setter TargetName="ColumnDefinition0" Property="Width" Value="*"/>
+        <Setter TargetName="ColumnDefinition1" Property="Width" Value="Auto"/>
+        <Setter TargetName="ContentPanel" Property="Grid.Column" Value="0"/>
+        <Setter TargetName="ContentPanel" Property="Grid.Row" Value="0"/>
+        <Setter TargetName="HeaderPanelGrid" Property="Grid.Column" Value="1"/>
+        <Setter TargetName="HeaderPanelGrid" Property="Grid.Row" Value="0"/>
+        <Setter TargetName="RowDefinition0" Property="Height" Value="*"/>
+        <Setter TargetName="RowDefinition1" Property="Height" Value="0"/>
+        <Setter TargetName="Underline" Property="Placement" Value="Left"/>
       </Trigger>
     </ControlTemplate.Triggers>
   </ControlTemplate>
@@ -87,89 +86,86 @@
   <ControlTemplate x:Key="Crystal.Templates.CrystalTabControl.DoNotKeepVisualTreeInMemory" TargetType="{x:Type crystal:CrystalTabControl}">
     <Grid>
       <Grid.ColumnDefinitions>
-        <ColumnDefinition x:Name="ColumnDefinition0" />
-        <ColumnDefinition x:Name="ColumnDefinition1" Width="0" />
+        <ColumnDefinition x:Name="ColumnDefinition0"/>
+        <ColumnDefinition x:Name="ColumnDefinition1" Width="0"/>
       </Grid.ColumnDefinitions>
       <Grid.RowDefinitions>
-        <RowDefinition x:Name="RowDefinition0" Height="Auto" />
-        <RowDefinition x:Name="RowDefinition1" Height="*" />
+        <RowDefinition x:Name="RowDefinition0" Height="Auto"/>
+        <RowDefinition x:Name="RowDefinition1" Height="*"/>
       </Grid.RowDefinitions>
       <Grid x:Name="HeaderPanelGrid"
-                  Grid.Row="0"
-                  Grid.Column="0"
-                  Margin="{TemplateBinding TabStripMargin}"
-                  Panel.ZIndex="1">
+            Grid.Row="0"
+            Grid.Column="0"
+            Margin="{TemplateBinding TabStripMargin}"
+            Panel.ZIndex="1">
         <crystal:Underline x:Name="Underline"
-                               Background="Transparent"
-                               BorderBrush="{TemplateBinding crystal:TabControlHelper.UnderlineBrush}"
-                               LineThickness="1"
-                               Placement="Bottom"
-                               SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                               Visibility="Collapsed" />
+                           Background="Transparent"
+                           BorderBrush="{TemplateBinding crystal:TabControlHelper.UnderlineBrush}"
+                           LineThickness="1"
+                           Placement="Bottom"
+                           SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                           Visibility="Collapsed"/>
         <TabPanel x:Name="HeaderPanel"
-                          IsItemsHost="true"
-                          KeyboardNavigation.TabIndex="1" />
+                  IsItemsHost="true"
+                  KeyboardNavigation.TabIndex="1"/>
       </Grid>
       <Border x:Name="ContentPanel"
-                    Grid.Row="1"
-                    Grid.Column="0"
-                    Background="{TemplateBinding Background}"
-                    BorderBrush="{TemplateBinding BorderBrush}"
-                    BorderThickness="{TemplateBinding BorderThickness}"
-                    KeyboardNavigation.DirectionalNavigation="Contained"
-                    KeyboardNavigation.TabIndex="2"
-                    KeyboardNavigation.TabNavigation="Local">
+              Grid.Row="1"
+              Grid.Column="0"
+              Background="{TemplateBinding Background}"
+              BorderBrush="{TemplateBinding BorderBrush}"
+              BorderThickness="{TemplateBinding BorderThickness}"
+              KeyboardNavigation.DirectionalNavigation="Contained"
+              KeyboardNavigation.TabIndex="2"
+              KeyboardNavigation.TabNavigation="Local">
         <ContentPresenter x:Name="PART_SelectedContentHost"
-                                  Margin="{TemplateBinding Padding}"
-                                  ContentSource="SelectedContent"
-                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                          Margin="{TemplateBinding Padding}"
+                          ContentSource="SelectedContent"
+                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
       </Border>
     </Grid>
     <ControlTemplate.Triggers>
       <Trigger Property="crystal:TabControlHelper.Underlined" Value="TabPanel">
-        <Setter TargetName="Underline" Property="Visibility" Value="Visible" />
+        <Setter TargetName="Underline" Property="Visibility" Value="Visible"/>
       </Trigger>
       <Trigger Property="TabStripPlacement" Value="Bottom">
-        <Setter TargetName="ContentPanel" Property="Grid.Row" Value="0" />
-        <Setter TargetName="HeaderPanelGrid" Property="Grid.Row" Value="1" />
-        <Setter TargetName="RowDefinition0" Property="Height" Value="*" />
-        <Setter TargetName="RowDefinition1" Property="Height" Value="Auto" />
-        <Setter TargetName="Underline" Property="Placement" Value="Top" />
+        <Setter TargetName="ContentPanel" Property="Grid.Row" Value="0"/>
+        <Setter TargetName="HeaderPanelGrid" Property="Grid.Row" Value="1"/>
+        <Setter TargetName="RowDefinition0" Property="Height" Value="*"/>
+        <Setter TargetName="RowDefinition1" Property="Height" Value="Auto"/>
+        <Setter TargetName="Underline" Property="Placement" Value="Top"/>
       </Trigger>
       <Trigger Property="TabStripPlacement" Value="Left">
-        <Setter TargetName="ColumnDefinition0" Property="Width" Value="Auto" />
-        <Setter TargetName="ColumnDefinition1" Property="Width" Value="*" />
-        <Setter TargetName="ContentPanel" Property="Grid.Column" Value="1" />
-        <Setter TargetName="ContentPanel" Property="Grid.Row" Value="0" />
-        <Setter TargetName="HeaderPanelGrid" Property="Grid.Column" Value="0" />
-        <Setter TargetName="HeaderPanelGrid" Property="Grid.Row" Value="0" />
-        <Setter TargetName="RowDefinition0" Property="Height" Value="*" />
-        <Setter TargetName="RowDefinition1" Property="Height" Value="0" />
-        <Setter TargetName="Underline" Property="Placement" Value="Right" />
+        <Setter TargetName="ColumnDefinition0" Property="Width" Value="Auto"/>
+        <Setter TargetName="ColumnDefinition1" Property="Width" Value="*"/>
+        <Setter TargetName="ContentPanel" Property="Grid.Column" Value="1"/>
+        <Setter TargetName="ContentPanel" Property="Grid.Row" Value="0"/>
+        <Setter TargetName="HeaderPanelGrid" Property="Grid.Column" Value="0"/>
+        <Setter TargetName="HeaderPanelGrid" Property="Grid.Row" Value="0"/>
+        <Setter TargetName="RowDefinition0" Property="Height" Value="*"/>
+        <Setter TargetName="RowDefinition1" Property="Height" Value="0"/>
+        <Setter TargetName="Underline" Property="Placement" Value="Right"/>
       </Trigger>
       <Trigger Property="TabStripPlacement" Value="Right">
-        <Setter TargetName="ColumnDefinition0" Property="Width" Value="*" />
-        <Setter TargetName="ColumnDefinition1" Property="Width" Value="Auto" />
-        <Setter TargetName="ContentPanel" Property="Grid.Column" Value="0" />
-        <Setter TargetName="ContentPanel" Property="Grid.Row" Value="0" />
-        <Setter TargetName="HeaderPanelGrid" Property="Grid.Column" Value="1" />
-        <Setter TargetName="HeaderPanelGrid" Property="Grid.Row" Value="0" />
-        <Setter TargetName="RowDefinition0" Property="Height" Value="*" />
-        <Setter TargetName="RowDefinition1" Property="Height" Value="0" />
-        <Setter TargetName="Underline" Property="Placement" Value="Left" />
+        <Setter TargetName="ColumnDefinition0" Property="Width" Value="*"/>
+        <Setter TargetName="ColumnDefinition1" Property="Width" Value="Auto"/>
+        <Setter TargetName="ContentPanel" Property="Grid.Column" Value="0"/>
+        <Setter TargetName="ContentPanel" Property="Grid.Row" Value="0"/>
+        <Setter TargetName="HeaderPanelGrid" Property="Grid.Column" Value="1"/>
+        <Setter TargetName="HeaderPanelGrid" Property="Grid.Row" Value="0"/>
+        <Setter TargetName="RowDefinition0" Property="Height" Value="*"/>
+        <Setter TargetName="RowDefinition1" Property="Height" Value="0"/>
+        <Setter TargetName="Underline" Property="Placement" Value="Left"/>
       </Trigger>
     </ControlTemplate.Triggers>
   </ControlTemplate>
 
-  <Style x:Key="{x:Type crystal:CrystalTabControl}"
-           BasedOn="{StaticResource Crystal.Styles.TabControl}"
-           TargetType="{x:Type crystal:CrystalTabControl}">
-    <Setter Property="Template" Value="{StaticResource Crystal.Templates.CrystalTabControl.DoNotKeepVisualTreeInMemory}" />
+  <Style x:Key="{x:Type crystal:CrystalTabControl}" BasedOn="{StaticResource Crystal.Styles.TabControl}" TargetType="{x:Type crystal:CrystalTabControl}">
+    <Setter Property="Template" Value="{StaticResource Crystal.Templates.CrystalTabControl.DoNotKeepVisualTreeInMemory}"/>
     <Style.Triggers>
       <Trigger Property="KeepVisualTreeInMemoryWhenChangingTabs" Value="True">
-        <Setter Property="Template" Value="{StaticResource Crystal.Templates.CrystalTabControl.KeepVisualTreeInMemory}" />
+        <Setter Property="Template" Value="{StaticResource Crystal.Templates.CrystalTabControl.KeepVisualTreeInMemory}"/>
       </Trigger>
     </Style.Triggers>
   </Style>
-
 </ResourceDictionary>

@@ -11,7 +11,7 @@
                       Opacity="0.3"
                       ShadowDepth="2"
                       Color="{DynamicResource Crystal.Colors.MenuShadow}"
-                      po:Freeze="True" />
+                      po:Freeze="True"/>
 
     <DropShadowEffect x:Key="Crystal.DropShadowEffect.WaitingForData"
                       x:Shared="False"
@@ -19,7 +19,7 @@
                       Opacity="0"
                       ShadowDepth="0"
                       Color="{DynamicResource Crystal.Colors.ThemeForeground}"
-                      po:Freeze="True" />
+                      po:Freeze="True"/>
 
     <DropShadowEffect x:Key="DropShadowBrush"
                       x:Shared="False"
@@ -27,6 +27,6 @@
                       Direction="330"
                       Opacity="0.3"
                       ShadowDepth="0"
-                      po:Freeze="True" />
+                      po:Freeze="True"/>
 
 </ResourceDictionary>

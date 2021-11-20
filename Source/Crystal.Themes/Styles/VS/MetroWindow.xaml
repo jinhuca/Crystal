@@ -3,15 +3,15 @@
                     xmlns:crystal="clr-namespace:Crystal.Themes.Controls">
 
   <ResourceDictionary.MergedDictionaries>
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.Buttons.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.TextBox.xaml" />
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.Buttons.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.TextBox.xaml"/>
   </ResourceDictionary.MergedDictionaries>
 
   <Style x:Key="Crystal.Styles.CrystalWindow.VisualStudio" TargetType="{x:Type crystal:CrystalWindow}">
-    <Setter Property="GlowBrush" Value="{DynamicResource Crystal.Brushes.Window.Glow}" />
-    <Setter Property="NonActiveWindowTitleBrush" Value="{DynamicResource Crystal.Brushes.Accent}" />
-    <Setter Property="ShowTitleBar" Value="True" />
-    <Setter Property="TitleForeground" Value="{DynamicResource Crystal.Brushes.WindowTitle.Foreground}" />
+    <Setter Property="GlowBrush" Value="{DynamicResource Crystal.Brushes.Window.Glow}"/>
+    <Setter Property="NonActiveWindowTitleBrush" Value="{DynamicResource Crystal.Brushes.Accent}"/>
+    <Setter Property="ShowTitleBar" Value="True"/>
+    <Setter Property="TitleForeground" Value="{DynamicResource Crystal.Brushes.WindowTitle.Foreground}"/>
   </Style>
 
   <Style x:Key="Crystal.Styles.Button.Window.VisualStudio"
@@ -19,35 +19,35 @@
            TargetType="{x:Type Button}">
     <Style.Triggers>
       <Trigger Property="IsPressed" Value="True">
-        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.BackgroundSelected}" />
-        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.BackgroundSelected}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeForeground}"/>
       </Trigger>
     </Style.Triggers>
   </Style>
 
   <Style TargetType="{x:Type crystal:WindowButtonCommands}">
-    <Setter Property="DarkCloseButtonStyle" Value="{StaticResource Crystal.Styles.Button.Window.VisualStudio}" />
-    <Setter Property="DarkMaxButtonStyle" Value="{StaticResource Crystal.Styles.Button.Window.VisualStudio}" />
-    <Setter Property="DarkMinButtonStyle" Value="{StaticResource Crystal.Styles.Button.Window.VisualStudio}" />
-    <Setter Property="LightCloseButtonStyle" Value="{StaticResource Crystal.Styles.Button.Window.VisualStudio}" />
-    <Setter Property="LightMaxButtonStyle" Value="{StaticResource Crystal.Styles.Button.Window.VisualStudio}" />
-    <Setter Property="LightMinButtonStyle" Value="{StaticResource Crystal.Styles.Button.Window.VisualStudio}" />
+    <Setter Property="DarkCloseButtonStyle" Value="{StaticResource Crystal.Styles.Button.Window.VisualStudio}"/>
+    <Setter Property="DarkMaxButtonStyle" Value="{StaticResource Crystal.Styles.Button.Window.VisualStudio}"/>
+    <Setter Property="DarkMinButtonStyle" Value="{StaticResource Crystal.Styles.Button.Window.VisualStudio}"/>
+    <Setter Property="LightCloseButtonStyle" Value="{StaticResource Crystal.Styles.Button.Window.VisualStudio}"/>
+    <Setter Property="LightMaxButtonStyle" Value="{StaticResource Crystal.Styles.Button.Window.VisualStudio}"/>
+    <Setter Property="LightMinButtonStyle" Value="{StaticResource Crystal.Styles.Button.Window.VisualStudio}"/>
   </Style>
 
   <Style x:Key="Crystal.Styles.Button.Window.Notification.VisualStudio"
            BasedOn="{StaticResource Crystal.Styles.Button.Flat}"
            TargetType="{x:Type Button}">
-    <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.NotificationButton.Background}" />
-    <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.NotificationButton.Foreground}" />
-    <Setter Property="Margin" Value="0 0 12 0" />
-    <Setter Property="Padding" Value="9 5 9 5" />
+    <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.NotificationButton.Background}"/>
+    <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.NotificationButton.Foreground}"/>
+    <Setter Property="Margin" Value="0 0 12 0"/>
+    <Setter Property="Padding" Value="9 5 9 5"/>
     <Style.Triggers>
       <Trigger Property="IsMouseOver" Value="True">
-        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.NotificationButton.BackgroundOver}" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.NotificationButton.BackgroundOver}"/>
       </Trigger>
       <Trigger Property="IsPressed" Value="True">
-        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.NotificationButton.BackgroundPressed}" />
-        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.NotificationButton.Foreground}" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.NotificationButton.BackgroundPressed}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.NotificationButton.Foreground}"/>
       </Trigger>
     </Style.Triggers>
   </Style>
@@ -55,15 +55,15 @@
   <Style x:Key="Crystal.Styles.TextBox.Window.QuickLaunch.VisualStudio"
            BasedOn="{StaticResource Crystal.Styles.TextBox.Button}"
            TargetType="{x:Type TextBox}">
-    <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.QuickLaunchTextBox.Border}" />
-    <Setter Property="FontSize" Value="12" />
-    <Setter Property="MaxWidth" Value="300" />
-    <Setter Property="MinWidth" Value="200" />
-    <Setter Property="VerticalAlignment" Value="Center" />
-    <Setter Property="crystal:ControlsHelper.FocusBorderBrush" Value="{DynamicResource Crystal.Brushes.QuickLaunchTextBox.FocusedBorder}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.QuickLaunchTextBox.Border}"/>
+    <Setter Property="FontSize" Value="12"/>
+    <Setter Property="MaxWidth" Value="300"/>
+    <Setter Property="MinWidth" Value="200"/>
+    <Setter Property="VerticalAlignment" Value="Center"/>
+    <Setter Property="crystal:ControlsHelper.FocusBorderBrush" Value="{DynamicResource Crystal.Brushes.QuickLaunchTextBox.FocusedBorder}"/>
     <Style.Triggers>
       <Trigger Property="IsFocused" Value="True">
-        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.QuickLaunchTextBox.Border}" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.QuickLaunchTextBox.Border}"/>
       </Trigger>
     </Style.Triggers>
   </Style>

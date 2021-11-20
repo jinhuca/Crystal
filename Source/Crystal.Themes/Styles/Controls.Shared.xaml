@@ -6,39 +6,39 @@
 
     <ExponentialEase x:Key="Crystal.ExponentialEase.EaseInOut"
                      EasingMode="EaseInOut"
-                     Exponent="2" />
+                     Exponent="2"/>
 
     <Storyboard x:Key="Crystal.Storyboard.EnterGotFocus" po:Freeze="True">
         <DoubleAnimation Storyboard.TargetName="PART_Message"
                          Storyboard.TargetProperty="Opacity"
                          To=".2"
-                         Duration="0:0:0.2" />
+                         Duration="0:0:0.2"/>
     </Storyboard>
 
     <Storyboard x:Key="Crystal.Storyboard.ExitGotFocus" po:Freeze="True">
         <DoubleAnimation Storyboard.TargetName="PART_Message"
                          Storyboard.TargetProperty="Opacity"
-                         Duration="0:0:0.2" />
+                         Duration="0:0:0.2"/>
     </Storyboard>
 
     <Storyboard x:Key="Crystal.Storyboard.EnterGotFocus.DatePickerTextBox" po:Freeze="True">
         <DoubleAnimation Storyboard.TargetName="PART_Watermark"
                          Storyboard.TargetProperty="Opacity"
                          To=".2"
-                         Duration="0:0:0.2" />
+                         Duration="0:0:0.2"/>
         <DoubleAnimation Storyboard.TargetName="PART_Message"
                          Storyboard.TargetProperty="Opacity"
                          To=".2"
-                         Duration="0:0:0.2" />
+                         Duration="0:0:0.2"/>
     </Storyboard>
 
     <Storyboard x:Key="Crystal.Storyboard.ExitGotFocus.DatePickerTextBox" po:Freeze="True">
         <DoubleAnimation Storyboard.TargetName="PART_Watermark"
                          Storyboard.TargetProperty="Opacity"
-                         Duration="0:0:0.2" />
+                         Duration="0:0:0.2"/>
         <DoubleAnimation Storyboard.TargetName="PART_Message"
                          Storyboard.TargetProperty="Opacity"
-                         Duration="0:0:0.2" />
+                         Duration="0:0:0.2"/>
     </Storyboard>
 
     <Storyboard x:Key="Crystal.Storyboard.EnterHasText" po:Freeze="True">
@@ -46,13 +46,13 @@
                          Storyboard.TargetProperty="Opacity"
                          From=".2"
                          To="0"
-                         Duration="0:0:0.2" />
+                         Duration="0:0:0.2"/>
     </Storyboard>
 
     <Storyboard x:Key="Crystal.Storyboard.ExitHasText" po:Freeze="True">
         <DoubleAnimation Storyboard.TargetName="PART_Message"
                          Storyboard.TargetProperty="Opacity"
-                         Duration="0:0:0.2" />
+                         Duration="0:0:0.2"/>
     </Storyboard>
 
     <Storyboard x:Key="Crystal.Storyboard.EnterHasText.DatePickerTextBox" po:Freeze="True">
@@ -60,21 +60,21 @@
                          Storyboard.TargetProperty="Opacity"
                          From=".2"
                          To="0"
-                         Duration="0:0:0.2" />
+                         Duration="0:0:0.2"/>
         <DoubleAnimation Storyboard.TargetName="PART_Message"
                          Storyboard.TargetProperty="Opacity"
                          From=".2"
                          To="0"
-                         Duration="0:0:0.2" />
+                         Duration="0:0:0.2"/>
     </Storyboard>
 
     <Storyboard x:Key="Crystal.Storyboard.ExitHasText.DatePickerTextBox" po:Freeze="True">
         <DoubleAnimation Storyboard.TargetName="PART_Watermark"
                          Storyboard.TargetProperty="Opacity"
-                         Duration="0:0:0.2" />
+                         Duration="0:0:0.2"/>
         <DoubleAnimation Storyboard.TargetName="PART_Message"
                          Storyboard.TargetProperty="Opacity"
-                         Duration="0:0:0.2" />
+                         Duration="0:0:0.2"/>
     </Storyboard>
 
     <Storyboard x:Key="Crystal.Storyboard.WaitingForData" po:Freeze="True">
@@ -85,7 +85,7 @@
                          Storyboard.TargetProperty="(Effect).Opacity"
                          From="0"
                          To="1"
-                         Duration="00:00:02" />
+                         Duration="00:00:02"/>
     </Storyboard>
 
     <Storyboard x:Key="Crystal.Storyboard.HideFloatingMessage" po:Freeze="True">
@@ -94,22 +94,22 @@
                          Storyboard.TargetProperty="Opacity"
                          From="1"
                          To="0"
-                         Duration="0:0:.2" />
+                         Duration="0:0:.2"/>
         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PART_FloatingMessageContainer" Storyboard.TargetProperty="(UIElement.Visibility)">
-            <DiscreteObjectKeyFrame KeyTime="0:0:.2" Value="{x:Static Visibility.Collapsed}" />
+            <DiscreteObjectKeyFrame KeyTime="0:0:.2" Value="{x:Static Visibility.Collapsed}"/>
         </ObjectAnimationUsingKeyFrames>
     </Storyboard>
 
     <Storyboard x:Key="Crystal.Storyboard.ShowFloatingMessage" po:Freeze="True">
         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PART_FloatingMessageContainer" Storyboard.TargetProperty="(UIElement.Visibility)">
-            <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
+            <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
         </ObjectAnimationUsingKeyFrames>
         <DoubleAnimation EasingFunction="{StaticResource Crystal.ExponentialEase.EaseInOut}"
                          Storyboard.TargetName="PART_FloatingMessageContainer"
                          Storyboard.TargetProperty="Opacity"
                          From="0"
                          To="1"
-                         Duration="0:0:.2" />
+                         Duration="0:0:.2"/>
     </Storyboard>
 
 </ResourceDictionary>

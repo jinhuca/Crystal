@@ -3,7 +3,7 @@ using System.Windows.Automation.Peers;
 namespace Crystal.Themes.Automation.Peers
 {
   /// <summary>
-  /// The CrystalThumbContentControlAutomationPeer class exposes the <see cref="T:Crystal.Themes.Controls.CrystalThumbContentControl" /> type to UI Automation.
+  /// The CrystalThumbContentControlAutomationPeer class exposes the <see cref="T:Crystal.Themes.Controls.CrystalThumbContentControl"/> type to UI Automation.
   /// </summary>
   public class CrystalThumbContentControlAutomationPeer : FrameworkElementAutomationPeer
   {

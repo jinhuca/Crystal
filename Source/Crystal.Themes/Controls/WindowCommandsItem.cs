@@ -49,7 +49,7 @@ namespace Crystal.Themes.Controls
       DefaultStyleKeyProperty.OverrideMetadata(typeof(WindowCommandsItem), new FrameworkPropertyMetadata(typeof(WindowCommandsItem)));
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override void OnApplyTemplate()
     {
       base.OnApplyTemplate();

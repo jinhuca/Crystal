@@ -12,27 +12,27 @@
     <Style x:Key="Crystal.Styles.ColorEyeDropper"
            BasedOn="{StaticResource {x:Type Button}}"
            TargetType="{x:Type crystal:ColorEyeDropper}">
-        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Gray10}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Button.Border}" />
-        <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="EyeDropperCursor" Value="{StaticResource Crystal.Cursors.EyeDropper}" />
-        <Setter Property="FontFamily" Value="{DynamicResource Crystal.Fonts.Family.Button}" />
-        <Setter Property="FontSize" Value="{DynamicResource Crystal.Font.Size.Button}" />
-        <Setter Property="FontWeight" Value="Bold" />
-        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
-        <Setter Property="MinHeight" Value="25" />
-        <Setter Property="Padding" Value="5 6" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Gray10}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Button.Border}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="EyeDropperCursor" Value="{StaticResource Crystal.Cursors.EyeDropper}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource Crystal.Fonts.Family.Button}"/>
+        <Setter Property="FontSize" Value="{DynamicResource Crystal.Font.Size.Button}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeForeground}"/>
+        <Setter Property="MinHeight" Value="25"/>
+        <Setter Property="Padding" Value="5 6"/>
         <Setter Property="PreviewContentTemplate">
             <Setter.Value>
                 <DataTemplate DataType="{x:Type crystal:ColorEyePreviewData}">
                     <Grid MinWidth="110">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
                         <Border Grid.Row="0"
@@ -45,11 +45,11 @@
                                        Width="50"
                                        Height="50"
                                        RenderOptions.BitmapScalingMode="NearestNeighbor"
-                                       Source="{Binding PreviewImage}" />
+                                       Source="{Binding PreviewImage}"/>
 
                                 <Path Stroke="{Binding PreviewBrush, Converter={x:Static crystalConverters:BackgroundToForegroundConverter.Instance}}" StrokeThickness="1">
                                     <Path.Data>
-                                        <PathGeometry Figures=" m 0 25 20 0  m 5 5 0 20  m 5 -25 20 0  m -25 -25 0 20 m -5 0 H20 H30 V30 H20 z" po:Freeze="true" />
+                                        <PathGeometry Figures=" m 0 25 20 0  m 5 5 0 20  m 5 -25 20 0  m -25 -25 0 20 m -5 0 H20 H30 V30 H20 z" po:Freeze="true"/>
                                     </Path.Data>
                                 </Path>
 
@@ -64,17 +64,17 @@
                                  Margin="5"
                                  Fill="{Binding PreviewBrush}"
                                  Stroke="{DynamicResource Crystal.Brushes.Gray}"
-                                 StrokeThickness="1" />
+                                 StrokeThickness="1"/>
 
                         <TextBlock Grid.Row="1"
                                    Grid.Column="1"
                                    Margin="5"
-                                   Text="{Binding PreviewBrush}" />
+                                   Text="{Binding PreviewBrush}"/>
                     </Grid>
                 </DataTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ButtonBase}">
@@ -84,13 +84,13 @@
                                         BorderBrush="{TemplateBinding BorderBrush}"
                                         BorderThickness="{TemplateBinding BorderThickness}"
                                         CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
-                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                         <crystal:ClipBorder x:Name="DisabledVisualElement"
                                         Background="{DynamicResource Crystal.Brushes.Control.Disabled}"
                                         CornerRadius="{TemplateBinding crystal:ControlsHelper.CornerRadius}"
                                         IsHitTestVisible="False"
                                         Opacity="0"
-                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                         <crystal:ContentControlEx x:Name="PART_ContentPresenter"
                                               Margin="{TemplateBinding BorderThickness}"
                                               Padding="{TemplateBinding Padding}"
@@ -102,33 +102,33 @@
                                               ContentTemplate="{TemplateBinding ContentTemplate}"
                                               ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
                                               RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}"
-                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray8}" />
-                            <Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.MouseOverBorderBrush), Mode=OneWay}" />
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray8}"/>
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.MouseOverBorderBrush), Mode=OneWay}"/>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray7}" />
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource Crystal.Brushes.Gray7}"/>
                         </Trigger>
                         <Trigger Property="IsKeyboardFocusWithin" Value="True">
-                            <Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.FocusBorderBrush), Mode=OneWay}" />
-                            <Setter TargetName="Border" Property="BorderThickness" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.FocusBorderThickness), Mode=OneWay}" />
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.FocusBorderBrush), Mode=OneWay}"/>
+                            <Setter TargetName="Border" Property="BorderThickness" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ControlsHelper.FocusBorderThickness), Mode=OneWay}"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="DisabledVisualElement" Property="Opacity" Value="0.7" />
-                            <Setter TargetName="PART_ContentPresenter" Property="Opacity" Value="0.3" />
+                            <Setter TargetName="DisabledVisualElement" Property="Opacity" Value="0.7"/>
+                            <Setter TargetName="PART_ContentPresenter" Property="Opacity" Value="0.3"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="crystal:ControlsHelper.ContentCharacterCasing" Value="{DynamicResource Crystal.CharacterCasing.ColorEyeDropper}" />
-        <Setter Property="crystal:ControlsHelper.CornerRadius" Value="3" />
-        <Setter Property="crystal:ControlsHelper.FocusBorderBrush" Value="{DynamicResource Crystal.Brushes.Button.Border.Focus}" />
-        <Setter Property="crystal:ControlsHelper.FocusBorderThickness" Value="2" />
-        <Setter Property="crystal:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource Crystal.Brushes.Button.Border.MouseOver}" />
+        <Setter Property="crystal:ControlsHelper.ContentCharacterCasing" Value="{DynamicResource Crystal.CharacterCasing.ColorEyeDropper}"/>
+        <Setter Property="crystal:ControlsHelper.CornerRadius" Value="3"/>
+        <Setter Property="crystal:ControlsHelper.FocusBorderBrush" Value="{DynamicResource Crystal.Brushes.Button.Border.Focus}"/>
+        <Setter Property="crystal:ControlsHelper.FocusBorderThickness" Value="2"/>
+        <Setter Property="crystal:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource Crystal.Brushes.Button.Border.MouseOver}"/>
         <Style.Triggers>
             <Trigger Property="Content" Value="{x:Null}">
                 <Setter Property="ContentTemplate">
@@ -138,7 +138,7 @@
                                      Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}, Path=FontSize}"
                                      Stretch="Uniform">
                                 <Canvas Width="24" Height="24">
-                                    <Path Data="M19.35,11.72L17.22,13.85L15.81,12.43L8.1,20.14L3.5,22L2,20.5L3.86,15.9L11.57,8.19L10.15,6.78L12.28,4.65L19.35,11.72M16.76,3C17.93,1.83 19.83,1.83 21,3C22.17,4.17 22.17,6.07 21,7.24L19.08,9.16L14.84,4.92L16.76,3M5.56,17.03L4.5,19.5L6.97,18.44L14.4,11L13,9.6L5.56,17.03Z" Fill="{DynamicResource Crystal.Brushes.ThemeForeground}" />
+                                    <Path Data="M19.35,11.72L17.22,13.85L15.81,12.43L8.1,20.14L3.5,22L2,20.5L3.86,15.9L11.57,8.19L10.15,6.78L12.28,4.65L19.35,11.72M16.76,3C17.93,1.83 19.83,1.83 21,3C22.17,4.17 22.17,6.07 21,7.24L19.08,9.16L14.84,4.92L16.76,3M5.56,17.03L4.5,19.5L6.97,18.44L14.4,11L13,9.6L5.56,17.03Z" Fill="{DynamicResource Crystal.Brushes.ThemeForeground}"/>
                                 </Canvas>
                             </Viewbox>
                         </DataTemplate>
@@ -151,8 +151,8 @@
     <Style x:Key="Crystal.Styles.ColorEyeDropper.ColorCanvas"
            BasedOn="{StaticResource Crystal.Styles.ColorEyeDropper}"
            TargetType="{x:Type crystal:ColorEyeDropper}">
-        <Setter Property="crystal:ControlsHelper.CornerRadius" Value="0" />
-        <Setter Property="crystal:ControlsHelper.FocusBorderThickness" Value="1" />
+        <Setter Property="crystal:ControlsHelper.CornerRadius" Value="0"/>
+        <Setter Property="crystal:ControlsHelper.FocusBorderThickness" Value="1"/>
     </Style>
 
 </ResourceDictionary>

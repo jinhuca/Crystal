@@ -215,7 +215,7 @@ namespace Crystal.Themes.Theming
             return this;
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public override string ToString()
         {
             return $"DisplayName={DisplayName}, Name={Name}, IsHighContrast={IsHighContrast}, IsRuntimeGenerated={IsRuntimeGenerated}";

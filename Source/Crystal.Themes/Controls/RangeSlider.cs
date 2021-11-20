@@ -479,7 +479,7 @@ namespace Crystal.Themes.Controls
                                           new FrameworkPropertyMetadata(Orientation.Horizontal));
 
         /// <summary>
-        /// Gets or sets the orientation of the <see cref="T:Crystal.Themes.Controls.RangeSlider" />.
+        /// Gets or sets the orientation of the <see cref="T:Crystal.Themes.Controls.RangeSlider"/>.
         /// </summary>
         [Bindable(true)]
         [Category("Common")]
@@ -497,10 +497,10 @@ namespace Crystal.Themes.Controls
                                           new FrameworkPropertyMetadata(TickPlacement.None));
 
         /// <summary>
-        /// Gets or sets the position of tick marks with respect to the <see cref="T:System.Windows.Controls.Primitives.Track" /> of the <see cref="T:Crystal.Themes.Controls.RangeSlider" />.
+        /// Gets or sets the position of tick marks with respect to the <see cref="T:System.Windows.Controls.Primitives.Track"/> of the <see cref="T:Crystal.Themes.Controls.RangeSlider"/>.
         /// </summary>
         /// <returns>
-        /// A <see cref="P:Crystal.Themes.Controls.RangeSlider.TickPlacement" /> value that defines how to position the tick marks in a <see cref="T:Crystal.Themes.Controls.RangeSlider" /> with respect to the slider bar. The default is <see cref="F:System.Windows.Controls.Primitives.TickPlacement.None" />.
+        /// A <see cref="P:Crystal.Themes.Controls.RangeSlider.TickPlacement"/> value that defines how to position the tick marks in a <see cref="T:Crystal.Themes.Controls.RangeSlider"/> with respect to the slider bar. The default is <see cref="F:System.Windows.Controls.Primitives.TickPlacement.None"/>.
         /// </returns>
         [Bindable(true)]
         [Category("Appearance")]
@@ -539,9 +539,9 @@ namespace Crystal.Themes.Controls
                                           new FrameworkPropertyMetadata(default(DoubleCollection)));
 
         /// <summary>
-        /// Gets or sets the positions of the tick marks to display for a <see cref="T:Crystal.Themes.Controls.RangeSlider" />. </summary>
+        /// Gets or sets the positions of the tick marks to display for a <see cref="T:Crystal.Themes.Controls.RangeSlider"/>. </summary>
         /// <returns>
-        /// A set of tick marks to display for a <see cref="T:Crystal.Themes.Controls.RangeSlider" />. The default is <see langword="null" />.
+        /// A set of tick marks to display for a <see cref="T:Crystal.Themes.Controls.RangeSlider"/>. The default is <see langword="null"/>.
         /// </returns>
         [Bindable(true)]
         [Category("Appearance")]
@@ -560,7 +560,7 @@ namespace Crystal.Themes.Controls
 
         /// <summary>
         /// Get or sets IsMoveToPoint feature which will enable/disable moving to exact point inside control when user clicked on it
-        /// Gets or sets a value that indicates whether the two <see cref="P:System.Windows.Controls.Primitives.Track.Thumb" /> of a <see cref="T:Crystal.Themes.Controls.RangeSlider" /> moves immediately to the location of the mouse click that occurs while the mouse pointer pauses on the <see cref="T:Crystal.Themes.Controls.RangeSlider" /> tracks.
+        /// Gets or sets a value that indicates whether the two <see cref="P:System.Windows.Controls.Primitives.Track.Thumb"/> of a <see cref="T:Crystal.Themes.Controls.RangeSlider"/> moves immediately to the location of the mouse click that occurs while the mouse pointer pauses on the <see cref="T:Crystal.Themes.Controls.RangeSlider"/> tracks.
         /// </summary>
         [Bindable(true)]
         [Category("Behavior")]
@@ -578,10 +578,10 @@ namespace Crystal.Themes.Controls
                                           new FrameworkPropertyMetadata(AutoToolTipPlacement.None));
 
         /// <summary>
-        /// Gets or sets whether a tooltip that contains the current value of the <see cref="T:Crystal.Themes.Controls.RangeSlider" /> displays when the <see cref="P:System.Windows.Controls.Primitives.Track.Thumb" /> is pressed. If a tooltip is displayed, this property also specifies the placement of the tooltip.
+        /// Gets or sets whether a tooltip that contains the current value of the <see cref="T:Crystal.Themes.Controls.RangeSlider"/> displays when the <see cref="P:System.Windows.Controls.Primitives.Track.Thumb"/> is pressed. If a tooltip is displayed, this property also specifies the placement of the tooltip.
         /// </summary>
         /// <returns>
-        /// One of the <see cref="T:System.Windows.Controls.Primitives.AutoToolTipPlacement" /> values that determines where to display the tooltip with respect to the <see cref="P:System.Windows.Controls.Primitives.Track.Thumb" /> of the <see cref="T:Crystal.Themes.Controls.RangeSlider" />, or that specifies to not show a tooltip. The default is <see cref="F:System.Windows.Controls.Primitives.AutoToolTipPlacement.None" />, which specifies that a tooltip is not displayed.
+        /// One of the <see cref="T:System.Windows.Controls.Primitives.AutoToolTipPlacement"/> values that determines where to display the tooltip with respect to the <see cref="P:System.Windows.Controls.Primitives.Track.Thumb"/> of the <see cref="T:Crystal.Themes.Controls.RangeSlider"/>, or that specifies to not show a tooltip. The default is <see cref="F:System.Windows.Controls.Primitives.AutoToolTipPlacement.None"/>, which specifies that a tooltip is not displayed.
         /// </returns>
         [Bindable(true)]
         [Category("Behavior")]
@@ -599,10 +599,10 @@ namespace Crystal.Themes.Controls
                                           new FrameworkPropertyMetadata(0), IsValidPrecision);
 
         /// <summary>
-        /// Gets or sets the number of digits that are displayed to the right side of the decimal point for the <see cref="P:System.Windows.Controls.Primitives.RangeBase.Value" /> of the <see cref="T:Crystal.Themes.Controls.RangeSlider" /> in a tooltip.
+        /// Gets or sets the number of digits that are displayed to the right side of the decimal point for the <see cref="P:System.Windows.Controls.Primitives.RangeBase.Value"/> of the <see cref="T:Crystal.Themes.Controls.RangeSlider"/> in a tooltip.
         /// </summary>
         /// <returns>
-        /// The precision of the <see cref="P:System.Windows.Controls.Primitives.RangeBase.Value" /> that displays in the tooltip, specified as the number of digits that appear to the right of the decimal point. The default is zero (0).
+        /// The precision of the <see cref="P:System.Windows.Controls.Primitives.RangeBase.Value"/> that displays in the tooltip, specified as the number of digits that appear to the right of the decimal point. The default is zero (0).
         /// </returns>
         [Bindable(true)]
         [Category("Appearance")]
@@ -692,10 +692,10 @@ namespace Crystal.Themes.Controls
                                           new FrameworkPropertyMetadata(BooleanBoxes.FalseBox));
 
         /// <summary>
-        /// Gets or sets a value that indicates whether the <see cref="T:Crystal.Themes.Controls.RangeSlider" /> displays a selection range along the <see cref="T:Crystal.Themes.Controls.RangeSlider" />.
+        /// Gets or sets a value that indicates whether the <see cref="T:Crystal.Themes.Controls.RangeSlider"/> displays a selection range along the <see cref="T:Crystal.Themes.Controls.RangeSlider"/>.
         /// </summary>
         /// <returns>
-        /// <see langword="true" /> if a selection range is displayed; otherwise, <see langword="false" />. The default is <see langword="false" />.
+        /// <see langword="true"/> if a selection range is displayed; otherwise, <see langword="false"/>. The default is <see langword="false"/>.
         /// </returns>
         [Bindable(true)]
         [Category("Appearance")]
@@ -714,10 +714,10 @@ namespace Crystal.Themes.Controls
                                           IsValidDoubleValue);
 
         /// <summary>
-        /// Gets or sets the smallest value of a specified selection for a <see cref="T:Crystal.Themes.Controls.RangeSlider" />.
+        /// Gets or sets the smallest value of a specified selection for a <see cref="T:Crystal.Themes.Controls.RangeSlider"/>.
         /// </summary>
         /// <returns>
-        /// The largest value of a selected range of values of a <see cref="T:Crystal.Themes.Controls.RangeSlider" />. The default is zero (0.0).
+        /// The largest value of a selected range of values of a <see cref="T:Crystal.Themes.Controls.RangeSlider"/>. The default is zero (0.0).
         /// </returns>
         [Bindable(true)]
         [Category("Appearance")]
@@ -763,10 +763,10 @@ namespace Crystal.Themes.Controls
                                           IsValidDoubleValue);
 
         /// <summary>
-        /// Gets or sets the largest value of a specified selection for a <see cref="T:Crystal.Themes.Controls.RangeSlider" />.
+        /// Gets or sets the largest value of a specified selection for a <see cref="T:Crystal.Themes.Controls.RangeSlider"/>.
         /// </summary>
         /// <returns>
-        /// The largest value of a selected range of values of a <see cref="T:Crystal.Themes.Controls.RangeSlider" />. The default is zero (0.0).
+        /// The largest value of a selected range of values of a <see cref="T:Crystal.Themes.Controls.RangeSlider"/>. The default is zero (0.0).
         /// </returns>
         [Bindable(true)]
         [Category("Appearance")]

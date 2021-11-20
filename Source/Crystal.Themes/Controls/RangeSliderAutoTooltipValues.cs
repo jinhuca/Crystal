@@ -59,7 +59,7 @@ namespace Crystal.Themes.Controls
             UpperValue = rangeSlider.GetToolTipNumber(rangeSlider.UpperValue);
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public override string ToString()
         {
             return $"{LowerValue} - {UpperValue}";

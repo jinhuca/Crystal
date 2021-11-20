@@ -4,13 +4,13 @@
                     xmlns:crystalConverters="clr-namespace:Crystal.Themes.Converters">
 
     <Style x:Key="Crystal.Styles.RevealImage" TargetType="{x:Type crystal:RevealImage}">
-        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Control.Background}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.SystemControlForegroundChromeWhite}" />
-        <Setter Property="BorderThickness" Value="2" />
-        <Setter Property="FontFamily" Value="Segoe WP SemiLight" />
-        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.SystemControlForegroundChromeWhite}" />
-        <Setter Property="Padding" Value="5" />
-        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Control.Background}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.SystemControlForegroundChromeWhite}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="FontFamily" Value="Segoe WP SemiLight"/>
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.SystemControlForegroundChromeWhite}"/>
+        <Setter Property="Padding" Value="5"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type crystal:RevealImage}">
@@ -19,21 +19,21 @@
                             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Border" Storyboard.TargetProperty="(UIElement.Opacity)">
                                 <EasingDoubleKeyFrame KeyTime="0" Value="0">
                                     <EasingDoubleKeyFrame.EasingFunction>
-                                        <CircleEase EasingMode="EaseOut" />
+                                        <CircleEase EasingMode="EaseOut"/>
                                     </EasingDoubleKeyFrame.EasingFunction>
                                 </EasingDoubleKeyFrame>
-                                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="1" />
+                                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="1"/>
                             </DoubleAnimationUsingKeyFrames>
                             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="PART_Text" Storyboard.TargetProperty="(UIElement.Opacity)">
-                                <EasingDoubleKeyFrame KeyTime="0:0:0.0" Value="1" />
+                                <EasingDoubleKeyFrame KeyTime="0:0:0.0" Value="1"/>
                             </DoubleAnimationUsingKeyFrames>
                         </Storyboard>
                         <Storyboard x:Key="OnMouseLeave1">
                             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="PART_Text" Storyboard.TargetProperty="(UIElement.Opacity)">
-                                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0" />
+                                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0"/>
                             </DoubleAnimationUsingKeyFrames>
                             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Border" Storyboard.TargetProperty="(UIElement.Opacity)">
-                                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0" />
+                                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0"/>
                             </DoubleAnimationUsingKeyFrames>
                         </Storyboard>
                     </ControlTemplate.Resources>
@@ -43,7 +43,7 @@
                                HorizontalAlignment="Left"
                                VerticalAlignment="Top"
                                Source="{Binding Image, RelativeSource={RelativeSource TemplatedParent}, Converter={crystalConverters:NullToUnsetValueConverter}}"
-                               Stretch="Fill" />
+                               Stretch="Fill"/>
 
                         <Border x:Name="Border"
                                 BorderBrush="{TemplateBinding BorderBrush}"
@@ -54,8 +54,8 @@
                                        StrokeThickness="0">
                                 <Rectangle.Fill>
                                     <RadialGradientBrush Center="0.25,0.25" GradientOrigin="0.25,0.25" Opacity="0.615">
-                                        <GradientStop Offset="1" Color="Black" />
-                                        <GradientStop Color="#FF8D8D8D" />
+                                        <GradientStop Offset="1" Color="Black"/>
+                                        <GradientStop Color="#FF8D8D8D"/>
                                     </RadialGradientBrush>
                                 </Rectangle.Fill>
                             </Rectangle>
@@ -67,15 +67,15 @@
                                    FontFamily="{TemplateBinding FontFamily}"
                                    Foreground="{TemplateBinding Foreground}"
                                    Opacity="0"
-                                   TextWrapping="Wrap" />
+                                   TextWrapping="Wrap"/>
                     </Grid>
 
                     <ControlTemplate.Triggers>
                         <EventTrigger RoutedEvent="Mouse.MouseEnter" SourceName="Root">
-                            <BeginStoryboard Storyboard="{StaticResource OnMouseEnter1}" />
+                            <BeginStoryboard Storyboard="{StaticResource OnMouseEnter1}"/>
                         </EventTrigger>
                         <EventTrigger RoutedEvent="Mouse.MouseLeave" SourceName="Root">
-                            <BeginStoryboard x:Name="OnMouseLeave1_BeginStoryboard" Storyboard="{StaticResource OnMouseLeave1}" />
+                            <BeginStoryboard x:Name="OnMouseLeave1_BeginStoryboard" Storyboard="{StaticResource OnMouseLeave1}"/>
                         </EventTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

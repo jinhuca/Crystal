@@ -45,7 +45,7 @@ namespace Crystal.Themes.Controls
             DefaultStyleKeyProperty.OverrideMetadata(typeof(FlipViewItem), new FrameworkPropertyMetadata(typeof(FlipViewItem)));
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();

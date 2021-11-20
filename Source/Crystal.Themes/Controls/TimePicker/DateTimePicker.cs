@@ -37,7 +37,7 @@ namespace Crystal.Themes.Controls
     ///     Gets or sets the date to display
     /// </summary>
     /// <returns>
-    ///     The date to display. The default is <see cref="DateTime.Today" />.
+    ///     The date to display. The default is <see cref="DateTime.Today"/>.
     /// </returns>
     public DateTime DisplayDate
     {
@@ -65,8 +65,8 @@ namespace Crystal.Themes.Controls
     ///     Gets or sets the day that is considered the beginning of the week.
     /// </summary>
     /// <returns>
-    ///     A <see cref="DayOfWeek" /> that represents the beginning of the week. The default is the
-    ///     <see cref="System.Globalization.DateTimeFormatInfo.FirstDayOfWeek" /> that is determined by the current culture.
+    ///     A <see cref="DayOfWeek"/> that represents the beginning of the week. The default is the
+    ///     <see cref="System.Globalization.DateTimeFormatInfo.FirstDayOfWeek"/> that is determined by the current culture.
     /// </returns>
     public DayOfWeek FirstDayOfWeek
     {
@@ -131,8 +131,8 @@ namespace Crystal.Themes.Controls
     ///     Gets or sets a value that indicates the dimension by which calendar and clock are stacked.
     /// </summary>
     /// <returns>
-    ///     The <see cref="System.Windows.Controls.Orientation" /> of the calendar and clock. The default is
-    ///     <see cref="System.Windows.Controls.Orientation.Horizontal" />.
+    ///     The <see cref="System.Windows.Controls.Orientation"/> of the calendar and clock. The default is
+    ///     <see cref="System.Windows.Controls.Orientation.Horizontal"/>.
     /// </returns>
     [Category("Layout")]
     public Orientation Orientation
@@ -174,7 +174,7 @@ namespace Crystal.Themes.Controls
       SetCurrentValue(DisplayDateProperty, DateTime.Today);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     protected override void FocusElementAfterIsDropDownOpenChanged()
     {
       if (calendar is null)
@@ -222,7 +222,7 @@ namespace Crystal.Themes.Controls
       RenderOptions.SetClearTypeHint(calendar, ClearTypeHint.Enabled);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override void OnApplyTemplate()
     {
       if (popupCalendarPresenter is not null)
@@ -276,7 +276,7 @@ namespace Crystal.Themes.Controls
       }
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     protected override void OnPopUpOpened()
     {
       if (calendar != null)
@@ -286,7 +286,7 @@ namespace Crystal.Themes.Controls
       }
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     protected override void OnPopUpClosed()
     {
       if (calendar?.IsKeyboardFocusWithin == true)
@@ -295,7 +295,7 @@ namespace Crystal.Themes.Controls
       }
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     protected override void ApplyCulture()
     {
       base.ApplyCulture();
@@ -303,7 +303,7 @@ namespace Crystal.Themes.Controls
       SetCurrentValue(FirstDayOfWeekProperty, SpecificCultureInfo.DateTimeFormat.FirstDayOfWeek);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     protected override string? GetValueForTextBox()
     {
       var formatInfo = SpecificCultureInfo.DateTimeFormat;
@@ -317,7 +317,7 @@ namespace Crystal.Themes.Controls
       return valueForTextBox;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     protected override void SetSelectedDateTime()
     {
       if (textBox is null)
@@ -370,7 +370,7 @@ namespace Crystal.Themes.Controls
       }
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     protected override void OnSelectedDateTimeChanged(DateTime? oldValue, DateTime? newValue)
     {
       calendar?.SetCurrentValue(Calendar.SelectedDateProperty, newValue);

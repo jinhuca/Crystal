@@ -119,7 +119,7 @@ namespace Crystal.Themes.Controls
         /// </summary>
         /// <returns>
         ///     A collection that is used to generate the content for selecting the hours. The default is a list of integer from 0
-        ///     to 23 if <see cref="IsMilitaryTime" /> is false or a list of integer from
+        ///     to 23 if <see cref="IsMilitaryTime"/> is false or a list of integer from
         ///     1 to 12 otherwise.
         /// </returns>
         [Category("Common")]
@@ -279,8 +279,8 @@ namespace Crystal.Themes.Controls
         ///     dependency property.
         /// </summary>
         /// <remarks>
-        ///     If this value is set to false then <see cref="Orientation" /> is set to
-        ///     <see cref="System.Windows.Controls.Orientation.Vertical" />
+        ///     If this value is set to false then <see cref="Orientation"/> is set to
+        ///     <see cref="System.Windows.Controls.Orientation.Vertical"/>
         /// </remarks>
         /// <returns>
         ///     true if the clock is visible; otherwise, false. The default value is true.
@@ -300,10 +300,10 @@ namespace Crystal.Themes.Controls
                                           new PropertyMetadata(BooleanBoxes.FalseBox));
 
         /// <summary>
-        ///     Gets or sets a value indicating whether the contents of the <see cref="TimePickerBase" /> are not editable.
+        ///     Gets or sets a value indicating whether the contents of the <see cref="TimePickerBase"/> are not editable.
         /// </summary>
         /// <returns>
-        ///     true if the <see cref="TimePickerBase" /> is read-only; otherwise, false. The default is false.
+        ///     true if the <see cref="TimePickerBase"/> is read-only; otherwise, false. The default is false.
         /// </returns>
         public bool IsReadOnly
         {
@@ -327,7 +327,7 @@ namespace Crystal.Themes.Controls
         ///     Gets or sets a value indicating the visibility of the clock hands in the user interface (UI).
         /// </summary>
         /// <returns>
-        ///     The visibility definition of the clock hands. The default is <see cref="TimePartVisibility.All" />.
+        ///     The visibility definition of the clock hands. The default is <see cref="TimePartVisibility.All"/>.
         /// </returns>
         [Category("Appearance")]
         [DefaultValue(TimePartVisibility.All)]
@@ -380,7 +380,7 @@ namespace Crystal.Themes.Controls
         ///     Gets or sets a value indicating the visibility of the selectable date-time-parts in the user interface (UI).
         /// </summary>
         /// <returns>
-        ///     visibility definition of the selectable date-time-parts. The default is <see cref="TimePartVisibility.All" />.
+        ///     visibility definition of the selectable date-time-parts. The default is <see cref="TimePartVisibility.All"/>.
         /// </returns>
         [Category("Appearance")]
         [DefaultValue(TimePartVisibility.All)]
@@ -397,7 +397,7 @@ namespace Crystal.Themes.Controls
                                                typeof(TimePickerBase));
 
         /// <summary>
-        ///     Occurs when the <see cref="SelectedDateTime" /> property is changed.
+        ///     Occurs when the <see cref="SelectedDateTime"/> property is changed.
         /// </summary>
         public event RoutedPropertyChangedEventHandler<DateTime?> SelectedDateTimeChanged
         {
@@ -565,9 +565,9 @@ namespace Crystal.Themes.Controls
         }
 
         /// <summary>
-        ///     Gets a value indicating whether the <see cref="DateTimeFormatInfo.AMDesignator" /> that is specified by the
-        ///     <see cref="CultureInfo" />
-        ///     set by the <see cref="Culture" /> (<see cref="FrameworkElement.Language" /> if null) has not a value.
+        ///     Gets a value indicating whether the <see cref="DateTimeFormatInfo.AMDesignator"/> that is specified by the
+        ///     <see cref="CultureInfo"/>
+        ///     set by the <see cref="Culture"/> (<see cref="FrameworkElement.Language"/> if null) has not a value.
         /// </summary>
         public bool IsMilitaryTime
         {
@@ -582,7 +582,7 @@ namespace Crystal.Themes.Controls
 
         /// <summary>
         ///     When overridden in a derived class, is invoked whenever application code or internal processes call
-        ///     <see cref="M:System.Windows.FrameworkElement.ApplyTemplate" />.
+        ///     <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/>.
         /// </summary>
         public override void OnApplyTemplate()
         {
@@ -940,19 +940,19 @@ namespace Crystal.Themes.Controls
         }
 
         /// <summary>
-        ///     Gets the offset from the selected <paramref name="currentHour" /> to use it in <see cref="TimeSpan" /> as hour
+        ///     Gets the offset from the selected <paramref name="currentHour"/> to use it in <see cref="TimeSpan"/> as hour
         ///     parameter.
         /// </summary>
         /// <param name="currentHour">The current hour.</param>
         /// <returns>
         ///     An integer representing the offset to add to the hour that is selected in the hour-picker for setting the correct
-        ///     <see cref="DateTime.TimeOfDay" />. The offset is determined as follows:
+        ///     <see cref="DateTime.TimeOfDay"/>. The offset is determined as follows:
         ///     <list type="table">
         ///         <listheader>
         ///             <term>Condition</term><description>Offset</description>
         ///         </listheader>
         ///         <item>
-        ///             <term><see cref="IsMilitaryTime" /> is false</term><description>0</description>
+        ///             <term><see cref="IsMilitaryTime"/> is false</term><description>0</description>
         ///         </item>
         ///         <item>
         ///             <term>Selected hour is between 1 AM and 11 AM</term><description>0</description>

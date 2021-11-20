@@ -206,7 +206,7 @@ namespace Crystal.Themes.Controls
     }
 
     /// <summary>
-    /// DependencyProperty for <see cref="CornerRadius" /> property.
+    /// DependencyProperty for <see cref="CornerRadius"/> property.
     /// </summary>
     public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.RegisterAttached(
       "CornerRadius",

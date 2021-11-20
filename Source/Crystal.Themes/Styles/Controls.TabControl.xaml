@@ -4,23 +4,23 @@
                     xmlns:crystal="clr-namespace:Crystal.Themes.Controls"
                     xmlns:crystalConverters="clr-namespace:Crystal.Themes.Converters">
 
-    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 
     <Style x:Key="Crystal.Styles.TabControl" TargetType="{x:Type TabControl}">
-        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeBackground}" />
-        <Setter Property="BorderBrush" Value="{x:Null}" />
-        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.ThemeBackground}"/>
+        <Setter Property="BorderBrush" Value="{x:Null}"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TabControl}">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition x:Name="ColumnDefinition0" />
-                            <ColumnDefinition x:Name="ColumnDefinition1" Width="0" />
+                            <ColumnDefinition x:Name="ColumnDefinition0"/>
+                            <ColumnDefinition x:Name="ColumnDefinition1" Width="0"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition x:Name="RowDefinition0" Height="Auto" />
-                            <RowDefinition x:Name="RowDefinition1" Height="*" />
+                            <RowDefinition x:Name="RowDefinition0" Height="Auto"/>
+                            <RowDefinition x:Name="RowDefinition1" Height="*"/>
                         </Grid.RowDefinitions>
                         <Grid x:Name="HeaderPanelGrid"
                               Grid.Row="0"
@@ -32,10 +32,10 @@
                                            LineThickness="1"
                                            Placement="Bottom"
                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                           Visibility="Collapsed" />
+                                           Visibility="Collapsed"/>
                             <TabPanel x:Name="HeaderPanel"
                                       IsItemsHost="true"
-                                      KeyboardNavigation.TabIndex="1" />
+                                      KeyboardNavigation.TabIndex="1"/>
                         </Grid>
                         <Border x:Name="ContentPanel"
                                 Grid.Row="1"
@@ -50,69 +50,69 @@
                             <ContentPresenter x:Name="PART_SelectedContentHost"
                                               Margin="{TemplateBinding Padding}"
                                               ContentSource="SelectedContent"
-                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                         </Border>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="crystal:TabControlHelper.Underlined" Value="TabPanel">
-                            <Setter TargetName="Underline" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="Underline" Property="Visibility" Value="Visible"/>
                         </Trigger>
                         <Trigger Property="TabStripPlacement" Value="Bottom">
-                            <Setter TargetName="ContentPanel" Property="Grid.Row" Value="0" />
-                            <Setter TargetName="HeaderPanelGrid" Property="Grid.Row" Value="1" />
-                            <Setter TargetName="HeaderPanelGrid" Property="Margin" Value="2 0 2 2" />
-                            <Setter TargetName="RowDefinition0" Property="Height" Value="*" />
-                            <Setter TargetName="RowDefinition1" Property="Height" Value="Auto" />
-                            <Setter TargetName="Underline" Property="Placement" Value="Top" />
+                            <Setter TargetName="ContentPanel" Property="Grid.Row" Value="0"/>
+                            <Setter TargetName="HeaderPanelGrid" Property="Grid.Row" Value="1"/>
+                            <Setter TargetName="HeaderPanelGrid" Property="Margin" Value="2 0 2 2"/>
+                            <Setter TargetName="RowDefinition0" Property="Height" Value="*"/>
+                            <Setter TargetName="RowDefinition1" Property="Height" Value="Auto"/>
+                            <Setter TargetName="Underline" Property="Placement" Value="Top"/>
                         </Trigger>
                         <Trigger Property="TabStripPlacement" Value="Left">
-                            <Setter TargetName="ColumnDefinition0" Property="Width" Value="Auto" />
-                            <Setter TargetName="ColumnDefinition1" Property="Width" Value="*" />
-                            <Setter TargetName="ContentPanel" Property="Grid.Column" Value="1" />
-                            <Setter TargetName="ContentPanel" Property="Grid.Row" Value="0" />
-                            <Setter TargetName="HeaderPanelGrid" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="HeaderPanelGrid" Property="Grid.Row" Value="0" />
-                            <Setter TargetName="HeaderPanelGrid" Property="Margin" Value="2 2 0 2" />
-                            <Setter TargetName="RowDefinition0" Property="Height" Value="*" />
-                            <Setter TargetName="RowDefinition1" Property="Height" Value="0" />
-                            <Setter TargetName="Underline" Property="Placement" Value="Right" />
+                            <Setter TargetName="ColumnDefinition0" Property="Width" Value="Auto"/>
+                            <Setter TargetName="ColumnDefinition1" Property="Width" Value="*"/>
+                            <Setter TargetName="ContentPanel" Property="Grid.Column" Value="1"/>
+                            <Setter TargetName="ContentPanel" Property="Grid.Row" Value="0"/>
+                            <Setter TargetName="HeaderPanelGrid" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="HeaderPanelGrid" Property="Grid.Row" Value="0"/>
+                            <Setter TargetName="HeaderPanelGrid" Property="Margin" Value="2 2 0 2"/>
+                            <Setter TargetName="RowDefinition0" Property="Height" Value="*"/>
+                            <Setter TargetName="RowDefinition1" Property="Height" Value="0"/>
+                            <Setter TargetName="Underline" Property="Placement" Value="Right"/>
                         </Trigger>
                         <Trigger Property="TabStripPlacement" Value="Right">
-                            <Setter TargetName="ColumnDefinition0" Property="Width" Value="*" />
-                            <Setter TargetName="ColumnDefinition1" Property="Width" Value="Auto" />
-                            <Setter TargetName="ContentPanel" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="ContentPanel" Property="Grid.Row" Value="0" />
-                            <Setter TargetName="HeaderPanelGrid" Property="Grid.Column" Value="1" />
-                            <Setter TargetName="HeaderPanelGrid" Property="Grid.Row" Value="0" />
-                            <Setter TargetName="HeaderPanelGrid" Property="Margin" Value="0 2 2 2" />
-                            <Setter TargetName="RowDefinition0" Property="Height" Value="*" />
-                            <Setter TargetName="RowDefinition1" Property="Height" Value="0" />
-                            <Setter TargetName="Underline" Property="Placement" Value="Left" />
+                            <Setter TargetName="ColumnDefinition0" Property="Width" Value="*"/>
+                            <Setter TargetName="ColumnDefinition1" Property="Width" Value="Auto"/>
+                            <Setter TargetName="ContentPanel" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="ContentPanel" Property="Grid.Row" Value="0"/>
+                            <Setter TargetName="HeaderPanelGrid" Property="Grid.Column" Value="1"/>
+                            <Setter TargetName="HeaderPanelGrid" Property="Grid.Row" Value="0"/>
+                            <Setter TargetName="HeaderPanelGrid" Property="Margin" Value="0 2 2 2"/>
+                            <Setter TargetName="RowDefinition0" Property="Height" Value="*"/>
+                            <Setter TargetName="RowDefinition1" Property="Height" Value="0"/>
+                            <Setter TargetName="Underline" Property="Placement" Value="Left"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
         <!--  special property for header font size  -->
-        <Setter Property="crystal:HeaderedControlHelper.HeaderFontSize" Value="{DynamicResource Crystal.Font.Size.TabItem}" />
-        <Setter Property="crystal:TabControlHelper.UnderlineBrush" Value="{DynamicResource Crystal.Brushes.Gray}" />
-        <Setter Property="crystal:TabControlHelper.UnderlineMouseOverBrush" Value="{DynamicResource Crystal.Brushes.Gray.MouseOver}" />
-        <Setter Property="crystal:TabControlHelper.UnderlineMouseOverSelectedBrush" Value="{DynamicResource Crystal.Brushes.Highlight}" />
-        <Setter Property="crystal:TabControlHelper.UnderlineSelectedBrush" Value="{DynamicResource Crystal.Brushes.Accent}" />
+        <Setter Property="crystal:HeaderedControlHelper.HeaderFontSize" Value="{DynamicResource Crystal.Font.Size.TabItem}"/>
+        <Setter Property="crystal:TabControlHelper.UnderlineBrush" Value="{DynamicResource Crystal.Brushes.Gray}"/>
+        <Setter Property="crystal:TabControlHelper.UnderlineMouseOverBrush" Value="{DynamicResource Crystal.Brushes.Gray.MouseOver}"/>
+        <Setter Property="crystal:TabControlHelper.UnderlineMouseOverSelectedBrush" Value="{DynamicResource Crystal.Brushes.Highlight}"/>
+        <Setter Property="crystal:TabControlHelper.UnderlineSelectedBrush" Value="{DynamicResource Crystal.Brushes.Accent}"/>
     </Style>
 
     <Style x:Key="Crystal.Styles.TabItem" TargetType="TabItem">
-        <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=Background, Mode=OneWay, FallbackValue=Transparent}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Accent}" />
-        <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Text}" />
-        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Setter Property="IsTabStop" Value="False" />
-        <Setter Property="MinHeight" Value="5" />
-        <Setter Property="MinWidth" Value="5" />
-        <Setter Property="Padding" Value="6 2 6 2" />
-        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=Background, Mode=OneWay, FallbackValue=Transparent}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Accent}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Text}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="MinHeight" Value="5"/>
+        <Setter Property="MinWidth" Value="5"/>
+        <Setter Property="Padding" Value="6 2 6 2"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TabItem">
@@ -126,12 +126,12 @@
                               VerticalAlignment="Stretch"
                               UseLayoutRounding="True">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition x:Name="PART_ContentLeftCol" Width="Auto" />
-                                <ColumnDefinition x:Name="PART_ContentRightCol" Width="Auto" />
+                                <ColumnDefinition x:Name="PART_ContentLeftCol" Width="Auto"/>
+                                <ColumnDefinition x:Name="PART_ContentRightCol" Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition x:Name="PART_ContentTopRow" Height="Auto" />
-                                <RowDefinition x:Name="PART_ContentBottomRow" Height="Auto" />
+                                <RowDefinition x:Name="PART_ContentTopRow" Height="Auto"/>
+                                <RowDefinition x:Name="PART_ContentBottomRow" Height="Auto"/>
                             </Grid.RowDefinitions>
                             <crystal:ContentControlEx x:Name="ContentSite"
                                                   Grid.Row="0"
@@ -150,7 +150,7 @@
                                                   Foreground="{TemplateBinding Foreground}"
                                                   RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}"
                                                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                                  UseLayoutRounding="False" />
+                                                  UseLayoutRounding="False"/>
                             <crystal:Underline x:Name="Underline"
                                            Grid.Row="1"
                                            Grid.Column="0"
@@ -161,359 +161,359 @@
                                            LineExtent="3"
                                            LineThickness="2"
                                            Placement="Bottom"
-                                           SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                           SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="TabStripPlacement" Value="Left">
-                            <Setter TargetName="ContentSite" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="ContentSite" Property="Grid.Row" Value="0" />
-                            <Setter TargetName="PART_ContentBottomRow" Property="Height" Value="Auto" />
-                            <Setter TargetName="PART_ContentLeftCol" Property="Width" Value="*" />
-                            <Setter TargetName="PART_ContentRightCol" Property="Width" Value="Auto" />
-                            <Setter TargetName="PART_ContentTopRow" Property="Height" Value="*" />
+                            <Setter TargetName="ContentSite" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="ContentSite" Property="Grid.Row" Value="0"/>
+                            <Setter TargetName="PART_ContentBottomRow" Property="Height" Value="Auto"/>
+                            <Setter TargetName="PART_ContentLeftCol" Property="Width" Value="*"/>
+                            <Setter TargetName="PART_ContentRightCol" Property="Width" Value="Auto"/>
+                            <Setter TargetName="PART_ContentTopRow" Property="Height" Value="*"/>
                         </Trigger>
                         <Trigger Property="TabStripPlacement" Value="Top">
-                            <Setter TargetName="ContentSite" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="ContentSite" Property="Grid.Row" Value="0" />
-                            <Setter TargetName="PART_ContentBottomRow" Property="Height" Value="Auto" />
-                            <Setter TargetName="PART_ContentLeftCol" Property="Width" Value="*" />
-                            <Setter TargetName="PART_ContentRightCol" Property="Width" Value="Auto" />
-                            <Setter TargetName="PART_ContentTopRow" Property="Height" Value="*" />
+                            <Setter TargetName="ContentSite" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="ContentSite" Property="Grid.Row" Value="0"/>
+                            <Setter TargetName="PART_ContentBottomRow" Property="Height" Value="Auto"/>
+                            <Setter TargetName="PART_ContentLeftCol" Property="Width" Value="*"/>
+                            <Setter TargetName="PART_ContentRightCol" Property="Width" Value="Auto"/>
+                            <Setter TargetName="PART_ContentTopRow" Property="Height" Value="*"/>
                         </Trigger>
                         <Trigger Property="TabStripPlacement" Value="Right">
-                            <Setter TargetName="ContentSite" Property="Grid.Column" Value="1" />
-                            <Setter TargetName="ContentSite" Property="Grid.Row" Value="0" />
-                            <Setter TargetName="PART_ContentBottomRow" Property="Height" Value="Auto" />
-                            <Setter TargetName="PART_ContentLeftCol" Property="Width" Value="Auto" />
-                            <Setter TargetName="PART_ContentRightCol" Property="Width" Value="*" />
-                            <Setter TargetName="PART_ContentTopRow" Property="Height" Value="*" />
+                            <Setter TargetName="ContentSite" Property="Grid.Column" Value="1"/>
+                            <Setter TargetName="ContentSite" Property="Grid.Row" Value="0"/>
+                            <Setter TargetName="PART_ContentBottomRow" Property="Height" Value="Auto"/>
+                            <Setter TargetName="PART_ContentLeftCol" Property="Width" Value="Auto"/>
+                            <Setter TargetName="PART_ContentRightCol" Property="Width" Value="*"/>
+                            <Setter TargetName="PART_ContentTopRow" Property="Height" Value="*"/>
                         </Trigger>
                         <Trigger Property="TabStripPlacement" Value="Bottom">
-                            <Setter TargetName="ContentSite" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="ContentSite" Property="Grid.Row" Value="1" />
-                            <Setter TargetName="PART_ContentBottomRow" Property="Height" Value="*" />
-                            <Setter TargetName="PART_ContentLeftCol" Property="Width" Value="*" />
-                            <Setter TargetName="PART_ContentRightCol" Property="Width" Value="Auto" />
-                            <Setter TargetName="PART_ContentTopRow" Property="Height" Value="Auto" />
+                            <Setter TargetName="ContentSite" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="ContentSite" Property="Grid.Row" Value="1"/>
+                            <Setter TargetName="PART_ContentBottomRow" Property="Height" Value="*"/>
+                            <Setter TargetName="PART_ContentLeftCol" Property="Width" Value="*"/>
+                            <Setter TargetName="PART_ContentRightCol" Property="Width" Value="Auto"/>
+                            <Setter TargetName="PART_ContentTopRow" Property="Height" Value="Auto"/>
                         </Trigger>
 
                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.Underlined)}" Value="None">
-                            <Setter TargetName="Underline" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="Underline" Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.Underlined)}" Value="SelectedTabItem">
-                            <Setter TargetName="Underline" Property="LineThickness" Value="0" />
+                            <Setter TargetName="Underline" Property="LineThickness" Value="0"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.Underlined)}" Value="TabPanel">
-                            <Setter TargetName="Underline" Property="LineExtent" Value="4" />
-                            <Setter TargetName="Underline" Property="LineThickness" Value="1" />
+                            <Setter TargetName="Underline" Property="LineExtent" Value="4"/>
+                            <Setter TargetName="Underline" Property="LineThickness" Value="1"/>
                         </DataTrigger>
 
                         <Trigger Property="IsSelected" Value="true">
-                            <Setter TargetName="ContentSite" Property="TextElement.Foreground" Value="{DynamicResource Crystal.Brushes.Accent}" />
-                            <Setter TargetName="Underline" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:TabControlHelper.UnderlineSelectedBrush), Mode=OneWay}" />
+                            <Setter TargetName="ContentSite" Property="TextElement.Foreground" Value="{DynamicResource Crystal.Brushes.Accent}"/>
+                            <Setter TargetName="Underline" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:TabControlHelper.UnderlineSelectedBrush), Mode=OneWay}"/>
                         </Trigger>
                         <Trigger Property="IsSelected" Value="false">
-                            <Setter TargetName="ContentSite" Property="TextElement.Foreground" Value="{DynamicResource Crystal.Brushes.Gray}" />
+                            <Setter TargetName="ContentSite" Property="TextElement.Foreground" Value="{DynamicResource Crystal.Brushes.Gray}"/>
                         </Trigger>
 
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.Underlined)}" Value="TabPanel" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsSelected}" Value="True" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.Underlined)}" Value="TabPanel"/>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsSelected}" Value="True"/>
                             </MultiDataTrigger.Conditions>
-                            <Setter TargetName="Underline" Property="LineThickness" Value="3" />
+                            <Setter TargetName="Underline" Property="LineThickness" Value="3"/>
                         </MultiDataTrigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.Underlined)}" Value="SelectedTabItem" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsSelected}" Value="True" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.Underlined)}" Value="SelectedTabItem"/>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsSelected}" Value="True"/>
                             </MultiDataTrigger.Conditions>
-                            <Setter TargetName="Underline" Property="LineThickness" Value="2" />
+                            <Setter TargetName="Underline" Property="LineThickness" Value="2"/>
                         </MultiDataTrigger>
 
                         <Trigger SourceName="Border" Property="IsMouseOver" Value="True">
-                            <Setter TargetName="ContentSite" Property="TextElement.Foreground" Value="{DynamicResource Crystal.Brushes.Gray.MouseOver}" />
-                            <Setter TargetName="Underline" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:TabControlHelper.UnderlineMouseOverBrush), Mode=OneWay}" />
+                            <Setter TargetName="ContentSite" Property="TextElement.Foreground" Value="{DynamicResource Crystal.Brushes.Gray.MouseOver}"/>
+                            <Setter TargetName="Underline" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:TabControlHelper.UnderlineMouseOverBrush), Mode=OneWay}"/>
                         </Trigger>
 
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.Underlined)}" Value="TabPanel" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsSelected}" Value="False" />
-                                <Condition Binding="{Binding ElementName=Border, Path=IsMouseOver}" Value="True" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.Underlined)}" Value="TabPanel"/>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsSelected}" Value="False"/>
+                                <Condition Binding="{Binding ElementName=Border, Path=IsMouseOver}" Value="True"/>
                             </MultiDataTrigger.Conditions>
-                            <Setter TargetName="Underline" Property="LineThickness" Value="2" />
+                            <Setter TargetName="Underline" Property="LineThickness" Value="2"/>
                         </MultiDataTrigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.Underlined)}" Value="SelectedTabItem" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsSelected}" Value="False" />
-                                <Condition Binding="{Binding ElementName=Border, Path=IsMouseOver}" Value="True" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.Underlined)}" Value="SelectedTabItem"/>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsSelected}" Value="False"/>
+                                <Condition Binding="{Binding ElementName=Border, Path=IsMouseOver}" Value="True"/>
                             </MultiDataTrigger.Conditions>
-                            <Setter TargetName="Underline" Property="LineThickness" Value="2" />
+                            <Setter TargetName="Underline" Property="LineThickness" Value="2"/>
                         </MultiDataTrigger>
 
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition SourceName="Border" Property="IsMouseOver" Value="True" />
-                                <Condition Property="IsSelected" Value="True" />
+                                <Condition SourceName="Border" Property="IsMouseOver" Value="True"/>
+                                <Condition Property="IsSelected" Value="True"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="ContentSite" Property="TextElement.Foreground" Value="{DynamicResource Crystal.Brushes.Highlight}" />
-                            <Setter TargetName="Underline" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:TabControlHelper.UnderlineMouseOverSelectedBrush), Mode=OneWay}" />
+                            <Setter TargetName="ContentSite" Property="TextElement.Foreground" Value="{DynamicResource Crystal.Brushes.Highlight}"/>
+                            <Setter TargetName="Underline" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:TabControlHelper.UnderlineMouseOverSelectedBrush), Mode=OneWay}"/>
                         </MultiTrigger>
 
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement), Converter={x:Static crystalConverters:IsNullConverter.Instance}}" Value="True" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Top" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement), Converter={x:Static crystalConverters:IsNullConverter.Instance}}" Value="True"/>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Top"/>
                             </MultiDataTrigger.Conditions>
-                            <Setter TargetName="Underline" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="Underline" Property="Grid.Row" Value="1" />
-                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Stretch" />
-                            <Setter TargetName="Underline" Property="Placement" Value="Bottom" />
-                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Bottom" />
+                            <Setter TargetName="Underline" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="Underline" Property="Grid.Row" Value="1"/>
+                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Stretch"/>
+                            <Setter TargetName="Underline" Property="Placement" Value="Bottom"/>
+                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Bottom"/>
                         </MultiDataTrigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement), Converter={x:Static crystalConverters:IsNullConverter.Instance}}" Value="True" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Bottom" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement), Converter={x:Static crystalConverters:IsNullConverter.Instance}}" Value="True"/>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Bottom"/>
                             </MultiDataTrigger.Conditions>
-                            <Setter TargetName="Underline" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="Underline" Property="Grid.Row" Value="0" />
-                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Stretch" />
-                            <Setter TargetName="Underline" Property="Placement" Value="Top" />
-                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Top" />
+                            <Setter TargetName="Underline" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="Underline" Property="Grid.Row" Value="0"/>
+                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Stretch"/>
+                            <Setter TargetName="Underline" Property="Placement" Value="Top"/>
+                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Top"/>
                         </MultiDataTrigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement), Converter={x:Static crystalConverters:IsNullConverter.Instance}}" Value="True" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Left" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement), Converter={x:Static crystalConverters:IsNullConverter.Instance}}" Value="True"/>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Left"/>
                             </MultiDataTrigger.Conditions>
-                            <Setter TargetName="Underline" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="Underline" Property="Grid.Row" Value="0" />
-                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Right" />
-                            <Setter TargetName="Underline" Property="Placement" Value="Right" />
-                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Stretch" />
+                            <Setter TargetName="Underline" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="Underline" Property="Grid.Row" Value="0"/>
+                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Right"/>
+                            <Setter TargetName="Underline" Property="Placement" Value="Right"/>
+                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Stretch"/>
                         </MultiDataTrigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement), Converter={x:Static crystalConverters:IsNullConverter.Instance}}" Value="True" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Right" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement), Converter={x:Static crystalConverters:IsNullConverter.Instance}}" Value="True"/>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Right"/>
                             </MultiDataTrigger.Conditions>
-                            <Setter TargetName="Underline" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="Underline" Property="Grid.Row" Value="0" />
-                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Left" />
-                            <Setter TargetName="Underline" Property="Placement" Value="Left" />
-                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Stretch" />
-                        </MultiDataTrigger>
-
-                        <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement)}" Value="Top" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Top" />
-                            </MultiDataTrigger.Conditions>
-                            <Setter TargetName="Underline" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="Underline" Property="Grid.Row" Value="0" />
-                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Stretch" />
-                            <Setter TargetName="Underline" Property="Placement" Value="Top" />
-                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Top" />
-                        </MultiDataTrigger>
-                        <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement)}" Value="Top" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Bottom" />
-                            </MultiDataTrigger.Conditions>
-                            <Setter TargetName="Underline" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="Underline" Property="Grid.Row" Value="0" />
-                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Stretch" />
-                            <Setter TargetName="Underline" Property="Placement" Value="Top" />
-                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Top" />
-                        </MultiDataTrigger>
-                        <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement)}" Value="Top" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Left" />
-                            </MultiDataTrigger.Conditions>
-                            <Setter TargetName="Underline" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="Underline" Property="Grid.Row" Value="0" />
-                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Stretch" />
-                            <Setter TargetName="Underline" Property="Placement" Value="Top" />
-                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Top" />
-                        </MultiDataTrigger>
-                        <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement)}" Value="Top" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Right" />
-                            </MultiDataTrigger.Conditions>
-                            <Setter TargetName="Underline" Property="Grid.Column" Value="1" />
-                            <Setter TargetName="Underline" Property="Grid.Row" Value="0" />
-                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Stretch" />
-                            <Setter TargetName="Underline" Property="Placement" Value="Top" />
-                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Top" />
+                            <Setter TargetName="Underline" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="Underline" Property="Grid.Row" Value="0"/>
+                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Left"/>
+                            <Setter TargetName="Underline" Property="Placement" Value="Left"/>
+                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Stretch"/>
                         </MultiDataTrigger>
 
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement)}" Value="Bottom" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Top" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement)}" Value="Top"/>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Top"/>
                             </MultiDataTrigger.Conditions>
-                            <Setter TargetName="Underline" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="Underline" Property="Grid.Row" Value="1" />
-                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Stretch" />
-                            <Setter TargetName="Underline" Property="Placement" Value="Bottom" />
-                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Bottom" />
+                            <Setter TargetName="Underline" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="Underline" Property="Grid.Row" Value="0"/>
+                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Stretch"/>
+                            <Setter TargetName="Underline" Property="Placement" Value="Top"/>
+                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Top"/>
                         </MultiDataTrigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement)}" Value="Bottom" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Bottom" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement)}" Value="Top"/>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Bottom"/>
                             </MultiDataTrigger.Conditions>
-                            <Setter TargetName="Underline" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="Underline" Property="Grid.Row" Value="1" />
-                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Stretch" />
-                            <Setter TargetName="Underline" Property="Placement" Value="Bottom" />
-                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Bottom" />
+                            <Setter TargetName="Underline" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="Underline" Property="Grid.Row" Value="0"/>
+                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Stretch"/>
+                            <Setter TargetName="Underline" Property="Placement" Value="Top"/>
+                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Top"/>
                         </MultiDataTrigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement)}" Value="Bottom" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Left" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement)}" Value="Top"/>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Left"/>
                             </MultiDataTrigger.Conditions>
-                            <Setter TargetName="Underline" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="Underline" Property="Grid.Row" Value="1" />
-                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Stretch" />
-                            <Setter TargetName="Underline" Property="Placement" Value="Bottom" />
-                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Bottom" />
+                            <Setter TargetName="Underline" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="Underline" Property="Grid.Row" Value="0"/>
+                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Stretch"/>
+                            <Setter TargetName="Underline" Property="Placement" Value="Top"/>
+                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Top"/>
                         </MultiDataTrigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement)}" Value="Bottom" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Right" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement)}" Value="Top"/>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Right"/>
                             </MultiDataTrigger.Conditions>
-                            <Setter TargetName="Underline" Property="Grid.Column" Value="1" />
-                            <Setter TargetName="Underline" Property="Grid.Row" Value="1" />
-                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Stretch" />
-                            <Setter TargetName="Underline" Property="Placement" Value="Bottom" />
-                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Bottom" />
-                        </MultiDataTrigger>
-
-                        <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement)}" Value="Left" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Top" />
-                            </MultiDataTrigger.Conditions>
-                            <Setter TargetName="Underline" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="Underline" Property="Grid.Row" Value="0" />
-                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Left" />
-                            <Setter TargetName="Underline" Property="Placement" Value="Left" />
-                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Stretch" />
-                        </MultiDataTrigger>
-                        <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement)}" Value="Left" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Bottom" />
-                            </MultiDataTrigger.Conditions>
-                            <Setter TargetName="Underline" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="Underline" Property="Grid.Row" Value="1" />
-                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Left" />
-                            <Setter TargetName="Underline" Property="Placement" Value="Left" />
-                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Stretch" />
-                        </MultiDataTrigger>
-                        <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement)}" Value="Left" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Left" />
-                            </MultiDataTrigger.Conditions>
-                            <Setter TargetName="Underline" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="Underline" Property="Grid.Row" Value="0" />
-                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Left" />
-                            <Setter TargetName="Underline" Property="Placement" Value="Left" />
-                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Stretch" />
-                        </MultiDataTrigger>
-                        <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement)}" Value="Left" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Right" />
-                            </MultiDataTrigger.Conditions>
-                            <Setter TargetName="Underline" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="Underline" Property="Grid.Row" Value="0" />
-                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Left" />
-                            <Setter TargetName="Underline" Property="Placement" Value="Left" />
-                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Stretch" />
+                            <Setter TargetName="Underline" Property="Grid.Column" Value="1"/>
+                            <Setter TargetName="Underline" Property="Grid.Row" Value="0"/>
+                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Stretch"/>
+                            <Setter TargetName="Underline" Property="Placement" Value="Top"/>
+                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Top"/>
                         </MultiDataTrigger>
 
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement)}" Value="Right" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Top" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement)}" Value="Bottom"/>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Top"/>
                             </MultiDataTrigger.Conditions>
-                            <Setter TargetName="Underline" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="Underline" Property="Grid.Row" Value="0" />
-                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Right" />
-                            <Setter TargetName="Underline" Property="Placement" Value="Right" />
-                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Stretch" />
+                            <Setter TargetName="Underline" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="Underline" Property="Grid.Row" Value="1"/>
+                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Stretch"/>
+                            <Setter TargetName="Underline" Property="Placement" Value="Bottom"/>
+                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Bottom"/>
                         </MultiDataTrigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement)}" Value="Right" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Bottom" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement)}" Value="Bottom"/>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Bottom"/>
                             </MultiDataTrigger.Conditions>
-                            <Setter TargetName="Underline" Property="Grid.Column" Value="1" />
-                            <Setter TargetName="Underline" Property="Grid.Row" Value="1" />
-                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Right" />
-                            <Setter TargetName="Underline" Property="Placement" Value="Right" />
-                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Stretch" />
+                            <Setter TargetName="Underline" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="Underline" Property="Grid.Row" Value="1"/>
+                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Stretch"/>
+                            <Setter TargetName="Underline" Property="Placement" Value="Bottom"/>
+                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Bottom"/>
                         </MultiDataTrigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement)}" Value="Right" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Left" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement)}" Value="Bottom"/>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Left"/>
                             </MultiDataTrigger.Conditions>
-                            <Setter TargetName="Underline" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="Underline" Property="Grid.Row" Value="0" />
-                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Right" />
-                            <Setter TargetName="Underline" Property="Placement" Value="Right" />
-                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Stretch" />
+                            <Setter TargetName="Underline" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="Underline" Property="Grid.Row" Value="1"/>
+                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Stretch"/>
+                            <Setter TargetName="Underline" Property="Placement" Value="Bottom"/>
+                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Bottom"/>
                         </MultiDataTrigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement)}" Value="Right" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Right" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement)}" Value="Bottom"/>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Right"/>
                             </MultiDataTrigger.Conditions>
-                            <Setter TargetName="Underline" Property="Grid.Column" Value="1" />
-                            <Setter TargetName="Underline" Property="Grid.Row" Value="0" />
-                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Right" />
-                            <Setter TargetName="Underline" Property="Placement" Value="Right" />
-                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Stretch" />
+                            <Setter TargetName="Underline" Property="Grid.Column" Value="1"/>
+                            <Setter TargetName="Underline" Property="Grid.Row" Value="1"/>
+                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Stretch"/>
+                            <Setter TargetName="Underline" Property="Placement" Value="Bottom"/>
+                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Bottom"/>
+                        </MultiDataTrigger>
+
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement)}" Value="Left"/>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Top"/>
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="Underline" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="Underline" Property="Grid.Row" Value="0"/>
+                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Left"/>
+                            <Setter TargetName="Underline" Property="Placement" Value="Left"/>
+                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Stretch"/>
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement)}" Value="Left"/>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Bottom"/>
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="Underline" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="Underline" Property="Grid.Row" Value="1"/>
+                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Left"/>
+                            <Setter TargetName="Underline" Property="Placement" Value="Left"/>
+                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Stretch"/>
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement)}" Value="Left"/>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Left"/>
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="Underline" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="Underline" Property="Grid.Row" Value="0"/>
+                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Left"/>
+                            <Setter TargetName="Underline" Property="Placement" Value="Left"/>
+                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Stretch"/>
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement)}" Value="Left"/>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Right"/>
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="Underline" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="Underline" Property="Grid.Row" Value="0"/>
+                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Left"/>
+                            <Setter TargetName="Underline" Property="Placement" Value="Left"/>
+                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Stretch"/>
+                        </MultiDataTrigger>
+
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement)}" Value="Right"/>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Top"/>
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="Underline" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="Underline" Property="Grid.Row" Value="0"/>
+                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Right"/>
+                            <Setter TargetName="Underline" Property="Placement" Value="Right"/>
+                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Stretch"/>
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement)}" Value="Right"/>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Bottom"/>
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="Underline" Property="Grid.Column" Value="1"/>
+                            <Setter TargetName="Underline" Property="Grid.Row" Value="1"/>
+                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Right"/>
+                            <Setter TargetName="Underline" Property="Placement" Value="Right"/>
+                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Stretch"/>
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement)}" Value="Right"/>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Left"/>
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="Underline" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="Underline" Property="Grid.Row" Value="0"/>
+                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Right"/>
+                            <Setter TargetName="Underline" Property="Placement" Value="Right"/>
+                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Stretch"/>
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement)}" Value="Right"/>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=TabStripPlacement}" Value="Right"/>
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="Underline" Property="Grid.Column" Value="1"/>
+                            <Setter TargetName="Underline" Property="Grid.Row" Value="0"/>
+                            <Setter TargetName="Underline" Property="HorizontalAlignment" Value="Right"/>
+                            <Setter TargetName="Underline" Property="Placement" Value="Right"/>
+                            <Setter TargetName="Underline" Property="VerticalAlignment" Value="Stretch"/>
                         </MultiDataTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="VerticalContentAlignment" Value="Stretch" />
-        <Setter Property="crystal:HeaderedControlHelper.HeaderFontFamily" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:HeaderedControlHelper.HeaderFontFamily), Mode=OneWay}" />
-        <Setter Property="crystal:HeaderedControlHelper.HeaderFontSize" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:HeaderedControlHelper.HeaderFontSize), Mode=OneWay}" />
-        <Setter Property="crystal:HeaderedControlHelper.HeaderFontStretch" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:HeaderedControlHelper.HeaderFontStretch), Mode=OneWay}" />
-        <Setter Property="crystal:HeaderedControlHelper.HeaderFontWeight" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:HeaderedControlHelper.HeaderFontWeight), Mode=OneWay}" />
-        <Setter Property="crystal:TabControlHelper.UnderlineBrush" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlineBrush), Mode=OneWay}" />
-        <Setter Property="crystal:TabControlHelper.UnderlineMouseOverBrush" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlineMouseOverBrush), Mode=OneWay}" />
-        <Setter Property="crystal:TabControlHelper.UnderlineMouseOverSelectedBrush" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlineMouseOverSelectedBrush), Mode=OneWay}" />
-        <Setter Property="crystal:TabControlHelper.UnderlinePlacement" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement), Mode=OneWay}" />
-        <Setter Property="crystal:TabControlHelper.UnderlineSelectedBrush" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlineSelectedBrush), Mode=OneWay}" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+        <Setter Property="crystal:HeaderedControlHelper.HeaderFontFamily" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:HeaderedControlHelper.HeaderFontFamily), Mode=OneWay}"/>
+        <Setter Property="crystal:HeaderedControlHelper.HeaderFontSize" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:HeaderedControlHelper.HeaderFontSize), Mode=OneWay}"/>
+        <Setter Property="crystal:HeaderedControlHelper.HeaderFontStretch" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:HeaderedControlHelper.HeaderFontStretch), Mode=OneWay}"/>
+        <Setter Property="crystal:HeaderedControlHelper.HeaderFontWeight" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:HeaderedControlHelper.HeaderFontWeight), Mode=OneWay}"/>
+        <Setter Property="crystal:TabControlHelper.UnderlineBrush" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlineBrush), Mode=OneWay}"/>
+        <Setter Property="crystal:TabControlHelper.UnderlineMouseOverBrush" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlineMouseOverBrush), Mode=OneWay}"/>
+        <Setter Property="crystal:TabControlHelper.UnderlineMouseOverSelectedBrush" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlineMouseOverSelectedBrush), Mode=OneWay}"/>
+        <Setter Property="crystal:TabControlHelper.UnderlinePlacement" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlinePlacement), Mode=OneWay}"/>
+        <Setter Property="crystal:TabControlHelper.UnderlineSelectedBrush" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=(crystal:TabControlHelper.UnderlineSelectedBrush), Mode=OneWay}"/>
     </Style>
 
     <!--  Crystal.Styles.TabControl.AnimatedSingleRow  -->
 
     <Style x:Key="Crystal.Styles.RepeatButton.ScrollBar.AnimatedSingleRow" TargetType="{x:Type RepeatButton}">
-        <Setter Property="Background" Value="Transparent" />
-        <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="Focusable" Value="False" />
-        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Gray3}" />
-        <Setter Property="IsTabStop" Value="False" />
-        <Setter Property="OverridesDefaultStyle" Value="True" />
-        <Setter Property="Padding" Value="0" />
-        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Gray3}"/>
+        <Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type RepeatButton}">
@@ -523,17 +523,17 @@
                                       Height="12"
                                       Data="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}"
                                       FlowDirection="{TemplateBinding FlowDirection}"
-                                      Foreground="{TemplateBinding Foreground}" />
+                                      Foreground="{TemplateBinding Foreground}"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="PART_Arrow" Property="Opacity" Value="0.5" />
+                            <Setter TargetName="PART_Arrow" Property="Opacity" Value="0.5"/>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="PART_Arrow" Property="Foreground" Value="{DynamicResource Crystal.Brushes.Gray1}" />
+                            <Setter TargetName="PART_Arrow" Property="Foreground" Value="{DynamicResource Crystal.Brushes.Gray1}"/>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="PART_Arrow" Property="Foreground" Value="{DynamicResource Crystal.Brushes.Accent}" />
+                            <Setter TargetName="PART_Arrow" Property="Foreground" Value="{DynamicResource Crystal.Brushes.Accent}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -544,40 +544,40 @@
     <ControlTemplate x:Key="Crystal.Templates.ScrollBar.AnimatedSingleRow.Horizontal" TargetType="{x:Type ScrollBar}">
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <RepeatButton Grid.Column="0"
                           Width="{DynamicResource {x:Static SystemParameters.HorizontalScrollBarButtonWidthKey}}"
                           Command="ScrollBar.PageLeftCommand"
                           Content="M6 2L0 8l6 6z"
-                          Style="{DynamicResource Crystal.Styles.RepeatButton.ScrollBar.AnimatedSingleRow}" />
+                          Style="{DynamicResource Crystal.Styles.RepeatButton.ScrollBar.AnimatedSingleRow}"/>
             <RepeatButton Grid.Column="2"
                           Width="{DynamicResource {x:Static SystemParameters.HorizontalScrollBarButtonWidthKey}}"
                           Command="ScrollBar.PageRightCommand"
                           Content="M0 14l6-6-6-6z"
-                          Style="{DynamicResource Crystal.Styles.RepeatButton.ScrollBar.AnimatedSingleRow}" />
+                          Style="{DynamicResource Crystal.Styles.RepeatButton.ScrollBar.AnimatedSingleRow}"/>
         </Grid>
     </ControlTemplate>
 
     <ControlTemplate x:Key="Crystal.Templates.ScrollBar.AnimatedSingleRow.Vertical" TargetType="{x:Type ScrollBar}">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <RepeatButton Grid.Row="0"
                           Height="{DynamicResource {x:Static SystemParameters.VerticalScrollBarButtonHeightKey}}"
                           Command="ScrollBar.PageUpCommand"
                           Content="M12 11L6 5l-6 6z"
-                          Style="{DynamicResource Crystal.Styles.RepeatButton.ScrollBar.AnimatedSingleRow}" />
+                          Style="{DynamicResource Crystal.Styles.RepeatButton.ScrollBar.AnimatedSingleRow}"/>
             <RepeatButton Grid.Row="2"
                           Height="{DynamicResource {x:Static SystemParameters.VerticalScrollBarButtonHeightKey}}"
                           Command="ScrollBar.PageDownCommand"
                           Content="M0 5l6 6 6-6z"
-                          Style="{DynamicResource Crystal.Styles.RepeatButton.ScrollBar.AnimatedSingleRow}" />
+                          Style="{DynamicResource Crystal.Styles.RepeatButton.ScrollBar.AnimatedSingleRow}"/>
         </Grid>
     </ControlTemplate>
 
@@ -593,7 +593,7 @@
                        Template="{DynamicResource Crystal.Templates.ScrollBar.AnimatedSingleRow.Horizontal}"
                        ViewportSize="{TemplateBinding ViewportWidth}"
                        Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
-                       Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
+                       Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"/>
             <ScrollBar x:Name="PART_VerticalScrollBar"
                        Width="Auto"
                        AutomationProperties.AutomationId="Crystal.Templates.ScrollBar.AnimatedSingleRow.Vertical"
@@ -604,27 +604,27 @@
                        Template="{DynamicResource Crystal.Templates.ScrollBar.AnimatedSingleRow.Vertical}"
                        ViewportSize="{TemplateBinding ViewportHeight}"
                        Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
-                       Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
+                       Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"/>
             <Grid Margin="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
                 <Grid Grid.Row="0"
                       Grid.Column="1"
                       Height="{DynamicResource {x:Static SystemParameters.VerticalScrollBarButtonHeightKey}}"
-                      Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" />
+                      Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"/>
                 <Grid Grid.Row="1"
                       Grid.Column="0"
                       Width="{DynamicResource {x:Static SystemParameters.HorizontalScrollBarButtonWidthKey}}"
-                      Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" />
+                      Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"/>
                 <ScrollContentPresenter x:Name="PART_ScrollContentPresenter"
                                         Grid.Row="1"
                                         Grid.Column="1"
@@ -632,15 +632,15 @@
                                         CanHorizontallyScroll="False"
                                         CanVerticallyScroll="False"
                                         Content="{TemplateBinding Content}"
-                                        ContentTemplate="{TemplateBinding ContentTemplate}" />
+                                        ContentTemplate="{TemplateBinding ContentTemplate}"/>
                 <Grid Grid.Row="1"
                       Grid.Column="2"
                       Width="{DynamicResource {x:Static SystemParameters.HorizontalScrollBarButtonWidthKey}}"
-                      Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" />
+                      Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"/>
                 <Grid Grid.Row="2"
                       Grid.Column="1"
                       Height="{DynamicResource {x:Static SystemParameters.VerticalScrollBarButtonHeightKey}}"
-                      Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" />
+                      Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"/>
             </Grid>
         </Grid>
     </ControlTemplate>
@@ -648,8 +648,8 @@
     <ControlTemplate x:Key="Crystal.Templates.TabControl.AnimatedSingleRow.Horizontal" TargetType="{x:Type TabControl}">
         <Grid KeyboardNavigation.TabNavigation="Local">
             <Grid.RowDefinitions>
-                <RowDefinition x:Name="RowDefinition0" Height="Auto" />
-                <RowDefinition x:Name="RowDefinition1" Height="*" />
+                <RowDefinition x:Name="RowDefinition0" Height="Auto"/>
+                <RowDefinition x:Name="RowDefinition1" Height="*"/>
             </Grid.RowDefinitions>
             <ScrollViewer x:Name="HeaderPanelScroll"
                           Grid.Row="0"
@@ -665,10 +665,10 @@
                                    LineThickness="1"
                                    Placement="Bottom"
                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                   Visibility="Collapsed" />
+                                   Visibility="Collapsed"/>
                     <TabPanel x:Name="HeaderPanel"
                               IsItemsHost="true"
-                              KeyboardNavigation.TabIndex="1" />
+                              KeyboardNavigation.TabIndex="1"/>
                 </Grid>
             </ScrollViewer>
             <crystal:TransitioningContentControl x:Name="ContentPanel"
@@ -681,28 +681,28 @@
                                   Margin="{TemplateBinding Padding}"
                                   ContentSource="SelectedContent"
                                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                  UseLayoutRounding="False" />
+                                  UseLayoutRounding="False"/>
             </crystal:TransitioningContentControl>
         </Grid>
         <ControlTemplate.Triggers>
             <Trigger Property="crystal:TabControlHelper.Underlined" Value="TabPanel">
-                <Setter TargetName="Underline" Property="Visibility" Value="Visible" />
+                <Setter TargetName="Underline" Property="Visibility" Value="Visible"/>
             </Trigger>
             <Trigger Property="TabStripPlacement" Value="Top">
-                <Setter TargetName="ContentPanel" Property="Grid.Row" Value="1" />
-                <Setter TargetName="HeaderPanelScroll" Property="Grid.Row" Value="0" />
-                <Setter TargetName="HeaderPanelScroll" Property="Margin" Value="2 2 2 0" />
-                <Setter TargetName="RowDefinition0" Property="Height" Value="Auto" />
-                <Setter TargetName="RowDefinition1" Property="Height" Value="*" />
-                <Setter TargetName="Underline" Property="Placement" Value="Bottom" />
+                <Setter TargetName="ContentPanel" Property="Grid.Row" Value="1"/>
+                <Setter TargetName="HeaderPanelScroll" Property="Grid.Row" Value="0"/>
+                <Setter TargetName="HeaderPanelScroll" Property="Margin" Value="2 2 2 0"/>
+                <Setter TargetName="RowDefinition0" Property="Height" Value="Auto"/>
+                <Setter TargetName="RowDefinition1" Property="Height" Value="*"/>
+                <Setter TargetName="Underline" Property="Placement" Value="Bottom"/>
             </Trigger>
             <Trigger Property="TabStripPlacement" Value="Bottom">
-                <Setter TargetName="ContentPanel" Property="Grid.Row" Value="0" />
-                <Setter TargetName="HeaderPanelScroll" Property="Grid.Row" Value="1" />
-                <Setter TargetName="HeaderPanelScroll" Property="Margin" Value="2 0 2 2" />
-                <Setter TargetName="RowDefinition0" Property="Height" Value="*" />
-                <Setter TargetName="RowDefinition1" Property="Height" Value="Auto" />
-                <Setter TargetName="Underline" Property="Placement" Value="Top" />
+                <Setter TargetName="ContentPanel" Property="Grid.Row" Value="0"/>
+                <Setter TargetName="HeaderPanelScroll" Property="Grid.Row" Value="1"/>
+                <Setter TargetName="HeaderPanelScroll" Property="Margin" Value="2 0 2 2"/>
+                <Setter TargetName="RowDefinition0" Property="Height" Value="*"/>
+                <Setter TargetName="RowDefinition1" Property="Height" Value="Auto"/>
+                <Setter TargetName="Underline" Property="Placement" Value="Top"/>
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
@@ -710,8 +710,8 @@
     <ControlTemplate x:Key="Crystal.Templates.TabControl.AnimatedSingleRow.Vertical" TargetType="{x:Type TabControl}">
         <Grid KeyboardNavigation.TabNavigation="Local">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition x:Name="ColumnDefinition0" Width="*" />
-                <ColumnDefinition x:Name="ColumnDefinition1" Width="Auto" />
+                <ColumnDefinition x:Name="ColumnDefinition0" Width="*"/>
+                <ColumnDefinition x:Name="ColumnDefinition1" Width="Auto"/>
             </Grid.ColumnDefinitions>
             <ScrollViewer x:Name="HeaderPanelScroll"
                           Grid.Column="1"
@@ -726,10 +726,10 @@
                                    LineThickness="1"
                                    Placement="Bottom"
                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                   Visibility="Collapsed" />
+                                   Visibility="Collapsed"/>
                     <TabPanel x:Name="HeaderPanel"
                               IsItemsHost="true"
-                              KeyboardNavigation.TabIndex="1" />
+                              KeyboardNavigation.TabIndex="1"/>
                 </Grid>
             </ScrollViewer>
             <crystal:TransitioningContentControl x:Name="ContentPanel"
@@ -742,28 +742,28 @@
                                   Margin="{TemplateBinding Padding}"
                                   ContentSource="SelectedContent"
                                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                  UseLayoutRounding="False" />
+                                  UseLayoutRounding="False"/>
             </crystal:TransitioningContentControl>
         </Grid>
         <ControlTemplate.Triggers>
             <Trigger Property="crystal:TabControlHelper.Underlined" Value="TabPanel">
-                <Setter TargetName="Underline" Property="Visibility" Value="Visible" />
+                <Setter TargetName="Underline" Property="Visibility" Value="Visible"/>
             </Trigger>
             <Trigger Property="TabStripPlacement" Value="Left">
-                <Setter TargetName="ColumnDefinition0" Property="Width" Value="Auto" />
-                <Setter TargetName="ColumnDefinition1" Property="Width" Value="*" />
-                <Setter TargetName="ContentPanel" Property="Grid.Column" Value="1" />
-                <Setter TargetName="HeaderPanelScroll" Property="Grid.Column" Value="0" />
-                <Setter TargetName="HeaderPanelScroll" Property="Margin" Value="2 2 0 2" />
-                <Setter TargetName="Underline" Property="Placement" Value="Right" />
+                <Setter TargetName="ColumnDefinition0" Property="Width" Value="Auto"/>
+                <Setter TargetName="ColumnDefinition1" Property="Width" Value="*"/>
+                <Setter TargetName="ContentPanel" Property="Grid.Column" Value="1"/>
+                <Setter TargetName="HeaderPanelScroll" Property="Grid.Column" Value="0"/>
+                <Setter TargetName="HeaderPanelScroll" Property="Margin" Value="2 2 0 2"/>
+                <Setter TargetName="Underline" Property="Placement" Value="Right"/>
             </Trigger>
             <Trigger Property="TabStripPlacement" Value="Right">
-                <Setter TargetName="ColumnDefinition0" Property="Width" Value="*" />
-                <Setter TargetName="ColumnDefinition1" Property="Width" Value="Auto" />
-                <Setter TargetName="ContentPanel" Property="Grid.Column" Value="0" />
-                <Setter TargetName="HeaderPanelScroll" Property="Grid.Column" Value="1" />
-                <Setter TargetName="HeaderPanelScroll" Property="Margin" Value="0 2 2 2" />
-                <Setter TargetName="Underline" Property="Placement" Value="Left" />
+                <Setter TargetName="ColumnDefinition0" Property="Width" Value="*"/>
+                <Setter TargetName="ColumnDefinition1" Property="Width" Value="Auto"/>
+                <Setter TargetName="ContentPanel" Property="Grid.Column" Value="0"/>
+                <Setter TargetName="HeaderPanelScroll" Property="Grid.Column" Value="1"/>
+                <Setter TargetName="HeaderPanelScroll" Property="Margin" Value="0 2 2 2"/>
+                <Setter TargetName="Underline" Property="Placement" Value="Left"/>
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
@@ -771,21 +771,21 @@
     <Style x:Key="Crystal.Styles.TabControl.AnimatedSingleRow"
            BasedOn="{StaticResource Crystal.Styles.TabControl}"
            TargetType="{x:Type TabControl}">
-        <Setter Property="Template" Value="{StaticResource Crystal.Templates.TabControl.AnimatedSingleRow.Horizontal}" />
-        <Setter Property="crystal:ScrollViewerHelper.IsHorizontalScrollWheelEnabled" Value="True" />
-        <Setter Property="crystal:TabControlHelper.Transition" Value="Left" />
+        <Setter Property="Template" Value="{StaticResource Crystal.Templates.TabControl.AnimatedSingleRow.Horizontal}"/>
+        <Setter Property="crystal:ScrollViewerHelper.IsHorizontalScrollWheelEnabled" Value="True"/>
+        <Setter Property="crystal:TabControlHelper.Transition" Value="Left"/>
         <Style.Triggers>
             <Trigger Property="TabStripPlacement" Value="Top">
-                <Setter Property="Template" Value="{StaticResource Crystal.Templates.TabControl.AnimatedSingleRow.Horizontal}" />
+                <Setter Property="Template" Value="{StaticResource Crystal.Templates.TabControl.AnimatedSingleRow.Horizontal}"/>
             </Trigger>
             <Trigger Property="TabStripPlacement" Value="Bottom">
-                <Setter Property="Template" Value="{StaticResource Crystal.Templates.TabControl.AnimatedSingleRow.Horizontal}" />
+                <Setter Property="Template" Value="{StaticResource Crystal.Templates.TabControl.AnimatedSingleRow.Horizontal}"/>
             </Trigger>
             <Trigger Property="TabStripPlacement" Value="Left">
-                <Setter Property="Template" Value="{StaticResource Crystal.Templates.TabControl.AnimatedSingleRow.Vertical}" />
+                <Setter Property="Template" Value="{StaticResource Crystal.Templates.TabControl.AnimatedSingleRow.Vertical}"/>
             </Trigger>
             <Trigger Property="TabStripPlacement" Value="Right">
-                <Setter Property="Template" Value="{StaticResource Crystal.Templates.TabControl.AnimatedSingleRow.Vertical}" />
+                <Setter Property="Template" Value="{StaticResource Crystal.Templates.TabControl.AnimatedSingleRow.Vertical}"/>
             </Trigger>
 
         </Style.Triggers>
@@ -801,12 +801,12 @@
                 <ControlTemplate TargetType="{x:Type TabControl}">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition x:Name="ColumnDefinition0" />
-                            <ColumnDefinition x:Name="ColumnDefinition1" Width="0" />
+                            <ColumnDefinition x:Name="ColumnDefinition0"/>
+                            <ColumnDefinition x:Name="ColumnDefinition1" Width="0"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition x:Name="RowDefinition0" Height="Auto" />
-                            <RowDefinition x:Name="RowDefinition1" Height="*" />
+                            <RowDefinition x:Name="RowDefinition0" Height="Auto"/>
+                            <RowDefinition x:Name="RowDefinition1" Height="*"/>
                         </Grid.RowDefinitions>
                         <Grid x:Name="HeaderPanelGrid"
                               Grid.Row="0"
@@ -818,10 +818,10 @@
                                            LineThickness="1"
                                            Placement="Bottom"
                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                           Visibility="Collapsed" />
+                                           Visibility="Collapsed"/>
                             <TabPanel x:Name="HeaderPanel"
                                       IsItemsHost="true"
-                                      KeyboardNavigation.TabIndex="1" />
+                                      KeyboardNavigation.TabIndex="1"/>
                         </Grid>
                         <Border x:Name="ContentPanel"
                                 Grid.Row="1"
@@ -842,61 +842,61 @@
                                                   Margin="{TemplateBinding Padding}"
                                                   ContentSource="SelectedContent"
                                                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                                  UseLayoutRounding="False" />
+                                                  UseLayoutRounding="False"/>
                             </crystal:TransitioningContentControl>
                         </Border>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="crystal:TabControlHelper.Underlined" Value="TabPanel">
-                            <Setter TargetName="Underline" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="Underline" Property="Visibility" Value="Visible"/>
                         </Trigger>
                         <Trigger Property="TabStripPlacement" Value="Bottom">
-                            <Setter TargetName="ContentPanel" Property="Grid.Row" Value="0" />
-                            <Setter TargetName="HeaderPanelGrid" Property="Grid.Row" Value="1" />
-                            <Setter TargetName="HeaderPanelGrid" Property="Margin" Value="2 0 2 2" />
-                            <Setter TargetName="RowDefinition0" Property="Height" Value="*" />
-                            <Setter TargetName="RowDefinition1" Property="Height" Value="Auto" />
-                            <Setter TargetName="Underline" Property="Placement" Value="Top" />
+                            <Setter TargetName="ContentPanel" Property="Grid.Row" Value="0"/>
+                            <Setter TargetName="HeaderPanelGrid" Property="Grid.Row" Value="1"/>
+                            <Setter TargetName="HeaderPanelGrid" Property="Margin" Value="2 0 2 2"/>
+                            <Setter TargetName="RowDefinition0" Property="Height" Value="*"/>
+                            <Setter TargetName="RowDefinition1" Property="Height" Value="Auto"/>
+                            <Setter TargetName="Underline" Property="Placement" Value="Top"/>
                         </Trigger>
                         <Trigger Property="TabStripPlacement" Value="Left">
-                            <Setter TargetName="ColumnDefinition0" Property="Width" Value="Auto" />
-                            <Setter TargetName="ColumnDefinition1" Property="Width" Value="*" />
-                            <Setter TargetName="ContentPanel" Property="Grid.Column" Value="1" />
-                            <Setter TargetName="ContentPanel" Property="Grid.Row" Value="0" />
-                            <Setter TargetName="HeaderPanelGrid" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="HeaderPanelGrid" Property="Grid.Row" Value="0" />
-                            <Setter TargetName="HeaderPanelGrid" Property="Margin" Value="2 2 0 2" />
-                            <Setter TargetName="RowDefinition0" Property="Height" Value="*" />
-                            <Setter TargetName="RowDefinition1" Property="Height" Value="0" />
-                            <Setter TargetName="Underline" Property="Placement" Value="Right" />
+                            <Setter TargetName="ColumnDefinition0" Property="Width" Value="Auto"/>
+                            <Setter TargetName="ColumnDefinition1" Property="Width" Value="*"/>
+                            <Setter TargetName="ContentPanel" Property="Grid.Column" Value="1"/>
+                            <Setter TargetName="ContentPanel" Property="Grid.Row" Value="0"/>
+                            <Setter TargetName="HeaderPanelGrid" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="HeaderPanelGrid" Property="Grid.Row" Value="0"/>
+                            <Setter TargetName="HeaderPanelGrid" Property="Margin" Value="2 2 0 2"/>
+                            <Setter TargetName="RowDefinition0" Property="Height" Value="*"/>
+                            <Setter TargetName="RowDefinition1" Property="Height" Value="0"/>
+                            <Setter TargetName="Underline" Property="Placement" Value="Right"/>
                         </Trigger>
                         <Trigger Property="TabStripPlacement" Value="Right">
-                            <Setter TargetName="ColumnDefinition0" Property="Width" Value="*" />
-                            <Setter TargetName="ColumnDefinition1" Property="Width" Value="Auto" />
-                            <Setter TargetName="ContentPanel" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="ContentPanel" Property="Grid.Row" Value="0" />
-                            <Setter TargetName="HeaderPanelGrid" Property="Grid.Column" Value="1" />
-                            <Setter TargetName="HeaderPanelGrid" Property="Grid.Row" Value="0" />
-                            <Setter TargetName="HeaderPanelGrid" Property="Margin" Value="0 2 2 2" />
-                            <Setter TargetName="RowDefinition0" Property="Height" Value="*" />
-                            <Setter TargetName="RowDefinition1" Property="Height" Value="0" />
-                            <Setter TargetName="Underline" Property="Placement" Value="Left" />
+                            <Setter TargetName="ColumnDefinition0" Property="Width" Value="*"/>
+                            <Setter TargetName="ColumnDefinition1" Property="Width" Value="Auto"/>
+                            <Setter TargetName="ContentPanel" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="ContentPanel" Property="Grid.Row" Value="0"/>
+                            <Setter TargetName="HeaderPanelGrid" Property="Grid.Column" Value="1"/>
+                            <Setter TargetName="HeaderPanelGrid" Property="Grid.Row" Value="0"/>
+                            <Setter TargetName="HeaderPanelGrid" Property="Margin" Value="0 2 2 2"/>
+                            <Setter TargetName="RowDefinition0" Property="Height" Value="*"/>
+                            <Setter TargetName="RowDefinition1" Property="Height" Value="0"/>
+                            <Setter TargetName="Underline" Property="Placement" Value="Left"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="crystal:TabControlHelper.Transition" Value="Left" />
+        <Setter Property="crystal:TabControlHelper.Transition" Value="Left"/>
     </Style>
 
 
     <Style x:Key="Crystal.Styles.TabControl.ColorPicker"
            BasedOn="{StaticResource Crystal.Styles.TabControl}"
            TargetType="TabControl">
-        <Setter Property="crystal:HeaderedControlHelper.HeaderFontSize" Value="{DynamicResource Crystal.Font.Size.ColorPicker.TabItemHeader}" />
+        <Setter Property="crystal:HeaderedControlHelper.HeaderFontSize" Value="{DynamicResource Crystal.Font.Size.ColorPicker.TabItemHeader}"/>
     </Style>
 
 </ResourceDictionary>

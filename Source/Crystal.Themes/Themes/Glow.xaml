@@ -10,7 +10,7 @@
   <system:Double x:Key="Crystal.Themes.Glow.ShadowOpacity">0.3</system:Double>
   <BlurEffect x:Key="Crystal.Themes.Glow.GlowBlurEffect"
                 Radius="3"
-                options:Freeze="True" />
+                options:Freeze="True"/>
 
   <ControlTemplate x:Key="Crystal.Themes.Glow.TopGlowTemplate" TargetType="{x:Type controls:Glow}">
     <Border x:Name="GlowBorder"
@@ -22,14 +22,14 @@
                 SnapsToDevicePixels="True">
       <Border.OpacityMask>
         <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1" options:Freeze="True">
-          <GradientStop Offset="0" Color="Transparent" />
-          <GradientStop Offset="1" Color="Black" />
+          <GradientStop Offset="0" Color="Transparent"/>
+          <GradientStop Offset="1" Color="Black"/>
         </LinearGradientBrush>
       </Border.OpacityMask>
     </Border>
     <ControlTemplate.Triggers>
       <Trigger Property="BorderThickness" Value="0">
-        <Setter TargetName="GlowBorder" Property="Opacity" Value="{StaticResource Crystal.Themes.Glow.ShadowOpacity}" />
+        <Setter TargetName="GlowBorder" Property="Opacity" Value="{StaticResource Crystal.Themes.Glow.ShadowOpacity}"/>
       </Trigger>
     </ControlTemplate.Triggers>
   </ControlTemplate>
@@ -44,14 +44,14 @@
                 SnapsToDevicePixels="True">
       <Border.OpacityMask>
         <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1" options:Freeze="True">
-          <GradientStop Offset="0" Color="Black" />
-          <GradientStop Offset="1" Color="Transparent" />
+          <GradientStop Offset="0" Color="Black"/>
+          <GradientStop Offset="1" Color="Transparent"/>
         </LinearGradientBrush>
       </Border.OpacityMask>
     </Border>
     <ControlTemplate.Triggers>
       <Trigger Property="BorderThickness" Value="0">
-        <Setter TargetName="GlowBorder" Property="Opacity" Value="{StaticResource Crystal.Themes.Glow.ShadowOpacity}" />
+        <Setter TargetName="GlowBorder" Property="Opacity" Value="{StaticResource Crystal.Themes.Glow.ShadowOpacity}"/>
       </Trigger>
     </ControlTemplate.Triggers>
   </ControlTemplate>
@@ -66,14 +66,14 @@
                 SnapsToDevicePixels="True">
       <Border.OpacityMask>
         <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5" options:Freeze="True">
-          <GradientStop Offset="0" Color="Transparent" />
-          <GradientStop Offset="1" Color="Black" />
+          <GradientStop Offset="0" Color="Transparent"/>
+          <GradientStop Offset="1" Color="Black"/>
         </LinearGradientBrush>
       </Border.OpacityMask>
     </Border>
     <ControlTemplate.Triggers>
       <Trigger Property="BorderThickness" Value="0">
-        <Setter TargetName="GlowBorder" Property="Opacity" Value="{StaticResource Crystal.Themes.Glow.ShadowOpacity}" />
+        <Setter TargetName="GlowBorder" Property="Opacity" Value="{StaticResource Crystal.Themes.Glow.ShadowOpacity}"/>
       </Trigger>
     </ControlTemplate.Triggers>
   </ControlTemplate>
@@ -88,29 +88,29 @@
                 SnapsToDevicePixels="True">
       <Border.OpacityMask>
         <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5" options:Freeze="True">
-          <GradientStop Offset="0" Color="Black" />
-          <GradientStop Offset="1" Color="Transparent" />
+          <GradientStop Offset="0" Color="Black"/>
+          <GradientStop Offset="1" Color="Transparent"/>
         </LinearGradientBrush>
       </Border.OpacityMask>
     </Border>
     <ControlTemplate.Triggers>
       <Trigger Property="BorderThickness" Value="0">
-        <Setter TargetName="GlowBorder" Property="Opacity" Value="{StaticResource Crystal.Themes.Glow.ShadowOpacity}" />
+        <Setter TargetName="GlowBorder" Property="Opacity" Value="{StaticResource Crystal.Themes.Glow.ShadowOpacity}"/>
       </Trigger>
     </ControlTemplate.Triggers>
   </ControlTemplate>
 
   <Style TargetType="{x:Type controls:Glow}">
-    <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource Self}, Path=GlowBrush}" />
-    <Setter Property="HorizontalAlignment" Value="Stretch" />
-    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-    <Setter Property="Template" Value="{StaticResource Crystal.Themes.Glow.TopGlowTemplate}" />
-    <Setter Property="UseLayoutRounding" Value="True" />
-    <Setter Property="VerticalAlignment" Value="Stretch" />
-    <Setter Property="VerticalContentAlignment" Value="Stretch" />
+    <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource Self}, Path=GlowBrush}"/>
+    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+    <Setter Property="Template" Value="{StaticResource Crystal.Themes.Glow.TopGlowTemplate}"/>
+    <Setter Property="UseLayoutRounding" Value="True"/>
+    <Setter Property="VerticalAlignment" Value="Stretch"/>
+    <Setter Property="VerticalContentAlignment" Value="Stretch"/>
     <Style.Triggers>
       <Trigger Property="IsGlow" Value="False">
-        <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource Self}, Path=NonActiveGlowBrush}" />
+        <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource Self}, Path=NonActiveGlowBrush}"/>
       </Trigger>
       <Trigger Property="Direction" Value="Bottom">
         <Setter Property="Template" Value="{StaticResource Crystal.Themes.Glow.BottomGlowTemplate}"/>

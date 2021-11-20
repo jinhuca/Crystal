@@ -64,7 +64,7 @@ namespace Crystal.Themes.Controls
                                       new PropertyMetadata(default(UIElement)));
 
     /// <summary>
-    /// Gets or sets the <see cref="T:System.Windows.UIElement" /> that this <see cref="T:System.Windows.Controls.Primitives.Popup" /> object is reserving space for.
+    /// Gets or sets the <see cref="T:System.Windows.UIElement"/> that this <see cref="T:System.Windows.Controls.Primitives.Popup"/> object is reserving space for.
     /// </summary>
     public UIElement? AdornedElement
     {

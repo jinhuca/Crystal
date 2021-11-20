@@ -17,7 +17,7 @@ namespace Crystal.Themes.Automation.Peers
       return "ToggleSwitch";
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     protected override AutomationControlType GetAutomationControlTypeCore()
     {
       return AutomationControlType.Button;

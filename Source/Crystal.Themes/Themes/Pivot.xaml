@@ -5,64 +5,64 @@
     <DataTemplate x:Key="Crystal.Templates.PivotHeader">
         <TextBlock FontFamily="{DynamicResource Crystal.Fonts.Family.Header}"
                    FontSize="{DynamicResource Crystal.Font.Size.Header}"
-                   Text="{Binding}" />
+                   Text="{Binding}"/>
     </DataTemplate>
 
     <DataTemplate x:Key="Crystal.Templates.PivotItemHeader" DataType="{x:Type crystal:PivotItem}">
         <TextBlock Margin="0 0 25 0"
                    FontFamily="{DynamicResource Crystal.Fonts.Family.Header}"
                    FontSize="{DynamicResource SubCrystal.Sizes.HeaderFont}"
-                   Text="{Binding}" />
+                   Text="{Binding}"/>
     </DataTemplate>
 
     <Style x:Key="Crystal.Styles.ListViewItem.Pivot" TargetType="{x:Type ListViewItem}">
-        <Setter Property="Border.BorderBrush" Value="{DynamicResource Crystal.Brushes.Gray1}" />
-        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
-        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Setter Property="Margin" Value="0" />
-        <Setter Property="MinHeight" Value="25" />
+        <Setter Property="Border.BorderBrush" Value="{DynamicResource Crystal.Brushes.Gray1}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeForeground}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="MinHeight" Value="25"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ListViewItem}">
                     <Border x:Name="Bd" SnapsToDevicePixels="true">
                         <Grid>
-                            <GridViewRowPresenter VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                            <GridViewRowPresenter VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                             <ContentPresenter x:Name="contentPresenter"
                                               Opacity="0.35"
-                                              Visibility="Collapsed" />
+                                              Visibility="Collapsed"/>
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="GridView.ColumnCollection" Value="{x:Null}">
-                            <Setter TargetName="contentPresenter" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="contentPresenter" Property="Visibility" Value="Visible"/>
                         </Trigger>
                         <Trigger Property="IsSelected" Value="true">
-                            <Setter TargetName="contentPresenter" Property="Opacity" Value="1" />
+                            <Setter TargetName="contentPresenter" Property="Opacity" Value="1"/>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="contentPresenter" Property="Opacity" Value="1" />
+                            <Setter TargetName="contentPresenter" Property="Opacity" Value="1"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
     </Style>
 
     <Style TargetType="{x:Type crystal:Pivot}">
-        <Setter Property="HeaderTemplate" Value="{StaticResource Crystal.Templates.PivotHeader}" />
+        <Setter Property="HeaderTemplate" Value="{StaticResource Crystal.Templates.PivotHeader}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type crystal:Pivot}">
                     <Grid x:Name="root">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <ContentPresenter Grid.Row="0"
                                           Content="{Binding Header, RelativeSource={RelativeSource AncestorType={x:Type crystal:Pivot}}}"
-                                          ContentTemplate="{TemplateBinding HeaderTemplate}" />
+                                          ContentTemplate="{TemplateBinding HeaderTemplate}"/>
                         <ListView x:Name="PART_Headers"
                                   Grid.Row="1"
                                   Background="{x:Null}"
@@ -74,7 +74,7 @@
                                   Style="{x:Null}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <StackPanel IsItemsHost="True" Orientation="Horizontal" />
+                                    <StackPanel IsItemsHost="True" Orientation="Horizontal"/>
                                 </ItemsPanelTemplate>
                             </ItemsControl.ItemsPanel>
                         </ListView>
@@ -89,7 +89,7 @@
                                           ItemsSource="{Binding Items, RelativeSource={RelativeSource AncestorType={x:Type crystal:Pivot}}}">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
-                                        <StackPanel IsItemsHost="True" Orientation="Horizontal" />
+                                        <StackPanel IsItemsHost="True" Orientation="Horizontal"/>
                                     </ItemsPanelTemplate>
                                 </ItemsControl.ItemsPanel>
                             </ItemsControl>
@@ -103,7 +103,7 @@
                                                               KeyTime="0:0:0.6"
                                                               Value="0">
                                             <EasingDoubleKeyFrame.EasingFunction>
-                                                <CircleEase />
+                                                <CircleEase/>
                                             </EasingDoubleKeyFrame.EasingFunction>
                                         </EasingDoubleKeyFrame>
                                     </DoubleAnimationUsingKeyFrames>
@@ -118,14 +118,14 @@
     </Style>
 
     <Style TargetType="{x:Type crystal:PivotItem}">
-        <Setter Property="HeaderTemplate" Value="{StaticResource Crystal.Templates.PivotItemHeader}" />
-        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="HeaderTemplate" Value="{StaticResource Crystal.Templates.PivotItemHeader}"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type crystal:PivotItem}">
                     <ContentPresenter Content="{TemplateBinding Header}"
                                       ContentTemplate="{TemplateBinding HeaderTemplate}"
-                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

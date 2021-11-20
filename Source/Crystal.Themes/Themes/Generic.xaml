@@ -5,80 +5,80 @@
                     xmlns:theming="clr-namespace:Crystal.Themes.Theming">
 
   <ResourceDictionary.MergedDictionaries>
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Fonts.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/Underline.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/Badged.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/DateTimePicker.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/DropDownButton.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/FlipView.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/Flyout.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/FlyoutsControl.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/FontIcon.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/PathIcon.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/CrystalAnimatedSingleRowTabControl.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/CrystalAnimatedTabControl.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/CrystalContentControl.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/CrystalHeader.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/CrystalProgressBar.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/CrystalTabControl.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/CrystalTabItem.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/CrystalWindow.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/NumericUpDown.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/Pivot.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/ProgressRing.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/RangeSlider.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/RevealImage.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/SplitButton.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/SplitView.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/HamburgerMenu.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/Tile.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/ToggleSwitch.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/TransitioningContentControl.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/WindowButtonCommands.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/WindowCommands.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/HotKeyBox.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/ContentControlEx.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/Dialogs/CrystalDialogBase.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/ColorPicker/ColorEyeDropper.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/ColorPicker/ColorCanvas.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/ColorPicker/ColorPalette.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/ColorPicker/ColorPicker.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/MultiSelectionComboBox.xaml" />
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Fonts.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/Underline.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/Badged.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/DateTimePicker.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/DropDownButton.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/FlipView.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/Flyout.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/FlyoutsControl.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/FontIcon.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/PathIcon.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/CrystalAnimatedSingleRowTabControl.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/CrystalAnimatedTabControl.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/CrystalContentControl.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/CrystalHeader.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/CrystalProgressBar.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/CrystalTabControl.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/CrystalTabItem.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/CrystalWindow.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/NumericUpDown.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/Pivot.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/ProgressRing.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/RangeSlider.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/RevealImage.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/SplitButton.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/SplitView.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/HamburgerMenu.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/Tile.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/ToggleSwitch.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/TransitioningContentControl.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/WindowButtonCommands.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/WindowCommands.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/HotKeyBox.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/ContentControlEx.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/Dialogs/CrystalDialogBase.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/ColorPicker/ColorEyeDropper.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/ColorPicker/ColorCanvas.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/ColorPicker/ColorPalette.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/ColorPicker/ColorPicker.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/MultiSelectionComboBox.xaml"/>
     <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/BadgedEx.xaml"/>
     <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/Glow.xaml"/>
     <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Themes/TabControlEx.xaml"/>
 
   </ResourceDictionary.MergedDictionaries>
 
-  <theming:CrystalLibraryThemeProvider x:Key="{x:Static theming:CrystalLibraryThemeProvider.DefaultInstance}" />
+  <theming:CrystalLibraryThemeProvider x:Key="{x:Static theming:CrystalLibraryThemeProvider.DefaultInstance}"/>
 
   <!--  set up default styles for our custom controls  -->
 
-  <Style BasedOn="{StaticResource Crystal.Styles.NumericUpDown}" TargetType="{x:Type crystal:NumericUpDown}" />
-  <Style BasedOn="{StaticResource Crystal.Styles.Flyout}" TargetType="{x:Type crystal:Flyout}" />
-  <Style BasedOn="{StaticResource Crystal.Styles.ToggleSwitch}" TargetType="{x:Type crystal:ToggleSwitch}" />
-  <Style BasedOn="{StaticResource Crystal.Styles.ContentControlEx}" TargetType="{x:Type crystal:ContentControlEx}" />
-  <Style BasedOn="{StaticResource Crystal.Styles.CrystalThumbContentControl}" TargetType="{x:Type crystal:CrystalThumbContentControl}" />
-  <Style BasedOn="{StaticResource Crystal.Styles.WindowCommandsItem}" TargetType="{x:Type crystal:WindowCommandsItem}" />
-  <Style BasedOn="{StaticResource Crystal.Styles.WindowCommands}" TargetType="{x:Type crystal:WindowCommands}" />
-  <Style BasedOn="{StaticResource Crystal.Styles.WindowButtonCommands.Win10}" TargetType="{x:Type crystal:WindowButtonCommands}" />
-  <Style BasedOn="{StaticResource Crystal.Styles.HamburgerMenuListBox}" TargetType="{x:Type crystal:HamburgerMenuListBox}" />
-  <Style BasedOn="{StaticResource Crystal.Styles.HamburgerMenu}" TargetType="{x:Type crystal:HamburgerMenu}" />
-  <Style BasedOn="{StaticResource Crystal.Styles.CrystalHeader}" TargetType="{x:Type crystal:CrystalHeader}" />
+  <Style BasedOn="{StaticResource Crystal.Styles.NumericUpDown}" TargetType="{x:Type crystal:NumericUpDown}"/>
+  <Style BasedOn="{StaticResource Crystal.Styles.Flyout}" TargetType="{x:Type crystal:Flyout}"/>
+  <Style BasedOn="{StaticResource Crystal.Styles.ToggleSwitch}" TargetType="{x:Type crystal:ToggleSwitch}"/>
+  <Style BasedOn="{StaticResource Crystal.Styles.ContentControlEx}" TargetType="{x:Type crystal:ContentControlEx}"/>
+  <Style BasedOn="{StaticResource Crystal.Styles.CrystalThumbContentControl}" TargetType="{x:Type crystal:CrystalThumbContentControl}"/>
+  <Style BasedOn="{StaticResource Crystal.Styles.WindowCommandsItem}" TargetType="{x:Type crystal:WindowCommandsItem}"/>
+  <Style BasedOn="{StaticResource Crystal.Styles.WindowCommands}" TargetType="{x:Type crystal:WindowCommands}"/>
+  <Style BasedOn="{StaticResource Crystal.Styles.WindowButtonCommands.Win10}" TargetType="{x:Type crystal:WindowButtonCommands}"/>
+  <Style BasedOn="{StaticResource Crystal.Styles.HamburgerMenuListBox}" TargetType="{x:Type crystal:HamburgerMenuListBox}"/>
+  <Style BasedOn="{StaticResource Crystal.Styles.HamburgerMenu}" TargetType="{x:Type crystal:HamburgerMenu}"/>
+  <Style BasedOn="{StaticResource Crystal.Styles.CrystalHeader}" TargetType="{x:Type crystal:CrystalHeader}"/>
   <Style BasedOn="{StaticResource Crystal.Styles.CrystalDialogBase}" TargetType="{x:Type dialogs:CrystalDialogBase}"/>
-  <Style BasedOn="{StaticResource Crystal.Styles.RangeSlider.Win10}" TargetType="{x:Type crystal:RangeSlider}" />
-  <Style BasedOn="{StaticResource Crystal.Styles.RevealImage}" TargetType="{x:Type crystal:RevealImage}" />
-  <Style BasedOn="{StaticResource Crystal.Styles.CrystalProgressBar}" TargetType="{x:Type crystal:CrystalProgressBar}" />
-  <Style BasedOn="{StaticResource Crystal.Styles.FlipViewItem}" TargetType="{x:Type crystal:FlipViewItem}" />
-  <Style BasedOn="{StaticResource Crystal.Styles.FlipView}" TargetType="{x:Type crystal:FlipView}" />
+  <Style BasedOn="{StaticResource Crystal.Styles.RangeSlider.Win10}" TargetType="{x:Type crystal:RangeSlider}"/>
+  <Style BasedOn="{StaticResource Crystal.Styles.RevealImage}" TargetType="{x:Type crystal:RevealImage}"/>
+  <Style BasedOn="{StaticResource Crystal.Styles.CrystalProgressBar}" TargetType="{x:Type crystal:CrystalProgressBar}"/>
+  <Style BasedOn="{StaticResource Crystal.Styles.FlipViewItem}" TargetType="{x:Type crystal:FlipViewItem}"/>
+  <Style BasedOn="{StaticResource Crystal.Styles.FlipView}" TargetType="{x:Type crystal:FlipView}"/>
   <!--#region ColorPicker-->
-  <Style BasedOn="{StaticResource Crystal.Styles.ColorCanvas}" TargetType="{x:Type crystal:ColorCanvas}" />
-  <Style BasedOn="{StaticResource Crystal.Styles.ColorEyeDropper}" TargetType="{x:Type crystal:ColorEyeDropper}" />
-  <Style BasedOn="{StaticResource Crystal.Styles.ColorPalette}" TargetType="{x:Type crystal:ColorPalette}" />
-  <Style BasedOn="{StaticResource Crystal.Styles.ColorPicker}" TargetType="{x:Type crystal:ColorPicker}" />
+  <Style BasedOn="{StaticResource Crystal.Styles.ColorCanvas}" TargetType="{x:Type crystal:ColorCanvas}"/>
+  <Style BasedOn="{StaticResource Crystal.Styles.ColorEyeDropper}" TargetType="{x:Type crystal:ColorEyeDropper}"/>
+  <Style BasedOn="{StaticResource Crystal.Styles.ColorPalette}" TargetType="{x:Type crystal:ColorPalette}"/>
+  <Style BasedOn="{StaticResource Crystal.Styles.ColorPicker}" TargetType="{x:Type crystal:ColorPicker}"/>
   <!--#endregion-->
-  <Style BasedOn="{StaticResource Crystal.Styles.MultiSelectionComboBox}" TargetType="{x:Type crystal:MultiSelectionComboBox}" />
+  <Style BasedOn="{StaticResource Crystal.Styles.MultiSelectionComboBox}" TargetType="{x:Type crystal:MultiSelectionComboBox}"/>
 
-  <!--<Style BasedOn="{StaticResource Crystal.Styles.BadgedEx}" TargetType="{x:Type controls:BadgedEx}" />-->
-  <!--<Style BasedOn="{StaticResource Crystal.Styles.TabControlEx}" TargetType="{x:Type controls:TabControlEx}" />-->
+  <!--<Style BasedOn="{StaticResource Crystal.Styles.BadgedEx}" TargetType="{x:Type controls:BadgedEx}"/>-->
+  <!--<Style BasedOn="{StaticResource Crystal.Styles.TabControlEx}" TargetType="{x:Type controls:TabControlEx}"/>-->
 </ResourceDictionary>

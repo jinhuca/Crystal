@@ -122,7 +122,7 @@ namespace Crystal.Themes.Standard
     }
 
 #if OWNDPISCALE
-    /// <summary>Stores DPI information from which a <see cref="T:System.Windows.Media.Visual" /> or <see cref="T:System.Windows.UIElement" /> is rendered.</summary>
+    /// <summary>Stores DPI information from which a <see cref="T:System.Windows.Media.Visual"/> or <see cref="T:System.Windows.UIElement"/> is rendered.</summary>
     public struct DpiScale
     {
         private readonly double dpiScaleX;
@@ -149,7 +149,7 @@ namespace Crystal.Themes.Standard
         }
 
         /// <summary>Get or sets the PixelsPerDip at which the text should be rendered.</summary>
-        /// <returns>The current <see cref="P:System.Windows.DpiScale.PixelsPerDip" /> value.</returns>
+        /// <returns>The current <see cref="P:System.Windows.DpiScale.PixelsPerDip"/> value.</returns>
         public double PixelsPerDip
         {
             get
@@ -178,7 +178,7 @@ namespace Crystal.Themes.Standard
             }
         }
 
-        /// <summary>Initializes a new instance of the <see cref="T:System.Windows.DpiScale" /> structure.</summary>
+        /// <summary>Initializes a new instance of the <see cref="T:System.Windows.DpiScale"/> structure.</summary>
         /// <param name="dpiScaleX">The DPI scale on the X axis.</param>
         /// <param name="dpiScaleY">The DPI scale on the Y axis. </param>
         public DpiScale(double dpiScaleX, double dpiScaleY)

@@ -685,7 +685,7 @@ namespace Crystal.Themes.Controls
                                         new PropertyMetadata(BooleanBoxes.FalseBox));
 
         /// <summary>
-        /// Gets or sets whether the DropDown should close after a color was selected from a <see cref="ColorPalette"/>. The default is <see langword="false" />
+        /// Gets or sets whether the DropDown should close after a color was selected from a <see cref="ColorPalette"/>. The default is <see langword="false"/>
         /// </summary>
         public bool CloseOnSelectedColorChanged
         {

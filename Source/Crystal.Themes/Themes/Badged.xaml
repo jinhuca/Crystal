@@ -3,17 +3,17 @@
                     xmlns:crystal="clr-namespace:Crystal.Themes.Controls"
                     xmlns:crystalConverters="clr-namespace:Crystal.Themes.Converters">
 
-  <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-  <SineEase x:Key="BadgeEase" EasingMode="EaseOut" />
+  <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+  <SineEase x:Key="BadgeEase" EasingMode="EaseOut"/>
   <Storyboard x:Key="BadgeChangedStoryboard">
     <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)">
-      <EasingDoubleKeyFrame KeyTime="0" Value="1.4" />
+      <EasingDoubleKeyFrame KeyTime="0" Value="1.4"/>
       <EasingDoubleKeyFrame EasingFunction="{StaticResource BadgeEase}"
                             KeyTime="0:0:0.3"
                             Value="1"/>
     </DoubleAnimationUsingKeyFrames>
     <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)">
-      <EasingDoubleKeyFrame KeyTime="0" Value="1.4" />
+      <EasingDoubleKeyFrame KeyTime="0" Value="1.4"/>
       <EasingDoubleKeyFrame EasingFunction="{StaticResource BadgeEase}"
                             KeyTime="0:0:0.3"
                             Value="1"/>

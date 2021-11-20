@@ -4,28 +4,28 @@
                     xmlns:crystalConverters="clr-namespace:Crystal.Themes.Converters"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
-    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-    <crystalConverters:ThicknessBindingConverter x:Key="ThicknessBindingConverter" />
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    <crystalConverters:ThicknessBindingConverter x:Key="ThicknessBindingConverter"/>
 
     <Thickness x:Key="ExpanderHeaderThemePadding">3</Thickness>
     <system:Double x:Key="ExpanderHeaderThemeFontSize">16</system:Double>
     <system:Double x:Key="ExpanderToggleButtonThemeSize">18</system:Double>
 
     <Style x:Key="Crystal.Styles.ToggleButton.ExpanderHeader.Base.VisualStudio" TargetType="{x:Type ToggleButton}">
-        <Setter Property="Background" Value="Transparent" />
-        <Setter Property="BorderBrush" Value="Transparent" />
-        <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-        <Setter Property="Margin" Value="0" />
-        <Setter Property="Padding" Value="{DynamicResource ExpanderHeaderThemePadding}" />
-        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Padding" Value="{DynamicResource ExpanderHeaderThemePadding}"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
     </Style>
 
     <Style x:Key="Crystal.Styles.ToggleButton.ExpanderHeader.Right.VisualStudio"
            BasedOn="{StaticResource Crystal.Styles.ToggleButton.ExpanderHeader.Base.VisualStudio}"
            TargetType="{x:Type ToggleButton}">
-        <Setter Property="BorderThickness" Value="0 0 2 0" />
-        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="BorderThickness" Value="0 0 2 0"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ToggleButton}">
@@ -37,8 +37,8 @@
                               Background="Transparent"
                               SnapsToDevicePixels="False">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
                             <Grid x:Name="ArrowGrid"
                                   Width="{DynamicResource ExpanderToggleButtonThemeSize}"
@@ -52,7 +52,7 @@
                                     <TransformGroup>
                                         <TransformGroup.Children>
                                             <TransformCollection>
-                                                <RotateTransform Angle="-90" />
+                                                <RotateTransform Angle="-90"/>
                                             </TransformCollection>
                                         </TransformGroup.Children>
                                     </TransformGroup>
@@ -64,7 +64,7 @@
                                       IsHitTestVisible="False"
                                       SnapsToDevicePixels="False"
                                       Stroke="{DynamicResource Crystal.Brushes.Border.Normal}"
-                                      StrokeThickness="2" />
+                                      StrokeThickness="2"/>
                             </Grid>
                             <crystal:ContentControlEx Grid.Row="1"
                                                   Margin="0"
@@ -76,32 +76,32 @@
                                                   ContentTemplate="{TemplateBinding ContentTemplate}"
                                                   ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
                                                   RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}"
-                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True">
-                            <Setter TargetName="Arrow" Property="Data" Value="M 1,4.5  L 4.5,1  L 8,4.5" />
+                            <Setter TargetName="Arrow" Property="Data" Value="M 1,4.5  L 4.5,1  L 8,4.5"/>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Arrow" Property="Stroke" Value="{DynamicResource Crystal.Brushes.Foreground}" />
-                            <Setter TargetName="ArrowGrid" Property="Background" Value="{DynamicResource Crystal.Brushes.BackgroundHighlighted}" />
+                            <Setter TargetName="Arrow" Property="Stroke" Value="{DynamicResource Crystal.Brushes.Foreground}"/>
+                            <Setter TargetName="ArrowGrid" Property="Background" Value="{DynamicResource Crystal.Brushes.BackgroundHighlighted}"/>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="ArrowGrid" Property="Background" Value="{DynamicResource Crystal.Brushes.BackgroundSelected}" />
+                            <Setter TargetName="ArrowGrid" Property="Background" Value="{DynamicResource Crystal.Brushes.BackgroundSelected}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
     </Style>
 
     <Style x:Key="Crystal.Styles.ToggleButton.ExpanderHeader.Up.VisualStudio"
            BasedOn="{StaticResource Crystal.Styles.ToggleButton.ExpanderHeader.Base.VisualStudio}"
            TargetType="{x:Type ToggleButton}">
-        <Setter Property="BorderThickness" Value="0 2 0 0" />
-        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="BorderThickness" Value="0 2 0 0"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ToggleButton}">
@@ -112,8 +112,8 @@
                               Background="Transparent"
                               SnapsToDevicePixels="False">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <crystal:ContentControlEx Grid.Column="0"
                                                   Margin="0"
@@ -125,7 +125,7 @@
                                                   ContentTemplate="{TemplateBinding ContentTemplate}"
                                                   ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
                                                   RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}"
-                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                             <Grid x:Name="ArrowGrid"
                                   Grid.Column="1"
                                   Width="{DynamicResource ExpanderToggleButtonThemeSize}"
@@ -139,7 +139,7 @@
                                     <TransformGroup>
                                         <TransformGroup.Children>
                                             <TransformCollection>
-                                                <RotateTransform Angle="180" />
+                                                <RotateTransform Angle="180"/>
                                             </TransformCollection>
                                         </TransformGroup.Children>
                                     </TransformGroup>
@@ -150,32 +150,32 @@
                                       Data="M 1,1.5 L 4.5,5 L 8,1.5"
                                       SnapsToDevicePixels="False"
                                       Stroke="{DynamicResource Crystal.Brushes.Border.Normal}"
-                                      StrokeThickness="2" />
+                                      StrokeThickness="2"/>
                             </Grid>
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True">
-                            <Setter TargetName="Arrow" Property="Data" Value="M 1,4.5  L 4.5,1  L 8,4.5" />
+                            <Setter TargetName="Arrow" Property="Data" Value="M 1,4.5  L 4.5,1  L 8,4.5"/>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Arrow" Property="Stroke" Value="{DynamicResource Crystal.Brushes.Foreground}" />
-                            <Setter TargetName="ArrowGrid" Property="Background" Value="{DynamicResource Crystal.Brushes.BackgroundHighlighted}" />
+                            <Setter TargetName="Arrow" Property="Stroke" Value="{DynamicResource Crystal.Brushes.Foreground}"/>
+                            <Setter TargetName="ArrowGrid" Property="Background" Value="{DynamicResource Crystal.Brushes.BackgroundHighlighted}"/>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="ArrowGrid" Property="Background" Value="{DynamicResource Crystal.Brushes.BackgroundSelected}" />
+                            <Setter TargetName="ArrowGrid" Property="Background" Value="{DynamicResource Crystal.Brushes.BackgroundSelected}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
     </Style>
 
     <Style x:Key="Crystal.Styles.ToggleButton.ExpanderHeader.Left.VisualStudio"
            BasedOn="{StaticResource Crystal.Styles.ToggleButton.ExpanderHeader.Right.VisualStudio}"
            TargetType="{x:Type ToggleButton}">
-        <Setter Property="BorderThickness" Value="2 0 0 0" />
+        <Setter Property="BorderThickness" Value="2 0 0 0"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ToggleButton}">
@@ -186,8 +186,8 @@
                               Background="Transparent"
                               SnapsToDevicePixels="False">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
                             <Grid x:Name="ArrowGrid"
                                   Width="{DynamicResource ExpanderToggleButtonThemeSize}"
@@ -201,7 +201,7 @@
                                     <TransformGroup>
                                         <TransformGroup.Children>
                                             <TransformCollection>
-                                                <RotateTransform Angle="90" />
+                                                <RotateTransform Angle="90"/>
                                             </TransformCollection>
                                         </TransformGroup.Children>
                                     </TransformGroup>
@@ -212,7 +212,7 @@
                                       Data="M 1,1.5 L 4.5,5 L 8,1.5"
                                       SnapsToDevicePixels="False"
                                       Stroke="{DynamicResource Crystal.Brushes.Border.Normal}"
-                                      StrokeThickness="2" />
+                                      StrokeThickness="2"/>
                             </Grid>
                             <crystal:ContentControlEx Grid.Row="1"
                                                   Margin="0"
@@ -224,19 +224,19 @@
                                                   ContentTemplate="{TemplateBinding ContentTemplate}"
                                                   ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
                                                   RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}"
-                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True">
-                            <Setter TargetName="Arrow" Property="Data" Value="M 1,4.5  L 4.5,1  L 8,4.5" />
+                            <Setter TargetName="Arrow" Property="Data" Value="M 1,4.5  L 4.5,1  L 8,4.5"/>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Arrow" Property="Stroke" Value="{DynamicResource Crystal.Brushes.Foreground}" />
-                            <Setter TargetName="ArrowGrid" Property="Background" Value="{DynamicResource Crystal.Brushes.BackgroundHighlighted}" />
+                            <Setter TargetName="Arrow" Property="Stroke" Value="{DynamicResource Crystal.Brushes.Foreground}"/>
+                            <Setter TargetName="ArrowGrid" Property="Background" Value="{DynamicResource Crystal.Brushes.BackgroundHighlighted}"/>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="ArrowGrid" Property="Background" Value="{DynamicResource Crystal.Brushes.BackgroundSelected}" />
+                            <Setter TargetName="ArrowGrid" Property="Background" Value="{DynamicResource Crystal.Brushes.BackgroundSelected}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -247,7 +247,7 @@
     <Style x:Key="Crystal.Styles.ToggleButton.ExpanderHeader.Down.VisualStudio"
            BasedOn="{StaticResource Crystal.Styles.ToggleButton.ExpanderHeader.Up.VisualStudio}"
            TargetType="{x:Type ToggleButton}">
-        <Setter Property="BorderThickness" Value="0 0 0 2" />
+        <Setter Property="BorderThickness" Value="0 0 0 2"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ToggleButton}">
@@ -258,8 +258,8 @@
                               Background="Transparent"
                               SnapsToDevicePixels="False">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <crystal:ContentControlEx Grid.Column="0"
                                                   Margin="0"
@@ -271,7 +271,7 @@
                                                   ContentTemplate="{TemplateBinding ContentTemplate}"
                                                   ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
                                                   RecognizesAccessKey="{TemplateBinding crystal:ControlsHelper.RecognizesAccessKey}"
-                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                             <Grid x:Name="ArrowGrid"
                                   Grid.Column="1"
                                   Width="{DynamicResource ExpanderToggleButtonThemeSize}"
@@ -287,20 +287,20 @@
                                       Data="M 1,1.5 L 4.5,5 L 8,1.5"
                                       SnapsToDevicePixels="False"
                                       Stroke="{DynamicResource Crystal.Brushes.Border.Normal}"
-                                      StrokeThickness="2" />
+                                      StrokeThickness="2"/>
                             </Grid>
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True">
-                            <Setter TargetName="Arrow" Property="Data" Value="M 1,4.5  L 4.5,1  L 8,4.5" />
+                            <Setter TargetName="Arrow" Property="Data" Value="M 1,4.5  L 4.5,1  L 8,4.5"/>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Arrow" Property="Stroke" Value="{DynamicResource Crystal.Brushes.Foreground}" />
-                            <Setter TargetName="ArrowGrid" Property="Background" Value="{DynamicResource Crystal.Brushes.BackgroundHighlighted}" />
+                            <Setter TargetName="Arrow" Property="Stroke" Value="{DynamicResource Crystal.Brushes.Foreground}"/>
+                            <Setter TargetName="ArrowGrid" Property="Background" Value="{DynamicResource Crystal.Brushes.BackgroundHighlighted}"/>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="ArrowGrid" Property="Background" Value="{DynamicResource Crystal.Brushes.BackgroundSelected}" />
+                            <Setter TargetName="ArrowGrid" Property="Background" Value="{DynamicResource Crystal.Brushes.BackgroundSelected}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -310,13 +310,13 @@
 
     <Storyboard x:Key="Crystal.Storyboard.Expander.Expand.VS">
         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ExpandSite" Storyboard.TargetProperty="(UIElement.Visibility)">
-            <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
+            <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
         </ObjectAnimationUsingKeyFrames>
         <DoubleAnimation Storyboard.TargetName="ExpandSite"
                          Storyboard.TargetProperty="(UIElement.Opacity)"
                          From="0"
                          To="1"
-                         Duration="0:0:0.2" />
+                         Duration="0:0:0.2"/>
     </Storyboard>
 
     <Storyboard x:Key="Crystal.Storyboard.Expander.Collapse.VS">
@@ -324,19 +324,19 @@
                          Storyboard.TargetProperty="(UIElement.Opacity)"
                          From="1"
                          To="0"
-                         Duration="0:0:0.1" />
+                         Duration="0:0:0.1"/>
         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ExpandSite" Storyboard.TargetProperty="(UIElement.Visibility)">
-            <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{x:Static Visibility.Visible}" />
-            <DiscreteObjectKeyFrame KeyTime="0:0:0.1" Value="{x:Static Visibility.Collapsed}" />
+            <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{x:Static Visibility.Visible}"/>
+            <DiscreteObjectKeyFrame KeyTime="0:0:0.1" Value="{x:Static Visibility.Collapsed}"/>
         </ObjectAnimationUsingKeyFrames>
     </Storyboard>
 
     <Style x:Key="Crystal.Styles.Expander.VisualStudio" TargetType="{x:Type Expander}">
-        <Setter Property="Background" Value="{x:Null}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Border.Normal}" />
-        <Setter Property="BorderThickness" Value="2" />
-        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Foreground}" />
-        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Background" Value="{x:Null}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Border.Normal}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Foreground}"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Expander}">
@@ -344,7 +344,7 @@
                         <Rectangle x:Name="DisabledVisualElement"
                                    Fill="{DynamicResource Crystal.Brushes.Control.Disabled}"
                                    IsHitTestVisible="False"
-                                   Opacity="0" />
+                                   Opacity="0"/>
                         <DockPanel x:Name="ExpanderRoot">
                             <ToggleButton x:Name="ToggleSite"
                                           Padding="{TemplateBinding crystal:HeaderedControlHelper.HeaderMargin}"
@@ -363,7 +363,7 @@
                                           Foreground="{TemplateBinding crystal:HeaderedControlHelper.HeaderForeground}"
                                           IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
                                           SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                          Style="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ExpanderHelper.HeaderDownStyle)}" />
+                                          Style="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ExpanderHelper.HeaderDownStyle)}"/>
                             <Border x:Name="ExpandSite"
                                     HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                     VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
@@ -380,20 +380,20 @@
                                                   Content="{TemplateBinding Content}"
                                                   ContentTemplate="{TemplateBinding ContentTemplate}"
                                                   Cursor="{TemplateBinding Cursor}"
-                                                  UseLayoutRounding="False" />
+                                                  UseLayoutRounding="False"/>
                             </Border>
                         </DockPanel>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
-                                <VisualState x:Name="Normal" />
-                                <VisualState x:Name="MouseOver" />
+                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="MouseOver"/>
                                 <VisualState x:Name="Disabled">
                                     <Storyboard>
                                         <DoubleAnimationUsingKeyFrames Storyboard.TargetName="DisabledVisualElement" Storyboard.TargetProperty="Opacity">
-                                            <SplineDoubleKeyFrame KeyTime="0" Value="0.7" />
+                                            <SplineDoubleKeyFrame KeyTime="0" Value="0.7"/>
                                         </DoubleAnimationUsingKeyFrames>
                                         <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ExpanderRoot" Storyboard.TargetProperty="(UIElement.Opacity)">
-                                            <EasingDoubleKeyFrame KeyTime="0" Value="0.3" />
+                                            <EasingDoubleKeyFrame KeyTime="0" Value="0.3"/>
                                         </DoubleAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
@@ -403,56 +403,56 @@
                     <ControlTemplate.Triggers>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding IsExpanded, RelativeSource={RelativeSource Self}}" Value="True" />
-                                <Condition Binding="{Binding Path=(crystal:ExpanderHelper.ExpandStoryboard), RelativeSource={RelativeSource Self}}" Value="{x:Null}" />
+                                <Condition Binding="{Binding IsExpanded, RelativeSource={RelativeSource Self}}" Value="True"/>
+                                <Condition Binding="{Binding Path=(crystal:ExpanderHelper.ExpandStoryboard), RelativeSource={RelativeSource Self}}" Value="{x:Null}"/>
                             </MultiDataTrigger.Conditions>
-                            <Setter TargetName="ExpandSite" Property="Opacity" Value="1" />
-                            <Setter TargetName="ExpandSite" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="ExpandSite" Property="Opacity" Value="1"/>
+                            <Setter TargetName="ExpandSite" Property="Visibility" Value="Visible"/>
                         </MultiDataTrigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding IsExpanded, RelativeSource={RelativeSource Self}}" Value="False" />
-                                <Condition Binding="{Binding Path=(crystal:ExpanderHelper.CollapseStoryboard), RelativeSource={RelativeSource Self}}" Value="{x:Null}" />
+                                <Condition Binding="{Binding IsExpanded, RelativeSource={RelativeSource Self}}" Value="False"/>
+                                <Condition Binding="{Binding Path=(crystal:ExpanderHelper.CollapseStoryboard), RelativeSource={RelativeSource Self}}" Value="{x:Null}"/>
                             </MultiDataTrigger.Conditions>
-                            <Setter TargetName="ExpandSite" Property="Opacity" Value="0" />
-                            <Setter TargetName="ExpandSite" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="ExpandSite" Property="Opacity" Value="0"/>
+                            <Setter TargetName="ExpandSite" Property="Visibility" Value="Collapsed"/>
                         </MultiDataTrigger>
 
                         <Trigger Property="ExpandDirection" Value="Right">
-                            <Setter TargetName="ExpandSite" Property="BorderThickness" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessBindingConverter}, ConverterParameter={x:Static crystalConverters:ThicknessSideType.Left}}" />
-                            <Setter TargetName="ExpandSite" Property="DockPanel.Dock" Value="Right" />
-                            <Setter TargetName="ToggleSite" Property="DockPanel.Dock" Value="Left" />
-                            <Setter TargetName="ToggleSite" Property="Style" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ExpanderHelper.HeaderRightStyle)}" />
+                            <Setter TargetName="ExpandSite" Property="BorderThickness" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessBindingConverter}, ConverterParameter={x:Static crystalConverters:ThicknessSideType.Left}}"/>
+                            <Setter TargetName="ExpandSite" Property="DockPanel.Dock" Value="Right"/>
+                            <Setter TargetName="ToggleSite" Property="DockPanel.Dock" Value="Left"/>
+                            <Setter TargetName="ToggleSite" Property="Style" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ExpanderHelper.HeaderRightStyle)}"/>
                         </Trigger>
                         <Trigger Property="ExpandDirection" Value="Up">
-                            <Setter TargetName="ExpandSite" Property="BorderThickness" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessBindingConverter}, ConverterParameter={x:Static crystalConverters:ThicknessSideType.Bottom}}" />
-                            <Setter TargetName="ExpandSite" Property="DockPanel.Dock" Value="Top" />
-                            <Setter TargetName="ToggleSite" Property="DockPanel.Dock" Value="Bottom" />
-                            <Setter TargetName="ToggleSite" Property="Style" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ExpanderHelper.HeaderUpStyle)}" />
+                            <Setter TargetName="ExpandSite" Property="BorderThickness" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessBindingConverter}, ConverterParameter={x:Static crystalConverters:ThicknessSideType.Bottom}}"/>
+                            <Setter TargetName="ExpandSite" Property="DockPanel.Dock" Value="Top"/>
+                            <Setter TargetName="ToggleSite" Property="DockPanel.Dock" Value="Bottom"/>
+                            <Setter TargetName="ToggleSite" Property="Style" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ExpanderHelper.HeaderUpStyle)}"/>
                         </Trigger>
                         <Trigger Property="ExpandDirection" Value="Left">
-                            <Setter TargetName="ExpandSite" Property="BorderThickness" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessBindingConverter}, ConverterParameter={x:Static crystalConverters:ThicknessSideType.Right}}" />
-                            <Setter TargetName="ExpandSite" Property="DockPanel.Dock" Value="Left" />
-                            <Setter TargetName="ToggleSite" Property="DockPanel.Dock" Value="Right" />
-                            <Setter TargetName="ToggleSite" Property="Style" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ExpanderHelper.HeaderLeftStyle)}" />
+                            <Setter TargetName="ExpandSite" Property="BorderThickness" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness, Converter={StaticResource ThicknessBindingConverter}, ConverterParameter={x:Static crystalConverters:ThicknessSideType.Right}}"/>
+                            <Setter TargetName="ExpandSite" Property="DockPanel.Dock" Value="Left"/>
+                            <Setter TargetName="ToggleSite" Property="DockPanel.Dock" Value="Right"/>
+                            <Setter TargetName="ToggleSite" Property="Style" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(crystal:ExpanderHelper.HeaderLeftStyle)}"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="crystal:ControlsHelper.ContentCharacterCasing" Value="{DynamicResource Crystal.CharacterCasing.Expander.VisualStudio}" />
-        <Setter Property="crystal:ExpanderHelper.CollapseStoryboard" Value="{StaticResource Crystal.Storyboard.Expander.Collapse.VS}" />
-        <Setter Property="crystal:ExpanderHelper.ExpandStoryboard" Value="{StaticResource Crystal.Storyboard.Expander.Expand.VS}" />
-        <Setter Property="crystal:ExpanderHelper.HeaderDownStyle" Value="{StaticResource Crystal.Styles.ToggleButton.ExpanderHeader.Down.VisualStudio}" />
-        <Setter Property="crystal:ExpanderHelper.HeaderLeftStyle" Value="{StaticResource Crystal.Styles.ToggleButton.ExpanderHeader.Left.VisualStudio}" />
-        <Setter Property="crystal:ExpanderHelper.HeaderRightStyle" Value="{StaticResource Crystal.Styles.ToggleButton.ExpanderHeader.Right.VisualStudio}" />
-        <Setter Property="crystal:ExpanderHelper.HeaderUpStyle" Value="{StaticResource Crystal.Styles.ToggleButton.ExpanderHeader.Up.VisualStudio}" />
-        <Setter Property="crystal:HeaderedControlHelper.HeaderBackground" Value="{x:Null}" />
-        <Setter Property="crystal:HeaderedControlHelper.HeaderFontSize" Value="{DynamicResource ExpanderHeaderThemeFontSize}" />
-        <Setter Property="crystal:HeaderedControlHelper.HeaderForeground" Value="{DynamicResource Crystal.Brushes.Foreground}" />
-        <Setter Property="crystal:HeaderedControlHelper.HeaderMargin" Value="{DynamicResource ExpanderHeaderThemePadding}" />
+        <Setter Property="crystal:ControlsHelper.ContentCharacterCasing" Value="{DynamicResource Crystal.CharacterCasing.Expander.VisualStudio}"/>
+        <Setter Property="crystal:ExpanderHelper.CollapseStoryboard" Value="{StaticResource Crystal.Storyboard.Expander.Collapse.VS}"/>
+        <Setter Property="crystal:ExpanderHelper.ExpandStoryboard" Value="{StaticResource Crystal.Storyboard.Expander.Expand.VS}"/>
+        <Setter Property="crystal:ExpanderHelper.HeaderDownStyle" Value="{StaticResource Crystal.Styles.ToggleButton.ExpanderHeader.Down.VisualStudio}"/>
+        <Setter Property="crystal:ExpanderHelper.HeaderLeftStyle" Value="{StaticResource Crystal.Styles.ToggleButton.ExpanderHeader.Left.VisualStudio}"/>
+        <Setter Property="crystal:ExpanderHelper.HeaderRightStyle" Value="{StaticResource Crystal.Styles.ToggleButton.ExpanderHeader.Right.VisualStudio}"/>
+        <Setter Property="crystal:ExpanderHelper.HeaderUpStyle" Value="{StaticResource Crystal.Styles.ToggleButton.ExpanderHeader.Up.VisualStudio}"/>
+        <Setter Property="crystal:HeaderedControlHelper.HeaderBackground" Value="{x:Null}"/>
+        <Setter Property="crystal:HeaderedControlHelper.HeaderFontSize" Value="{DynamicResource ExpanderHeaderThemeFontSize}"/>
+        <Setter Property="crystal:HeaderedControlHelper.HeaderForeground" Value="{DynamicResource Crystal.Brushes.Foreground}"/>
+        <Setter Property="crystal:HeaderedControlHelper.HeaderMargin" Value="{DynamicResource ExpanderHeaderThemePadding}"/>
     </Style>
 </ResourceDictionary>

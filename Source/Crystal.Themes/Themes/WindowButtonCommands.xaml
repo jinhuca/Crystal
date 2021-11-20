@@ -18,18 +18,18 @@
           <MultiBinding Converter="{x:Static crystalConverters:ResizeModeMinMaxButtonVisibilityConverter.Instance}" ConverterParameter="{x:Static crystalConverters:ResizeModeButtonType.Min}">
             <Binding Mode="OneWay"
                                  Path="ShowMinButton"
-                                 RelativeSource="{RelativeSource AncestorType={x:Type crystal:CrystalWindow}}" />
+                                 RelativeSource="{RelativeSource AncestorType={x:Type crystal:CrystalWindow}}"/>
             <Binding Mode="OneWay"
                                  Path="UseNoneWindowStyle"
-                                 RelativeSource="{RelativeSource AncestorType={x:Type crystal:CrystalWindow}}" />
+                                 RelativeSource="{RelativeSource AncestorType={x:Type crystal:CrystalWindow}}"/>
             <Binding Mode="OneWay"
                                  Path="ResizeMode"
-                                 RelativeSource="{RelativeSource AncestorType={x:Type crystal:CrystalWindow}}" />
+                                 RelativeSource="{RelativeSource AncestorType={x:Type crystal:CrystalWindow}}"/>
           </MultiBinding>
         </Button.Visibility>
         <Path Data="F1M0,6L0,9 9,9 9,6 0,6z"
                       Fill="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"
-                      SnapsToDevicePixels="True" />
+                      SnapsToDevicePixels="True"/>
       </Button>
       <Button x:Name="PART_Max"
                     AutomationProperties.AutomationId="MaximizeRestore"
@@ -42,13 +42,13 @@
           <MultiBinding Converter="{x:Static crystalConverters:ResizeModeMinMaxButtonVisibilityConverter.Instance}" ConverterParameter="{x:Static crystalConverters:ResizeModeButtonType.Max}">
             <Binding Mode="OneWay"
                                  Path="ShowMaxRestoreButton"
-                                 RelativeSource="{RelativeSource AncestorType={x:Type crystal:CrystalWindow}}" />
+                                 RelativeSource="{RelativeSource AncestorType={x:Type crystal:CrystalWindow}}"/>
             <Binding Mode="OneWay"
                                  Path="UseNoneWindowStyle"
-                                 RelativeSource="{RelativeSource AncestorType={x:Type crystal:CrystalWindow}}" />
+                                 RelativeSource="{RelativeSource AncestorType={x:Type crystal:CrystalWindow}}"/>
             <Binding Mode="OneWay"
                                  Path="ResizeMode"
-                                 RelativeSource="{RelativeSource AncestorType={x:Type crystal:CrystalWindow}}" />
+                                 RelativeSource="{RelativeSource AncestorType={x:Type crystal:CrystalWindow}}"/>
           </MultiBinding>
         </Button.Visibility>
         <!--  normal state  -->
@@ -57,7 +57,7 @@
                       Height="10"
                       Data="F1M0,0L0,9 9,9 9,0 0,0 0,3 8,3 8,8 1,8 1,3z"
                       Fill="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"
-                      SnapsToDevicePixels="True" />
+                      SnapsToDevicePixels="True"/>
       </Button>
       <Button x:Name="PART_Close"
                     AutomationProperties.AutomationId="Close"
@@ -71,10 +71,10 @@
           <MultiBinding Converter="{x:Static crystalConverters:ResizeModeMinMaxButtonVisibilityConverter.Instance}" ConverterParameter="{x:Static crystalConverters:ResizeModeButtonType.Close}">
             <Binding Mode="OneWay"
                                  Path="ShowCloseButton"
-                                 RelativeSource="{RelativeSource AncestorType={x:Type crystal:CrystalWindow}}" />
+                                 RelativeSource="{RelativeSource AncestorType={x:Type crystal:CrystalWindow}}"/>
             <Binding Mode="OneWay"
                                  Path="UseNoneWindowStyle"
-                                 RelativeSource="{RelativeSource AncestorType={x:Type crystal:CrystalWindow}}" />
+                                 RelativeSource="{RelativeSource AncestorType={x:Type crystal:CrystalWindow}}"/>
           </MultiBinding>
         </Button.Visibility>
         <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -84,41 +84,41 @@
                           X1="1"
                           X2="9"
                           Y1="1"
-                          Y2="9" />
+                          Y2="9"/>
           <Line SnapsToDevicePixels="True"
                           Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"
                           StrokeThickness="2.5"
                           X1="1"
                           X2="9"
                           Y1="9"
-                          Y2="1" />
+                          Y2="1"/>
         </Grid>
       </Button>
     </StackPanel>
     <ControlTemplate.Triggers>
       <MultiDataTrigger>
         <MultiDataTrigger.Conditions>
-          <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type crystal:CrystalWindow}}, Path=IsCloseButtonEnabled}" Value="True" />
-          <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type crystal:CrystalWindow}}, Path=IsAnyDialogOpen}" Value="True" />
-          <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type crystal:CrystalWindow}}, Path=IsCloseButtonEnabledWithDialog}" Value="False" />
+          <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type crystal:CrystalWindow}}, Path=IsCloseButtonEnabled}" Value="True"/>
+          <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type crystal:CrystalWindow}}, Path=IsAnyDialogOpen}" Value="True"/>
+          <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type crystal:CrystalWindow}}, Path=IsCloseButtonEnabledWithDialog}" Value="False"/>
         </MultiDataTrigger.Conditions>
-        <Setter TargetName="PART_Close" Property="IsEnabled" Value="False" />
+        <Setter TargetName="PART_Close" Property="IsEnabled" Value="False"/>
       </MultiDataTrigger>
       <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type crystal:CrystalWindow}}, Path=WindowState}" Value="Maximized">
-        <Setter TargetName="PART_Max" Property="AutomationProperties.Name" Value="Restore" />
-        <Setter TargetName="PART_Max" Property="Command" Value="{x:Static SystemCommands.RestoreWindowCommand}" />
-        <Setter TargetName="PART_Max" Property="ToolTip" Value="{Binding Restore, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}" />
-        <Setter TargetName="PART_MaxPath" Property="Data" Value="F1M0,10L0,3 3,3 3,0 10,0 10,2 4,2 4,3 7,3 7,6 6,6 6,5 1,5 1,10z M1,10L7,10 7,7 10,7 10,2 9,2 9,6 6,6 6,9 1,9z" />
+        <Setter TargetName="PART_Max" Property="AutomationProperties.Name" Value="Restore"/>
+        <Setter TargetName="PART_Max" Property="Command" Value="{x:Static SystemCommands.RestoreWindowCommand}"/>
+        <Setter TargetName="PART_Max" Property="ToolTip" Value="{Binding Restore, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"/>
+        <Setter TargetName="PART_MaxPath" Property="Data" Value="F1M0,10L0,3 3,3 3,0 10,0 10,2 4,2 4,3 7,3 7,6 6,6 6,5 1,5 1,10z M1,10L7,10 7,7 10,7 10,2 9,2 9,6 6,6 6,9 1,9z"/>
       </DataTrigger>
       <Trigger Property="Theme" Value="Light">
-        <Setter TargetName="PART_Close" Property="Style" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=LightCloseButtonStyle}" />
-        <Setter TargetName="PART_Max" Property="Style" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=LightMaxButtonStyle}" />
-        <Setter TargetName="PART_Min" Property="Style" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=LightMinButtonStyle}" />
+        <Setter TargetName="PART_Close" Property="Style" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=LightCloseButtonStyle}"/>
+        <Setter TargetName="PART_Max" Property="Style" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=LightMaxButtonStyle}"/>
+        <Setter TargetName="PART_Min" Property="Style" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=LightMinButtonStyle}"/>
       </Trigger>
       <Trigger Property="Theme" Value="Dark">
-        <Setter TargetName="PART_Close" Property="Style" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DarkCloseButtonStyle}" />
-        <Setter TargetName="PART_Max" Property="Style" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DarkMaxButtonStyle}" />
-        <Setter TargetName="PART_Min" Property="Style" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DarkMinButtonStyle}" />
+        <Setter TargetName="PART_Close" Property="Style" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DarkCloseButtonStyle}"/>
+        <Setter TargetName="PART_Max" Property="Style" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DarkMaxButtonStyle}"/>
+        <Setter TargetName="PART_Min" Property="Style" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DarkMinButtonStyle}"/>
       </Trigger>
     </ControlTemplate.Triggers>
   </ControlTemplate>
@@ -138,13 +138,13 @@
           <MultiBinding Converter="{x:Static crystalConverters:ResizeModeMinMaxButtonVisibilityConverter.Instance}" ConverterParameter="{x:Static crystalConverters:ResizeModeButtonType.Min}">
             <Binding Mode="OneWay"
                                  Path="ShowMinButton"
-                                 RelativeSource="{RelativeSource AncestorType={x:Type crystal:CrystalWindow}}" />
+                                 RelativeSource="{RelativeSource AncestorType={x:Type crystal:CrystalWindow}}"/>
             <Binding Mode="OneWay"
                                  Path="UseNoneWindowStyle"
-                                 RelativeSource="{RelativeSource AncestorType={x:Type crystal:CrystalWindow}}" />
+                                 RelativeSource="{RelativeSource AncestorType={x:Type crystal:CrystalWindow}}"/>
             <Binding Mode="OneWay"
                                  Path="ResizeMode"
-                                 RelativeSource="{RelativeSource AncestorType={x:Type crystal:CrystalWindow}}" />
+                                 RelativeSource="{RelativeSource AncestorType={x:Type crystal:CrystalWindow}}"/>
           </MultiBinding>
         </Button.Visibility>
         <Path Width="10"
@@ -155,7 +155,7 @@
                       Fill="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"
                       RenderOptions.EdgeMode="Aliased"
                       SnapsToDevicePixels="True"
-                      Stretch="Uniform" />
+                      Stretch="Uniform"/>
       </Button>
       <Button x:Name="PART_Max"
                     Width="46"
@@ -170,13 +170,13 @@
           <MultiBinding Converter="{x:Static crystalConverters:ResizeModeMinMaxButtonVisibilityConverter.Instance}" ConverterParameter="{x:Static crystalConverters:ResizeModeButtonType.Max}">
             <Binding Mode="OneWay"
                                  Path="ShowMaxRestoreButton"
-                                 RelativeSource="{RelativeSource AncestorType={x:Type crystal:CrystalWindow}}" />
+                                 RelativeSource="{RelativeSource AncestorType={x:Type crystal:CrystalWindow}}"/>
             <Binding Mode="OneWay"
                                  Path="UseNoneWindowStyle"
-                                 RelativeSource="{RelativeSource AncestorType={x:Type crystal:CrystalWindow}}" />
+                                 RelativeSource="{RelativeSource AncestorType={x:Type crystal:CrystalWindow}}"/>
             <Binding Mode="OneWay"
                                  Path="ResizeMode"
-                                 RelativeSource="{RelativeSource AncestorType={x:Type crystal:CrystalWindow}}" />
+                                 RelativeSource="{RelativeSource AncestorType={x:Type crystal:CrystalWindow}}"/>
           </MultiBinding>
         </Button.Visibility>
         <!--  normal state  -->
@@ -189,7 +189,7 @@
                       Fill="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"
                       RenderOptions.EdgeMode="Aliased"
                       SnapsToDevicePixels="True"
-                      Stretch="Uniform" />
+                      Stretch="Uniform"/>
       </Button>
       <Button x:Name="PART_Close"
                     Width="46"
@@ -204,10 +204,10 @@
           <MultiBinding Converter="{x:Static crystalConverters:ResizeModeMinMaxButtonVisibilityConverter.Instance}" ConverterParameter="{x:Static crystalConverters:ResizeModeButtonType.Close}">
             <Binding Mode="OneWay"
                                  Path="ShowCloseButton"
-                                 RelativeSource="{RelativeSource AncestorType={x:Type crystal:CrystalWindow}}" />
+                                 RelativeSource="{RelativeSource AncestorType={x:Type crystal:CrystalWindow}}"/>
             <Binding Mode="OneWay"
                                  Path="UseNoneWindowStyle"
-                                 RelativeSource="{RelativeSource AncestorType={x:Type crystal:CrystalWindow}}" />
+                                 RelativeSource="{RelativeSource AncestorType={x:Type crystal:CrystalWindow}}"/>
           </MultiBinding>
         </Button.Visibility>
         <Path Width="10"
@@ -218,50 +218,50 @@
                       Fill="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"
                       RenderOptions.EdgeMode="Aliased"
                       SnapsToDevicePixels="True"
-                      Stretch="Uniform" />
+                      Stretch="Uniform"/>
       </Button>
     </StackPanel>
     <ControlTemplate.Triggers>
       <MultiDataTrigger>
         <MultiDataTrigger.Conditions>
-          <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type crystal:CrystalWindow}}, Path=IsCloseButtonEnabled}" Value="True" />
-          <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type crystal:CrystalWindow}}, Path=IsAnyDialogOpen}" Value="True" />
-          <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type crystal:CrystalWindow}}, Path=IsCloseButtonEnabledWithDialog}" Value="False" />
+          <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type crystal:CrystalWindow}}, Path=IsCloseButtonEnabled}" Value="True"/>
+          <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type crystal:CrystalWindow}}, Path=IsAnyDialogOpen}" Value="True"/>
+          <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type crystal:CrystalWindow}}, Path=IsCloseButtonEnabledWithDialog}" Value="False"/>
         </MultiDataTrigger.Conditions>
-        <Setter TargetName="PART_Close" Property="IsEnabled" Value="False" />
+        <Setter TargetName="PART_Close" Property="IsEnabled" Value="False"/>
       </MultiDataTrigger>
       <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type crystal:CrystalWindow}}, Path=WindowState}" Value="Maximized">
-        <Setter TargetName="PART_Max" Property="AutomationProperties.Name" Value="Restore" />
-        <Setter TargetName="PART_Max" Property="Command" Value="{x:Static SystemCommands.RestoreWindowCommand}" />
-        <Setter TargetName="PART_Max" Property="ToolTip" Value="{Binding Restore, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}" />
-        <Setter TargetName="PART_MaxPath" Property="Data" Value="M1,4.56L1,14.56 11,14.56 11,4.56z M4,1L4,3.56 12,3.56 12,11 14,11 14,1z M3,0L15,0 15,12 12,12 12,15.56 0,15.56 0,3.56 3,3.56z" />
+        <Setter TargetName="PART_Max" Property="AutomationProperties.Name" Value="Restore"/>
+        <Setter TargetName="PART_Max" Property="Command" Value="{x:Static SystemCommands.RestoreWindowCommand}"/>
+        <Setter TargetName="PART_Max" Property="ToolTip" Value="{Binding Restore, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"/>
+        <Setter TargetName="PART_MaxPath" Property="Data" Value="M1,4.56L1,14.56 11,14.56 11,4.56z M4,1L4,3.56 12,3.56 12,11 14,11 14,1z M3,0L15,0 15,12 12,12 12,15.56 0,15.56 0,3.56 3,3.56z"/>
       </DataTrigger>
       <Trigger Property="Theme" Value="Light">
-        <Setter TargetName="PART_Close" Property="Style" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=LightCloseButtonStyle}" />
-        <Setter TargetName="PART_Max" Property="Style" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=LightMaxButtonStyle}" />
-        <Setter TargetName="PART_Min" Property="Style" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=LightMinButtonStyle}" />
+        <Setter TargetName="PART_Close" Property="Style" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=LightCloseButtonStyle}"/>
+        <Setter TargetName="PART_Max" Property="Style" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=LightMaxButtonStyle}"/>
+        <Setter TargetName="PART_Min" Property="Style" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=LightMinButtonStyle}"/>
       </Trigger>
       <Trigger Property="Theme" Value="Dark">
-        <Setter TargetName="PART_Close" Property="Style" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DarkCloseButtonStyle}" />
-        <Setter TargetName="PART_Max" Property="Style" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DarkMaxButtonStyle}" />
-        <Setter TargetName="PART_Min" Property="Style" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DarkMinButtonStyle}" />
+        <Setter TargetName="PART_Close" Property="Style" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DarkCloseButtonStyle}"/>
+        <Setter TargetName="PART_Max" Property="Style" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DarkMaxButtonStyle}"/>
+        <Setter TargetName="PART_Min" Property="Style" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DarkMinButtonStyle}"/>
       </Trigger>
     </ControlTemplate.Triggers>
   </ControlTemplate>
 
   <Style x:Key="Crystal.Styles.WindowButtonCommands.Base" TargetType="{x:Type crystal:WindowButtonCommands}">
-    <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Transparent}" />
-    <Setter Property="DarkCloseButtonStyle" Value="{DynamicResource Crystal.Styles.Button.CrystalWindow.Dark}" />
-    <Setter Property="DarkMaxButtonStyle" Value="{DynamicResource Crystal.Styles.Button.CrystalWindow.Dark}" />
-    <Setter Property="DarkMinButtonStyle" Value="{DynamicResource Crystal.Styles.Button.CrystalWindow.Dark}" />
-    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-    <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeForeground}" />
-    <Setter Property="IsTabStop" Value="False" />
-    <Setter Property="LightCloseButtonStyle" Value="{DynamicResource Crystal.Styles.Button.CrystalWindow.Light}" />
-    <Setter Property="LightMaxButtonStyle" Value="{DynamicResource Crystal.Styles.Button.CrystalWindow.Light}" />
-    <Setter Property="LightMinButtonStyle" Value="{DynamicResource Crystal.Styles.Button.CrystalWindow.Light}" />
-    <Setter Property="Template" Value="{StaticResource Crystal.Templates.WindowButtonCommands}" />
-    <Setter Property="VerticalContentAlignment" Value="Center" />
+    <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Transparent}"/>
+    <Setter Property="DarkCloseButtonStyle" Value="{DynamicResource Crystal.Styles.Button.CrystalWindow.Dark}"/>
+    <Setter Property="DarkMaxButtonStyle" Value="{DynamicResource Crystal.Styles.Button.CrystalWindow.Dark}"/>
+    <Setter Property="DarkMinButtonStyle" Value="{DynamicResource Crystal.Styles.Button.CrystalWindow.Dark}"/>
+    <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+    <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.ThemeForeground}"/>
+    <Setter Property="IsTabStop" Value="False"/>
+    <Setter Property="LightCloseButtonStyle" Value="{DynamicResource Crystal.Styles.Button.CrystalWindow.Light}"/>
+    <Setter Property="LightMaxButtonStyle" Value="{DynamicResource Crystal.Styles.Button.CrystalWindow.Light}"/>
+    <Setter Property="LightMinButtonStyle" Value="{DynamicResource Crystal.Styles.Button.CrystalWindow.Light}"/>
+    <Setter Property="Template" Value="{StaticResource Crystal.Templates.WindowButtonCommands}"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
   </Style>
 
   <Style x:Key="Crystal.Styles.WindowButtonCommands"
@@ -269,7 +269,7 @@
            TargetType="{x:Type crystal:WindowButtonCommands}">
     <Style.Triggers>
       <DataTrigger Binding="{Binding ParentWindow.ShowTitleBar, RelativeSource={RelativeSource Self}}" Value="True">
-        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForeground}" />
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForeground}"/>
       </DataTrigger>
     </Style.Triggers>
   </Style>
@@ -277,9 +277,9 @@
   <Style x:Key="Crystal.Styles.WindowButtonCommands.Win10"
            BasedOn="{StaticResource Crystal.Styles.WindowButtonCommands}"
            TargetType="{x:Type crystal:WindowButtonCommands}">
-    <Setter Property="DarkCloseButtonStyle" Value="{DynamicResource Crystal.Styles.Button.CrystalWindow.Close.Dark.Win10}" />
-    <Setter Property="LightCloseButtonStyle" Value="{DynamicResource Crystal.Styles.Button.CrystalWindow.Close.Light.Win10}" />
-    <Setter Property="Template" Value="{StaticResource Crystal.Templates.WindowButtonCommands.Win10}" />
+    <Setter Property="DarkCloseButtonStyle" Value="{DynamicResource Crystal.Styles.Button.CrystalWindow.Close.Dark.Win10}"/>
+    <Setter Property="LightCloseButtonStyle" Value="{DynamicResource Crystal.Styles.Button.CrystalWindow.Close.Light.Win10}"/>
+    <Setter Property="Template" Value="{StaticResource Crystal.Templates.WindowButtonCommands.Win10}"/>
   </Style>
 
 </ResourceDictionary>

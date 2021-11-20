@@ -4,7 +4,7 @@ using Crystal.Themes.ValueBoxes;
 namespace Crystal.Themes.Actions
 {
   /// <summary>
-  /// This CommandTriggerAction can be used to bind any event on any FrameworkElement to an <see cref="ICommand" />.
+  /// This CommandTriggerAction can be used to bind any event on any FrameworkElement to an <see cref="ICommand"/>.
   /// This trigger can only be attached to a FrameworkElement or a class deriving from FrameworkElement.
   /// 
   /// This class is inspired from Laurent Bugnion and his EventToCommand.

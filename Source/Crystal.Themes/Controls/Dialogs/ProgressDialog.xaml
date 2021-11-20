@@ -7,15 +7,15 @@
   <dialogs:CrystalDialogBase.Content>
     <Grid>
       <Grid.RowDefinitions>
-        <RowDefinition Height="*" />
-        <RowDefinition Height="Auto" />
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="Auto"/>
       </Grid.RowDefinitions>
       <TextBlock Grid.Row="0"
                        Margin="0 5 0 0"
                        FontSize="{Binding DialogMessageFontSize, RelativeSource={RelativeSource AncestorType=dialogs:ProgressDialog, Mode=FindAncestor}, UpdateSourceTrigger=PropertyChanged}"
                        Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=dialogs:ProgressDialog, Mode=FindAncestor}, UpdateSourceTrigger=PropertyChanged}"
                        Text="{Binding Message, RelativeSource={RelativeSource AncestorType=dialogs:ProgressDialog, Mode=FindAncestor}, UpdateSourceTrigger=PropertyChanged}"
-                       TextWrapping="Wrap" />
+                       TextWrapping="Wrap"/>
 
       <StackPanel Grid.Row="1"
                         MinHeight="85"
@@ -27,7 +27,7 @@
                         Cursor="Arrow"
                         FontSize="{Binding DialogButtonFontSize, RelativeSource={RelativeSource AncestorType=dialogs:ProgressDialog, Mode=FindAncestor}, UpdateSourceTrigger=PropertyChanged}"
                         Style="{DynamicResource Crystal.Styles.Button.Dialogs.Accent}"
-                        Visibility="Hidden" />
+                        Visibility="Hidden"/>
       </StackPanel>
     </Grid>
   </dialogs:CrystalDialogBase.Content>
@@ -38,6 +38,6 @@
                               Panel.ZIndex="5"
                               Foreground="{Binding ProgressBarForeground, RelativeSource={RelativeSource AncestorType=dialogs:ProgressDialog, Mode=FindAncestor}, UpdateSourceTrigger=PropertyChanged}"
                               Maximum="1.0"
-                              Minimum="0.0" />
+                              Minimum="0.0"/>
   </dialogs:CrystalDialogBase.DialogBottom>
 </dialogs:CrystalDialogBase>

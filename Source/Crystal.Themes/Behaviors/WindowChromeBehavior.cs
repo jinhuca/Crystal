@@ -209,7 +209,7 @@ namespace Crystal.Themes.Behaviors
       set { SetValue(EnableMaxRestoreProperty, value); }
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     protected override void OnAttached()
     {
       // no transparency, because it has more then one unwanted issues
@@ -368,7 +368,7 @@ namespace Crystal.Themes.Behaviors
       // nothing here
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     protected override void OnDetaching()
     {
       Cleanup(false);

@@ -104,7 +104,7 @@ namespace Crystal.Themes.Behaviors
       }
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     protected override void OnDetaching()
     {
       AssociatedObject.SourceInitialized -= AssociatedObjectSourceInitialized;

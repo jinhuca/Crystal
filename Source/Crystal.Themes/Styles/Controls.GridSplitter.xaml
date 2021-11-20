@@ -1,22 +1,22 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <Style x:Key="Crystal.Styles.GridSplitter.Preview">
-        <Setter Property="Control.Template">
-            <Setter.Value>
-                <ControlTemplate>
-                    <Rectangle Fill="{DynamicResource Crystal.Brushes.ThemeForeground}" Opacity="0.5" />
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
+  <Style x:Key="Crystal.Styles.GridSplitter.Preview">
+    <Setter Property="Control.Template">
+      <Setter.Value>
+        <ControlTemplate>
+          <Rectangle Fill="{DynamicResource Crystal.Brushes.ThemeForeground}" Opacity="0.5"/>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
 
-    <Style x:Key="Crystal.Styles.GridSplitter" TargetType="{x:Type GridSplitter}">
-        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Gray8}" />
-        <Setter Property="HorizontalAlignment" Value="Stretch" />
-        <Setter Property="PreviewStyle" Value="{StaticResource Crystal.Styles.GridSplitter.Preview}" />
-        <Setter Property="ShowsPreview" Value="True" />
-        <Setter Property="VerticalAlignment" Value="Stretch" />
-    </Style>
+  <Style x:Key="Crystal.Styles.GridSplitter" TargetType="{x:Type GridSplitter}">
+    <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.Gray8}"/>
+    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+    <Setter Property="PreviewStyle" Value="{StaticResource Crystal.Styles.GridSplitter.Preview}"/>
+    <Setter Property="ShowsPreview" Value="True"/>
+    <Setter Property="VerticalAlignment" Value="Stretch"/>
+  </Style>
 
 </ResourceDictionary>

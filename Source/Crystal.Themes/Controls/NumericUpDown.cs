@@ -159,7 +159,7 @@ namespace Crystal.Themes.Controls
 
     /// <summary>
     /// Gets or sets the amount of time, in milliseconds, the NumericUpDown waits while the up/down button is pressed
-    /// before it starts increasing/decreasing the <see cref="Value" /> for the specified <see cref="Interval" /> .
+    /// before it starts increasing/decreasing the <see cref="Value"/> for the specified <see cref="Interval"/> .
     /// The value must be non-negative.
     /// </summary>
     [Bindable(true)]
@@ -202,8 +202,8 @@ namespace Crystal.Themes.Controls
     }
 
     /// <summary>
-    /// Gets or sets a value indicating whether the value to be added to or subtracted from <see cref="Value" /> remains
-    /// always <see cref="Interval" /> or if it will increase faster after pressing the up/down button/arrow some time.
+    /// Gets or sets a value indicating whether the value to be added to or subtracted from <see cref="Value"/> remains
+    /// always <see cref="Interval"/> or if it will increase faster after pressing the up/down button/arrow some time.
     /// </summary>
     [Category("Common")]
     [DefaultValue(true)]
@@ -272,7 +272,7 @@ namespace Crystal.Themes.Controls
     }
 
     /// <summary>
-    /// Gets or sets the formatting for the displaying <see cref="Value" />
+    /// Gets or sets the formatting for the displaying <see cref="Value"/>
     /// </summary>
     /// <remarks>
     /// <see href="https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings"></see>
@@ -538,7 +538,7 @@ namespace Crystal.Themes.Controls
     }
 
     /// <summary>
-    /// Gets or sets the interval value for increasing/decreasing the <see cref="Value" /> .
+    /// Gets or sets the interval value for increasing/decreasing the <see cref="Value"/> .
     /// </summary>
     [Bindable(true)]
     [Category("Behavior")]
@@ -618,16 +618,16 @@ namespace Crystal.Themes.Controls
     /// Gets or sets a value indicating whether the up/down button of the control are visible.
     /// </summary>
     /// <remarks>
-    /// If the value is false then the <see cref="Value" /> of the control can be changed only if one of the following cases is satisfied:
+    /// If the value is false then the <see cref="Value"/> of the control can be changed only if one of the following cases is satisfied:
     /// <list type="bullet">
     ///     <item>
-    ///         <description><see cref="InterceptArrowKeys" /> is true.</description>
+    ///         <description><see cref="InterceptArrowKeys"/> is true.</description>
     ///     </item>
     ///     <item>
-    ///         <description><see cref="InterceptMouseWheel" /> is true.</description>
+    ///         <description><see cref="InterceptMouseWheel"/> is true.</description>
     ///     </item>
     ///     <item>
-    ///         <description><see cref="InterceptManualEnter" /> is true.</description>
+    ///         <description><see cref="InterceptManualEnter"/> is true.</description>
     ///     </item>
     /// </list>
     /// </remarks>
@@ -991,7 +991,7 @@ namespace Crystal.Themes.Controls
 
     /// <summary>
     ///     When overridden in a derived class, is invoked whenever application code or internal processes call
-    ///     <see cref="M:System.Windows.FrameworkElement.ApplyTemplate" />.
+    ///     <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/>.
     /// </summary>
     public override void OnApplyTemplate()
     {
@@ -1197,13 +1197,13 @@ namespace Crystal.Themes.Controls
     }
 
     /// <summary>
-    ///     Raises the <see cref="ValueChanged" /> routed event.
+    ///     Raises the <see cref="ValueChanged"/> routed event.
     /// </summary>
     /// <param name="oldValue">
-    ///     Old value of the <see cref="Value" /> property
+    ///     Old value of the <see cref="Value"/> property
     /// </param>
     /// <param name="newValue">
-    ///     New value of the <see cref="Value" /> property
+    ///     New value of the <see cref="Value"/> property
     /// </param>
     protected virtual void OnValueChanged(double? oldValue, double? newValue)
     {

@@ -3,9 +3,9 @@
                     xmlns:crystal="clr-namespace:Crystal.Themes.Controls">
 
     <Style x:Key="Crystal.Styles.StatusBarItem" TargetType="{x:Type StatusBarItem}">
-        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.IdealForeground}" />
-        <Setter Property="HorizontalContentAlignment" Value="Left" />
-        <Setter Property="Padding" Value="3" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.IdealForeground}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="Padding" Value="3"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type StatusBarItem}">
@@ -16,24 +16,24 @@
                             SnapsToDevicePixels="True">
                         <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Gray2}" />
+                            <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Gray2}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
     </Style>
 
     <Style x:Key="Crystal.Styles.Separator.StatusBar" TargetType="{x:Type Separator}">
-        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.IdealForeground}" />
-        <Setter Property="MinHeight" Value="1" />
-        <Setter Property="MinWidth" Value="1" />
-        <Setter Property="Opacity" Value="0.75" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.IdealForeground}"/>
+        <Setter Property="MinHeight" Value="1"/>
+        <Setter Property="MinWidth" Value="1"/>
+        <Setter Property="Opacity" Value="0.75"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Separator}">
@@ -42,18 +42,18 @@
                             BorderThickness="{TemplateBinding BorderThickness}"
                             Opacity="{TemplateBinding Opacity}"
                             SnapsToDevicePixels="True"
-                            UseLayoutRounding="True" />
+                            UseLayoutRounding="True"/>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
 
     <Style x:Key="Crystal.Styles.StatusBar" TargetType="{x:Type StatusBar}">
-        <Setter Property="FontFamily" Value="{DynamicResource {x:Static SystemFonts.StatusFontFamilyKey}}" />
-        <Setter Property="FontSize" Value="{DynamicResource Crystal.Font.Size.StatusBar}" />
-        <Setter Property="FontStyle" Value="{DynamicResource {x:Static SystemFonts.StatusFontStyleKey}}" />
-        <Setter Property="FontWeight" Value="{DynamicResource {x:Static SystemFonts.StatusFontWeightKey}}" />
-        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForeground}" />
+        <Setter Property="FontFamily" Value="{DynamicResource {x:Static SystemFonts.StatusFontFamilyKey}}"/>
+        <Setter Property="FontSize" Value="{DynamicResource Crystal.Font.Size.StatusBar}"/>
+        <Setter Property="FontStyle" Value="{DynamicResource {x:Static SystemFonts.StatusFontStyleKey}}"/>
+        <Setter Property="FontWeight" Value="{DynamicResource {x:Static SystemFonts.StatusFontWeightKey}}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.IdealForeground}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type StatusBar}">
@@ -63,7 +63,7 @@
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             SnapsToDevicePixels="True">
-                        <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
@@ -71,20 +71,20 @@
         <Style.Triggers>
             <MultiDataTrigger>
                 <MultiDataTrigger.Conditions>
-                    <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsVisible}" Value="True" />
-                    <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=IsActive}" Value="True" />
+                    <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsVisible}" Value="True"/>
+                    <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=IsActive}" Value="True"/>
                 </MultiDataTrigger.Conditions>
-                <Setter Property="Background" Value="{Binding Path=WindowTitleBrush, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type crystal:CrystalWindow}}}" />
+                <Setter Property="Background" Value="{Binding Path=WindowTitleBrush, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type crystal:CrystalWindow}}}"/>
             </MultiDataTrigger>
             <MultiDataTrigger>
                 <MultiDataTrigger.Conditions>
-                    <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsVisible}" Value="True" />
-                    <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=IsActive}" Value="False" />
+                    <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsVisible}" Value="True"/>
+                    <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=IsActive}" Value="False"/>
                 </MultiDataTrigger.Conditions>
-                <Setter Property="Background" Value="{Binding Path=NonActiveWindowTitleBrush, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type crystal:CrystalWindow}}}" />
+                <Setter Property="Background" Value="{Binding Path=NonActiveWindowTitleBrush, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type crystal:CrystalWindow}}}"/>
             </MultiDataTrigger>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Gray9}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource Crystal.Brushes.Gray9}"/>
             </Trigger>
         </Style.Triggers>
     </Style>

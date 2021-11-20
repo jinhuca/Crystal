@@ -5,7 +5,7 @@
 namespace Crystal.Themes.Controls
 {
     /// <summary>
-    ///     Provides event data for the <see cref="SplitView.PaneClosing" /> event.
+    ///     Provides event data for the <see cref="SplitView.PaneClosing"/> event.
     /// </summary>
     public sealed class SplitViewPaneClosingEventArgs
     {

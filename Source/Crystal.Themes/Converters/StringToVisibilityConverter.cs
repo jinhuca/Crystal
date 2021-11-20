@@ -33,7 +33,7 @@ namespace Crystal.Themes.Converters
         /// </summary>
         public bool OppositeStringValue { get; set; }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         protected override object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             if (value is null or string && targetType == typeof(Visibility))
@@ -49,7 +49,7 @@ namespace Crystal.Themes.Converters
             return default(Visibility);
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         protected override object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             return DependencyProperty.UnsetValue;

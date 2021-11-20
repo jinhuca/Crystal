@@ -2,12 +2,12 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Style x:Key="Crystal.Styles.TextBox.VisualStudio" TargetType="{x:Type TextBox}">
-        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.TextBox.Background}" />
-        <Setter Property="CaretBrush" Value="{DynamicResource Crystal.Brushes.Foreground}" />
-        <Setter Property="ContextMenu" Value="{DynamicResource Crystal.TextBox.ContextMenu}" />
-        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Foreground}" />
-        <Setter Property="Padding" Value="1" />
-        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.TextBox.Background}"/>
+        <Setter Property="CaretBrush" Value="{DynamicResource Crystal.Brushes.Foreground}"/>
+        <Setter Property="ContextMenu" Value="{DynamicResource Crystal.TextBox.ContextMenu}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Crystal.Brushes.Foreground}"/>
+        <Setter Property="Padding" Value="1"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TextBox}">
@@ -17,20 +17,20 @@
                                       Background="{x:Null}"
                                       BorderThickness="0"
                                       IsTabStop="False"
-                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="true">
-                            <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.TextBox.BackgroundSelected}" />
+                            <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.TextBox.BackgroundSelected}"/>
                         </Trigger>
                         <Trigger Property="IsFocused" Value="true">
-                            <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.TextBox.BackgroundSelected}" />
+                            <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.TextBox.BackgroundSelected}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource Crystal.Templates.ValidationError}" />
+        <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource Crystal.Templates.ValidationError}"/>
     </Style>
 
     <Style x:Key="Crystal.Styles.TextBox.Search.VisualStudio"
@@ -45,28 +45,28 @@
                                    VerticalAlignment="Center"
                                    Foreground="{DynamicResource Crystal.Brushes.SearchTextBox.Foreground}"
                                    Text="Search ..."
-                                   Visibility="Hidden" />
+                                   Visibility="Hidden"/>
                         <ScrollViewer x:Name="PART_ContentHost"
                                       Margin="{TemplateBinding Padding}"
                                       Background="{x:Null}"
                                       BorderThickness="0"
                                       IsTabStop="False"
-                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="TextBox.Text" Value="">
-                            <Setter TargetName="search" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="search" Property="Visibility" Value="Visible"/>
                         </Trigger>
                         <Trigger Property="TextBox.Text" Value="{x:Null}">
-                            <Setter TargetName="search" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="search" Property="Visibility" Value="Visible"/>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="true">
-                            <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.TextBox.BackgroundSelected}" />
-                            <Setter TargetName="search" Property="Foreground" Value="{DynamicResource Crystal.Brushes.Foreground}" />
+                            <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.TextBox.BackgroundSelected}"/>
+                            <Setter TargetName="search" Property="Foreground" Value="{DynamicResource Crystal.Brushes.Foreground}"/>
                         </Trigger>
                         <Trigger Property="IsFocused" Value="true">
-                            <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.TextBox.BackgroundSelected}" />
-                            <Setter TargetName="search" Property="Visibility" Value="Hidden" />
+                            <Setter Property="Background" Value="{DynamicResource Crystal.Brushes.TextBox.BackgroundSelected}"/>
+                            <Setter TargetName="search" Property="Visibility" Value="Hidden"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
