@@ -1,11 +1,12 @@
-﻿<Window x:Class="LoadModuleManually.MainWindow"
+﻿<themes:CrystalWindow x:Class="LoadModuleManually.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:crystal="http://schemas.crystal.com"
+        xmlns:themes="http://schemas.crystal.com/themes"
 				xmlns:shared="clr-namespace:Shared;assembly=Shared"
         Title="MainWindow">
 	<DockPanel LastChildFill="True">
 		<Button DockPanel.Dock="Top" Content="Load Module" Margin="5" Click="Button_Click"/>
 		<ContentControl crystal:RegionManager.RegionName="{x:Static shared:RegionNames.ContentRegionName}"/>
 	</DockPanel>
-</Window>
+</themes:CrystalWindow>

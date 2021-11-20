@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Crystal.Desktop" Version="2.2.3.6" />
-    <PackageReference Include="Crystal.Themes" Version="2.2.4.3" />
+    <PackageReference Include="Crystal.Desktop" Version="2.2.3.7" />
+    <PackageReference Include="Crystal.Themes" Version="2.2.4.4" />
   </ItemGroup>
 
 </Project>

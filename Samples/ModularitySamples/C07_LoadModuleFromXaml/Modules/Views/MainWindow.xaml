@@ -1,9 +1,10 @@
-﻿<Window x:Class="Modules.Views.MainWindow"
+﻿<themes:CrystalWindow x:Class="Modules.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:crystal="http://schemas.crystal.com"
+        xmlns:themes="http://schemas.crystal.com/themes"
         Title="Shell" Height="350" Width="525" Background="LightBlue">
 	<Grid>
 		<ContentControl crystal:RegionManager.RegionName="ContentRegion"/>
 	</Grid>
-</Window>
+</themes:CrystalWindow>

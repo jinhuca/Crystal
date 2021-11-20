@@ -1,8 +1,6 @@
-﻿using System.Windows;
-
-namespace RegionSimple
+﻿namespace RegionSimple
 {
-	public partial class Shell : Window
+	public partial class Shell
 	{
 		public Shell()
 		{

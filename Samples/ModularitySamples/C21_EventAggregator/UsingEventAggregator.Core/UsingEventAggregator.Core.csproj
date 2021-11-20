@@ -5,7 +5,7 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Crystal.Core" Version="2.2.3.6" />
-    <PackageReference Include="Crystal.Desktop" Version="2.2.3.6" />
+    <PackageReference Include="Crystal.Core" Version="2.2.3.7" />
+    <PackageReference Include="Crystal.Desktop" Version="2.2.3.7" />
   </ItemGroup>
 </Project>
