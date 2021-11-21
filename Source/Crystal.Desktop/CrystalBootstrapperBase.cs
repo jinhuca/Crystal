@@ -35,7 +35,6 @@ namespace Crystal
 			OnInitialized();
 		}
 
-
 #pragma warning disable CS1574 // XML comment has cref attribute 'ViewModelLocator' that could not be resolved
 		/// <summary>
 		/// Configures the <see cref="Crystal.Mvvm.ViewModelLocator"/> used by Crystal.

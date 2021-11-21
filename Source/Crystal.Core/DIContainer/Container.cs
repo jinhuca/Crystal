@@ -54,32 +54,50 @@ using static FastExpressionCompiler.LightExpression.Expression;
 
 namespace Crystal
 {
-	/// <summary>Inversion of control container</summary>
-	public partial class Container : IContainer
+  /// <summary>
+  /// Inversion of control container
+  /// </summary>
+  public partial class Container : IContainer
   {
-    /// <summary>Creates new container with default rules <see cref="Injector.Rules.Default"/>.</summary>
-    public Container() : this(Rules.Default, Ref.Of(Registry.Default), NewSingletonScope()) =>
-        SetInitialFactoryID();
+    /// <summary>
+    /// Creates new container with default rules <see cref="Injector.Rules.Default"/>.
+    /// </summary>
+    public Container() : this(Rules.Default, Ref.Of(Registry.Default), NewSingletonScope())
+      => SetInitialFactoryID();
 
-    /// <summary>Creates new container, optionally providing <see cref="Rules"/> to modify default container behavior.</summary>
-    /// <param name="rules">(optional) Rules to modify container default resolution behavior.
-    /// If not specified, then <see cref="Injector.Rules.Default"/> will be used.</param>
-    /// <param name="scopeContext">(optional) Scope context to use for scoped reuse.</param>
-    public Container(Rules rules = null, IScopeContext scopeContext = null)
-        : this(rules ?? Rules.Default, Ref.Of(Registry.Default), NewSingletonScope(), scopeContext) =>
-        SetInitialFactoryID();
+    /// <summary>
+    /// Creates new container, optionally providing <see cref="Rules"/> to modify default container behavior.
+    /// </summary>
+    /// <param name="rules">
+    /// (optional) Rules to modify container default resolution behavior.
+    /// If not specified, then <see cref="Injector.Rules.Default"/> will be used.
+    /// </param>
+    /// <param name="scopeContext">
+    /// (optional) Scope context to use for scoped reuse.
+    /// </param>
+    public Container(Rules rules = null, IScopeContext scopeContext = null) : this(rules ?? Rules.Default, Ref.Of(Registry.Default), NewSingletonScope(), scopeContext)
+      => SetInitialFactoryID();
 
-    /// <summary>Creates new container with configured rules.</summary>
-    /// <param name="configure">Allows to modify <see cref="Injector.Rules.Default"/> rules.</param>
-    /// <param name="scopeContext">(optional) Scope context to use for <see cref="Reuse.InCurrentScope"/>.</param>
-    public Container(Func<Rules, Rules> configure, IScopeContext scopeContext = null)
-        : this(configure.ThrowIfNull()(Rules.Default) ?? Rules.Default, scopeContext)
+    /// <summary>
+    /// Creates new container with configured rules.
+    /// </summary>
+    /// <param name="configure">
+    /// Allows to modify <see cref="Injector.Rules.Default"/> rules.
+    /// </param>
+    /// <param name="scopeContext">
+    /// (optional) Scope context to use for <see cref="Reuse.InCurrentScope"/>.
+    /// </param>
+    public Container(Func<Rules, Rules> configure, IScopeContext scopeContext = null) : this(configure.ThrowIfNull()(Rules.Default) ?? Rules.Default, scopeContext)
     { }
 
-    /// <summary>Helper to create singleton scope</summary>
+    /// <summary>
+    /// Helper to create singleton scope.
+    /// </summary>
     public static IScope NewSingletonScope() => new Scope(name: "<singletons>");
 
-    /// <summary>Pretty prints the container info including the open scope details if any.</summary> 
+    /// <summary>
+    /// Pretty prints the container info including the open scope details if any.
+    /// </summary> 
     public override string ToString()
     {
       var s = _scopeContext == null ? "container" : "container with ambient " + _scopeContext;
@@ -103,7 +121,9 @@ namespace Crystal
       return s;
     }
 
-    /// <summary>Dispose either open scope, or container with singletons, if no scope opened.</summary>
+    /// <summary>
+    /// Dispose either open scope, or container with singletons, if no scope opened.
+    /// </summary>
     public void Dispose()
     {
       // if already disposed - just leave
@@ -143,18 +163,19 @@ namespace Crystal
       }
     }
 
-    #region Compile-time generated parts - former DryIocZero
+    #region Compile-time generated parts
 
     partial void GetLastGeneratedFactoryID(ref int lastFactoryID);
 
     partial void ResolveGenerated(ref object service, Type serviceType);
 
-    partial void ResolveGenerated(ref object service,
-        Type serviceType, object serviceKey, Type requiredServiceType, Request preRequestParent, object[] args);
+    partial void ResolveGenerated(ref object service, Type serviceType, object serviceKey, Type requiredServiceType, Request preRequestParent, object[] args);
 
     partial void ResolveManyGenerated(ref IEnumerable<ResolveManyResult> services, Type serviceType);
 
-    /// <summary>Identifies the service when resolving collection</summary>
+    /// <summary>
+    /// Identifies the service when resolving collection.
+    /// </summary>
     public struct ResolveManyResult
     {
       /// <summary>Factory, the required part</summary>
@@ -167,17 +188,18 @@ namespace Crystal
       public Type RequiredServiceType;
 
       /// <summary>Constructs the struct.</summary>
-      public static ResolveManyResult Of(FactoryDelegate factoryDelegate,
-          object serviceKey = null, Type requiredServiceType = null) =>
-          new ResolveManyResult
-          {
-            FactoryDelegate = factoryDelegate,
-            ServiceKey = serviceKey,
-            RequiredServiceType = requiredServiceType
-          };
+      public static ResolveManyResult Of(FactoryDelegate factoryDelegate, object serviceKey = null, Type requiredServiceType = null)
+        => new ResolveManyResult
+        {
+          FactoryDelegate = factoryDelegate,
+          ServiceKey = serviceKey,
+          RequiredServiceType = requiredServiceType
+        };
     }
 
-    /// <summary>Directly uses generated factories to resolve service. Or returns the default if service does not have generated factory.</summary>
+    /// <summary>
+    /// Directly uses generated factories to resolve service. Or returns the default if service does not have generated factory.
+    /// </summary>
     [SuppressMessage("ReSharper", "InvocationIsSkipped", Justification = "Per design")]
     [SuppressMessage("ReSharper", "ExpressionIsAlwaysNull", Justification = "Per design")]
     public object ResolveCompileTimeGeneratedOrDefault(Type serviceType)
@@ -187,18 +209,21 @@ namespace Crystal
       return service;
     }
 
-    /// <summary>Directly uses generated factories to resolve service. Or returns the default if service does not have generated factory.</summary>
+    /// <summary>
+    /// Directly uses generated factories to resolve service. Or returns the default if service does not have generated factory.
+    /// </summary>
     [SuppressMessage("ReSharper", "InvocationIsSkipped", Justification = "Per design")]
     [SuppressMessage("ReSharper", "ExpressionIsAlwaysNull", Justification = "Per design")]
     public object ResolveCompileTimeGeneratedOrDefault(Type serviceType, object serviceKey)
     {
       object service = null;
-      ResolveGenerated(ref service, serviceType, serviceKey,
-          requiredServiceType: null, preRequestParent: null, args: null);
+      ResolveGenerated(ref service, serviceType, serviceKey, requiredServiceType: null, preRequestParent: null, args: null);
       return service;
     }
 
-    /// <summary>Resolves many generated only services. Ignores runtime registrations.</summary>
+    /// <summary>
+    /// Resolves many generated only services. Ignores runtime registrations.
+    /// </summary>
     public IEnumerable<ResolveManyResult> ResolveManyCompileTimeGeneratedOrEmpty(Type serviceType)
     {
       IEnumerable<ResolveManyResult> manyGenerated = ArrayTools.Empty<ResolveManyResult>();
@@ -2819,7 +2844,9 @@ namespace Crystal
     #endregion
   }
 
-  /// Special service key with info about open-generic service type
+  /// <summary>
+  /// Special service key with info about open-generic service type.
+  /// </summary>
   public sealed class OpenGenericTypeKey : IConvertibleToExpression
   {
     /// <summary>Open-generic required service-type</summary>
@@ -2836,18 +2863,16 @@ namespace Crystal
     }
 
     /// <inheritdoc />
-    public override string ToString() =>
-        new StringBuilder(nameof(OpenGenericTypeKey)).Append('(')
-            .Print(RequiredServiceType).Append(", ").Print(ServiceKey)
-            .Append(')').ToString();
+    public override string ToString() => new StringBuilder(nameof(OpenGenericTypeKey))
+      .Append('(')
+      .Print(RequiredServiceType).Append(", ").Print(ServiceKey)
+      .Append(')').ToString();
 
     /// <inheritdoc />
     public override bool Equals(object obj)
     {
       var other = obj as OpenGenericTypeKey;
-      return other != null &&
-             other.RequiredServiceType == RequiredServiceType &&
-             Equals(other.ServiceKey, ServiceKey);
+      return other != null && other.RequiredServiceType == RequiredServiceType && Equals(other.ServiceKey, ServiceKey);
     }
 
     /// <inheritdoc />
@@ -5864,8 +5889,8 @@ namespace Crystal
           var factory = new ReflectionFactory(concreteType,
                   made: Crystal.FactoryMethod.ConstructorWithResolvableArgumentsIncludingNonPublic);
 
-              // to enable fallback to other rules if unresolved try to resolve expression first and return null
-              return factory.GetExpressionOrDefault(request.WithIfUnresolved(IfUnresolved.ReturnDefault)) != null ? factory : null;
+          // to enable fallback to other rules if unresolved try to resolve expression first and return null
+          return factory.GetExpressionOrDefault(request.WithIfUnresolved(IfUnresolved.ReturnDefault)) != null ? factory : null;
         };
 
     /// <summary>Rule to automatically resolves non-registered service type which is: nor interface, nor abstract.
@@ -5883,21 +5908,21 @@ namespace Crystal
                   condition != null && !condition(serviceType, serviceKey))
             return null;
 
-              // exclude concrete service types which are pre-defined DryIoc wrapper types
-              var openGenericServiceType = serviceType.GetGenericDefinitionOrNull();
+          // exclude concrete service types which are pre-defined DryIoc wrapper types
+          var openGenericServiceType = serviceType.GetGenericDefinitionOrNull();
           if (openGenericServiceType != null && WrappersSupport.Wrappers.GetValueOrDefault(openGenericServiceType) != null)
             return null;
 
           return serviceType.One(); // use concrete service type as implementation type
-            },
+        },
         implType =>
         {
           ReflectionFactory factory = null;
 
-              // the condition checks that factory is resolvable
-              factory = new ReflectionFactory(implType, reuse,
-	              Crystal.FactoryMethod.ConstructorWithResolvableArgumentsIncludingNonPublic,
-                  Setup.With(condition: req => factory?.GetExpressionOrDefault(req.WithIfUnresolved(IfUnresolved.ReturnDefault)) != null));
+          // the condition checks that factory is resolvable
+          factory = new ReflectionFactory(implType, reuse,
+            Crystal.FactoryMethod.ConstructorWithResolvableArgumentsIncludingNonPublic,
+              Setup.With(condition: req => factory?.GetExpressionOrDefault(req.WithIfUnresolved(IfUnresolved.ReturnDefault)) != null));
 
           return factory;
         });
@@ -5953,12 +5978,12 @@ namespace Crystal
                               : fs.AddOrUpdate(implTypeHash, implType, implFactory = factory.Invoke(implType).ThrowIfNull()));
               }
 
-                      // We nullify default keys (usually passed by ResolveMany to resolve the specific factory in order)
-                      // so that `CombineRegisteredWithDynamicFactories` may assign the key again.
-                      // Given that the implementation types are unchanged then the new keys assignment will be the same the last one,
-                      // so that the factory resolution will correctly match the required factory by key.
-                      // e.g. bitbucket issue #396
-                      var theKey = serviceKey is DefaultDynamicKey ? null : serviceKey;
+              // We nullify default keys (usually passed by ResolveMany to resolve the specific factory in order)
+              // so that `CombineRegisteredWithDynamicFactories` may assign the key again.
+              // Given that the implementation types are unchanged then the new keys assignment will be the same the last one,
+              // so that the factory resolution will correctly match the required factory by key.
+              // e.g. bitbucket issue #396
+              var theKey = serviceKey is DefaultDynamicKey ? null : serviceKey;
               return new DynamicRegistration(implFactory, IfAlreadyRegistered.Keep, theKey);
             });
       };
@@ -12397,7 +12422,8 @@ namespace Crystal
 
     private static void SafelyDisposeOrderedDisposables(ImMap<IDisposable> disposables)
     {
-      disposables.Visit(d => {
+      disposables.Visit(d =>
+      {
         try
         {
           // Ignoring disposing exception, as it is not important to proceed the disposal of other items
@@ -14598,10 +14624,10 @@ namespace Crystal
 #if SUPPORTS_ASYNC_LOCAL
 namespace Crystal
 {
-	using System.Threading;
+  using System.Threading;
 
-	/// <summary>Stores scopes propagating through async-await boundaries.</summary>
-	public sealed class AsyncExecutionFlowScopeContext : IScopeContext
+  /// <summary>Stores scopes propagating through async-await boundaries.</summary>
+  public sealed class AsyncExecutionFlowScopeContext : IScopeContext
   {
     /// <summary>Statically known name of root scope in this context.</summary>
     public static readonly string ScopeContextName = typeof(AsyncExecutionFlowScopeContext).FullName;
@@ -14632,14 +14658,14 @@ namespace Crystal
 #if SUPPORTS_VARIANCE
 namespace Crystal
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using System.Threading;
-	using System.Threading.Tasks;
+  using System;
+  using System.Collections.Generic;
+  using System.Linq;
+  using System.Threading;
+  using System.Threading.Tasks;
 
-	/// Base type for messages
-	public interface IMessage<out TResponse> { }
+  /// Base type for messages
+  public interface IMessage<out TResponse> { }
 
   /// Type for an empty response
   public struct EmptyResponse
@@ -14766,8 +14792,8 @@ namespace Crystal
 
 namespace Crystal
 {
-	/// <summary>The testing utility</summary>
-	public interface ITest
+  /// <summary>The testing utility</summary>
+  public interface ITest
   {
     /// <summary>Runs the tests and should return the number of run tests</summary>
     int Run();

@@ -8,7 +8,9 @@ using System.Runtime.CompilerServices;
 
 namespace Crystal.Utilities
 {
-  /// <summary>Helpers for functional composition</summary>
+  /// <summary>
+  /// Helpers for functional composition
+  /// </summary>
   public static class Fun
   {
     /// <summary>
@@ -62,7 +64,9 @@ namespace Crystal.Utilities
     public static R ToFunc<T, R>(this R result, T ignoredArg) => result;
   }
 
-  /// <summary>Helpers for lazy instantiations</summary>
+  /// <summary>
+  /// Helpers for lazy instantiations
+  /// </summary>
   public static class Lazy
   {
     /// <summary>Provides result type inference for creation of lazy.</summary>
@@ -399,7 +403,7 @@ namespace Crystal.Utilities
 
       public Tag Tag { [MethodImpl((MethodImplOptions)256)] get => Tag.Case1; }
 
-      [MethodImpl((MethodImplOptions)256)]
+      [MethodImpl(MethodImplOptions.AggressiveInlining)]
       public R Match<R>(Func<T1, R> map1, Func<T2, R> map2, Func<T3, R> map3, Func<T4, R> map4) => map1(Case);
 
       public T1 Value { [MethodImpl((MethodImplOptions)256)] get => Case; }
