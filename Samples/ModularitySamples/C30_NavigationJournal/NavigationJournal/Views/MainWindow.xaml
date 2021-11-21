@@ -1,10 +1,11 @@
-﻿<Window x:Class="NavigationJournal.Views.MainWindow"
+﻿<themes:CrystalWindow x:Class="NavigationJournal.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:crystal="http://schemas.crystal.com"
+        xmlns:themes="http://schemas.crystal.com/themes"
         crystal:ViewModelLocator.AutoWireViewModel="True"
         Title="{Binding Title}" Height="350" Width="525">
     <Grid>
         <ContentControl crystal:RegionManager.RegionName="ContentRegion" />
     </Grid>
-</Window>
+</themes:CrystalWindow>

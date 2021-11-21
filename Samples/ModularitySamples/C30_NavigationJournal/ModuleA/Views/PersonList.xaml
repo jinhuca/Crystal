@@ -4,6 +4,15 @@
              xmlns:crystal="http://schemas.crystal.com"
              xmlns:behaviors="http://schemas.crystal.com/behaviors"
              crystal:ViewModelLocator.AutoWireViewModel="True">
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Controls.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Fonts.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Themes/Light.Blue.xaml" />
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </UserControl.Resources>
   <Grid x:Name="LayoutRoot" Background="White" Margin="10">
     <Grid.RowDefinitions>
       <RowDefinition Height="100"/>
