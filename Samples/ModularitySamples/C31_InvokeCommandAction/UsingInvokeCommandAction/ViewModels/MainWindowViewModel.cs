@@ -6,7 +6,7 @@ namespace UsingInvokeCommandAction.ViewModels
 {
   public class MainWindowViewModel : BindableBase
   {
-    private string _title = "Prism Unity Application";
+    private string _title = "Crystal Application";
     public string Title
     {
       get { return _title; }
