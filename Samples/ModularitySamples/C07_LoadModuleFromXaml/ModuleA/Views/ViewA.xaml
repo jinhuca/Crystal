@@ -12,6 +12,6 @@
     </ResourceDictionary>
   </UserControl.Resources>
 	<Grid>
-		<TextBlock Text="View A" FontSize="38" FontWeight="Black" Foreground="Blue" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+		<TextBlock Text="View A1" FontSize="38" FontWeight="Black" Foreground="Blue" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 	</Grid>
 </UserControl>
