@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Prism.Ioc.Mocks.Services;
-using Prism.Ioc.Mocks.Views;
 using Xunit;
 
 namespace Crystal.Tests

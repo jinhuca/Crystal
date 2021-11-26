@@ -18,9 +18,6 @@ namespace Container.Shared.Fixtures.Ioc
 
     static ContainerProviderExtensionFixture()
     {
-      // Preload assembly to resolve 'xmlns:prism' on xaml.
-      Assembly.Load("Prism.Wpf");
-
       _containerExtension.RegisterInstance<IService>(_unnamedService);
       foreach (var kvp in _namedServiceDictionary)
       {
@@ -93,25 +90,6 @@ namespace Container.Shared.Fixtures.Ioc
 
       Assert.Same(expectedService, service);
     }
-
-    private const string _xamlWithMarkupExtension =
-@"<Window 
-  xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation'
-  xmlns:x='http://schemas.microsoft.com/winfx/2006/xaml'
-  xmlns:prism='http://prismlibrary.com/'
-  xmlns:mocks='clr-namespace:Prism.IocContainer.Wpf.Tests.Support.Mocks;assembly=Prism.IocContainer.Wpf.Tests.Support'
-  DataContext='{prism:ContainerProvider mocks:IService}' />";
-
-    private const string _xamlWithXmlElement =
-@"<Window
-  xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation'
-  xmlns:x='http://schemas.microsoft.com/winfx/2006/xaml'
-  xmlns:prism='http://prismlibrary.com/'
-  xmlns:mocks='clr-namespace:Prism.IocContainer.Wpf.Tests.Support.Mocks;assembly=Prism.IocContainer.Wpf.Tests.Support'>
-  <Window.DataContext>
-    <prism:ContainerProvider Type='mocks:IService' />
-  </Window.DataContext>
-</Window>";
 
     [Theory]
     [InlineData(_xamlWithMarkupExtension)]

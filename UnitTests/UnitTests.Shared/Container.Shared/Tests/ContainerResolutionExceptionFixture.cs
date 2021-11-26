@@ -3,10 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using Prism.Ioc;
-using Prism.Ioc.Mocks.Services;
-using Prism.Ioc.Mocks.ViewModels;
-using Prism.Ioc.Mocks.Views;
 using Xunit;
 
 namespace Crystal.Tests
