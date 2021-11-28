@@ -11,7 +11,7 @@ namespace ModuleA.Business
     private string _firstName;
     public string FirstName
     {
-      get { return _firstName; }
+      get => _firstName;
       set
       {
         _firstName = value;
@@ -22,7 +22,7 @@ namespace ModuleA.Business
     private string _lastName;
     public string LastName
     {
-      get { return _lastName; }
+      get => _lastName;
       set
       {
         _lastName = value;
@@ -33,7 +33,7 @@ namespace ModuleA.Business
     private int _age;
     public int Age
     {
-      get { return _age; }
+      get => _age;
       set
       {
         _age = value;
@@ -44,7 +44,7 @@ namespace ModuleA.Business
     private DateTime? _lastUpdated;
     public DateTime? LastUpdated
     {
-      get { return _lastUpdated; }
+      get => _lastUpdated;
       set
       {
         _lastUpdated = value;

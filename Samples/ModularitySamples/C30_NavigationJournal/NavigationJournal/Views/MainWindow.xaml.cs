@@ -1,6 +1,4 @@
-﻿using System.Windows;
-
-namespace NavigationJournal.Views
+﻿namespace NavigationJournal.Views
 {
   public partial class MainWindow
   {

@@ -14,11 +14,11 @@
       <ItemsControl.ItemTemplate>
         <DataTemplate>
           <Border Background="LightBlue" Height="50" Width="50" Margin="2">
-            <TextBlock Text="{Binding}" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <TextBlock Text="{Binding}" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
           </Border>
         </DataTemplate>
       </ItemsControl.ItemTemplate>
     </ItemsControl>
-    <ContentControl crystal:RegionManager.RegionName="ContentRegion" Margin="5"  />
+    <ContentControl crystal:RegionManager.RegionName="ContentRegion" Margin="5"/>
   </DockPanel>
 </themes:CrystalWindow>

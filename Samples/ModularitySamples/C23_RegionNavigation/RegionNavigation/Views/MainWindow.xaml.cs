@@ -1,6 +1,4 @@
-﻿using System.Windows;
-
-namespace RegionNavigation.Views
+﻿namespace RegionNavigation.Views
 {
   public partial class MainWindow
   {

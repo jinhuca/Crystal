@@ -1,8 +1,6 @@
-﻿using System.Windows.Controls;
-
-namespace ModuleA.Views
+﻿namespace ModuleA.Views
 {
-  public partial class ViewA : UserControl
+  public partial class ViewA
   {
     public ViewA()
     {

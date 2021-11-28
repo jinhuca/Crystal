@@ -1,11 +1,6 @@
-﻿using System.Windows.Controls;
-
-namespace ModuleB.Views
+﻿namespace ModuleB.Views
 {
-  /// <summary>
-  /// Interaction logic for MessageList.xaml
-  /// </summary>
-  public partial class MessageList : UserControl
+  public partial class MessageList
   {
     public MessageList()
     {

@@ -8,7 +8,7 @@
 
   <UserControl.Resources>
     <Style TargetType="TabItem">
-      <Setter Property="Header" Value="{Binding DataContext.SelectedPerson.FirstName}" />
+      <Setter Property="Header" Value="{Binding DataContext.SelectedPerson.FirstName}"/>
     </Style>
   </UserControl.Resources>
 
@@ -25,6 +25,6 @@
         </i:EventTrigger>
       </i:Interaction.Triggers>
     </ListBox>
-    <TabControl Grid.Row="1" Margin="10" crystal:RegionManager.RegionName="PersonDetailsRegion" />
+    <TabControl Grid.Row="1" Margin="10" crystal:RegionManager.RegionName="PersonDetailsRegion"/>
   </Grid>
 </UserControl>

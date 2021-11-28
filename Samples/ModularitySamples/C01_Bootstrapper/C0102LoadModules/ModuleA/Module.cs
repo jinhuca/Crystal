@@ -1,10 +1,9 @@
 using C0102ModuleA.Views;
 using Crystal;
-using System;
 
 namespace C0102Module
 {
-	public class Module : IModule
+  public class Module : IModule
 	{
 		private readonly IContainerProvider _containerProvider;
 		private readonly IRegionManager _regionManager;

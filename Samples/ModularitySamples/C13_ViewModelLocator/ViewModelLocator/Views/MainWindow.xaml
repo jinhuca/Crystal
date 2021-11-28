@@ -4,7 +4,7 @@
         xmlns:crystal="http://schemas.crystal.com"
 				crystal:ViewModelLocator.AutoWireViewModel="True"
         Title="{Binding Title}" Height="450" Width="800" Background="LightBlue">
-    <Grid>
+  <Grid>
 
-    </Grid>
+  </Grid>
 </Window>

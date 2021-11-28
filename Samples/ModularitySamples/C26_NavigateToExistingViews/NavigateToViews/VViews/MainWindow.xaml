@@ -15,6 +15,6 @@
       <Button Command="{Binding NavigateCommand}" CommandParameter="ViewA" Margin="5">Navigate to View A</Button>
       <Button Command="{Binding NavigateCommand}" CommandParameter="ViewB" Margin="5">Navigate to View B</Button>
     </StackPanel>
-    <TabControl crystal:RegionManager.RegionName="ContentRegion" Margin="5"  />
+    <TabControl crystal:RegionManager.RegionName="ContentRegion" Margin="5"/>
   </DockPanel>
 </Window>

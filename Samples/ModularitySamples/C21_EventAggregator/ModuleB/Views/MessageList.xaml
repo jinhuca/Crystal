@@ -4,6 +4,6 @@
              xmlns:crystal="http://schemas.crystal.com"
              crystal:ViewModelLocator.AutoWireViewModel="True" Padding="25">
   <Grid>
-    <ListBox ItemsSource="{Binding Messages}" />
+    <ListBox ItemsSource="{Binding Messages}"/>
   </Grid>
 </UserControl>

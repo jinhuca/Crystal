@@ -1,11 +1,10 @@
 using Crystal;
 using ModuleA.Views;
 using Shared;
-using System;
 
 namespace ModuleA
 {
-	public class Module : IModule
+  public class Module : IModule
 	{
 		private readonly IContainerProvider _containerProvider;
 		private readonly IRegionManager _regionManager;

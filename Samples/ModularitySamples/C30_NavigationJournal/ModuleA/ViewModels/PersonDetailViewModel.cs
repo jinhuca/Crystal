@@ -9,8 +9,8 @@ namespace ModuleA.ViewModels
     IRegionNavigationJournal _journal;
     public Person SelectedPerson
     {
-      get { return _selectedPerson; }
-      set { SetProperty(ref _selectedPerson, value); }
+      get => _selectedPerson;
+      set => SetProperty(ref _selectedPerson, value);
     }
 
     public DelegateCommand GoBackCommand { get; set; }

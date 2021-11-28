@@ -5,7 +5,7 @@
         xmlns:themes="http://schemas.crystal.com/themes"
         crystal:ViewModelLocator.AutoWireViewModel="True"
         Title="{Binding Title}" Height="350" Width="525">
-    <Grid>
-        <ContentControl crystal:RegionManager.RegionName="ContentRegion" />
-    </Grid>
+  <Grid>
+    <ContentControl crystal:RegionManager.RegionName="ContentRegion"/>
+  </Grid>
 </themes:CrystalWindow>

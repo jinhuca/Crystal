@@ -1,8 +1,6 @@
-﻿using System.Windows;
-
-namespace PassingParameters.Views
+﻿namespace PassingParameters.Views
 {
-  public partial class MainWindow : Window
+  public partial class MainWindow
   {
     public MainWindow()
     {

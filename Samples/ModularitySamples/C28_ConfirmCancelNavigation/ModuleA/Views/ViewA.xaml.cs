@@ -1,10 +1,10 @@
 ﻿namespace ModuleA.Views
 {
   public partial class ViewA
+  {
+    public ViewA()
     {
-        public ViewA()
-        {
-            InitializeComponent();
-        }
+      InitializeComponent();
     }
+  }
 }

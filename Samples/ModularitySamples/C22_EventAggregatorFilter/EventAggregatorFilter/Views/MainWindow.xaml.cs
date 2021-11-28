@@ -1,8 +1,6 @@
-﻿using System.Windows;
-
-namespace EventAggregatorFilter.Views
+﻿namespace EventAggregatorFilter.Views
 {
-  public partial class MainWindow : Window
+  public partial class MainWindow
   {
     public MainWindow()
     {

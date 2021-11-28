@@ -1,15 +1,10 @@
-﻿using System.Windows.Controls;
-
-namespace ModuleA.Views
+﻿namespace ModuleA.Views
 {
-    /// <summary>
-    /// Interaction logic for PersonDetail
-    /// </summary>
-    public partial class PersonDetail : UserControl
+  public partial class PersonDetail
+  {
+    public PersonDetail()
     {
-        public PersonDetail()
-        {
-            InitializeComponent();
-        }
+      InitializeComponent();
     }
+  }
 }

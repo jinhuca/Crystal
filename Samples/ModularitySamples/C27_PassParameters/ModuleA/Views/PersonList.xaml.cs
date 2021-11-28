@@ -1,15 +1,10 @@
-﻿using System.Windows.Controls;
-
-namespace ModuleA.Views
+﻿namespace ModuleA.Views
 {
-    /// <summary>
-    /// Interaction logic for PersonList
-    /// </summary>
-    public partial class PersonList : UserControl
+  public partial class PersonList
+  {
+    public PersonList()
     {
-        public PersonList()
-        {
-            InitializeComponent();
-        }
+      InitializeComponent();
     }
+  }
 }

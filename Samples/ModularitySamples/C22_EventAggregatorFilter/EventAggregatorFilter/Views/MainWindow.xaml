@@ -9,7 +9,7 @@
       <ColumnDefinition />
       <ColumnDefinition />
     </Grid.ColumnDefinitions>
-    <ContentControl crystal:RegionManager.RegionName="LeftRegion" />
-    <ContentControl Grid.Column="1" crystal:RegionManager.RegionName="RightRegion" />
+    <ContentControl crystal:RegionManager.RegionName="LeftRegion"/>
+    <ContentControl Grid.Column="1" crystal:RegionManager.RegionName="RightRegion"/>
   </Grid>
 </Window>
