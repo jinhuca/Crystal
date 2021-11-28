@@ -8,9 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Crystal.Core" Version="2.2.3.7" />
-    <PackageReference Include="Crystal.Desktop" Version="2.2.3.7" />
-    <PackageReference Include="Crystal.Themes" Version="2.2.4.4" />
+    <PackageReference Include="Crystal.Core" Version="2.2.3.8" />
+    <PackageReference Include="Crystal.Desktop" Version="2.2.3.8" />
+    <PackageReference Include="Crystal.Themes" Version="2.2.4.5" />
   </ItemGroup>
 
   <ItemGroup>
