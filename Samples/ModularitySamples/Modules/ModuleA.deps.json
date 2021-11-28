@@ -8,49 +8,49 @@
     ".NETCoreApp,Version=v6.0": {
       "ModuleA/1.0.0": {
         "dependencies": {
-          "Crystal.Desktop": "2.2.3.7",
-          "Crystal.Themes": "2.2.4.4",
+          "Crystal.Desktop": "2.2.3.8",
+          "Crystal.Themes": "2.2.4.5",
           "Shared": "1.0.0"
         },
         "runtime": {
           "ModuleA.dll": {}
         }
       },
-      "Crystal.Behaviors/2.2.3.7": {
+      "Crystal.Behaviors/2.2.3.8": {
         "runtime": {
           "lib/net6.0-windows7.0/Crystal.Behaviors.dll": {
-            "assemblyVersion": "2.2.3.7",
-            "fileVersion": "2.2.3.7"
+            "assemblyVersion": "2.2.3.8",
+            "fileVersion": "2.2.3.8"
           }
         }
       },
-      "Crystal.Core/2.2.3.7": {
+      "Crystal.Core/2.2.3.8": {
         "runtime": {
           "lib/net6.0-windows7.0/Crystal.Core.dll": {
-            "assemblyVersion": "2.2.3.7",
-            "fileVersion": "2.2.3.7"
+            "assemblyVersion": "2.2.3.8",
+            "fileVersion": "2.2.3.8"
           }
         }
       },
-      "Crystal.Desktop/2.2.3.7": {
+      "Crystal.Desktop/2.2.3.8": {
         "dependencies": {
-          "Crystal.Core": "2.2.3.7"
+          "Crystal.Core": "2.2.3.8"
         },
         "runtime": {
           "lib/net6.0-windows7.0/Crystal.Desktop.dll": {
-            "assemblyVersion": "2.2.3.7",
-            "fileVersion": "2.2.3.7"
+            "assemblyVersion": "2.2.3.8",
+            "fileVersion": "2.2.3.8"
           }
         }
       },
-      "Crystal.Themes/2.2.4.4": {
+      "Crystal.Themes/2.2.4.5": {
         "dependencies": {
-          "Crystal.Behaviors": "2.2.3.7"
+          "Crystal.Behaviors": "2.2.3.8"
         },
         "runtime": {
           "lib/net6.0-windows7.0/Crystal.Themes.dll": {
-            "assemblyVersion": "2.2.4.4",
-            "fileVersion": "2.2.4.4"
+            "assemblyVersion": "2.2.4.5",
+            "fileVersion": "2.2.4.5"
           }
         },
         "resources": {
@@ -72,33 +72,33 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Crystal.Behaviors/2.2.3.7": {
+    "Crystal.Behaviors/2.2.3.8": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-LWtQBZois+F/oWUuP1Z75ZbZEBoKkEd6P2Nj6rEalUctYl2iY0CaUfZvwNmpGrznVjANCyrY6JubES2O94KnWA==",
-      "path": "crystal.behaviors/2.2.3.7",
-      "hashPath": "crystal.behaviors.2.2.3.7.nupkg.sha512"
+      "sha512": "sha512-6WU4Wh8p1q4WNRX8KILjTGQ0zoCEglvvVakwegaGJCIuM/HRrEoDeRb18hlH6rHb9gsVhUnGh2h9JGzxZ2kM7g==",
+      "path": "crystal.behaviors/2.2.3.8",
+      "hashPath": "crystal.behaviors.2.2.3.8.nupkg.sha512"
     },
-    "Crystal.Core/2.2.3.7": {
+    "Crystal.Core/2.2.3.8": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-XLNsFgMoLX7I5ZrHvRGVoXn4TpF1g5Q1sivh9RzK/mf8x7WbG2/+90qYvhbL2fuZiE+WZiNtNH6zwTpSQlEUqA==",
-      "path": "crystal.core/2.2.3.7",
-      "hashPath": "crystal.core.2.2.3.7.nupkg.sha512"
+      "sha512": "sha512-wKpKZz451RAKYPIJX4IDBI61FvGymHJ7qnVgD8QbTcbZ4Yhhqzauwd/X325ddD3Mf1YPCWOiFbARqiMRQx2GgA==",
+      "path": "crystal.core/2.2.3.8",
+      "hashPath": "crystal.core.2.2.3.8.nupkg.sha512"
     },
-    "Crystal.Desktop/2.2.3.7": {
+    "Crystal.Desktop/2.2.3.8": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-mYfvuoaJER60vVqIyaxtbZ5ibEPen50Brk/nCE1oLbAvgtey+ObyVag7QZpegfkoOAqd6PpsuxLR6YXnwjE6+A==",
-      "path": "crystal.desktop/2.2.3.7",
-      "hashPath": "crystal.desktop.2.2.3.7.nupkg.sha512"
+      "sha512": "sha512-NjKzVAUqP8cibB82R/OmxTOkNAFM82YJ5nQabvQUpujpzehUAFM5c9pQ/H/aMb2dFbn34hj3c36NdG8WDtQXuw==",
+      "path": "crystal.desktop/2.2.3.8",
+      "hashPath": "crystal.desktop.2.2.3.8.nupkg.sha512"
     },
-    "Crystal.Themes/2.2.4.4": {
+    "Crystal.Themes/2.2.4.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-92+3FPQAJlXG4pe8L3/bNjPJWIByBRjGUZtXTDxOmEdE1DhH+WakzzwUhY0+/5WQawVILAgpJ2O/iq8JpBRhKg==",
-      "path": "crystal.themes/2.2.4.4",
-      "hashPath": "crystal.themes.2.2.4.4.nupkg.sha512"
+      "sha512": "sha512-u9gnI2ARAkryDlVcwBFSD8Ny7sv5aYNqMbN1IeiBGd6TvUKa944XY7dsAYwfsI4Uh9MQt/RUo4VNT9+FF2AewQ==",
+      "path": "crystal.themes/2.2.4.5",
+      "hashPath": "crystal.themes.2.2.4.5.nupkg.sha512"
     },
     "Shared/1.0.0": {
       "type": "project",
