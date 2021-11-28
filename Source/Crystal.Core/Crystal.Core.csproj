@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0-windows</TargetFramework>
-    <Version>2.2.3.7</Version>
+    <Version>2.2.3.8</Version>
     <Authors>Jin Hu</Authors>
     <Description>Crystal library for building composite .NET applications and components</Description>
     <PackageProjectUrl>https://github.com/jinhuca/Crystal</PackageProjectUrl>
@@ -12,8 +12,8 @@
     <PackageIcon>CrystalCore.png</PackageIcon>
     <PackageIconUrl />
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <AssemblyVersion>2.2.3.7</AssemblyVersion>
-    <FileVersion>2.2.3.7</FileVersion>
+    <AssemblyVersion>2.2.3.8</AssemblyVersion>
+    <FileVersion>2.2.3.8</FileVersion>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
   </PropertyGroup>
