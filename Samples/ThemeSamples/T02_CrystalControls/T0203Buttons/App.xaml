@@ -11,11 +11,9 @@
         <ResourceDictionary Source="pack://application:,,,/Crystal.Themes;component/Styles/Themes/Light.Blue.xaml"/>
       </ResourceDictionary.MergedDictionaries>
 
-      <Style x:Key="DescriptionHeaderStyle"
-                   BasedOn="{StaticResource {x:Type Label}}"
-                   TargetType="{x:Type Label}">
-        <Setter Property="FontSize" Value="22" />
-        <Setter Property="HorizontalAlignment" Value="Center" />
+      <Style x:Key="DescriptionHeaderStyle" BasedOn="{StaticResource {x:Type Label}}" TargetType="{x:Type Label}">
+        <Setter Property="FontSize" Value="22"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
       </Style>
     </ResourceDictionary>
   </Application.Resources>
