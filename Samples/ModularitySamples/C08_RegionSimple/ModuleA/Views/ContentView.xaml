@@ -10,7 +10,7 @@
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </UserControl.Resources>
-	<Grid Background="LightCoral">
+	<Grid Background="LightBlue">
 		<TextBlock Text="Content" FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 	</Grid>
 </UserControl>
