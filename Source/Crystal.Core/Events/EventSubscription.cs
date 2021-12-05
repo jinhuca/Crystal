@@ -1,15 +1,14 @@
 using System;
-using System.Globalization;
 using static System.String;
 using static Crystal.Constants.StringConstants;
 
 namespace Crystal
 {
-	/// <summary>
-	/// Provides a way to retrieve a <see cref="Delegate"/> to execute an action depending
-	/// on the value of a second filter predicate that returns true if the action should execute.
-	/// </summary>
-	public class EventSubscription : IEventSubscription
+  /// <summary>
+  /// Provides a way to retrieve a <see cref="Delegate"/> to execute an action depending
+  /// on the value of a second filter predicate that returns true if the action should execute.
+  /// </summary>
+  public class EventSubscription : IEventSubscription
 	{
 		private readonly IDelegateReference _actionReference;
 
