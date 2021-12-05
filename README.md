@@ -31,4 +31,4 @@ In this library, two packages are built to facilitate the UI customization:
 | <a href="https://www.nuget.org/packages/Crystal.Themes/">![](https://img.shields.io/badge/Crystal-Themes-red)</a> | [![NuGet Badge](https://buildstats.info/nuget/Crystal.Themes)](https://www.nuget.org/packages/Crystal.Themes/) | ![License: MIT](https://img.shields.io/badge/license-MIT-blue) |
 
 #### [`Wiki`](https://github.com/jinhuca/Crystal/wiki) contains more details about key design and implementation about Crystal library.
-#### [`Samples`](https://github.com/jinhuca/Crystal.Samples) contains sample applications using Crystal library.
+#### [`Samples`](https://github.com/jinhuca/Crystal/tree/master/Samples) contains sample applications using Crystal library.
