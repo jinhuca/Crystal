@@ -11,7 +11,7 @@
     </ResourceDictionary>
   </UserControl.Resources>
   <StackPanel>
-    <TextBlock Text="ViewA1" FontSize="36" FontWeight="Black" Foreground="Blue" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+    <TextBlock Text="ViewA1" FontSize="36" FontWeight="Black" Foreground="Red" VerticalAlignment="Center" HorizontalAlignment="Center"/>
     <Button Content="Hello Crystal" FontSize="25" VerticalAlignment="Center" HorizontalAlignment="Center"/>
   </StackPanel>
 </UserControl>

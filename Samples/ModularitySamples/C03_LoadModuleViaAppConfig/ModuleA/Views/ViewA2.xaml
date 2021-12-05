@@ -10,5 +10,5 @@
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </UserControl.Resources>
-	<TextBlock Text="ViewA2" FontSize="26" FontWeight="Black" Foreground="DarkRed" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+	<TextBlock Text="ViewA2" FontSize="26" FontWeight="Black" Foreground="DarkGreen" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 </UserControl>
