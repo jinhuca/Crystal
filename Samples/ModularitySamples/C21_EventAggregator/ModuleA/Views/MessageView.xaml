@@ -3,8 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:crystal="http://schemas.crystal.com"
              crystal:ViewModelLocator.AutoWireViewModel="True" Padding="25">
+  <Border BorderBrush="DarkRed" BorderThickness="3" CornerRadius="3">
     <StackPanel>
-        <TextBox Text="{Binding Message}" Margin="5"/>
-        <Button Command="{Binding SendMessageCommand}" Content="Send Message" Margin="5"/>
+      <TextBox Text="{Binding Message}" Margin="5"/>
+      <Button Command="{Binding SendMessageCommand}" Content="Send Message" Margin="5"/>
     </StackPanel>
+  </Border>
 </UserControl>
