@@ -1,0 +1,12 @@
+﻿<UserControl x:Class="C3201ModulePublisher.Views.PublisherView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:crystal="http://schemas.crystal.com"
+             crystal:ViewModelLocator.AutoWireViewModel="True">
+  <Border BorderBrush="DarkRed" BorderThickness="2" CornerRadius="2">
+    <StackPanel>
+      <TextBox Text="{Binding Message}" Margin="5"/>
+      <Button Command="{Binding PublishMessageCommand}" Content="Publish Event" Margin="5"/>
+    </StackPanel>
+  </Border>
+</UserControl>

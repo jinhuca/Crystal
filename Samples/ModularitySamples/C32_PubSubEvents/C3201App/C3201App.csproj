@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Crystal.Desktop" Version="2.2.3.8" />
+    <PackageReference Include="Crystal.Themes" Version="2.2.4.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\C3201ModulePublisher\C3201ModulePublisher.csproj" />
+    <ProjectReference Include="..\C3201ModuleSubscriber\C3201ModuleSubscriber.csproj" />
+    <ProjectReference Include="..\C3201SolutionCore\C3201SolutionCore.csproj" />
+  </ItemGroup>
+
+</Project>
