@@ -2,8 +2,9 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:crystal="http://schemas.crystal.com"
-             crystal:ViewModelLocator.AutoWireViewModel="True">
-  <Border BorderBrush="DarkBlue" BorderThickness="2" CornerRadius="2" Padding="25">
+             crystal:ViewModelLocator.AutoWireViewModel="True"
+             HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+  <Border BorderBrush="DarkBlue" BorderThickness="2" CornerRadius="2" Padding="5" Margin="10">
     <ListBox ItemsSource="{Binding Messages}"/>
   </Border>
 </UserControl>

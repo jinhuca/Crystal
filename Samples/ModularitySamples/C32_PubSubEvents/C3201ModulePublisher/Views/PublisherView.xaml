@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:crystal="http://schemas.crystal.com"
              crystal:ViewModelLocator.AutoWireViewModel="True">
-  <Border BorderBrush="DarkRed" BorderThickness="2" CornerRadius="2">
+  <Border BorderBrush="DarkRed" BorderThickness="2" CornerRadius="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10">
     <StackPanel>
       <TextBox Text="{Binding Message}" Margin="5"/>
       <Button Command="{Binding PublishMessageCommand}" Content="Publish Event" Margin="5"/>

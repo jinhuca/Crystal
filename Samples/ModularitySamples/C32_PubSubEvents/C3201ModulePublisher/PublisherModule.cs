@@ -1,7 +1,6 @@
 using C3201ModulePublisher.Views;
 using C3201SolutionCore;
 using Crystal;
-using System;
 
 namespace C3101Sender
 {
