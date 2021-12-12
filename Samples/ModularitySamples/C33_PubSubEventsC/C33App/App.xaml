@@ -1,7 +1,8 @@
-﻿<crystal:CrystalApplication x:Class="C3201App.App"
+﻿<crystal:CrystalApplication x:Class="C33App.App"
                             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                            xmlns:crystal="http://schemas.crystal.com">
+                            xmlns:crystal="http://schemas.crystal.com"
+                            xmlns:themes="http://schemas.crystal.com/themes">
   <Application.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>

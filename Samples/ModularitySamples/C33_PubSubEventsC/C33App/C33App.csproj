@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Crystal.Desktop" Version="2.2.3.8" />
+    <PackageReference Include="Crystal.Themes" Version="2.2.4.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\C33ModuleCore\C33ModuleCore.csproj" />
+    <ProjectReference Include="..\C33ModulePublisher\C33ModulePublisher.csproj" />
+    <ProjectReference Include="..\C33ModuleSubscriber1\C33ModuleSubscriber1.csproj" />
+    <ProjectReference Include="..\C33ModuleSubscriber2\C33ModuleSubscriber2.csproj" />
+  </ItemGroup>
+
+</Project>

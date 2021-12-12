@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="C33ModulePublisher.Views.PublisherView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:crystal="http://schemas.crystal.com">
+  <Border BorderBrush="DarkRed" BorderThickness="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10">
+    <StackPanel>
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition/>
+          <RowDefinition/>
+          <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition/>
+          <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Name"/>
+        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Name}"/>
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Age"/>
+        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Age}"/>
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Gdp"/>
+        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Gdp}"/>
+      </Grid>
+      <Button Command="{Binding PublishCommand}" Content="Send Student Message" Margin="5"/>
+    </StackPanel>
+  </Border>
+</UserControl>

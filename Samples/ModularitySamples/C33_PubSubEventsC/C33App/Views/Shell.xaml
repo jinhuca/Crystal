@@ -1,0 +1,28 @@
+﻿<themes:CrystalWindow x:Class="C33App.Views.Shell"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:crystal="http://schemas.crystal.com"
+                      xmlns:themes="http://schemas.crystal.com/themes"
+                      xmlns:infrastructure="clr-namespace:C33ModuleCore;assembly=C33ModuleCore"
+                      crystal:ViewModelLocator.AutoWireViewModel="True"
+                      Title="{Binding Title}" Height="350" Width="600">
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition/>
+      <ColumnDefinition/>
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition/>
+      <RowDefinition/>
+    </Grid.RowDefinitions>
+    <ContentControl Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"
+                    crystal:RegionManager.RegionName="{x:Static infrastructure:RegionNames.LeftRegionName}"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+    <ContentControl Grid.Row="0" Grid.Column="1"
+                    crystal:RegionManager.RegionName="{x:Static infrastructure:RegionNames.RightUpperRegionName}"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+    <ContentControl Grid.Row="1" Grid.Column="1"
+                    crystal:RegionManager.RegionName="{x:Static infrastructure:RegionNames.RightLowerRegionName}"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+  </Grid>
+</themes:CrystalWindow>
