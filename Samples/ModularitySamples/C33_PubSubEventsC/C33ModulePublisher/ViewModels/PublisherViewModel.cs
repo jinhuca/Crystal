@@ -6,7 +6,6 @@ namespace C33ModulePublisher.ViewModels
   internal class PublisherViewModel : BindableBase
   {
     private readonly IEventAggregator _eventAggregator;
-    
     private int _age = 7;
     public int Age
     {
@@ -29,10 +28,6 @@ namespace C33ModulePublisher.ViewModels
     }
 
     public DelegateCommand PublishCommand { get; set; }
-
-    public PublisherViewModel()
-    {
-
-    }
+    public PublisherViewModel() { }
   }
 }
