@@ -7,8 +7,8 @@ namespace RegionContext.ViewModels
     private string _title = "Crystal Region Context";
     public string Title
     {
-      get { return _title; }
-      set { SetProperty(ref _title, value); }
+      get => _title;
+      set => SetProperty(ref _title, value);
     }
 
     public MainWindowViewModel()

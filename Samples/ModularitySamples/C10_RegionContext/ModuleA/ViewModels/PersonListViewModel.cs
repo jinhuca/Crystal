@@ -9,11 +9,15 @@ namespace ModuleA.ViewModels
     private ObservableCollection<Person> _people;
     public ObservableCollection<Person> People
     {
-      get { return _people; }
-      set { SetProperty(ref _people, value); }
+      get => _people;
+      set => SetProperty(ref _people, value);
     }
 
-    public PersonListViewModel() => CreatePeople();
+    public PersonListViewModel(ObservableCollection<Person> people)
+    {
+      _people = people;
+      CreatePeople();
+    }
 
     private void CreatePeople()
     {

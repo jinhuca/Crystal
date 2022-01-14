@@ -8,7 +8,6 @@
       <RowDefinition Height="100"/>
       <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
-
     <ListBox x:Name="_listOfPeople" ItemsSource="{Binding People}"/>
     <ContentControl Grid.Row="1" Margin="10"
                     crystal:RegionManager.RegionName="PersonDetailsRegion"
