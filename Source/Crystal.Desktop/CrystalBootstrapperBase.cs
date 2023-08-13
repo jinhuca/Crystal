@@ -9,7 +9,8 @@ namespace Crystal
 	/// <remarks>
 	/// This class must be overridden to provide application specific configuration.
 	/// </remarks>
-	public abstract class CrystalBootstrapperBase
+	[Obsolete]
+  public abstract class CrystalBootstrapperBase
 	{
 		IContainerExtension _containerExtension;
 		IModuleCatalog _moduleCatalog;

@@ -5,7 +5,8 @@ namespace Crystal
 	/// <summary>
 	/// Base bootstrapper class that uses <see cref="ContainerExtension"/> as it's container.
 	/// </summary>
-	public abstract class CrystalBootstrapper : CrystalBootstrapperBase
+  [Obsolete]
+  public abstract class CrystalBootstrapper : CrystalBootstrapperBase
 	{
 		/// <summary>
 		/// Create <see cref="Rules" /> to alter behavior of <see cref="IContainer" />
