@@ -2,10 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-namespace Crystal.Themes.Controls
+namespace Crystal.Themes.Controls;
+
+public class ClosingWindowEventHandlerArgs : EventArgs
 {
-  public class ClosingWindowEventHandlerArgs : EventArgs
-    {
-        public bool Cancelled { get; set; }
-    }
+  public bool Cancelled { get; set; }
 }

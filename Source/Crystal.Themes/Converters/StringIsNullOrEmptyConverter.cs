@@ -4,22 +4,21 @@
 
 using System.Globalization;
 
-namespace Crystal.Themes.Converters
+namespace Crystal.Themes.Converters;
+
+[ValueConversion(typeof(string), typeof(bool))]
+public sealed class StringIsNullOrEmptyConverter : IValueConverter
 {
-  [ValueConversion(typeof(string), typeof(bool))]
-    public sealed class StringIsNullOrEmptyConverter : IValueConverter
-    {
-        /// <summary> Gets the default instance </summary>
-        public static StringIsNullOrEmptyConverter Default { get; } = new StringIsNullOrEmptyConverter();
+  /// <summary> Gets the default instance </summary>
+  public static StringIsNullOrEmptyConverter Default { get; } = new StringIsNullOrEmptyConverter();
 
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return string.IsNullOrEmpty(value as string);
-        }
+  public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+  {
+    return string.IsNullOrEmpty(value as string);
+  }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
+  public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+  {
+    throw new NotImplementedException();
+  }
 }

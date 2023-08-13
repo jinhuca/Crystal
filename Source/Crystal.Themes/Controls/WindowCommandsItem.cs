@@ -1,61 +1,58 @@
-﻿using Crystal.Themes.ValueBoxes;
+﻿namespace Crystal.Themes.Controls;
 
-namespace Crystal.Themes.Controls
+[TemplatePart(Name = PART_ContentPresenter, Type = typeof(UIElement))]
+[TemplatePart(Name = PART_Separator, Type = typeof(UIElement))]
+public class WindowCommandsItem : ContentControl
 {
-  [TemplatePart(Name = PART_ContentPresenter, Type = typeof(UIElement))]
-  [TemplatePart(Name = PART_Separator, Type = typeof(UIElement))]
-  public class WindowCommandsItem : ContentControl
+  private const string PART_ContentPresenter = "PART_ContentPresenter";
+  private const string PART_Separator = "PART_Separator";
+
+  internal PropertyChangeNotifier? VisibilityPropertyChangeNotifier { get; set; }
+
+  /// <summary>Identifies the <see cref="IsSeparatorVisible"/> dependency property.</summary>
+  public static readonly DependencyProperty IsSeparatorVisibleProperty =
+    DependencyProperty.Register(nameof(IsSeparatorVisible),
+      typeof(bool),
+      typeof(WindowCommandsItem),
+      new FrameworkPropertyMetadata(BooleanBoxes.TrueBox,
+        FrameworkPropertyMetadataOptions.Inherits | FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender));
+
+  /// <summary>
+  /// Gets or sets the value indicating whether to show the separator.
+  /// </summary>
+  public bool IsSeparatorVisible
   {
-    private const string PART_ContentPresenter = "PART_ContentPresenter";
-    private const string PART_Separator = "PART_Separator";
+    get => (bool)GetValue(IsSeparatorVisibleProperty);
+    set => SetValue(IsSeparatorVisibleProperty, BooleanBoxes.Box(value));
+  }
 
-    internal PropertyChangeNotifier? VisibilityPropertyChangeNotifier { get; set; }
+  /// <summary>Identifies the <see cref="ParentWindowCommands"/> dependency property.</summary>
+  private static readonly DependencyPropertyKey ParentWindowCommandsPropertyKey =
+    DependencyProperty.RegisterReadOnly(nameof(ParentWindowCommands),
+      typeof(WindowCommands),
+      typeof(WindowCommandsItem),
+      new PropertyMetadata(null));
 
-    /// <summary>Identifies the <see cref="IsSeparatorVisible"/> dependency property.</summary>
-    public static readonly DependencyProperty IsSeparatorVisibleProperty =
-        DependencyProperty.Register(nameof(IsSeparatorVisible),
-                                    typeof(bool),
-                                    typeof(WindowCommandsItem),
-                                    new FrameworkPropertyMetadata(BooleanBoxes.TrueBox,
-                                                                  FrameworkPropertyMetadataOptions.Inherits | FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender));
+  /// <summary>Identifies the <see cref="ParentWindowCommands"/> dependency property.</summary>
+  public static readonly DependencyProperty ParentWindowCommandsProperty = ParentWindowCommandsPropertyKey.DependencyProperty;
 
-    /// <summary>
-    /// Gets or sets the value indicating whether to show the separator.
-    /// </summary>
-    public bool IsSeparatorVisible
-    {
-      get => (bool)GetValue(IsSeparatorVisibleProperty);
-      set => SetValue(IsSeparatorVisibleProperty, BooleanBoxes.Box(value));
-    }
+  public WindowCommands? ParentWindowCommands
+  {
+    get => (WindowCommands?)GetValue(ParentWindowCommandsProperty);
+    protected set => SetValue(ParentWindowCommandsPropertyKey, value);
+  }
 
-    /// <summary>Identifies the <see cref="ParentWindowCommands"/> dependency property.</summary>
-    private static readonly DependencyPropertyKey ParentWindowCommandsPropertyKey =
-        DependencyProperty.RegisterReadOnly(nameof(ParentWindowCommands),
-                                            typeof(WindowCommands),
-                                            typeof(WindowCommandsItem),
-                                            new PropertyMetadata(null));
+  static WindowCommandsItem()
+  {
+    DefaultStyleKeyProperty.OverrideMetadata(typeof(WindowCommandsItem), new FrameworkPropertyMetadata(typeof(WindowCommandsItem)));
+  }
 
-    /// <summary>Identifies the <see cref="ParentWindowCommands"/> dependency property.</summary>
-    public static readonly DependencyProperty ParentWindowCommandsProperty = ParentWindowCommandsPropertyKey.DependencyProperty;
+  /// <inheritdoc/>
+  public override void OnApplyTemplate()
+  {
+    base.OnApplyTemplate();
 
-    public WindowCommands? ParentWindowCommands
-    {
-      get => (WindowCommands?)GetValue(ParentWindowCommandsProperty);
-      protected set => SetValue(ParentWindowCommandsPropertyKey, value);
-    }
-
-    static WindowCommandsItem()
-    {
-      DefaultStyleKeyProperty.OverrideMetadata(typeof(WindowCommandsItem), new FrameworkPropertyMetadata(typeof(WindowCommandsItem)));
-    }
-
-    /// <inheritdoc/>
-    public override void OnApplyTemplate()
-    {
-      base.OnApplyTemplate();
-
-      var windowCommands = ItemsControl.ItemsControlFromItemContainer(this) as WindowCommands;
-      SetValue(ParentWindowCommandsPropertyKey, windowCommands);
-    }
+    var windowCommands = ItemsControl.ItemsControlFromItemContainer(this) as WindowCommands;
+    SetValue(ParentWindowCommandsPropertyKey, windowCommands);
   }
 }

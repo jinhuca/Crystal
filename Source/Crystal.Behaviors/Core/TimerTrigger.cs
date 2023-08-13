@@ -2,136 +2,135 @@ using System;
 using System.Windows;
 using System.Windows.Threading;
 
-namespace Crystal.Behaviors
+namespace Crystal.Behaviors;
+
+/// <summary>
+/// A trigger that is triggered by a specified event occurring on its source and fires after a delay when that event is fired.
+/// </summary>
+public class TimerTrigger : EventTrigger
 {
+  public static readonly DependencyProperty MillisecondsPerTickProperty = DependencyProperty.Register(
+    nameof(MillisecondsPerTick),
+    typeof(double),
+    typeof(TimerTrigger),
+    new FrameworkPropertyMetadata(1000.0));
+
+  public static readonly DependencyProperty TotalTicksProperty = DependencyProperty.Register(
+    nameof(TotalTicks),
+    typeof(int),
+    typeof(TimerTrigger),
+    new FrameworkPropertyMetadata(-1));
+
+  private ITickTimer timer;
+  private EventArgs eventArgs;
+  private int tickCount;
+
   /// <summary>
-  /// A trigger that is triggered by a specified event occurring on its source and fires after a delay when that event is fired.
+  /// Initializes a new instance of the <see cref="TimerTrigger"/> class.
   /// </summary>
-  public class TimerTrigger : EventTrigger
+  public TimerTrigger() : this(new DispatcherTickTimer())
   {
-    public static readonly DependencyProperty MillisecondsPerTickProperty = DependencyProperty.Register(
-      nameof(MillisecondsPerTick),
-      typeof(double),
-      typeof(TimerTrigger),
-      new FrameworkPropertyMetadata(1000.0));
+  }
 
-    public static readonly DependencyProperty TotalTicksProperty = DependencyProperty.Register(
-      nameof(TotalTicks),
-      typeof(int),
-      typeof(TimerTrigger),
-      new FrameworkPropertyMetadata(-1));
+  internal TimerTrigger(ITickTimer timer)
+  {
+    this.timer = timer;
+  }
 
-    private ITickTimer timer;
-    private EventArgs eventArgs;
-    private int tickCount;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="TimerTrigger"/> class.
-    /// </summary>
-    public TimerTrigger() : this(new DispatcherTickTimer())
+  /// <summary>
+  /// Gets or sets the number of milliseconds to wait between ticks. This is a dependency property.
+  /// </summary>
+  public double MillisecondsPerTick
+  {
+    get => (double)GetValue(MillisecondsPerTickProperty);
+    set => SetValue(MillisecondsPerTickProperty, value);
+  }
+
+  /// <summary>
+  /// Gets or sets the total number of ticks to be fired before the trigger is finished.  This is a dependency property.
+  /// </summary>
+  public int TotalTicks
+  {
+    get => (int)GetValue(TotalTicksProperty);
+    set => SetValue(TotalTicksProperty, value);
+  }
+
+  protected override void OnEvent(EventArgs eventArgs)
+  {
+    StopTimer();
+
+    this.eventArgs = eventArgs;
+    tickCount = 0;
+
+    StartTimer();
+  }
+
+  protected override void OnDetaching()
+  {
+    StopTimer();
+
+    base.OnDetaching();
+  }
+
+  internal void StartTimer()
+  {
+    if (timer != null)
     {
+      timer.Interval = TimeSpan.FromMilliseconds(MillisecondsPerTick);
+      timer.Tick += OnTimerTick;
+      timer.Start();
     }
+  }
 
-    internal TimerTrigger(ITickTimer timer)
+  internal void StopTimer()
+  {
+    if (timer != null)
     {
-      this.timer = timer;
+      timer.Stop();
+      timer.Tick -= OnTimerTick;
     }
+  }
 
-
-    /// <summary>
-    /// Gets or sets the number of milliseconds to wait between ticks. This is a dependency property.
-    /// </summary>
-    public double MillisecondsPerTick
-    {
-      get => (double)GetValue(MillisecondsPerTickProperty);
-      set => SetValue(MillisecondsPerTickProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the total number of ticks to be fired before the trigger is finished.  This is a dependency property.
-    /// </summary>
-    public int TotalTicks
-    {
-      get => (int)GetValue(TotalTicksProperty);
-      set => SetValue(TotalTicksProperty, value);
-    }
-
-    protected override void OnEvent(EventArgs eventArgs)
+  private void OnTimerTick(object sender, EventArgs e)
+  {
+    if (TotalTicks > 0 && ++tickCount >= TotalTicks)
     {
       StopTimer();
-
-      this.eventArgs = eventArgs;
-      tickCount = 0;
-
-      StartTimer();
     }
 
-    protected override void OnDetaching()
-    {
-      StopTimer();
+    InvokeActions(eventArgs);
+  }
 
-      base.OnDetaching();
+  internal class DispatcherTickTimer : ITickTimer
+  {
+    private DispatcherTimer dispatcherTimer;
+
+    public DispatcherTickTimer()
+    {
+      dispatcherTimer = new DispatcherTimer();
     }
 
-    internal void StartTimer()
+    public event EventHandler Tick
     {
-      if (timer != null)
-      {
-        timer.Interval = TimeSpan.FromMilliseconds(MillisecondsPerTick);
-        timer.Tick += OnTimerTick;
-        timer.Start();
-      }
+      add { dispatcherTimer.Tick += value; }
+      remove { dispatcherTimer.Tick -= value; }
     }
 
-    internal void StopTimer()
+    public TimeSpan Interval
     {
-      if (timer != null)
-      {
-        timer.Stop();
-        timer.Tick -= OnTimerTick;
-      }
+      get => dispatcherTimer.Interval;
+      set => dispatcherTimer.Interval = value;
     }
 
-    private void OnTimerTick(object sender, EventArgs e)
+    public void Start()
     {
-      if (TotalTicks > 0 && ++tickCount >= TotalTicks)
-      {
-        StopTimer();
-      }
-
-      InvokeActions(eventArgs);
+      dispatcherTimer.Start();
     }
 
-    internal class DispatcherTickTimer : ITickTimer
+    public void Stop()
     {
-      private DispatcherTimer dispatcherTimer;
-
-      public DispatcherTickTimer()
-      {
-        dispatcherTimer = new DispatcherTimer();
-      }
-
-      public event EventHandler Tick
-      {
-        add { dispatcherTimer.Tick += value; }
-        remove { dispatcherTimer.Tick -= value; }
-      }
-
-      public TimeSpan Interval
-      {
-        get => dispatcherTimer.Interval;
-        set => dispatcherTimer.Interval = value;
-      }
-
-      public void Start()
-      {
-        dispatcherTimer.Start();
-      }
-
-      public void Stop()
-      {
-        dispatcherTimer.Stop();
-      }
+      dispatcherTimer.Stop();
     }
   }
 }

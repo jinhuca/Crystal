@@ -1,9 +1,8 @@
-﻿namespace Crystal.Themes.Controls.Dialogs
+﻿namespace Crystal.Themes.Controls.Dialogs;
+
+public class DialogStateChangedEventArgs : EventArgs
 {
-  public class DialogStateChangedEventArgs : EventArgs
+  internal DialogStateChangedEventArgs()
   {
-    internal DialogStateChangedEventArgs()
-    {
-    }
   }
 }

@@ -4,31 +4,30 @@
 
 using System.Globalization;
 
-namespace Crystal.Themes.Converters
+namespace Crystal.Themes.Converters;
+
+// this converter is only used by DatePicker to convert the font size to width and height of the icon button
+[ValueConversion(typeof(double), typeof(double), ParameterType = typeof(double))]
+[ValueConversion(typeof(object), typeof(object), ParameterType = typeof(double))]
+public class FontSizeOffsetConverter : IValueConverter
 {
-  // this converter is only used by DatePicker to convert the font size to width and height of the icon button
-  [ValueConversion(typeof(double), typeof(double), ParameterType = typeof(double))]
-    [ValueConversion(typeof(object), typeof(object), ParameterType = typeof(double))]
-    public class FontSizeOffsetConverter : IValueConverter
+  /// <summary>
+  /// Gets a static default instance of <see cref="FontSizeOffsetConverter"/>.
+  /// </summary>
+  public static readonly FontSizeOffsetConverter Instance = new();
+
+  public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+  {
+    if (value is double orgValue && parameter is double offset)
     {
-        /// <summary>
-        /// Gets a static default instance of <see cref="FontSizeOffsetConverter"/>.
-        /// </summary>
-        public static readonly FontSizeOffsetConverter Instance = new();
-
-        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-        {
-            if (value is double orgValue && parameter is double offset)
-            {
-                return Math.Round(orgValue + offset);
-            }
-
-            return value;
-        }
-
-        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-        {
-            return DependencyProperty.UnsetValue;
-        }
+      return Math.Round(orgValue + offset);
     }
+
+    return value;
+  }
+
+  public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+  {
+    return DependencyProperty.UnsetValue;
+  }
 }

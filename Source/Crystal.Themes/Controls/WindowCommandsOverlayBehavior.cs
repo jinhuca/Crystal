@@ -2,19 +2,18 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-namespace Crystal.Themes.Controls
-{
-  [Flags]
-    public enum WindowCommandsOverlayBehavior
-    {
-        /// <summary>
-        /// Doesn't overlay a hidden TitleBar.
-        /// </summary>
-        Never = 0,
+namespace Crystal.Themes.Controls;
 
-        /// <summary>
-        /// Overlays a hidden TitleBar.
-        /// </summary>
-        HiddenTitleBar = 1 << 0
-    }
+[Flags]
+public enum WindowCommandsOverlayBehavior
+{
+  /// <summary>
+  /// Doesn't overlay a hidden TitleBar.
+  /// </summary>
+  Never = 0,
+
+  /// <summary>
+  /// Overlays a hidden TitleBar.
+  /// </summary>
+  HiddenTitleBar = 1 << 0
 }

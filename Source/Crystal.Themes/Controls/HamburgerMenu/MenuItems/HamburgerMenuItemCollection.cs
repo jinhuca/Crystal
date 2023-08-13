@@ -1,13 +1,12 @@
-﻿namespace Crystal.Themes.Controls
+﻿namespace Crystal.Themes.Controls;
+
+/// <summary>
+/// The HamburgerMenuItemCollection provides typed collection of HamburgerMenuItemBase.
+/// </summary>
+public class HamburgerMenuItemCollection : FreezableCollection<HamburgerMenuItemBase>
 {
-  /// <summary>
-  /// The HamburgerMenuItemCollection provides typed collection of HamburgerMenuItemBase.
-  /// </summary>
-  public class HamburgerMenuItemCollection : FreezableCollection<HamburgerMenuItemBase>
+  protected override Freezable CreateInstanceCore()
   {
-    protected override Freezable CreateInstanceCore()
-    {
-      return new HamburgerMenuItemCollection();
-    }
+    return new HamburgerMenuItemCollection();
   }
 }

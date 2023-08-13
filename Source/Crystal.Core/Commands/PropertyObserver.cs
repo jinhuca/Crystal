@@ -6,60 +6,59 @@ using System.Reflection;
 using Crystal.Constants;
 using static System.String;
 
-namespace Crystal
+namespace Crystal;
+
+/// <summary>
+/// Provide a way to observe property changes of INotifyPropertyChanged objects and invokes a 
+/// custom action when the PropertyChanged event is fired.
+/// </summary>
+internal class PropertyObserver
 {
-	/// <summary>
-	/// Provide a way to observe property changes of INotifyPropertyChanged objects and invokes a 
-	/// custom action when the PropertyChanged event is fired.
-	/// </summary>
-	internal class PropertyObserver
-	{
-		private readonly Action _action;
+  private readonly Action _action;
 
-		private PropertyObserver(Expression propertyExpression, Action action)
-		{
-			_action = action;
-			SubscribeListeners(propertyExpression);
-		}
+  private PropertyObserver(Expression propertyExpression, Action action)
+  {
+    _action = action;
+    SubscribeListeners(propertyExpression);
+  }
 
-		private void SubscribeListeners(Expression propertyExpression)
-		{
-			var propNameStack = new Stack<PropertyInfo>();
-			while (propertyExpression is MemberExpression temp) // Gets the root of the property chain.
-			{
-				propertyExpression = temp.Expression;
-				propNameStack.Push(temp.Member as PropertyInfo); // Records the member info as property info
-			}
+  private void SubscribeListeners(Expression propertyExpression)
+  {
+    var propNameStack = new Stack<PropertyInfo>();
+    while (propertyExpression is MemberExpression temp) // Gets the root of the property chain.
+    {
+      propertyExpression = temp.Expression;
+      propNameStack.Push(temp.Member as PropertyInfo); // Records the member info as property info
+    }
 
-			if (propertyExpression is not ConstantExpression constantExpression)
-			{
-				throw new NotSupportedException(StringConstants.NotSupportedExceptionMsg);
-			}
-			var propObserverNodeRoot = new PropertyObserverNode(propNameStack.Pop(), _action);
-			PropertyObserverNode previousNode = propObserverNodeRoot;
-			foreach (var propName in propNameStack) // Create a node chain that corresponds to the property chain.
-			{
-				var currentNode = new PropertyObserverNode(propName, _action);
-				previousNode.Next = currentNode;
-				previousNode = currentNode;
-			}
+    if (propertyExpression is not ConstantExpression constantExpression)
+    {
+      throw new NotSupportedException(StringConstants.NotSupportedExceptionMsg);
+    }
+    var propObserverNodeRoot = new PropertyObserverNode(propNameStack.Pop(), _action);
+    PropertyObserverNode previousNode = propObserverNodeRoot;
+    foreach (var propName in propNameStack) // Create a node chain that corresponds to the property chain.
+    {
+      var currentNode = new PropertyObserverNode(propName, _action);
+      previousNode.Next = currentNode;
+      previousNode = currentNode;
+    }
 
-			object propOwnerObject = constantExpression.Value;
+    object propOwnerObject = constantExpression.Value;
 
-			if (propOwnerObject is not INotifyPropertyChanged inpcObject)
-			{
-				throw new InvalidOperationException(Format(StringConstants.NotImplementInpc, propObserverNodeRoot.PropertyInfo.Name));
-			}
-			propObserverNodeRoot.SubscribeListenerFor(inpcObject);
-		}
+    if (propOwnerObject is not INotifyPropertyChanged inpcObject)
+    {
+      throw new InvalidOperationException(Format(StringConstants.NotImplementInpc, propObserverNodeRoot.PropertyInfo.Name));
+    }
+    propObserverNodeRoot.SubscribeListenerFor(inpcObject);
+  }
 
-		/// <summary>
-		/// Observes a property that implements INotifyPropertyChanged, and automatically calls a custom action on 
-		/// property changed notifications. The given expression must be in this form: "() => Prop.NestedProp.PropToObserve".
-		/// </summary>
-		/// <param name="propertyExpression">Expression representing property to be observed. Ex.: "() => Prop.NestedProp.PropToObserve".</param>
-		/// <param name="action">Action to be invoked when PropertyChanged event occurs.</param>
-		internal static PropertyObserver Observes<T>(Expression<Func<T>> propertyExpression, Action action)
-			=> new(propertyExpression.Body, action);
-	}
+  /// <summary>
+  /// Observes a property that implements INotifyPropertyChanged, and automatically calls a custom action on 
+  /// property changed notifications. The given expression must be in this form: "() => Prop.NestedProp.PropToObserve".
+  /// </summary>
+  /// <param name="propertyExpression">Expression representing property to be observed. Ex.: "() => Prop.NestedProp.PropToObserve".</param>
+  /// <param name="action">Action to be invoked when PropertyChanged event occurs.</param>
+  internal static PropertyObserver Observes<T>(Expression<Func<T>> propertyExpression, Action action)
+    => new(propertyExpression.Body, action);
 }

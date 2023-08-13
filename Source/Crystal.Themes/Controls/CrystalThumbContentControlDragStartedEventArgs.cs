@@ -1,11 +1,10 @@
-namespace Crystal.Themes.Controls
+namespace Crystal.Themes.Controls;
+
+public class CrystalThumbContentControlDragStartedEventArgs : DragStartedEventArgs
 {
-  public class CrystalThumbContentControlDragStartedEventArgs : DragStartedEventArgs
+  public CrystalThumbContentControlDragStartedEventArgs(double horizontalOffset, double verticalOffset)
+    : base(horizontalOffset, verticalOffset)
   {
-    public CrystalThumbContentControlDragStartedEventArgs(double horizontalOffset, double verticalOffset)
-        : base(horizontalOffset, verticalOffset)
-    {
-      RoutedEvent = CrystalThumbContentControl.DragStartedEvent;
-    }
+    RoutedEvent = CrystalThumbContentControl.DragStartedEvent;
   }
 }

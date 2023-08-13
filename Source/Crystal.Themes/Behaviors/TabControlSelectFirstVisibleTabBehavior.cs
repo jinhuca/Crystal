@@ -1,54 +1,51 @@
-﻿using Crystal.Behaviors;
+﻿namespace Crystal.Themes.Behaviors;
 
-namespace Crystal.Themes.Behaviors
+/// <summary>
+/// <para>
+///     Sets the first TabItem with Visibility="<see cref="Visibility.Visible"/>" as
+///     the SelectedItem of the TabControl.
+/// </para>
+/// <para>
+///     If there is no visible TabItem, null is set as the SelectedItem
+/// </para>
+/// </summary>
+public class TabControlSelectFirstVisibleTabBehavior : Behavior<TabControl>
 {
-  /// <summary>
-  /// <para>
-  ///     Sets the first TabItem with Visibility="<see cref="Visibility.Visible"/>" as
-  ///     the SelectedItem of the TabControl.
-  /// </para>
-  /// <para>
-  ///     If there is no visible TabItem, null is set as the SelectedItem
-  /// </para>
-  /// </summary>
-  public class TabControlSelectFirstVisibleTabBehavior : Behavior<TabControl>
+  protected override void OnAttached()
   {
-    protected override void OnAttached()
-    {
-      base.OnAttached();
+    base.OnAttached();
 
-      AssociatedObject.SelectionChanged += OnSelectionChanged;
+    AssociatedObject.SelectionChanged += OnSelectionChanged;
+  }
+
+  private void OnSelectionChanged(object sender, SelectionChangedEventArgs args)
+  {
+    // We don't need select the TabItem if the selected item is already visible
+    if (AssociatedObject.SelectedItem is TabItem selectedItem && selectedItem.Visibility == Visibility.Visible)
+    {
+      return;
     }
 
-    private void OnSelectionChanged(object sender, SelectionChangedEventArgs args)
+    // Get the first visible item
+    var tabItems = AssociatedObject.Items.OfType<TabItem>().ToList();
+    var firstVisible = tabItems.FirstOrDefault(t => t.Visibility == Visibility.Visible);
+
+    if (firstVisible != null)
     {
-      // We don't need select the TabItem if the selected item is already visible
-      if (AssociatedObject.SelectedItem is TabItem selectedItem && selectedItem.Visibility == Visibility.Visible)
-      {
-        return;
-      }
-
-      // Get the first visible item
-      var tabItems = AssociatedObject.Items.OfType<TabItem>().ToList();
-      var firstVisible = tabItems.FirstOrDefault(t => t.Visibility == Visibility.Visible);
-
-      if (firstVisible != null)
-      {
-        AssociatedObject.SetCurrentValue(Selector.SelectedIndexProperty, tabItems.IndexOf(firstVisible));
-      }
-      else
-      {
-        // There is no visible item
-        // Raises SelectionChanged again one time (second time, oldValue == newValue)
-        AssociatedObject.SetCurrentValue(Selector.SelectedItemProperty, null);
-      }
+      AssociatedObject.SetCurrentValue(Selector.SelectedIndexProperty, tabItems.IndexOf(firstVisible));
     }
-
-    protected override void OnDetaching()
+    else
     {
-      AssociatedObject.SelectionChanged -= OnSelectionChanged;
-
-      base.OnDetaching();
+      // There is no visible item
+      // Raises SelectionChanged again one time (second time, oldValue == newValue)
+      AssociatedObject.SetCurrentValue(Selector.SelectedItemProperty, null);
     }
+  }
+
+  protected override void OnDetaching()
+  {
+    AssociatedObject.SelectionChanged -= OnSelectionChanged;
+
+    base.OnDetaching();
   }
 }

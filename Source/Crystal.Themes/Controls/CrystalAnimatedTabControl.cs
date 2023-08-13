@@ -1,13 +1,12 @@
-﻿namespace Crystal.Themes.Controls
+﻿namespace Crystal.Themes.Controls;
+
+/// <summary>
+/// A CrystalTabControl (Pivot) that uses a TransitioningContentControl to animate the contents of a TabItem/CrystalTabItem.
+/// </summary>
+public class CrystalAnimatedTabControl : CrystalTabControlBase
 {
-  /// <summary>
-  /// A CrystalTabControl (Pivot) that uses a TransitioningContentControl to animate the contents of a TabItem/CrystalTabItem.
-  /// </summary>
-  public class CrystalAnimatedTabControl : CrystalTabControlBase
+  public CrystalAnimatedTabControl()
   {
-    public CrystalAnimatedTabControl()
-    {
-      DefaultStyleKey = typeof(CrystalAnimatedTabControl);
-    }
+    DefaultStyleKey = typeof(CrystalAnimatedTabControl);
   }
 }

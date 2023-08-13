@@ -1,7 +1,6 @@
-﻿namespace Crystal.Themes.Controls
+﻿namespace Crystal.Themes.Controls;
+
+public interface IHamburgerMenuHeaderItem
 {
-  public interface IHamburgerMenuHeaderItem
-  {
-    string? Label { get; set; }
-  }
+  string? Label { get; set; }
 }

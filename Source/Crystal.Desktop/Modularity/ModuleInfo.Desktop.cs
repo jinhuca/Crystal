@@ -1,11 +1,6 @@
+namespace Crystal;
 
-
-using System;
-
-namespace Crystal
+[Serializable]
+public partial class ModuleInfo
 {
-	[Serializable]
-	public partial class ModuleInfo
-	{
-	}
 }

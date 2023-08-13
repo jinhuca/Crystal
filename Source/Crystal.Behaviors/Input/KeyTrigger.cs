@@ -3,147 +3,146 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace Crystal.Behaviors
+namespace Crystal.Behaviors;
+
+public enum KeyTriggerFiredOn
 {
-  public enum KeyTriggerFiredOn
+  KeyDown,
+  KeyUp
+}
+
+/// <summary>
+/// A Trigger that is triggered by a keyboard event.  If the target Key and Modifiers are detected, it fires.
+/// </summary>
+public class KeyTrigger : EventTriggerBase<UIElement>
+{
+  public static readonly DependencyProperty KeyProperty = DependencyProperty.Register("Key", typeof(Key), typeof(KeyTrigger));
+
+  public static readonly DependencyProperty ModifiersProperty = DependencyProperty.Register("Modifiers", typeof(ModifierKeys), typeof(KeyTrigger));
+
+  public static readonly DependencyProperty ActiveOnFocusProperty = DependencyProperty.Register("ActiveOnFocus", typeof(bool), typeof(KeyTrigger));
+
+  public static readonly DependencyProperty FiredOnProperty = DependencyProperty.Register("FiredOn", typeof(KeyTriggerFiredOn), typeof(KeyTrigger));
+
+  private UIElement targetElement;
+
+  /// <summary>
+  /// The key that must be pressed for the trigger to fire.
+  /// </summary>
+  public Key Key
   {
-    KeyDown,
-    KeyUp
+    get => (Key)GetValue(KeyProperty);
+    set => SetValue(KeyProperty, value);
   }
 
   /// <summary>
-  /// A Trigger that is triggered by a keyboard event.  If the target Key and Modifiers are detected, it fires.
+  /// The modifiers that must be active for the trigger to fire (the default is no modifiers pressed).
   /// </summary>
-  public class KeyTrigger : EventTriggerBase<UIElement>
+  public ModifierKeys Modifiers
   {
-    public static readonly DependencyProperty KeyProperty = DependencyProperty.Register("Key", typeof(Key), typeof(KeyTrigger));
+    get => (ModifierKeys)GetValue(ModifiersProperty);
+    set => SetValue(ModifiersProperty, value);
+  }
 
-    public static readonly DependencyProperty ModifiersProperty = DependencyProperty.Register("Modifiers", typeof(ModifierKeys), typeof(KeyTrigger));
+  /// <summary>
+  /// If true, the Trigger only listens to its trigger Source object, which means that element must have focus for the trigger to fire.
+  /// If false, the Trigger listens at the root, so any unhandled KeyDown/Up messages will be caught.
+  /// </summary>
+  public bool ActiveOnFocus
+  {
+    get => (bool)GetValue(ActiveOnFocusProperty);
+    set => SetValue(ActiveOnFocusProperty, value);
+  }
 
-    public static readonly DependencyProperty ActiveOnFocusProperty = DependencyProperty.Register("ActiveOnFocus", typeof(bool), typeof(KeyTrigger));
+  /// <summary>
+  /// Determines whether or not to listen to the KeyDown or KeyUp event.
+  /// </summary>
+  public KeyTriggerFiredOn FiredOn
+  {
+    get => (KeyTriggerFiredOn)GetValue(FiredOnProperty);
+    set => SetValue(FiredOnProperty, value);
+  }
 
-    public static readonly DependencyProperty FiredOnProperty = DependencyProperty.Register("FiredOn", typeof(KeyTriggerFiredOn), typeof(KeyTrigger));
+  protected override string GetEventName()
+  {
+    return "Loaded";
+  }
 
-    private UIElement targetElement;
-
-    /// <summary>
-    /// The key that must be pressed for the trigger to fire.
-    /// </summary>
-    public Key Key
+  private void OnKeyPress(object sender, KeyEventArgs e)
+  {
+    if (e.Key == Key &&
+        Keyboard.Modifiers == GetActualModifiers(e.Key, Modifiers))
     {
-      get => (Key)GetValue(KeyProperty);
-      set => SetValue(KeyProperty, value);
+      InvokeActions(e);
+    }
+  }
+
+  private static ModifierKeys GetActualModifiers(Key key, ModifierKeys modifiers)
+  {
+    if (key == Key.LeftCtrl || key == Key.RightCtrl)
+    {
+      modifiers |= ModifierKeys.Control;
+    }
+    else if (key == Key.LeftAlt || key == Key.RightAlt || key == Key.System)
+    {
+      modifiers |= ModifierKeys.Alt;
+    }
+    else if (key == Key.LeftShift || key == Key.RightShift)
+    {
+      modifiers |= ModifierKeys.Shift;
+    }
+    return modifiers;
+  }
+
+  protected override void OnEvent(EventArgs eventArgs)
+  {
+    // Listen to keyboard events.
+    if (ActiveOnFocus)
+    {
+      targetElement = Source;
+    }
+    else
+    {
+      targetElement = GetRoot(Source);
     }
 
-    /// <summary>
-    /// The modifiers that must be active for the trigger to fire (the default is no modifiers pressed).
-    /// </summary>
-    public ModifierKeys Modifiers
+    if (FiredOn == KeyTriggerFiredOn.KeyDown)
     {
-      get => (ModifierKeys)GetValue(ModifiersProperty);
-      set => SetValue(ModifiersProperty, value);
+      targetElement.KeyDown += OnKeyPress;
     }
-
-    /// <summary>
-    /// If true, the Trigger only listens to its trigger Source object, which means that element must have focus for the trigger to fire.
-    /// If false, the Trigger listens at the root, so any unhandled KeyDown/Up messages will be caught.
-    /// </summary>
-    public bool ActiveOnFocus
+    else
     {
-      get => (bool)GetValue(ActiveOnFocusProperty);
-      set => SetValue(ActiveOnFocusProperty, value);
+      targetElement.KeyUp += OnKeyPress;
     }
+  }
 
-    /// <summary>
-    /// Determines whether or not to listen to the KeyDown or KeyUp event.
-    /// </summary>
-    public KeyTriggerFiredOn FiredOn
+  protected override void OnDetaching()
+  {
+    if (targetElement != null)
     {
-      get => (KeyTriggerFiredOn)GetValue(FiredOnProperty);
-      set => SetValue(FiredOnProperty, value);
-    }
-
-    protected override string GetEventName()
-    {
-      return "Loaded";
-    }
-
-    private void OnKeyPress(object sender, KeyEventArgs e)
-    {
-      if (e.Key == Key &&
-          Keyboard.Modifiers == GetActualModifiers(e.Key, Modifiers))
-      {
-        InvokeActions(e);
-      }
-    }
-
-    private static ModifierKeys GetActualModifiers(Key key, ModifierKeys modifiers)
-    {
-      if (key == Key.LeftCtrl || key == Key.RightCtrl)
-      {
-        modifiers |= ModifierKeys.Control;
-      }
-      else if (key == Key.LeftAlt || key == Key.RightAlt || key == Key.System)
-      {
-        modifiers |= ModifierKeys.Alt;
-      }
-      else if (key == Key.LeftShift || key == Key.RightShift)
-      {
-        modifiers |= ModifierKeys.Shift;
-      }
-      return modifiers;
-    }
-
-    protected override void OnEvent(EventArgs eventArgs)
-    {
-      // Listen to keyboard events.
-      if (ActiveOnFocus)
-      {
-        targetElement = Source;
-      }
-      else
-      {
-        targetElement = GetRoot(Source);
-      }
-
       if (FiredOn == KeyTriggerFiredOn.KeyDown)
       {
-        targetElement.KeyDown += OnKeyPress;
+        targetElement.KeyDown -= OnKeyPress;
       }
       else
       {
-        targetElement.KeyUp += OnKeyPress;
+        targetElement.KeyUp -= OnKeyPress;
       }
     }
 
-    protected override void OnDetaching()
+    base.OnDetaching();
+  }
+
+  private static UIElement GetRoot(DependencyObject current)
+  {
+    UIElement last = null;
+
+    while (current != null)
     {
-      if (targetElement != null)
-      {
-        if (FiredOn == KeyTriggerFiredOn.KeyDown)
-        {
-          targetElement.KeyDown -= OnKeyPress;
-        }
-        else
-        {
-          targetElement.KeyUp -= OnKeyPress;
-        }
-      }
-
-      base.OnDetaching();
+      last = current as UIElement;
+      current = VisualTreeHelper.GetParent(current);
     }
 
-    private static UIElement GetRoot(DependencyObject current)
-    {
-      UIElement last = null;
-
-      while (current != null)
-      {
-        last = current as UIElement;
-        current = VisualTreeHelper.GetParent(current);
-      }
-
-      return last;
-    }
+    return last;
   }
 }

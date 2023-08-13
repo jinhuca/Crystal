@@ -1,9 +1,8 @@
-﻿namespace Crystal.Themes.Controls
+﻿namespace Crystal.Themes.Controls;
+
+public enum AddToRecentColorsTrigger
 {
-  public enum AddToRecentColorsTrigger
-  {
-    Never,
-    ColorPickerClosed,
-    SelectedColorChanged
-  }
+  Never,
+  ColorPickerClosed,
+  SelectedColorChanged
 }

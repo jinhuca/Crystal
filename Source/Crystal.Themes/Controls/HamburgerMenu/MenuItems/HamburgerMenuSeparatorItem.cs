@@ -1,13 +1,12 @@
-﻿namespace Crystal.Themes.Controls
+﻿namespace Crystal.Themes.Controls;
+
+/// <summary>
+/// The HamburgerMenuSeparatorItem provides an separator based implementation for HamburgerMenu entries.
+/// </summary>
+public class HamburgerMenuSeparatorItem : HamburgerMenuItemBase, IHamburgerMenuSeparatorItem
 {
-  /// <summary>
-  /// The HamburgerMenuSeparatorItem provides an separator based implementation for HamburgerMenu entries.
-  /// </summary>
-  public class HamburgerMenuSeparatorItem : HamburgerMenuItemBase, IHamburgerMenuSeparatorItem
+  protected override Freezable CreateInstanceCore()
   {
-    protected override Freezable CreateInstanceCore()
-    {
-      return new HamburgerMenuSeparatorItem();
-    }
+    return new HamburgerMenuSeparatorItem();
   }
 }

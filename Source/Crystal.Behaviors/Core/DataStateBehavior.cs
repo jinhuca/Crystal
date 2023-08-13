@@ -5,199 +5,198 @@ using System.Windows;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
-namespace Crystal.Behaviors
+namespace Crystal.Behaviors;
+
+/// <summary>
+/// Toggles between two states based on a conditional statement.
+/// </summary>
+public class DataStateBehavior : Behavior<FrameworkElement>
 {
+  public static readonly DependencyProperty BindingProperty = DependencyProperty.Register(
+    nameof(Binding),
+    typeof(object),
+    typeof(DataStateBehavior),
+    new PropertyMetadata(OnBindingChanged));
+
+  public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
+    nameof(Value),
+    typeof(object),
+    typeof(DataStateBehavior),
+    new PropertyMetadata(OnValueChanged));
+
+  public static readonly DependencyProperty TrueStateProperty = DependencyProperty.Register(
+    nameof(TrueState),
+    typeof(string),
+    typeof(DataStateBehavior),
+    new PropertyMetadata(OnTrueStateChanged));
+
+  public static readonly DependencyProperty FalseStateProperty = DependencyProperty.Register(
+    nameof(FalseState),
+    typeof(string),
+    typeof(DataStateBehavior),
+    new PropertyMetadata(OnFalseStateChanged));
+
   /// <summary>
-  /// Toggles between two states based on a conditional statement.
+  /// Gets or sets the binding that produces the property value of the data object. This is a dependency property.
   /// </summary>
-  public class DataStateBehavior : Behavior<FrameworkElement>
+  public object Binding
   {
-    public static readonly DependencyProperty BindingProperty = DependencyProperty.Register(
-      nameof(Binding),
-      typeof(object),
-      typeof(DataStateBehavior),
-      new PropertyMetadata(OnBindingChanged));
+    get => GetValue(BindingProperty);
+    set => SetValue(BindingProperty, value);
+  }
 
-    public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-      nameof(Value),
-      typeof(object),
-      typeof(DataStateBehavior),
-      new PropertyMetadata(OnValueChanged));
+  /// <summary>
+  /// Gets or sets the value to be compared with the property value of the data object. This is a dependency property.
+  /// </summary>
+  [SuppressMessage("Microsoft.Naming", "CA1721:PropertyNamesShouldNotMatchGetMethods", Justification = "This matches the structure of DataTrigger, which this is patterned after.")]
+  public object Value
+  {
+    get => GetValue(ValueProperty);
+    set => SetValue(ValueProperty, value);
+  }
 
-    public static readonly DependencyProperty TrueStateProperty = DependencyProperty.Register(
-      nameof(TrueState),
-      typeof(string),
-      typeof(DataStateBehavior),
-      new PropertyMetadata(OnTrueStateChanged));
+  /// <summary>
+  /// Gets or sets the name of the visual state to transition to when the condition is met. This is a dependency property.
+  /// </summary>
+  public string TrueState
+  {
+    get => (string)GetValue(TrueStateProperty);
+    set => SetValue(TrueStateProperty, value);
+  }
 
-    public static readonly DependencyProperty FalseStateProperty = DependencyProperty.Register(
-      nameof(FalseState),
-      typeof(string),
-      typeof(DataStateBehavior),
-      new PropertyMetadata(OnFalseStateChanged));
+  /// <summary>
+  /// Gets or sets the name of the visual state to transition to when the condition is not met. This is a dependency property.
+  /// </summary>
+  public string FalseState
+  {
+    get => (string)GetValue(FalseStateProperty);
+    set => SetValue(FalseStateProperty, value);
+  }
 
-    /// <summary>
-    /// Gets or sets the binding that produces the property value of the data object. This is a dependency property.
-    /// </summary>
-    public object Binding
+  private FrameworkElement TargetObject => VisualStateUtilities.FindNearestStatefulControl(AssociatedObject);
+
+  /// <summary>
+  /// Called after the behavior is attached to an AssociatedObject.
+  /// </summary>
+  /// <remarks>Override this to hook up functionality to the AssociatedObject.</remarks>
+  protected override void OnAttached()
+  {
+    base.OnAttached();
+    ValidateStateNamesDeferred();
+  }
+
+  private void ValidateStateNamesDeferred()
+  {
+    FrameworkElement parentElement = AssociatedObject.Parent as FrameworkElement;
+
+    if (parentElement != null && IsElementLoaded(parentElement))
     {
-      get => GetValue(BindingProperty);
-      set => SetValue(BindingProperty, value);
+      ValidateStateNames();
     }
-
-    /// <summary>
-    /// Gets or sets the value to be compared with the property value of the data object. This is a dependency property.
-    /// </summary>
-    [SuppressMessage("Microsoft.Naming", "CA1721:PropertyNamesShouldNotMatchGetMethods", Justification = "This matches the structure of DataTrigger, which this is patterned after.")]
-    public object Value
+    else
     {
-      get => GetValue(ValueProperty);
-      set => SetValue(ValueProperty, value);
+      AssociatedObject.Loaded += (o, e) => { ValidateStateNames(); };
     }
+  }
 
-    /// <summary>
-    /// Gets or sets the name of the visual state to transition to when the condition is met. This is a dependency property.
-    /// </summary>
-    public string TrueState
+  // todo jekelly: this is duplicated from Interaction.IsElementLoaded, find some way to share them
+  /// <summary>
+  /// A helper function to take the place of FrameworkElement.IsLoaded, as this property isn't available in Silverlight.
+  /// </summary>
+  /// <param name="element">The element of interest.</param>
+  /// <returns>Returns true if the element has been loaded; otherwise, returns false.</returns>
+  internal static bool IsElementLoaded(FrameworkElement element)
+  {
+    return element.IsLoaded;
+  }
+
+  private void ValidateStateNames()
+  {
+    ValidateStateName(TrueState);
+    ValidateStateName(FalseState);
+  }
+
+  private void ValidateStateName(string stateName)
+  {
+    if (AssociatedObject != null)
     {
-      get => (string)GetValue(TrueStateProperty);
-      set => SetValue(TrueStateProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the name of the visual state to transition to when the condition is not met. This is a dependency property.
-    /// </summary>
-    public string FalseState
-    {
-      get => (string)GetValue(FalseStateProperty);
-      set => SetValue(FalseStateProperty, value);
-    }
-
-    private FrameworkElement TargetObject => VisualStateUtilities.FindNearestStatefulControl(AssociatedObject);
-
-    /// <summary>
-    /// Called after the behavior is attached to an AssociatedObject.
-    /// </summary>
-    /// <remarks>Override this to hook up functionality to the AssociatedObject.</remarks>
-    protected override void OnAttached()
-    {
-      base.OnAttached();
-      ValidateStateNamesDeferred();
-    }
-
-    private void ValidateStateNamesDeferred()
-    {
-      FrameworkElement parentElement = AssociatedObject.Parent as FrameworkElement;
-
-      if (parentElement != null && IsElementLoaded(parentElement))
+      if (!string.IsNullOrEmpty(stateName))
       {
-        ValidateStateNames();
+        foreach (VisualState state in TargetedVisualStates)
+        {
+          if (stateName == state.Name)
+          {
+            return;
+          }
+        }
+        throw new ArgumentException(string.Format(CultureInfo.CurrentCulture,
+          ExceptionStringTable.DataStateBehaviorStateNameNotFoundExceptionMessage,
+          stateName, TargetObject != null ? TargetObject.GetType().Name : "null"));
+      }
+    }
+  }
+
+  private IEnumerable<VisualState> TargetedVisualStates
+  {
+    get
+    {
+      List<VisualState> states = new List<VisualState>();
+      if (TargetObject != null)
+      {
+        IList groups = VisualStateUtilities.GetVisualStateGroups(TargetObject);
+        foreach (VisualStateGroup group in groups)
+        {
+          foreach (VisualState state in group.States)
+          {
+            states.Add(state);
+          }
+        }
+      }
+      return states;
+    }
+  }
+
+  private static void OnBindingChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+  {
+    DataStateBehavior dataStateBehavior = (DataStateBehavior)obj;
+    dataStateBehavior.Evaluate();
+  }
+
+  private static void OnValueChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+  {
+    DataStateBehavior dataStateBehavior = (DataStateBehavior)obj;
+    dataStateBehavior.Evaluate();
+  }
+
+  private static void OnTrueStateChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+  {
+    DataStateBehavior dataStateBehavior = (DataStateBehavior)obj;
+    dataStateBehavior.ValidateStateName(dataStateBehavior.TrueState);
+    dataStateBehavior.Evaluate();
+  }
+
+  private static void OnFalseStateChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+  {
+    DataStateBehavior dataStateBehavior = (DataStateBehavior)obj;
+    dataStateBehavior.ValidateStateName(dataStateBehavior.FalseState);
+    dataStateBehavior.Evaluate();
+  }
+
+  private void Evaluate()
+  {
+    if (TargetObject != null)
+    {
+      string stateName = null;
+      if (ComparisonLogic.EvaluateImpl(Binding, ComparisonConditionType.Equal, Value))
+      {
+        stateName = TrueState;
       }
       else
       {
-        AssociatedObject.Loaded += (o, e) => { ValidateStateNames(); };
+        stateName = FalseState;
       }
-    }
 
-    // todo jekelly: this is duplicated from Interaction.IsElementLoaded, find some way to share them
-    /// <summary>
-    /// A helper function to take the place of FrameworkElement.IsLoaded, as this property isn't available in Silverlight.
-    /// </summary>
-    /// <param name="element">The element of interest.</param>
-    /// <returns>Returns true if the element has been loaded; otherwise, returns false.</returns>
-    internal static bool IsElementLoaded(FrameworkElement element)
-    {
-      return element.IsLoaded;
-    }
-
-    private void ValidateStateNames()
-    {
-      ValidateStateName(TrueState);
-      ValidateStateName(FalseState);
-    }
-
-    private void ValidateStateName(string stateName)
-    {
-      if (AssociatedObject != null)
-      {
-        if (!string.IsNullOrEmpty(stateName))
-        {
-          foreach (VisualState state in TargetedVisualStates)
-          {
-            if (stateName == state.Name)
-            {
-              return;
-            }
-          }
-          throw new ArgumentException(string.Format(CultureInfo.CurrentCulture,
-              ExceptionStringTable.DataStateBehaviorStateNameNotFoundExceptionMessage,
-              stateName, TargetObject != null ? TargetObject.GetType().Name : "null"));
-        }
-      }
-    }
-
-    private IEnumerable<VisualState> TargetedVisualStates
-    {
-      get
-      {
-        List<VisualState> states = new List<VisualState>();
-        if (TargetObject != null)
-        {
-          IList groups = VisualStateUtilities.GetVisualStateGroups(TargetObject);
-          foreach (VisualStateGroup group in groups)
-          {
-            foreach (VisualState state in group.States)
-            {
-              states.Add(state);
-            }
-          }
-        }
-        return states;
-      }
-    }
-
-    private static void OnBindingChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
-    {
-      DataStateBehavior dataStateBehavior = (DataStateBehavior)obj;
-      dataStateBehavior.Evaluate();
-    }
-
-    private static void OnValueChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
-    {
-      DataStateBehavior dataStateBehavior = (DataStateBehavior)obj;
-      dataStateBehavior.Evaluate();
-    }
-
-    private static void OnTrueStateChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
-    {
-      DataStateBehavior dataStateBehavior = (DataStateBehavior)obj;
-      dataStateBehavior.ValidateStateName(dataStateBehavior.TrueState);
-      dataStateBehavior.Evaluate();
-    }
-
-    private static void OnFalseStateChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
-    {
-      DataStateBehavior dataStateBehavior = (DataStateBehavior)obj;
-      dataStateBehavior.ValidateStateName(dataStateBehavior.FalseState);
-      dataStateBehavior.Evaluate();
-    }
-
-    private void Evaluate()
-    {
-      if (TargetObject != null)
-      {
-        string stateName = null;
-        if (ComparisonLogic.EvaluateImpl(Binding, ComparisonConditionType.Equal, Value))
-        {
-          stateName = TrueState;
-        }
-        else
-        {
-          stateName = FalseState;
-        }
-
-        VisualStateUtilities.GoToState(TargetObject, stateName, true);
-      }
+      VisualStateUtilities.GoToState(TargetObject, stateName, true);
     }
   }
 }

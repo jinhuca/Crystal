@@ -1,9 +1,8 @@
-﻿namespace Crystal.Behaviors
+﻿namespace Crystal.Behaviors;
+
+internal enum ScreenType
 {
-  internal enum ScreenType
-  {
-    None,
-    Navigation,
-    Composition,
-  }
+  None,
+  Navigation,
+  Composition,
 }

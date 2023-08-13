@@ -1,27 +1,24 @@
-﻿using Crystal.Themes.ValueBoxes;
+﻿namespace Crystal.Themes.Controls;
 
-namespace Crystal.Themes.Controls
+/// <summary>
+/// A standard CrystalTabControl (Pivot).
+/// </summary>
+public class CrystalTabControl : CrystalTabControlBase
 {
-  /// <summary>
-  /// A standard CrystalTabControl (Pivot).
-  /// </summary>
-  public class CrystalTabControl : CrystalTabControlBase
+  static CrystalTabControl()
   {
-    static CrystalTabControl()
-    {
-      DefaultStyleKeyProperty.OverrideMetadata(typeof(CrystalTabControl), new FrameworkPropertyMetadata(typeof(CrystalTabControl)));
-    }
+    DefaultStyleKeyProperty.OverrideMetadata(typeof(CrystalTabControl), new FrameworkPropertyMetadata(typeof(CrystalTabControl)));
+  }
 
-    public static readonly DependencyProperty KeepVisualTreeInMemoryWhenChangingTabsProperty = DependencyProperty.Register(
-      nameof(KeepVisualTreeInMemoryWhenChangingTabs),
-      typeof(bool),
-      typeof(CrystalTabControl),
-      new PropertyMetadata(BooleanBoxes.FalseBox));
+  public static readonly DependencyProperty KeepVisualTreeInMemoryWhenChangingTabsProperty = DependencyProperty.Register(
+    nameof(KeepVisualTreeInMemoryWhenChangingTabs),
+    typeof(bool),
+    typeof(CrystalTabControl),
+    new PropertyMetadata(BooleanBoxes.FalseBox));
 
-    public bool KeepVisualTreeInMemoryWhenChangingTabs
-    {
-      get => (bool)GetValue(KeepVisualTreeInMemoryWhenChangingTabsProperty);
-      set => SetValue(KeepVisualTreeInMemoryWhenChangingTabsProperty, BooleanBoxes.Box(value));
-    }
+  public bool KeepVisualTreeInMemoryWhenChangingTabs
+  {
+    get => (bool)GetValue(KeepVisualTreeInMemoryWhenChangingTabsProperty);
+    set => SetValue(KeepVisualTreeInMemoryWhenChangingTabsProperty, BooleanBoxes.Box(value));
   }
 }

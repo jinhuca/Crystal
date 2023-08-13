@@ -4,26 +4,25 @@
 
 using Crystal.Themes.Windows.Shell;
 
-namespace Crystal.Themes.Controls
+namespace Crystal.Themes.Controls;
+
+public class ContentPresenterEx : ContentPresenter
 {
-  public class ContentPresenterEx : ContentPresenter
+  static ContentPresenterEx()
+  {
+    ContentProperty.OverrideMetadata(typeof(ContentPresenterEx), new FrameworkPropertyMetadata(OnContentPropertyChanged));
+  }
+
+  private static void OnContentPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+  {
+    if (e.OldValue is IInputElement && e.OldValue is DependencyObject oldInputElement)
     {
-        static ContentPresenterEx()
-        {
-            ContentProperty.OverrideMetadata(typeof(ContentPresenterEx), new FrameworkPropertyMetadata(OnContentPropertyChanged));
-        }
-
-        private static void OnContentPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (e.OldValue is IInputElement && e.OldValue is DependencyObject oldInputElement)
-            {
-                BindingOperations.ClearBinding(oldInputElement, WindowChrome.IsHitTestVisibleInChromeProperty);
-            }
-
-            if (e.NewValue is IInputElement && e.NewValue is DependencyObject newInputElement)
-            {
-                BindingOperations.SetBinding(newInputElement, WindowChrome.IsHitTestVisibleInChromeProperty, new Binding { Path = new PropertyPath(WindowChrome.IsHitTestVisibleInChromeProperty), Source = d });
-            }
-        }
+      BindingOperations.ClearBinding(oldInputElement, WindowChrome.IsHitTestVisibleInChromeProperty);
     }
+
+    if (e.NewValue is IInputElement && e.NewValue is DependencyObject newInputElement)
+    {
+      BindingOperations.SetBinding(newInputElement, WindowChrome.IsHitTestVisibleInChromeProperty, new Binding { Path = new PropertyPath(WindowChrome.IsHitTestVisibleInChromeProperty), Source = d });
+    }
+  }
 }

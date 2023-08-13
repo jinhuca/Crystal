@@ -1,151 +1,148 @@
-using Crystal.Behaviors;
+namespace Crystal.Themes.Behaviors;
 
-namespace Crystal.Themes.Behaviors
+public class StylizedBehaviors
 {
-  public class StylizedBehaviors
+  public static readonly DependencyProperty BehaviorsProperty
+    = DependencyProperty.RegisterAttached(
+      "Behaviors",
+      typeof(StylizedBehaviorCollection),
+      typeof(StylizedBehaviors),
+      new FrameworkPropertyMetadata(null, OnPropertyChanged));
+
+  [Category(AppName.CrystalThemes)]
+  public static StylizedBehaviorCollection? GetBehaviors(DependencyObject uie)
   {
-    public static readonly DependencyProperty BehaviorsProperty
-        = DependencyProperty.RegisterAttached(
-            "Behaviors",
-            typeof(StylizedBehaviorCollection),
-            typeof(StylizedBehaviors),
-            new FrameworkPropertyMetadata(null, OnPropertyChanged));
+    return (StylizedBehaviorCollection?)uie.GetValue(BehaviorsProperty);
+  }
 
-    [Category(AppName.CrystalThemes)]
-    public static StylizedBehaviorCollection? GetBehaviors(DependencyObject uie)
+  [Category(AppName.CrystalThemes)]
+  public static void SetBehaviors(DependencyObject uie, StylizedBehaviorCollection? value)
+  {
+    uie.SetValue(BehaviorsProperty, value);
+  }
+
+  private static void OnPropertyChanged(DependencyObject dpo, DependencyPropertyChangedEventArgs e)
+  {
+    if (dpo is not FrameworkElement frameworkElement)
     {
-      return (StylizedBehaviorCollection?)uie.GetValue(BehaviorsProperty);
+      return;
     }
 
-    [Category(AppName.CrystalThemes)]
-    public static void SetBehaviors(DependencyObject uie, StylizedBehaviorCollection? value)
+    var newBehaviors = e.NewValue as StylizedBehaviorCollection;
+    var oldBehaviors = e.OldValue as StylizedBehaviorCollection;
+    if (newBehaviors == oldBehaviors)
     {
-      uie.SetValue(BehaviorsProperty, value);
+      return;
     }
 
-    private static void OnPropertyChanged(DependencyObject dpo, DependencyPropertyChangedEventArgs e)
+    var itemBehaviors = Interaction.GetBehaviors(frameworkElement);
+
+    frameworkElement.Unloaded -= FrameworkElementUnloaded;
+
+    if (oldBehaviors != null)
     {
-      if (dpo is not FrameworkElement frameworkElement)
+      foreach (var behavior in oldBehaviors)
       {
-        return;
-      }
-
-      var newBehaviors = e.NewValue as StylizedBehaviorCollection;
-      var oldBehaviors = e.OldValue as StylizedBehaviorCollection;
-      if (newBehaviors == oldBehaviors)
-      {
-        return;
-      }
-
-      var itemBehaviors = Interaction.GetBehaviors(frameworkElement);
-
-      frameworkElement.Unloaded -= FrameworkElementUnloaded;
-
-      if (oldBehaviors != null)
-      {
-        foreach (var behavior in oldBehaviors)
+        var index = GetIndexOf(itemBehaviors, behavior);
+        if (index >= 0)
         {
-          var index = GetIndexOf(itemBehaviors, behavior);
-          if (index >= 0)
-          {
-            itemBehaviors.RemoveAt(index);
-          }
+          itemBehaviors.RemoveAt(index);
         }
       }
+    }
 
-      if (newBehaviors != null)
+    if (newBehaviors != null)
+    {
+      foreach (var behavior in newBehaviors)
       {
-        foreach (var behavior in newBehaviors)
+        var index = GetIndexOf(itemBehaviors, behavior);
+        if (index < 0)
         {
-          var index = GetIndexOf(itemBehaviors, behavior);
-          if (index < 0)
-          {
-            var clone = (Behavior)behavior.Clone();
-            SetOriginalBehavior(clone, behavior);
-            itemBehaviors.Add(clone);
-          }
+          var clone = (Behavior)behavior.Clone();
+          SetOriginalBehavior(clone, behavior);
+          itemBehaviors.Add(clone);
         }
       }
-
-      if (itemBehaviors.Count > 0)
-      {
-        frameworkElement.Unloaded += FrameworkElementUnloaded;
-      }
     }
 
-    private static void FrameworkElementUnloaded(object sender, RoutedEventArgs e)
+    if (itemBehaviors.Count > 0)
     {
-      // BehaviorCollection doesn't call Detach, so we do this
-      if (sender is not FrameworkElement frameworkElement)
-      {
-        return;
-      }
-
-      var itemBehaviors = Interaction.GetBehaviors(frameworkElement);
-      foreach (var behavior in itemBehaviors)
-      {
-        behavior.Detach();
-      }
-
-      frameworkElement.Loaded += FrameworkElementLoaded;
+      frameworkElement.Unloaded += FrameworkElementUnloaded;
     }
+  }
 
-    private static void FrameworkElementLoaded(object sender, RoutedEventArgs e)
+  private static void FrameworkElementUnloaded(object sender, RoutedEventArgs e)
+  {
+    // BehaviorCollection doesn't call Detach, so we do this
+    if (sender is not FrameworkElement frameworkElement)
     {
-      if (sender is not FrameworkElement frameworkElement)
+      return;
+    }
+
+    var itemBehaviors = Interaction.GetBehaviors(frameworkElement);
+    foreach (var behavior in itemBehaviors)
+    {
+      behavior.Detach();
+    }
+
+    frameworkElement.Loaded += FrameworkElementLoaded;
+  }
+
+  private static void FrameworkElementLoaded(object sender, RoutedEventArgs e)
+  {
+    if (sender is not FrameworkElement frameworkElement)
+    {
+      return;
+    }
+
+    frameworkElement.Loaded -= FrameworkElementLoaded;
+    var itemBehaviors = Interaction.GetBehaviors(frameworkElement);
+    foreach (var behavior in itemBehaviors)
+    {
+      behavior.Attach(frameworkElement);
+    }
+  }
+
+  private static int GetIndexOf(BehaviorCollection itemBehaviors, Behavior behavior)
+  {
+    var index = -1;
+
+    var originalBehavior = GetOriginalBehavior(behavior);
+
+    for (var i = 0; i < itemBehaviors.Count; i++)
+    {
+      var currentBehavior = itemBehaviors[i];
+      if (currentBehavior == behavior || currentBehavior == originalBehavior)
       {
-        return;
+        index = i;
+        break;
       }
 
-      frameworkElement.Loaded -= FrameworkElementLoaded;
-      var itemBehaviors = Interaction.GetBehaviors(frameworkElement);
-      foreach (var behavior in itemBehaviors)
+      var currentOriginalBehavior = GetOriginalBehavior(currentBehavior);
+      if (currentOriginalBehavior == behavior || currentOriginalBehavior == originalBehavior)
       {
-        behavior.Attach(frameworkElement);
+        index = i;
+        break;
       }
     }
 
-    private static int GetIndexOf(BehaviorCollection itemBehaviors, Behavior behavior)
-    {
-      var index = -1;
+    return index;
+  }
 
-      var originalBehavior = GetOriginalBehavior(behavior);
+  private static readonly DependencyProperty OriginalBehaviorProperty
+    = DependencyProperty.RegisterAttached(
+      "OriginalBehavior",
+      typeof(Behavior),
+      typeof(StylizedBehaviors),
+      new UIPropertyMetadata(null));
 
-      for (var i = 0; i < itemBehaviors.Count; i++)
-      {
-        var currentBehavior = itemBehaviors[i];
-        if (currentBehavior == behavior || currentBehavior == originalBehavior)
-        {
-          index = i;
-          break;
-        }
+  private static Behavior? GetOriginalBehavior(DependencyObject obj)
+  {
+    return (Behavior?)obj.GetValue(OriginalBehaviorProperty);
+  }
 
-        var currentOriginalBehavior = GetOriginalBehavior(currentBehavior);
-        if (currentOriginalBehavior == behavior || currentOriginalBehavior == originalBehavior)
-        {
-          index = i;
-          break;
-        }
-      }
-
-      return index;
-    }
-
-    private static readonly DependencyProperty OriginalBehaviorProperty
-        = DependencyProperty.RegisterAttached(
-            "OriginalBehavior",
-            typeof(Behavior),
-            typeof(StylizedBehaviors),
-            new UIPropertyMetadata(null));
-
-    private static Behavior? GetOriginalBehavior(DependencyObject obj)
-    {
-      return (Behavior?)obj.GetValue(OriginalBehaviorProperty);
-    }
-
-    private static void SetOriginalBehavior(DependencyObject obj, Behavior? value)
-    {
-      obj.SetValue(OriginalBehaviorProperty, value);
-    }
+  private static void SetOriginalBehavior(DependencyObject obj, Behavior? value)
+  {
+    obj.SetValue(OriginalBehaviorProperty, value);
   }
 }

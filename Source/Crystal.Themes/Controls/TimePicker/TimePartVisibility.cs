@@ -2,18 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-namespace Crystal.Themes.Controls
+namespace Crystal.Themes.Controls;
+
+/// <summary>
+/// Defines the visibility for time-parts that are visible for the <see cref="DateTimePicker"/>. 
+/// </summary>
+[Flags]
+public enum TimePartVisibility
 {
-  /// <summary>
-  /// Defines the visibility for time-parts that are visible for the <see cref="DateTimePicker"/>. 
-  /// </summary>
-  [Flags]
-    public enum TimePartVisibility
-    {
-        Hour = 1 << 1,
-        Minute = 1 << 2,
-        Second = 1 << 3,
-        HourMinute = Hour | Minute,
-        All = HourMinute | Second
-    }
+  Hour = 1 << 1,
+  Minute = 1 << 2,
+  Second = 1 << 3,
+  HourMinute = Hour | Minute,
+  All = HourMinute | Second
 }

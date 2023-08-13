@@ -1,290 +1,289 @@
-namespace Crystal.Themes.Controls
+namespace Crystal.Themes.Controls;
+
+/// <summary>
+/// Defines a helper class for selected items binding on <see cref="ListBox"/> or <see cref="MultiSelector"/> controls.
+/// </summary>
+public static class MultiSelectorHelper
 {
+  public static readonly DependencyProperty SelectedItemsProperty = DependencyProperty.RegisterAttached(
+    "SelectedItems",
+    typeof(IList),
+    typeof(MultiSelectorHelper),
+    new FrameworkPropertyMetadata(null, OnSelectedItemsChanged));
+
   /// <summary>
-  /// Defines a helper class for selected items binding on <see cref="ListBox"/> or <see cref="MultiSelector"/> controls.
+  /// Handles disposal and creation of old and new bindings
   /// </summary>
-  public static class MultiSelectorHelper
+  private static void OnSelectedItemsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
   {
-    public static readonly DependencyProperty SelectedItemsProperty = DependencyProperty.RegisterAttached(
-      "SelectedItems",
-      typeof(IList),
-      typeof(MultiSelectorHelper),
-      new FrameworkPropertyMetadata(null, OnSelectedItemsChanged));
+    if (!(d is ListBox || d is MultiSelector || d is MultiSelectionComboBox))
+    {
+      throw new ArgumentException("The property 'SelectedItems' may only be set on ListBox, MultiSelector or MultiSelectionComboBox elements.");
+    }
+
+    if (e.OldValue != e.NewValue)
+    {
+      var oldBinding = GetSelectedItemBinding(d);
+      oldBinding?.UnBind();
+
+      if (e.NewValue is IList newList)
+      {
+        var multiSelectorBinding = new MultiSelectorBinding((Selector)d, newList);
+        SetSelectedItemBinding(d, multiSelectorBinding);
+        multiSelectorBinding.Bind();
+      }
+      else
+      {
+        SetSelectedItemBinding((Selector)d, null);
+      }
+    }
+  }
+
+  [Category(AppName.CrystalThemes)]
+  [AttachedPropertyBrowsableForType(typeof(ListBox))]
+  [AttachedPropertyBrowsableForType(typeof(MultiSelector))]
+  public static IList? GetSelectedItems(DependencyObject element) => (IList?)element.GetValue(SelectedItemsProperty);
+
+  [Category(AppName.CrystalThemes)]
+  [AttachedPropertyBrowsableForType(typeof(ListBox))]
+  [AttachedPropertyBrowsableForType(typeof(MultiSelector))]
+  public static void SetSelectedItems(DependencyObject element, IList? value) => element.SetValue(SelectedItemsProperty, value);
+
+  private static readonly DependencyProperty SelectedItemBindingProperty = DependencyProperty.RegisterAttached(
+    "SelectedItemBinding",
+    typeof(MultiSelectorBinding),
+    typeof(MultiSelectorHelper));
+
+  [AttachedPropertyBrowsableForType(typeof(ListBox))]
+  [AttachedPropertyBrowsableForType(typeof(MultiSelector))]
+  private static MultiSelectorBinding? GetSelectedItemBinding(DependencyObject element) => (MultiSelectorBinding?)element.GetValue(SelectedItemBindingProperty);
+
+  [AttachedPropertyBrowsableForType(typeof(ListBox))]
+  [AttachedPropertyBrowsableForType(typeof(MultiSelector))]
+  private static void SetSelectedItemBinding(DependencyObject element, MultiSelectorBinding? value) => element.SetValue(SelectedItemBindingProperty, value);
+
+  private class MultiSelectorBinding
+  {
+    private readonly Selector selector;
+    private readonly IList collection;
 
     /// <summary>
-    /// Handles disposal and creation of old and new bindings
+    /// Creates an instance of <see cref="MultiSelectorBinding"/>
     /// </summary>
-    private static void OnSelectedItemsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    /// <param name="selector">The selector of this binding</param>
+    /// <param name="collection">The bound collection</param>
+    public MultiSelectorBinding(Selector selector, IList collection)
     {
-      if (!(d is ListBox || d is MultiSelector || d is MultiSelectionComboBox))
-      {
-        throw new ArgumentException("The property 'SelectedItems' may only be set on ListBox, MultiSelector or MultiSelectionComboBox elements.");
-      }
+      this.selector = selector;
+      this.collection = collection;
 
-      if (e.OldValue != e.NewValue)
+      if (selector is ListBox listbox)
       {
-        var oldBinding = GetSelectedItemBinding(d);
-        oldBinding?.UnBind();
-
-        if (e.NewValue is IList newList)
+        listbox.SelectedItems.Clear();
+        foreach (var newItem in collection)
         {
-          var multiSelectorBinding = new MultiSelectorBinding((Selector)d, newList);
-          SetSelectedItemBinding(d, multiSelectorBinding);
-          multiSelectorBinding.Bind();
+          listbox.SelectedItems.Add(newItem);
         }
-        else
+      }
+      else if (selector is MultiSelector multiSelector)
+      {
+        multiSelector.SelectedItems.Clear();
+        foreach (var newItem in collection)
         {
-          SetSelectedItemBinding((Selector)d, null);
+          multiSelector.SelectedItems.Add(newItem);
+        }
+      }
+      else if (selector is MultiSelectionComboBox multiSelectionComboBox)
+      {
+        if (multiSelectionComboBox.SelectedItems is not null)
+        {
+          multiSelectionComboBox.SelectedItems.Clear();
+          foreach (var newItem in collection)
+          {
+            multiSelectionComboBox.SelectedItems.Add(newItem);
+          }
         }
       }
     }
 
-    [Category(AppName.CrystalThemes)]
-    [AttachedPropertyBrowsableForType(typeof(ListBox))]
-    [AttachedPropertyBrowsableForType(typeof(MultiSelector))]
-    public static IList? GetSelectedItems(DependencyObject element) => (IList?)element.GetValue(SelectedItemsProperty);
-
-    [Category(AppName.CrystalThemes)]
-    [AttachedPropertyBrowsableForType(typeof(ListBox))]
-    [AttachedPropertyBrowsableForType(typeof(MultiSelector))]
-    public static void SetSelectedItems(DependencyObject element, IList? value) => element.SetValue(SelectedItemsProperty, value);
-
-    private static readonly DependencyProperty SelectedItemBindingProperty = DependencyProperty.RegisterAttached(
-      "SelectedItemBinding",
-      typeof(MultiSelectorBinding),
-      typeof(MultiSelectorHelper));
-
-    [AttachedPropertyBrowsableForType(typeof(ListBox))]
-    [AttachedPropertyBrowsableForType(typeof(MultiSelector))]
-    private static MultiSelectorBinding? GetSelectedItemBinding(DependencyObject element) => (MultiSelectorBinding?)element.GetValue(SelectedItemBindingProperty);
-
-    [AttachedPropertyBrowsableForType(typeof(ListBox))]
-    [AttachedPropertyBrowsableForType(typeof(MultiSelector))]
-    private static void SetSelectedItemBinding(DependencyObject element, MultiSelectorBinding? value) => element.SetValue(SelectedItemBindingProperty, value);
-
-    private class MultiSelectorBinding
+    /// <summary>
+    /// Registers the event handlers for selector and collection changes
+    /// </summary>
+    public void Bind()
     {
-      private readonly Selector selector;
-      private readonly IList collection;
+      // prevent multiple event registration
+      UnBind();
 
-      /// <summary>
-      /// Creates an instance of <see cref="MultiSelectorBinding"/>
-      /// </summary>
-      /// <param name="selector">The selector of this binding</param>
-      /// <param name="collection">The bound collection</param>
-      public MultiSelectorBinding(Selector selector, IList collection)
+      selector.SelectionChanged += OnSelectionChanged;
+      if (collection is INotifyCollectionChanged notifyCollection)
       {
-        this.selector = selector;
-        this.collection = collection;
+        notifyCollection.CollectionChanged += OnCollectionChanged;
+      }
+    }
 
-        if (selector is ListBox listbox)
+    /// <summary>
+    /// Clear the event handlers for selector and collection changes
+    /// </summary>
+    public void UnBind()
+    {
+      selector.SelectionChanged -= OnSelectionChanged;
+      if (collection is INotifyCollectionChanged notifyCollection)
+      {
+        notifyCollection.CollectionChanged -= OnCollectionChanged;
+      }
+    }
+
+    /// <summary>
+    /// Updates the collection with changes made in the selector
+    /// </summary>
+    private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+      var notifyCollection = collection as INotifyCollectionChanged;
+      if (notifyCollection is not null)
+      {
+        notifyCollection.CollectionChanged -= OnCollectionChanged;
+      }
+
+      try
+      {
+        var removedItems = e.RemovedItems;
+        if (removedItems is not null)
         {
-          listbox.SelectedItems.Clear();
-          foreach (var newItem in collection)
+          foreach (var oldItem in removedItems)
           {
-            listbox.SelectedItems.Add(newItem);
+            collection.Remove(oldItem);
           }
         }
-        else if (selector is MultiSelector multiSelector)
+
+        var addedItems = e.AddedItems;
+        if (addedItems is not null)
         {
-          multiSelector.SelectedItems.Clear();
-          foreach (var newItem in collection)
+          foreach (var newItem in addedItems)
           {
-            multiSelector.SelectedItems.Add(newItem);
-          }
-        }
-        else if (selector is MultiSelectionComboBox multiSelectionComboBox)
-        {
-          if (multiSelectionComboBox.SelectedItems is not null)
-          {
-            multiSelectionComboBox.SelectedItems.Clear();
-            foreach (var newItem in collection)
-            {
-              multiSelectionComboBox.SelectedItems.Add(newItem);
-            }
+            collection.Add(newItem);
           }
         }
       }
-
-      /// <summary>
-      /// Registers the event handlers for selector and collection changes
-      /// </summary>
-      public void Bind()
+      finally
       {
-        // prevent multiple event registration
-        UnBind();
-
-        selector.SelectionChanged += OnSelectionChanged;
-        if (collection is INotifyCollectionChanged notifyCollection)
+        if (notifyCollection is not null)
         {
           notifyCollection.CollectionChanged += OnCollectionChanged;
         }
       }
+    }
 
-      /// <summary>
-      /// Clear the event handlers for selector and collection changes
-      /// </summary>
-      public void UnBind()
+    private void OnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+      selector.SelectionChanged -= OnSelectionChanged;
+
+      try
       {
-        selector.SelectionChanged -= OnSelectionChanged;
-        if (collection is INotifyCollectionChanged notifyCollection)
-        {
-          notifyCollection.CollectionChanged -= OnCollectionChanged;
-        }
-      }
+        var selectedItems = (selector as ListBox)?.SelectedItems ?? (selector as MultiSelector)?.SelectedItems;
 
-      /// <summary>
-      /// Updates the collection with changes made in the selector
-      /// </summary>
-      private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-      {
-        var notifyCollection = collection as INotifyCollectionChanged;
-        if (notifyCollection is not null)
+        if (selectedItems is not null)
         {
-          notifyCollection.CollectionChanged -= OnCollectionChanged;
-        }
-
-        try
-        {
-          var removedItems = e.RemovedItems;
-          if (removedItems is not null)
+          switch (e.Action)
           {
-            foreach (var oldItem in removedItems)
-            {
-              collection.Remove(oldItem);
-            }
-          }
-
-          var addedItems = e.AddedItems;
-          if (addedItems is not null)
-          {
-            foreach (var newItem in addedItems)
-            {
-              collection.Add(newItem);
-            }
-          }
-        }
-        finally
-        {
-          if (notifyCollection is not null)
-          {
-            notifyCollection.CollectionChanged += OnCollectionChanged;
-          }
-        }
-      }
-
-      private void OnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-      {
-        selector.SelectionChanged -= OnSelectionChanged;
-
-        try
-        {
-          var selectedItems = (selector as ListBox)?.SelectedItems ?? (selector as MultiSelector)?.SelectedItems;
-
-          if (selectedItems is not null)
-          {
-            switch (e.Action)
-            {
-              case NotifyCollectionChangedAction.Add:
-                if (e.NewItems is not null)
+            case NotifyCollectionChangedAction.Add:
+              if (e.NewItems is not null)
+              {
+                foreach (var item in e.NewItems)
                 {
-                  foreach (var item in e.NewItems)
-                  {
-                    selectedItems.Add(item);
-                  }
+                  selectedItems.Add(item);
                 }
+              }
 
-                break;
-              case NotifyCollectionChangedAction.Remove:
-                if (e.OldItems is not null)
+              break;
+            case NotifyCollectionChangedAction.Remove:
+              if (e.OldItems is not null)
+              {
+                foreach (var item in e.OldItems)
                 {
-                  foreach (var item in e.OldItems)
-                  {
-                    selectedItems.Remove(item);
-                  }
+                  selectedItems.Remove(item);
                 }
+              }
 
-                break;
-              case NotifyCollectionChangedAction.Move:
-                Move(selectedItems, e);
-                break;
-              case NotifyCollectionChangedAction.Replace:
-                RemoveItems(selectedItems, e);
-                AddItems(selectedItems, e);
-                break;
-              case NotifyCollectionChangedAction.Reset:
-                selectedItems.Clear();
-                break;
-            }
-          }
-        }
-        finally
-        {
-          selector.SelectionChanged += OnSelectionChanged;
-        }
-      }
-
-      private static void RemoveItems(IList? selectedItems, NotifyCollectionChangedEventArgs e)
-      {
-        if (e.OldItems is not null && selectedItems is not null)
-        {
-          foreach (var item in e.OldItems)
-          {
-            selectedItems.Remove(item);
+              break;
+            case NotifyCollectionChangedAction.Move:
+              Move(selectedItems, e);
+              break;
+            case NotifyCollectionChangedAction.Replace:
+              RemoveItems(selectedItems, e);
+              AddItems(selectedItems, e);
+              break;
+            case NotifyCollectionChangedAction.Reset:
+              selectedItems.Clear();
+              break;
           }
         }
       }
-
-      private static void AddItems(IList? selectedItems, NotifyCollectionChangedEventArgs e)
+      finally
       {
-        if (e.NewItems is not null && selectedItems is not null)
-        {
-          for (var i = 0; i < e.NewItems.Count; i++)
-          {
-            var insertionPoint = e.NewStartingIndex + i;
+        selector.SelectionChanged += OnSelectionChanged;
+      }
+    }
 
-            if (insertionPoint > selectedItems.Count)
-            {
-              selectedItems.Add(e.NewItems[i]);
-            }
-            else
-            {
-              selectedItems.Insert(insertionPoint, e.NewItems[i]);
-            }
-          }
+    private static void RemoveItems(IList? selectedItems, NotifyCollectionChangedEventArgs e)
+    {
+      if (e.OldItems is not null && selectedItems is not null)
+      {
+        foreach (var item in e.OldItems)
+        {
+          selectedItems.Remove(item);
         }
       }
+    }
 
-      /// <summary>
-      /// Checks if the given collection is a ObservableCollection&lt;&gt;
-      /// </summary>
-      /// <param name="collection">The collection to test.</param>
-      /// <returns>True if the collection is a ObservableCollection&lt;&gt;</returns>
-      private static bool IsObservableCollection(IList? collection)
+    private static void AddItems(IList? selectedItems, NotifyCollectionChangedEventArgs e)
+    {
+      if (e.NewItems is not null && selectedItems is not null)
       {
-        return collection is not null
-               && collection.GetType().IsGenericType
-               && collection.GetType().GetGenericTypeDefinition() == typeof(ObservableCollection<>);
-      }
-
-      private static void Move(IList? selectedItems, NotifyCollectionChangedEventArgs e)
-      {
-        if (selectedItems is not null && e.OldStartingIndex != e.NewStartingIndex)
+        for (var i = 0; i < e.NewItems.Count; i++)
         {
-          if (selectedItems is ObservableCollection<object> observableCollection)
+          var insertionPoint = e.NewStartingIndex + i;
+
+          if (insertionPoint > selectedItems.Count)
           {
-            observableCollection.Move(e.OldStartingIndex, e.NewStartingIndex);
-          }
-          else if (IsObservableCollection(selectedItems))
-          {
-            var method = selectedItems.GetType().GetMethod("Move", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
-            _ = method?.Invoke(selectedItems, new object[] { e.OldStartingIndex, e.NewStartingIndex });
+            selectedItems.Add(e.NewItems[i]);
           }
           else
           {
-            RemoveItems(selectedItems, e);
-            AddItems(selectedItems, e);
+            selectedItems.Insert(insertionPoint, e.NewItems[i]);
           }
+        }
+      }
+    }
+
+    /// <summary>
+    /// Checks if the given collection is a ObservableCollection&lt;&gt;
+    /// </summary>
+    /// <param name="collection">The collection to test.</param>
+    /// <returns>True if the collection is a ObservableCollection&lt;&gt;</returns>
+    private static bool IsObservableCollection(IList? collection)
+    {
+      return collection is not null
+             && collection.GetType().IsGenericType
+             && collection.GetType().GetGenericTypeDefinition() == typeof(ObservableCollection<>);
+    }
+
+    private static void Move(IList? selectedItems, NotifyCollectionChangedEventArgs e)
+    {
+      if (selectedItems is not null && e.OldStartingIndex != e.NewStartingIndex)
+      {
+        if (selectedItems is ObservableCollection<object> observableCollection)
+        {
+          observableCollection.Move(e.OldStartingIndex, e.NewStartingIndex);
+        }
+        else if (IsObservableCollection(selectedItems))
+        {
+          var method = selectedItems.GetType().GetMethod("Move", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+          _ = method?.Invoke(selectedItems, new object[] { e.OldStartingIndex, e.NewStartingIndex });
+        }
+        else
+        {
+          RemoveItems(selectedItems, e);
+          AddItems(selectedItems, e);
         }
       }
     }

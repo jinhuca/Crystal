@@ -2,25 +2,24 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-namespace Crystal.Themes.Controls
+namespace Crystal.Themes.Controls;
+
+/// <summary>
+/// Enum NumericInput which indicates what input is allowed for NumericUpdDown.
+/// </summary>
+[Flags]
+public enum NumericInput
 {
   /// <summary>
-  /// Enum NumericInput which indicates what input is allowed for NumericUpdDown.
+  /// Only numbers are allowed
   /// </summary>
-  [Flags]
-    public enum NumericInput
-    {
-        /// <summary>
-        /// Only numbers are allowed
-        /// </summary>
-        Numbers = 1 << 1, // Only Numbers
-        /// <summary>
-        /// Numbers with decimal point and allowed scientific input
-        /// </summary>
-        Decimal = 2 << 1,
-        /// <summary>
-        /// All is allowed
-        /// </summary>
-        All = Numbers | Decimal
-    }
+  Numbers = 1 << 1, // Only Numbers
+  /// <summary>
+  /// Numbers with decimal point and allowed scientific input
+  /// </summary>
+  Decimal = 2 << 1,
+  /// <summary>
+  /// All is allowed
+  /// </summary>
+  All = Numbers | Decimal
 }

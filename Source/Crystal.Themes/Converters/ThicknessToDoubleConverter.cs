@@ -4,41 +4,40 @@
 
 using System.Globalization;
 
-namespace Crystal.Themes.Converters
+namespace Crystal.Themes.Converters;
+
+[ValueConversion(typeof(Thickness), typeof(double), ParameterType = typeof(ThicknessSideType))]
+public class ThicknessToDoubleConverter : IValueConverter
 {
-  [ValueConversion(typeof(Thickness), typeof(double), ParameterType = typeof(ThicknessSideType))]
-    public class ThicknessToDoubleConverter : IValueConverter
+  public ThicknessSideType TakeThicknessSide { get; set; } = ThicknessSideType.None;
+
+  public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+  {
+    if (value is Thickness thickness)
     {
-        public ThicknessSideType TakeThicknessSide { get; set; } = ThicknessSideType.None;
+      var takeThicknessSide = TakeThicknessSide;
 
-        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-        {
-            if (value is Thickness thickness)
-            {
-                var takeThicknessSide = TakeThicknessSide;
+      // yes, we can override it with the parameter value
+      if (parameter is ThicknessSideType sideType)
+      {
+        takeThicknessSide = sideType;
+      }
 
-                // yes, we can override it with the parameter value
-                if (parameter is ThicknessSideType sideType)
-                {
-                    takeThicknessSide = sideType;
-                }
-
-                return takeThicknessSide switch
-                {
-                    ThicknessSideType.Left => thickness.Left,
-                    ThicknessSideType.Top => thickness.Top,
-                    ThicknessSideType.Right => thickness.Right,
-                    ThicknessSideType.Bottom => thickness.Bottom,
-                    _ => default
-                };
-            }
-
-            return default(double);
-        }
-
-        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-        {
-            return DependencyProperty.UnsetValue;
-        }
+      return takeThicknessSide switch
+      {
+        ThicknessSideType.Left => thickness.Left,
+        ThicknessSideType.Top => thickness.Top,
+        ThicknessSideType.Right => thickness.Right,
+        ThicknessSideType.Bottom => thickness.Bottom,
+        _ => default
+      };
     }
+
+    return default(double);
+  }
+
+  public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+  {
+    return DependencyProperty.UnsetValue;
+  }
 }

@@ -4,50 +4,49 @@
 
 using System.Globalization;
 
-namespace Crystal.Themes.Converters
+namespace Crystal.Themes.Converters;
+
+/// <summary>
+/// Filters a CornerRadius by the given Filter property. Result can be a new CornerRadius or a value of it's 4 corners.
+/// </summary>
+[ValueConversion(typeof(CornerRadius), typeof(CornerRadius), ParameterType = typeof(RadiusType))]
+[ValueConversion(typeof(CornerRadius), typeof(double), ParameterType = typeof(RadiusType))]
+public class CornerRadiusFilterConverter : IValueConverter
 {
-  /// <summary>
-  /// Filters a CornerRadius by the given Filter property. Result can be a new CornerRadius or a value of it's 4 corners.
-  /// </summary>
-  [ValueConversion(typeof(CornerRadius), typeof(CornerRadius), ParameterType = typeof(RadiusType))]
-    [ValueConversion(typeof(CornerRadius), typeof(double), ParameterType = typeof(RadiusType))]
-    public class CornerRadiusFilterConverter : IValueConverter
+  public RadiusType Filter { get; set; } = RadiusType.None;
+
+  public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+  {
+    if (value is CornerRadius cornerRadius)
     {
-        public RadiusType Filter { get; set; } = RadiusType.None;
+      var filter = Filter;
 
-        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-        {
-            if (value is CornerRadius cornerRadius)
-            {
-                var filter = Filter;
+      // yes, we can override it with the parameter value
+      if (parameter is RadiusType radiusType)
+      {
+        filter = radiusType;
+      }
 
-                // yes, we can override it with the parameter value
-                if (parameter is RadiusType radiusType)
-                {
-                    filter = radiusType;
-                }
-
-                return filter switch
-                {
-                    RadiusType.Left => new CornerRadius(cornerRadius.TopLeft, 0, 0, cornerRadius.BottomLeft),
-                    RadiusType.Top => new CornerRadius(cornerRadius.TopLeft, cornerRadius.TopRight, 0, 0),
-                    RadiusType.Right => new CornerRadius(0, cornerRadius.TopRight, cornerRadius.BottomRight, 0),
-                    RadiusType.Bottom => new CornerRadius(0, 0, cornerRadius.BottomRight, cornerRadius.BottomLeft),
-                    RadiusType.TopLeft => cornerRadius.TopLeft,
-                    RadiusType.TopRight => cornerRadius.TopRight,
-                    RadiusType.BottomRight => cornerRadius.BottomRight,
-                    RadiusType.BottomLeft => cornerRadius.BottomLeft,
-                    _ => cornerRadius
-                };
-            }
-
-            return Binding.DoNothing;
-        }
-
-        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-        {
-            // for now no back converting
-            return DependencyProperty.UnsetValue;
-        }
+      return filter switch
+      {
+        RadiusType.Left => new CornerRadius(cornerRadius.TopLeft, 0, 0, cornerRadius.BottomLeft),
+        RadiusType.Top => new CornerRadius(cornerRadius.TopLeft, cornerRadius.TopRight, 0, 0),
+        RadiusType.Right => new CornerRadius(0, cornerRadius.TopRight, cornerRadius.BottomRight, 0),
+        RadiusType.Bottom => new CornerRadius(0, 0, cornerRadius.BottomRight, cornerRadius.BottomLeft),
+        RadiusType.TopLeft => cornerRadius.TopLeft,
+        RadiusType.TopRight => cornerRadius.TopRight,
+        RadiusType.BottomRight => cornerRadius.BottomRight,
+        RadiusType.BottomLeft => cornerRadius.BottomLeft,
+        _ => cornerRadius
+      };
     }
+
+    return Binding.DoNothing;
+  }
+
+  public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+  {
+    // for now no back converting
+    return DependencyProperty.UnsetValue;
+  }
 }

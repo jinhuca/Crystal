@@ -1,6 +1,5 @@
-﻿namespace Crystal.Themes.Controls
+﻿namespace Crystal.Themes.Controls;
+
+public interface IHamburgerMenuSeparatorItem
 {
-  public interface IHamburgerMenuSeparatorItem
-  {
-  }
 }

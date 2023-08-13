@@ -2,16 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-namespace Crystal.Themes.Controls
-{
-  public class NumericUpDownChangedRoutedEventArgs : RoutedEventArgs
-    {
-        public double Interval { get; set; }
+namespace Crystal.Themes.Controls;
 
-        public NumericUpDownChangedRoutedEventArgs(RoutedEvent routedEvent, double interval)
-            : base(routedEvent)
-        {
-            Interval = interval;
-        }
-    }
+public class NumericUpDownChangedRoutedEventArgs : RoutedEventArgs
+{
+  public double Interval { get; set; }
+
+  public NumericUpDownChangedRoutedEventArgs(RoutedEvent routedEvent, double interval)
+    : base(routedEvent)
+  {
+    Interval = interval;
+  }
 }

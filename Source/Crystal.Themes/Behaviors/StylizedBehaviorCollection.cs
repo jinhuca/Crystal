@@ -1,12 +1,9 @@
-using Crystal.Behaviors;
+namespace Crystal.Themes.Behaviors;
 
-namespace Crystal.Themes.Behaviors
+public class StylizedBehaviorCollection : FreezableCollection<Behavior>
 {
-  public class StylizedBehaviorCollection : FreezableCollection<Behavior>
+  protected override Freezable CreateInstanceCore()
   {
-    protected override Freezable CreateInstanceCore()
-    {
-      return new StylizedBehaviorCollection();
-    }
+    return new StylizedBehaviorCollection();
   }
 }

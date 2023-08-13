@@ -6,335 +6,334 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 
-namespace Crystal.Behaviors
+namespace Crystal.Behaviors;
+
+[DefaultTrigger(typeof(ButtonBase), typeof(Behaviors.EventTrigger), "Click")]
+[DefaultTrigger(typeof(TextBox), typeof(Behaviors.EventTrigger), "TextChanged")]
+[DefaultTrigger(typeof(RichTextBox), typeof(Behaviors.EventTrigger), "TextChanged")]
+[DefaultTrigger(typeof(ListBoxItem), typeof(Behaviors.EventTrigger), "Selected")]
+[DefaultTrigger(typeof(TreeViewItem), typeof(Behaviors.EventTrigger), "Selected")]
+[DefaultTrigger(typeof(Selector), typeof(Behaviors.EventTrigger), "SelectionChanged")]
+[DefaultTrigger(typeof(TreeView), typeof(Behaviors.EventTrigger), "SelectedItemChanged")]
+[DefaultTrigger(typeof(RangeBase), typeof(Behaviors.EventTrigger), "ValueChanged")]
+public abstract class PrototypingActionBase : TriggerAction<DependencyObject>
 {
-  [DefaultTrigger(typeof(ButtonBase), typeof(Behaviors.EventTrigger), "Click")]
-  [DefaultTrigger(typeof(TextBox), typeof(Behaviors.EventTrigger), "TextChanged")]
-  [DefaultTrigger(typeof(RichTextBox), typeof(Behaviors.EventTrigger), "TextChanged")]
-  [DefaultTrigger(typeof(ListBoxItem), typeof(Behaviors.EventTrigger), "Selected")]
-  [DefaultTrigger(typeof(TreeViewItem), typeof(Behaviors.EventTrigger), "Selected")]
-  [DefaultTrigger(typeof(Selector), typeof(Behaviors.EventTrigger), "SelectionChanged")]
-  [DefaultTrigger(typeof(TreeView), typeof(Behaviors.EventTrigger), "SelectedItemChanged")]
-  [DefaultTrigger(typeof(RangeBase), typeof(Behaviors.EventTrigger), "ValueChanged")]
-  public abstract class PrototypingActionBase : TriggerAction<DependencyObject>
+  //	for unittests
+  internal void TestInvoke(object parameter)
   {
-    //	for unittests
-    internal void TestInvoke(object parameter)
+    Invoke(parameter);
+  }
+
+  protected UserControl GetContainingScreen()
+  {
+    var userControlAncestors = AssociatedObject.GetSelfAndAncestors().OfType<UserControl>();
+
+    // Find the first screen up the visual tree, so that we can invoke state on the proper UserControl
+    var screen = userControlAncestors.FirstOrDefault(userControl => InteractionContext.IsScreen(userControl.GetType().FullName));
+
+    // If we couldn't find a hosting screen, take the first UserControl we find.
+    return screen ?? userControlAncestors.First();
+  }
+}
+
+public sealed class ActivateStateAction : PrototypingActionBase
+{
+  public static readonly DependencyProperty TargetScreenProperty = DependencyProperty.Register(
+    nameof(TargetScreen),
+    typeof(string),
+    typeof(ActivateStateAction),
+    new PropertyMetadata(null));
+
+  public static readonly DependencyProperty TargetStateProperty = DependencyProperty.Register(
+    nameof(TargetState),
+    typeof(string),
+    typeof(ActivateStateAction),
+    new PropertyMetadata(null));
+
+  public string TargetScreen
+  {
+    get => (string)GetValue(TargetScreenProperty);
+    set => SetValue(TargetScreenProperty, value);
+  }
+
+  public string TargetState
+  {
+    get => (string)GetValue(TargetStateProperty);
+    set => SetValue(TargetStateProperty, value);
+  }
+
+  protected override void Invoke(object parameter)
+  {
+    string screen = TargetScreen;
+
+    if (string.IsNullOrEmpty(screen))
     {
-      Invoke(parameter);
+      screen = GetContainingScreen().GetType().ToString();
     }
 
-    protected UserControl GetContainingScreen()
+    InteractionContext.GoToState(screen, TargetState);
+  }
+
+  protected override Freezable CreateInstanceCore()
+  {
+    return new ActivateStateAction();
+  }
+}
+
+public sealed class NavigateToScreenAction : PrototypingActionBase
+{
+  public static readonly DependencyProperty TargetScreenProperty = DependencyProperty.Register(
+    "TargetScreen", typeof(string), typeof(NavigateToScreenAction), new PropertyMetadata(null));
+
+  public string TargetScreen
+  {
+    get => (string)GetValue(TargetScreenProperty);
+    set => SetValue(TargetScreenProperty, value as string);
+  }
+
+  protected override void Invoke(object parameter)
+  {
+    Assembly libraryAssembly = null;
+
+    UserControl hostControl = AssociatedObject.GetSelfAndAncestors().OfType<UserControl>().FirstOrDefault();
+    if (hostControl != null)
     {
-      var userControlAncestors = AssociatedObject.GetSelfAndAncestors().OfType<UserControl>();
+      libraryAssembly = hostControl.GetType().Assembly;
+    }
 
-      // Find the first screen up the visual tree, so that we can invoke state on the proper UserControl
-      var screen = userControlAncestors.FirstOrDefault(userControl => InteractionContext.IsScreen(userControl.GetType().FullName));
+    InteractionContext.GoToScreen(TargetScreen, libraryAssembly);
+  }
 
-      // If we couldn't find a hosting screen, take the first UserControl we find.
-      return screen ?? userControlAncestors.First();
+  protected override Freezable CreateInstanceCore()
+  {
+    return new NavigateToScreenAction();
+  }
+}
+
+public sealed class NavigateBackAction : PrototypingActionBase
+{
+  protected override void Invoke(object parameter)
+  {
+    InteractionContext.GoBack();
+  }
+
+  protected override Freezable CreateInstanceCore()
+  {
+    return new NavigateBackAction();
+  }
+}
+
+public sealed class NavigateForwardAction : PrototypingActionBase
+{
+  protected override void Invoke(object parameter)
+  {
+    InteractionContext.GoForward();
+  }
+
+  protected override Freezable CreateInstanceCore()
+  {
+    return new NavigateForwardAction();
+  }
+}
+
+public sealed class PlaySketchFlowAnimationAction : PrototypingActionBase
+{
+  public static readonly DependencyProperty TargetScreenProperty = DependencyProperty.Register(
+    "TargetScreen", typeof(string), typeof(PlaySketchFlowAnimationAction), new PropertyMetadata(null));
+  public static readonly DependencyProperty SketchFlowAnimationProperty = DependencyProperty.Register(
+    "StateAnimation", typeof(string), typeof(PlaySketchFlowAnimationAction), new PropertyMetadata(null));
+
+  public string TargetScreen
+  {
+    get => (string)GetValue(TargetScreenProperty);
+    set => SetValue(TargetScreenProperty, value);
+  }
+
+  public string SketchFlowAnimation
+  {
+    get => (string)GetValue(SketchFlowAnimationProperty);
+    set => SetValue(SketchFlowAnimationProperty, value);
+  }
+
+  protected override void Invoke(object parameter)
+  {
+    string screen = TargetScreen;
+
+    if (string.IsNullOrEmpty(screen))
+    {
+      screen = GetContainingScreen().GetType().ToString();
+    }
+
+    InteractionContext.PlaySketchFlowAnimation(SketchFlowAnimation, screen);
+  }
+
+  protected override Freezable CreateInstanceCore()
+  {
+    return new PlaySketchFlowAnimationAction();
+  }
+}
+
+[DefaultTrigger(typeof(FrameworkElement), typeof(Behaviors.EventTrigger), "Loaded")]
+[DefaultTrigger(typeof(ButtonBase), typeof(Behaviors.EventTrigger), "Loaded")]
+public sealed class NavigationMenuAction : TargetedTriggerAction<FrameworkElement>
+{
+  public static readonly DependencyProperty InactiveStateProperty = DependencyProperty.Register(
+    nameof(InactiveState),
+    typeof(string),
+    typeof(NavigationMenuAction),
+    new PropertyMetadata(null));
+
+  public static readonly DependencyProperty TargetScreenProperty = DependencyProperty.Register(
+    nameof(TargetScreen),
+    typeof(string),
+    typeof(NavigationMenuAction),
+    new PropertyMetadata(null));
+
+  public static readonly DependencyProperty ActiveStateProperty = DependencyProperty.Register(
+    nameof(ActiveState),
+    typeof(string),
+    typeof(NavigationMenuAction),
+    new PropertyMetadata(null));
+
+  public string TargetScreen
+  {
+    get => (string)GetValue(TargetScreenProperty);
+    set => SetValue(TargetScreenProperty, value);
+  }
+
+  public string ActiveState
+  {
+    get => (string)GetValue(ActiveStateProperty);
+    set => SetValue(ActiveStateProperty, value);
+  }
+
+  public string InactiveState
+  {
+    get => (string)GetValue(InactiveStateProperty);
+    set => SetValue(InactiveStateProperty, value);
+  }
+
+  private bool IsTargetObjectSet
+  {
+    get
+    {
+      bool isLocallySet = ReadLocalValue(TargetObjectProperty) != DependencyProperty.UnsetValue;
+      // if the value can be set indirectly (via trigger, style, etc), should also check ValueSource, but not a concern for behaviors right now.
+      return isLocallySet;
     }
   }
 
-  public sealed class ActivateStateAction : PrototypingActionBase
+  private FrameworkElement StateTarget { get; set; }
+
+  /// <summary>
+  /// Called when the target changes. If the TargetName property isn't set, this action has custom behavior.
+  /// </summary>
+  /// <param name="oldTarget"></param>
+  /// <param name="newTarget"></param>
+  /// <exception cref="InvalidOperationException">Could not locate an appropriate FrameworkElement with states.</exception>
+  protected override void OnTargetChanged(FrameworkElement oldTarget, FrameworkElement newTarget)
   {
-    public static readonly DependencyProperty TargetScreenProperty = DependencyProperty.Register(
-      nameof(TargetScreen),
-      typeof(string),
-      typeof(ActivateStateAction),
-      new PropertyMetadata(null));
+    base.OnTargetChanged(oldTarget, newTarget);
 
-    public static readonly DependencyProperty TargetStateProperty = DependencyProperty.Register(
-      nameof(TargetState),
-      typeof(string),
-      typeof(ActivateStateAction),
-      new PropertyMetadata(null));
+    FrameworkElement frameworkElement = null;
 
-    public string TargetScreen
+    if (string.IsNullOrEmpty(TargetName) && !IsTargetObjectSet)
     {
-      get => (string)GetValue(TargetScreenProperty);
-      set => SetValue(TargetScreenProperty, value);
+      VisualStateUtilities.TryFindNearestStatefulControl(AssociatedObject as FrameworkElement, out frameworkElement);
+    }
+    else
+    {
+      frameworkElement = Target;
     }
 
-    public string TargetState
+    StateTarget = frameworkElement;
+  }
+
+  protected override void Invoke(object parameter)
+  {
+    if (AssociatedObject != null)
     {
-      get => (string)GetValue(TargetStateProperty);
-      set => SetValue(TargetStateProperty, value);
+      InvokeImpl(StateTarget);
     }
+  }
 
-    protected override void Invoke(object parameter)
+  internal void InvokeImpl(FrameworkElement stateTarget)
+  {
+    if (stateTarget != null && !string.IsNullOrEmpty(ActiveState) && !string.IsNullOrEmpty(InactiveState) && !string.IsNullOrEmpty(TargetScreen))
     {
-      string screen = TargetScreen;
+      UserControl screen = stateTarget.GetSelfAndAncestors().OfType<UserControl>().FirstOrDefault(control => control.GetType().ToString() == TargetScreen);
 
-      if (string.IsNullOrEmpty(screen))
+      string stateName = InactiveState;
+      if (screen != null)
       {
-        screen = GetContainingScreen().GetType().ToString();
+        stateName = ActiveState;
       }
 
-      InteractionContext.GoToState(screen, TargetState);
-    }
-
-    protected override Freezable CreateInstanceCore()
-    {
-      return new ActivateStateAction();
-    }
-  }
-
-  public sealed class NavigateToScreenAction : PrototypingActionBase
-  {
-    public static readonly DependencyProperty TargetScreenProperty = DependencyProperty.Register(
-        "TargetScreen", typeof(string), typeof(NavigateToScreenAction), new PropertyMetadata(null));
-
-    public string TargetScreen
-    {
-      get => (string)GetValue(TargetScreenProperty);
-      set => SetValue(TargetScreenProperty, value as string);
-    }
-
-    protected override void Invoke(object parameter)
-    {
-      Assembly libraryAssembly = null;
-
-      UserControl hostControl = AssociatedObject.GetSelfAndAncestors().OfType<UserControl>().FirstOrDefault();
-      if (hostControl != null)
+      if (!string.IsNullOrEmpty(stateName))
       {
-        libraryAssembly = hostControl.GetType().Assembly;
-      }
-
-      InteractionContext.GoToScreen(TargetScreen, libraryAssembly);
-    }
-
-    protected override Freezable CreateInstanceCore()
-    {
-      return new NavigateToScreenAction();
-    }
-  }
-
-  public sealed class NavigateBackAction : PrototypingActionBase
-  {
-    protected override void Invoke(object parameter)
-    {
-      InteractionContext.GoBack();
-    }
-
-    protected override Freezable CreateInstanceCore()
-    {
-      return new NavigateBackAction();
-    }
-  }
-
-  public sealed class NavigateForwardAction : PrototypingActionBase
-  {
-    protected override void Invoke(object parameter)
-    {
-      InteractionContext.GoForward();
-    }
-
-    protected override Freezable CreateInstanceCore()
-    {
-      return new NavigateForwardAction();
-    }
-  }
-
-  public sealed class PlaySketchFlowAnimationAction : PrototypingActionBase
-  {
-    public static readonly DependencyProperty TargetScreenProperty = DependencyProperty.Register(
-        "TargetScreen", typeof(string), typeof(PlaySketchFlowAnimationAction), new PropertyMetadata(null));
-    public static readonly DependencyProperty SketchFlowAnimationProperty = DependencyProperty.Register(
-        "StateAnimation", typeof(string), typeof(PlaySketchFlowAnimationAction), new PropertyMetadata(null));
-
-    public string TargetScreen
-    {
-      get => (string)GetValue(TargetScreenProperty);
-      set => SetValue(TargetScreenProperty, value);
-    }
-
-    public string SketchFlowAnimation
-    {
-      get => (string)GetValue(SketchFlowAnimationProperty);
-      set => SetValue(SketchFlowAnimationProperty, value);
-    }
-
-    protected override void Invoke(object parameter)
-    {
-      string screen = TargetScreen;
-
-      if (string.IsNullOrEmpty(screen))
-      {
-        screen = GetContainingScreen().GetType().ToString();
-      }
-
-      InteractionContext.PlaySketchFlowAnimation(SketchFlowAnimation, screen);
-    }
-
-    protected override Freezable CreateInstanceCore()
-    {
-      return new PlaySketchFlowAnimationAction();
-    }
-  }
-
-  [DefaultTrigger(typeof(FrameworkElement), typeof(Behaviors.EventTrigger), "Loaded")]
-  [DefaultTrigger(typeof(ButtonBase), typeof(Behaviors.EventTrigger), "Loaded")]
-  public sealed class NavigationMenuAction : TargetedTriggerAction<FrameworkElement>
-  {
-    public static readonly DependencyProperty InactiveStateProperty = DependencyProperty.Register(
-        nameof(InactiveState),
-        typeof(string),
-        typeof(NavigationMenuAction),
-        new PropertyMetadata(null));
-
-    public static readonly DependencyProperty TargetScreenProperty = DependencyProperty.Register(
-        nameof(TargetScreen),
-        typeof(string),
-        typeof(NavigationMenuAction),
-        new PropertyMetadata(null));
-
-    public static readonly DependencyProperty ActiveStateProperty = DependencyProperty.Register(
-        nameof(ActiveState),
-        typeof(string),
-        typeof(NavigationMenuAction),
-        new PropertyMetadata(null));
-
-    public string TargetScreen
-    {
-      get => (string)GetValue(TargetScreenProperty);
-      set => SetValue(TargetScreenProperty, value);
-    }
-
-    public string ActiveState
-    {
-      get => (string)GetValue(ActiveStateProperty);
-      set => SetValue(ActiveStateProperty, value);
-    }
-
-    public string InactiveState
-    {
-      get => (string)GetValue(InactiveStateProperty);
-      set => SetValue(InactiveStateProperty, value);
-    }
-
-    private bool IsTargetObjectSet
-    {
-      get
-      {
-        bool isLocallySet = ReadLocalValue(TargetObjectProperty) != DependencyProperty.UnsetValue;
-        // if the value can be set indirectly (via trigger, style, etc), should also check ValueSource, but not a concern for behaviors right now.
-        return isLocallySet;
+        if (stateTarget is ToggleButton toggleButton)
+        {
+          switch (stateName)
+          {
+            case "Checked":
+              toggleButton.IsChecked = true;
+              return;
+            case "Unchecked":
+              toggleButton.IsChecked = false;
+              return;
+          }
+        }
+        if (stateName == "Disabled")
+        {
+          stateTarget.IsEnabled = false;
+          return;
+        }
+        VisualStateUtilities.GoToState(stateTarget, stateName, true);
       }
     }
+  }
 
-    private FrameworkElement StateTarget { get; set; }
+  protected override Freezable CreateInstanceCore()
+  {
+    return new NavigationMenuAction();
+  }
+}
 
-    /// <summary>
-    /// Called when the target changes. If the TargetName property isn't set, this action has custom behavior.
-    /// </summary>
-    /// <param name="oldTarget"></param>
-    /// <param name="newTarget"></param>
-    /// <exception cref="InvalidOperationException">Could not locate an appropriate FrameworkElement with states.</exception>
-    protected override void OnTargetChanged(FrameworkElement oldTarget, FrameworkElement newTarget)
+/// <summary>
+/// Allows a user to remove the item from a ListBox ItemTemplate.
+/// </summary>
+public sealed class RemoveItemInListBoxAction : TriggerAction<FrameworkElement>
+{
+  protected override void Invoke(object parameter)
+  {
+    ItemsControl items = ItemsControl;
+    if (items != null)
     {
-      base.OnTargetChanged(oldTarget, newTarget);
-
-      FrameworkElement frameworkElement = null;
-
-      if (string.IsNullOrEmpty(TargetName) && !IsTargetObjectSet)
+      if (items.ItemsSource != null)
       {
-        VisualStateUtilities.TryFindNearestStatefulControl(AssociatedObject as FrameworkElement, out frameworkElement);
+        // Given the flexibility of databinding, we won't always have a collection where we can 
+        // remove an item.  But let's try a common scenario.
+        if (items.ItemsSource is IList list && !list.IsReadOnly && list.Contains(AssociatedObject.DataContext))
+        {
+          list.Remove(AssociatedObject.DataContext);
+        }
       }
       else
       {
-        frameworkElement = Target;
-      }
-
-      StateTarget = frameworkElement;
-    }
-
-    protected override void Invoke(object parameter)
-    {
-      if (AssociatedObject != null)
-      {
-        InvokeImpl(StateTarget);
-      }
-    }
-
-    internal void InvokeImpl(FrameworkElement stateTarget)
-    {
-      if (stateTarget != null && !string.IsNullOrEmpty(ActiveState) && !string.IsNullOrEmpty(InactiveState) && !string.IsNullOrEmpty(TargetScreen))
-      {
-        UserControl screen = stateTarget.GetSelfAndAncestors().OfType<UserControl>().FirstOrDefault(control => control.GetType().ToString() == TargetScreen);
-
-        string stateName = InactiveState;
-        if (screen != null)
+        if (ItemsControl is ListBox listBox)
         {
-          stateName = ActiveState;
-        }
-
-        if (!string.IsNullOrEmpty(stateName))
-        {
-          if (stateTarget is ToggleButton toggleButton)
+          ListBoxItem listBoxItem = ItemContainer;
+          if (listBoxItem != null)
           {
-            switch (stateName)
-            {
-              case "Checked":
-                toggleButton.IsChecked = true;
-                return;
-              case "Unchecked":
-                toggleButton.IsChecked = false;
-                return;
-            }
+            listBox.Items.Remove(listBoxItem.Content);
           }
-          if (stateName == "Disabled")
-          {
-            stateTarget.IsEnabled = false;
-            return;
-          }
-          VisualStateUtilities.GoToState(stateTarget, stateName, true);
         }
       }
     }
 
-    protected override Freezable CreateInstanceCore()
-    {
-      return new NavigationMenuAction();
-    }
   }
 
-  /// <summary>
-  /// Allows a user to remove the item from a ListBox ItemTemplate.
-  /// </summary>
-  public sealed class RemoveItemInListBoxAction : TriggerAction<FrameworkElement>
-  {
-    protected override void Invoke(object parameter)
-    {
-      ItemsControl items = ItemsControl;
-      if (items != null)
-      {
-        if (items.ItemsSource != null)
-        {
-          // Given the flexibility of databinding, we won't always have a collection where we can 
-          // remove an item.  But let's try a common scenario.
-          if (items.ItemsSource is IList list && !list.IsReadOnly && list.Contains(AssociatedObject.DataContext))
-          {
-            list.Remove(AssociatedObject.DataContext);
-          }
-        }
-        else
-        {
-          if (ItemsControl is ListBox listBox)
-          {
-            ListBoxItem listBoxItem = ItemContainer;
-            if (listBoxItem != null)
-            {
-              listBox.Items.Remove(listBoxItem.Content);
-            }
-          }
-        }
-      }
+  private ListBoxItem ItemContainer => (ListBoxItem)AssociatedObject.GetSelfAndAncestors().FirstOrDefault(element => element is ListBoxItem);
 
-    }
-
-    private ListBoxItem ItemContainer => (ListBoxItem)AssociatedObject.GetSelfAndAncestors().FirstOrDefault(element => element is ListBoxItem);
-
-    private ItemsControl ItemsControl => (ItemsControl)AssociatedObject.GetSelfAndAncestors().FirstOrDefault(element => element is ItemsControl);
-  }
+  private ItemsControl ItemsControl => (ItemsControl)AssociatedObject.GetSelfAndAncestors().FirstOrDefault(element => element is ItemsControl);
 }

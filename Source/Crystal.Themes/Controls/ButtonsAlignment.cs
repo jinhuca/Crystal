@@ -2,12 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-namespace Crystal.Themes.Controls
+namespace Crystal.Themes.Controls;
+
+public enum ButtonsAlignment
 {
-    public enum ButtonsAlignment
-    {
-        Left,
-        Right,
-        Opposite
-    }
+  Left,
+  Right,
+  Opposite
 }

@@ -4,25 +4,24 @@
 
 using System.Globalization;
 
-namespace Crystal.Themes.Converters
-{
-  /// <summary>
-  /// This Converter converts a given height or width of an control to a CornerRadius
-  /// </summary>
-  [ValueConversion(typeof(double), typeof(CornerRadius))]
-    [MarkupExtensionReturnType(typeof(SizeToCornerRadiusConverter))]
-    public class SizeToCornerRadiusConverter : MarkupConverter
-    {
-        /// <inheritdoc/>
-        protected override object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-        {
-            return value is double dValue ? new CornerRadius(dValue / 2) : new CornerRadius();
-        }
+namespace Crystal.Themes.Converters;
 
-        /// <inheritdoc/>
-        protected override object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-        {
-            return Binding.DoNothing;
-        }
-    }
+/// <summary>
+/// This Converter converts a given height or width of an control to a CornerRadius
+/// </summary>
+[ValueConversion(typeof(double), typeof(CornerRadius))]
+[MarkupExtensionReturnType(typeof(SizeToCornerRadiusConverter))]
+public class SizeToCornerRadiusConverter : MarkupConverter
+{
+  /// <inheritdoc/>
+  protected override object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+  {
+    return value is double dValue ? new CornerRadius(dValue / 2) : new CornerRadius();
+  }
+
+  /// <inheritdoc/>
+  protected override object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+  {
+    return Binding.DoNothing;
+  }
 }

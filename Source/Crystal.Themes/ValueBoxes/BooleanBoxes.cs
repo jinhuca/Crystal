@@ -1,34 +1,33 @@
-﻿namespace Crystal.Themes.ValueBoxes
+﻿namespace Crystal.Themes.ValueBoxes;
+
+/// <summary>
+/// Helps boxing Boolean values.
+/// </summary>
+public static class BooleanBoxes
 {
   /// <summary>
-  /// Helps boxing Boolean values.
+  /// Gets a boxed representation for <see cref="bool"/> "true" value.
   /// </summary>
-  public static class BooleanBoxes
+  public static readonly object TrueBox = true;
+
+  /// <summary>
+  /// Gets a boxed representation for <see cref="bool"/> "false" value.
+  /// </summary>
+  public static readonly object FalseBox = false;
+
+  /// <summary>
+  /// Returns a boxed representation for the specified Boolean value.
+  /// </summary>
+  /// <param name="value">The value to box.</param>
+  /// <returns>A boxed <see cref="bool"/> value.</returns>
+  public static object Box(bool value) => value ? TrueBox : FalseBox;
+
+  /// <summary>
+  /// Returns a boxed value for the specified nullable <paramref name="value"/>.
+  /// </summary>
+  /// <returns>A boxed nullable <see cref="bool"/> value.</returns>
+  public static object? Box(bool? value)
   {
-    /// <summary>
-    /// Gets a boxed representation for <see cref="bool"/> "true" value.
-    /// </summary>
-    public static readonly object TrueBox = true;
-
-    /// <summary>
-    /// Gets a boxed representation for <see cref="bool"/> "false" value.
-    /// </summary>
-    public static readonly object FalseBox = false;
-
-    /// <summary>
-    /// Returns a boxed representation for the specified Boolean value.
-    /// </summary>
-    /// <param name="value">The value to box.</param>
-    /// <returns>A boxed <see cref="bool"/> value.</returns>
-    public static object Box(bool value) => value ? TrueBox : FalseBox;
-
-    /// <summary>
-    /// Returns a boxed value for the specified nullable <paramref name="value"/>.
-    /// </summary>
-    /// <returns>A boxed nullable <see cref="bool"/> value.</returns>
-    public static object? Box(bool? value)
-    {
-      return value.HasValue ? value.Value ? TrueBox : FalseBox : null;
-    }
+    return value.HasValue ? value.Value ? TrueBox : FalseBox : null;
   }
 }

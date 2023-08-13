@@ -1,56 +1,55 @@
-﻿namespace Crystal.Themes.Controls.Dialogs
+﻿namespace Crystal.Themes.Controls.Dialogs;
+
+public static class DialogParticipation
 {
-  public static class DialogParticipation
+  private static readonly IDictionary<object, DependencyObject> ContextRegistrationIndex = new Dictionary<object, DependencyObject>();
+
+  public static readonly DependencyProperty RegisterProperty
+    = DependencyProperty.RegisterAttached("Register",
+      typeof(object),
+      typeof(DialogParticipation),
+      new PropertyMetadata(null, RegisterPropertyChangedCallback));
+
+  private static void RegisterPropertyChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
   {
-    private static readonly IDictionary<object, DependencyObject> ContextRegistrationIndex = new Dictionary<object, DependencyObject>();
-
-    public static readonly DependencyProperty RegisterProperty
-        = DependencyProperty.RegisterAttached("Register",
-                                              typeof(object),
-                                              typeof(DialogParticipation),
-                                              new PropertyMetadata(null, RegisterPropertyChangedCallback));
-
-    private static void RegisterPropertyChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+    if (dependencyPropertyChangedEventArgs.OldValue != null)
     {
-      if (dependencyPropertyChangedEventArgs.OldValue != null)
-      {
-        ContextRegistrationIndex.Remove(dependencyPropertyChangedEventArgs.OldValue);
-      }
-
-      if (dependencyPropertyChangedEventArgs.NewValue != null)
-      {
-        ContextRegistrationIndex[dependencyPropertyChangedEventArgs.NewValue] = dependencyObject;
-      }
+      ContextRegistrationIndex.Remove(dependencyPropertyChangedEventArgs.OldValue);
     }
 
-    public static void SetRegister(DependencyObject element, object? context)
+    if (dependencyPropertyChangedEventArgs.NewValue != null)
     {
-      element.SetValue(RegisterProperty, context);
+      ContextRegistrationIndex[dependencyPropertyChangedEventArgs.NewValue] = dependencyObject;
+    }
+  }
+
+  public static void SetRegister(DependencyObject element, object? context)
+  {
+    element.SetValue(RegisterProperty, context);
+  }
+
+  public static object? GetRegister(DependencyObject element)
+  {
+    return element.GetValue(RegisterProperty);
+  }
+
+  internal static bool IsRegistered(object context)
+  {
+    if (context is null)
+    {
+      throw new ArgumentNullException(nameof(context));
     }
 
-    public static object? GetRegister(DependencyObject element)
+    return ContextRegistrationIndex.ContainsKey(context);
+  }
+
+  internal static DependencyObject GetAssociation(object context)
+  {
+    if (context is null)
     {
-      return element.GetValue(RegisterProperty);
+      throw new ArgumentNullException(nameof(context));
     }
 
-    internal static bool IsRegistered(object context)
-    {
-      if (context is null)
-      {
-        throw new ArgumentNullException(nameof(context));
-      }
-
-      return ContextRegistrationIndex.ContainsKey(context);
-    }
-
-    internal static DependencyObject GetAssociation(object context)
-    {
-      if (context is null)
-      {
-        throw new ArgumentNullException(nameof(context));
-      }
-
-      return ContextRegistrationIndex[context];
-    }
+    return ContextRegistrationIndex[context];
   }
 }

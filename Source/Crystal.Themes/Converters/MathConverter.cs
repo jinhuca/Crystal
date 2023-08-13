@@ -1,214 +1,213 @@
 ﻿using System.Globalization;
 
-namespace Crystal.Themes.Converters
+namespace Crystal.Themes.Converters;
+
+/// <summary>
+/// The math operations which can be used at the <see cref="MathConverter"/>
+/// </summary>
+public enum MathOperation
 {
-  /// <summary>
-  /// The math operations which can be used at the <see cref="MathConverter"/>
-  /// </summary>
-  public enum MathOperation
+  Add,
+  Subtract,
+  Multiply,
+  Divide
+}
+
+/// <summary>
+/// MathConverter provides a value converter which can be used for math operations.
+/// It can be used for normal binding or multi binding as well.
+/// If it is used for normal binding the given parameter will be used as operands with the selected operation.
+/// If it is used for multi binding then the first and second binding will be used as operands with the selected operation.
+/// This class cannot be inherited.
+/// </summary>
+[ValueConversion(typeof(object), typeof(object))]
+public sealed class MathConverter : IValueConverter, IMultiValueConverter
+{
+  public MathOperation Operation { get; set; }
+
+  public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
   {
-    Add,
-    Subtract,
-    Multiply,
-    Divide
+    return DoConvert(value, parameter, Operation);
   }
 
-  /// <summary>
-  /// MathConverter provides a value converter which can be used for math operations.
-  /// It can be used for normal binding or multi binding as well.
-  /// If it is used for normal binding the given parameter will be used as operands with the selected operation.
-  /// If it is used for multi binding then the first and second binding will be used as operands with the selected operation.
-  /// This class cannot be inherited.
-  /// </summary>
-  [ValueConversion(typeof(object), typeof(object))]
-  public sealed class MathConverter : IValueConverter, IMultiValueConverter
+  public object? Convert(object[]? values, Type targetType, object? parameter, CultureInfo culture)
   {
-    public MathOperation Operation { get; set; }
+    return values is null
+      ? Binding.DoNothing
+      : DoConvert(values.ElementAtOrDefault(0), values.ElementAtOrDefault(1), Operation);
+  }
 
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+  public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+  {
+    return DependencyProperty.UnsetValue;
+  }
+
+  public object[]? ConvertBack(object? value, Type[] targetTypes, object? parameter, CultureInfo culture)
+  {
+    return targetTypes.Select(t => DependencyProperty.UnsetValue).ToArray();
+  }
+
+  private static object? DoConvert(object? firstValue, object? secondValue, MathOperation operation)
+  {
+    if (firstValue is null
+        || secondValue is null
+        || firstValue == DependencyProperty.UnsetValue
+        || secondValue == DependencyProperty.UnsetValue
+        || firstValue == DBNull.Value
+        || secondValue == DBNull.Value)
     {
-      return DoConvert(value, parameter, Operation);
+      return Binding.DoNothing;
     }
 
-    public object? Convert(object[]? values, Type targetType, object? parameter, CultureInfo culture)
+    try
     {
-      return values is null
-          ? Binding.DoNothing
-          : DoConvert(values.ElementAtOrDefault(0), values.ElementAtOrDefault(1), Operation);
-    }
+      var value1 = (firstValue as double?).GetValueOrDefault(System.Convert.ToDouble(firstValue, CultureInfo.InvariantCulture));
+      var value2 = (secondValue as double?).GetValueOrDefault(System.Convert.ToDouble(secondValue, CultureInfo.InvariantCulture));
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-      return DependencyProperty.UnsetValue;
-    }
-
-    public object[]? ConvertBack(object? value, Type[] targetTypes, object? parameter, CultureInfo culture)
-    {
-      return targetTypes.Select(t => DependencyProperty.UnsetValue).ToArray();
-    }
-
-    private static object? DoConvert(object? firstValue, object? secondValue, MathOperation operation)
-    {
-      if (firstValue is null
-          || secondValue is null
-          || firstValue == DependencyProperty.UnsetValue
-          || secondValue == DependencyProperty.UnsetValue
-          || firstValue == DBNull.Value
-          || secondValue == DBNull.Value)
+      switch (operation)
       {
-        return Binding.DoNothing;
-      }
-
-      try
-      {
-        var value1 = (firstValue as double?).GetValueOrDefault(System.Convert.ToDouble(firstValue, CultureInfo.InvariantCulture));
-        var value2 = (secondValue as double?).GetValueOrDefault(System.Convert.ToDouble(secondValue, CultureInfo.InvariantCulture));
-
-        switch (operation)
+        case MathOperation.Add: return value1 + value2;
+        case MathOperation.Divide:
         {
-          case MathOperation.Add: return value1 + value2;
-          case MathOperation.Divide:
-            {
-              if (value2 > 0)
-              {
-                return value1 / value2;
-              }
-              else
-              {
-                Trace.TraceWarning($"Second value can not be used by division, because it's '0' (value1={value1}, value2={value2})");
-                return Binding.DoNothing;
-              }
-            }
-          case MathOperation.Multiply: return value1 * value2;
-          case MathOperation.Subtract: return value1 - value2;
-          default: return Binding.DoNothing;
+          if (value2 > 0)
+          {
+            return value1 / value2;
+          }
+          else
+          {
+            Trace.TraceWarning($"Second value can not be used by division, because it's '0' (value1={value1}, value2={value2})");
+            return Binding.DoNothing;
+          }
         }
-      }
-      catch (Exception e)
-      {
-        Trace.TraceError($"Error while math operation: operation={operation}, value1={firstValue}, value2={secondValue} => exception: {e}");
-        return Binding.DoNothing;
+        case MathOperation.Multiply: return value1 * value2;
+        case MathOperation.Subtract: return value1 - value2;
+        default: return Binding.DoNothing;
       }
     }
-  }
-
-  /// <summary>
-  /// MathAddConverter provides a multi value converter as a MarkupExtension which can be used for math operations.
-  /// This class cannot be inherited.
-  /// </summary>
-  [MarkupExtensionReturnType(typeof(MathAddConverter))]
-  public sealed class MathAddConverter : MarkupMultiConverter
-  {
-    private static readonly MathConverter MathConverter = new MathConverter { Operation = MathOperation.Add };
-
-    public override object? Convert(object[]? values, Type targetType, object? parameter, CultureInfo culture)
+    catch (Exception e)
     {
-      return MathConverter.Convert(values, targetType, parameter, culture);
-    }
-
-    public override object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-      return MathConverter.Convert(value, targetType, parameter, culture);
-    }
-
-    public override object[]? ConvertBack(object? value, Type[] targetTypes, object? parameter, CultureInfo culture)
-    {
-      return MathConverter.ConvertBack(value, targetTypes, parameter, culture);
-    }
-
-    public override object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-      return MathConverter.ConvertBack(value, targetType, parameter, culture);
+      Trace.TraceError($"Error while math operation: operation={operation}, value1={firstValue}, value2={secondValue} => exception: {e}");
+      return Binding.DoNothing;
     }
   }
+}
 
-  /// <summary>
-  /// MathSubtractConverter provides a multi value converter as a MarkupExtension which can be used for math operations.
-  /// This class cannot be inherited.
-  /// </summary>
-  [MarkupExtensionReturnType(typeof(MathSubtractConverter))]
-  public sealed class MathSubtractConverter : MarkupMultiConverter
+/// <summary>
+/// MathAddConverter provides a multi value converter as a MarkupExtension which can be used for math operations.
+/// This class cannot be inherited.
+/// </summary>
+[MarkupExtensionReturnType(typeof(MathAddConverter))]
+public sealed class MathAddConverter : MarkupMultiConverter
+{
+  private static readonly MathConverter MathConverter = new MathConverter { Operation = MathOperation.Add };
+
+  public override object? Convert(object[]? values, Type targetType, object? parameter, CultureInfo culture)
   {
-    private static readonly MathConverter MathConverter = new MathConverter { Operation = MathOperation.Subtract };
-
-    public override object? Convert(object[]? values, Type targetType, object? parameter, CultureInfo culture)
-    {
-      return MathConverter.Convert(values, targetType, parameter, culture);
-    }
-
-    public override object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-      return MathConverter.Convert(value, targetType, parameter, culture);
-    }
-
-    public override object[]? ConvertBack(object? value, Type[] targetTypes, object? parameter, CultureInfo culture)
-    {
-      return MathConverter.ConvertBack(value, targetTypes, parameter, culture);
-    }
-
-    public override object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-      return MathConverter.ConvertBack(value, targetType, parameter, culture);
-    }
+    return MathConverter.Convert(values, targetType, parameter, culture);
   }
 
-  /// <summary>
-  /// MathMultiplyConverter provides a multi value converter as a MarkupExtension which can be used for math operations.
-  /// This class cannot be inherited.
-  /// </summary>
-  [MarkupExtensionReturnType(typeof(MathMultiplyConverter))]
-  public sealed class MathMultiplyConverter : MarkupMultiConverter
+  public override object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
   {
-    private static readonly MathConverter MathConverter = new MathConverter { Operation = MathOperation.Multiply };
-
-    public override object? Convert(object[]? values, Type targetType, object? parameter, CultureInfo culture)
-    {
-      return MathConverter.Convert(values, targetType, parameter, culture);
-    }
-
-    public override object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-      return MathConverter.Convert(value, targetType, parameter, culture);
-    }
-
-    public override object[]? ConvertBack(object? value, Type[] targetTypes, object? parameter, CultureInfo culture)
-    {
-      return MathConverter.ConvertBack(value, targetTypes, parameter, culture);
-    }
-
-    public override object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-      return MathConverter.ConvertBack(value, targetType, parameter, culture);
-    }
+    return MathConverter.Convert(value, targetType, parameter, culture);
   }
 
-  /// <summary>
-  /// MathDivideConverter provides a multi value converter as a MarkupExtension which can be used for math operations.
-  /// This class cannot be inherited.
-  /// </summary>
-  [MarkupExtensionReturnType(typeof(MathDivideConverter))]
-  public sealed class MathDivideConverter : MarkupMultiConverter
+  public override object[]? ConvertBack(object? value, Type[] targetTypes, object? parameter, CultureInfo culture)
   {
-    private static readonly MathConverter MathConverter = new MathConverter { Operation = MathOperation.Divide };
+    return MathConverter.ConvertBack(value, targetTypes, parameter, culture);
+  }
 
-    public override object? Convert(object[]? values, Type targetType, object? parameter, CultureInfo culture)
-    {
-      return MathConverter.Convert(values, targetType, parameter, culture);
-    }
+  public override object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+  {
+    return MathConverter.ConvertBack(value, targetType, parameter, culture);
+  }
+}
 
-    public override object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-      return MathConverter.Convert(value, targetType, parameter, culture);
-    }
+/// <summary>
+/// MathSubtractConverter provides a multi value converter as a MarkupExtension which can be used for math operations.
+/// This class cannot be inherited.
+/// </summary>
+[MarkupExtensionReturnType(typeof(MathSubtractConverter))]
+public sealed class MathSubtractConverter : MarkupMultiConverter
+{
+  private static readonly MathConverter MathConverter = new MathConverter { Operation = MathOperation.Subtract };
 
-    public override object[]? ConvertBack(object? value, Type[] targetTypes, object? parameter, CultureInfo culture)
-    {
-      return MathConverter.ConvertBack(value, targetTypes, parameter, culture);
-    }
+  public override object? Convert(object[]? values, Type targetType, object? parameter, CultureInfo culture)
+  {
+    return MathConverter.Convert(values, targetType, parameter, culture);
+  }
 
-    public override object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-      return MathConverter.ConvertBack(value, targetType, parameter, culture);
-    }
+  public override object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+  {
+    return MathConverter.Convert(value, targetType, parameter, culture);
+  }
+
+  public override object[]? ConvertBack(object? value, Type[] targetTypes, object? parameter, CultureInfo culture)
+  {
+    return MathConverter.ConvertBack(value, targetTypes, parameter, culture);
+  }
+
+  public override object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+  {
+    return MathConverter.ConvertBack(value, targetType, parameter, culture);
+  }
+}
+
+/// <summary>
+/// MathMultiplyConverter provides a multi value converter as a MarkupExtension which can be used for math operations.
+/// This class cannot be inherited.
+/// </summary>
+[MarkupExtensionReturnType(typeof(MathMultiplyConverter))]
+public sealed class MathMultiplyConverter : MarkupMultiConverter
+{
+  private static readonly MathConverter MathConverter = new MathConverter { Operation = MathOperation.Multiply };
+
+  public override object? Convert(object[]? values, Type targetType, object? parameter, CultureInfo culture)
+  {
+    return MathConverter.Convert(values, targetType, parameter, culture);
+  }
+
+  public override object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+  {
+    return MathConverter.Convert(value, targetType, parameter, culture);
+  }
+
+  public override object[]? ConvertBack(object? value, Type[] targetTypes, object? parameter, CultureInfo culture)
+  {
+    return MathConverter.ConvertBack(value, targetTypes, parameter, culture);
+  }
+
+  public override object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+  {
+    return MathConverter.ConvertBack(value, targetType, parameter, culture);
+  }
+}
+
+/// <summary>
+/// MathDivideConverter provides a multi value converter as a MarkupExtension which can be used for math operations.
+/// This class cannot be inherited.
+/// </summary>
+[MarkupExtensionReturnType(typeof(MathDivideConverter))]
+public sealed class MathDivideConverter : MarkupMultiConverter
+{
+  private static readonly MathConverter MathConverter = new MathConverter { Operation = MathOperation.Divide };
+
+  public override object? Convert(object[]? values, Type targetType, object? parameter, CultureInfo culture)
+  {
+    return MathConverter.Convert(values, targetType, parameter, culture);
+  }
+
+  public override object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+  {
+    return MathConverter.Convert(value, targetType, parameter, culture);
+  }
+
+  public override object[]? ConvertBack(object? value, Type[] targetTypes, object? parameter, CultureInfo culture)
+  {
+    return MathConverter.ConvertBack(value, targetTypes, parameter, culture);
+  }
+
+  public override object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+  {
+    return MathConverter.ConvertBack(value, targetType, parameter, culture);
   }
 }

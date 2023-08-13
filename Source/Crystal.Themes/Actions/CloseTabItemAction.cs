@@ -1,6 +1,4 @@
-﻿using Crystal.Themes.Controls;
-
-namespace Crystal.Themes.Actions
+﻿namespace Crystal.Themes.Actions
 {
   public class CloseTabItemAction : CommandTriggerAction
   {
@@ -41,36 +39,36 @@ namespace Crystal.Themes.Actions
       else
       {
         var closeAction =
-            new Action(
-                () =>
-                    {
-                              // TODO Raise a closing event to cancel this action
+          new Action(
+            () =>
+            {
+              // TODO Raise a closing event to cancel this action
 
-                              if (tabControl.ItemsSource is null)
-                      {
-                                // if the list is hard-coded (i.e. has no ItemsSource)
-                                // then we remove the item from the collection
-                                tabItem.ClearStyle();
-                        tabControl.Items.Remove(tabItem);
-                      }
-                      else
-                      {
-                                // if ItemsSource is something we cannot work with, bail out
-                                var collection = tabControl.ItemsSource as IList;
-                        if (collection is null)
-                        {
-                          return;
-                        }
+              if (tabControl.ItemsSource is null)
+              {
+                // if the list is hard-coded (i.e. has no ItemsSource)
+                // then we remove the item from the collection
+                tabItem.ClearStyle();
+                tabControl.Items.Remove(tabItem);
+              }
+              else
+              {
+                // if ItemsSource is something we cannot work with, bail out
+                var collection = tabControl.ItemsSource as IList;
+                if (collection is null)
+                {
+                  return;
+                }
 
-                                // find the item and kill it (I mean, remove it)
-                                var item2Remove = collection.OfType<object>().FirstOrDefault(item => tabItem == item || tabItem.DataContext == item);
-                        if (item2Remove != null)
-                        {
-                          tabItem.ClearStyle();
-                          collection.Remove(item2Remove);
-                        }
-                      }
-                    });
+                // find the item and kill it (I mean, remove it)
+                var item2Remove = collection.OfType<object>().FirstOrDefault(item => tabItem == item || tabItem.DataContext == item);
+                if (item2Remove != null)
+                {
+                  tabItem.ClearStyle();
+                  collection.Remove(item2Remove);
+                }
+              }
+            });
         this.BeginInvoke(closeAction);
       }
     }

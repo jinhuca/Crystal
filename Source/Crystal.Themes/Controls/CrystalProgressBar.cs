@@ -1,286 +1,285 @@
-﻿namespace Crystal.Themes.Controls
+﻿namespace Crystal.Themes.Controls;
+
+/// <summary>
+/// A styled ProgressBar.
+/// <see cref="ProgressBar"/>
+/// </summary>
+public class CrystalProgressBar : ProgressBar
 {
+  public static readonly DependencyProperty EllipseDiameterProperty = DependencyProperty.Register(
+    nameof(EllipseDiameter),
+    typeof(double),
+    typeof(CrystalProgressBar),
+    new PropertyMetadata(default(double)));
+
   /// <summary>
-  /// A styled ProgressBar.
-  /// <see cref="ProgressBar"/>
+  /// Gets or sets the diameter of the ellipses used in the indeterminate animation.
   /// </summary>
-  public class CrystalProgressBar : ProgressBar
+  public double EllipseDiameter
   {
-    public static readonly DependencyProperty EllipseDiameterProperty = DependencyProperty.Register(
-      nameof(EllipseDiameter),
-      typeof(double),
-      typeof(CrystalProgressBar),
-      new PropertyMetadata(default(double)));
+    get => (double)GetValue(EllipseDiameterProperty);
+    set => SetValue(EllipseDiameterProperty, value);
+  }
 
-    /// <summary>
-    /// Gets or sets the diameter of the ellipses used in the indeterminate animation.
-    /// </summary>
-    public double EllipseDiameter
+  public static readonly DependencyProperty EllipseOffsetProperty = DependencyProperty.Register(
+    nameof(EllipseOffset),
+    typeof(double),
+    typeof(CrystalProgressBar),
+    new PropertyMetadata(default(double)));
+
+  public double EllipseOffset
+  {
+    get => (double)GetValue(EllipseOffsetProperty);
+    set => SetValue(EllipseOffsetProperty, value);
+  }
+
+  private readonly object lockme = new object();
+  private Storyboard? indeterminateStoryboard;
+
+  static CrystalProgressBar()
+  {
+    DefaultStyleKeyProperty.OverrideMetadata(typeof(CrystalProgressBar), new FrameworkPropertyMetadata(typeof(CrystalProgressBar)));
+    IsIndeterminateProperty.OverrideMetadata(typeof(CrystalProgressBar), new FrameworkPropertyMetadata(OnIsIndeterminateChanged));
+  }
+
+  public CrystalProgressBar()
+  {
+    IsVisibleChanged += VisibleChangedHandler;
+  }
+
+  private void VisibleChangedHandler(object sender, DependencyPropertyChangedEventArgs e)
+  {
+    // reset Storyboard if Visibility is set to Visible #1300
+    if (IsIndeterminate)
     {
-      get => (double)GetValue(EllipseDiameterProperty);
-      set => SetValue(EllipseDiameterProperty, value);
+      ToggleIndeterminate(this, (bool)e.OldValue, (bool)e.NewValue);
+    }
+  }
+
+  private static void OnIsIndeterminateChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+  {
+    var bar = (CrystalProgressBar)dependencyObject;
+    if (bar.IsLoaded && bar.IsVisible)
+    {
+      ToggleIndeterminate(bar, (bool)e.OldValue, (bool)e.NewValue);
+    }
+  }
+
+  private static void ToggleIndeterminate(CrystalProgressBar bar, bool oldValue, bool newValue)
+  {
+    if (newValue == oldValue)
+    {
+      return;
     }
 
-    public static readonly DependencyProperty EllipseOffsetProperty = DependencyProperty.Register(
-      nameof(EllipseOffset),
-      typeof(double),
-      typeof(CrystalProgressBar),
-      new PropertyMetadata(default(double)));
-
-    public double EllipseOffset
+    var indeterminateState = bar.GetIndeterminate();
+    var containingObject = bar.GetTemplateChild("ContainingGrid") as FrameworkElement;
+    if (indeterminateState != null && containingObject != null)
     {
-      get => (double)GetValue(EllipseOffsetProperty);
-      set => SetValue(EllipseOffsetProperty, value);
-    }
-
-    private readonly object lockme = new object();
-    private Storyboard? indeterminateStoryboard;
-
-    static CrystalProgressBar()
-    {
-      DefaultStyleKeyProperty.OverrideMetadata(typeof(CrystalProgressBar), new FrameworkPropertyMetadata(typeof(CrystalProgressBar)));
-      IsIndeterminateProperty.OverrideMetadata(typeof(CrystalProgressBar), new FrameworkPropertyMetadata(OnIsIndeterminateChanged));
-    }
-
-    public CrystalProgressBar()
-    {
-      IsVisibleChanged += VisibleChangedHandler;
-    }
-
-    private void VisibleChangedHandler(object sender, DependencyPropertyChangedEventArgs e)
-    {
-      // reset Storyboard if Visibility is set to Visible #1300
-      if (IsIndeterminate)
+      var resetAction = new Action(() =>
       {
-        ToggleIndeterminate(this, (bool)e.OldValue, (bool)e.NewValue);
-      }
-    }
-
-    private static void OnIsIndeterminateChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
-    {
-      var bar = (CrystalProgressBar)dependencyObject;
-      if (bar.IsLoaded && bar.IsVisible)
-      {
-        ToggleIndeterminate(bar, (bool)e.OldValue, (bool)e.NewValue);
-      }
-    }
-
-    private static void ToggleIndeterminate(CrystalProgressBar bar, bool oldValue, bool newValue)
-    {
-      if (newValue == oldValue)
-      {
-        return;
-      }
-
-      var indeterminateState = bar.GetIndeterminate();
-      var containingObject = bar.GetTemplateChild("ContainingGrid") as FrameworkElement;
-      if (indeterminateState != null && containingObject != null)
-      {
-        var resetAction = new Action(() =>
-            {
-              if (oldValue && indeterminateState.Storyboard != null)
-              {
-                // remove the previous storyboard from the Grid #1855
-                indeterminateState.Storyboard.Stop(containingObject);
-                indeterminateState.Storyboard.Remove(containingObject);
-              }
-
-              if (newValue)
-              {
-                bar.ResetStoryboard(bar.ActualSize(true), false);
-              }
-            });
-        bar.Invoke(resetAction);
-      }
-    }
-
-    private void SizeChangedHandler(object? sender, SizeChangedEventArgs? e)
-    {
-      var size = ActualSize(false);
-      var bar = this;
-      if (Visibility == Visibility.Visible && IsIndeterminate)
-      {
-        bar.ResetStoryboard(size, true);
-      }
-    }
-
-    private double ActualSize(bool invalidateMeasureArrange)
-    {
-      if (invalidateMeasureArrange)
-      {
-        UpdateLayout();
-        Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-        InvalidateArrange();
-      }
-
-      return Orientation == Orientation.Horizontal ? ActualWidth : ActualHeight;
-    }
-
-    private void ResetStoryboard(double width, bool removeOldStoryboard)
-    {
-      if (!IsIndeterminate)
-      {
-        return;
-      }
-
-      lock (lockme)
-      {
-        //perform calculations
-        var containerAnimStart = CalcContainerAnimStart(width);
-        var containerAnimEnd = CalcContainerAnimEnd(width);
-        var ellipseAnimWell = CalcEllipseAnimWell(width);
-        var ellipseAnimEnd = CalcEllipseAnimEnd(width);
-        //reset the main double animation
-        try
+        if (oldValue && indeterminateState.Storyboard != null)
         {
-          var indeterminate = GetIndeterminate();
+          // remove the previous storyboard from the Grid #1855
+          indeterminateState.Storyboard.Stop(containingObject);
+          indeterminateState.Storyboard.Remove(containingObject);
+        }
 
-          if (indeterminate != null && indeterminateStoryboard != null)
+        if (newValue)
+        {
+          bar.ResetStoryboard(bar.ActualSize(true), false);
+        }
+      });
+      bar.Invoke(resetAction);
+    }
+  }
+
+  private void SizeChangedHandler(object? sender, SizeChangedEventArgs? e)
+  {
+    var size = ActualSize(false);
+    var bar = this;
+    if (Visibility == Visibility.Visible && IsIndeterminate)
+    {
+      bar.ResetStoryboard(size, true);
+    }
+  }
+
+  private double ActualSize(bool invalidateMeasureArrange)
+  {
+    if (invalidateMeasureArrange)
+    {
+      UpdateLayout();
+      Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+      InvalidateArrange();
+    }
+
+    return Orientation == Orientation.Horizontal ? ActualWidth : ActualHeight;
+  }
+
+  private void ResetStoryboard(double width, bool removeOldStoryboard)
+  {
+    if (!IsIndeterminate)
+    {
+      return;
+    }
+
+    lock (lockme)
+    {
+      //perform calculations
+      var containerAnimStart = CalcContainerAnimStart(width);
+      var containerAnimEnd = CalcContainerAnimEnd(width);
+      var ellipseAnimWell = CalcEllipseAnimWell(width);
+      var ellipseAnimEnd = CalcEllipseAnimEnd(width);
+      //reset the main double animation
+      try
+      {
+        var indeterminate = GetIndeterminate();
+
+        if (indeterminate != null && indeterminateStoryboard != null)
+        {
+          var newStoryboard = indeterminateStoryboard.Clone();
+          var doubleAnim = newStoryboard.Children.First(t => t.Name == "MainDoubleAnim");
+          doubleAnim.SetValue(DoubleAnimation.FromProperty, containerAnimStart);
+          doubleAnim.SetValue(DoubleAnimation.ToProperty, containerAnimEnd);
+
+          var namesOfElements = new[] { "E1", "E2", "E3", "E4", "E5" };
+          foreach (var elemName in namesOfElements)
           {
-            var newStoryboard = indeterminateStoryboard.Clone();
-            var doubleAnim = newStoryboard.Children.First(t => t.Name == "MainDoubleAnim");
-            doubleAnim.SetValue(DoubleAnimation.FromProperty, containerAnimStart);
-            doubleAnim.SetValue(DoubleAnimation.ToProperty, containerAnimEnd);
-
-            var namesOfElements = new[] { "E1", "E2", "E3", "E4", "E5" };
-            foreach (var elemName in namesOfElements)
+            var doubleAnimParent = (DoubleAnimationUsingKeyFrames)newStoryboard.Children.First(t => t.Name == elemName + "Anim");
+            DoubleKeyFrame first, second, third;
+            if (elemName == "E1")
             {
-              var doubleAnimParent = (DoubleAnimationUsingKeyFrames)newStoryboard.Children.First(t => t.Name == elemName + "Anim");
-              DoubleKeyFrame first, second, third;
-              if (elemName == "E1")
-              {
-                first = doubleAnimParent.KeyFrames[1];
-                second = doubleAnimParent.KeyFrames[2];
-                third = doubleAnimParent.KeyFrames[3];
-              }
-              else
-              {
-                first = doubleAnimParent.KeyFrames[2];
-                second = doubleAnimParent.KeyFrames[3];
-                third = doubleAnimParent.KeyFrames[4];
-              }
-
-              first.Value = ellipseAnimWell;
-              second.Value = ellipseAnimWell;
-              third.Value = ellipseAnimEnd;
-              first.InvalidateProperty(DoubleKeyFrame.ValueProperty);
-              second.InvalidateProperty(DoubleKeyFrame.ValueProperty);
-              third.InvalidateProperty(DoubleKeyFrame.ValueProperty);
-
-              doubleAnimParent.InvalidateProperty(Storyboard.TargetPropertyProperty);
-              doubleAnimParent.InvalidateProperty(Storyboard.TargetNameProperty);
+              first = doubleAnimParent.KeyFrames[1];
+              second = doubleAnimParent.KeyFrames[2];
+              third = doubleAnimParent.KeyFrames[3];
+            }
+            else
+            {
+              first = doubleAnimParent.KeyFrames[2];
+              second = doubleAnimParent.KeyFrames[3];
+              third = doubleAnimParent.KeyFrames[4];
             }
 
-            var containingGrid = (FrameworkElement)GetTemplateChild("ContainingGrid");
+            first.Value = ellipseAnimWell;
+            second.Value = ellipseAnimWell;
+            third.Value = ellipseAnimEnd;
+            first.InvalidateProperty(DoubleKeyFrame.ValueProperty);
+            second.InvalidateProperty(DoubleKeyFrame.ValueProperty);
+            third.InvalidateProperty(DoubleKeyFrame.ValueProperty);
 
-            if (removeOldStoryboard && indeterminate.Storyboard != null)
-            {
-              // remove the previous storyboard from the Grid #1855
-              indeterminate.Storyboard.Stop(containingGrid);
-              indeterminate.Storyboard.Remove(containingGrid);
-            }
-
-            indeterminate.Storyboard = newStoryboard;
-
-            indeterminate.Storyboard?.Begin(containingGrid, true);
+            doubleAnimParent.InvalidateProperty(Storyboard.TargetPropertyProperty);
+            doubleAnimParent.InvalidateProperty(Storyboard.TargetNameProperty);
           }
-        }
-        catch (Exception)
-        {
-          //we just ignore 
+
+          var containingGrid = (FrameworkElement)GetTemplateChild("ContainingGrid");
+
+          if (removeOldStoryboard && indeterminate.Storyboard != null)
+          {
+            // remove the previous storyboard from the Grid #1855
+            indeterminate.Storyboard.Stop(containingGrid);
+            indeterminate.Storyboard.Remove(containingGrid);
+          }
+
+          indeterminate.Storyboard = newStoryboard;
+
+          indeterminate.Storyboard?.Begin(containingGrid, true);
         }
       }
+      catch (Exception)
+      {
+        //we just ignore 
+      }
     }
+  }
 
-    private VisualState? GetIndeterminate()
+  private VisualState? GetIndeterminate()
+  {
+    var templateGrid = GetTemplateChild("ContainingGrid") as FrameworkElement;
+    if (templateGrid is null)
     {
-      var templateGrid = GetTemplateChild("ContainingGrid") as FrameworkElement;
+      ApplyTemplate();
+      templateGrid = GetTemplateChild("ContainingGrid") as FrameworkElement;
       if (templateGrid is null)
       {
-        ApplyTemplate();
-        templateGrid = GetTemplateChild("ContainingGrid") as FrameworkElement;
-        if (templateGrid is null)
-        {
-          return null;
-        }
+        return null;
+      }
+    }
+
+    var groups = VisualStateManager.GetVisualStateGroups(templateGrid);
+    return groups?.OfType<VisualStateGroup>().SelectMany(group => group.States.OfType<VisualState>()).FirstOrDefault(state => state.Name == "Indeterminate");
+  }
+
+  private void SetEllipseDiameter(double width)
+  {
+    SetCurrentValue(EllipseDiameterProperty, width <= 180 ? 4d : (width <= 280 ? 5d : 6d));
+  }
+
+  private void SetEllipseOffset(double width)
+  {
+    SetCurrentValue(EllipseOffsetProperty, width <= 180 ? 4d : (width <= 280 ? 7d : 9d));
+  }
+
+  private double CalcContainerAnimStart(double width)
+  {
+    return width <= 180 ? -34 : (width <= 280 ? -50.5 : -63);
+  }
+
+  private double CalcContainerAnimEnd(double width)
+  {
+    var firstPart = 0.4352 * width;
+    return width <= 180 ? firstPart - 25.731 : (width <= 280 ? firstPart + 27.84 : firstPart + 58.862);
+  }
+
+  private double CalcEllipseAnimWell(double width)
+  {
+    return width * 1.0 / 3.0;
+  }
+
+  private double CalcEllipseAnimEnd(double width)
+  {
+    return width * 2.0 / 3.0;
+  }
+
+  public override void OnApplyTemplate()
+  {
+    base.OnApplyTemplate();
+
+    lock (lockme)
+    {
+      indeterminateStoryboard = TryFindResource("IndeterminateStoryboard") as Storyboard;
+    }
+
+    Loaded -= LoadedHandler;
+    Loaded += LoadedHandler;
+  }
+
+  private void LoadedHandler(object sender, RoutedEventArgs routedEventArgs)
+  {
+    Loaded -= LoadedHandler;
+    SizeChangedHandler(null, null);
+    SizeChanged += SizeChangedHandler;
+  }
+
+  protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
+  {
+    base.OnRenderSizeChanged(sizeInfo);
+    UpdateEllipseProperties();
+  }
+
+  private void UpdateEllipseProperties()
+  {
+    // Update the Ellipse properties to their default values only if they haven't been user-set.
+    var actualSize = ActualSize(true);
+    if (actualSize > 0)
+    {
+      if (EllipseDiameter.Equals(0))
+      {
+        SetEllipseDiameter(actualSize);
       }
 
-      var groups = VisualStateManager.GetVisualStateGroups(templateGrid);
-      return groups?.OfType<VisualStateGroup>().SelectMany(group => group.States.OfType<VisualState>()).FirstOrDefault(state => state.Name == "Indeterminate");
-    }
-
-    private void SetEllipseDiameter(double width)
-    {
-      SetCurrentValue(EllipseDiameterProperty, width <= 180 ? 4d : (width <= 280 ? 5d : 6d));
-    }
-
-    private void SetEllipseOffset(double width)
-    {
-      SetCurrentValue(EllipseOffsetProperty, width <= 180 ? 4d : (width <= 280 ? 7d : 9d));
-    }
-
-    private double CalcContainerAnimStart(double width)
-    {
-      return width <= 180 ? -34 : (width <= 280 ? -50.5 : -63);
-    }
-
-    private double CalcContainerAnimEnd(double width)
-    {
-      var firstPart = 0.4352 * width;
-      return width <= 180 ? firstPart - 25.731 : (width <= 280 ? firstPart + 27.84 : firstPart + 58.862);
-    }
-
-    private double CalcEllipseAnimWell(double width)
-    {
-      return width * 1.0 / 3.0;
-    }
-
-    private double CalcEllipseAnimEnd(double width)
-    {
-      return width * 2.0 / 3.0;
-    }
-
-    public override void OnApplyTemplate()
-    {
-      base.OnApplyTemplate();
-
-      lock (lockme)
+      if (EllipseOffset.Equals(0))
       {
-        indeterminateStoryboard = TryFindResource("IndeterminateStoryboard") as Storyboard;
-      }
-
-      Loaded -= LoadedHandler;
-      Loaded += LoadedHandler;
-    }
-
-    private void LoadedHandler(object sender, RoutedEventArgs routedEventArgs)
-    {
-      Loaded -= LoadedHandler;
-      SizeChangedHandler(null, null);
-      SizeChanged += SizeChangedHandler;
-    }
-
-    protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
-    {
-      base.OnRenderSizeChanged(sizeInfo);
-      UpdateEllipseProperties();
-    }
-
-    private void UpdateEllipseProperties()
-    {
-      // Update the Ellipse properties to their default values only if they haven't been user-set.
-      var actualSize = ActualSize(true);
-      if (actualSize > 0)
-      {
-        if (EllipseDiameter.Equals(0))
-        {
-          SetEllipseDiameter(actualSize);
-        }
-
-        if (EllipseOffset.Equals(0))
-        {
-          SetEllipseOffset(actualSize);
-        }
+        SetEllipseOffset(actualSize);
       }
     }
   }

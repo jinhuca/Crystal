@@ -1,10 +1,9 @@
-﻿namespace Crystal.Themes.Controls
+﻿namespace Crystal.Themes.Controls;
+
+public enum GlowDirection
 {
-  public enum GlowDirection
-  {
-    Left,
-    Right,
-    Top,
-    Bottom,
-  }
+  Left,
+  Right,
+  Top,
+  Bottom,
 }

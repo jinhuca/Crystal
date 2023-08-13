@@ -1,188 +1,187 @@
 ﻿using Crystal.Themes.Converters;
 using System.Windows.Automation;
 
-namespace Crystal.Themes.Controls
+namespace Crystal.Themes.Controls;
+
+public class HamburgerMenuListBox : ListBox
 {
-  public class HamburgerMenuListBox : ListBox
+  private static readonly BooleanToVisibilityConverter BooleanToVisibilityConverter = new();
+
+  static HamburgerMenuListBox()
   {
-    private static readonly BooleanToVisibilityConverter BooleanToVisibilityConverter = new();
+    DefaultStyleKeyProperty.OverrideMetadata(typeof(HamburgerMenuListBox), new FrameworkPropertyMetadata(typeof(HamburgerMenuListBox)));
+  }
 
-    static HamburgerMenuListBox()
+  protected override void PrepareContainerForItemOverride(DependencyObject element, object item)
+  {
+    base.PrepareContainerForItemOverride(element, item);
+
+    if (element is ListBoxItem listBoxItem)
     {
-      DefaultStyleKeyProperty.OverrideMetadata(typeof(HamburgerMenuListBox), new FrameworkPropertyMetadata(typeof(HamburgerMenuListBox)));
-    }
-
-    protected override void PrepareContainerForItemOverride(DependencyObject element, object item)
-    {
-      base.PrepareContainerForItemOverride(element, item);
-
-      if (element is ListBoxItem listBoxItem)
+      if (item is IHamburgerMenuItemBase baseMenuItem)
       {
-        if (item is IHamburgerMenuItemBase baseMenuItem)
+        listBoxItem.SetBinding(VisibilityProperty, new Binding
         {
-          listBoxItem.SetBinding(VisibilityProperty, new Binding
-          {
-            Source = baseMenuItem,
-            Path = new PropertyPath(nameof(IHamburgerMenuItemBase.IsVisible)),
-            Converter = BooleanToVisibilityConverter,
-            FallbackValue = Visibility.Visible
-          });
-        }
+          Source = baseMenuItem,
+          Path = new PropertyPath(nameof(IHamburgerMenuItemBase.IsVisible)),
+          Converter = BooleanToVisibilityConverter,
+          FallbackValue = Visibility.Visible
+        });
+      }
 
-        if (item is IHamburgerMenuItem hamburgerMenuItem)
+      if (item is IHamburgerMenuItem hamburgerMenuItem)
+      {
+        listBoxItem.SetBinding(IsEnabledProperty, new Binding
         {
-          listBoxItem.SetBinding(IsEnabledProperty, new Binding
-          {
-            Source = hamburgerMenuItem,
-            Path = new PropertyPath(nameof(IHamburgerMenuItem.IsEnabled)),
-            FallbackValue = true
-          });
+          Source = hamburgerMenuItem,
+          Path = new PropertyPath(nameof(IHamburgerMenuItem.IsEnabled)),
+          FallbackValue = true
+        });
 
-          if (item is DependencyObject)
+        if (item is DependencyObject)
+        {
+          var helpTextPropertyMultiBinding = new MultiBinding
           {
-            var helpTextPropertyMultiBinding = new MultiBinding
-            {
-              Converter = HamburgerMenuItemAccessibleConverter.Default,
-              Mode = BindingMode.OneWay,
-              FallbackValue = string.Empty,
-              Bindings = {
-                new Binding {
-                  Source = hamburgerMenuItem,
-                  Path = new PropertyPath(nameof(IHamburgerMenuItem.ToolTip)),
-                  Mode = BindingMode.OneWay,
-                  FallbackValue = string.Empty
-                },
-                new Binding {
-                  Source = hamburgerMenuItem,
-                  Path = new PropertyPath(AutomationProperties.HelpTextProperty),
-                  Mode = BindingMode.OneWay,
-                  FallbackValue = string.Empty
-                }
-              }
-            };
-            listBoxItem.SetBinding(AutomationProperties.HelpTextProperty, helpTextPropertyMultiBinding);
-
-            listBoxItem.SetBinding(AutomationProperties.LabeledByProperty,
-              new Binding {
-                Source = hamburgerMenuItem,
-                Path = new PropertyPath(AutomationProperties.LabeledByProperty),
-                Mode = BindingMode.OneWay,
-                FallbackValue = null
-              });
-
-            var namePropertyMultiBinding = new MultiBinding
-            {
-              Converter = HamburgerMenuItemAccessibleConverter.Default,
-              Mode = BindingMode.OneWay,
-              FallbackValue = string.Empty,
-              Bindings = {
-                new Binding {
-                  Source = hamburgerMenuItem,
-                  Path = new PropertyPath(nameof(IHamburgerMenuItem.Label)),
-                  Mode = BindingMode.OneWay,
-                  FallbackValue = string.Empty
-                },
-                new Binding {
-                  Source = hamburgerMenuItem,
-                  Path = new PropertyPath(AutomationProperties.NameProperty),
-                  Mode = BindingMode.OneWay,
-                  FallbackValue = string.Empty
-                }
-              }
-            };
-            listBoxItem.SetBinding(AutomationProperties.NameProperty, namePropertyMultiBinding);
-          }
-          else
-          {
-            listBoxItem.SetBinding(AutomationProperties.HelpTextProperty,
+            Converter = HamburgerMenuItemAccessibleConverter.Default,
+            Mode = BindingMode.OneWay,
+            FallbackValue = string.Empty,
+            Bindings = {
               new Binding {
                 Source = hamburgerMenuItem,
                 Path = new PropertyPath(nameof(IHamburgerMenuItem.ToolTip)),
                 Mode = BindingMode.OneWay,
                 FallbackValue = string.Empty
-              });
+              },
+              new Binding {
+                Source = hamburgerMenuItem,
+                Path = new PropertyPath(AutomationProperties.HelpTextProperty),
+                Mode = BindingMode.OneWay,
+                FallbackValue = string.Empty
+              }
+            }
+          };
+          listBoxItem.SetBinding(AutomationProperties.HelpTextProperty, helpTextPropertyMultiBinding);
 
-            listBoxItem.SetBinding(AutomationProperties.NameProperty,
+          listBoxItem.SetBinding(AutomationProperties.LabeledByProperty,
+            new Binding {
+              Source = hamburgerMenuItem,
+              Path = new PropertyPath(AutomationProperties.LabeledByProperty),
+              Mode = BindingMode.OneWay,
+              FallbackValue = null
+            });
+
+          var namePropertyMultiBinding = new MultiBinding
+          {
+            Converter = HamburgerMenuItemAccessibleConverter.Default,
+            Mode = BindingMode.OneWay,
+            FallbackValue = string.Empty,
+            Bindings = {
               new Binding {
                 Source = hamburgerMenuItem,
                 Path = new PropertyPath(nameof(IHamburgerMenuItem.Label)),
                 Mode = BindingMode.OneWay,
                 FallbackValue = string.Empty
-              });
-          }
-        }
-
-        if (item is IHamburgerMenuHeaderItem hamburgerMenuHeaderItem)
-        {
-          if (item is DependencyObject)
-          {
-            listBoxItem.SetBinding(
-              AutomationProperties.HelpTextProperty,
+              },
               new Binding {
-                Source = hamburgerMenuHeaderItem,
-                Path = new PropertyPath(AutomationProperties.HelpTextProperty),
+                Source = hamburgerMenuItem,
+                Path = new PropertyPath(AutomationProperties.NameProperty),
                 Mode = BindingMode.OneWay,
                 FallbackValue = string.Empty
-              });
-
-            listBoxItem.SetBinding(
-              AutomationProperties.LabeledByProperty,
-              new Binding {
-                Source = hamburgerMenuHeaderItem,
-                Path = new PropertyPath(AutomationProperties.LabeledByProperty),
-                Mode = BindingMode.OneWay,
-                FallbackValue = null
-              });
-
-            var namePropertyMultiBinding = new MultiBinding
-            {
-              Converter = HamburgerMenuItemAccessibleConverter.Default,
-              Mode = BindingMode.OneWay,
-              FallbackValue = string.Empty,
-              Bindings = {
-                new Binding {
-                  Source = hamburgerMenuHeaderItem,
-                  Path = new PropertyPath(nameof(IHamburgerMenuHeaderItem.Label)),
-                  Mode = BindingMode.OneWay,
-                  FallbackValue = string.Empty
-                },
-                new Binding {
-                  Source = hamburgerMenuHeaderItem,
-                  Path = new PropertyPath(AutomationProperties.NameProperty),
-                  Mode = BindingMode.OneWay,
-                  FallbackValue = string.Empty
-                }
               }
-            };
-            listBoxItem.SetBinding(AutomationProperties.NameProperty, namePropertyMultiBinding);
-          }
-          else
+            }
+          };
+          listBoxItem.SetBinding(AutomationProperties.NameProperty, namePropertyMultiBinding);
+        }
+        else
+        {
+          listBoxItem.SetBinding(AutomationProperties.HelpTextProperty,
+            new Binding {
+              Source = hamburgerMenuItem,
+              Path = new PropertyPath(nameof(IHamburgerMenuItem.ToolTip)),
+              Mode = BindingMode.OneWay,
+              FallbackValue = string.Empty
+            });
+
+          listBoxItem.SetBinding(AutomationProperties.NameProperty,
+            new Binding {
+              Source = hamburgerMenuItem,
+              Path = new PropertyPath(nameof(IHamburgerMenuItem.Label)),
+              Mode = BindingMode.OneWay,
+              FallbackValue = string.Empty
+            });
+        }
+      }
+
+      if (item is IHamburgerMenuHeaderItem hamburgerMenuHeaderItem)
+      {
+        if (item is DependencyObject)
+        {
+          listBoxItem.SetBinding(
+            AutomationProperties.HelpTextProperty,
+            new Binding {
+              Source = hamburgerMenuHeaderItem,
+              Path = new PropertyPath(AutomationProperties.HelpTextProperty),
+              Mode = BindingMode.OneWay,
+              FallbackValue = string.Empty
+            });
+
+          listBoxItem.SetBinding(
+            AutomationProperties.LabeledByProperty,
+            new Binding {
+              Source = hamburgerMenuHeaderItem,
+              Path = new PropertyPath(AutomationProperties.LabeledByProperty),
+              Mode = BindingMode.OneWay,
+              FallbackValue = null
+            });
+
+          var namePropertyMultiBinding = new MultiBinding
           {
-            listBoxItem.SetBinding(
-              AutomationProperties.NameProperty,
+            Converter = HamburgerMenuItemAccessibleConverter.Default,
+            Mode = BindingMode.OneWay,
+            FallbackValue = string.Empty,
+            Bindings = {
               new Binding {
                 Source = hamburgerMenuHeaderItem,
                 Path = new PropertyPath(nameof(IHamburgerMenuHeaderItem.Label)),
                 Mode = BindingMode.OneWay,
                 FallbackValue = string.Empty
-              });
-          }
+              },
+              new Binding {
+                Source = hamburgerMenuHeaderItem,
+                Path = new PropertyPath(AutomationProperties.NameProperty),
+                Mode = BindingMode.OneWay,
+                FallbackValue = string.Empty
+              }
+            }
+          };
+          listBoxItem.SetBinding(AutomationProperties.NameProperty, namePropertyMultiBinding);
+        }
+        else
+        {
+          listBoxItem.SetBinding(
+            AutomationProperties.NameProperty,
+            new Binding {
+              Source = hamburgerMenuHeaderItem,
+              Path = new PropertyPath(nameof(IHamburgerMenuHeaderItem.Label)),
+              Mode = BindingMode.OneWay,
+              FallbackValue = string.Empty
+            });
         }
       }
     }
+  }
 
-    protected override void ClearContainerForItemOverride(DependencyObject element, object item)
+  protected override void ClearContainerForItemOverride(DependencyObject element, object item)
+  {
+    base.ClearContainerForItemOverride(element, item);
+
+    if (element is ListBoxItem listBoxItem)
     {
-      base.ClearContainerForItemOverride(element, item);
-
-      if (element is ListBoxItem listBoxItem)
-      {
-        BindingOperations.ClearBinding(listBoxItem, VisibilityProperty);
-        BindingOperations.ClearBinding(listBoxItem, IsEnabledProperty);
-        BindingOperations.ClearBinding(listBoxItem, AutomationProperties.HelpTextProperty);
-        BindingOperations.ClearBinding(listBoxItem, AutomationProperties.LabeledByProperty);
-        BindingOperations.ClearBinding(listBoxItem, AutomationProperties.NameProperty);
-      }
+      BindingOperations.ClearBinding(listBoxItem, VisibilityProperty);
+      BindingOperations.ClearBinding(listBoxItem, IsEnabledProperty);
+      BindingOperations.ClearBinding(listBoxItem, AutomationProperties.HelpTextProperty);
+      BindingOperations.ClearBinding(listBoxItem, AutomationProperties.LabeledByProperty);
+      BindingOperations.ClearBinding(listBoxItem, AutomationProperties.NameProperty);
     }
   }
 }

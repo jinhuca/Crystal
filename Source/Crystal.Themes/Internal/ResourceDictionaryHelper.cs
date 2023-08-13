@@ -1,46 +1,45 @@
 ﻿#nullable enable
-namespace Crystal.Themes.Internal
+namespace Crystal.Themes.Internal;
+
+public static class ResourceDictionaryHelper
 {
-  public static class ResourceDictionaryHelper
+  /// <summary>
+  /// Gets the value associated with <paramref name="key"/> directly from <paramref name="resourceDictionary"/>.
+  /// </summary>
+  public static object? GetValueFromKey(ResourceDictionary resourceDictionary, object key)
   {
-    /// <summary>
-    /// Gets the value associated with <paramref name="key"/> directly from <paramref name="resourceDictionary"/>.
-    /// </summary>
-    public static object? GetValueFromKey(ResourceDictionary resourceDictionary, object key)
+    foreach (var resourceKey in resourceDictionary.Keys)
     {
-      foreach (var resourceKey in resourceDictionary.Keys)
+      if (key.Equals(resourceKey))
       {
-        if (key.Equals(resourceKey))
+        try
         {
-          try
-          {
-            return resourceDictionary[resourceKey];
-          }
-          catch
-          {
-            // ignored
-            // if we get an exception here the resource dictionary is, most likely, malformed
-          }
+          return resourceDictionary[resourceKey];
+        }
+        catch
+        {
+          // ignored
+          // if we get an exception here the resource dictionary is, most likely, malformed
         }
       }
-
-      return null;
     }
 
-    /// <summary>
-    /// Checks if <paramref name="resourceDictionary"/> directly contains <paramref name="key"/>.
-    /// </summary>
-    public static bool ContainsKey(ResourceDictionary resourceDictionary, object key)
+    return null;
+  }
+
+  /// <summary>
+  /// Checks if <paramref name="resourceDictionary"/> directly contains <paramref name="key"/>.
+  /// </summary>
+  public static bool ContainsKey(ResourceDictionary resourceDictionary, object key)
+  {
+    foreach (var resourceKey in resourceDictionary.Keys)
     {
-      foreach (var resourceKey in resourceDictionary.Keys)
+      if (key.Equals(resourceKey))
       {
-        if (key.Equals(resourceKey))
-        {
-          return true;
-        }
+        return true;
       }
-
-      return false;
     }
+
+    return false;
   }
 }

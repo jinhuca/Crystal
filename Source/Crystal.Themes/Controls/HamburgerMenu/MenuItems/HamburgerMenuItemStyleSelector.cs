@@ -1,47 +1,46 @@
-﻿namespace Crystal.Themes.Controls
-{
-  public class HamburgerMenuItemStyleSelector : StyleSelector
-  {
-    /// <summary>
-    /// Gets or sets a value indicating whether which item container style will be used for the HamburgerMenuItem.
-    /// </summary>
-    public bool IsItemOptions { get; set; }
+﻿namespace Crystal.Themes.Controls;
 
-    /// <inheritdoc/>
-    public override Style SelectStyle(object? item, DependencyObject? container)
+public class HamburgerMenuItemStyleSelector : StyleSelector
+{
+  /// <summary>
+  /// Gets or sets a value indicating whether which item container style will be used for the HamburgerMenuItem.
+  /// </summary>
+  public bool IsItemOptions { get; set; }
+
+  /// <inheritdoc/>
+  public override Style SelectStyle(object? item, DependencyObject? container)
+  {
+    if (container != null)
     {
-      if (container != null)
+      var listBox = ItemsControl.ItemsControlFromItemContainer(container);
+      var hamburgerMenu = listBox?.TryFindParent<HamburgerMenu>();
+      if (hamburgerMenu != null)
       {
-        var listBox = ItemsControl.ItemsControlFromItemContainer(container);
-        var hamburgerMenu = listBox?.TryFindParent<HamburgerMenu>();
-        if (hamburgerMenu != null)
+        if (item is IHamburgerMenuHeaderItem)
         {
-          if (item is IHamburgerMenuHeaderItem)
+          if (hamburgerMenu.HeaderItemContainerStyle != null)
           {
-            if (hamburgerMenu.HeaderItemContainerStyle != null)
-            {
-              return hamburgerMenu.HeaderItemContainerStyle;
-            }
+            return hamburgerMenu.HeaderItemContainerStyle;
           }
-          else if (item is IHamburgerMenuSeparatorItem)
+        }
+        else if (item is IHamburgerMenuSeparatorItem)
+        {
+          if (hamburgerMenu.SeparatorItemContainerStyle != null)
           {
-            if (hamburgerMenu.SeparatorItemContainerStyle != null)
-            {
-              return hamburgerMenu.SeparatorItemContainerStyle;
-            }
+            return hamburgerMenu.SeparatorItemContainerStyle;
           }
-          else
+        }
+        else
+        {
+          var itemContainerStyle = IsItemOptions ? hamburgerMenu.OptionsItemContainerStyle : hamburgerMenu.ItemContainerStyle;
+          if (itemContainerStyle != null)
           {
-            var itemContainerStyle = IsItemOptions ? hamburgerMenu.OptionsItemContainerStyle : hamburgerMenu.ItemContainerStyle;
-            if (itemContainerStyle != null)
-            {
-              return itemContainerStyle;
-            }
+            return itemContainerStyle;
           }
         }
       }
-
-      return base.SelectStyle(item, container);
     }
+
+    return base.SelectStyle(item, container);
   }
 }

@@ -4,68 +4,67 @@
 
 using System.Globalization;
 
-namespace Crystal.Themes.Controls
+namespace Crystal.Themes.Controls;
+
+/// <summary>
+///     Represents a control that allows the user to select a time.
+/// </summary>
+public class TimePicker : TimePickerBase
 {
-  /// <summary>
-  ///     Represents a control that allows the user to select a time.
-  /// </summary>
-  public class TimePicker : TimePickerBase
+  static TimePicker()
+  {
+    DefaultStyleKeyProperty.OverrideMetadata(typeof(TimePicker), new FrameworkPropertyMetadata(typeof(TimePicker)));
+  }
+
+  public TimePicker()
+  {
+    IsDatePickerVisible = false;
+  }
+
+  /// <inheritdoc/>
+  protected override void FocusElementAfterIsDropDownOpenChanged()
+  {
+    if (hourInput is null)
     {
-        static TimePicker()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(TimePicker), new FrameworkPropertyMetadata(typeof(TimePicker)));
-        }
-
-        public TimePicker()
-        {
-            IsDatePickerVisible = false;
-        }
-
-        /// <inheritdoc/>
-        protected override void FocusElementAfterIsDropDownOpenChanged()
-        {
-            if (hourInput is null)
-            {
-                return;
-            }
-
-            // When the popup is opened set focus to the hour input.
-            // Do this asynchronously because the IsDropDownOpen could
-            // have been set even before the template for the DatePicker is
-            // applied. And this would mean that the visuals wouldn't be available yet.
-
-            Dispatcher.BeginInvoke(DispatcherPriority.Input, (Action)delegate
-                {
-                    // setting the focus to the calendar will focus the correct date.
-                    hourInput.Focus();
-                });
-        }
-
-        /// <inheritdoc/>
-        protected override void SetSelectedDateTime()
-        {
-            if (textBox is null)
-            {
-                return;
-            }
-
-            const DateTimeStyles dateTimeParseStyle = DateTimeStyles.AllowWhiteSpaces
-                                                      & DateTimeStyles.AssumeLocal
-                                                      & DateTimeStyles.NoCurrentDateDefault;
-
-            if (DateTime.TryParse(textBox.Text, SpecificCultureInfo, dateTimeParseStyle, out var timeSpan))
-            {
-                SetCurrentValue(SelectedDateTimeProperty, SelectedDateTime.GetValueOrDefault().Date + timeSpan.TimeOfDay);
-            }
-            else
-            {
-                SetCurrentValue(SelectedDateTimeProperty, null);
-                if (SelectedDateTime == null)
-                {
-                    // if already null, overwrite wrong data in TextBox
-                    WriteValueToTextBox();
-                }
-            }
-        }
+      return;
     }
+
+    // When the popup is opened set focus to the hour input.
+    // Do this asynchronously because the IsDropDownOpen could
+    // have been set even before the template for the DatePicker is
+    // applied. And this would mean that the visuals wouldn't be available yet.
+
+    Dispatcher.BeginInvoke(DispatcherPriority.Input, (Action)delegate
+    {
+      // setting the focus to the calendar will focus the correct date.
+      hourInput.Focus();
+    });
+  }
+
+  /// <inheritdoc/>
+  protected override void SetSelectedDateTime()
+  {
+    if (textBox is null)
+    {
+      return;
+    }
+
+    const DateTimeStyles dateTimeParseStyle = DateTimeStyles.AllowWhiteSpaces
+                                              & DateTimeStyles.AssumeLocal
+                                              & DateTimeStyles.NoCurrentDateDefault;
+
+    if (DateTime.TryParse(textBox.Text, SpecificCultureInfo, dateTimeParseStyle, out var timeSpan))
+    {
+      SetCurrentValue(SelectedDateTimeProperty, SelectedDateTime.GetValueOrDefault().Date + timeSpan.TimeOfDay);
+    }
+    else
+    {
+      SetCurrentValue(SelectedDateTimeProperty, null);
+      if (SelectedDateTime == null)
+      {
+        // if already null, overwrite wrong data in TextBox
+        WriteValueToTextBox();
+      }
+    }
+  }
 }

@@ -1,73 +1,72 @@
 ﻿using System.Windows;
 
-namespace Crystal.Behaviors
+namespace Crystal.Behaviors;
+
+///<summary>
+/// Represents a collection of triggers with a shared AssociatedObject and provides change notifications to its contents when that AssociatedObject changes.
+/// </summary>
+public sealed class TriggerCollection : AttachableCollection<TriggerBase>
 {
-  ///<summary>
-  /// Represents a collection of triggers with a shared AssociatedObject and provides change notifications to its contents when that AssociatedObject changes.
+  /// <summary>
+  /// Initializes a new instance of the <see cref="TriggerCollection"/> class.
   /// </summary>
-  public sealed class TriggerCollection : AttachableCollection<TriggerBase>
+  /// <remarks>Internal, because this should not be inherited outside this assembly.</remarks>
+  internal TriggerCollection()
   {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="TriggerCollection"/> class.
-    /// </summary>
-    /// <remarks>Internal, because this should not be inherited outside this assembly.</remarks>
-    internal TriggerCollection()
-    {
-    }
+  }
 
-    /// <summary>
-    /// Called immediately after the collection is attached to an AssociatedObject.
-    /// </summary>
-    protected override void OnAttached()
+  /// <summary>
+  /// Called immediately after the collection is attached to an AssociatedObject.
+  /// </summary>
+  protected override void OnAttached()
+  {
+    foreach (TriggerBase trigger in this)
     {
-      foreach (TriggerBase trigger in this)
-      {
-        trigger.Attach(AssociatedObject);
-      }
+      trigger.Attach(AssociatedObject);
     }
+  }
 
-    /// <summary>
-    /// Called when the collection is being detached from its AssociatedObject, but before it has actually occurred.
-    /// </summary>
-    protected override void OnDetaching()
+  /// <summary>
+  /// Called when the collection is being detached from its AssociatedObject, but before it has actually occurred.
+  /// </summary>
+  protected override void OnDetaching()
+  {
+    foreach (TriggerBase trigger in this)
     {
-      foreach (TriggerBase trigger in this)
-      {
-        trigger.Detach();
-      }
+      trigger.Detach();
     }
+  }
 
-    /// <summary>
-    /// Called when a new item is added to the collection.
-    /// </summary>
-    /// <param name="item">The new item.</param>
-    internal override void ItemAdded(TriggerBase item)
+  /// <summary>
+  /// Called when a new item is added to the collection.
+  /// </summary>
+  /// <param name="item">The new item.</param>
+  internal override void ItemAdded(TriggerBase item)
+  {
+    if (AssociatedObject != null)
     {
-      if (AssociatedObject != null)
-      {
-        item.Attach(AssociatedObject);
-      }
+      item.Attach(AssociatedObject);
     }
+  }
 
-    /// <summary>
-    /// Called when an item is removed from the collection.
-    /// </summary>
-    /// <param name="item">The removed item.</param>
-    internal override void ItemRemoved(TriggerBase item)
+  /// <summary>
+  /// Called when an item is removed from the collection.
+  /// </summary>
+  /// <param name="item">The removed item.</param>
+  internal override void ItemRemoved(TriggerBase item)
+  {
+    if (((IAttachedObject)item).AssociatedObject != null)
     {
-      if (((IAttachedObject)item).AssociatedObject != null)
-      {
-        item.Detach();
-      }
+      item.Detach();
     }
+  }
 
-    /// <summary>
-    /// Creates a new instance of the <see cref="TriggerCollection"/>.
-    /// </summary>
-    /// <returns>The new instance.</returns>
-    protected override Freezable CreateInstanceCore()
-    {
-      return new TriggerCollection();
-    }
+  /// <summary>
+  /// Creates a new instance of the <see cref="TriggerCollection"/>.
+  /// </summary>
+  /// <returns>The new instance.</returns>
+  protected override Freezable CreateInstanceCore()
+  {
+    return new TriggerCollection();
   }
 }

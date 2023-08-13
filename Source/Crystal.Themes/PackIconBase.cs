@@ -1,92 +1,91 @@
-namespace Crystal.Themes
+namespace Crystal.Themes;
+
+public abstract class PackIconBase : Control
 {
-  public abstract class PackIconBase : Control
+  internal abstract void UpdateData();
+}
+
+/// <summary>
+/// Base class for creating an icon control for icon packs.
+/// </summary>
+public abstract class PackIconBase<TKind> : PackIconBase
+  where TKind : notnull
+{
+  private static Lazy<IDictionary<TKind, string>>? dataIndex;
+
+  /// <summary>Creates a new instance.</summary>
+  /// <param name="dataIndexFactory">
+  /// Inheritors should provide a factory for setting up the path data index (per icon kind).
+  /// The factory will only be utilized once, across all closed instances (first instantiation wins).
+  /// </param>
+  protected PackIconBase(Func<IDictionary<TKind, string>> dataIndexFactory)
   {
-    internal abstract void UpdateData();
+    if (dataIndexFactory is null)
+    {
+      throw new ArgumentNullException(nameof(dataIndexFactory));
+    }
+
+    if (dataIndex is null)
+    {
+      dataIndex = new Lazy<IDictionary<TKind, string>>(dataIndexFactory);
+    }
+  }
+
+  /// <summary>Identifies the <see cref="Kind"/> dependency property.</summary>
+  public static readonly DependencyProperty KindProperty
+    = DependencyProperty.Register(nameof(Kind),
+      typeof(TKind),
+      typeof(PackIconBase<TKind>),
+      new PropertyMetadata(default(TKind), OnKindChanged));
+
+  private static void OnKindChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+  {
+    ((PackIconBase<TKind>)dependencyObject).UpdateData();
   }
 
   /// <summary>
-  /// Base class for creating an icon control for icon packs.
+  /// Gets or sets the icon to display.
   /// </summary>
-  public abstract class PackIconBase<TKind> : PackIconBase
-      where TKind : notnull
+  public TKind Kind
   {
-    private static Lazy<IDictionary<TKind, string>>? dataIndex;
+    get { return (TKind)GetValue(KindProperty); }
+    set { SetValue(KindProperty, value); }
+  }
 
-    /// <summary>Creates a new instance.</summary>
-    /// <param name="dataIndexFactory">
-    /// Inheritors should provide a factory for setting up the path data index (per icon kind).
-    /// The factory will only be utilized once, across all closed instances (first instantiation wins).
-    /// </param>
-    protected PackIconBase(Func<IDictionary<TKind, string>> dataIndexFactory)
-    {
-      if (dataIndexFactory is null)
-      {
-        throw new ArgumentNullException(nameof(dataIndexFactory));
-      }
+  private static readonly DependencyPropertyKey DataPropertyKey
+    = DependencyProperty.RegisterReadOnly(nameof(Data),
+      typeof(string),
+      typeof(PackIconBase<TKind>),
+      new PropertyMetadata(string.Empty));
 
-      if (dataIndex is null)
-      {
-        dataIndex = new Lazy<IDictionary<TKind, string>>(dataIndexFactory);
-      }
-    }
+  // ReSharper disable once StaticMemberInGenericType
 
-    /// <summary>Identifies the <see cref="Kind"/> dependency property.</summary>
-    public static readonly DependencyProperty KindProperty
-        = DependencyProperty.Register(nameof(Kind),
-                                      typeof(TKind),
-                                      typeof(PackIconBase<TKind>),
-                                      new PropertyMetadata(default(TKind), OnKindChanged));
+  /// <summary>Identifies the <see cref="Data"/> dependency property.</summary>
+  public static readonly DependencyProperty DataProperty = DataPropertyKey.DependencyProperty;
 
-    private static void OnKindChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
-    {
-      ((PackIconBase<TKind>)dependencyObject).UpdateData();
-    }
-
-    /// <summary>
-    /// Gets or sets the icon to display.
-    /// </summary>
-    public TKind Kind
-    {
-      get { return (TKind)GetValue(KindProperty); }
-      set { SetValue(KindProperty, value); }
-    }
-
-    private static readonly DependencyPropertyKey DataPropertyKey
-        = DependencyProperty.RegisterReadOnly(nameof(Data),
-                                              typeof(string),
-                                              typeof(PackIconBase<TKind>),
-                                              new PropertyMetadata(string.Empty));
-
-    // ReSharper disable once StaticMemberInGenericType
-
-    /// <summary>Identifies the <see cref="Data"/> dependency property.</summary>
-    public static readonly DependencyProperty DataProperty = DataPropertyKey.DependencyProperty;
-
-    /// <summary>
-    /// Gets the icon path data for the current <see cref="Kind"/>.
-    /// </summary>
-    [TypeConverter(typeof(GeometryConverter))]
+  /// <summary>
+  /// Gets the icon path data for the current <see cref="Kind"/>.
+  /// </summary>
+  [TypeConverter(typeof(GeometryConverter))]
 #pragma warning disable WPF0012 // CLR property type should match registered type.
-    public string? Data
+  public string? Data
 #pragma warning restore WPF0012 // CLR property type should match registered type.
-    {
-      get { return (string?)GetValue(DataProperty); }
-      private set { SetValue(DataPropertyKey, value); }
-    }
+  {
+    get { return (string?)GetValue(DataProperty); }
+    private set { SetValue(DataPropertyKey, value); }
+  }
 
-    public override void OnApplyTemplate()
-    {
-      base.OnApplyTemplate();
+  public override void OnApplyTemplate()
+  {
+    base.OnApplyTemplate();
 
-      UpdateData();
-    }
+    UpdateData();
+  }
 
-    internal override void UpdateData()
-    {
-      string? data = null;
-      dataIndex?.Value?.TryGetValue(Kind, out data);
-      Data = data;
-    }
+  internal override void UpdateData()
+  {
+    string? data = null;
+    dataIndex?.Value?.TryGetValue(Kind, out data);
+    Data = data;
   }
 }

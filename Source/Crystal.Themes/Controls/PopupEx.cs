@@ -2,381 +2,380 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.Windows.Interop;
 
-namespace Crystal.Themes.Controls
+namespace Crystal.Themes.Controls;
+
+/// <summary>
+/// This custom popup can be used by validation error templates or something else.
+/// It provides some additional nice features:
+///     - repositioning if host-window size or location changed
+///     - repositioning if host-window gets maximized and vice versa
+///     - it's only topmost if the host-window is activated
+/// </summary>
+public class PopupEx : Popup
 {
+  /// <summary>Identifies the <see cref="CloseOnMouseLeftButtonDown"/> dependency property.</summary>
+  public static readonly DependencyProperty CloseOnMouseLeftButtonDownProperty
+    = DependencyProperty.Register(nameof(CloseOnMouseLeftButtonDown),
+      typeof(bool),
+      typeof(PopupEx),
+      new PropertyMetadata(false));
+
   /// <summary>
-  /// This custom popup can be used by validation error templates or something else.
-  /// It provides some additional nice features:
-  ///     - repositioning if host-window size or location changed
-  ///     - repositioning if host-window gets maximized and vice versa
-  ///     - it's only topmost if the host-window is activated
+  /// Gets or sets if the popup can be closed by left mouse button down.
   /// </summary>
-  public class PopupEx : Popup
+  public bool CloseOnMouseLeftButtonDown
+  {
+    get { return (bool)GetValue(CloseOnMouseLeftButtonDownProperty); }
+    set { SetValue(CloseOnMouseLeftButtonDownProperty, value); }
+  }
+
+  /// <summary>Identifies the <see cref="AllowTopMost"/> dependency property.</summary>
+  public static readonly DependencyProperty AllowTopMostProperty
+    = DependencyProperty.Register(nameof(AllowTopMost),
+      typeof(bool),
+      typeof(PopupEx),
+      new PropertyMetadata(true));
+
+  /// <summary>
+  /// Gets or sets whether if the Popup should be always on top.
+  /// </summary>
+  public bool AllowTopMost
+  {
+    get { return (bool)GetValue(AllowTopMostProperty); }
+    set { SetValue(AllowTopMostProperty, value); }
+  }
+
+  public PopupEx()
+  {
+    Loaded += PopupEx_Loaded;
+    Opened += PopupEx_Opened;
+  }
+
+  /// <summary>
+  /// Causes the popup to update it's position according to it's current settings.
+  /// </summary>
+  public void RefreshPosition()
+  {
+    var offset = HorizontalOffset;
+    // "bump" the offset to cause the popup to reposition itself on its own
+    SetCurrentValue(HorizontalOffsetProperty, offset + 1);
+    SetCurrentValue(HorizontalOffsetProperty, offset);
+  }
+
+  private void PopupEx_Loaded(object? sender, RoutedEventArgs e)
+  {
+    var target = PlacementTarget as FrameworkElement;
+    if (target is null)
     {
-        /// <summary>Identifies the <see cref="CloseOnMouseLeftButtonDown"/> dependency property.</summary>
-        public static readonly DependencyProperty CloseOnMouseLeftButtonDownProperty
-            = DependencyProperty.Register(nameof(CloseOnMouseLeftButtonDown),
-                                          typeof(bool),
-                                          typeof(PopupEx),
-                                          new PropertyMetadata(false));
-
-        /// <summary>
-        /// Gets or sets if the popup can be closed by left mouse button down.
-        /// </summary>
-        public bool CloseOnMouseLeftButtonDown
-        {
-            get { return (bool)GetValue(CloseOnMouseLeftButtonDownProperty); }
-            set { SetValue(CloseOnMouseLeftButtonDownProperty, value); }
-        }
-
-        /// <summary>Identifies the <see cref="AllowTopMost"/> dependency property.</summary>
-        public static readonly DependencyProperty AllowTopMostProperty
-            = DependencyProperty.Register(nameof(AllowTopMost),
-                                          typeof(bool),
-                                          typeof(PopupEx),
-                                          new PropertyMetadata(true));
-
-        /// <summary>
-        /// Gets or sets whether if the Popup should be always on top.
-        /// </summary>
-        public bool AllowTopMost
-        {
-            get { return (bool)GetValue(AllowTopMostProperty); }
-            set { SetValue(AllowTopMostProperty, value); }
-        }
-
-        public PopupEx()
-        {
-            Loaded += PopupEx_Loaded;
-            Opened += PopupEx_Opened;
-        }
-
-        /// <summary>
-        /// Causes the popup to update it's position according to it's current settings.
-        /// </summary>
-        public void RefreshPosition()
-        {
-            var offset = HorizontalOffset;
-            // "bump" the offset to cause the popup to reposition itself on its own
-            SetCurrentValue(HorizontalOffsetProperty, offset + 1);
-            SetCurrentValue(HorizontalOffsetProperty, offset);
-        }
-
-        private void PopupEx_Loaded(object? sender, RoutedEventArgs e)
-        {
-            var target = PlacementTarget as FrameworkElement;
-            if (target is null)
-            {
-                return;
-            }
-
-            hostWindow = Window.GetWindow(target);
-            if (hostWindow is null)
-            {
-                return;
-            }
-
-            hostWindow.LocationChanged -= HostWindow_SizeOrLocationChanged;
-            hostWindow.LocationChanged += HostWindow_SizeOrLocationChanged;
-            hostWindow.SizeChanged -= HostWindow_SizeOrLocationChanged;
-            hostWindow.SizeChanged += HostWindow_SizeOrLocationChanged;
-            target.SizeChanged -= HostWindow_SizeOrLocationChanged;
-            target.SizeChanged += HostWindow_SizeOrLocationChanged;
-            hostWindow.StateChanged -= HostWindow_StateChanged;
-            hostWindow.StateChanged += HostWindow_StateChanged;
-            hostWindow.Activated -= HostWindow_Activated;
-            hostWindow.Activated += HostWindow_Activated;
-            hostWindow.Deactivated -= HostWindow_Deactivated;
-            hostWindow.Deactivated += HostWindow_Deactivated;
-
-            Unloaded -= PopupEx_Unloaded;
-            Unloaded += PopupEx_Unloaded;
-        }
-
-        private void PopupEx_Opened(object? sender, EventArgs e)
-        {
-            SetTopmostState(hostWindow?.IsActive ?? true);
-        }
-
-        private void HostWindow_Activated(object? sender, EventArgs e)
-        {
-            SetTopmostState(true);
-        }
-
-        private void HostWindow_Deactivated(object? sender, EventArgs e)
-        {
-            SetTopmostState(false);
-        }
-
-        private void PopupEx_Unloaded(object? sender, RoutedEventArgs e)
-        {
-            var target = PlacementTarget as FrameworkElement;
-            if (target is not null)
-            {
-                target.SizeChanged -= HostWindow_SizeOrLocationChanged;
-            }
-
-            if (hostWindow is not null)
-            {
-                hostWindow.LocationChanged -= HostWindow_SizeOrLocationChanged;
-                hostWindow.SizeChanged -= HostWindow_SizeOrLocationChanged;
-                hostWindow.StateChanged -= HostWindow_StateChanged;
-                hostWindow.Activated -= HostWindow_Activated;
-                hostWindow.Deactivated -= HostWindow_Deactivated;
-            }
-
-            Unloaded -= PopupEx_Unloaded;
-            Opened -= PopupEx_Opened;
-            hostWindow = null;
-        }
-
-        private void HostWindow_StateChanged(object? sender, EventArgs e)
-        {
-            if (hostWindow is not null && hostWindow.WindowState != WindowState.Minimized)
-            {
-                // special handling for validation popup
-                var holder = PlacementTarget is FrameworkElement target ? target.DataContext as AdornedElementPlaceholder : null;
-                var adornedElement = holder?.AdornedElement;
-                if (adornedElement is not null)
-                {
-                    SetCurrentValue(PopupAnimationProperty, PopupAnimation.None);
-                    SetCurrentValue(IsOpenProperty, false);
-                    var errorTemplate = adornedElement.GetValue(Validation.ErrorTemplateProperty);
-                    adornedElement.SetCurrentValue(Validation.ErrorTemplateProperty, null);
-                    adornedElement.SetCurrentValue(Validation.ErrorTemplateProperty, errorTemplate);
-                }
-            }
-        }
-
-        private void HostWindow_SizeOrLocationChanged(object? sender, EventArgs e)
-        {
-            RefreshPosition();
-        }
-
-        private void SetTopmostState(bool isTop)
-        {
-            isTop &= AllowTopMost;
-
-            // Don’t apply state if it’s the same as incoming state
-            if (appliedTopMost.HasValue && appliedTopMost == isTop)
-            {
-                return;
-            }
-
-            if (Child is null)
-            {
-                return;
-            }
-
-            var hwndSource = PresentationSource.FromVisual(Child) as HwndSource;
-            if (hwndSource is null)
-            {
-                return;
-            }
-
-            var hwnd = hwndSource.Handle;
-
-            RECT rect;
-            if (!GetWindowRect(hwnd, out rect))
-            {
-                return;
-            }
-
-            //Debug.WriteLine("setting z-order " + isTop);
-
-            var left = rect.Left;
-            var top = rect.Top;
-            var width = rect.Width;
-            var height = rect.Height;
-            if (isTop)
-            {
-                SetWindowPos(hwnd, HWND_TOPMOST, left, top, width, height, SWP.TOPMOST);
-            }
-            else
-            {
-                // Z-Order would only get refreshed/reflected if clicking the
-                // the titlebar (as opposed to other parts of the external
-                // window) unless I first set the popup to HWND_BOTTOM
-                // then HWND_TOP before HWND_NOTOPMOST
-                SetWindowPos(hwnd, HWND_BOTTOM, left, top, width, height, SWP.TOPMOST);
-                SetWindowPos(hwnd, HWND_TOP, left, top, width, height, SWP.TOPMOST);
-                SetWindowPos(hwnd, HWND_NOTOPMOST, left, top, width, height, SWP.TOPMOST);
-            }
-
-            appliedTopMost = isTop;
-        }
-
-        protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)
-        {
-            if (CloseOnMouseLeftButtonDown)
-            {
-                SetCurrentValue(IsOpenProperty, false);
-            }
-        }
-
-        private Window? hostWindow;
-        private bool? appliedTopMost;
-    private static readonly IntPtr HWND_TOPMOST = new(-1);
-        private static readonly IntPtr HWND_NOTOPMOST = new(-2);
-        private static readonly IntPtr HWND_TOP = new(0);
-        private static readonly IntPtr HWND_BOTTOM = new(1);
-
-    /// <summary>
-    /// SetWindowPos options
-    /// </summary>
-    [Flags]
-        internal enum SWP
-        {
-            ASYNCWINDOWPOS = 0x4000,
-            DEFERERASE = 0x2000,
-            DRAWFRAME = 0x0020,
-            FRAMECHANGED = 0x0020,
-            HIDEWINDOW = 0x0080,
-            NOACTIVATE = 0x0010,
-            NOCOPYBITS = 0x0100,
-            NOMOVE = 0x0002,
-            NOOWNERZORDER = 0x0200,
-            NOREDRAW = 0x0008,
-            NOREPOSITION = 0x0200,
-            NOSENDCHANGING = 0x0400,
-            NOSIZE = 0x0001,
-            NOZORDER = 0x0004,
-            SHOWWINDOW = 0x0040,
-            TOPMOST = NOACTIVATE | NOOWNERZORDER | NOSIZE | NOMOVE | NOREDRAW | NOSENDCHANGING,
-        }
-
-    internal static int LOWORD(int i)
-        {
-            return (short)(i & 0xFFFF);
-        }
-
-    [StructLayout(LayoutKind.Sequential)]
-        internal struct POINT
-        {
-            public int x;
-            public int y;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        internal struct SIZE
-        {
-            public int cx;
-            public int cy;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        internal struct RECT
-        {
-            private int left;
-            private int top;
-            private int right;
-            private int bottom;
-
-            public void Offset(int dx, int dy)
-            {
-                left += dx;
-                top += dy;
-                right += dx;
-                bottom += dy;
-            }
-
-            public int Left
-            {
-                get { return left; }
-                set { left = value; }
-            }
-
-            public int Right
-            {
-                get { return right; }
-                set { right = value; }
-            }
-
-            public int Top
-            {
-                get { return top; }
-                set { top = value; }
-            }
-
-            public int Bottom
-            {
-                get { return bottom; }
-                set { bottom = value; }
-            }
-
-            public int Width
-            {
-                get { return right - left; }
-            }
-
-            public int Height
-            {
-                get { return bottom - top; }
-            }
-
-            public POINT Position
-            {
-                get { return new POINT { x = left, y = top }; }
-            }
-
-            public SIZE Size
-            {
-                get { return new SIZE { cx = Width, cy = Height }; }
-            }
-
-            public static RECT Union(RECT rect1, RECT rect2)
-            {
-                return new RECT
-                {
-                    Left = Math.Min(rect1.Left, rect2.Left),
-                    Top = Math.Min(rect1.Top, rect2.Top),
-                    Right = Math.Max(rect1.Right, rect2.Right),
-                    Bottom = Math.Max(rect1.Bottom, rect2.Bottom),
-                };
-            }
-
-            public override bool Equals(object? obj)
-            {
-                try
-                {
-                    var rc = (RECT)obj!;
-                    return rc.bottom == bottom
-                           && rc.left == left
-                           && rc.right == right
-                           && rc.top == top;
-                }
-                catch (InvalidCastException)
-                {
-                    return false;
-                }
-            }
-
-            public override int GetHashCode()
-            {
-                return (left << 16 | LOWORD(right)) ^ (top << 16 | LOWORD(bottom));
-            }
-        }
-
-    [SecurityCritical]
-        [DllImport("user32.dll", EntryPoint = "GetWindowRect", SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
-
-        [SecurityCritical]
-        [DllImport("user32.dll", EntryPoint = "SetWindowPos", SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-    private static extern bool _SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, SWP uFlags);
-
-    [SecurityCritical]
-        private static bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, SWP uFlags)
-        {
-            if (!_SetWindowPos(hWnd, hWndInsertAfter, x, y, cx, cy, uFlags))
-            {
-                // If this fails it's never worth taking down the process.  Let the caller deal with the error if they want.
-                return false;
-            }
-
-            return true;
-        }
+      return;
     }
+
+    hostWindow = Window.GetWindow(target);
+    if (hostWindow is null)
+    {
+      return;
+    }
+
+    hostWindow.LocationChanged -= HostWindow_SizeOrLocationChanged;
+    hostWindow.LocationChanged += HostWindow_SizeOrLocationChanged;
+    hostWindow.SizeChanged -= HostWindow_SizeOrLocationChanged;
+    hostWindow.SizeChanged += HostWindow_SizeOrLocationChanged;
+    target.SizeChanged -= HostWindow_SizeOrLocationChanged;
+    target.SizeChanged += HostWindow_SizeOrLocationChanged;
+    hostWindow.StateChanged -= HostWindow_StateChanged;
+    hostWindow.StateChanged += HostWindow_StateChanged;
+    hostWindow.Activated -= HostWindow_Activated;
+    hostWindow.Activated += HostWindow_Activated;
+    hostWindow.Deactivated -= HostWindow_Deactivated;
+    hostWindow.Deactivated += HostWindow_Deactivated;
+
+    Unloaded -= PopupEx_Unloaded;
+    Unloaded += PopupEx_Unloaded;
+  }
+
+  private void PopupEx_Opened(object? sender, EventArgs e)
+  {
+    SetTopmostState(hostWindow?.IsActive ?? true);
+  }
+
+  private void HostWindow_Activated(object? sender, EventArgs e)
+  {
+    SetTopmostState(true);
+  }
+
+  private void HostWindow_Deactivated(object? sender, EventArgs e)
+  {
+    SetTopmostState(false);
+  }
+
+  private void PopupEx_Unloaded(object? sender, RoutedEventArgs e)
+  {
+    var target = PlacementTarget as FrameworkElement;
+    if (target is not null)
+    {
+      target.SizeChanged -= HostWindow_SizeOrLocationChanged;
+    }
+
+    if (hostWindow is not null)
+    {
+      hostWindow.LocationChanged -= HostWindow_SizeOrLocationChanged;
+      hostWindow.SizeChanged -= HostWindow_SizeOrLocationChanged;
+      hostWindow.StateChanged -= HostWindow_StateChanged;
+      hostWindow.Activated -= HostWindow_Activated;
+      hostWindow.Deactivated -= HostWindow_Deactivated;
+    }
+
+    Unloaded -= PopupEx_Unloaded;
+    Opened -= PopupEx_Opened;
+    hostWindow = null;
+  }
+
+  private void HostWindow_StateChanged(object? sender, EventArgs e)
+  {
+    if (hostWindow is not null && hostWindow.WindowState != WindowState.Minimized)
+    {
+      // special handling for validation popup
+      var holder = PlacementTarget is FrameworkElement target ? target.DataContext as AdornedElementPlaceholder : null;
+      var adornedElement = holder?.AdornedElement;
+      if (adornedElement is not null)
+      {
+        SetCurrentValue(PopupAnimationProperty, PopupAnimation.None);
+        SetCurrentValue(IsOpenProperty, false);
+        var errorTemplate = adornedElement.GetValue(Validation.ErrorTemplateProperty);
+        adornedElement.SetCurrentValue(Validation.ErrorTemplateProperty, null);
+        adornedElement.SetCurrentValue(Validation.ErrorTemplateProperty, errorTemplate);
+      }
+    }
+  }
+
+  private void HostWindow_SizeOrLocationChanged(object? sender, EventArgs e)
+  {
+    RefreshPosition();
+  }
+
+  private void SetTopmostState(bool isTop)
+  {
+    isTop &= AllowTopMost;
+
+    // Don’t apply state if it’s the same as incoming state
+    if (appliedTopMost.HasValue && appliedTopMost == isTop)
+    {
+      return;
+    }
+
+    if (Child is null)
+    {
+      return;
+    }
+
+    var hwndSource = PresentationSource.FromVisual(Child) as HwndSource;
+    if (hwndSource is null)
+    {
+      return;
+    }
+
+    var hwnd = hwndSource.Handle;
+
+    RECT rect;
+    if (!GetWindowRect(hwnd, out rect))
+    {
+      return;
+    }
+
+    //Debug.WriteLine("setting z-order " + isTop);
+
+    var left = rect.Left;
+    var top = rect.Top;
+    var width = rect.Width;
+    var height = rect.Height;
+    if (isTop)
+    {
+      SetWindowPos(hwnd, HWND_TOPMOST, left, top, width, height, SWP.TOPMOST);
+    }
+    else
+    {
+      // Z-Order would only get refreshed/reflected if clicking the
+      // the titlebar (as opposed to other parts of the external
+      // window) unless I first set the popup to HWND_BOTTOM
+      // then HWND_TOP before HWND_NOTOPMOST
+      SetWindowPos(hwnd, HWND_BOTTOM, left, top, width, height, SWP.TOPMOST);
+      SetWindowPos(hwnd, HWND_TOP, left, top, width, height, SWP.TOPMOST);
+      SetWindowPos(hwnd, HWND_NOTOPMOST, left, top, width, height, SWP.TOPMOST);
+    }
+
+    appliedTopMost = isTop;
+  }
+
+  protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)
+  {
+    if (CloseOnMouseLeftButtonDown)
+    {
+      SetCurrentValue(IsOpenProperty, false);
+    }
+  }
+
+  private Window? hostWindow;
+  private bool? appliedTopMost;
+  private static readonly IntPtr HWND_TOPMOST = new(-1);
+  private static readonly IntPtr HWND_NOTOPMOST = new(-2);
+  private static readonly IntPtr HWND_TOP = new(0);
+  private static readonly IntPtr HWND_BOTTOM = new(1);
+
+  /// <summary>
+  /// SetWindowPos options
+  /// </summary>
+  [Flags]
+  internal enum SWP
+  {
+    ASYNCWINDOWPOS = 0x4000,
+    DEFERERASE = 0x2000,
+    DRAWFRAME = 0x0020,
+    FRAMECHANGED = 0x0020,
+    HIDEWINDOW = 0x0080,
+    NOACTIVATE = 0x0010,
+    NOCOPYBITS = 0x0100,
+    NOMOVE = 0x0002,
+    NOOWNERZORDER = 0x0200,
+    NOREDRAW = 0x0008,
+    NOREPOSITION = 0x0200,
+    NOSENDCHANGING = 0x0400,
+    NOSIZE = 0x0001,
+    NOZORDER = 0x0004,
+    SHOWWINDOW = 0x0040,
+    TOPMOST = NOACTIVATE | NOOWNERZORDER | NOSIZE | NOMOVE | NOREDRAW | NOSENDCHANGING,
+  }
+
+  internal static int LOWORD(int i)
+  {
+    return (short)(i & 0xFFFF);
+  }
+
+  [StructLayout(LayoutKind.Sequential)]
+  internal struct POINT
+  {
+    public int x;
+    public int y;
+  }
+
+  [StructLayout(LayoutKind.Sequential)]
+  internal struct SIZE
+  {
+    public int cx;
+    public int cy;
+  }
+
+  [StructLayout(LayoutKind.Sequential)]
+  internal struct RECT
+  {
+    private int left;
+    private int top;
+    private int right;
+    private int bottom;
+
+    public void Offset(int dx, int dy)
+    {
+      left += dx;
+      top += dy;
+      right += dx;
+      bottom += dy;
+    }
+
+    public int Left
+    {
+      get { return left; }
+      set { left = value; }
+    }
+
+    public int Right
+    {
+      get { return right; }
+      set { right = value; }
+    }
+
+    public int Top
+    {
+      get { return top; }
+      set { top = value; }
+    }
+
+    public int Bottom
+    {
+      get { return bottom; }
+      set { bottom = value; }
+    }
+
+    public int Width
+    {
+      get { return right - left; }
+    }
+
+    public int Height
+    {
+      get { return bottom - top; }
+    }
+
+    public POINT Position
+    {
+      get { return new POINT { x = left, y = top }; }
+    }
+
+    public SIZE Size
+    {
+      get { return new SIZE { cx = Width, cy = Height }; }
+    }
+
+    public static RECT Union(RECT rect1, RECT rect2)
+    {
+      return new RECT
+      {
+        Left = Math.Min(rect1.Left, rect2.Left),
+        Top = Math.Min(rect1.Top, rect2.Top),
+        Right = Math.Max(rect1.Right, rect2.Right),
+        Bottom = Math.Max(rect1.Bottom, rect2.Bottom),
+      };
+    }
+
+    public override bool Equals(object? obj)
+    {
+      try
+      {
+        var rc = (RECT)obj!;
+        return rc.bottom == bottom
+               && rc.left == left
+               && rc.right == right
+               && rc.top == top;
+      }
+      catch (InvalidCastException)
+      {
+        return false;
+      }
+    }
+
+    public override int GetHashCode()
+    {
+      return (left << 16 | LOWORD(right)) ^ (top << 16 | LOWORD(bottom));
+    }
+  }
+
+  [SecurityCritical]
+  [DllImport("user32.dll", EntryPoint = "GetWindowRect", SetLastError = true)]
+  [return: MarshalAs(UnmanagedType.Bool)]
+  private static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
+
+  [SecurityCritical]
+  [DllImport("user32.dll", EntryPoint = "SetWindowPos", SetLastError = true)]
+  [return: MarshalAs(UnmanagedType.Bool)]
+  private static extern bool _SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, SWP uFlags);
+
+  [SecurityCritical]
+  private static bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, SWP uFlags)
+  {
+    if (!_SetWindowPos(hWnd, hWndInsertAfter, x, y, cx, cy, uFlags))
+    {
+      // If this fails it's never worth taking down the process.  Let the caller deal with the error if they want.
+      return false;
+    }
+
+    return true;
+  }
 }
