@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Windows;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Windows;
 
 namespace Crystal.Behaviors;
 

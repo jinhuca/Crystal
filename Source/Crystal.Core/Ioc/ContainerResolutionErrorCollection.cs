@@ -23,9 +23,9 @@ public sealed class ContainerResolutionErrorCollection : IEnumerable<KeyValuePai
   /// </remarks>
   public IEnumerable<Type> Types => _errors.Select(x => x.Key).Distinct();
 
-  IEnumerator<KeyValuePair<Type, Exception>> IEnumerable<KeyValuePair<Type, Exception>>.GetEnumerator() 
+  IEnumerator<KeyValuePair<Type, Exception>> IEnumerable<KeyValuePair<Type, Exception>>.GetEnumerator()
     => _errors.GetEnumerator();
 
-  IEnumerator IEnumerable.GetEnumerator() 
+  IEnumerator IEnumerable.GetEnumerator()
     => _errors.GetEnumerator();
 }

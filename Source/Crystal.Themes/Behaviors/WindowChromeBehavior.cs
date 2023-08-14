@@ -1,8 +1,8 @@
 ﻿#pragma warning disable 618, CA1001
-using System.Security;
-using System.Windows.Interop;
 using Crystal.Themes.Native;
 using Crystal.Themes.Standard;
+using System.Security;
+using System.Windows.Interop;
 
 namespace Crystal.Themes.Behaviors;
 

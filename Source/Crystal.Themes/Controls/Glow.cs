@@ -3,27 +3,27 @@
 public class Glow : Control
 {
   public static readonly DependencyProperty GlowBrushProperty = DependencyProperty.Register(
-    nameof(GlowBrush), 
-    typeof(Brush), 
-    typeof(Glow), 
+    nameof(GlowBrush),
+    typeof(Brush),
+    typeof(Glow),
     new UIPropertyMetadata(Brushes.Transparent));
 
   public static readonly DependencyProperty NonActiveGlowBrushProperty = DependencyProperty.Register(
-    nameof(NonActiveGlowBrush), 
-    typeof(Brush), 
-    typeof(Glow), 
+    nameof(NonActiveGlowBrush),
+    typeof(Brush),
+    typeof(Glow),
     new UIPropertyMetadata(Brushes.Transparent));
-    
+
   public static readonly DependencyProperty IsGlowProperty = DependencyProperty.Register(
-    nameof(IsGlow), 
-    typeof(bool), 
-    typeof(Glow), 
+    nameof(IsGlow),
+    typeof(bool),
+    typeof(Glow),
     new UIPropertyMetadata(true));
 
   public static readonly DependencyProperty DirectionProperty = DependencyProperty.Register(
-    nameof(Direction), 
-    typeof(GlowDirection), 
-    typeof(Glow), 
+    nameof(Direction),
+    typeof(GlowDirection),
+    typeof(Glow),
     new UIPropertyMetadata(GlowDirection.Top));
 
   static Glow()

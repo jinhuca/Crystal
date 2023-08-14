@@ -236,25 +236,25 @@ public class SliderHelper
       switch (d)
       {
         case Slider slider:
-        {
-          slider.PreviewMouseWheel -= OnSliderPreviewMouseWheel;
-          if ((MouseWheelState)e.NewValue != MouseWheelState.None)
           {
-            slider.PreviewMouseWheel += OnSliderPreviewMouseWheel;
-          }
+            slider.PreviewMouseWheel -= OnSliderPreviewMouseWheel;
+            if ((MouseWheelState)e.NewValue != MouseWheelState.None)
+            {
+              slider.PreviewMouseWheel += OnSliderPreviewMouseWheel;
+            }
 
-          break;
-        }
+            break;
+          }
         case RangeSlider rangeSlider:
-        {
-          rangeSlider.PreviewMouseWheel -= OnRangeSliderPreviewMouseWheel;
-          if ((MouseWheelState)e.NewValue != MouseWheelState.None)
           {
-            rangeSlider.PreviewMouseWheel += OnRangeSliderPreviewMouseWheel;
-          }
+            rangeSlider.PreviewMouseWheel -= OnRangeSliderPreviewMouseWheel;
+            if ((MouseWheelState)e.NewValue != MouseWheelState.None)
+            {
+              rangeSlider.PreviewMouseWheel += OnRangeSliderPreviewMouseWheel;
+            }
 
-          break;
-        }
+            break;
+          }
       }
     }
   }

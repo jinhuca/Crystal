@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Crystal.Constants;
+using System;
 using System.Globalization;
-using Crystal.Constants;
 using static System.String;
 
 namespace Crystal;

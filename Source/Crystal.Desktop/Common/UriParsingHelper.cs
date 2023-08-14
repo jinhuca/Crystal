@@ -30,8 +30,8 @@ public static class UriParsingHelper
       return uri;
     }
 
-    return !uri.OriginalString.StartsWith("/", StringComparison.Ordinal) 
-      ? new Uri("http://localhost/" + uri, UriKind.Absolute) 
+    return !uri.OriginalString.StartsWith("/", StringComparison.Ordinal)
+      ? new Uri("http://localhost/" + uri, UriKind.Absolute)
       : new Uri("http://localhost" + uri, UriKind.Absolute);
   }
 }

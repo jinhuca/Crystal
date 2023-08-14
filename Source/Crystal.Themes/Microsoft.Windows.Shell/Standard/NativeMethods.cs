@@ -1,10 +1,9 @@
+using Microsoft.Win32.SafeHandles;
 using System.IO;
 using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security;
-using Microsoft.Win32.SafeHandles;
-
 // Some COM interfaces and Win32 structures are already declared in the framework.
 // Interesting ones to remember in System.Runtime.InteropServices.ComTypes are:
 using IStream = System.Runtime.InteropServices.ComTypes.IStream;

@@ -1639,12 +1639,12 @@ public static class ExpressionCompiler
               parent | ParentFlags.TryCatch);
 
           case ExpressionType.Throw:
-          {
-            if (!TryEmit(((UnaryExpression)expr).Operand, paramExprs, il, ref closure, parent & ~ParentFlags.IgnoreResult))
-              return false;
-            il.Emit(OpCodes.Throw);
-            return true;
-          }
+            {
+              if (!TryEmit(((UnaryExpression)expr).Operand, paramExprs, il, ref closure, parent & ~ParentFlags.IgnoreResult))
+                return false;
+              il.Emit(OpCodes.Throw);
+              return true;
+            }
 
           case ExpressionType.Default:
             if (expr.Type != typeof(void) && (parent & ParentFlags.IgnoreResult) == 0)
@@ -3822,7 +3822,7 @@ public static class ExpressionCompiler
           return false;
       }
 
-      nullCheck:
+    nullCheck:
       if (leftIsNullable)
       {
         var leftNullableHasValueGetterMethod = exprLeft.Type.FindNullableHasValueGetterMethod();

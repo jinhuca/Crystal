@@ -1,8 +1,8 @@
-﻿using System.Runtime.InteropServices;
-using System.Windows.Interop;
-using Crystal.Themes.Internal;
+﻿using Crystal.Themes.Internal;
 using Crystal.Themes.Native;
 using Crystal.Themes.Standard;
+using System.Runtime.InteropServices;
+using System.Windows.Interop;
 
 namespace Crystal.Themes.Behaviors;
 
@@ -305,38 +305,38 @@ public class GlowWindowBehavior : Behavior<Window>
     {
       // Z-Index must NOT be updated when WINDOWPOSCHANGING
       case WM.WINDOWPOSCHANGING:
-      {
-        Assert.IsNotDefault(lParam);
-        var wp = (WINDOWPOS)Marshal.PtrToStructure(lParam, typeof(WINDOWPOS))!;
-        if (wp.SizeAndPositionEquals(prevWindowPos) == false)
         {
-          UpdateCore();
-          prevWindowPos = wp;
+          Assert.IsNotDefault(lParam);
+          var wp = (WINDOWPOS)Marshal.PtrToStructure(lParam, typeof(WINDOWPOS))!;
+          if (wp.SizeAndPositionEquals(prevWindowPos) == false)
+          {
+            UpdateCore();
+            prevWindowPos = wp;
+          }
         }
-      }
 
         break;
 
       // Z-Index must be updated when WINDOWPOSCHANGED
       case WM.WINDOWPOSCHANGED:
-      {
-        Assert.IsNotDefault(lParam);
-        var wp = (WINDOWPOS)Marshal.PtrToStructure(lParam, typeof(WINDOWPOS))!;
-        if (wp.SizeAndPositionEquals(prevWindowPos) == false)
         {
-          UpdateCore();
-          prevWindowPos = wp;
+          Assert.IsNotDefault(lParam);
+          var wp = (WINDOWPOS)Marshal.PtrToStructure(lParam, typeof(WINDOWPOS))!;
+          if (wp.SizeAndPositionEquals(prevWindowPos) == false)
+          {
+            UpdateCore();
+            prevWindowPos = wp;
+          }
+
+          // todo: direct z-order
+          //foreach (GlowWindow loadedGlowWindow in this.loadedGlowWindows)
+          //{
+          //    var glowWindowHandle = new WindowInteropHelper(loadedGlowWindow).Handle;
+          //    NativeMethods.SetWindowPos(glowWindowHandle, this.windowHandle, 0, 0, 0, 0, SWP.NOSIZE | SWP.NOMOVE | SWP.NOACTIVATE);
+          //}
+
+          UpdateZOrderOfThisAndOwner();
         }
-
-        // todo: direct z-order
-        //foreach (GlowWindow loadedGlowWindow in this.loadedGlowWindows)
-        //{
-        //    var glowWindowHandle = new WindowInteropHelper(loadedGlowWindow).Handle;
-        //    NativeMethods.SetWindowPos(glowWindowHandle, this.windowHandle, 0, 0, 0, 0, SWP.NOSIZE | SWP.NOMOVE | SWP.NOACTIVATE);
-        //}
-
-        UpdateZOrderOfThisAndOwner();
-      }
 
         break;
 

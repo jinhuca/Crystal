@@ -549,24 +549,24 @@ public static class DataGridHelper
         {
           // Send a 'left click' routed command to the toggleButton
           case ToggleButton toggleButton:
-          {
-            var newMouseEvent = new MouseButtonEventArgs(e.MouseDevice, 0, MouseButton.Left)
             {
-              RoutedEvent = Mouse.MouseDownEvent,
-              Source = dataGrid
-            };
+              var newMouseEvent = new MouseButtonEventArgs(e.MouseDevice, 0, MouseButton.Left)
+              {
+                RoutedEvent = Mouse.MouseDownEvent,
+                Source = dataGrid
+              };
 
-            toggleButton.RaiseEvent(newMouseEvent);
-            break;
-          }
+              toggleButton.RaiseEvent(newMouseEvent);
+              break;
+            }
 
           // Open the dropdown explicitly. Left clicking is not viable, as it would edit the text and not open the dropdown
           case ComboBox comboBox:
-          {
-            comboBox.IsDropDownOpen = true;
-            e.Handled = true;
-            break;
-          }
+            {
+              comboBox.IsDropDownOpen = true;
+              e.Handled = true;
+              break;
+            }
         }
       }
     }

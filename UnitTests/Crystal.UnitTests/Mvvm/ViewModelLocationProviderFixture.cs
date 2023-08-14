@@ -1,25 +1,25 @@
-﻿using System;
-using System.Reflection;
-using Crystal.UnitTests.Mocks.ViewModels;
+﻿using Crystal.UnitTests.Mocks.ViewModels;
 using Crystal.UnitTests.Mocks.Views;
+using System;
+using System.Reflection;
 using Xunit;
 
 namespace Crystal.UnitTests.Mvvm
 {
   public class ViewModelLocationProviderFixture
   {
-	  [Fact]
-	  public void ShouldFailWhenCustomDefaultViewTypeToViewModelTypeResolverIsNull()
-	  {
-		  ResetViewModelLocationProvider();
-		  var view = new Mock();
-		  ViewModelLocationProvider.SetDefaultViewTypeToViewModelTypeResolver(viewType => null);
-		  ViewModelLocationProvider.AutoWireViewModelChanged(view, (v, vm) =>
-		  {
-			  Assert.NotNull(v);
-			  Assert.NotNull(vm);
-		  });
-	  }
+    [Fact]
+    public void ShouldFailWhenCustomDefaultViewTypeToViewModelTypeResolverIsNull()
+    {
+      ResetViewModelLocationProvider();
+      var view = new Mock();
+      ViewModelLocationProvider.SetDefaultViewTypeToViewModelTypeResolver(viewType => null);
+      ViewModelLocationProvider.AutoWireViewModelChanged(view, (v, vm) =>
+      {
+        Assert.NotNull(v);
+        Assert.NotNull(vm);
+      });
+    }
 
     [Fact]
     public void ShouldLocateViewModelWithDefaultSettings()

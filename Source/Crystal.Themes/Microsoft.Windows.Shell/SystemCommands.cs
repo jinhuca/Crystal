@@ -1,8 +1,8 @@
-﻿using System.Security;
-using System.Windows.Interop;
-using Crystal.Themes.Internal;
+﻿using Crystal.Themes.Internal;
 using Crystal.Themes.Native;
 using Crystal.Themes.Standard;
+using System.Security;
+using System.Windows.Interop;
 
 namespace Crystal.Themes.Windows.Shell;
 

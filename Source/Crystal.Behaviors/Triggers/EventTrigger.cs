@@ -1,5 +1,5 @@
-﻿using System.Windows;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Windows;
 
 namespace Crystal.Behaviors;
 

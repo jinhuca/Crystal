@@ -89,7 +89,7 @@ public class RegionMemberLifetimeBehavior : RegionBehavior
       return lifetimeAttribute;
     }
 
-    if (inactiveView is FrameworkElement {DataContext: { }} frameworkElement)
+    if (inactiveView is FrameworkElement { DataContext: { } } frameworkElement)
     {
       var dataContext = frameworkElement.DataContext;
       var contextLifetimeAttribute =

@@ -1,5 +1,5 @@
-﻿using System.Security;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
+using System.Security;
 
 #nullable enable
 namespace Crystal.Themes.Theming;

@@ -42,10 +42,10 @@ public sealed class HSVColorChannelMinMaxConverter : IValueConverter
         case HSVColorChannelType.V: return new HSVColor(hsv.Hue, hsv.Saturation, hsv.Value).ToColor();
         case HSVColorChannelType.SVMax: return new HSVColor(hsv.Hue, 1, 1).ToColor();
         default:
-        {
-          Trace.TraceWarning($"Unexpected value {nameof(parameter)} = {channel}");
-          return Binding.DoNothing;
-        }
+          {
+            Trace.TraceWarning($"Unexpected value {nameof(parameter)} = {channel}");
+            return Binding.DoNothing;
+          }
       }
     }
 
@@ -113,10 +113,10 @@ public sealed class HSVColorChannel2GradientBrushConverter : IValueConverter
           maxResult = HSVColorChannelMinMaxConverter.Default.Convert(value, targetType, HSVColorChannelType.VMax, culture);
           break;
         default:
-        {
-          Trace.TraceWarning($"Unexpected value {nameof(parameter)} = {channel}");
-          return Binding.DoNothing;
-        }
+          {
+            Trace.TraceWarning($"Unexpected value {nameof(parameter)} = {channel}");
+            return Binding.DoNothing;
+          }
       }
 
       if (minResult is Color minColor && maxResult is Color maxColor)

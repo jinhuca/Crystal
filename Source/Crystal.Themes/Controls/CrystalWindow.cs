@@ -2,15 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using Crystal.Themes.Automation.Peers;
+using Crystal.Themes.Behaviors;
+using Crystal.Themes.Native;
+using Crystal.Themes.Standard;
+using Crystal.Themes.Theming;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Windows.Automation;
 using System.Windows.Shapes;
-using Crystal.Themes.Automation.Peers;
-using Crystal.Themes.Behaviors;
-using Crystal.Themes.Theming;
-using Crystal.Themes.Native;
-using Crystal.Themes.Standard;
 
 namespace Crystal.Themes.Controls;
 

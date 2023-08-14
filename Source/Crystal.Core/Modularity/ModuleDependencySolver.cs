@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using static System.String;
 using static Crystal.Constants.StringConstants;
+using static System.String;
 
 namespace Crystal;
 

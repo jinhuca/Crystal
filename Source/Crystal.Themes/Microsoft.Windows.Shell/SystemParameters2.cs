@@ -1,6 +1,6 @@
-﻿using System.Runtime.InteropServices;
+﻿using Crystal.Themes.Standard;
+using System.Runtime.InteropServices;
 using System.Security;
-using Crystal.Themes.Standard;
 
 #pragma warning disable 1591, 618
 #pragma warning disable CA1001
@@ -398,7 +398,7 @@ internal class SystemParameters2 : INotifyPropertyChanged
       // and the window getting updated.  It's not too expensive, just always do the check.
       return NativeMethods.DwmIsCompositionEnabled();
     }
-            
+
     private set
     {
       if (value != _isGlassEnabled)
@@ -412,7 +412,7 @@ internal class SystemParameters2 : INotifyPropertyChanged
   public Color WindowGlassColor
   {
     get { return _glassColor; }
-            
+
     private set
     {
       if (value != _glassColor)
@@ -426,7 +426,7 @@ internal class SystemParameters2 : INotifyPropertyChanged
   public SolidColorBrush WindowGlassBrush
   {
     get { return _glassColorBrush; }
-            
+
     private set
     {
       Assert.IsNotNull(value);

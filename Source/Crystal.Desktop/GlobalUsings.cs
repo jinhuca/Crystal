@@ -13,5 +13,5 @@ global using System.Runtime.Serialization;
 global using System.Windows;
 global using System.Windows.Controls;
 global using System.Windows.Markup;
-global using static System.String;
 global using static Crystal.Constants.StringConstants;
+global using static System.String;

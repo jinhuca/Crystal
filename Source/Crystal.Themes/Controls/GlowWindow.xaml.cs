@@ -1,9 +1,9 @@
-using System.Runtime.InteropServices;
-using System.Windows.Interop;
 using Crystal.Themes.Behaviors;
 using Crystal.Themes.Internal;
 using Crystal.Themes.Native;
 using Crystal.Themes.Standard;
+using System.Runtime.InteropServices;
+using System.Windows.Interop;
 
 #pragma warning disable 618, CA1001, CA1060
 

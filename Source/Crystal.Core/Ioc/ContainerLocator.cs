@@ -32,7 +32,7 @@ public static class ContainerLocator
   /// NOTE: We want to use Lazy Initialization in case the container is first created
   /// prior to Crystal initializing which could be the case with Shiny
   /// </remarks>
-  public static void SetContainerExtension(Func<IContainerExtension> factory) 
+  public static void SetContainerExtension(Func<IContainerExtension> factory)
     => _lazyContainer = new Lazy<IContainerExtension>(factory);
 
   /// <summary>

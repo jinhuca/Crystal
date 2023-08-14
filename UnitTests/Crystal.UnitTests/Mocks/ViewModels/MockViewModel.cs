@@ -1,22 +1,19 @@
-using System.ComponentModel;
-using Crystal;
-
 namespace Crystal.UnitTests.Mocks.ViewModels
 {
-	public class MockViewModel : BindableBase
-	{
-		private int mockProperty;
+  public class MockViewModel : BindableBase
+  {
+    private int mockProperty;
 
-		public int MockProperty
-		{
-			get => mockProperty;
+    public int MockProperty
+    {
+      get => mockProperty;
 
-			set => SetProperty(ref mockProperty, value);
-		}
+      set => SetProperty(ref mockProperty, value);
+    }
 
-		internal void InvokeOnPropertyChanged()
-		{
-			RaisePropertyChanged(nameof(MockProperty));
-		}
-	}
+    internal void InvokeOnPropertyChanged()
+    {
+      RaisePropertyChanged(nameof(MockProperty));
+    }
+  }
 }

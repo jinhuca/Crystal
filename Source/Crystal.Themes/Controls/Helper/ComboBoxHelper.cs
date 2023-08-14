@@ -46,9 +46,9 @@ public class ComboBoxHelper
   }
 
   public static readonly DependencyProperty InterceptMouseWheelSelectionProperty = DependencyProperty.RegisterAttached(
-    "InterceptMouseWheelSelection", 
-    typeof(bool), 
-    typeof(ComboBoxHelper), 
+    "InterceptMouseWheelSelection",
+    typeof(bool),
+    typeof(ComboBoxHelper),
     new PropertyMetadata(BooleanBoxes.TrueBox, OnInterceptMouseWheelSelectionPropertyChangedCallback));
 
   [Category(AppName.CrystalThemes)]

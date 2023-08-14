@@ -70,17 +70,17 @@ public static class CrystalAppsCommands
         passwordBox.GetBindingExpression(PasswordBoxBindingBehavior.PasswordProperty)?.UpdateSource();
         break;
       case ComboBox comboBox:
-      {
-        if (comboBox.IsEditable)
         {
-          comboBox.SetCurrentValue(ComboBox.TextProperty, null);
-          comboBox.GetBindingExpression(ComboBox.TextProperty)?.UpdateSource();
-        }
+          if (comboBox.IsEditable)
+          {
+            comboBox.SetCurrentValue(ComboBox.TextProperty, null);
+            comboBox.GetBindingExpression(ComboBox.TextProperty)?.UpdateSource();
+          }
 
-        comboBox.SetCurrentValue(ComboBox.SelectedItemProperty, null);
-        comboBox.GetBindingExpression(ComboBox.SelectedItemProperty)?.UpdateSource();
-        break;
-      }
+          comboBox.SetCurrentValue(ComboBox.SelectedItemProperty, null);
+          comboBox.GetBindingExpression(ComboBox.SelectedItemProperty)?.UpdateSource();
+          break;
+        }
     }
   }
 }

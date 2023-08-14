@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
-using static System.String;
 using static Crystal.Constants.StringConstants;
+using static System.String;
 
 namespace Crystal;
 
@@ -326,7 +326,7 @@ public class ModuleCatalogBase : IModuleCatalog
 
     if (moduleInfo != null)
     {
-      throw new ModularityException(moduleInfo.ModuleName,Format(StartupModuleDependsOnAnOnDemandModule, moduleInfo.ModuleName));
+      throw new ModularityException(moduleInfo.ModuleName, Format(StartupModuleDependsOnAnOnDemandModule, moduleInfo.ModuleName));
     }
   }
 

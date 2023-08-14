@@ -56,7 +56,7 @@ public class RegionActiveAwareBehavior : IRegionBehavior
       foreach (object item in e.NewItems)
       {
         void Invocation(IActiveAware activeAware) => activeAware.IsActive = true;
-        MvvmHelpers.ViewAndViewModelAction(item, (Action<IActiveAware>) Invocation);
+        MvvmHelpers.ViewAndViewModelAction(item, (Action<IActiveAware>)Invocation);
         InvokeOnSynchronizedActiveAwareChildren(item, Invocation);
       }
     }
@@ -65,7 +65,7 @@ public class RegionActiveAwareBehavior : IRegionBehavior
       foreach (object item in e.OldItems)
       {
         void Invocation(IActiveAware activeAware) => activeAware.IsActive = false;
-        MvvmHelpers.ViewAndViewModelAction(item, (Action<IActiveAware>) Invocation);
+        MvvmHelpers.ViewAndViewModelAction(item, (Action<IActiveAware>)Invocation);
         InvokeOnSynchronizedActiveAwareChildren(item, Invocation);
       }
     }

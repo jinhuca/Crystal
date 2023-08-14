@@ -1,189 +1,188 @@
 using System;
 using System.Threading.Tasks;
-using Crystal;
 using Xunit;
 
 namespace Crystal.UnitTests.Events
 {
-	public class DelegateReferenceFixture
-	{
-		[Fact]
-		public void KeepAlivePreventsDelegateFromBeingCollected()
-		{
-			var delegates = new SomeClassHandler();
-			var delegateReference = new DelegateReference((Action<string>)delegates.DoEvent, true);
+  public class DelegateReferenceFixture
+  {
+    [Fact]
+    public void KeepAlivePreventsDelegateFromBeingCollected()
+    {
+      var delegates = new SomeClassHandler();
+      var delegateReference = new DelegateReference((Action<string>)delegates.DoEvent, true);
 
-			delegates = null;
-			GC.Collect();
+      delegates = null;
+      GC.Collect();
 
-			Assert.NotNull(delegateReference.Target);
-		}
+      Assert.NotNull(delegateReference.Target);
+    }
 
-		[Fact]
-		public async Task NotKeepAliveAllowsDelegateToBeCollected()
-		{
-			var delegates = new SomeClassHandler();
-			var delegateReference = new DelegateReference((Action<string>)delegates.DoEvent, false);
+    [Fact]
+    public async Task NotKeepAliveAllowsDelegateToBeCollected()
+    {
+      var delegates = new SomeClassHandler();
+      var delegateReference = new DelegateReference((Action<string>)delegates.DoEvent, false);
 
-			delegates = null;
-			await Task.Delay(100);
-			GC.Collect();
+      delegates = null;
+      await Task.Delay(100);
+      GC.Collect();
 
-			Assert.Null(delegateReference.Target);
-		}
+      Assert.Null(delegateReference.Target);
+    }
 
-		[Fact]
-		public async Task NotKeepAliveKeepsDelegateIfStillAlive()
-		{
-			var delegates = new SomeClassHandler();
-			var delegateReference = new DelegateReference((Action<string>)delegates.DoEvent, false);
+    [Fact]
+    public async Task NotKeepAliveKeepsDelegateIfStillAlive()
+    {
+      var delegates = new SomeClassHandler();
+      var delegateReference = new DelegateReference((Action<string>)delegates.DoEvent, false);
 
-			GC.Collect();
+      GC.Collect();
 
-			Assert.NotNull(delegateReference.Target);
+      Assert.NotNull(delegateReference.Target);
 
-			GC.KeepAlive(delegates);  //Makes delegates ineligible for garbage collection until this point (to prevent compiler optimizations that may release the referenced object prematurely).
-			delegates = null;
-			await Task.Delay(100);
-			GC.Collect();
+      GC.KeepAlive(delegates);  //Makes delegates ineligible for garbage collection until this point (to prevent compiler optimizations that may release the referenced object prematurely).
+      delegates = null;
+      await Task.Delay(100);
+      GC.Collect();
 
-			Assert.Null(delegateReference.Target);
-		}
+      Assert.Null(delegateReference.Target);
+    }
 
-		[Fact]
-		public void TargetShouldReturnAction()
-		{
-			var classHandler = new SomeClassHandler();
-			Action<string> myAction = new(classHandler.MyAction);
+    [Fact]
+    public void TargetShouldReturnAction()
+    {
+      var classHandler = new SomeClassHandler();
+      Action<string> myAction = new(classHandler.MyAction);
 
-			var weakAction = new DelegateReference(myAction, false);
+      var weakAction = new DelegateReference(myAction, false);
 
-			((Action<string>)weakAction.Target)("payload");
-			Assert.Equal("payload", classHandler.MyActionArg);
-		}
+      ((Action<string>)weakAction.Target)("payload");
+      Assert.Equal("payload", classHandler.MyActionArg);
+    }
 
-		[Fact]
-		public async Task ShouldAllowCollectionOfOriginalDelegate()
-		{
-			var classHandler = new SomeClassHandler();
-			Action<string> myAction = new(classHandler.MyAction);
+    [Fact]
+    public async Task ShouldAllowCollectionOfOriginalDelegate()
+    {
+      var classHandler = new SomeClassHandler();
+      Action<string> myAction = new(classHandler.MyAction);
 
-			var weakAction = new DelegateReference(myAction, false);
+      var weakAction = new DelegateReference(myAction, false);
 
-			var originalAction = new WeakReference(myAction);
-			myAction = null;
-			await Task.Delay(100);
-			GC.Collect();
-			Assert.False(originalAction.IsAlive);
+      var originalAction = new WeakReference(myAction);
+      myAction = null;
+      await Task.Delay(100);
+      GC.Collect();
+      Assert.False(originalAction.IsAlive);
 
-			((Action<string>)weakAction.Target)("payload");
-			Assert.Equal("payload", classHandler.MyActionArg);
-		}
+      ((Action<string>)weakAction.Target)("payload");
+      Assert.Equal("payload", classHandler.MyActionArg);
+    }
 
-		[Fact]
-		public async Task ShouldReturnNullIfTargetNotAlive()
-		{
-			SomeClassHandler handler = new();
-			var weakHandlerRef = new WeakReference(handler);
+    [Fact]
+    public async Task ShouldReturnNullIfTargetNotAlive()
+    {
+      SomeClassHandler handler = new();
+      var weakHandlerRef = new WeakReference(handler);
 
-			var action = new DelegateReference((Action<string>)handler.DoEvent, false);
+      var action = new DelegateReference((Action<string>)handler.DoEvent, false);
 
-			handler = null;
-			await Task.Delay(100);
-			GC.Collect();
-			Assert.False(weakHandlerRef.IsAlive);
+      handler = null;
+      await Task.Delay(100);
+      GC.Collect();
+      Assert.False(weakHandlerRef.IsAlive);
 
-			Assert.Null(action.Target);
-		}
+      Assert.Null(action.Target);
+    }
 
-		[Fact]
-		public void WeakDelegateWorksWithStaticMethodDelegates()
-		{
-			var action = new DelegateReference((Action)SomeClassHandler.StaticMethod, false);
+    [Fact]
+    public void WeakDelegateWorksWithStaticMethodDelegates()
+    {
+      var action = new DelegateReference((Action)SomeClassHandler.StaticMethod, false);
 
-			Assert.NotNull(action.Target);
-		}
+      Assert.NotNull(action.Target);
+    }
 
-		[Fact]
-		public void TargetEqualsActionShouldReturnTrue()
-		{
-			var classHandler = new SomeClassHandler();
-			Action<string> myAction = new(classHandler.MyAction);
+    [Fact]
+    public void TargetEqualsActionShouldReturnTrue()
+    {
+      var classHandler = new SomeClassHandler();
+      Action<string> myAction = new(classHandler.MyAction);
 
-			var weakAction = new DelegateReference(myAction, false);
+      var weakAction = new DelegateReference(myAction, false);
 
-			Assert.True(weakAction.TargetEquals(new Action<string>(classHandler.MyAction)));
-		}
+      Assert.True(weakAction.TargetEquals(new Action<string>(classHandler.MyAction)));
+    }
 
-		[Fact]
-		public async Task TargetEqualsNullShouldReturnTrueIfTargetNotAlive()
-		{
-			SomeClassHandler handler = new();
-			var weakHandlerRef = new WeakReference(handler);
+    [Fact]
+    public async Task TargetEqualsNullShouldReturnTrueIfTargetNotAlive()
+    {
+      SomeClassHandler handler = new();
+      var weakHandlerRef = new WeakReference(handler);
 
-			var action = new DelegateReference((Action<string>)handler.DoEvent, false);
+      var action = new DelegateReference((Action<string>)handler.DoEvent, false);
 
-			handler = null;
+      handler = null;
 
-			// Intentional delay to encourage Garbage Collection to actually occur
-			await Task.Delay(100);
-			GC.Collect();
-			Assert.False(weakHandlerRef.IsAlive);
+      // Intentional delay to encourage Garbage Collection to actually occur
+      await Task.Delay(100);
+      GC.Collect();
+      Assert.False(weakHandlerRef.IsAlive);
 
-			Assert.True(action.TargetEquals(null));
-		}
+      Assert.True(action.TargetEquals(null));
+    }
 
-		[Fact]
-		public void TargetEqualsNullShouldReturnFalseIfTargetAlive()
-		{
-			SomeClassHandler handler = new();
-			var weakHandlerRef = new WeakReference(handler);
+    [Fact]
+    public void TargetEqualsNullShouldReturnFalseIfTargetAlive()
+    {
+      SomeClassHandler handler = new();
+      var weakHandlerRef = new WeakReference(handler);
 
-			var action = new DelegateReference((Action<string>)handler.DoEvent, false);
+      var action = new DelegateReference((Action<string>)handler.DoEvent, false);
 
-			Assert.False(action.TargetEquals(null));
-			Assert.True(weakHandlerRef.IsAlive);
-			GC.KeepAlive(handler);
-		}
+      Assert.False(action.TargetEquals(null));
+      Assert.True(weakHandlerRef.IsAlive);
+      GC.KeepAlive(handler);
+    }
 
-		[Fact]
-		public void TargetEqualsWorksWithStaticMethodDelegates()
-		{
-			var action = new DelegateReference((Action)SomeClassHandler.StaticMethod, false);
+    [Fact]
+    public void TargetEqualsWorksWithStaticMethodDelegates()
+    {
+      var action = new DelegateReference((Action)SomeClassHandler.StaticMethod, false);
 
-			Assert.True(action.TargetEquals((Action)SomeClassHandler.StaticMethod));
-		}
+      Assert.True(action.TargetEquals((Action)SomeClassHandler.StaticMethod));
+    }
 
-		//todo: fix
-		//[Fact]
-		//public void NullDelegateThrows()
-		//{
-		//    Assert.ThrowsException<ArgumentNullException>(() =>
-		//    {
-		//        var action = new DelegateReference(null, true);
-		//    });
-		//}
+    //todo: fix
+    //[Fact]
+    //public void NullDelegateThrows()
+    //{
+    //    Assert.ThrowsException<ArgumentNullException>(() =>
+    //    {
+    //        var action = new DelegateReference(null, true);
+    //    });
+    //}
 
-		public class SomeClassHandler
-		{
-			public string MyActionArg;
+    public class SomeClassHandler
+    {
+      public string MyActionArg;
 
-			public void DoEvent(string value)
-			{
-				string myValue = value;
-			}
+      public void DoEvent(string value)
+      {
+        string myValue = value;
+      }
 
-			public static void StaticMethod()
-			{
+      public static void StaticMethod()
+      {
 #pragma warning disable 0219
-				int i = 0;
+        int i = 0;
 #pragma warning restore 0219
-			}
+      }
 
-			public void MyAction(string arg)
-			{
-				MyActionArg = arg;
-			}
-		}
-	}
+      public void MyAction(string arg)
+      {
+        MyActionArg = arg;
+      }
+    }
+  }
 }

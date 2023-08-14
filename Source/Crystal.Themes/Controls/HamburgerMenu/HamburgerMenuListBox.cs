@@ -63,7 +63,8 @@ public class HamburgerMenuListBox : ListBox
           listBoxItem.SetBinding(AutomationProperties.HelpTextProperty, helpTextPropertyMultiBinding);
 
           listBoxItem.SetBinding(AutomationProperties.LabeledByProperty,
-            new Binding {
+            new Binding
+            {
               Source = hamburgerMenuItem,
               Path = new PropertyPath(AutomationProperties.LabeledByProperty),
               Mode = BindingMode.OneWay,
@@ -95,7 +96,8 @@ public class HamburgerMenuListBox : ListBox
         else
         {
           listBoxItem.SetBinding(AutomationProperties.HelpTextProperty,
-            new Binding {
+            new Binding
+            {
               Source = hamburgerMenuItem,
               Path = new PropertyPath(nameof(IHamburgerMenuItem.ToolTip)),
               Mode = BindingMode.OneWay,
@@ -103,7 +105,8 @@ public class HamburgerMenuListBox : ListBox
             });
 
           listBoxItem.SetBinding(AutomationProperties.NameProperty,
-            new Binding {
+            new Binding
+            {
               Source = hamburgerMenuItem,
               Path = new PropertyPath(nameof(IHamburgerMenuItem.Label)),
               Mode = BindingMode.OneWay,
@@ -118,7 +121,8 @@ public class HamburgerMenuListBox : ListBox
         {
           listBoxItem.SetBinding(
             AutomationProperties.HelpTextProperty,
-            new Binding {
+            new Binding
+            {
               Source = hamburgerMenuHeaderItem,
               Path = new PropertyPath(AutomationProperties.HelpTextProperty),
               Mode = BindingMode.OneWay,
@@ -127,7 +131,8 @@ public class HamburgerMenuListBox : ListBox
 
           listBoxItem.SetBinding(
             AutomationProperties.LabeledByProperty,
-            new Binding {
+            new Binding
+            {
               Source = hamburgerMenuHeaderItem,
               Path = new PropertyPath(AutomationProperties.LabeledByProperty),
               Mode = BindingMode.OneWay,
@@ -160,7 +165,8 @@ public class HamburgerMenuListBox : ListBox
         {
           listBoxItem.SetBinding(
             AutomationProperties.NameProperty,
-            new Binding {
+            new Binding
+            {
               Source = hamburgerMenuHeaderItem,
               Path = new PropertyPath(nameof(IHamburgerMenuHeaderItem.Label)),
               Mode = BindingMode.OneWay,

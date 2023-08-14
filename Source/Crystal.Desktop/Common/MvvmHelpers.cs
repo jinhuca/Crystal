@@ -50,7 +50,7 @@ public static class MvvmHelpers
     return view switch
     {
       T viewAsT => viewAsT,
-      FrameworkElement {DataContext: T vmAsT} => vmAsT,
+      FrameworkElement { DataContext: T vmAsT } => vmAsT,
       _ => null
     };
   }

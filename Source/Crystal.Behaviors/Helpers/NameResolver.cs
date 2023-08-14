@@ -1,7 +1,7 @@
 using System;
-using System.Windows;
 using System.Diagnostics;
 using System.Globalization;
+using System.Windows;
 
 namespace Crystal.Behaviors;
 

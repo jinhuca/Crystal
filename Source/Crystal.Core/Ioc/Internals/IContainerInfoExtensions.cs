@@ -33,6 +33,6 @@ public static class IContainerInfoExtensions
   /// <param name="type">Service Type</param>
   /// <returns>Implementation <see cref="Type"/></returns>
   [EditorBrowsable(EditorBrowsableState.Never)]
-  public static Type GetRegistrationType(this IContainerExtension container, Type type) 
+  public static Type GetRegistrationType(this IContainerExtension container, Type type)
     => container is IContainerInfo ci ? ci.GetRegistrationType(type) : null;
 }

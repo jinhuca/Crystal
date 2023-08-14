@@ -290,30 +290,30 @@ public partial class MessageDialog : CrystalDialogBase
     switch (md.ButtonStyle)
     {
       case MessageDialogStyle.Affirmative:
-      {
-        md.PART_AffirmativeButton.Visibility = Visibility.Visible;
-        md.PART_NegativeButton.Visibility = Visibility.Collapsed;
-        md.PART_FirstAuxiliaryButton.Visibility = Visibility.Collapsed;
-        md.PART_SecondAuxiliaryButton.Visibility = Visibility.Collapsed;
-      }
+        {
+          md.PART_AffirmativeButton.Visibility = Visibility.Visible;
+          md.PART_NegativeButton.Visibility = Visibility.Collapsed;
+          md.PART_FirstAuxiliaryButton.Visibility = Visibility.Collapsed;
+          md.PART_SecondAuxiliaryButton.Visibility = Visibility.Collapsed;
+        }
         break;
       case MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary:
       case MessageDialogStyle.AffirmativeAndNegativeAndDoubleAuxiliary:
       case MessageDialogStyle.AffirmativeAndNegative:
-      {
-        md.PART_AffirmativeButton.Visibility = Visibility.Visible;
-        md.PART_NegativeButton.Visibility = Visibility.Visible;
-
-        if (md.ButtonStyle == MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary || md.ButtonStyle == MessageDialogStyle.AffirmativeAndNegativeAndDoubleAuxiliary)
         {
-          md.PART_FirstAuxiliaryButton.Visibility = Visibility.Visible;
-        }
+          md.PART_AffirmativeButton.Visibility = Visibility.Visible;
+          md.PART_NegativeButton.Visibility = Visibility.Visible;
 
-        if (md.ButtonStyle == MessageDialogStyle.AffirmativeAndNegativeAndDoubleAuxiliary)
-        {
-          md.PART_SecondAuxiliaryButton.Visibility = Visibility.Visible;
+          if (md.ButtonStyle == MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary || md.ButtonStyle == MessageDialogStyle.AffirmativeAndNegativeAndDoubleAuxiliary)
+          {
+            md.PART_FirstAuxiliaryButton.Visibility = Visibility.Visible;
+          }
+
+          if (md.ButtonStyle == MessageDialogStyle.AffirmativeAndNegativeAndDoubleAuxiliary)
+          {
+            md.PART_SecondAuxiliaryButton.Visibility = Visibility.Visible;
+          }
         }
-      }
         break;
     }
 

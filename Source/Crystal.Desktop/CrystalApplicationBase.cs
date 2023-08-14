@@ -8,8 +8,8 @@
 /// </remarks>
 public abstract class CrystalApplicationBase : Application
 {
-  IContainerExtension _containerExtension;
-  IModuleCatalog _moduleCatalog;
+  private IContainerExtension _containerExtension;
+  private IModuleCatalog _moduleCatalog;
 
   /// <summary>
   /// The dependency injection container used to resolve objects
@@ -29,7 +29,7 @@ public abstract class CrystalApplicationBase : Application
   /// <summary>
   /// Run the initialization process.
   /// </summary>
-  void InitializeInternal()
+  private void InitializeInternal()
   {
     ConfigureViewModelLocator();
     Initialize();

@@ -1,10 +1,10 @@
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.Reflection;
 using System.Windows;
-using System.Windows.Input;
-using System.Globalization;
 using System.Windows.Data;
+using System.Windows.Input;
 
 namespace Crystal.Behaviors;
 
@@ -16,33 +16,33 @@ public sealed class InvokeCommandAction : TriggerAction<DependencyObject>
   private string commandName;
 
   public static readonly DependencyProperty CommandProperty = DependencyProperty.Register(
-    nameof(Command), 
-    typeof(ICommand), 
-    typeof(InvokeCommandAction), 
+    nameof(Command),
+    typeof(ICommand),
+    typeof(InvokeCommandAction),
     null);
-    
+
   public static readonly DependencyProperty CommandParameterProperty = DependencyProperty.Register(
-    nameof(CommandParameter), 
-    typeof(object), 
-    typeof(InvokeCommandAction), 
+    nameof(CommandParameter),
+    typeof(object),
+    typeof(InvokeCommandAction),
     null);
-    
+
   public static readonly DependencyProperty EventArgsConverterProperty = DependencyProperty.Register(
-    nameof(EventArgsConverter), 
-    typeof(IValueConverter), 
-    typeof(InvokeCommandAction), 
+    nameof(EventArgsConverter),
+    typeof(IValueConverter),
+    typeof(InvokeCommandAction),
     new PropertyMetadata(null));
 
   public static readonly DependencyProperty EventArgsConverterParameterProperty = DependencyProperty.Register(
-    nameof(EventArgsConverterParameter), 
-    typeof(object), 
-    typeof(InvokeCommandAction), 
+    nameof(EventArgsConverterParameter),
+    typeof(object),
+    typeof(InvokeCommandAction),
     new PropertyMetadata(null));
 
   public static readonly DependencyProperty EventArgsParameterPathProperty = DependencyProperty.Register(
-    nameof(EventArgsParameterPath), 
-    typeof(string), 
-    typeof(InvokeCommandAction), 
+    nameof(EventArgsParameterPath),
+    typeof(string),
+    typeof(InvokeCommandAction),
     new PropertyMetadata(null));
 
   /// <summary>

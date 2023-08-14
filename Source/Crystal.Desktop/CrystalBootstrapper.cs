@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Crystal;
+﻿namespace Crystal;
 
 /// <summary>
 /// Base bootstrapper class that uses <see cref="ContainerExtension"/> as it's container.

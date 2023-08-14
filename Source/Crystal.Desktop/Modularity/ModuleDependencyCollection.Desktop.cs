@@ -51,7 +51,7 @@ public sealed class ModuleDependencyCollection : ConfigurationElementCollection
   /// </summary>
   /// <param name="index">The index of the element in the collection.</param>
   /// <returns>A <see cref="ModuleDependencyConfigurationElement"/>.</returns>
-  public ModuleDependencyConfigurationElement this[int index] => (ModuleDependencyConfigurationElement) BaseGet(index);
+  public ModuleDependencyConfigurationElement this[int index] => (ModuleDependencyConfigurationElement)BaseGet(index);
 
   /// <summary>
   /// Creates a new <see cref="ModuleDependencyConfigurationElement"/>.

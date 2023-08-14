@@ -26,23 +26,23 @@ public class WindowCommands : ToolBar
       switch (baseColor)
       {
         case ThemeManager.BaseColorLightConst:
-        {
-          if (windowCommands.LightTemplate != null)
           {
-            windowCommands.SetValue(TemplateProperty, windowCommands.LightTemplate);
-          }
+            if (windowCommands.LightTemplate != null)
+            {
+              windowCommands.SetValue(TemplateProperty, windowCommands.LightTemplate);
+            }
 
-          break;
-        }
+            break;
+          }
         case ThemeManager.BaseColorDarkConst:
-        {
-          if (windowCommands.DarkTemplate != null)
           {
-            windowCommands.SetValue(TemplateProperty, windowCommands.DarkTemplate);
-          }
+            if (windowCommands.DarkTemplate != null)
+            {
+              windowCommands.SetValue(TemplateProperty, windowCommands.DarkTemplate);
+            }
 
-          break;
-        }
+            break;
+          }
       }
     }
   }

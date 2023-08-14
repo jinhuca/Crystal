@@ -1,6 +1,6 @@
-﻿using System.Windows;
-using System;
+﻿using System;
 using System.Diagnostics;
+using System.Windows;
 
 namespace Crystal.Behaviors;
 

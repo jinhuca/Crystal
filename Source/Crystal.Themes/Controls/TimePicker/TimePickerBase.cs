@@ -1123,29 +1123,29 @@ public abstract class TimePickerBase : Control
     switch (e.Key)
     {
       case Key.System:
-      {
-        switch (e.SystemKey)
         {
-          case Key.Down:
+          switch (e.SystemKey)
           {
-            if ((Keyboard.Modifiers & ModifierKeys.Alt) == ModifierKeys.Alt)
-            {
-              TogglePopUp();
-              return true;
-            }
+            case Key.Down:
+              {
+                if ((Keyboard.Modifiers & ModifierKeys.Alt) == ModifierKeys.Alt)
+                {
+                  TogglePopUp();
+                  return true;
+                }
 
-            break;
+                break;
+              }
           }
+
+          break;
         }
 
-        break;
-      }
-
       case Key.Enter:
-      {
-        SetSelectedDateTime();
-        return true;
-      }
+        {
+          SetSelectedDateTime();
+          return true;
+        }
     }
 
     return false;

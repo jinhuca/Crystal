@@ -51,10 +51,10 @@ public sealed class ColorChannelMinMaxConverter : IValueConverter
         case ColorChannelType.AMin: return Color.FromArgb(0, color.R, color.G, color.B);
         case ColorChannelType.AMax: return Color.FromArgb(255, color.R, color.G, color.B);
         default:
-        {
-          Trace.TraceWarning($"Unexpected value {nameof(parameter)} = {channel}");
-          return Binding.DoNothing;
-        }
+          {
+            Trace.TraceWarning($"Unexpected value {nameof(parameter)} = {channel}");
+            return Binding.DoNothing;
+          }
       }
     }
 
@@ -102,10 +102,10 @@ public sealed class ColorChannel2GradientBrushConverter : IValueConverter
           maxResult = ColorChannelMinMaxConverter.Default.Convert(value, targetType, ColorChannelType.AMax, culture);
           break;
         default:
-        {
-          Trace.TraceWarning($"Unexpected value {nameof(parameter)} = {channel}");
-          return Binding.DoNothing;
-        }
+          {
+            Trace.TraceWarning($"Unexpected value {nameof(parameter)} = {channel}");
+            return Binding.DoNothing;
+          }
       }
 
       if (minResult is Color minColor && maxResult is Color maxColor)

@@ -812,7 +812,7 @@ public class FlipView : Selector
       {
         presenter.Transition = Orientation == Orientation.Horizontal ? LeftTransition : DownTransition;
       }
-                
+
       if (SelectedIndex < Items.Count - 1)
       {
         SelectedIndex++;
@@ -1090,7 +1090,7 @@ public class FlipView : Selector
     }
     else
     {
-      this.ExecuteWhenLoaded(() => 
+      this.ExecuteWhenLoaded(() =>
       {
         if (bannerLabel is not null)
         {

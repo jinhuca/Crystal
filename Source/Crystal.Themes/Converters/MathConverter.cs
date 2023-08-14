@@ -68,17 +68,17 @@ public sealed class MathConverter : IValueConverter, IMultiValueConverter
       {
         case MathOperation.Add: return value1 + value2;
         case MathOperation.Divide:
-        {
-          if (value2 > 0)
           {
-            return value1 / value2;
+            if (value2 > 0)
+            {
+              return value1 / value2;
+            }
+            else
+            {
+              Trace.TraceWarning($"Second value can not be used by division, because it's '0' (value1={value1}, value2={value2})");
+              return Binding.DoNothing;
+            }
           }
-          else
-          {
-            Trace.TraceWarning($"Second value can not be used by division, because it's '0' (value1={value1}, value2={value2})");
-            return Binding.DoNothing;
-          }
-        }
         case MathOperation.Multiply: return value1 * value2;
         case MathOperation.Subtract: return value1 - value2;
         default: return Binding.DoNothing;

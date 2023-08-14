@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Crystal.Constants;
+using System;
 using System.ComponentModel;
 using System.Reflection;
-using Crystal.Constants;
 using static System.String;
 
 namespace Crystal;

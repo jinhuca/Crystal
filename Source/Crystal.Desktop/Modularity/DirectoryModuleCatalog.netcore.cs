@@ -80,7 +80,7 @@ public class DirectoryModuleCatalog : ModuleCatalog
       Assembly[] alreadyLoadedAssemblies = AppDomain.CurrentDomain.GetAssemblies().Where(p => !p.IsDynamic).ToArray();
 
       var fileInfos = directory.GetFiles("*.dll")
-        .Where(file => alreadyLoadedAssemblies.FirstOrDefault(assembly 
+        .Where(file => alreadyLoadedAssemblies.FirstOrDefault(assembly
           => Compare(Path.GetFileName(assembly.Location), file.Name, StringComparison.OrdinalIgnoreCase) == 0) == null).ToList();
 
       foreach (FileInfo fileInfo in fileInfos)

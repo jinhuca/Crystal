@@ -44,7 +44,7 @@ public class PubSubEvent : EventBase
   /// <para/>
   /// The PubSubEvent collection is thread-safe.
   /// </remarks>
-  public SubscriptionToken Subscribe(Action action, bool keepSubscriberReferenceAlive) 
+  public SubscriptionToken Subscribe(Action action, bool keepSubscriberReferenceAlive)
     => Subscribe(action, ThreadOption.PublisherThread, keepSubscriberReferenceAlive);
 
   /// <summary>
@@ -161,7 +161,7 @@ public class PubSubEvent<TPayload> : EventBase
   /// <remarks>
   /// The PubSubEvent collection is thread-safe.
   /// </remarks>
-  public SubscriptionToken Subscribe(Action<TPayload> action, ThreadOption threadOption) 
+  public SubscriptionToken Subscribe(Action<TPayload> action, ThreadOption threadOption)
     => Subscribe(action, threadOption, false);
 
   /// <summary>

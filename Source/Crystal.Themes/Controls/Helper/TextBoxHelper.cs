@@ -1,6 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Crystal.Themes.Behaviors;
+using System.ComponentModel.DataAnnotations;
 using System.Reflection;
-using Crystal.Themes.Behaviors;
 
 namespace Crystal.Themes.Controls;
 

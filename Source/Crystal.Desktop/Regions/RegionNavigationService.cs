@@ -171,7 +171,7 @@ public class RegionNavigationService : IRegionNavigationService
     object[] activeViews,
     int currentViewIndex)
   {
-    if (activeViews[currentViewIndex] is FrameworkElement {DataContext: IConfirmNavigationRequest vetoingViewModel})
+    if (activeViews[currentViewIndex] is FrameworkElement { DataContext: IConfirmNavigationRequest vetoingViewModel })
     {
       // the data model for the current active view implements IConfirmNavigationRequest, request confirmation
       // providing a callback to resume the navigation request
@@ -227,7 +227,7 @@ public class RegionNavigationService : IRegionNavigationService
 
       // The view can be informed of navigation
       void action(INavigationAware n) => n.OnNavigatedTo(navigationContext);
-      MvvmHelpers.ViewAndViewModelAction(view, (Action<INavigationAware>) action);
+      MvvmHelpers.ViewAndViewModelAction(view, (Action<INavigationAware>)action);
 
       navigationCallback(new NavigationResult(navigationContext, true));
 

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Windows;
-
-namespace Crystal;
+﻿namespace Crystal;
 
 /// <summary>
 /// Base class that provides a basic bootstrapping sequence and hooks that specific implementations can override.
