@@ -4,8 +4,8 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>disable</ImplicitUsings>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <RootNamespace>CrystalMonitorLib.Smbios</RootNamespace>
-    <AssemblyName>CrystalMonitorLib.Smbios</AssemblyName>
-    <BaseOutputPath>..\..\Build\</BaseOutputPath>
+    <RootNamespace>Crystal.Smbios</RootNamespace>
+    <AssemblyName>Crystal.Smbios</AssemblyName>
+    <BaseOutputPath>$(SolutionDir)\Build\</BaseOutputPath>
   </PropertyGroup>
 </Project>

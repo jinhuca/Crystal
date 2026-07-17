@@ -3,13 +3,16 @@
   <Folder Name="/Modules/" />
   <Folder Name="/Providers/">
     <Project Path="Providers/Crystal.Smbios/Crystal.Smbios.csproj" />
+    <Project Path="Providers/Crystal.Telemetry/Crystal.Telemetry.csproj">
+      <Platform Project="x64" />
+    </Project>
   </Folder>
   <Folder Name="/Services/" />
   <Folder Name="/Shared/">
     <Project Path="Shared/Crystal.Plot2D/Crystal.Plot2D.csproj" />
   </Folder>
   <Folder Name="/Shell/">
-    <Project Path="Shell/CrystalShell/CrystalShell.csproj" Id="83751eb1-53f5-4387-abb9-41f1b6cccbff" />
+    <Project Path="Shell/Crystal.Shell/Crystal.Shell.csproj" />
   </Folder>
   <Folder Name="/SmokeTests/">
     <Project Path="SmokeTests/Crystal.Smbios.Cli/Crystal.Smbios.Cli.csproj" />
