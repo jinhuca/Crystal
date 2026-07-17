@@ -11,8 +11,10 @@
   </Folder>
   <Folder Name="/Services/" />
   <Folder Name="/Shared/">
+    <Project Path="Shared/Crystal.CliConverters/Crystal.CliConverters.csproj" Id="6f6758f4-c675-45f6-9025-4d35f2396cdc" />
     <Project Path="Shared/Crystal.Information/Crystal.Information.csproj" />
     <Project Path="Shared/Crystal.Plot2D/Crystal.Plot2D.csproj" />
+    <Project Path="Shared/Crystal.WpfConverters/Crystal.WpfConverters.csproj" Id="a829b8b6-9258-4c8d-9749-bdccbf065b6b" />
   </Folder>
   <Folder Name="/Shell/">
     <Project Path="Shell/Crystal.Shell/Crystal.Shell.csproj" />
