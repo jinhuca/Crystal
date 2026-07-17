@@ -365,3 +365,30 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/Build/Intermediate/net10.0-windows/.NETCoreApp,Version=v10.0.AssemblyAttributes.cs
+/Build/Intermediate/net10.0-windows/Axes/AxisControlStyle.baml
+/Build/Intermediate/net10.0-windows/Charts/MagnifyingGlass.baml
+/Build/Intermediate/net10.0-windows/Charts/MagnifyingGlass.g.cs
+/Build/Intermediate/net10.0-windows/Charts/MagnifyingGlass.g.i.cs
+/Build/Intermediate/net10.0-windows/Common/PlotterStyle.baml
+/Build/Intermediate/net10.0-windows/Common/SendFeedbackIcon.baml
+/Build/Intermediate/net10.0-windows/Crystal.Plot2D.AssemblyInfo.cs
+/Build/Intermediate/net10.0-windows/Crystal.Plot2D.csproj.FileListAbsolute.txt
+/Build/Intermediate/net10.0-windows/Crystal.Plot2D.dll
+/Build/Intermediate/net10.0-windows/Crystal.Plot2D.g.resources
+/Build/Intermediate/net10.0-windows/Crystal.Plot2D.GeneratedMSBuildEditorConfig.editorconfig
+/Build/Intermediate/net10.0-windows/Crystal.Plot2D.Strings.Exceptions.resources
+/Build/Intermediate/net10.0-windows/Crystal.Plot2D.Strings.UIResources.resources
+/Build/Intermediate/net10.0-windows/Crystal.Plot2D_j2tkwkyj_wpftmp.AssemblyInfo.cs
+/Build/Intermediate/net10.0-windows/Crystal.Plot2D_j2tkwkyj_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+/Build/Intermediate/net10.0-windows/Crystal.Plot2D_MarkupCompile.lref
+/Build/Intermediate/net10.0-windows/GeneratedInternalTypeHelper.g.cs
+/Build/Intermediate/net10.0-windows/GeneratedInternalTypeHelper.g.i.cs
+/Build/Intermediate/net10.0-windows/ref/Crystal.Plot2D.dll
+/Build/Intermediate/net10.0-windows/refint/Crystal.Plot2D.dll
+/Build/Intermediate/net10.0-windows/Resources/MailClose_Geometry.baml
+/Build/Intermediate/net10.0-windows/Shapes/DraggablePoint.baml
+/Build/Intermediate/net10.0-windows/Shapes/DraggablePoint.g.cs
+/Build/Intermediate/net10.0-windows/Shapes/DraggablePoint.g.i.cs
+/Build/Intermediate/net10.0-windows/Shapes/RangeHighlightStyle.baml
+/Build/Intermediate/net10.0-windows/Themes/Generic.baml
