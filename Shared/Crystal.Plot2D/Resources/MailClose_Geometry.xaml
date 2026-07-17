@@ -1,0 +1,6 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <StreamGeometry x:Key="MailClose_Geometry}">
+    F1 M 90.002,-0.000488281L 48.002,41.9995L 6.00195,-0.000488281L 90.002,-0.000488281 Z M 0,0.00146484L 36,36.0015L 0,72.0015L 0,0.00146484 Z M 96.001,72.001L 60.001,36.001L 96.001,0.000976563L 96.001,72.001 Z M 6.00195,72.0005L 39.002,39.0005L 48.002,48.0005L 57.002,39.0005L 90.002,72.0005L 6.00195,72.0005 Z
+  </StreamGeometry>
+</ResourceDictionary>

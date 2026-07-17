@@ -1,0 +1,33 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Crystal.Plot2D.Common">
+  <!--Send feedback icon-->
+  <Image x:Key="SendFeedbackIcon" Width="16" Height="16">
+    <Image.Source>
+      <DrawingImage>
+        <DrawingImage.Drawing>
+          <DrawingGroup>
+            <DrawingGroup.Children>
+              <GeometryDrawing Brush="#FFFFD94D" 
+                               Geometry="F1 M 5.125,10.0208L 26.7083,10.0208L 26.7083,21.6875L 5.125,21.6875L 5.125,10.0208 Z">
+                <GeometryDrawing.Pen>
+                  <Pen LineJoin="Round" Brush="#FF000000"/>
+                </GeometryDrawing.Pen>
+              </GeometryDrawing>
+              <GeometryDrawing Brush="#FFFFE278" Geometry="F1 M 5.52083,21.2708L 15.9167,14.2292L 26.2708,21.2708">
+                <GeometryDrawing.Pen>
+                  <Pen LineJoin="Round" Brush="#FF000000"/>
+                </GeometryDrawing.Pen>
+              </GeometryDrawing>
+              <GeometryDrawing Brush="#FFFFC800" Geometry="F1 M 5.45833,10.4583L 16,16.4375L 26.3958,10.4583">
+                <GeometryDrawing.Pen>
+                  <Pen LineJoin="Round" Brush="#FF000000"/>
+                </GeometryDrawing.Pen>
+              </GeometryDrawing>
+            </DrawingGroup.Children>
+          </DrawingGroup>
+        </DrawingImage.Drawing>
+      </DrawingImage>
+    </Image.Source>
+  </Image>
+</ResourceDictionary>
