@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <IntermediateOutputPath>$(SolutionDir)\Build\Intermediate\</IntermediateOutputPath>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <BaseOutputPath>$(SolutionDir)\Build\</BaseOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="bin\**" />
+    <Compile Remove="Controls\Bar\**" />
+    <EmbeddedResource Remove="bin\**" />
+    <EmbeddedResource Remove="Controls\Bar\**" />
+    <None Remove="bin\**" />
+    <None Remove="Controls\Bar\**" />
+    <Page Remove="bin\**" />
+    <Page Remove="Controls\Bar\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NetCore5.0.Microsoft.Expression.Drawing" Version="1.0.0" />
+    <PackageReference Include="Prism.Wpf" Version="9.0.537" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Shared\Crystal.Plot2D\Crystal.Plot2D.csproj" />
+  </ItemGroup>
+
+</Project>

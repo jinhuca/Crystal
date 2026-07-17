@@ -1,0 +1,11 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Style TargetType="Viewbox" x:Key="MeterViewBoxStyle">
+    <Setter Property="Stretch" Value="Uniform"/>
+    <Setter Property="HorizontalAlignment" Value="Center"/>
+    <Setter Property="VerticalAlignment" Value="Center"/>
+    <Setter Property="Margin" Value="0,0,0.8cm,0"/>
+    <Setter Property="Width" Value="4.00cm"/>
+    <Setter Property="Height" Value="4.00cm"/>
+  </Style>
+</ResourceDictionary>

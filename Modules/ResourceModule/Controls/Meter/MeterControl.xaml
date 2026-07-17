@@ -1,0 +1,88 @@
+﻿<UserControl x:Class="ResourceModule.Controls.Meter.MeterControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ResourceModule.Controls.Meter"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+  <UserControl.Resources>
+    <local:ValuesToAngleConverter x:Key="valuesToAngleConverter"/>
+    <local:ValuesToDisplayConverter x:Key="valuesToDisplayConverter"/>
+    <local:UnitToDisplayConverter x:Key="unitToDisplayConverter"/>
+  </UserControl.Resources>
+  <Grid ShowGridLines="False">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="50"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+    <TextBlock Grid.Row="0" 
+               Margin="0,0,0,0"
+               HorizontalAlignment="Center" 
+               VerticalAlignment="Top"
+               Foreground="{StaticResource ModuleContentTextBrush}" 
+               FontSize="34"
+               Text="{Binding Label, RelativeSource={RelativeSource AncestorType=UserControl}, StringFormat=N2}" />
+    <Grid Grid.Row="1" Background="{Binding CtrlBackground, RelativeSource={RelativeSource AncestorType=UserControl}}"
+          VerticalAlignment="Bottom">
+      <Grid Margin="0,0,0,0">
+        <ed:Arc StartAngle="-120" EndAngle="120"
+              Stretch="None" 
+              Height="{Binding CtrlHeight, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+              Width="{Binding CtrlWidth, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+              StrokeThickness="{Binding ArcStrokeThickness, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+              StrokeDashArray="0.2" 
+              Stroke="{Binding GaugeColor, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+        <ed:Arc StartAngle="-120"
+              Stretch="None" 
+              Height="{Binding CtrlHeight, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+              Width="{Binding CtrlWidth, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+              StrokeThickness="{Binding ArcStrokeThickness, RelativeSource={RelativeSource AncestorType=UserControl}}"
+              StrokeDashArray=".2"
+              Stroke="{Binding NeedleColor, RelativeSource={RelativeSource AncestorType=UserControl}}">
+          <ed:Arc.EndAngle>
+            <MultiBinding Converter="{StaticResource valuesToAngleConverter}">
+              <Binding Path="Value" RelativeSource="{RelativeSource AncestorType=UserControl}"/>
+              <Binding Path="MinValue" RelativeSource="{RelativeSource AncestorType=UserControl}"/>
+              <Binding Path="MaxValue" RelativeSource="{RelativeSource AncestorType=UserControl}"/>
+            </MultiBinding>
+          </ed:Arc.EndAngle>
+        </ed:Arc>
+      </Grid>
+      <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,45,0,0"
+                Background="Transparent">
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top">
+          <TextBlock Foreground="{StaticResource RealTimeValueTextBrush}" HorizontalAlignment="Center" 
+                     VerticalAlignment="Top" Margin="10,0,0,0" FontWeight="Light">
+            <Run Style="{StaticResource IntegralRunStyle}">
+              <Run.Text>
+                <MultiBinding Converter="{StaticResource valuesToDisplayConverter}" ConverterParameter="int">
+                  <Binding Path="Value" RelativeSource="{RelativeSource AncestorType=UserControl}"/>
+                  <Binding Path="MinValue" RelativeSource="{RelativeSource AncestorType=UserControl}"/>
+                  <Binding Path="MaxValue" RelativeSource="{RelativeSource AncestorType=UserControl}"/>
+                  <Binding Path="Unit" RelativeSource="{RelativeSource AncestorType=UserControl}"/>
+                </MultiBinding>
+              </Run.Text>
+            </Run>
+            <Run Style="{StaticResource DecimalRunStyle}">
+              <Run.Text>
+                <MultiBinding Converter="{StaticResource valuesToDisplayConverter}" ConverterParameter="dec">
+                  <Binding Path="Value" RelativeSource="{RelativeSource AncestorType=UserControl}"/>
+                  <Binding Path="MinValue" RelativeSource="{RelativeSource AncestorType=UserControl}"/>
+                  <Binding Path="MaxValue" RelativeSource="{RelativeSource AncestorType=UserControl}"/>
+                  <Binding Path="Unit" RelativeSource="{RelativeSource AncestorType=UserControl}"/>
+                </MultiBinding>
+              </Run.Text>
+            </Run>
+          </TextBlock>
+          <TextBlock Text="{Binding Unit, 
+                         RelativeSource={RelativeSource AncestorType=UserControl}, 
+                         Converter={StaticResource unitToDisplayConverter}}" 
+                   Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0"
+                   FontSize="24" FontWeight="ExtraLight"/>
+        </StackPanel>
+      </StackPanel>
+    </Grid>
+  </Grid>
+</UserControl>

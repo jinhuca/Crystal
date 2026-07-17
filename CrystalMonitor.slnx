@@ -1,6 +1,8 @@
 <Solution>
   <Folder Name="/Build/" />
-  <Folder Name="/Modules/" />
+  <Folder Name="/Modules/">
+    <Project Path="Modules/ResourceModule/ResourceModule.csproj" />
+  </Folder>
   <Folder Name="/Providers/">
     <Project Path="Providers/Crystal.Smbios/Crystal.Smbios.csproj" />
     <Project Path="Providers/Crystal.Telemetry/Crystal.Telemetry.csproj">
@@ -9,6 +11,7 @@
   </Folder>
   <Folder Name="/Services/" />
   <Folder Name="/Shared/">
+    <Project Path="Shared/Crystal.Information/Crystal.Information.csproj" />
     <Project Path="Shared/Crystal.Plot2D/Crystal.Plot2D.csproj" />
   </Folder>
   <Folder Name="/Shell/">

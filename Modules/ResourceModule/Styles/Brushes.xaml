@@ -1,0 +1,88 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <SolidColorBrush x:Key="ShellBackgroundSolidBrush" Color="#FF111122"/>
+  <SolidColorBrush x:Key="TitleBarBackgroundSolidBrush" Color="#FF081818"/>
+  
+  <SolidColorBrush x:Key="ModuleContentTitleBrush" Color="#FF878A9F"/>
+  <SolidColorBrush x:Key="ModuleContentTextBrush" Color="#FFFFFF"/>
+
+  <SolidColorBrush x:Key="HomePanelTextBrush" Color="#FFFFFFFF"/>
+  <SolidColorBrush x:Key="HomePanelBorderBrush" Color="#FFFFFFFF"/>
+  
+  <SolidColorBrush x:Key="StaticValueTextBrush" Color="LightGreen"/>
+  <SolidColorBrush x:Key="RealTimeValueTextBrush" Color="NavajoWhite"/>
+  
+  <SolidColorBrush x:Key="SmallValueBrush" Color="WhiteSmoke"/>
+  
+  
+  <SolidColorBrush x:Key="MeterGaugeColor" Color="#FF878A9F"/>
+  
+  <!-- Load -->
+  <SolidColorBrush x:Key="LoadSolidColorBrush" Color="#FFFF1D6B"/>
+  <SolidColorBrush x:Key="LoadRangeSolidColorBrush" Color="#11FF1D6B"/>
+
+  <Color x:Key="LoadBeginColor" A="#FF" R="#FF" G="#1D" B="#6B"/>
+  <Color x:Key="LoadEndColor" A="#11" R="#FF" G="#1D" B="#6B"/>
+  
+  <LinearGradientBrush x:Key="LoadRangeLinearGradientBrush"
+                       StartPoint="0,0" EndPoint="0,1">
+    <GradientStop Color="{StaticResource LoadBeginColor}" Offset="0"/>
+    <GradientStop Color="{StaticResource LoadEndColor}" Offset="1"/>
+  </LinearGradientBrush>
+
+  <!-- Power -->
+  <SolidColorBrush x:Key="PowerSolidColorBrush" Color="#FF286FFE"/>
+  <SolidColorBrush x:Key="PowerRangeSolidColorBrush" Color="#77286FFE"/>
+
+  <Color x:Key="PowerBeginColor" A="#FF" R="#28" G="#6F" B="#FE"/>
+  <Color x:Key="PowerEndColor" A="#11" R="#28" G="#6F" B="#FE"/>
+
+  <LinearGradientBrush x:Key="PowerRangeLinearGradientBrush"
+                       StartPoint="0,0" EndPoint="0,1">
+    <GradientStop Color="{StaticResource PowerBeginColor}" Offset="0"/>
+    <GradientStop Color="{StaticResource PowerEndColor}" Offset="1"/>
+  </LinearGradientBrush>
+
+  <!-- Voltage -->
+  <SolidColorBrush x:Key="VoltageSolidColorBrush" Color="#FF44FE45"/>
+  <SolidColorBrush x:Key="VoltageRangeSolidColorBrush" Color="#7744FE45"/>
+
+  <Color x:Key="VoltageBeginColor" A="#FF" R="#44" G="#FE" B="#45"/>
+  <Color x:Key="VoltageEndColor"   A="#11" R="#44" G="#FE" B="#45"/>
+
+  <LinearGradientBrush x:Key="VoltageRangeLinearGradientBrush" 
+                       StartPoint="0,0" EndPoint="0,1">
+    <GradientStop Color="{StaticResource VoltageBeginColor}" Offset="0"/>
+    <GradientStop Color="{StaticResource VoltageEndColor}" Offset="1"/>
+  </LinearGradientBrush>
+
+  <!-- Temperature -->
+  <SolidColorBrush x:Key="TemperatureSolidColorBrush" Color="#FFAF5350"/>
+  <SolidColorBrush x:Key="TemperatureRangeSolidColorBrush" Color="#77AF5350"/>
+
+  <Color x:Key="TemperatureBeginColor" A="#FF" R="#AF" G="#53" B="#50"/>
+  <Color x:Key="TemperatureEndColor" A="#11" R="#AF" G="#53" B="#50"/>
+
+  <LinearGradientBrush x:Key="TemperatureRangeLinearGradientBrush" 
+                       StartPoint="0,0" EndPoint="0,1">
+    <GradientStop Color="{StaticResource TemperatureBeginColor}" Offset="0"/>
+    <GradientStop Color="{StaticResource TemperatureEndColor}" Offset="1"/>
+  </LinearGradientBrush>
+
+  <!-- Clock -->
+  <SolidColorBrush x:Key="ClockSolidColorBrush" Color="#AAFFFD55"/>
+  <SolidColorBrush x:Key="ClockRangeSolidColorBrush" Color="#77FFFD55"/>
+  
+  <Color x:Key="ClockBeginColor" A="#AA" R="#FF" G="#FD" B="#55"/>
+  <Color x:Key="ClockEndColor" A="#11" R="#FF" G="#FD" B="#55"/>
+
+  <LinearGradientBrush x:Key="ClockRangeLinearGradientBrush" 
+                       StartPoint="0,0" EndPoint="0,1">
+    <GradientStop Color="{StaticResource ClockBeginColor}" Offset="0"/>
+    <GradientStop Color="{StaticResource ClockEndColor}" Offset="1"/>
+  </LinearGradientBrush>
+  
+  <SolidColorBrush x:Key="ToolButtonBackgroundBrush" Color="#FF1E1E1E"/>
+  <SolidColorBrush x:Key="ToolButtonHoverBrush" Color="#FF4A4A4A"/>
+  <SolidColorBrush x:Key="ToolButtonHoverForegroundBrush" Color="#FFFFFFFF"/>
+</ResourceDictionary>

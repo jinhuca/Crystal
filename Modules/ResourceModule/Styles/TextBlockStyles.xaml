@@ -1,0 +1,104 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Style TargetType="TextBlock" x:Key="ModuleTitleTextStyle">
+    <Setter Property="FontSize" Value="0.7cm"/>
+    <Setter Property="FontStyle" Value="Normal"/>
+    <Setter Property="FontWeight" Value="ExtraLight"/>
+    <Setter Property="Foreground" Value="White"/>
+    <Setter Property="VerticalAlignment" Value="Top"/>
+    <Setter Property="HorizontalAlignment" Value="Left"/>
+    <Setter Property="Margin" Value="10,0,0,0"/>
+  </Style>
+  <Style TargetType="TextBlock" x:Key="ModuleSubTitleTextStyle">
+    <Setter Property="FontSize" Value="0.55cm"/>
+    <Setter Property="FontStyle" Value="Normal"/>
+    <Setter Property="FontWeight" Value="ExtraLight"/>
+    <Setter Property="Foreground" Value="White"/>
+    <Setter Property="VerticalAlignment" Value="Top"/>
+    <Setter Property="HorizontalAlignment" Value="Left"/>
+    <Setter Property="Margin" Value="10,0,0,0"/>
+  </Style>
+  <Style TargetType="TextBlock" x:Key="ValueTextStyle">
+    <Setter Property="FontSize" Value="0.35cm"/>
+    <Setter Property="FontStyle" Value="Normal"/>
+    <Setter Property="FontWeight" Value="ExtraLight"/>
+    <Setter Property="Foreground" Value="{StaticResource StaticValueTextBrush}"/>
+    <Setter Property="VerticalAlignment" Value="Top"/>
+    <Setter Property="HorizontalAlignment" Value="Left"/>
+    <Setter Property="Margin" Value="10,0,0,0"/>
+  </Style>
+
+  <Style TargetType="TextBlock" x:Key="ModuleContentTitleStyle">
+    <Setter Property="FontSize" Value="0.4cm"/>
+    <Setter Property="Foreground" Value="#FF878A9F"/>
+    <Setter Property="VerticalAlignment" Value="Center"/>
+    <Setter Property="HorizontalAlignment" Value="Left"/>
+    <Setter Property="Margin" Value="1,0,0,0"/>
+  </Style>
+
+  <Style TargetType="TextBlock" x:Key="ProcessThreadHandleTitleStyle">
+    <Setter Property="FontSize" Value="0.6cm"/>
+    <Setter Property="Foreground" Value="#FF878A9F"/>
+    <Setter Property="VerticalAlignment" Value="Center"/>
+    <Setter Property="HorizontalAlignment" Value="Left"/>
+    <Setter Property="Margin" Value="1,0,0,0"/>
+  </Style>
+
+  <Style TargetType="TextBlock" x:Key="ProcessThreadHandleValueStyle">
+    <Setter Property="FontSize" Value="1cm"/>
+    <Setter Property="Foreground" Value="{StaticResource RealTimeValueTextBrush}"/>
+    <Setter Property="VerticalAlignment" Value="Center"/>
+    <Setter Property="HorizontalAlignment" Value="Left"/>
+    <Setter Property="Margin" Value="1,0,0,0"/>
+  </Style>
+  
+  <Style TargetType="TextBlock" x:Key="ModuleContentTextStyle">
+    <Setter Property="FontSize" Value="0.4cm"/>
+    <Setter Property="Foreground" Value="{StaticResource StaticValueTextBrush}"/>
+    <Setter Property="VerticalAlignment" Value="Center"/>
+    <Setter Property="HorizontalAlignment" Value="Left"/>
+    <Setter Property="Margin" Value="1,0,0,0"/>
+  </Style>
+  <Style TargetType="TextBlock" x:Key="ModuleContentValueStyle">
+    <Setter Property="FontSize" Value="0.7cm"/>
+    <Setter Property="Foreground" Value="{StaticResource SmallValueBrush}"/>
+    <Setter Property="VerticalAlignment" Value="Center"/>
+    <Setter Property="HorizontalAlignment" Value="Left"/>
+    <Setter Property="Margin" Value="1,0,0,0"/>
+  </Style>
+
+  <Style x:Key="HomePanelTextStyle"
+         TargetType="TextBlock">
+    <Setter Property="FontSize" Value="0.5cm"/>
+    <Setter Property="Foreground" Value="{DynamicResource HomePanelTextBrush}"/>
+    <Setter Property="VerticalAlignment" Value="Center"/>
+    <Setter Property="HorizontalAlignment" Value="Left"/>
+    <Setter Property="Margin" Value="0.5cm,0,0,0"/>
+  </Style>
+
+  <Style x:Key="HomeCaptionTextStyle"
+         TargetType="TextBlock">
+    <Setter Property="HorizontalAlignment" Value="Left"/>
+    <Setter Property="VerticalAlignment" Value="Top"/>
+    <Setter Property="FontSize" Value="30"/>
+    <Setter Property="Foreground" Value="White"/>
+    <Setter Property="Margin" Value="30,0,0,0"/>
+  </Style>
+
+  <Style x:Key="HomeSubTitleTextStyle"
+         TargetType="TextBlock">
+    <Setter Property="HorizontalAlignment" Value="Right"/>
+    <Setter Property="VerticalAlignment" Value="Center"/>
+    <Setter Property="Margin" Value="0,0,12,0"/>
+    <Setter Property="FontSize" Value="14"/>
+    <Setter Property="Foreground" Value="WhiteSmoke"/>
+  </Style>
+  <Style x:Key="HomeValueTextStyle"
+         TargetType="TextBlock">
+    <Setter Property="HorizontalAlignment" Value="Left"/>
+    <Setter Property="VerticalAlignment" Value="Center"/>
+    <Setter Property="FontSize" Value="14"/>
+    <Setter Property="Foreground" Value="LightGreen"/>
+    
+  </Style>
+</ResourceDictionary>
