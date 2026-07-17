@@ -17,8 +17,10 @@
 mono_crash.*
 
 # Build results
-Build/
-Intermediate/
+/Build/
+/bin/
+[Bb]uild/
+[Ii]ntermediate/
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
