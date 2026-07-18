@@ -4,7 +4,7 @@ using Crystal.Smbios.Types;
 using System;
 using System.Linq;
 
-internal class Program {
+internal class Smbios_Cli_Program {
   static void generate_dump_file() {
     var (tableData, major, minor) = WindowsSmbiosReader.ReadTableData();
     var outPath = Path.Combine(Directory.GetCurrentDirectory(), "smbios_dump.bin");
