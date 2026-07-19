@@ -2,20 +2,25 @@
 using Crystal.Mmi.Interfaces;
 using Microsoft.Management.Infrastructure;
 using static Crystal.Mmi.Constants.ErrorConstants;
-using static Crystal.Mmi.Constants.OsConstants;
+using static Crystal.Mmi.Constants.ProcessConstants;
 
 namespace Crystal.Mmi.Queries; 
-public class QueryOs : IMmiQuery {
+public class QueryProcess : IMmiQuery {
   private readonly CimSession _session;
   private readonly CimInstance _cimInstance;
-  private static Dictionary<string, (string, string)> info = [];
   public Dictionary<string, string> InfoDictionary { get; } = [];
-  public static string[]? MULLanguages;
-  public static int? NumberOfProcesses;
 
-  public QueryOs() {
+  public QueryProcess() {
     _session = CimSession.Create(MmiConstants.ComputerName);
 
+    // NOTE: unlike Bios/Os (genuinely singular) or Cpu/Memory/Disk/Network (multiple, but
+    // "first" is at least a real physical component), Win32_Process is fundamentally a *list*
+    // -- every running process on the system. Grabbing FirstOrDefault() here just returns
+    // whatever process WMI happens to enumerate first (frequently PID 0, the System Idle
+    // Process), which isn't meaningful info on its own. This class exists to match the
+    // requested "one query class per MmiCategory" shape, but it isn't useful until
+    // QueryMultiple (or an equivalent list-returning query) is implemented -- don't wire this
+    // one into anything that expects real process data yet.
     _cimInstance = _session
       .QueryInstances(MmiConstants.SessionNamespace, MmiConstants.QueryDialect, QueryString)
       .FirstOrDefault()
@@ -34,21 +39,6 @@ public class QueryOs : IMmiQuery {
     }
 
     return InfoDictionary;
-  }
-
-  public Dictionary<string, Dictionary<string, (string, string)>> QueryMultiple(string query) {
-    //using CimSession session = CimSession.Create(MmiConstants.ComputerName);
-    //var osInstances = session.QueryInstances(MmiConstants.SessionNamespace, MmiConstants.QueryDialect, query);
-    //var result = new Dictionary<string, Dictionary<string, (string, string)>>();
-    //foreach (var instance in osInstances) {
-    //  var properties = new Dictionary<string, (string, string)>();
-    //  foreach (var property in instance.CimInstanceProperties) {
-    //    properties[property.Name] = (property.Value?.ToString() ?? string.Empty, property.CimType.ToString());
-    //  }
-    //  result[instance.CimSystemProperties.InstanceId] = properties;
-    //}
-    //return result;
-    throw new NotImplementedException();
   }
 
   public void Dispose() {

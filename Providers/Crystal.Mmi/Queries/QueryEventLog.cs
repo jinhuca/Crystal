@@ -2,20 +2,24 @@
 using Crystal.Mmi.Interfaces;
 using Microsoft.Management.Infrastructure;
 using static Crystal.Mmi.Constants.ErrorConstants;
-using static Crystal.Mmi.Constants.OsConstants;
+using static Crystal.Mmi.Constants.EventLogConstants;
 
 namespace Crystal.Mmi.Queries; 
-public class QueryOs : IMmiQuery {
+public class QueryEventLog : IMmiQuery {
   private readonly CimSession _session;
   private readonly CimInstance _cimInstance;
-  private static Dictionary<string, (string, string)> info = [];
   public Dictionary<string, string> InfoDictionary { get; } = [];
-  public static string[]? MULLanguages;
-  public static int? NumberOfProcesses;
 
-  public QueryOs() {
+  public QueryEventLog() {
     _session = CimSession.Create(MmiConstants.ComputerName);
 
+    // NOTE: this targets Win32_NTEventLogFile (one instance per log -- Application, System,
+    // Security, Setup, etc.), not Win32_NTLogEvent (one instance per individual log entry,
+    // which would be many thousands of rows and isn't practical to snapshot this way). Like
+    // Process/Service/User/Group, this is still a list underneath -- FirstOrDefault() here
+    // grabs whichever log WMI enumerates first (commonly "Application"), not a specific one by
+    // name. If you need a specific log (e.g. "System"), that needs a WHERE clause via the
+    // multi-instance path, not this single-instance shape.
     _cimInstance = _session
       .QueryInstances(MmiConstants.SessionNamespace, MmiConstants.QueryDialect, QueryString)
       .FirstOrDefault()
@@ -34,21 +38,6 @@ public class QueryOs : IMmiQuery {
     }
 
     return InfoDictionary;
-  }
-
-  public Dictionary<string, Dictionary<string, (string, string)>> QueryMultiple(string query) {
-    //using CimSession session = CimSession.Create(MmiConstants.ComputerName);
-    //var osInstances = session.QueryInstances(MmiConstants.SessionNamespace, MmiConstants.QueryDialect, query);
-    //var result = new Dictionary<string, Dictionary<string, (string, string)>>();
-    //foreach (var instance in osInstances) {
-    //  var properties = new Dictionary<string, (string, string)>();
-    //  foreach (var property in instance.CimInstanceProperties) {
-    //    properties[property.Name] = (property.Value?.ToString() ?? string.Empty, property.CimType.ToString());
-    //  }
-    //  result[instance.CimSystemProperties.InstanceId] = properties;
-    //}
-    //return result;
-    throw new NotImplementedException();
   }
 
   public void Dispose() {

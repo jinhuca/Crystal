@@ -74,8 +74,7 @@ class Program {
 
   private static void TestMmiProvider() {
     using var queryOs = new Crystal.Mmi.Queries.QueryOs();
-    Console.WriteLine(queryOs.Id);
-    var info = queryOs.GetInfo();
+    var info = queryOs.InfoDictionary;
     foreach (var kvp in info) {
       Console.WriteLine($"{kvp.Key}: {kvp.Value}");
     }

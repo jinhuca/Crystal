@@ -2,20 +2,21 @@
 using Crystal.Mmi.Interfaces;
 using Microsoft.Management.Infrastructure;
 using static Crystal.Mmi.Constants.ErrorConstants;
-using static Crystal.Mmi.Constants.OsConstants;
+using static Crystal.Mmi.Constants.DiskConstants;
 
 namespace Crystal.Mmi.Queries; 
-public class QueryOs : IMmiQuery {
+public class QueryDisk : IMmiQuery {
   private readonly CimSession _session;
   private readonly CimInstance _cimInstance;
-  private static Dictionary<string, (string, string)> info = [];
   public Dictionary<string, string> InfoDictionary { get; } = [];
-  public static string[]? MULLanguages;
-  public static int? NumberOfProcesses;
 
-  public QueryOs() {
+  public QueryDisk() {
     _session = CimSession.Create(MmiConstants.ComputerName);
 
+    // NOTE: Win32_DiskDrive returns one instance per physical drive, so on any multi-drive
+    // machine this only captures the first one WMI happens to enumerate. Same caveat as
+    // QueryCpu/QueryMemory -- a real "list every drive" view needs the multi-instance path
+    // (QueryMultiple).
     _cimInstance = _session
       .QueryInstances(MmiConstants.SessionNamespace, MmiConstants.QueryDialect, QueryString)
       .FirstOrDefault()
@@ -34,21 +35,6 @@ public class QueryOs : IMmiQuery {
     }
 
     return InfoDictionary;
-  }
-
-  public Dictionary<string, Dictionary<string, (string, string)>> QueryMultiple(string query) {
-    //using CimSession session = CimSession.Create(MmiConstants.ComputerName);
-    //var osInstances = session.QueryInstances(MmiConstants.SessionNamespace, MmiConstants.QueryDialect, query);
-    //var result = new Dictionary<string, Dictionary<string, (string, string)>>();
-    //foreach (var instance in osInstances) {
-    //  var properties = new Dictionary<string, (string, string)>();
-    //  foreach (var property in instance.CimInstanceProperties) {
-    //    properties[property.Name] = (property.Value?.ToString() ?? string.Empty, property.CimType.ToString());
-    //  }
-    //  result[instance.CimSystemProperties.InstanceId] = properties;
-    //}
-    //return result;
-    throw new NotImplementedException();
   }
 
   public void Dispose() {

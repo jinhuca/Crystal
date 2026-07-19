@@ -2,20 +2,20 @@
 using Crystal.Mmi.Interfaces;
 using Microsoft.Management.Infrastructure;
 using static Crystal.Mmi.Constants.ErrorConstants;
-using static Crystal.Mmi.Constants.OsConstants;
+using static Crystal.Mmi.Constants.GroupConstants;
 
 namespace Crystal.Mmi.Queries; 
-public class QueryOs : IMmiQuery {
+public class QueryGroup : IMmiQuery {
   private readonly CimSession _session;
   private readonly CimInstance _cimInstance;
-  private static Dictionary<string, (string, string)> info = [];
   public Dictionary<string, string> InfoDictionary { get; } = [];
-  public static string[]? MULLanguages;
-  public static int? NumberOfProcesses;
 
-  public QueryOs() {
+  public QueryGroup() {
     _session = CimSession.Create(MmiConstants.ComputerName);
 
+    // NOTE: same caveat as QueryUser -- Win32_Group is a list of every local group on the
+    // machine (Administrators, Users, Guests, etc.). FirstOrDefault() is a placeholder pending
+    // a real multi-instance/filtered query.
     _cimInstance = _session
       .QueryInstances(MmiConstants.SessionNamespace, MmiConstants.QueryDialect, QueryString)
       .FirstOrDefault()
@@ -34,21 +34,6 @@ public class QueryOs : IMmiQuery {
     }
 
     return InfoDictionary;
-  }
-
-  public Dictionary<string, Dictionary<string, (string, string)>> QueryMultiple(string query) {
-    //using CimSession session = CimSession.Create(MmiConstants.ComputerName);
-    //var osInstances = session.QueryInstances(MmiConstants.SessionNamespace, MmiConstants.QueryDialect, query);
-    //var result = new Dictionary<string, Dictionary<string, (string, string)>>();
-    //foreach (var instance in osInstances) {
-    //  var properties = new Dictionary<string, (string, string)>();
-    //  foreach (var property in instance.CimInstanceProperties) {
-    //    properties[property.Name] = (property.Value?.ToString() ?? string.Empty, property.CimType.ToString());
-    //  }
-    //  result[instance.CimSystemProperties.InstanceId] = properties;
-    //}
-    //return result;
-    throw new NotImplementedException();
   }
 
   public void Dispose() {

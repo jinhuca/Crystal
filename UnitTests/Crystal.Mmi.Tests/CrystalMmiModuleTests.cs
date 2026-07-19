@@ -2,8 +2,8 @@
 // Crystal.Mmi project alongside everything else, which is under `Crystal.Mmi.*`. That looks
 // like a leftover from a Wmi -> Mmi rename rather than something intentional -- flagging it
 // here since it's why this test file imports Crystal.Wmi instead of Crystal.Mmi.
-using Crystal.Wmi;
 using Xunit;
+using Crystal.Wmi;
 
 namespace Crystal.Mmi.Tests;
 

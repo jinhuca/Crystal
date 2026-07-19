@@ -1,5 +1,5 @@
-﻿using Crystal.Mmi.Constants;
-using Xunit;
+﻿using Xunit;
+using Crystal.Mmi.Constants;
 
 namespace Crystal.Mmi.Tests.Constants;
 
