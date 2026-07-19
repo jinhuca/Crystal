@@ -11,4 +11,8 @@
     <PackageReference Include="Microsoft.Management.Infrastructure" Version="3.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Providers\Crystal.Mmi\Crystal.Mmi.csproj" />
+  </ItemGroup>
+
 </Project>

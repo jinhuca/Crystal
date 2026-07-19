@@ -5,7 +5,8 @@ using Microsoft.Management.Infrastructure;
 class Program {
   static void Main() {
     //Test1();
-    var result = GetOsInfo();
+    //var result = GetOsInfo();
+    TestMmiProvider();
   }
 
   private static void Test0() {
@@ -69,5 +70,14 @@ class Program {
       }
     }
     return osInfo;
+  }
+
+  private static void TestMmiProvider() {
+    using var queryOs = new Crystal.Mmi.Queries.QueryOs();
+    Console.WriteLine(queryOs.Id);
+    var info = queryOs.GetInfo();
+    foreach (var kvp in info) {
+      Console.WriteLine($"{kvp.Key}: {kvp.Value}");
+    }
   }
 }

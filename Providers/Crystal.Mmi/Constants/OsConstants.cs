@@ -4,6 +4,7 @@ using System.Text;
 
 namespace Crystal.Mmi.Constants; 
 internal class OsConstants {
+  public const string QueryId = "Operating System";
   public const string QueryString = "SELECT * FROM Win32_OperatingSystem";
 
   public const string BootDeviceKey = "BootDevice";

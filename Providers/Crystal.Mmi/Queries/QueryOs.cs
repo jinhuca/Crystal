@@ -13,6 +13,8 @@ public class QueryOs : IMmiQuery {
   public static string[]? MULLanguages;
   public static int? NumberOfProcesses;
 
+  public string Id => OsConstants.QueryId;
+
   public QueryOs() {
     _session = CimSession.Create(MmiConstants.ComputerName);
 
@@ -26,7 +28,7 @@ public class QueryOs : IMmiQuery {
     throw new NotImplementedException();
   }
 
-  public Dictionary<string, string> GetInfoDictionary() {
+  public Dictionary<string, string> GetInfo() {
     InfoDictionary.Clear();
 
     foreach (var property in _cimInstance.CimInstanceProperties) {

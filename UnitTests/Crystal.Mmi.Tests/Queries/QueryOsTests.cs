@@ -20,10 +20,10 @@ public class QueryOsTests {
   }
 
   [Fact(Skip = "Requires Windows and the MI/CIM runtime", SkipUnless = nameof(IsWindows))]
-  public void GetInfoDictionary_ContainsRealOperatingSystemProperties() {
+  public void GetInfo_ContainsRealOperatingSystemProperties() {
     using var queryOs = new QueryOs();
 
-    var result = queryOs.GetInfoDictionary();
+    var result = queryOs.GetInfo();
 
     Assert.NotEmpty(result);
     Assert.Contains(OsConstants.CaptionKey, result.Keys);
@@ -35,7 +35,7 @@ public class QueryOsTests {
   public void GetInfoDictionary_ReturnsTheSameInstanceItExposesAsInfoDictionary() {
     using var queryOs = new QueryOs();
 
-    var result = queryOs.GetInfoDictionary();
+    var result = queryOs.GetInfo();
 
     Assert.Same(queryOs.InfoDictionary, result);
   }
