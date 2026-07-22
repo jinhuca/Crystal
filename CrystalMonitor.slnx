@@ -4,6 +4,7 @@
     <Project Path="Modules/ResourceModule/ResourceModule.csproj" />
   </Folder>
   <Folder Name="/Providers/">
+    <Project Path="Providers/Crystal.Mmi/Crystal.Mmi.csproj" />
     <Project Path="Providers/Crystal.Smbios/Crystal.Smbios.csproj" />
     <Project Path="Providers/Crystal.Telemetry/Crystal.Telemetry.csproj">
       <Platform Project="x64" />
@@ -20,9 +21,11 @@
     <Project Path="Shell/Crystal.Shell/Crystal.Shell.csproj" />
   </Folder>
   <Folder Name="/SmokeTests/">
+    <Project Path="SmokeTests/Crystal.Mmi.Cli/Crystal.Mmi.Cli.csproj" />
     <Project Path="SmokeTests/Crystal.Smbios.Cli/Crystal.Smbios.Cli.csproj" />
   </Folder>
   <Folder Name="/UnitTests/">
+    <Project Path="UnitTests/Crystal.Mmi.Tests/Crystal.Mmi.Tests.csproj" />
     <Project Path="UnitTests/Crystal.Plot2D.Tests/Crystal.Plot2D.Tests.csproj" />
     <Project Path="UnitTests/Crystal.Smbios.Tests/Crystal.Smbios.Tests.csproj" />
   </Folder>
