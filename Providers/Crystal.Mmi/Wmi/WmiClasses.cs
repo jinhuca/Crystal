@@ -42,6 +42,10 @@ public static class WmiClasses {
   // Network
   public const string NetworkAdapter = "Win32_NetworkAdapter";
   public const string NetworkAdapterConfiguration = "Win32_NetworkAdapterConfiguration";
+  public const string NetworkClient = "Win32_NetworkClient";
+  public const string NetworkConnection = "Win32_NetworkConnection";
+  public const string NetworkLoginProfile = "Win32_NetworkLoginProfile";
+  public const string NetworkProtocol = "Win32_NetworkProtocol";
 
   // USB / Plug and Play
   public const string UsbController = "Win32_USBController";
