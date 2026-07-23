@@ -1,6 +1,7 @@
 <Solution>
   <Folder Name="/Build/" />
   <Folder Name="/Modules/">
+    <Project Path="Modules/BiosModule/BiosModule.csproj" Id="c1b31da1-27c9-4607-a2fc-582db4f16c78" />
     <Project Path="Modules/ResourceModule/ResourceModule.csproj" />
   </Folder>
   <Folder Name="/Providers/">
