@@ -2,12 +2,17 @@
 using Crystal.Mmi.HardwareFeatures.BaseBoard;
 using Crystal.Mmi.HardwareFeatures.Battery;
 using Crystal.Mmi.HardwareFeatures.Bios;
+using Crystal.Mmi.HardwareFeatures.Bus;
 using Crystal.Mmi.HardwareFeatures.DesktopMonitor;
+using Crystal.Mmi.HardwareFeatures.DeviceBus;
+using Crystal.Mmi.HardwareFeatures.DeviceSettings;
 using Crystal.Mmi.HardwareFeatures.DiskDrive;
 using Crystal.Mmi.HardwareFeatures.DiskPartition;
 using Crystal.Mmi.HardwareFeatures.Fan;
 using Crystal.Mmi.HardwareFeatures.HeatPipe;
+//using Crystal.Mmi.HardwareFeatures.Keyboard;
 using Crystal.Mmi.HardwareFeatures.LogicalDisk;
+using Crystal.Mmi.HardwareFeatures.MotherboardDevice;
 using Crystal.Mmi.HardwareFeatures.NetworkAdapter;
 using Crystal.Mmi.HardwareFeatures.NetworkAdapterConfiguration;
 using Crystal.Mmi.HardwareFeatures.ParallelPort;
@@ -19,13 +24,22 @@ using Crystal.Mmi.HardwareFeatures.SoundDevice;
 using Crystal.Mmi.HardwareFeatures.SystemEnclosure;
 using Crystal.Mmi.HardwareFeatures.USBController;
 using Crystal.Mmi.HardwareFeatures.VideoController;
+//using Crystal.Mmi.HardwareFeatures.VideoSettings;
 using Crystal.Mmi.MmiEngine;
 using Crystal.Mmi.PerformanceFeatures.PerfCounter;
 using Crystal.Mmi.PerformanceFeatures.PerfRawData;
+using Crystal.Mmi.SoftwareFeatures.Environment;
+using Crystal.Mmi.SoftwareFeatures.LogonSession;
+using Crystal.Mmi.SoftwareFeatures.NetworkClient;
+using Crystal.Mmi.SoftwareFeatures.NetworkConnection;
+using Crystal.Mmi.SoftwareFeatures.NetworkLoginProfile;
+using Crystal.Mmi.SoftwareFeatures.NetworkProtocol;
 using Crystal.Mmi.SoftwareFeatures.OperatingSystem;
 using Crystal.Mmi.SoftwareFeatures.Process;
 using Crystal.Mmi.SoftwareFeatures.Service;
+using Crystal.Mmi.SoftwareFeatures.StartupCommand;
 using Crystal.Mmi.SoftwareFeatures.Thread;
+using Crystal.Mmi.SoftwareFeatures.UserAccount;
 
 namespace Crystal.Mmi.Cli;
 
@@ -33,7 +47,9 @@ public class Program {
   // Categories that can easily return hundreds of instances on a real machine.
   // Previewed by default; pass --full to dump every instance.
   private static readonly HashSet<string> HighVolumeSections = new(StringComparer.OrdinalIgnoreCase) {
-    "Processes", "Threads", "Services", "Performance Counters", "Performance Raw Data", "Plug and Play Devices"
+    "Processes", "Threads", "Services", "Performance Counters", "Performance Raw Data", "Plug and Play Devices",
+    "Device-Bus Associations", "Device Settings Associations", "Video Settings Associations", "Network Login Profiles",
+    "Environment Variables"
   };
 
   private const int PreviewCount = 15;
@@ -88,21 +104,33 @@ public class Program {
     await PrintDriveTopologyAsync(provider, token);
     await RunListAsync("Network Adapters", ct => provider.ToSafeNetworkAdapterMetricsAsync(ct), showAll, token);
     await RunListAsync("Network Adapter Configurations", ct => provider.ToSafeNetworkAdapterConfigMetricsAsync(ct), showAll, token);
+    await RunListAsync("Network Clients", ct => provider.ToSafeNetworkClientMetricsAsync(ct), showAll, token);
+    await RunListAsync("Network Connections", ct => provider.ToSafeNetworkConnectionMetricsAsync(ct), showAll, token);
+    await RunListAsync("Network Protocols", ct => provider.ToSafeNetworkProtocolMetricsAsync(ct), showAll, token);
     await RunListAsync("Video Controllers", ct => provider.ToSafeVideoControllerMetricsAsync(ct), showAll, token);
     await RunListAsync("Desktop Monitors", ct => provider.ToSafeDesktopMonitorMetricsAsync(ct), showAll, token);
     await RunListAsync("Sound Devices", ct => provider.ToSafeSoundDeviceMetricsAsync(ct), showAll, token);
     await RunListAsync("USB Controllers", ct => provider.ToSafeUSBControllerMetricsAsync(ct), showAll, token);
     await RunListAsync("System Enclosures", ct => provider.ToSafeSystemEnclosureMetricsAsync(ct), showAll, token);
+    await RunListAsync("Motherboard Devices", ct => provider.ToSafeMotherboardDeviceMetricsAsync(ct), showAll, token);
+    await RunListAsync("Buses", ct => provider.ToSafeBusMetricsAsync(ct), showAll, token);
     await RunListAsync("Fans", ct => provider.ToSafeFanMetricsAsync(ct), showAll, token);
     await RunListAsync("Heat Pipes", ct => provider.ToSafeHeatPipeMetricsAsync(ct), showAll, token);
     await RunListAsync("Serial Ports", ct => provider.ToSafeSerialPortMetricsAsync(ct), showAll, token);
     await RunListAsync("Parallel Ports", ct => provider.ToSafeParallelPortMetricsAsync(ct), showAll, token);
     await RunListAsync("Plug and Play Devices", ct => provider.ToSafePnPEntityMetricsAsync(ct), showAll, token);
+    await RunListAsync("Device-Bus Associations", ct => provider.ToSafeDeviceBusMetricsAsync(ct), showAll, token);
+    await RunListAsync("Device Settings Associations", ct => provider.ToSafeDeviceSettingsMetricsAsync(ct), showAll, token);
 
     // --- Software / runtime state ---
     await RunListAsync("Processes", ct => provider.ToSafeProcessMetricsAsync(ct), showAll, token);
     await RunListAsync("Threads", ct => provider.ToSafeThreadMetricsAsync(ct), showAll, token);
     await RunListAsync("Services", ct => provider.ToSafeServiceMetricsAsync(ct), showAll, token);
+    await RunListAsync("User Accounts", ct => provider.ToSafeUserAccountMetricsAsync(ct), showAll, token);
+    await RunListAsync("Logon Sessions", ct => provider.ToSafeLogonSessionMetricsAsync(ct), showAll, token);
+    await RunListAsync("Network Login Profiles", ct => provider.ToSafeNetworkLoginProfileMetricsAsync(ct), showAll, token);
+    await RunListAsync("Startup Commands", ct => provider.ToSafeStartupCommandMetricsAsync(ct), showAll, token);
+    await RunListAsync("Environment Variables", ct => provider.ToSafeEnvironmentMetricsAsync(ct), showAll, token);
 
     // --- Raw performance counter base classes ---
     await RunListAsync("Performance Counters", ct => provider.ToSafePerfCounterMetricsAsync(ct), showAll, token);
