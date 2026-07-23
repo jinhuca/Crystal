@@ -15,7 +15,7 @@ public static class WmiBaseBoardExtensions {
       var data = instances.FirstOrDefault();
 
       // --- FULL NULL/CRASH FALLBACK RETRIEVAL ---
-      if(data == null || data.Count == 0) {
+      if (data == null || data.Count == 0) {
         return new BaseBoardMetrics(
           null, null, null, null, null, null, null, null, null, null,
           null, null, null, null, null, null, null, null, null, null,

@@ -14,7 +14,7 @@ public static class WmiBatteryExtensions {
       var data = instances.FirstOrDefault();
 
       // --- FULL NULL/CRASH FALLBACK RETRIEVAL ---
-      if(data == null || data.Count == 0) {
+      if (data == null || data.Count == 0) {
         return new BatteryMetrics(
           null, null, null, null, null, null, null, null, null, null,
           null, null, null, null, null, null, null, null, null, null,
@@ -26,17 +26,17 @@ public static class WmiBatteryExtensions {
       cancellationToken.ThrowIfCancellationRequested();
 
       // --- CLEAN LOOKUP CONDITIONAL WRAPPERS ---
-      string? GetStr(string key) => data.TryGetValue(key, out var v) && v.Type == WmiType.String 
+      string? GetStr(string key) => data.TryGetValue(key, out var v) && v.Type == WmiType.String
         ? v.AsString() : null;
-      int? GetInt(string key) => data.TryGetValue(key, out var v) && v.Type == WmiType.Int 
+      int? GetInt(string key) => data.TryGetValue(key, out var v) && v.Type == WmiType.Int
         ? v.AsInt() : null;
-      bool? GetBool(string key) => data.TryGetValue(key, out var v) && v.Type == WmiType.Bool 
+      bool? GetBool(string key) => data.TryGetValue(key, out var v) && v.Type == WmiType.Bool
         ? v.AsBool() : null;
-      DateTime? GetDate(string key) => data.TryGetValue(key, out var v) && v.Type == WmiType.DateTime 
+      DateTime? GetDate(string key) => data.TryGetValue(key, out var v) && v.Type == WmiType.DateTime
         ? v.AsDateTime() : null;
-      ulong? GetULong(string key) => data.TryGetValue(key, out var v) && v.Type == WmiType.ULong 
+      ulong? GetULong(string key) => data.TryGetValue(key, out var v) && v.Type == WmiType.ULong
         ? v.AsReadOnlyULong() : null;
-      ushort[]? GetUShortArr(string key) => data.TryGetValue(key, out var v) && v.Type == WmiType.UShortArray 
+      ushort[]? GetUShortArr(string key) => data.TryGetValue(key, out var v) && v.Type == WmiType.UShortArray
         ? v.AsUShortArray() : null;
 
       // --- INSTANTIATE SORTED EXTRACTED VALUES ---
