@@ -19,6 +19,7 @@
     <Project Path="Shared/Crystal.WpfConverters/Crystal.WpfConverters.csproj" Id="a829b8b6-9258-4c8d-9749-bdccbf065b6b" />
   </Folder>
   <Folder Name="/Shell/">
+    <Project Path="Shell/Crystal.NewShell/Crystal.NewShell.csproj" Id="34c04727-c18d-49e7-bdb5-9bb18e95078b" />
     <Project Path="Shell/Crystal.Shell/Crystal.Shell.csproj" />
   </Folder>
   <Folder Name="/SmokeTests/">
