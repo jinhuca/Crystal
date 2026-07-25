@@ -33,7 +33,12 @@ public sealed class T000_BiosInformation : ISmbiosDecodedStructure {
       if (ExtendedRomSize != 0) {
         uint unit = (uint)(ExtendedRomSize >> 14) & 0x3;
         uint value = (uint)(ExtendedRomSize & 0x3FFF);
-        return unit == 0 ? value * 1024L * 1024L : value * 1024L * 1024L * 1024L;
+        return unit switch {
+          0 => value * 1024L * 1024L,           // MB
+          1 => value * 1024L * 1024L * 1024L,  // GB
+          2 => value * 1024L,                   // KB
+          _ => ((long)RomSize + 1) * 64 * 1024  // reserved → fallback
+        };
       }
       return ((long)RomSize + 1) * 64 * 1024;
     }

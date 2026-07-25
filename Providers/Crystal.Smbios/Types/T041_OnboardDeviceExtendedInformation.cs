@@ -9,61 +9,58 @@ namespace Crystal.Smbios.Types;
 /// Supersedes the obsolete Type 10 (On Board Devices), which only recorded
 /// device type and description without PCI bus addressing.
 /// </summary>
-public sealed class T041_OnboardDeviceExtendedInformation : ISmbiosDecodedStructure
-{
-    public SmbiosStructureType StructureType { get; init; }
-    public byte Length { get; init; }
-    public ushort Handle { get; init; }
+public sealed class T041_OnboardDeviceExtendedInformation : ISmbiosDecodedStructure {
+  public SmbiosStructureType StructureType { get; init; }
+  public byte Length { get; init; }
+  public ushort Handle { get; init; }
 
-    /// <summary>Human-readable label, e.g. "Onboard LAN", "Onboard Audio".</summary>
-    public string? ReferenceDesignation { get; init; }
+  /// <summary>Human-readable label, e.g. "Onboard LAN", "Onboard Audio".</summary>
+  public string? ReferenceDesignation { get; init; }
 
-    /// <summary>Device category (lower 7 bits of the raw Device Type byte).</summary>
-    public OnboardDeviceType DeviceType { get; init; }
+  /// <summary>Device category (lower 7 bits of the raw Device Type byte).</summary>
+  public OnboardDeviceType DeviceType { get; init; }
 
-    /// <summary>True when the device is enabled; false when disabled (e.g. in BIOS setup).</summary>
-    public bool IsEnabled { get; init; }
+  /// <summary>True when the device is enabled; false when disabled (e.g. in BIOS setup).</summary>
+  public bool IsEnabled { get; init; }
 
-    /// <summary>1-based instance number distinguishing multiple devices of the same type.</summary>
-    public byte DeviceTypeInstance { get; init; }
+  /// <summary>1-based instance number distinguishing multiple devices of the same type.</summary>
+  public byte DeviceTypeInstance { get; init; }
 
-    /// <summary>PCI segment group number; 0 on single-segment systems.</summary>
-    public ushort SegmentGroupNumber { get; init; }
-    /// <summary>PCI bus number of this device.</summary>
-    public byte BusNumber { get; init; }
-    /// <summary>Bits 7-3: device number; bits 2-0: function number.</summary>
-    public byte DeviceFunctionNumber { get; init; }
+  /// <summary>PCI segment group number; 0 on single-segment systems.</summary>
+  public ushort SegmentGroupNumber { get; init; }
+  /// <summary>PCI bus number of this device.</summary>
+  public byte BusNumber { get; init; }
+  /// <summary>Bits 7-3: device number; bits 2-0: function number.</summary>
+  public byte DeviceFunctionNumber { get; init; }
 
-    /// <summary>PCI device number (upper 5 bits of <see cref="DeviceFunctionNumber"/>).</summary>
-    public int DeviceNumber => DeviceFunctionNumber >> 3;
-    /// <summary>PCI function number (lower 3 bits of <see cref="DeviceFunctionNumber"/>).</summary>
-    public int FunctionNumber => DeviceFunctionNumber & 0b111;
+  /// <summary>PCI device number (upper 5 bits of <see cref="DeviceFunctionNumber"/>).</summary>
+  public int DeviceNumber => DeviceFunctionNumber >> 3;
+  /// <summary>PCI function number (lower 3 bits of <see cref="DeviceFunctionNumber"/>).</summary>
+  public int FunctionNumber => DeviceFunctionNumber & 0b111;
 
-    internal static T041_OnboardDeviceExtendedInformation Decode(SmbiosRawStructure s)
-    {
-        // DSP0134 §7.42 formatted-area layout:
-        // 04 ReferenceDesignation      STRING
-        // 05 DeviceType                BYTE   (bit7 = enabled, bits6-0 = OnboardDeviceType)
-        // 06 DeviceTypeInstance        BYTE
-        // 07 SegmentGroupNumber        WORD
-        // 09 BusNumber                 BYTE
-        // 0A DeviceFunctionNumber      BYTE
-        byte deviceTypeRaw = s.ReadByte(0x05);
+  internal static T041_OnboardDeviceExtendedInformation Decode(SmbiosRawStructure s) {
+    // DSP0134 §7.42 formatted-area layout:
+    // 04 ReferenceDesignation      STRING
+    // 05 DeviceType                BYTE   (bit7 = enabled, bits6-0 = OnboardDeviceType)
+    // 06 DeviceTypeInstance        BYTE
+    // 07 SegmentGroupNumber        WORD
+    // 09 BusNumber                 BYTE
+    // 0A DeviceFunctionNumber      BYTE
+    byte deviceTypeRaw = s.ReadByte(0x05);
 
-        return new T041_OnboardDeviceExtendedInformation
-        {
-            StructureType        = s.Type,
-            Length               = s.Length,
-            Handle               = s.Handle,
-            ReferenceDesignation = s.GetString(s.ReadByte(0x04)),
-            DeviceType           = (OnboardDeviceType)(deviceTypeRaw & 0x7F),
-            IsEnabled            = (deviceTypeRaw & 0x80) != 0,
-            DeviceTypeInstance   = s.ReadByte(0x06),
-            SegmentGroupNumber   = s.Length > 0x08 ? s.ReadWord(0x07) : (ushort)0,
-            BusNumber            = s.Length > 0x09 ? s.ReadByte(0x09) : (byte)0,
-            DeviceFunctionNumber = s.Length > 0x0A ? s.ReadByte(0x0A) : (byte)0,
-        };
-    }
+    return new T041_OnboardDeviceExtendedInformation {
+      StructureType = s.Type,
+      Length = s.Length,
+      Handle = s.Handle,
+      ReferenceDesignation = s.GetString(s.ReadByte(0x04)),
+      DeviceType = (OnboardDeviceType)(deviceTypeRaw & 0x7F),
+      IsEnabled = (deviceTypeRaw & 0x80) != 0,
+      DeviceTypeInstance = s.ReadByte(0x06),
+      SegmentGroupNumber = s.Length > 0x08 ? s.ReadWord(0x07) : (ushort)0,
+      BusNumber = s.Length > 0x09 ? s.ReadByte(0x09) : (byte)0,
+      DeviceFunctionNumber = s.Length > 0x0A ? s.ReadByte(0x0A) : (byte)0,
+    };
+  }
 }
 
 // ── Type 41 — Onboard Devices Extended Information enums (DSP0134 §7.42) ────
