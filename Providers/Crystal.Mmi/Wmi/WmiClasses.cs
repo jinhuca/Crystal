@@ -100,4 +100,12 @@ public static class WmiClasses
     public const string UserAccount = "Win32_UserAccount";
     public const string StartupCommand = "Win32_StartupCommand";
     public const string Environment = "Win32_Environment";
+    public const string Desktop = "Win32_Desktop";
+    public const string UserDesktop = "Win32_UserDesktop";
+    public const string TimeZone = "Win32_TimeZone";
+
+    // Drivers / File System / Registry
+    public const string SystemDriver = "Win32_SystemDriver";
+    public const string Directory = "Win32_Directory";
+    public const string Registry = "Win32_Registry";
 }

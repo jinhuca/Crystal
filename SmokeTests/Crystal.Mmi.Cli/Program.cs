@@ -47,6 +47,8 @@ using Crystal.Mmi.HardwareFeatures.VoltageProbe;
 using Crystal.Mmi.MmiEngine;
 using Crystal.Mmi.PerformanceFeatures.PerfCounter;
 using Crystal.Mmi.PerformanceFeatures.PerfRawData;
+using Crystal.Mmi.SoftwareFeatures.Desktop;
+using Crystal.Mmi.SoftwareFeatures.Directory;
 using Crystal.Mmi.SoftwareFeatures.Environment;
 using Crystal.Mmi.SoftwareFeatures.LogonSession;
 using Crystal.Mmi.SoftwareFeatures.NetworkClient;
@@ -55,10 +57,14 @@ using Crystal.Mmi.SoftwareFeatures.NetworkLoginProfile;
 using Crystal.Mmi.SoftwareFeatures.NetworkProtocol;
 using Crystal.Mmi.SoftwareFeatures.OperatingSystem;
 using Crystal.Mmi.SoftwareFeatures.Process;
+using Crystal.Mmi.SoftwareFeatures.Registry;
 using Crystal.Mmi.SoftwareFeatures.Service;
 using Crystal.Mmi.SoftwareFeatures.StartupCommand;
+using Crystal.Mmi.SoftwareFeatures.SystemDriver;
 using Crystal.Mmi.SoftwareFeatures.Thread;
+using Crystal.Mmi.SoftwareFeatures.TimeZone;
 using Crystal.Mmi.SoftwareFeatures.UserAccount;
+using Crystal.Mmi.SoftwareFeatures.UserDesktop;
 
 namespace Crystal.Mmi.Cli;
 
@@ -69,7 +75,7 @@ public class Program {
     "Processes", "Threads", "Services", "Performance Counters", "Performance Raw Data", "Plug and Play Devices",
     "Device-Bus Associations", "Device Settings Associations", "Video Settings Associations", "Network Login Profiles",
     "Environment Variables", "IDE Controller-Device Associations", "SCSI Controller-Device Associations",
-    "USB Controller-Device Associations", "Associated Processor Memory", "DMA Channels"
+    "USB Controller-Device Associations", "Associated Processor Memory", "DMA Channels", "User Desktop Associations"
   };
 
   private const int PreviewCount = 15;
@@ -172,6 +178,15 @@ public class Program {
     await RunListAsync("Network Login Profiles", ct => provider.ToSafeNetworkLoginProfileMetricsAsync(ct), showAll, token);
     await RunListAsync("Startup Commands", ct => provider.ToSafeStartupCommandMetricsAsync(ct), showAll, token);
     await RunListAsync("Environment Variables", ct => provider.ToSafeEnvironmentMetricsAsync(ct), showAll, token);
+    await RunListAsync("System Drivers", ct => provider.ToSafeSystemDriverMetricsAsync(ct), showAll, token);
+    await RunListAsync("Desktops", ct => provider.ToSafeDesktopMetricsAsync(ct), showAll, token);
+    await RunListAsync("User Desktop Associations", ct => provider.ToSafeUserDesktopMetricsAsync(ct), showAll, token);
+    await RunListAsync("Time Zones", ct => provider.ToSafeTimeZoneMetricsAsync(ct), showAll, token);
+    await RunListAsync("Registry", ct => provider.ToSafeRegistryMetricsAsync(ct), showAll, token);
+    // Directories are intentionally NOT enumerated here: Win32_Directory has no built-in scope,
+    // so a bare SELECT * walks the entire file system. Callers should query
+    // ToSafeDirectoryMetricsAsync with a provider that scopes the WQL WHERE clause
+    // (e.g. WHERE Drive='C:' or a specific path) rather than enumerating everything.
 
     // --- Raw performance counter base classes ---
     await RunListAsync("Performance Counters", ct => provider.ToSafePerfCounterMetricsAsync(ct), showAll, token);
