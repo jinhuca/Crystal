@@ -22,6 +22,16 @@ public static class WmiClasses
     public const string DeviceBus = "Win32_DeviceBus";
     public const string DeviceSettings = "Win32_DeviceSettings";
     public const string VideoSettings = "Win32_VideoSettings";
+    public const string IDEController = "Win32_IDEController";
+    public const string IDEControllerDevice = "Win32_IDEControllerDevice";
+    public const string SCSIController = "Win32_SCSIController";
+    public const string SCSIControllerDevice = "Win32_SCSIControllerDevice";
+    public const string USBControllerDevice = "Win32_USBControllerDevice";
+    public const string USBHub = "Win32_USBHub";
+    public const string DMAChannel = "Win32_DMAChannel";
+    public const string OnBoardDevice = "Win32_OnBoardDevice";
+    public const string InfraredDevice = "Win32_InfraredDevice";
+    public const string AssociatedProcessorMemory = "Win32_AssociatedProcessorMemory";
 
     // Processor / Memory
     public const string Processor = "Win32_Processor";
@@ -76,6 +86,9 @@ public static class WmiClasses
     public const string PointingDevice = "Win32_PointingDevice";
     public const string Refrigeration = "Win32_Refrigeration";
     public const string TemperatureProbe = "Win32_TemperatureProbe";
+    public const string CurrentProbe = "Win32_CurrentProbe";
+    public const string VoltageProbe = "Win32_VoltageProbe";
+    public const string PowerManagementEvent = "Win32_PowerManagementEvent";
     public const string CDROMDrive = "Win32_CDROMDrive";
     public const string CdRomDrive = "Win32_CDROMDrive";
     public const string TapeDrive = "Win32_TapeDrive";

@@ -1,35 +1,49 @@
 ﻿using System.Reflection;
+using Crystal.Mmi.HardwareFeatures.AssociatedProcessorMemory;
 using Crystal.Mmi.HardwareFeatures.BaseBoard;
 using Crystal.Mmi.HardwareFeatures.Battery;
 using Crystal.Mmi.HardwareFeatures.Bios;
 using Crystal.Mmi.HardwareFeatures.Bus;
+using Crystal.Mmi.HardwareFeatures.CurrentProbe;
 using Crystal.Mmi.HardwareFeatures.DesktopMonitor;
 using Crystal.Mmi.HardwareFeatures.DeviceBus;
 using Crystal.Mmi.HardwareFeatures.DeviceSettings;
 using Crystal.Mmi.HardwareFeatures.DiskDrive;
 using Crystal.Mmi.HardwareFeatures.DiskPartition;
 using Crystal.Mmi.HardwareFeatures.DisplayControllerConfiguration;
+using Crystal.Mmi.HardwareFeatures.DMAChannel;
 using Crystal.Mmi.HardwareFeatures.Fan;
 using Crystal.Mmi.HardwareFeatures.HeatPipe;
+using Crystal.Mmi.HardwareFeatures.IDEController;
+using Crystal.Mmi.HardwareFeatures.IDEControllerDevice;
+using Crystal.Mmi.HardwareFeatures.InfraredDevice;
 using Crystal.Mmi.HardwareFeatures.Keyboard;
 using Crystal.Mmi.HardwareFeatures.LogicalDisk;
 using Crystal.Mmi.HardwareFeatures.MotherboardDevice;
 using Crystal.Mmi.HardwareFeatures.NetworkAdapter;
 using Crystal.Mmi.HardwareFeatures.NetworkAdapterConfiguration;
+using Crystal.Mmi.HardwareFeatures.OnBoardDevice;
 using Crystal.Mmi.HardwareFeatures.ParallelPort;
 using Crystal.Mmi.HardwareFeatures.PhysicalMedia;
 using Crystal.Mmi.HardwareFeatures.PhysicalMemory;
 using Crystal.Mmi.HardwareFeatures.PnPEntity;
 using Crystal.Mmi.HardwareFeatures.PointingDevice;
+using Crystal.Mmi.HardwareFeatures.PortableBattery;
+using Crystal.Mmi.HardwareFeatures.PowerManagementEvent;
 using Crystal.Mmi.HardwareFeatures.Processor;
 using Crystal.Mmi.HardwareFeatures.Refrigeration;
+using Crystal.Mmi.HardwareFeatures.SCSIController;
+using Crystal.Mmi.HardwareFeatures.SCSIControllerDevice;
 using Crystal.Mmi.HardwareFeatures.SerialPort;
 using Crystal.Mmi.HardwareFeatures.SoundDevice;
 using Crystal.Mmi.HardwareFeatures.SystemEnclosure;
 using Crystal.Mmi.HardwareFeatures.TemperatureProbe;
 using Crystal.Mmi.HardwareFeatures.USBController;
+using Crystal.Mmi.HardwareFeatures.USBControllerDevice;
+using Crystal.Mmi.HardwareFeatures.USBHub;
 using Crystal.Mmi.HardwareFeatures.VideoController;
 using Crystal.Mmi.HardwareFeatures.VideoSettings;
+using Crystal.Mmi.HardwareFeatures.VoltageProbe;
 using Crystal.Mmi.MmiEngine;
 using Crystal.Mmi.PerformanceFeatures.PerfCounter;
 using Crystal.Mmi.PerformanceFeatures.PerfRawData;
@@ -54,7 +68,8 @@ public class Program {
   private static readonly HashSet<string> HighVolumeSections = new(StringComparer.OrdinalIgnoreCase) {
     "Processes", "Threads", "Services", "Performance Counters", "Performance Raw Data", "Plug and Play Devices",
     "Device-Bus Associations", "Device Settings Associations", "Video Settings Associations", "Network Login Profiles",
-    "Environment Variables"
+    "Environment Variables", "IDE Controller-Device Associations", "SCSI Controller-Device Associations",
+    "USB Controller-Device Associations", "Associated Processor Memory", "DMA Channels"
   };
 
   private const int PreviewCount = 15;
@@ -118,6 +133,11 @@ public class Program {
     await RunListAsync("Desktop Monitors", ct => provider.ToSafeDesktopMonitorMetricsAsync(ct), showAll, token);
     await RunListAsync("Sound Devices", ct => provider.ToSafeSoundDeviceMetricsAsync(ct), showAll, token);
     await RunListAsync("USB Controllers", ct => provider.ToSafeUSBControllerMetricsAsync(ct), showAll, token);
+    await RunListAsync("USB Hubs", ct => provider.ToSafeUSBHubMetricsAsync(ct), showAll, token);
+    await RunListAsync("IDE Controllers", ct => provider.ToSafeIDEControllerMetricsAsync(ct), showAll, token);
+    await RunListAsync("SCSI Controllers", ct => provider.ToSafeSCSIControllerMetricsAsync(ct), showAll, token);
+    await RunListAsync("DMA Channels", ct => provider.ToSafeDMAChannelMetricsAsync(ct), showAll, token);
+    await RunListAsync("OnBoard Devices", ct => provider.ToSafeOnBoardDeviceMetricsAsync(ct), showAll, token);
     await RunListAsync("System Enclosures", ct => provider.ToSafeSystemEnclosureMetricsAsync(ct), showAll, token);
     await RunListAsync("Motherboard Devices", ct => provider.ToSafeMotherboardDeviceMetricsAsync(ct), showAll, token);
     await RunListAsync("Buses", ct => provider.ToSafeBusMetricsAsync(ct), showAll, token);
@@ -125,6 +145,11 @@ public class Program {
     await RunListAsync("Heat Pipes", ct => provider.ToSafeHeatPipeMetricsAsync(ct), showAll, token);
     await RunListAsync("Refrigeration Devices", ct => provider.ToSafeRefrigerationMetricsAsync(ct), showAll, token);
     await RunListAsync("Temperature Probes", ct => provider.ToSafeTemperatureProbeMetricsAsync(ct), showAll, token);
+    await RunListAsync("Current Probes", ct => provider.ToSafeCurrentProbeMetricsAsync(ct), showAll, token);
+    await RunListAsync("Voltage Probes", ct => provider.ToSafeVoltageProbeMetricsAsync(ct), showAll, token);
+    await RunListAsync("Portable Batteries", ct => provider.ToSafePortableBatteryMetricsAsync(ct), showAll, token);
+    await RunListAsync("Power Management Events", ct => provider.ToSafePowerManagementEventMetricsAsync(ct), showAll, token);
+    await RunListAsync("Infrared Devices", ct => provider.ToSafeInfraredDeviceMetricsAsync(ct), showAll, token);
     await RunListAsync("Keyboards", ct => provider.ToSafeKeyboardMetricsAsync(ct), showAll, token);
     await RunListAsync("Pointing Devices", ct => provider.ToSafePointingDeviceMetricsAsync(ct), showAll, token);
     await RunListAsync("Serial Ports", ct => provider.ToSafeSerialPortMetricsAsync(ct), showAll, token);
@@ -133,6 +158,10 @@ public class Program {
     await RunListAsync("Device-Bus Associations", ct => provider.ToSafeDeviceBusMetricsAsync(ct), showAll, token);
     await RunListAsync("Device Settings Associations", ct => provider.ToSafeDeviceSettingsMetricsAsync(ct), showAll, token);
     await RunListAsync("Video Settings Associations", ct => provider.ToSafeVideoSettingsMetricsAsync(ct), showAll, token);
+    await RunListAsync("IDE Controller-Device Associations", ct => provider.ToSafeIDEControllerDeviceMetricsAsync(ct), showAll, token);
+    await RunListAsync("SCSI Controller-Device Associations", ct => provider.ToSafeSCSIControllerDeviceMetricsAsync(ct), showAll, token);
+    await RunListAsync("USB Controller-Device Associations", ct => provider.ToSafeUSBControllerDeviceMetricsAsync(ct), showAll, token);
+    await RunListAsync("Associated Processor Memory", ct => provider.ToSafeAssociatedProcessorMemoryMetricsAsync(ct), showAll, token);
 
     // --- Software / runtime state ---
     await RunListAsync("Processes", ct => provider.ToSafeProcessMetricsAsync(ct), showAll, token);
