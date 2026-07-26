@@ -355,6 +355,8 @@ internal class Smbios_Cli_Program {
           Console.WriteLine();
         }
       }
+
+      DumpNewlyAddedTypes(table);
     }
     catch (Exception ex) {
       Console.WriteLine($"Error: {ex.Message}");
@@ -364,6 +366,141 @@ internal class Smbios_Cli_Program {
     Console.WriteLine("\nPress any key to exit...");
     Console.ReadKey();
   }
+
+  // Demo output for the types added on top of the original five-file SMBIOS
+  // implementation: Types 5, 6, 10, 12, 14, 23-25, 29-32, 34-38, 40, 42-46.
+  private static void DumpNewlyAddedTypes(SmbiosTable table) {
+    Console.WriteLine("\n=== Memory Controllers (Type 5, Obsolete) ===");
+    if (table.MemoryControllers.Count == 0) Console.WriteLine("  (none reported)");
+    foreach (var mc in table.MemoryControllers) {
+      Console.WriteLine($"  Error Detecting: {mc.ErrorDetectingMethod}  Correcting: {mc.ErrorCorrectingCapability}");
+      Console.WriteLine($"    Interleave: supported={mc.SupportedInterleave} current={mc.CurrentInterleave}");
+      Console.WriteLine($"    Max Module Size: {mc.MaximumMemoryModuleSizeMiB?.ToString() ?? "unknown"} MiB  Slots: {mc.AssociatedMemorySlotCount}");
+    }
+
+    Console.WriteLine("\n=== Memory Modules (Type 6, Obsolete) ===");
+    if (table.MemoryModules.Count == 0) Console.WriteLine("  (none reported)");
+    foreach (var mm in table.MemoryModules) {
+      Console.WriteLine($"  {mm.SocketDesignation ?? "(unnamed)"}: {mm.CurrentMemoryType}, installed={mm.InstalledSizeMiB?.ToString() ?? "n/a"} MiB, enabled={mm.EnabledSizeMiB?.ToString() ?? "n/a"} MiB");
+    }
+
+    Console.WriteLine("\n=== On Board Devices (Type 10, Obsolete) ===");
+    if (table.LegacyOnBoardDevices.Count == 0) Console.WriteLine("  (none reported)");
+    foreach (var obd in table.LegacyOnBoardDevices) {
+      foreach (var d in obd.Devices)
+        Console.WriteLine($"  [{(d.IsEnabled ? "enabled" : "disabled")}] {d.DeviceType}: {d.Description ?? "(unnamed)"}");
+    }
+
+    Console.WriteLine("\n=== System Configuration Options (Type 12) ===");
+    if (table.SystemConfigurationOptions.Count == 0) Console.WriteLine("  (none reported)");
+    foreach (var sco in table.SystemConfigurationOptions)
+      foreach (var opt in sco.Options) Console.WriteLine($"  - {opt}");
+
+    Console.WriteLine("\n=== Group Associations (Type 14) ===");
+    if (table.GroupAssociations.Count == 0) Console.WriteLine("  (none reported)");
+    foreach (var ga in table.GroupAssociations) {
+      Console.WriteLine($"  {ga.GroupName ?? "(unnamed group)"}: {ga.Items.Count} member(s)");
+      foreach (var item in ga.Items) Console.WriteLine($"    - {item.ItemType} @ handle 0x{item.ItemHandle:X4}");
+    }
+
+    Console.WriteLine("\n=== System Reset (Type 23) ===");
+    if (table.SystemResets.Count == 0) Console.WriteLine("  (none reported)");
+    foreach (var sr in table.SystemResets) {
+      Console.WriteLine($"  Enabled: {sr.IsEnabled}  Watchdog: {sr.HasWatchdogTimer}");
+      Console.WriteLine($"    Boot Option: {sr.BootOption}  On Limit: {sr.BootOptionOnLimit}");
+      Console.WriteLine($"    Reset Count: {sr.ResetCount}  Limit: {sr.ResetLimit}  Timer: {sr.TimerIntervalMinutes} min  Timeout: {sr.TimeoutMinutes} min");
+    }
+
+    Console.WriteLine("\n=== Hardware Security (Type 24) ===");
+    var hwSec = table.HardwareSecurity;
+    if (hwSec is null) Console.WriteLine("  (none reported)");
+    else {
+      Console.WriteLine($"  Power-On Password: {hwSec.PowerOnPasswordStatus}");
+      Console.WriteLine($"  Keyboard Password: {hwSec.KeyboardPasswordStatus}");
+      Console.WriteLine($"  Administrator Password: {hwSec.AdministratorPasswordStatus}");
+      Console.WriteLine($"  Front Panel Reset: {hwSec.FrontPanelResetStatus}");
+    }
+
+    Console.WriteLine("\n=== System Power Controls (Type 25) ===");
+    var pwrCtl = table.PowerControls;
+    if (pwrCtl is null) Console.WriteLine("  (none reported)");
+    else Console.WriteLine($"  Next Scheduled Power-On: month={pwrCtl.Month?.ToString() ?? "every"} day={pwrCtl.DayOfMonth?.ToString() ?? "every"} {pwrCtl.Hour:D2}:{pwrCtl.Minute:D2}:{pwrCtl.Second:D2}");
+
+    Console.WriteLine("\n=== Electrical Current Probes (Type 29) ===");
+    if (table.ElectricalCurrentProbes.Count == 0) Console.WriteLine("  (none reported)");
+    foreach (var ecp in table.ElectricalCurrentProbes) {
+      Console.WriteLine($"  {ecp.Description ?? "(unnamed)"} @ {ecp.Location}: {ecp.Status}");
+      Console.WriteLine($"    Max: {ecp.MaximumValueMilliamps} mA  Min: {ecp.MinimumValueMilliamps} mA  Nominal: {(ecp.IsNominalValueIdentifiable ? ecp.NominalValueMilliamps.ToString() : "unknown")} mA");
+    }
+
+    Console.WriteLine("\n=== Out-of-Band Remote Access (Type 30) ===");
+    if (table.OutOfBandRemoteAccess.Count == 0) Console.WriteLine("  (none reported)");
+    foreach (var oob in table.OutOfBandRemoteAccess)
+      Console.WriteLine($"  {oob.ManufacturerName ?? "(unnamed)"}: inbound={oob.InboundConnectionEnabled} outbound={oob.OutboundConnectionEnabled}");
+
+    Console.WriteLine("\n=== Boot Integrity Services Entry Point (Type 31) ===");
+    if (table.BootIntegrityServicesEntryPoints.Count == 0) Console.WriteLine("  (none reported)");
+    foreach (var bis in table.BootIntegrityServicesEntryPoints)
+      Console.WriteLine($"  16-bit entry: {bis.BisEntry16Segment:X4}:{bis.BisEntry16Offset:X4}  32-bit entry: 0x{bis.BisEntry32Address:X8}");
+
+    Console.WriteLine("\n=== System Boot Information (Type 32) ===");
+    var boot = table.BootInformation;
+    if (boot is null) Console.WriteLine("  (none reported)");
+    else Console.WriteLine($"  Status: {(object?)boot.Status ?? $"raw 0x{boot.BootStatusRaw:X2} (OEM/product-specific)"}");
+
+    Console.WriteLine("\n=== Management Devices (Type 34/35/36) ===");
+    if (table.ManagementDevices.Count == 0) Console.WriteLine("  (none reported)");
+    foreach (var md in table.ManagementDevices)
+      Console.WriteLine($"  {md.Description ?? "(unnamed)"}: {md.Type} @ 0x{md.Address:X} ({md.AddressType})");
+    foreach (var comp in table.ManagementDeviceComponents)
+      Console.WriteLine($"  Component {comp.Description ?? "(unnamed)"}: device=0x{comp.ManagementDeviceHandle:X4} target=0x{comp.ComponentHandle:X4} threshold={(comp.HasThreshold ? $"0x{comp.ThresholdHandle:X4}" : "none")}");
+    foreach (var th in table.ManagementDeviceThresholds)
+      Console.WriteLine($"  Thresholds: nonCritical=[{th.LowerThresholdNonCritical},{th.UpperThresholdNonCritical}] critical=[{th.LowerThresholdCritical},{th.UpperThresholdCritical}] nonRecoverable=[{th.LowerThresholdNonRecoverable},{th.UpperThresholdNonRecoverable}]");
+
+    Console.WriteLine("\n=== Memory Channels (Type 37) ===");
+    if (table.MemoryChannels.Count == 0) Console.WriteLine("  (none reported)");
+    foreach (var mch in table.MemoryChannels) {
+      Console.WriteLine($"  {mch.ChannelType}: max load={mch.MaximumChannelLoad} total load={mch.TotalLoad}");
+      foreach (var dev in mch.Devices) Console.WriteLine($"    - handle 0x{dev.MemoryDeviceHandle:X4} load {dev.DeviceLoad}");
+    }
+
+    Console.WriteLine("\n=== IPMI Device (Type 38) ===");
+    var ipmi = table.Ipmi;
+    if (ipmi is null) Console.WriteLine("  (none reported)");
+    else Console.WriteLine($"  {ipmi.InterfaceType} v{ipmi.IpmiSpecificationMajor}.{ipmi.IpmiSpecificationMinor}  I2C: 0x{ipmi.I2CSlaveAddress:X2}  Base: 0x{ipmi.BaseAddress:X}");
+
+    Console.WriteLine("\n=== Additional Information (Type 40) ===");
+    if (table.AdditionalInformation.Count == 0) Console.WriteLine("  (none reported)");
+    foreach (var ai in table.AdditionalInformation)
+      foreach (var entry in ai.Entries)
+        Console.WriteLine($"  {entry.EntryString ?? "(unnamed)"}: handle=0x{entry.ReferencedHandle:X4} offset=0x{entry.ReferencedOffset:X2} value=[{string.Join(",", entry.Value.Select(b => $"0x{b:X2}"))}]");
+
+    Console.WriteLine("\n=== Management Controller Host Interfaces (Type 42) ===");
+    if (table.ManagementControllerHostInterfaces.Count == 0) Console.WriteLine("  (none reported)");
+    foreach (var mchi in table.ManagementControllerHostInterfaces)
+      Console.WriteLine($"  {(object?)mchi.InterfaceType ?? $"raw 0x{mchi.InterfaceTypeRaw:X2}"}: {mchi.InterfaceTypeSpecificData.Count} spec byte(s), {mchi.TrailingBytes.Count} trailing byte(s)");
+
+    Console.WriteLine("\n=== TPM Device (Type 43) ===");
+    var tpm = table.Tpm;
+    if (tpm is null) Console.WriteLine("  (none reported)");
+    else Console.WriteLine($"  {tpm.VendorId} spec {tpm.MajorSpecVersion}.{tpm.MinorSpecVersion}  {tpm.Description ?? "(unnamed)"}  Characteristics: {tpm.Characteristics}");
+
+    Console.WriteLine("\n=== Processor Additional Information (Type 44) ===");
+    if (table.ProcessorAdditionalInformation.Count == 0) Console.WriteLine("  (none reported)");
+    foreach (var pai in table.ProcessorAdditionalInformation)
+      Console.WriteLine($"  Processor 0x{pai.ReferencedHandle:X4}: {pai.ProcessorArchitectureType}, {pai.ProcessorSpecificData.Count} data byte(s)");
+
+    Console.WriteLine("\n=== Firmware Inventory (Type 45) ===");
+    if (table.FirmwareInventory.Count == 0) Console.WriteLine("  (none reported)");
+    foreach (var fw in table.FirmwareInventory)
+      Console.WriteLine($"  {fw.FirmwareComponentName ?? "(unnamed)"} v{fw.FirmwareVersion ?? "?"} ({fw.Manufacturer ?? "unknown mfr"}): {fw.State}, {fw.ImageSizeBytes} bytes");
+
+    Console.WriteLine("\n=== String Properties (Type 46) ===");
+    if (table.StringProperties.Count == 0) Console.WriteLine("  (none reported)");
+    foreach (var sp in table.StringProperties)
+      Console.WriteLine($"  {(object?)sp.PropertyId ?? $"raw 0x{sp.PropertyIdRaw:X4}"} -> \"{sp.PropertyValue ?? "(none)"}\" (parent 0x{sp.ParentHandle:X4})");
+  }
+
 
   static void Main(string[] args) {
     //tryit();

@@ -75,6 +75,61 @@ public sealed class SmbiosTable {
   // Add this property to the public properties section (near GroupAssociations / PhysicalMemoryArrays)
   public IReadOnlyList<T015_SystemEventLog> SystemEventLogs { get; }
 
+  // ── Newly-added decoded structure collections (Types 5,6,10,12,14,23-25,29-32,34-38,40,42-46) ──
+
+  /// <summary>Memory Controller Information (Obsolete, Type 5).</summary>
+  public IReadOnlyList<T005_MemoryControllerInformation> MemoryControllers { get; }
+  /// <summary>Memory Module Information (Obsolete, Type 6).</summary>
+  public IReadOnlyList<T006_MemoryModuleInformation> MemoryModules { get; }
+  /// <summary>On Board Devices Information (Obsolete, Type 10). Superseded by <see cref="OnboardDevices"/> (Type 41).</summary>
+  public IReadOnlyList<T010_OnBoardDevicesInformation> LegacyOnBoardDevices { get; }
+  /// <summary>System Configuration Options (Type 12). Free-form jumper/switch strings.</summary>
+  public IReadOnlyList<T012_SystemConfigurationOptions> SystemConfigurationOptions { get; }
+  /// <summary>Group Associations (Type 14).</summary>
+  public IReadOnlyList<T014_GroupAssociations> GroupAssociations { get; }
+  /// <summary>System Reset (Type 23). Normally at most one.</summary>
+  public IReadOnlyList<T023_SystemReset> SystemResets { get; }
+  /// <summary>Hardware Security (Type 24). Normally at most one.</summary>
+  public IReadOnlyList<T024_HardwareSecurity> HardwareSecurityInformation { get; }
+  /// <summary>System Power Controls (Type 25). Normally at most one.</summary>
+  public IReadOnlyList<T025_SystemPowerControls> SystemPowerControls { get; }
+  /// <summary>Electrical Current Probe (Type 29). One per current sensor.</summary>
+  public IReadOnlyList<T029_ElectricalCurrentProbeInformation> ElectricalCurrentProbes { get; }
+  /// <summary>Out-of-Band Remote Access (Type 30). Normally at most one.</summary>
+  public IReadOnlyList<T030_OutOfBandRemoteAccess> OutOfBandRemoteAccess { get; }
+  /// <summary>Boot Integrity Services (BIS) Entry Point (Type 31). Normally at most one.</summary>
+  public IReadOnlyList<T031_BootIntegrityServicesEntryPoint> BootIntegrityServicesEntryPoints { get; }
+  /// <summary>System Boot Information (Type 32). Normally exactly one.</summary>
+  public IReadOnlyList<T032_SystemBootInformation> SystemBootInformation { get; }
+  /// <summary>Management Device (Type 34). One per hardware-monitoring chip.</summary>
+  public IReadOnlyList<T034_ManagementDevice> ManagementDevices { get; }
+  /// <summary>Management Device Component (Type 35).</summary>
+  public IReadOnlyList<T035_ManagementDeviceComponent> ManagementDeviceComponents { get; }
+  /// <summary>Management Device Threshold Data (Type 36).</summary>
+  public IReadOnlyList<T036_ManagementDeviceThresholdData> ManagementDeviceThresholds { get; }
+  /// <summary>Memory Channel (Type 37).</summary>
+  public IReadOnlyList<T037_MemoryChannel> MemoryChannels { get; }
+  /// <summary>IPMI Device Information (Type 38). Normally at most one.</summary>
+  public IReadOnlyList<T038_IpmiDeviceInformation> IpmiDevices { get; }
+  /// <summary>Additional Information (Type 40). Field overrides/extensions for other structures.</summary>
+  public IReadOnlyList<T040_AdditionalInformation> AdditionalInformation { get; }
+  /// <summary>Management Controller Host Interface (Type 42).</summary>
+  public IReadOnlyList<T042_ManagementControllerHostInterface> ManagementControllerHostInterfaces { get; }
+  /// <summary>TPM Device (Type 43). Normally at most one.</summary>
+  public IReadOnlyList<T043_TpmDevice> TpmDevices { get; }
+  /// <summary>Processor Additional Information (Type 44).</summary>
+  public IReadOnlyList<T044_ProcessorAdditionalInformation> ProcessorAdditionalInformation { get; }
+  /// <summary>Firmware Inventory Information (Type 45). One per firmware component.</summary>
+  public IReadOnlyList<T045_FirmwareInventoryInformation> FirmwareInventory { get; }
+  /// <summary>String Property (Type 46).</summary>
+  public IReadOnlyList<T046_StringProperty> StringProperties { get; }
+
+  // ── Convenience accessors for the newly-added single-instance types ──────
+  public T024_HardwareSecurity? HardwareSecurity => HardwareSecurityInformation.FirstOrDefault();
+  public T025_SystemPowerControls? PowerControls => SystemPowerControls.FirstOrDefault();
+  public T032_SystemBootInformation? BootInformation => SystemBootInformation.FirstOrDefault();
+  public T038_IpmiDeviceInformation? Ipmi => IpmiDevices.FirstOrDefault();
+  public T043_TpmDevice? Tpm => TpmDevices.FirstOrDefault();
 
   // ── Convenience OEM helpers ─────────────────────────────────────────────
 
@@ -231,6 +286,30 @@ public sealed class SmbiosTable {
 
     PowerSupplies = Decode<T039_SystemPowerSupply>(rawStructures, SmbiosStructureType.SystemPowerSupply, T039_SystemPowerSupply.Decode);
     SystemEventLogs = Decode<T015_SystemEventLog>(rawStructures, SmbiosStructureType.SystemEventLog, T015_SystemEventLog.Decode);
+
+    MemoryControllers = Decode<T005_MemoryControllerInformation>(rawStructures, SmbiosStructureType.MemoryController, T005_MemoryControllerInformation.Decode);
+    MemoryModules = Decode<T006_MemoryModuleInformation>(rawStructures, SmbiosStructureType.MemoryModule, T006_MemoryModuleInformation.Decode);
+    LegacyOnBoardDevices = Decode<T010_OnBoardDevicesInformation>(rawStructures, SmbiosStructureType.OnBoardDevices, T010_OnBoardDevicesInformation.Decode);
+    SystemConfigurationOptions = Decode<T012_SystemConfigurationOptions>(rawStructures, SmbiosStructureType.SystemConfigOptions, T012_SystemConfigurationOptions.Decode);
+    GroupAssociations = Decode<T014_GroupAssociations>(rawStructures, SmbiosStructureType.GroupAssociations, T014_GroupAssociations.Decode);
+    SystemResets = Decode<T023_SystemReset>(rawStructures, SmbiosStructureType.SystemReset, T023_SystemReset.Decode);
+    HardwareSecurityInformation = Decode<T024_HardwareSecurity>(rawStructures, SmbiosStructureType.HardwareSecurity, T024_HardwareSecurity.Decode);
+    SystemPowerControls = Decode<T025_SystemPowerControls>(rawStructures, SmbiosStructureType.SystemPowerControls, T025_SystemPowerControls.Decode);
+    ElectricalCurrentProbes = Decode<T029_ElectricalCurrentProbeInformation>(rawStructures, SmbiosStructureType.ElectricalCurrentProbe, T029_ElectricalCurrentProbeInformation.Decode);
+    OutOfBandRemoteAccess = Decode<T030_OutOfBandRemoteAccess>(rawStructures, SmbiosStructureType.OutOfBandRemoteAccess, T030_OutOfBandRemoteAccess.Decode);
+    BootIntegrityServicesEntryPoints = Decode<T031_BootIntegrityServicesEntryPoint>(rawStructures, SmbiosStructureType.BootIntegrityServices, T031_BootIntegrityServicesEntryPoint.Decode);
+    SystemBootInformation = Decode<T032_SystemBootInformation>(rawStructures, SmbiosStructureType.SystemBoot, T032_SystemBootInformation.Decode);
+    ManagementDevices = Decode<T034_ManagementDevice>(rawStructures, SmbiosStructureType.ManagementDevice, T034_ManagementDevice.Decode);
+    ManagementDeviceComponents = Decode<T035_ManagementDeviceComponent>(rawStructures, SmbiosStructureType.ManagementDeviceComponent, T035_ManagementDeviceComponent.Decode);
+    ManagementDeviceThresholds = Decode<T036_ManagementDeviceThresholdData>(rawStructures, SmbiosStructureType.ManagementDeviceThreshold, T036_ManagementDeviceThresholdData.Decode);
+    MemoryChannels = Decode<T037_MemoryChannel>(rawStructures, SmbiosStructureType.MemoryChannel, T037_MemoryChannel.Decode);
+    IpmiDevices = Decode<T038_IpmiDeviceInformation>(rawStructures, SmbiosStructureType.IpmiDevice, T038_IpmiDeviceInformation.Decode);
+    AdditionalInformation = Decode<T040_AdditionalInformation>(rawStructures, SmbiosStructureType.Additional, T040_AdditionalInformation.Decode);
+    ManagementControllerHostInterfaces = Decode<T042_ManagementControllerHostInterface>(rawStructures, SmbiosStructureType.ManagementControllerHostInterface, T042_ManagementControllerHostInterface.Decode);
+    TpmDevices = Decode<T043_TpmDevice>(rawStructures, SmbiosStructureType.TpmDevice, T043_TpmDevice.Decode);
+    ProcessorAdditionalInformation = Decode<T044_ProcessorAdditionalInformation>(rawStructures, SmbiosStructureType.ProcessorAdditional, T044_ProcessorAdditionalInformation.Decode);
+    FirmwareInventory = Decode<T045_FirmwareInventoryInformation>(rawStructures, SmbiosStructureType.FirmwareInventory, T045_FirmwareInventoryInformation.Decode);
+    StringProperties = Decode<T046_StringProperty>(rawStructures, SmbiosStructureType.StringProperty, T046_StringProperty.Decode);
 
     _cachesByHandle = new Lazy<Dictionary<ushort, T007_CacheInformation>>(
         () => CacheInformation.ToDictionary(c => c.Handle));
