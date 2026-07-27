@@ -13,17 +13,21 @@ using Crystal.Mmi.HardwareFeatures.DiskPartition;
 using Crystal.Mmi.HardwareFeatures.DisplayControllerConfiguration;
 using Crystal.Mmi.HardwareFeatures.DMAChannel;
 using Crystal.Mmi.HardwareFeatures.Fan;
+using Crystal.Mmi.HardwareFeatures.FloppyController;
+using Crystal.Mmi.HardwareFeatures.FloppyDrive;
 using Crystal.Mmi.HardwareFeatures.HeatPipe;
 using Crystal.Mmi.HardwareFeatures.IDEController;
 using Crystal.Mmi.HardwareFeatures.IDEControllerDevice;
 using Crystal.Mmi.HardwareFeatures.InfraredDevice;
 using Crystal.Mmi.HardwareFeatures.Keyboard;
 using Crystal.Mmi.HardwareFeatures.LogicalDisk;
+using Crystal.Mmi.HardwareFeatures.MappedLogicalDisk;
 using Crystal.Mmi.HardwareFeatures.MotherboardDevice;
 using Crystal.Mmi.HardwareFeatures.NetworkAdapter;
 using Crystal.Mmi.HardwareFeatures.NetworkAdapterConfiguration;
 using Crystal.Mmi.HardwareFeatures.OnBoardDevice;
 using Crystal.Mmi.HardwareFeatures.ParallelPort;
+using Crystal.Mmi.HardwareFeatures.PCMCIAController;
 using Crystal.Mmi.HardwareFeatures.PhysicalMedia;
 using Crystal.Mmi.HardwareFeatures.PhysicalMemory;
 using Crystal.Mmi.HardwareFeatures.PnPEntity;
@@ -46,19 +50,26 @@ using Crystal.Mmi.HardwareFeatures.VideoSettings;
 using Crystal.Mmi.HardwareFeatures.VoltageProbe;
 using Crystal.Mmi.MmiEngine;
 using Crystal.Mmi.PerformanceFeatures.PerfCounter;
+using Crystal.Mmi.PerformanceFeatures.PerfFormattedData;
 using Crystal.Mmi.PerformanceFeatures.PerfRawData;
+using Crystal.Mmi.SoftwareFeatures.COMClass;
 using Crystal.Mmi.SoftwareFeatures.Desktop;
 using Crystal.Mmi.SoftwareFeatures.Directory;
 using Crystal.Mmi.SoftwareFeatures.Environment;
+using Crystal.Mmi.SoftwareFeatures.Group;
+using Crystal.Mmi.SoftwareFeatures.GroupUser;
 using Crystal.Mmi.SoftwareFeatures.LogonSession;
 using Crystal.Mmi.SoftwareFeatures.NetworkClient;
 using Crystal.Mmi.SoftwareFeatures.NetworkConnection;
 using Crystal.Mmi.SoftwareFeatures.NetworkLoginProfile;
 using Crystal.Mmi.SoftwareFeatures.NetworkProtocol;
 using Crystal.Mmi.SoftwareFeatures.OperatingSystem;
+using Crystal.Mmi.SoftwareFeatures.OSRecoveryConfiguration;
 using Crystal.Mmi.SoftwareFeatures.Process;
+using Crystal.Mmi.SoftwareFeatures.QuickFixEngineering;
 using Crystal.Mmi.SoftwareFeatures.Registry;
 using Crystal.Mmi.SoftwareFeatures.Service;
+using Crystal.Mmi.SoftwareFeatures.Share;
 using Crystal.Mmi.SoftwareFeatures.StartupCommand;
 using Crystal.Mmi.SoftwareFeatures.SystemDriver;
 using Crystal.Mmi.SoftwareFeatures.Thread;
@@ -72,10 +83,12 @@ public class Program {
   // Categories that can easily return hundreds of instances on a real machine.
   // Previewed by default; pass --full to dump every instance.
   private static readonly HashSet<string> HighVolumeSections = new(StringComparer.OrdinalIgnoreCase) {
-    "Processes", "Threads", "Services", "Performance Counters", "Performance Raw Data", "Plug and Play Devices",
-    "Device-Bus Associations", "Device Settings Associations", "Video Settings Associations", "Network Login Profiles",
-    "Environment Variables", "IDE Controller-Device Associations", "SCSI Controller-Device Associations",
-    "USB Controller-Device Associations", "Associated Processor Memory", "DMA Channels", "User Desktop Associations"
+    "Processes", "Threads", "Services", "Performance Counters", "Performance Raw Data", "Performance Formatted Data",
+    "Plug and Play Devices", "Device-Bus Associations", "Device Settings Associations", "Video Settings Associations",
+    "Network Login Profiles", "Environment Variables", "IDE Controller-Device Associations",
+    "SCSI Controller-Device Associations", "USB Controller-Device Associations", "Associated Processor Memory",
+    "DMA Channels", "User Desktop Associations", "Group Membership Associations", "Quick Fix Engineering (Hotfixes)",
+    "COM Classes"
   };
 
   private const int PreviewCount = 15;
@@ -121,12 +134,14 @@ public class Program {
     await RunSingleAsync("Processor", ct => provider.ToSafeProcessorMetricsAsync(ct), token);
     await RunSingleAsync("Operating System", ct => provider.ToSafeOperatingSystemMetricsAsync(ct), token);
     await RunSingleAsync("Battery", ct => provider.ToSafeBatteryMetricsAsync(ct), token);
+    await RunSingleAsync("OS Recovery Configuration", ct => provider.ToSafeOSRecoveryConfigurationMetricsAsync(ct), token);
 
     // --- Hardware inventories (zero or more instances) ---
     await RunListAsync("Physical Memory", ct => provider.ToSafePhysicalMemoryMetricsAsync(ct), showAll, token);
     await RunListAsync("Disk Drives", ct => provider.ToSafeDiskDriveMetricsAsync(ct), showAll, token);
     await RunListAsync("Disk Partitions", ct => provider.ToSafeDiskPartitionMetricsAsync(ct), showAll, token);
     await RunListAsync("Logical Disks", ct => provider.ToSafeLogicalDiskMetricsAsync(ct), showAll, token);
+    await RunListAsync("Mapped Logical Disks", ct => provider.ToSafeMappedLogicalDiskMetricsAsync(ct), showAll, token);
     await RunListAsync("Physical Media", ct => provider.ToSafePhysicalMediaMetricsAsync(ct), showAll, token);
     await PrintDriveTopologyAsync(provider, token);
     await RunListAsync("Network Adapters", ct => provider.ToSafeNetworkAdapterMetricsAsync(ct), showAll, token);
@@ -142,6 +157,9 @@ public class Program {
     await RunListAsync("USB Hubs", ct => provider.ToSafeUSBHubMetricsAsync(ct), showAll, token);
     await RunListAsync("IDE Controllers", ct => provider.ToSafeIDEControllerMetricsAsync(ct), showAll, token);
     await RunListAsync("SCSI Controllers", ct => provider.ToSafeSCSIControllerMetricsAsync(ct), showAll, token);
+    await RunListAsync("Floppy Controllers", ct => provider.ToSafeFloppyControllerMetricsAsync(ct), showAll, token);
+    await RunListAsync("Floppy Drives", ct => provider.ToSafeFloppyDriveMetricsAsync(ct), showAll, token);
+    await RunListAsync("PCMCIA Controllers", ct => provider.ToSafePCMCIAControllerMetricsAsync(ct), showAll, token);
     await RunListAsync("DMA Channels", ct => provider.ToSafeDMAChannelMetricsAsync(ct), showAll, token);
     await RunListAsync("OnBoard Devices", ct => provider.ToSafeOnBoardDeviceMetricsAsync(ct), showAll, token);
     await RunListAsync("System Enclosures", ct => provider.ToSafeSystemEnclosureMetricsAsync(ct), showAll, token);
@@ -174,6 +192,10 @@ public class Program {
     await RunListAsync("Threads", ct => provider.ToSafeThreadMetricsAsync(ct), showAll, token);
     await RunListAsync("Services", ct => provider.ToSafeServiceMetricsAsync(ct), showAll, token);
     await RunListAsync("User Accounts", ct => provider.ToSafeUserAccountMetricsAsync(ct), showAll, token);
+    await RunListAsync("Groups", ct => provider.ToSafeGroupMetricsAsync(ct), showAll, token);
+    await RunListAsync("Group Membership Associations", ct => provider.ToSafeGroupUserMetricsAsync(ct), showAll, token);
+    await RunListAsync("Shares", ct => provider.ToSafeShareMetricsAsync(ct), showAll, token);
+    await RunListAsync("Quick Fix Engineering (Hotfixes)", ct => provider.ToSafeQuickFixEngineeringMetricsAsync(ct), showAll, token);
     await RunListAsync("Logon Sessions", ct => provider.ToSafeLogonSessionMetricsAsync(ct), showAll, token);
     await RunListAsync("Network Login Profiles", ct => provider.ToSafeNetworkLoginProfileMetricsAsync(ct), showAll, token);
     await RunListAsync("Startup Commands", ct => provider.ToSafeStartupCommandMetricsAsync(ct), showAll, token);
@@ -191,6 +213,10 @@ public class Program {
     // --- Raw performance counter base classes ---
     await RunListAsync("Performance Counters", ct => provider.ToSafePerfCounterMetricsAsync(ct), showAll, token);
     await RunListAsync("Performance Raw Data", ct => provider.ToSafePerfRawDataMetricsAsync(ct), showAll, token);
+    await RunListAsync("Performance Formatted Data", ct => provider.ToSafePerfFormattedDataMetricsAsync(ct), showAll, token);
+
+    // --- WMI / COM registration ---
+    await RunListAsync("COM Classes", ct => provider.ToSafeCOMClassMetricsAsync(ct), showAll, token);
 
     Console.WriteLine();
     Console.WriteLine(showAll

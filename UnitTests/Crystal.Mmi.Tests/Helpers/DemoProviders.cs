@@ -80,6 +80,31 @@ internal static class DemoProviders
         });
     }
 
+    public static FakeWmiProvider GroupsWithMembership()
+    {
+        FrozenDictionary<string, WmiValue> adminsGroup = WmiRow.Build(
+            ("Name", new WmiValue("Administrators")),
+            ("SID", new WmiValue("S-1-5-32-544")));
+
+        FrozenDictionary<string, WmiValue> usersGroup = WmiRow.Build(
+            ("Name", new WmiValue("Users")),
+            ("SID", new WmiValue("S-1-5-32-545")));
+
+        FrozenDictionary<string, WmiValue> membership1 = WmiRow.Build(
+            ("GroupComponent", new WmiValue("Win32_Group.Domain=\"DESKTOP-01\",Name=\"Administrators\"")),
+            ("PartComponent", new WmiValue("Win32_UserAccount.Domain=\"DESKTOP-01\",Name=\"jdoe\"")));
+
+        FrozenDictionary<string, WmiValue> membership2 = WmiRow.Build(
+            ("GroupComponent", new WmiValue("Win32_Group.Domain=\"DESKTOP-01\",Name=\"Administrators\"")),
+            ("PartComponent", new WmiValue("Win32_UserAccount.Domain=\"DESKTOP-01\",Name=\"asmith\"")));
+
+        return new FakeWmiProvider(new Dictionary<string, IReadOnlyList<FrozenDictionary<string, WmiValue>>>
+        {
+            ["Win32_Group"] = new[] { adminsGroup, usersGroup },
+            ["Win32_GroupUser"] = new[] { membership1, membership2 }
+        });
+    }
+
     public static FakeWmiProvider Empty(string className)
     {
         return new FakeWmiProvider(className, WmiRow.Empty());

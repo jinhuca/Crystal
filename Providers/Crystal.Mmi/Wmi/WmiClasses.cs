@@ -45,6 +45,7 @@ public static class WmiClasses
     public const string LogicalDisk = "Win32_LogicalDisk";
     public const string Volume = "Win32_Volume";
     public const string PhysicalMedia = "Win32_PhysicalMedia";
+    public const string MappedLogicalDisk = "Win32_MappedLogicalDisk";
 
     // Display / Audio
     public const string VideoController = "Win32_VideoController";
@@ -94,6 +95,9 @@ public static class WmiClasses
     public const string TapeDrive = "Win32_TapeDrive";
     public const string Printer = "Win32_Printer";
     public const string PortableBattery = "Win32_PortableBattery";
+    public const string FloppyController = "Win32_FloppyController";
+    public const string FloppyDrive = "Win32_FloppyDrive";
+    public const string PCMCIAController = "Win32_PCMCIAController";
 
     // Future Expansion - User / Startup / Environment
     public const string LogonSession = "Win32_LogonSession";
@@ -108,4 +112,14 @@ public static class WmiClasses
     public const string SystemDriver = "Win32_SystemDriver";
     public const string Directory = "Win32_Directory";
     public const string Registry = "Win32_Registry";
+
+    // Accounts / Shares / System Configuration
+    public const string Group = "Win32_Group";
+    public const string GroupUser = "Win32_GroupUser";
+    public const string Share = "Win32_Share";
+    public const string QuickFixEngineering = "Win32_QuickFixEngineering";
+    public const string OSRecoveryConfiguration = "Win32_OSRecoveryConfiguration";
+
+    // WMI / COM
+    public const string COMClass = "Win32_COMClass";
 }

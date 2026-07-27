@@ -3,6 +3,8 @@ using Crystal.Mmi.HardwareFeatures.PhysicalMemory;
 using Crystal.Mmi.HardwareFeatures.PhysicalMemoryArray;
 using Crystal.Mmi.HardwareFeatures.SystemSlot;
 using Crystal.Mmi.MmiEngine;
+using Crystal.Mmi.SoftwareFeatures.Group;
+using Crystal.Mmi.SoftwareFeatures.GroupUser;
 
 namespace Crystal.Mmi.Cli;
 
@@ -120,6 +122,48 @@ public static class CliDemos
         }
 
         output.WriteLine();
+    }
+
+    public static async Task DumpLocalGroupMembershipAsync(
+        IWmiHardwareProvider provider,
+        TextWriter output,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(provider);
+        ArgumentNullException.ThrowIfNull(output);
+
+        output.WriteLine();
+        output.WriteLine("========== Local Group Membership ==========");
+        output.WriteLine();
+
+        var groups = await provider.ToSafeGroupMetricsAsync(cancellationToken);
+        var memberships = await provider.ToSafeGroupUserMetricsAsync(cancellationToken);
+
+        // Resolve GroupUser's Element/PartComponent object-path references back to plain
+        // group names so callers don't need to parse WMI reference strings themselves.
+        var membersByGroup = memberships
+            .Where(m => m.GroupName is not null)
+            .GroupBy(m => m.GroupName!)
+            .ToDictionary(g => g.Key, g => g.Select(m => m.MemberName).Where(n => n is not null).ToList());
+
+        foreach (var group in groups)
+        {
+            output.WriteLine($"Group: {Format(group.Name)} ({Format(group.SID)})");
+
+            if (group.Name is not null && membersByGroup.TryGetValue(group.Name, out var members) && members.Count > 0)
+            {
+                foreach (var member in members)
+                {
+                    output.WriteLine($"  - {member}");
+                }
+            }
+            else
+            {
+                output.WriteLine("  (no members found)");
+            }
+
+            output.WriteLine();
+        }
     }
 
     private static string Format(object? value)
