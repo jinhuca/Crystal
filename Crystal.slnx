@@ -15,7 +15,6 @@
   <Folder Name="/Shared/">
     <Project Path="Shared/Crystal.CliConverters/Crystal.CliConverters.csproj" Id="6f6758f4-c675-45f6-9025-4d35f2396cdc" />
     <Project Path="Shared/Crystal.Information/Crystal.Information.csproj" />
-    <Project Path="Shared/Crystal.Plot2D/Crystal.Plot2D.csproj" />
     <Project Path="Shared/Crystal.WpfConverters/Crystal.WpfConverters.csproj" Id="a829b8b6-9258-4c8d-9749-bdccbf065b6b" />
   </Folder>
   <Folder Name="/Shell/">
@@ -31,7 +30,6 @@
   </Folder>
   <Folder Name="/UnitTests/">
     <Project Path="UnitTests/Crystal.Mmi.Tests/Crystal.Mmi.Tests.csproj" />
-    <Project Path="UnitTests/Crystal.Plot2D.Tests/Crystal.Plot2D.Tests.csproj" />
     <Project Path="UnitTests/Crystal.Smbios.Tests/Crystal.Smbios.Tests.csproj" />
   </Folder>
 </Solution>
