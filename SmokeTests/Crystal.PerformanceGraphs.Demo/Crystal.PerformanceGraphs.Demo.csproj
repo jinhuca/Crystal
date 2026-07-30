@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Crystal.PerformanceGraphs\Crystal.PerformanceGraphs.csproj" />
+    <ProjectReference Include="..\..\Shared\Crystal.PerformanceGraphs\Crystal.PerformanceGraphs.csproj" />
   </ItemGroup>
 
 </Project>
