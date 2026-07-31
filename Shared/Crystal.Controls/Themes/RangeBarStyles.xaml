@@ -1,0 +1,95 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:Crystal.Controls.RangeBars.Controls"
+                    xmlns:bars="clr-namespace:Crystal.Controls.RangeBars">
+
+  <controls:ValueFormatConverter x:Key="RangeBarValueFormatConverter"/>
+
+  <Style TargetType="{x:Type controls:RangeBarView}">
+    <Setter Property="Foreground" Value="White"/>
+    <Setter Property="Background" Value="Black"/>
+    <Setter Property="FontSize" Value="18"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type controls:RangeBarView}">
+          <Grid Background="{TemplateBinding Background}">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Title -->
+            <TextBlock Grid.Column="0"
+                       Text="{TemplateBinding Title}"
+                       Foreground="{TemplateBinding Foreground}"
+                       FontWeight="Bold"
+                       VerticalAlignment="Center"
+                       Margin="0,0,16,0"/>
+
+            <!-- Unit -->
+            <TextBlock Grid.Column="1"
+                       Text="{TemplateBinding Unit}"
+                       Foreground="{TemplateBinding Foreground}"
+                       FontWeight="Bold"
+                       VerticalAlignment="Center"
+                       Margin="0,0,16,0"/>
+
+            <!-- Value (accented) -->
+            <TextBlock Grid.Column="2"
+                       FontWeight="Bold"
+                       VerticalAlignment="Center"
+                       Margin="0,0,16,0">
+              <TextBlock.Foreground>
+                <SolidColorBrush Color="#E82A2A"/>
+              </TextBlock.Foreground>
+              <TextBlock.Text>
+                <MultiBinding Converter="{StaticResource RangeBarValueFormatConverter}">
+                  <Binding Path="Value" RelativeSource="{RelativeSource TemplatedParent}"/>
+                  <Binding Path="ValueFormat" RelativeSource="{RelativeSource TemplatedParent}"/>
+                </MultiBinding>
+              </TextBlock.Text>
+            </TextBlock>
+
+            <!-- Min value end label -->
+            <TextBlock Grid.Column="3"
+                       Foreground="{TemplateBinding Foreground}"
+                       FontWeight="Bold"
+                       VerticalAlignment="Center"
+                       Margin="0,0,12,0">
+              <TextBlock.Text>
+                <MultiBinding Converter="{StaticResource RangeBarValueFormatConverter}">
+                  <Binding Path="MinValue" RelativeSource="{RelativeSource TemplatedParent}"/>
+                  <Binding Path="ValueFormat" RelativeSource="{RelativeSource TemplatedParent}"/>
+                </MultiBinding>
+              </TextBlock.Text>
+            </TextBlock>
+
+            <!-- Range bar track -->
+            <bars:RangeBar x:Name="PART_Bar" Grid.Column="4"
+                           Height="40"
+                           VerticalAlignment="Center"/>
+
+            <!-- Max value end label -->
+            <TextBlock Grid.Column="5"
+                       Foreground="{TemplateBinding Foreground}"
+                       FontWeight="Bold"
+                       VerticalAlignment="Center"
+                       Margin="12,0,0,0">
+              <TextBlock.Text>
+                <MultiBinding Converter="{StaticResource RangeBarValueFormatConverter}">
+                  <Binding Path="MaxValue" RelativeSource="{RelativeSource TemplatedParent}"/>
+                  <Binding Path="ValueFormat" RelativeSource="{RelativeSource TemplatedParent}"/>
+                </MultiBinding>
+              </TextBlock.Text>
+            </TextBlock>
+          </Grid>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+</ResourceDictionary>
