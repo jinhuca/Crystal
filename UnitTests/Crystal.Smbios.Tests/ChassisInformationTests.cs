@@ -76,20 +76,22 @@ public class ChassisInformationTests {
 
   [Fact]
   public void Decode_VariableContainedElements_ShiftsSkuOffsetCorrectly() {
-    // Arrange: 2 items elements spanning 3 bytes each.
-    int expectedSkuOffset = 0x17 + (2 * 3); // 0x1D
-    byte totalLength = (byte)(expectedSkuOffset + 1); // 0x1E
+    // DSP0134 §7.4: Contained Element Count @0x13, Record Length @0x14,
+    // Contained Elements @0x15, SKU Number string @0x15+n*m.
+    // 2 elements spanning 3 bytes each -> SKU at 0x15 + 6 = 0x1B.
+    int expectedSkuOffset = 0x15 + (2 * 3); // 0x1B
+    byte totalLength = (byte)(expectedSkuOffset + 1); // 0x1C
 
     byte[] rawBytes = new byte[totalLength];
     rawBytes[0x00] = 0x03;
     rawBytes[0x01] = totalLength;
     rawBytes[0x05] = 0x03; // TypeRaw: Desktop (Unlocked)
-    rawBytes[0x15] = 0x02; // Count
-    rawBytes[0x16] = 0x03; // Length per record
+    rawBytes[0x13] = 0x02; // Count
+    rawBytes[0x14] = 0x03; // Length per record
 
     // Seeding element memory arrays
-    rawBytes[0x17] = 0x11; rawBytes[0x18] = 0x22; rawBytes[0x19] = 0x33;
-    rawBytes[0x1A] = 0x44; rawBytes[0x1B] = 0x55; rawBytes[0x1C] = 0x66;
+    rawBytes[0x15] = 0x11; rawBytes[0x16] = 0x22; rawBytes[0x17] = 0x33;
+    rawBytes[0x18] = 0x44; rawBytes[0x19] = 0x55; rawBytes[0x1A] = 0x66;
 
     // SKU location placement pointer
     rawBytes[expectedSkuOffset] = 1;

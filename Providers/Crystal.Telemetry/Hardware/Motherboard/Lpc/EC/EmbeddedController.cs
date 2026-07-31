@@ -6,6 +6,10 @@ using System.Text;
 
 namespace Crystal.Telemetry.Hardware.Motherboard.Lpc.EC;
 
+/// <summary>
+/// Base class for reading sensors exposed by a motherboard's ACPI embedded controller.
+/// Concrete platform-specific implementations provide the actual I/O interface.
+/// </summary>
 public abstract class EmbeddedController : Hardware {
   // If you are updating board information, please consider sharing your changes with the corresponding Linux driver.
   // You can do that at https://github.com/zeule/asus-ec-sensors or contribute directly to Linux HWMON.
@@ -495,6 +499,12 @@ public abstract class EmbeddedController : Hardware {
 
   private readonly IReadOnlyList<EmbeddedControllerSource> _sources;
 
+  /// <summary>
+  /// Initializes a new instance of the <see cref="EmbeddedController"/> class with the
+  /// given set of sensor sources.
+  /// </summary>
+  /// <param name="sources">The embedded controller sensor sources to read.</param>
+  /// <param name="settings">The settings used to configure the hardware and its sensors.</param>
   protected EmbeddedController(IEnumerable<EmbeddedControllerSource> sources, ISettings settings) : base("Embedded Controller", new Identifier("lpc", "ec"), settings) {
     // sorting by address, which implies sorting by bank, for optimized EC access
     var sourcesList = sources.ToList();
@@ -522,6 +532,7 @@ public abstract class EmbeddedController : Hardware {
     _data = new byte[_registers.Length];
   }
 
+  /// <summary>Gets the hardware type, which is always <see cref="HardwareType.EmbeddedController"/>.</summary>
   public override HardwareType HardwareType => HardwareType.EmbeddedController;
 
   internal static EmbeddedController Create(Model model, ISettings settings) {
@@ -547,6 +558,9 @@ public abstract class EmbeddedController : Hardware {
     };
   }
 
+  /// <summary>
+  /// Reads the current values of all embedded controller sensors and updates their sensor values.
+  /// </summary>
   public override void Update() {
     if (!TryUpdateData()) {
       // just skip this update cycle?
@@ -570,6 +584,10 @@ public abstract class EmbeddedController : Hardware {
     }
   }
 
+  /// <summary>
+  /// Builds a diagnostic report containing a dump of the embedded controller registers.
+  /// </summary>
+  /// <returns>A string containing the formatted embedded controller register report.</returns>
   public override string GetReport() {
     StringBuilder r = new();
 
@@ -608,6 +626,10 @@ public abstract class EmbeddedController : Hardware {
     return r.ToString();
   }
 
+  /// <summary>
+  /// Acquires a platform-specific interface for reading from the embedded controller.
+  /// </summary>
+  /// <returns>An <see cref="IEmbeddedControllerIO"/> used to perform embedded controller I/O.</returns>
   protected abstract IEmbeddedControllerIO AcquireIOInterface();
 
   private bool TryUpdateData() {
@@ -708,15 +730,36 @@ public abstract class EmbeddedController : Hardware {
     public ECSensor[] Sensors { get; }
   }
 
+  /// <summary>
+  /// The exception that is thrown when an error occurs while performing ACPI embedded controller I/O.
+  /// </summary>
   public class IOException : System.IO.IOException {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="IOException"/> class with the specified message.
+    /// </summary>
+    /// <param name="message">A description of the I/O error.</param>
     public IOException(string message) : base($"ACPI embedded controller I/O error: {message}") { }
   }
 
+  /// <summary>
+  /// The exception that is thrown when the embedded controller board configuration is invalid.
+  /// </summary>
   public class BadConfigurationException : Exception {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="BadConfigurationException"/> class with the specified message.
+    /// </summary>
+    /// <param name="message">A description of the configuration error.</param>
     public BadConfigurationException(string message) : base(message) { }
   }
 
+  /// <summary>
+  /// The exception that is thrown when more than one board record refers to the same model.
+  /// </summary>
   public class MultipleBoardRecordsFoundException : BadConfigurationException {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MultipleBoardRecordsFoundException"/> class for the specified model.
+    /// </summary>
+    /// <param name="model">The model that matched multiple board records.</param>
     public MultipleBoardRecordsFoundException(string model) : base($"Multiple board records refer to the same model '{model}'") { }
   }
 }

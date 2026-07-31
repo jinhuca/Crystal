@@ -17,6 +17,9 @@ using StorageDIT = DiskInfoToolkit.Storage;
 
 namespace Crystal.Telemetry.Hardware.Storage;
 
+/// <summary>
+/// Represents a physical storage device (disk) and exposes its sensors and SMART attributes.
+/// </summary>
 public sealed class StorageDevice : Hardware, ISmart {
   private readonly PerformanceValue _perfRead = new();
   private readonly PerformanceValue _perfTotal = new();
@@ -42,6 +45,11 @@ public sealed class StorageDevice : Hardware, ISmart {
   private Sensor _usageSensor;
   private Sensor _freeSpaceSensor;
 
+  /// <summary>
+  /// Initializes a new instance of the <see cref="StorageDevice"/> class for the given underlying storage device.
+  /// </summary>
+  /// <param name="storage">The underlying storage device information source.</param>
+  /// <param name="settings">The settings used to configure sensors.</param>
   public StorageDevice(StorageDeviceDIT storage, ISettings settings)
       : base(storage.ProductName, GetIdentifier(storage), settings) {
     _storage = storage;
@@ -51,10 +59,19 @@ public sealed class StorageDevice : Hardware, ISmart {
     CreateSensors();
   }
 
+  /// <summary>
+  /// Gets the hardware type, which is always <see cref="HardwareType.Storage"/>.
+  /// </summary>
   public override HardwareType HardwareType => HardwareType.Storage;
 
+  /// <summary>
+  /// Gets the underlying storage device information source.
+  /// </summary>
   public StorageDeviceDIT Storage => _storage;
 
+  /// <summary>
+  /// Gets the SMART attributes reported by this storage device.
+  /// </summary>
   public IReadOnlyList<SmartAttribute> Attributes => _attributes;
 
   /// <summary>
@@ -63,8 +80,14 @@ public sealed class StorageDevice : Hardware, ISmart {
   /// <remarks>See <see cref="StorageDIT.TryWakeUp"/> for more information.</remarks>
   public bool ForceWakeup { get; set; }
 
+  /// <summary>
+  /// Gets or sets the minimum interval between successive updates of storage devices.
+  /// </summary>
   public static TimeSpan ThrottleInterval { get; set; }
 
+  /// <summary>
+  /// Refreshes the device state, SMART attributes, and sensor values, honoring <see cref="ThrottleInterval"/>.
+  /// </summary>
   public override void Update() {
     if (DateTime.UtcNow - _lastUpdate < ThrottleInterval) {
       return;
@@ -118,6 +141,10 @@ public sealed class StorageDevice : Hardware, ISmart {
     _sensors.ForEach(s => s.Update(_storage));
   }
 
+  /// <summary>
+  /// Builds a human-readable report describing the device, its SMART attributes, and partitions.
+  /// </summary>
+  /// <returns>A formatted report string.</returns>
   public override string GetReport() {
     var r = new StringBuilder();
     r.AppendLine("Storage");
@@ -181,6 +208,10 @@ public sealed class StorageDevice : Hardware, ISmart {
     return r.ToString();
   }
 
+  /// <summary>
+  /// Accepts a visitor and forwards it to each of this device's sensors.
+  /// </summary>
+  /// <param name="visitor">The visitor to accept.</param>
   public override void Traverse(IVisitor visitor) {
     foreach (ISensor sensor in Sensors)
       sensor.Accept(visitor);

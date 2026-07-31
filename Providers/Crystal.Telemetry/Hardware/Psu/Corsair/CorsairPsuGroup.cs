@@ -5,6 +5,9 @@ using System.Text;
 
 namespace Crystal.Telemetry.Hardware.Psu.Corsair;
 
+/// <summary>
+/// <see cref="IGroup" /> containing all detected Corsair HXi/RMi series PSU <see cref="IHardware" />.
+/// </summary>
 public class CorsairPsuGroup : IGroup {
   private static readonly int[] _productIds =
   {
@@ -30,6 +33,10 @@ public class CorsairPsuGroup : IGroup {
   private readonly List<IHardware> _hardware;
   private readonly StringBuilder _report;
 
+  /// <summary>
+  /// Initializes a new instance of the <see cref="CorsairPsuGroup" /> class and detects supported Corsair PSU devices.
+  /// </summary>
+  /// <param name="settings">Additional settings passed to each detected <see cref="IHardware" />.</param>
   public CorsairPsuGroup(ISettings settings) {
     _report = new StringBuilder();
     _report.AppendLine("Corsair HXi/RMi series PSU Hardware");
@@ -46,8 +53,10 @@ public class CorsairPsuGroup : IGroup {
     }
   }
 
+  /// <inheritdoc />
   public IReadOnlyList<IHardware> Hardware => _hardware;
 
+  /// <inheritdoc />
   public void Close() {
     foreach (IHardware iHardware in _hardware) {
       if (iHardware is Hardware hardware)
@@ -55,6 +64,7 @@ public class CorsairPsuGroup : IGroup {
     }
   }
 
+  /// <inheritdoc />
   public string GetReport() {
     return _report.ToString();
   }

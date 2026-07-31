@@ -6,13 +6,38 @@ using System.Text;
 
 namespace Crystal.Telemetry.Hardware.Cpu;
 
+/// <summary>
+/// Generic CPU hardware implementation that exposes load and time stamp counter
+/// information common to all processors, serving as the base for vendor-specific CPUs.
+/// </summary>
 public class GenericCpu : Hardware {
+  /// <summary>
+  /// The number of physical cores in the processor.
+  /// </summary>
   protected readonly int _coreCount;
+  /// <summary>
+  /// The CPUID data for each core and thread.
+  /// </summary>
   protected readonly CpuId[][] _cpuId;
+  /// <summary>
+  /// The processor family.
+  /// </summary>
   protected readonly uint _family;
+  /// <summary>
+  /// The processor model.
+  /// </summary>
   protected readonly uint _model;
+  /// <summary>
+  /// The processor package type.
+  /// </summary>
   protected readonly uint _packageType;
+  /// <summary>
+  /// The processor stepping.
+  /// </summary>
   protected readonly uint _stepping;
+  /// <summary>
+  /// The total number of logical threads across all cores.
+  /// </summary>
   protected readonly int _threadCount;
 
   private readonly CpuLoad _cpuLoad;
@@ -27,6 +52,12 @@ public class GenericCpu : Hardware {
   private long _lastTime;
   private ulong _lastTimeStampCount;
 
+  /// <summary>
+  /// Initializes a new instance of the <see cref="GenericCpu"/> class.
+  /// </summary>
+  /// <param name="processorIndex">The index of the processor.</param>
+  /// <param name="cpuId">The CPUID data for each core and thread.</param>
+  /// <param name="settings">The settings used to persist sensor configuration.</param>
   public GenericCpu(int processorIndex, CpuId[][] cpuId, ISettings settings) : base(cpuId[0][0].Name, CreateIdentifier(cpuId[0][0].Vendor, processorIndex), settings) {
     _cpuId = cpuId;
     _vendor = cpuId[0][0].Vendor;
@@ -93,10 +124,19 @@ public class GenericCpu : Hardware {
   /// </summary>
   public CpuId[][] CpuId => _cpuId;
 
+  /// <summary>
+  /// Gets the hardware type, which is always <see cref="HardwareType.Cpu"/>.
+  /// </summary>
   public override HardwareType HardwareType => HardwareType.Cpu;
 
+  /// <summary>
+  /// Gets a value indicating whether the processor exposes model-specific registers (MSRs).
+  /// </summary>
   public bool HasModelSpecificRegisters { get; }
 
+  /// <summary>
+  /// Gets a value indicating whether the processor has a time stamp counter (TSC).
+  /// </summary>
   public bool HasTimeStampCounter { get; }
 
   /// <summary>
@@ -104,8 +144,16 @@ public class GenericCpu : Hardware {
   /// </summary>
   public int Index { get; }
 
+  /// <summary>
+  /// Gets the estimated time stamp counter frequency, in MHz.
+  /// </summary>
   public double TimeStampCounterFrequency { get; private set; }
 
+  /// <summary>
+  /// Builds a display name for the CPU core at the given index.
+  /// </summary>
+  /// <param name="i">The zero-based core index.</param>
+  /// <returns>A human-readable label for the core.</returns>
   protected string CoreString(int i) {
     if (_coreCount == 1)
       return "CPU Core";
@@ -184,6 +232,10 @@ public class GenericCpu : Hardware {
   }
 
 
+  /// <summary>
+  /// Builds a diagnostic report describing the processor and its time stamp counter.
+  /// </summary>
+  /// <returns>A multi-line report string.</returns>
   public override string GetReport() {
     StringBuilder r = new();
 
@@ -216,6 +268,9 @@ public class GenericCpu : Hardware {
     return r.ToString();
   }
 
+  /// <summary>
+  /// Refreshes the time stamp counter frequency estimate and per-thread load sensors.
+  /// </summary>
   public override void Update() {
     if (HasTimeStampCounter && _isInvariantTimeStampCounter) {
       // make sure always the same thread is used

@@ -79,28 +79,4 @@ public static class MemoryInterleaveHelper
         }
     }
 
-    /// <summary>
-    /// Convenience overload that accepts a MemoryArrayMappedAddress.
-    /// If the address does not use extended addressing the StartAddressBytes/EndAddressBytes
-    /// are used as provided by the structure.
-    /// </summary>
-    public static IEnumerable<(ulong Offset, ulong Length)> ComputeInterleavedSegments(
-        T019_MemoryArrayMappedAddress map,
-        int interleavePosition)
-    {
-        if (map is null) throw new ArgumentNullException(nameof(map));
-        return ComputeInterleavedSegments(map.StartAddressBytes, map.EndAddressBytes, Math.Max(1, (int)map.PartitionWidth), interleavePosition, map.InterleaveGranularityBytes);
-    }
-
-    /// <summary>
-    /// Convenience overload that accepts a MemoryDeviceMappedAddress.
-    /// </summary>
-    public static IEnumerable<(ulong Offset, ulong Length)> ComputeInterleavedSegments(
-        T020_MemoryDeviceMappedAddress map,
-        int interleavePosition)
-    {
-        if (map is null)
-            throw new ArgumentNullException(nameof(map));
-        return ComputeInterleavedSegments(map.StartAddressBytes, map.EndAddressBytes, Math.Max(1, (int)map.PartitionRowPosition), interleavePosition, map.InterleaveGranularityBytes);
-    }
 }

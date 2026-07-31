@@ -11,7 +11,7 @@ public sealed class GroupMembershipDemoTests
     {
         using var console = new TestConsoleWriter();
 
-        await CliDemos.DumpLocalGroupMembershipAsync(DemoProviders.GroupsWithMembership(), console.Writer);
+        await CliDemos.DumpLocalGroupMembershipAsync(DemoProviders.GroupsWithMembership(), console.Writer, TestContext.Current.CancellationToken);
 
         Assert.Contains("Local Group Membership", console.Output);
     }
@@ -21,7 +21,7 @@ public sealed class GroupMembershipDemoTests
     {
         using var console = new TestConsoleWriter();
 
-        await CliDemos.DumpLocalGroupMembershipAsync(DemoProviders.GroupsWithMembership(), console.Writer);
+        await CliDemos.DumpLocalGroupMembershipAsync(DemoProviders.GroupsWithMembership(), console.Writer, TestContext.Current.CancellationToken);
 
         Assert.Contains("Group: Administrators", console.Output);
         Assert.Contains("- jdoe", console.Output);
@@ -33,7 +33,7 @@ public sealed class GroupMembershipDemoTests
     {
         using var console = new TestConsoleWriter();
 
-        await CliDemos.DumpLocalGroupMembershipAsync(DemoProviders.GroupsWithMembership(), console.Writer);
+        await CliDemos.DumpLocalGroupMembershipAsync(DemoProviders.GroupsWithMembership(), console.Writer, TestContext.Current.CancellationToken);
 
         Assert.Contains("Group: Users", console.Output);
         Assert.Contains("(no members found)", console.Output);
@@ -44,7 +44,7 @@ public sealed class GroupMembershipDemoTests
     {
         using var console = new TestConsoleWriter();
 
-        await CliDemos.DumpLocalGroupMembershipAsync(DemoProviders.Empty("Win32_Group"), console.Writer);
+        await CliDemos.DumpLocalGroupMembershipAsync(DemoProviders.Empty("Win32_Group"), console.Writer, TestContext.Current.CancellationToken);
 
         Assert.Contains("Local Group Membership", console.Output);
         Assert.DoesNotContain("Group:", console.Output);

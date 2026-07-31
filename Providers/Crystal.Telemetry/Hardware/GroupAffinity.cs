@@ -4,6 +4,9 @@
 /// This structure describes a group-specific affinity.
 /// </summary>
 public readonly struct GroupAffinity {
+  /// <summary>
+  /// An undefined group affinity.
+  /// </summary>
   public static GroupAffinity Undefined = new(ushort.MaxValue, 0);
 
   /// <summary>

@@ -44,14 +44,18 @@ public sealed class T027_CoolingDevice : ISmbiosDecodedStructure {
   public CoolingDeviceType DeviceType { get; init; }
   public CoolingDeviceStatus Status { get; init; }
   public byte CoolingUnitGroup { get; init; }
-  public uint NominalSpeedRpm { get; init; }
+  public uint OEMDefined { get; init; }
+  public ushort NominalSpeedRpm { get; init; }
   public string? Description { get; init; }
 
   // High-utility quick checks for system builders
-  public bool IsSpeedIdentifiable => NominalSpeedRpm != 0x80000000;
+  public bool IsSpeedIdentifiable => NominalSpeedRpm != 0x8000;
   public bool HasAssociatedProbe => TemperatureProbeHandle != 0xFFFF;
 
   internal static T027_CoolingDevice Decode(SmbiosRawStructure s) {
+    // DSP0134 §7.28: Temperature Probe Handle @0x04, Device Type and Status @0x06,
+    // Cooling Unit Group @0x07, OEM-defined DWORD @0x08, Nominal Speed WORD @0x0C,
+    // Description (string) @0x0E (v2.7).
     byte typeStatusByte = s.ReadByte(0x06);
 
     // Bits 7:5 map the operational status
@@ -68,8 +72,9 @@ public sealed class T027_CoolingDevice : ISmbiosDecodedStructure {
       DeviceType = deviceType,
       Status = status,
       CoolingUnitGroup = s.Length > 0x07 ? s.ReadByte(0x07) : (byte)0,
-      NominalSpeedRpm = s.Length > 0x0B ? s.ReadDWord(0x08) : 0x80000000, // 0x80000000 indicates Unknown in spec
-      Description = s.Length > 0x0C ? s.GetString(s.ReadByte(0x0C)) : null
+      OEMDefined = s.Length > 0x0B ? s.ReadDWord(0x08) : 0,
+      NominalSpeedRpm = s.Length > 0x0D ? s.ReadWord(0x0C) : (ushort)0x8000, // 0x8000 indicates Unknown in spec
+      Description = s.Length > 0x0E ? s.GetString(s.ReadByte(0x0E)) : null
     };
   }
 }

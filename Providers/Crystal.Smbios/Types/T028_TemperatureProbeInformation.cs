@@ -61,7 +61,10 @@ public sealed class T028_TemperatureProbeInformation : ISmbiosDecodedStructure {
   public double? ToleranceCelsius => ToleranceRaw != 0x8000 ? ToleranceRaw / 10.0 : null;
 
   public static T028_TemperatureProbeInformation Decode(SmbiosRawStructure s) {
-    byte locationStatusByte = s.ReadByte(0x06);
+    // DSP0134 §7.29: Description @0x04, Location and Status @0x05, Maximum @0x06,
+    // Minimum @0x08, Resolution @0x0A, Tolerance @0x0C, Accuracy @0x0E,
+    // OEM-defined DWORD @0x10, Nominal Value @0x14.
+    byte locationStatusByte = s.ReadByte(0x05);
 
     // Bits 7:5 map the operational status
     TemperatureProbeStatus status = (TemperatureProbeStatus)((locationStatusByte >> 5) & 0x07);
@@ -76,13 +79,13 @@ public sealed class T028_TemperatureProbeInformation : ISmbiosDecodedStructure {
       LocationAndStatusRaw = locationStatusByte,
       Location = location,
       Status = status,
-      MaximumValueRaw = (short)s.ReadWord(0x07),
-      MinimumValueRaw = (short)s.ReadWord(0x09),
-      ResolutionRaw = s.ReadWord(0x0B),
-      ToleranceRaw = s.ReadWord(0x0D),
-      Accuracy = s.ReadWord(0x0F), // 2-byte word field at 0x0F
-      OEMDefined = s.Length > 0x14 ? s.ReadDWord(0x11) : 0,
-      NominalValueRaw = s.Length > 0x16 ? (short)s.ReadWord(0x15) : unchecked((short)0x8000) // 0x8000 indicates Unknown in spec
+      MaximumValueRaw = (short)s.ReadWord(0x06),
+      MinimumValueRaw = (short)s.ReadWord(0x08),
+      ResolutionRaw = s.ReadWord(0x0A),
+      ToleranceRaw = s.ReadWord(0x0C),
+      Accuracy = s.ReadWord(0x0E),
+      OEMDefined = s.Length > 0x13 ? s.ReadDWord(0x10) : 0,
+      NominalValueRaw = s.Length > 0x15 ? (short)s.ReadWord(0x14) : unchecked((short)0x8000) // 0x8000 indicates Unknown in spec
     };
   }
 }

@@ -108,17 +108,11 @@ internal class Smbios_Cli_Program {
       else {
         foreach (var entry in table.MemoryErrorEntries) {
           var info = entry.Info;
-          Console.WriteLine($"  ErrorType: {info.ErrorType}  Granularity: {info.ErrorGranularity}  VendorSyndrome: 0x{info.VendorSyndrome:X}");
-          Console.WriteLine($"    MemoryArrayHandle: 0x{info.MemoryArrayHandle:X4}  DeviceHandle: 0x{info.DeviceHandle:X4}  Is64: {info.Is64Bit}");
-          if (entry.Is64) {
-            var e64 = entry.As64!;
-            Console.WriteLine($"    ErrorOperation: 0x{e64.ErrorOperation:X4}");
-            Console.WriteLine($"    PhysicalAddress: {FormatHexWithSep(e64.PhysicalAddress, 8)}  Mask: {FormatHexWithSep(e64.PhysicalAddressMask, 8)}");
-          }
-          else if (entry.Is32) {
-            var e32 = entry.As32!;
-            Console.WriteLine($"    PhysicalAddress: {FormatHexWithSep(e32.PhysicalAddress, 4)}  AddressResolution: {FormatHexWithSep(e32.AddressResolution, 4)}");
-          }
+          Console.WriteLine($"  ErrorType: 0x{info.ErrorType:X2}  Granularity: 0x{info.ErrorGranularity:X2}  Operation: 0x{info.ErrorOperation:X2}  Is64: {info.Is64Bit}");
+          Console.WriteLine($"    VendorSyndrome: 0x{info.VendorSyndrome:X}");
+          Console.WriteLine($"    MemoryArrayErrorAddress: {FormatHexWithSep(info.MemoryArrayErrorAddress, info.Is64Bit ? 8 : 4)}");
+          Console.WriteLine($"    DeviceErrorAddress: {FormatHexWithSep(info.DeviceErrorAddress, info.Is64Bit ? 8 : 4)}");
+          Console.WriteLine($"    ErrorResolution: {FormatHexWithSep(info.ErrorResolution, 4)}");
         }
       }
 
@@ -131,9 +125,6 @@ internal class Smbios_Cli_Program {
           Console.WriteLine($"  Device Type: {device.DeviceType}");
           Console.WriteLine($"    Interface: {device.Interface}");
           Console.WriteLine($"    Number of Buttons: {device.NumberOfButtons}");
-          Console.WriteLine($"    Capabilities: {device.Capabilities}");
-          Console.WriteLine($"    Accuracy: {(device.Accuracy > 0 ? $"{device.Accuracy / 10.0:F1}% (1/10 of a percentage point)" : "Not specified")}");
-          Console.WriteLine($"    Track Speed: {(device.TrackSpeed > 0 ? device.TrackSpeed.ToString() : "Not specified")}");
           Console.WriteLine();
         }
       }
@@ -210,18 +201,6 @@ internal class Smbios_Cli_Program {
           Console.WriteLine($"  ArrayHandle: 0x{m.MemoryArrayHandle:X4}  Start: 0x{m.StartAddressBytes:X}  End: 0x{m.EndAddressBytes:X}");
           Console.WriteLine($"    StartKiB: {m.StartAddressKiB}  EndKiB: {m.EndAddressKiB}  SizeKiB: {m.SizeKiB}");
           Console.WriteLine($"    UsesExtended: {m.UsesExtendedAddresses}  PartitionWidth: {m.PartitionWidth}  IsInterleaved: {m.IsInterleaved}");
-          Console.WriteLine($"    InterleavePosition: {(m.InterleavePosition.HasValue ? m.InterleavePosition.Value.ToString() : "(none)")}  InterleaveGranularityBytes: {(m.InterleaveGranularityBytes.HasValue ? m.InterleaveGranularityBytes.Value.ToString() : "(none)")}");
-          if (m.InterleaveGranularityBytes is not null && m.PartitionWidth > 1 && m.InterleavePosition is not null) {
-            var ip = m.InterleavePosition.Value;
-            if (ip >= 1 && ip <= m.PartitionWidth) {
-              Console.WriteLine("    Segments for this partition:");
-              foreach (var seg in MemoryInterleaveHelper.ComputeInterleavedSegments(m, (int)ip))
-                Console.WriteLine($"      0x{seg.Offset:X16} length={seg.Length}");
-            }
-            else {
-              Console.WriteLine($"    Warning: invalid InterleavePosition={ip} (expected 1..{m.PartitionWidth}) — cannot compute segments.");
-            }
-          }
         }
       }
 
@@ -230,21 +209,10 @@ internal class Smbios_Cli_Program {
         Console.WriteLine("  (none reported)");
       else {
         foreach (var md in table.MemoryDeviceMappedAddresses) {
-          Console.WriteLine($"  DeviceHandle: 0x{md.MemoryDeviceHandle:X4}  Start: 0x{md.StartAddressBytes:X}  End: 0x{md.EndAddressBytes:X}");
+          Console.WriteLine($"  DeviceHandle: 0x{md.MemoryDeviceHandle:X4}  ArrayMappedHandle: 0x{md.MemoryArrayMappedAddressHandle:X4}  Start: 0x{md.StartAddressBytes:X}  End: 0x{md.EndAddressBytes:X}");
           Console.WriteLine($"    StartKiB: {md.StartAddressKiB}  EndKiB: {md.EndAddressKiB}  SizeKiB: {md.SizeKiB}");
           Console.WriteLine($"    UsesExtended: {md.UsesExtendedAddresses}  PartitionRowPosition: {md.PartitionRowPosition}");
-          Console.WriteLine($"    InterleavePosition: {(md.InterleavePosition.HasValue ? md.InterleavePosition.Value.ToString() : "(none)")}  InterleaveColumn: {(md.InterleaveColumn.HasValue ? md.InterleaveColumn.Value.ToString() : "(none)")}  GranularityBytes: {(md.InterleaveGranularityBytes.HasValue ? md.InterleaveGranularityBytes.Value.ToString() : "(none)")}");
-          if (md.InterleaveGranularityBytes is not null && md.PartitionRowPosition > 1 && md.InterleavePosition is not null) {
-            var ip = md.InterleavePosition.Value;
-            if (ip >= 1 && ip <= md.PartitionRowPosition) {
-              Console.WriteLine("    Segments for this partition-row:");
-              foreach (var seg in MemoryInterleaveHelper.ComputeInterleavedSegments(md, (int)ip))
-                Console.WriteLine($"      0x{seg.Offset:X16} length={seg.Length}");
-            }
-            else {
-              Console.WriteLine($"    Warning: invalid InterleavePosition={ip} (expected 1..{md.PartitionRowPosition}) — cannot compute segments.");
-            }
-          }
+          Console.WriteLine($"    InterleavePosition: {md.InterleavePosition}  InterleavedDataDepth: {md.InterleavedDataDepth}");
         }
       }
 
@@ -323,17 +291,14 @@ internal class Smbios_Cli_Program {
       if (table.PowerSupplies.Count == 0)
         Console.WriteLine("  (No power supplies found)");
       else {
-        var psuRawList = table.RawStructures.Where(s => s.Type == (SmbiosStructureType)39).ToList();
-        foreach (var pair in table.PowerSupplies.Zip(psuRawList, (p, r) => (Psu: p, Raw: r))) {
-          var psu = pair.Psu;
-          var raw = pair.Raw;
-          var description = raw.GetString(psu.DescriptionIndex) ?? "(unnamed)";
-          Console.WriteLine($"  Description: {description}");
-          Console.WriteLine($"    Power Unit Group: {psu.PowerUnitGroup}");
-          Console.WriteLine($"    Location and Status: 0x{psu.LocationAndStatus:X2}");
-          Console.WriteLine($"    Power Supply Type: 0x{psu.PowerSupplyType:X2}");
-          Console.WriteLine($"    Input Voltage Range Switch: 0x{psu.InputVoltageRangeSwitch:X2}");
-          Console.WriteLine($"    Capacity: {psu.CapacityWatts} W");
+        foreach (var psu in table.PowerSupplies) {
+          Console.WriteLine($"  Device Name: {psu.DeviceName ?? "(unnamed)"} ({psu.Manufacturer ?? "unknown mfr"})");
+          Console.WriteLine($"    Power Unit Group: {psu.PowerUnitGroup}  Location: {psu.Location ?? "(none)"}");
+          Console.WriteLine($"    Model/Part: {psu.ModelPartNumber ?? "(none)"}  Rev: {psu.RevisionLevel ?? "(none)"}  Serial: {psu.SerialNumber ?? "(none)"}  Asset: {psu.AssetTagNumber ?? "(none)"}");
+          Console.WriteLine($"    Type: {psu.SupplyType}  Status: {psu.Status}  InputVoltageRangeSwitching: {psu.InputVoltageRangeSwitching}");
+          Console.WriteLine($"    Present: {psu.IsPresent}  HotReplaceable: {psu.IsHotReplaceable}  Unplugged: {psu.IsUnplugged}");
+          Console.WriteLine($"    Max Power Capacity: {(psu.IsMaxPowerKnown ? $"{psu.MaxPowerCapacityWatts} W" : "(unknown)")}");
+          Console.WriteLine($"    Probes: inputVoltage=0x{psu.InputVoltageProbeHandle:X4} cooling=0x{psu.CoolingDeviceHandle:X4} inputCurrent=0x{psu.InputCurrentProbeHandle:X4}");
           Console.WriteLine();
         }
       }
@@ -477,8 +442,11 @@ internal class Smbios_Cli_Program {
 
     Console.WriteLine("\n=== Management Controller Host Interfaces (Type 42) ===");
     if (table.ManagementControllerHostInterfaces.Count == 0) Console.WriteLine("  (none reported)");
-    foreach (var mchi in table.ManagementControllerHostInterfaces)
-      Console.WriteLine($"  {(object?)mchi.InterfaceType ?? $"raw 0x{mchi.InterfaceTypeRaw:X2}"}: {mchi.InterfaceTypeSpecificData.Count} spec byte(s), {mchi.TrailingBytes.Count} trailing byte(s)");
+    foreach (var mchi in table.ManagementControllerHostInterfaces) {
+      Console.WriteLine($"  {(object?)mchi.InterfaceType ?? $"raw 0x{mchi.InterfaceTypeRaw:X2}"}: {mchi.InterfaceTypeSpecificData.Count} spec byte(s), {mchi.ProtocolRecordCount} protocol record(s)");
+      foreach (var rec in mchi.ProtocolRecords)
+        Console.WriteLine($"    - Protocol: {(object?)rec.ProtocolType ?? $"raw 0x{rec.ProtocolTypeRaw:X2}"} ({rec.ProtocolTypeSpecificDataLength} data byte(s))");
+    }
 
     Console.WriteLine("\n=== TPM Device (Type 43) ===");
     var tpm = table.Tpm;
@@ -649,7 +617,7 @@ internal class Smbios_Cli_Program {
       Console.WriteLine($"  LogAreaLength: {log.LogAreaLength}");
       Console.WriteLine($"  LogHeaderStartOffset: {log.LogHeaderStartOffset}");
       Console.WriteLine($"  LogHeaderFormat: {log.LogHeaderFormat}");
-      Console.WriteLine($"  LogHeaderLength: {log.LogHeaderLength}");
+      Console.WriteLine($"  LogDataStartOffset: {log.LogDataStartOffset}");
       Console.WriteLine($"  AccessMethod: {log.AccessMethod}");
       Console.WriteLine($"  FormattedArea bytes: {BitConverter.ToString(log.FormattedArea.ToArray())}");
     }

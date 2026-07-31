@@ -27,15 +27,36 @@ public enum ManagementControllerHostInterfaceType : byte {
   OemDefined = 0xF0,
 }
 
+/// <summary>DSP0134 §7.43.2 — Protocol Record Type.</summary>
+public enum ManagementControllerProtocolType : byte {
+  Ipmi = 0x02,
+  Mctp = 0x03,
+  RedfishOverIp = 0x04,
+  OemDefined = 0xF0,
+}
+
+/// <summary>
+/// A single Protocol Record within a Type 42 structure (DSP0134 §7.43.2):
+/// a Protocol Type byte followed by a length-prefixed type-specific data blob.
+/// </summary>
+public sealed class ManagementControllerProtocolRecord {
+  public byte ProtocolTypeRaw { get; init; }
+  public ManagementControllerProtocolType? ProtocolType =>
+      Enum.IsDefined(typeof(ManagementControllerProtocolType), ProtocolTypeRaw)
+          ? (ManagementControllerProtocolType)ProtocolTypeRaw
+          : null;
+
+  public byte ProtocolTypeSpecificDataLength { get; init; }
+  public IReadOnlyList<byte> ProtocolTypeSpecificData { get; init; } = Array.Empty<byte>();
+}
+
 /// <summary>
 /// Type 42 — Management Controller Host Interface (DSP0134 §7.43).
 /// Describes a management controller host interface not discoverable via
-/// Plug-and-Play. This decoder exposes the common header (interface type
-/// and its type-specific data blob); the type-specific payload for
-/// <see cref="ManagementControllerHostInterfaceType.NetworkHostInterface"/>
-/// (DSP0270) and the trailing Protocol Records region are left as raw
-/// bytes for callers who need to dig further — dmidecode itself only
-/// partially decodes this structure for the same reason.
+/// Plug-and-Play. This decoder exposes the common header (interface type and
+/// its type-specific data blob) plus the Protocol Records region. The
+/// interface-type-specific payload (e.g. DSP0270 for the Network Host
+/// Interface) is left as raw bytes for callers who need to dig further.
 /// </summary>
 public sealed class T042_ManagementControllerHostInterface : ISmbiosDecodedStructure {
   public SmbiosStructureType StructureType { get; init; }
@@ -54,10 +75,18 @@ public sealed class T042_ManagementControllerHostInterface : ISmbiosDecodedStruc
   /// <summary>Raw interface-type-specific data (DSP0270 for Network Host Interface, etc).</summary>
   public IReadOnlyList<byte> InterfaceTypeSpecificData { get; init; } = Array.Empty<byte>();
 
-  /// <summary>Any bytes after the interface-type-specific data (the Protocol Records region), left undecoded.</summary>
-  public IReadOnlyList<byte> TrailingBytes { get; init; } = Array.Empty<byte>();
+  /// <summary>Number of protocol records reported by the structure.</summary>
+  public byte ProtocolRecordCount { get; init; }
+
+  /// <summary>Decoded protocol records (each: type + length-prefixed data).</summary>
+  public IReadOnlyList<ManagementControllerProtocolRecord> ProtocolRecords { get; init; }
+      = Array.Empty<ManagementControllerProtocolRecord>();
 
   internal static T042_ManagementControllerHostInterface Decode(SmbiosRawStructure s) {
+    // DSP0134 §7.43: Interface Type @0x04; Interface-Type-Specific Data Length
+    // BYTE @0x05; Interface-Type-Specific Data @0x06; then Number of Protocol
+    // Records BYTE, followed by that many Protocol Records (each: Protocol Type
+    // BYTE, Protocol-Type-Specific Data Length BYTE, Data) (v3.2).
     byte interfaceType = s.ReadByte(0x04);
     byte specLength = s.Length > 0x05 ? s.ReadByte(0x05) : (byte)0;
 
@@ -68,11 +97,31 @@ public sealed class T042_ManagementControllerHostInterface : ISmbiosDecodedStruc
       for (int i = 0; i < specLength; i++) specData[i] = s.ReadByte(0x06 + i);
     }
 
-    var trailing = Array.Empty<byte>();
-    if (s.Length > specEnd) {
-      int trailingLength = s.Length - specEnd;
-      trailing = new byte[trailingLength];
-      for (int i = 0; i < trailingLength; i++) trailing[i] = s.ReadByte(specEnd + i);
+    byte recordCount = 0;
+    var records = new List<ManagementControllerProtocolRecord>();
+    int cursor = specEnd;
+    if (s.Length > cursor) {
+      recordCount = s.ReadByte(cursor);
+      cursor += 1;
+      for (int r = 0; r < recordCount && cursor + 1 < s.Length + 1 && cursor < s.Length; r++) {
+        byte protocolType = s.ReadByte(cursor);
+        byte dataLength = (cursor + 1) < s.Length ? s.ReadByte(cursor + 1) : (byte)0;
+        int dataStart = cursor + 2;
+
+        var data = Array.Empty<byte>();
+        if (dataLength > 0 && s.Length >= dataStart + dataLength) {
+          data = new byte[dataLength];
+          for (int i = 0; i < dataLength; i++) data[i] = s.ReadByte(dataStart + i);
+        }
+
+        records.Add(new ManagementControllerProtocolRecord {
+          ProtocolTypeRaw = protocolType,
+          ProtocolTypeSpecificDataLength = dataLength,
+          ProtocolTypeSpecificData = data,
+        });
+
+        cursor = dataStart + dataLength;
+      }
     }
 
     return new T042_ManagementControllerHostInterface {
@@ -82,7 +131,8 @@ public sealed class T042_ManagementControllerHostInterface : ISmbiosDecodedStruc
       InterfaceTypeRaw = interfaceType,
       InterfaceTypeSpecificDataLength = specLength,
       InterfaceTypeSpecificData = specData,
-      TrailingBytes = trailing,
+      ProtocolRecordCount = recordCount,
+      ProtocolRecords = records,
     };
   }
 }

@@ -60,11 +60,12 @@ public enum MemoryType : byte {
   Lpddr3 = 0x1D,
   Lpddr4 = 0x1E,
   LogicalNonVolatileDevice = 0x1F,
+  Hbm = 0x20,
+  Hbm2 = 0x21,
   Ddr5 = 0x22,
   Lpddr5 = 0x23,
-  Hbm = 0x24,
-  Hbm2 = 0x25,
-  Hbm3 = 0x26
+  Hbm3 = 0x24,
+  Mrdimm = 0x25
 }
 
 /// <summary>
@@ -73,21 +74,21 @@ public enum MemoryType : byte {
 [Flags]
 public enum MemoryTypeDetail : ushort {
   None = 0x0000,
-  Other = 0x0002,
-  Unknown = 0x0004,
-  FastPageMode = 0x0008,
-  NibbleMode = 0x0010,
-  StaticColumn = 0x0020,
-  PseudoStatic = 0x0040,
-  PipelinedNibble = 0x0080,
-  Synchronous = 0x0100,
-  Cmos = 0x0200,
-  Edo = 0x0400,
-  WindowDram = 0x0800,
-  CacheDram = 0x1000,
-  NonVolatile = 0x2000,
-  Registered = 0x4000,
-  Unbuffered = 0x8000
+  Other = 0x0002,          // bit 1
+  Unknown = 0x0004,        // bit 2
+  FastPaged = 0x0008,      // bit 3
+  StaticColumn = 0x0010,   // bit 4
+  PseudoStatic = 0x0020,   // bit 5
+  Rambus = 0x0040,         // bit 6
+  Synchronous = 0x0080,    // bit 7
+  Cmos = 0x0100,           // bit 8
+  Edo = 0x0200,            // bit 9
+  WindowDram = 0x0400,     // bit 10
+  CacheDram = 0x0800,      // bit 11
+  NonVolatile = 0x1000,    // bit 12
+  Registered = 0x2000,     // bit 13 (Registered / Buffered)
+  Unbuffered = 0x4000,     // bit 14 (Unbuffered / Unregistered)
+  Lrdimm = 0x8000          // bit 15
 }
 
 /// <summary>
@@ -133,6 +134,22 @@ public sealed class T017_MemoryDevice : ISmbiosDecodedStructure {
   public ushort MaximumVoltageMillivolts { get; init; }
   public ushort ConfiguredVoltageMillivolts { get; init; }
   public MemoryTechnology Technology { get; init; }
+
+  // ── SMBIOS 3.2 additions ──────────────────────────────────────────────────
+  public ushort MemoryOperatingModeCapability { get; init; }
+  public string? FirmwareVersion { get; init; }
+  public ushort ModuleManufacturerId { get; init; }
+  public ushort ModuleProductId { get; init; }
+  public ushort MemorySubsystemControllerManufacturerId { get; init; }
+  public ushort MemorySubsystemControllerProductId { get; init; }
+  public ulong NonVolatileSizeBytes { get; init; }
+  public ulong VolatileSizeBytes { get; init; }
+  public ulong CacheSizeBytes { get; init; }
+  public ulong LogicalSizeBytes { get; init; }
+
+  // ── SMBIOS 3.3 additions ──────────────────────────────────────────────────
+  public uint ExtendedSpeedMts { get; init; }
+  public uint ExtendedConfiguredMemorySpeedMts { get; init; }
 
   // ── High Utility Computation Properties ───────────────────────────────────
 
@@ -194,19 +211,36 @@ public sealed class T017_MemoryDevice : ISmbiosDecodedStructure {
       DeviceLocator = s.Length > 0x10 ? s.GetString(s.ReadByte(0x10)) : null,
       BankLocator = s.Length > 0x11 ? s.GetString(s.ReadByte(0x11)) : null,
       Type = s.Length > 0x12 ? (MemoryType)s.ReadByte(0x12) : MemoryType.Unknown,
-      TypeDetail = s.Length > 0x15 ? (MemoryTypeDetail)s.ReadWord(0x14) : MemoryTypeDetail.None,
-      SpeedMts = s.Length > 0x17 ? s.ReadWord(0x16) : (ushort)0,
-      Manufacturer = s.Length > 0x18 ? s.GetString(s.ReadByte(0x18)) : null,
-      SerialNumber = s.Length > 0x19 ? s.GetString(s.ReadByte(0x19)) : null,
-      AssetTag = s.Length > 0x1A ? s.GetString(s.ReadByte(0x1A)) : null,
-      PartNumber = s.Length > 0x1B ? s.GetString(s.ReadByte(0x1B)) : null,
-      Attributes = s.Length > 0x1C ? s.ReadByte(0x1C) : (byte)0,
-      ExtendedSizeMegabytes = s.Length > 0x20 ? s.ReadDWord(0x1D) : 0,
-      ConfiguredMemorySpeedMts = s.Length > 0x22 ? s.ReadWord(0x21) : (ushort)0,
-      MinimumVoltageMillivolts = s.Length > 0x24 ? s.ReadWord(0x23) : (ushort)0,
-      MaximumVoltageMillivolts = s.Length > 0x26 ? s.ReadWord(0x25) : (ushort)0,
-      ConfiguredVoltageMillivolts = s.Length > 0x28 ? s.ReadWord(0x27) : (ushort)0,
-      Technology = s.Length > 0x29 ? (MemoryTechnology)s.ReadByte(0x29) : MemoryTechnology.Unknown
+      // DSP0134 §7.18: Type Detail WORD @0x13, Speed WORD @0x15, strings @0x17-0x1A,
+      // Attributes @0x1B, Extended Size DWORD @0x1C, Configured Speed @0x20,
+      // voltages @0x22/0x24/0x26, Technology @0x28.
+      TypeDetail = s.Length > 0x14 ? (MemoryTypeDetail)s.ReadWord(0x13) : MemoryTypeDetail.None,
+      SpeedMts = s.Length > 0x16 ? s.ReadWord(0x15) : (ushort)0,
+      Manufacturer = s.Length > 0x17 ? s.GetString(s.ReadByte(0x17)) : null,
+      SerialNumber = s.Length > 0x18 ? s.GetString(s.ReadByte(0x18)) : null,
+      AssetTag = s.Length > 0x19 ? s.GetString(s.ReadByte(0x19)) : null,
+      PartNumber = s.Length > 0x1A ? s.GetString(s.ReadByte(0x1A)) : null,
+      Attributes = s.Length > 0x1B ? s.ReadByte(0x1B) : (byte)0,
+      ExtendedSizeMegabytes = s.Length > 0x1F ? s.ReadDWord(0x1C) : 0,
+      ConfiguredMemorySpeedMts = s.Length > 0x21 ? s.ReadWord(0x20) : (ushort)0,
+      MinimumVoltageMillivolts = s.Length > 0x23 ? s.ReadWord(0x22) : (ushort)0,
+      MaximumVoltageMillivolts = s.Length > 0x25 ? s.ReadWord(0x24) : (ushort)0,
+      ConfiguredVoltageMillivolts = s.Length > 0x27 ? s.ReadWord(0x26) : (ushort)0,
+      Technology = s.Length > 0x28 ? (MemoryTechnology)s.ReadByte(0x28) : MemoryTechnology.Unknown,
+      // SMBIOS 3.2 fields
+      MemoryOperatingModeCapability = s.Length > 0x2A ? s.ReadWord(0x29) : (ushort)0,
+      FirmwareVersion = s.Length > 0x2B ? s.GetString(s.ReadByte(0x2B)) : null,
+      ModuleManufacturerId = s.Length > 0x2D ? s.ReadWord(0x2C) : (ushort)0,
+      ModuleProductId = s.Length > 0x2F ? s.ReadWord(0x2E) : (ushort)0,
+      MemorySubsystemControllerManufacturerId = s.Length > 0x31 ? s.ReadWord(0x30) : (ushort)0,
+      MemorySubsystemControllerProductId = s.Length > 0x33 ? s.ReadWord(0x32) : (ushort)0,
+      NonVolatileSizeBytes = s.Length > 0x3B ? s.ReadQWord(0x34) : 0UL,
+      VolatileSizeBytes = s.Length > 0x43 ? s.ReadQWord(0x3C) : 0UL,
+      CacheSizeBytes = s.Length > 0x4B ? s.ReadQWord(0x44) : 0UL,
+      LogicalSizeBytes = s.Length > 0x53 ? s.ReadQWord(0x4C) : 0UL,
+      // SMBIOS 3.3 fields
+      ExtendedSpeedMts = s.Length > 0x57 ? s.ReadDWord(0x54) : 0u,
+      ExtendedConfiguredMemorySpeedMts = s.Length > 0x5B ? s.ReadDWord(0x58) : 0u
     };
   }
 }

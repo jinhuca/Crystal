@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Crystal.Smbios.Types;
 
@@ -38,19 +39,23 @@ public sealed class T009_SystemSlotInformation : ISmbiosDecodedStructure {
   /// <summary>Bits 7-3: device number; bits 2-0: function number (v2.6+).</summary>
   public byte DeviceFunctionNumber { get; init; }
 
-  /// <summary>Physical slot width in lanes (v3.2+); 0xFF = not applicable.</summary>
-  public byte SlotPhysicalWidth { get; init; }
-  /// <summary>Slot pitch in 0.1 mm units (v3.2+); 0 = not given.</summary>
-  public ushort SlotPitch { get; init; }
-  /// <summary>Slot height classification (v3.4+).</summary>
-  public SlotHeight SlotHeight { get; init; }
+  /// <summary>Data Bus Width of the slot's base segment (v3.2+).</summary>
+  public byte DataBusWidthBase { get; init; }
 
-  /// <summary>
-  /// Number of Peer Grouping entries that follow this structure (v3.2+);
-  /// the entries themselves are not decoded (see class remarks).
-  /// 0 on structures without peer grouping.
-  /// </summary>
+  /// <summary>Number of Peer Grouping entries (v3.2+); 0 when none.</summary>
   public byte PeerGroupingCount { get; init; }
+
+  /// <summary>Decoded Peer Grouping entries (v3.2+): each maps a PCI segment/bus/device-function to a negotiated data-bus width.</summary>
+  public IReadOnlyList<SlotPeerGroup> PeerGroups { get; init; } = Array.Empty<SlotPeerGroup>();
+
+  /// <summary>Slot Information — meaning depends on SlotType (v3.4+).</summary>
+  public byte SlotInformation { get; init; }
+  /// <summary>Physical slot width in lanes (v3.4+); 0xFF = not applicable.</summary>
+  public byte SlotPhysicalWidth { get; init; }
+  /// <summary>Slot pitch in 0.01 mm units (v3.4+); 0 = not given.</summary>
+  public ushort SlotPitch { get; init; }
+  /// <summary>Slot height classification (v3.5+).</summary>
+  public SlotHeight SlotHeight { get; init; }
 
   /// <summary>PCI device number (upper 5 bits of <see cref="DeviceFunctionNumber"/>).</summary>
   public int DeviceNumber => DeviceFunctionNumber >> 3;
@@ -73,10 +78,30 @@ public sealed class T009_SystemSlotInformation : ISmbiosDecodedStructure {
     // 0D SegmentGroupNumber        WORD   (v2.6+)
     // 0F BusNumber                 BYTE   (v2.6+)
     // 10 DeviceFunctionNumber      BYTE   (v2.6+)
-    // 11 DataBusWidth (physical)   BYTE   (v3.2+) — SlotPhysicalWidth
-    // 12 SlotPitch                 WORD   (v3.2+)
-    // 14 SlotHeight                BYTE   (v3.4+)
-    // 15 PeerGroupingCount         BYTE   (v3.2+; peer-group array follows, not decoded)
+    // 11 DataBusWidth              BYTE   (v3.2+)
+    // 12 PeerGroupingCount (n)     BYTE   (v3.2+)
+    // 13 PeerGroups (n * 5 bytes)         (v3.2+)
+    // then, after the peer-group array (base = 0x13 + 5n):
+    //   +0 SlotInformation         BYTE   (v3.4+)
+    //   +1 SlotPhysicalWidth       BYTE   (v3.4+)
+    //   +2 SlotPitch               WORD   (v3.4+)
+    //   +4 SlotHeight              BYTE   (v3.5+)
+    byte peerCount = s.Length > 0x12 ? s.ReadByte(0x12) : (byte)0;
+
+    var peerGroups = new List<SlotPeerGroup>(peerCount);
+    for (int i = 0; i < peerCount; i++) {
+      int off = 0x13 + i * 5;
+      if (s.Length < off + 5) break;
+      peerGroups.Add(new SlotPeerGroup {
+        SegmentGroupNumber = s.ReadWord(off),
+        BusNumber = s.ReadByte(off + 2),
+        DeviceFunctionNumber = s.ReadByte(off + 3),
+        DataBusWidth = s.ReadByte(off + 4),
+      });
+    }
+
+    int tail = 0x13 + peerCount * 5;
+
     return new T009_SystemSlotInformation {
       StructureType = s.Type,
       Length = s.Length,
@@ -92,12 +117,26 @@ public sealed class T009_SystemSlotInformation : ISmbiosDecodedStructure {
       SegmentGroupNumber = s.Length > 0x0E ? s.ReadWord(0x0D) : (ushort)0,
       BusNumber = s.Length > 0x0F ? s.ReadByte(0x0F) : (byte)0,
       DeviceFunctionNumber = s.Length > 0x10 ? s.ReadByte(0x10) : (byte)0,
-      SlotPhysicalWidth = s.Length > 0x11 ? s.ReadByte(0x11) : (byte)0xFF,
-      SlotPitch = s.Length > 0x13 ? s.ReadWord(0x12) : (ushort)0,
-      SlotHeight = s.Length > 0x14 ? (SlotHeight)s.ReadByte(0x14) : SlotHeight.NotApplicable,
-      PeerGroupingCount = s.Length > 0x15 ? s.ReadByte(0x15) : (byte)0,
+      DataBusWidthBase = s.Length > 0x11 ? s.ReadByte(0x11) : (byte)0,
+      PeerGroupingCount = peerCount,
+      PeerGroups = peerGroups,
+      SlotInformation = s.Length > tail ? s.ReadByte(tail) : (byte)0,
+      SlotPhysicalWidth = s.Length > tail + 1 ? s.ReadByte(tail + 1) : (byte)0xFF,
+      SlotPitch = s.Length > tail + 3 ? s.ReadWord(tail + 2) : (ushort)0,
+      SlotHeight = s.Length > tail + 4 ? (SlotHeight)s.ReadByte(tail + 4) : SlotHeight.NotApplicable,
     };
   }
+}
+
+/// <summary>DSP0134 §7.10.9 — a single System Slot Peer Group entry (v3.2+).</summary>
+public sealed class SlotPeerGroup {
+  public ushort SegmentGroupNumber { get; init; }
+  public byte BusNumber { get; init; }
+  public byte DeviceFunctionNumber { get; init; }
+  /// <summary>Data bus width (electrical width) negotiated for this peer, in the same encoding as physical width.</summary>
+  public byte DataBusWidth { get; init; }
+  public int DeviceNumber => DeviceFunctionNumber >> 3;
+  public int FunctionNumber => DeviceFunctionNumber & 0b111;
 }
 
 // ── Type 9 — System Slots enums (DSP0134 §7.10) ──────────────────────────────

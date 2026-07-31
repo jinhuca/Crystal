@@ -1,5 +1,8 @@
 ﻿namespace Crystal.Telemetry.Hardware.Gpu;
 
+/// <summary>
+/// Base class for all GPU <see cref="Hardware" /> implementations.
+/// </summary>
 public abstract class GenericGpu : Hardware {
   /// <summary>
   /// Initializes a new instance of the <see cref="GenericGpu" /> class.
@@ -15,6 +18,7 @@ public abstract class GenericGpu : Hardware {
   /// </summary>
   public abstract string DeviceId { get; }
 
+  /// <inheritdoc />
   public override void Close() {
     base.Close();
   }

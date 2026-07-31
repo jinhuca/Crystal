@@ -4,10 +4,17 @@ using System.Text;
 
 namespace Crystal.Telemetry.Hardware.Controller.AquaComputer;
 
+/// <summary>
+/// <see cref="IGroup" /> containing all detected Aqua Computer <see cref="IHardware" />.
+/// </summary>
 public class AquaComputerGroup : IGroup {
   private readonly List<IHardware> _hardware = new();
   private readonly StringBuilder _report = new();
 
+  /// <summary>
+  /// Initializes a new instance of the <see cref="AquaComputerGroup" /> class and detects supported Aqua Computer devices.
+  /// </summary>
+  /// <param name="settings">Additional settings passed to each detected <see cref="IHardware" />.</param>
   public AquaComputerGroup(ISettings settings) {
     _report.AppendLine("AquaComputer Hardware");
     _report.AppendLine();
@@ -107,8 +114,10 @@ public class AquaComputerGroup : IGroup {
     }
   }
 
+  /// <inheritdoc />
   public IReadOnlyList<IHardware> Hardware => _hardware;
 
+  /// <inheritdoc />
   public void Close() {
     foreach (IHardware iHardware in _hardware) {
       if (iHardware is Hardware hardware)
@@ -116,6 +125,7 @@ public class AquaComputerGroup : IGroup {
     }
   }
 
+  /// <inheritdoc />
   public string GetReport() {
     return _report.ToString();
   }

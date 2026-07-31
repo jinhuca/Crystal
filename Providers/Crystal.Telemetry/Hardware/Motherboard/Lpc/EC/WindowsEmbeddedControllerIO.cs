@@ -24,6 +24,10 @@ public class WindowsEmbeddedControllerIO : IEmbeddedControllerIO {
 
   private int _waitReadFailures;
 
+  /// <summary>
+  /// Initializes a new instance of the <see cref="WindowsEmbeddedControllerIO"/> class and acquires the EC bus lock.
+  /// </summary>
+  /// <exception cref="BusMutexLockingFailedException">Thrown when the EC bus mutex could not be acquired.</exception>
   public WindowsEmbeddedControllerIO() {
     _pawnModule = new LpcAcpiEc();
 
@@ -32,6 +36,11 @@ public class WindowsEmbeddedControllerIO : IEmbeddedControllerIO {
     }
   }
 
+  /// <summary>
+  /// Reads one byte for each of the specified registers into the provided data buffer, handling bank switching.
+  /// </summary>
+  /// <param name="registers">The register offsets to read, sorted by bank.</param>
+  /// <param name="data">The buffer that receives the read bytes; must be at least as long as <paramref name="registers"/>.</param>
   public void Read(ushort[] registers, byte[] data) {
     Trace.Assert(registers.Length <= data.Length,
                  "data buffer length has to be greater or equal to the registers array length");
@@ -57,6 +66,9 @@ public class WindowsEmbeddedControllerIO : IEmbeddedControllerIO {
     SwitchBank(prevBank);
   }
 
+  /// <summary>
+  /// Releases the EC bus lock and closes the underlying PawnIO module.
+  /// </summary>
   public void Dispose() {
     if (!_disposed) {
       _disposed = true;
@@ -157,6 +169,12 @@ public class WindowsEmbeddedControllerIO : IEmbeddedControllerIO {
     _pawnModule.WritePort((byte)port, datum);
   }
 
+  /// <summary>
+  /// Attempts to read a single byte from the specified EC register following the ACPI read protocol.
+  /// </summary>
+  /// <param name="register">The register offset to read.</param>
+  /// <param name="value">When this method returns, contains the byte read, or zero on failure.</param>
+  /// <returns><see langword="true"/> if the read succeeded; otherwise, <see langword="false"/>.</returns>
   protected bool ReadByteOp(byte register, out byte value) {
     if (WaitWrite()) {
       WriteIOPort(Port.Command, (byte)Command.Read);
@@ -175,6 +193,12 @@ public class WindowsEmbeddedControllerIO : IEmbeddedControllerIO {
     return false;
   }
 
+  /// <summary>
+  /// Attempts to write a single byte to the specified EC register following the ACPI write protocol.
+  /// </summary>
+  /// <param name="register">The register offset to write.</param>
+  /// <param name="value">The byte value to write.</param>
+  /// <returns><see langword="true"/> if the write succeeded; otherwise, <see langword="false"/>.</returns>
   protected bool WriteByteOp(byte register, byte value) {
     if (WaitWrite()) {
       WriteIOPort(Port.Command, (byte)Command.Write);
@@ -190,7 +214,13 @@ public class WindowsEmbeddedControllerIO : IEmbeddedControllerIO {
     return false;
   }
 
+  /// <summary>
+  /// The exception thrown when the ISA bus mutex could not be locked.
+  /// </summary>
   public class BusMutexLockingFailedException : EmbeddedController.IOException {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="BusMutexLockingFailedException"/> class.
+    /// </summary>
     public BusMutexLockingFailedException() : base("could not lock ISA bus mutex") { }
   }
 

@@ -10,10 +10,19 @@ namespace Crystal.Telemetry.Hardware;
 /// System enclosure security status based on <see href="https://www.dmtf.org/dsp/DSP0134">DMTF SMBIOS Reference Specification v.3.3.0, Chapter 7.4.3</see>.
 /// </summary>
 public enum SystemEnclosureSecurityStatus {
+  /// <summary>The security status is of an other type.</summary>
   Other = 1,
+
+  /// <summary>The security status is unknown.</summary>
   Unknown,
+
+  /// <summary>No physical security status is present.</summary>
   None,
+
+  /// <summary>The external interface is locked out.</summary>
   ExternalInterfaceLockedOut,
+
+  /// <summary>The external interface is enabled.</summary>
   ExternalInterfaceEnabled
 }
 
@@ -21,11 +30,22 @@ public enum SystemEnclosureSecurityStatus {
 /// System enclosure state based on <see href="https://www.dmtf.org/dsp/DSP0134">DMTF SMBIOS Reference Specification v.3.3.0, Chapter 7.4.2</see>.
 /// </summary>
 public enum SystemEnclosureState {
+  /// <summary>The state is of an other type.</summary>
   Other = 1,
+
+  /// <summary>The state is unknown.</summary>
   Unknown,
+
+  /// <summary>The enclosure is in a safe state.</summary>
   Safe,
+
+  /// <summary>The enclosure is in a warning state.</summary>
   Warning,
+
+  /// <summary>The enclosure is in a critical state.</summary>
   Critical,
+
+  /// <summary>The enclosure is in a non-recoverable state.</summary>
   NonRecoverable
 }
 
@@ -33,41 +53,112 @@ public enum SystemEnclosureState {
 /// System enclosure type based on <see href="https://www.dmtf.org/dsp/DSP0134">DMTF SMBIOS Reference Specification v.3.3.0, Chapter 7.4.1</see>.
 /// </summary>
 public enum SystemEnclosureType {
+  /// <summary>An other enclosure type.</summary>
   Other = 1,
+
+  /// <summary>An unknown enclosure type.</summary>
   Unknown,
+
+  /// <summary>A desktop enclosure.</summary>
   Desktop,
+
+  /// <summary>A low-profile desktop enclosure.</summary>
   LowProfileDesktop,
+
+  /// <summary>A pizza box enclosure.</summary>
   PizzaBox,
+
+  /// <summary>A mini tower enclosure.</summary>
   MiniTower,
+
+  /// <summary>A tower enclosure.</summary>
   Tower,
+
+  /// <summary>A portable enclosure.</summary>
   Portable,
+
+  /// <summary>A laptop enclosure.</summary>
   Laptop,
+
+  /// <summary>A notebook enclosure.</summary>
   Notebook,
+
+  /// <summary>A hand-held enclosure.</summary>
   HandHeld,
+
+  /// <summary>A docking station enclosure.</summary>
   DockingStation,
+
+  /// <summary>An all-in-one enclosure.</summary>
   AllInOne,
+
+  /// <summary>A sub-notebook enclosure.</summary>
   SubNotebook,
+
+  /// <summary>A space-saving enclosure.</summary>
   SpaceSaving,
+
+  /// <summary>A lunch box enclosure.</summary>
   LunchBox,
+
+  /// <summary>A main server chassis enclosure.</summary>
   MainServerChassis,
+
+  /// <summary>An expansion chassis enclosure.</summary>
   ExpansionChassis,
+
+  /// <summary>A sub-chassis enclosure.</summary>
   SubChassis,
+
+  /// <summary>A bus expansion chassis enclosure.</summary>
   BusExpansionChassis,
+
+  /// <summary>A peripheral chassis enclosure.</summary>
   PeripheralChassis,
+
+  /// <summary>A RAID chassis enclosure.</summary>
   RaidChassis,
+
+  /// <summary>A rack-mount chassis enclosure.</summary>
   RackMountChassis,
+
+  /// <summary>A sealed-case PC enclosure.</summary>
   SealedCasePc,
+
+  /// <summary>A multi-system chassis enclosure.</summary>
   MultiSystemChassis,
+
+  /// <summary>A CompactPCI enclosure.</summary>
   CompactPci,
+
+  /// <summary>An AdvancedTCA enclosure.</summary>
   AdvancedTca,
+
+  /// <summary>A blade enclosure.</summary>
   Blade,
+
+  /// <summary>A blade enclosure chassis.</summary>
   BladeEnclosure,
+
+  /// <summary>A tablet enclosure.</summary>
   Tablet,
+
+  /// <summary>A convertible enclosure.</summary>
   Convertible,
+
+  /// <summary>A detachable enclosure.</summary>
   Detachable,
+
+  /// <summary>An IoT gateway enclosure.</summary>
   IoTGateway,
+
+  /// <summary>An embedded PC enclosure.</summary>
   EmbeddedPc,
+
+  /// <summary>A mini PC enclosure.</summary>
   MiniPc,
+
+  /// <summary>A stick PC enclosure.</summary>
   StickPc
 }
 
@@ -75,216 +166,637 @@ public enum SystemEnclosureType {
 /// Processor family based on <see href="https://www.dmtf.org/dsp/DSP0134">DMTF SMBIOS Reference Specification v.3.3.0, Chapter 7.5.2</see>.
 /// </summary>
 public enum ProcessorFamily {
+  /// <summary>An other processor family.</summary>
   Other = 1,
+
+  /// <summary>Intel 8086 processor.</summary>
   Intel8086 = 3,
+
+  /// <summary>Intel 80286 processor.</summary>
   Intel80286 = 4,
+
+  /// <summary>Intel 386 processor.</summary>
   Intel386,
+
+  /// <summary>Intel 486 processor.</summary>
   Intel486,
+
+  /// <summary>Intel 8087 math coprocessor.</summary>
   Intel8087,
+
+  /// <summary>Intel 80287 math coprocessor.</summary>
   Intel80287,
+
+  /// <summary>Intel 80387 math coprocessor.</summary>
   Intel80387,
+
+  /// <summary>Intel 80487 math coprocessor.</summary>
   Intel80487,
+
+  /// <summary>Intel Pentium processor.</summary>
   IntelPentium,
+
+  /// <summary>Intel Pentium Pro processor.</summary>
   IntelPentiumPro,
+
+  /// <summary>Intel Pentium II processor.</summary>
   IntelPentiumII,
+
+  /// <summary>Intel Pentium with MMX technology processor.</summary>
   IntelPentiumMMX,
+
+  /// <summary>Intel Celeron processor.</summary>
   IntelCeleron,
+
+  /// <summary>Intel Pentium II Xeon processor.</summary>
   IntelPentiumIIXeon,
+
+  /// <summary>Intel Pentium III processor.</summary>
   IntelPentiumIII,
+
+  /// <summary>M1 family processor.</summary>
   M1,
+
+  /// <summary>M2 family processor.</summary>
   M2,
+
+  /// <summary>Intel Celeron M processor.</summary>
   IntelCeleronM,
+
+  /// <summary>Intel Pentium 4 HT processor.</summary>
   IntelPentium4HT,
+
+  /// <summary>AMD Duron processor.</summary>
   AmdDuron = 24,
+
+  /// <summary>AMD K5 family processor.</summary>
   AmdK5,
+
+  /// <summary>AMD K6 family processor.</summary>
   AmdK6,
+
+  /// <summary>AMD K6-2 processor.</summary>
   AmdK62,
+
+  /// <summary>AMD K6-3 processor.</summary>
   AmdK63,
+
+  /// <summary>AMD Athlon processor.</summary>
   AmdAthlon,
+
+  /// <summary>AMD 29000 family processor.</summary>
   Amd2900,
+
+  /// <summary>AMD K6-2+ processor.</summary>
   AmdK62Plus,
+
+  /// <summary>PowerPC family processor.</summary>
   PowerPc,
+
+  /// <summary>PowerPC 601 processor.</summary>
   PowerPc601,
+
+  /// <summary>PowerPC 603 processor.</summary>
   PowerPc603,
+
+  /// <summary>PowerPC 603+ processor.</summary>
   PowerPc603Plus,
+
+  /// <summary>PowerPC 604 processor.</summary>
   PowerPc604,
+
+  /// <summary>PowerPC 620 processor.</summary>
   PowerPc620,
+
+  /// <summary>PowerPC x704 processor.</summary>
   PowerPcx704,
+
+  /// <summary>PowerPC 750 processor.</summary>
   PowerPc750,
+
+  /// <summary>Intel Core Duo processor.</summary>
   IntelCoreDuo,
+
+  /// <summary>Intel Core Duo mobile processor.</summary>
   IntelCoreDuoMobile,
+
+  /// <summary>Intel Core Solo mobile processor.</summary>
   IntelCoreSoloMobile,
+
+  /// <summary>Intel Atom processor.</summary>
   IntelAtom,
+
+  /// <summary>Intel Core M processor.</summary>
   IntelCoreM,
+
+  /// <summary>Intel Core m3 processor.</summary>
   IntelCoreM3,
+
+  /// <summary>Intel Core m5 processor.</summary>
   IntelCoreM5,
+
+  /// <summary>Intel Core m7 processor.</summary>
   IntelCoreM7,
+
+  /// <summary>DEC Alpha family processor.</summary>
   Alpha,
+
+  /// <summary>DEC Alpha 21064 processor.</summary>
   Alpha21064,
+
+  /// <summary>DEC Alpha 21066 processor.</summary>
   Alpha21066,
+
+  /// <summary>DEC Alpha 21164 processor.</summary>
   Alpha21164,
+
+  /// <summary>DEC Alpha 21164PC processor.</summary>
   Alpha21164Pc,
+
+  /// <summary>DEC Alpha 21164a processor.</summary>
   Alpha21164a,
+
+  /// <summary>DEC Alpha 21264 processor.</summary>
   Alpha21264,
+
+  /// <summary>DEC Alpha 21364 processor.</summary>
   Alpha21364,
+
+  /// <summary>AMD Turion II Ultra Dual-Core Mobile M processor.</summary>
   AmdTurionIIUltraDualCoreMobileM,
+
+  /// <summary>AMD Turion II Dual-Core Mobile M processor.</summary>
   AmdTurionDualCoreMobileM,
+
+  /// <summary>AMD Athlon II Dual-Core M processor.</summary>
   AmdAthlonIIDualCoreM,
+
+  /// <summary>AMD Opteron 6100 series processor.</summary>
   AmdOpteron6100Series,
+
+  /// <summary>AMD Opteron 4100 series processor.</summary>
   AmdOpteron4100Series,
+
+  /// <summary>AMD Opteron 6200 series processor.</summary>
   AmdOpteron6200Series,
+
+  /// <summary>AMD Opteron 4200 series processor.</summary>
   AmdOpteron4200Series,
+
+  /// <summary>AMD FX series processor.</summary>
   AmdFxSeries,
+
+  /// <summary>MIPS family processor.</summary>
   Mips,
+
+  /// <summary>MIPS R4000 processor.</summary>
   MipsR4000,
+
+  /// <summary>MIPS R4200 processor.</summary>
   MipsR4200,
+
+  /// <summary>MIPS R4400 processor.</summary>
   MipsR4400,
+
+  /// <summary>MIPS R4600 processor.</summary>
   MipsR4600,
+
+  /// <summary>MIPS R10000 processor.</summary>
   MipsR10000,
+
+  /// <summary>AMD C-Series processor.</summary>
   AmdCSeries,
+
+  /// <summary>AMD E-Series processor.</summary>
   AmdESeries,
+
+  /// <summary>AMD A-Series processor.</summary>
   AmdASeries,
+
+  /// <summary>AMD G-Series processor.</summary>
   AmdGSeries,
+
+  /// <summary>AMD Z-Series processor.</summary>
   AmdZSeries,
+
+  /// <summary>AMD R-Series processor.</summary>
   AmdRSeries,
+
+  /// <summary>AMD Opteron 4300 series processor.</summary>
   AmdOpteron4300Series,
+
+  /// <summary>AMD Opteron 6300 series processor.</summary>
   AmdOpteron6300Series,
+
+  /// <summary>AMD Opteron 3300 series processor.</summary>
   AmdOpteron3300Series,
+
+  /// <summary>AMD FirePro series processor.</summary>
   AmdFireProSeries,
+
+  /// <summary>SPARC family processor.</summary>
   Sparc,
+
+  /// <summary>SuperSPARC processor.</summary>
   SuperSparc,
+
+  /// <summary>microSPARC II processor.</summary>
   MicroSparcII,
+
+  /// <summary>microSPARC IIep processor.</summary>
   MicroSparcIIep,
+
+  /// <summary>UltraSPARC processor.</summary>
   UltraSparc,
+
+  /// <summary>UltraSPARC II processor.</summary>
   UltraSparcII,
+
+  /// <summary>UltraSPARC IIi processor.</summary>
   UltraSparcIIi,
+
+  /// <summary>UltraSPARC III processor.</summary>
   UltraSparcIII,
+
+  /// <summary>UltraSPARC IIIi processor.</summary>
   UltraSparcIIIi,
+
+  /// <summary>Motorola 68040 processor.</summary>
   Motorola68040 = 96,
+
+  /// <summary>Motorola 68xxx family processor.</summary>
   Motorola68xxx,
+
+  /// <summary>Motorola 68000 processor.</summary>
   Motorola68000,
+
+  /// <summary>Motorola 68010 processor.</summary>
   Motorola68010,
+
+  /// <summary>Motorola 68020 processor.</summary>
   Motorola68020,
+
+  /// <summary>Motorola 68030 processor.</summary>
   Motorola68030,
+
+  /// <summary>AMD Athlon X4 Quad-Core processor.</summary>
   AmdAthlonX4QuadCore,
+
+  /// <summary>AMD Opteron X1000 series processor.</summary>
   AmdOpteronX1000Series,
+
+  /// <summary>AMD Opteron X2000 series processor.</summary>
   AmdOpteronX2000Series,
+
+  /// <summary>AMD Opteron A-Series processor.</summary>
   AmdOpteronASeries,
+
+  /// <summary>AMD Opteron X3000 series processor.</summary>
   AmdOpteronX3000Series,
+
+  /// <summary>AMD Zen family processor.</summary>
   AmdZen,
+
+  /// <summary>Hobbit family processor.</summary>
   Hobbit = 112,
+
+  /// <summary>Transmeta Crusoe TM5000 family processor.</summary>
   CrusoeTm5000 = 120,
+
+  /// <summary>Transmeta Crusoe TM3000 family processor.</summary>
   CrusoeTm3000,
+
+  /// <summary>Transmeta Efficeon TM8000 family processor.</summary>
   EfficeonTm8000,
+
+  /// <summary>Weitek processor.</summary>
   Weitek = 128,
+
+  /// <summary>Intel Itanium processor.</summary>
   IntelItanium = 130,
+
+  /// <summary>AMD Athlon 64 processor.</summary>
   AmdAthlon64,
+
+  /// <summary>AMD Opteron processor.</summary>
   AmdOpteron,
+
+  /// <summary>AMD Sempron processor.</summary>
   AmdSempron,
+
+  /// <summary>AMD Turion 64 mobile processor.</summary>
   AmdTurio64Mobile,
+
+  /// <summary>AMD Opteron Dual-Core processor.</summary>
   AmdOpteronDualCore,
+
+  /// <summary>AMD Athlon 64 X2 Dual-Core processor.</summary>
   AmdAthlon64X2DualCore,
+
+  /// <summary>AMD Turion 64 X2 mobile processor.</summary>
   AmdTurion64X2Mobile,
+
+  /// <summary>AMD Opteron Quad-Core processor.</summary>
   AmdOpteronQuadCore,
+
+  /// <summary>AMD Opteron third-generation processor.</summary>
   AmdOpteronThirdGen,
+
+  /// <summary>AMD Phenom FX Quad-Core processor.</summary>
   AmdPhenomFXQuadCore,
+
+  /// <summary>AMD Phenom X4 Quad-Core processor.</summary>
   AmdPhenomX4QuadCore,
+
+  /// <summary>AMD Phenom X2 Dual-Core processor.</summary>
   AmdPhenomX2DualCore,
+
+  /// <summary>AMD Athlon X2 Dual-Core processor.</summary>
   AmdAthlonX2DualCore,
+
+  /// <summary>PA-RISC family processor.</summary>
   PaRisc,
+
+  /// <summary>PA-RISC 8500 processor.</summary>
   PaRisc8500,
+
+  /// <summary>PA-RISC 8000 processor.</summary>
   PaRisc8000,
+
+  /// <summary>PA-RISC 7300LC processor.</summary>
   PaRisc7300LC,
+
+  /// <summary>PA-RISC 7200 processor.</summary>
   PaRisc7200,
+
+  /// <summary>PA-RISC 7100LC processor.</summary>
   PaRisc7100LC,
+
+  /// <summary>PA-RISC 7100 processor.</summary>
   PaRisc7100,
+
+  /// <summary>V30 family processor.</summary>
   V30 = 160,
+
+  /// <summary>Intel Xeon 3200 Quad-Core series processor.</summary>
   IntelXeon3200QuadCoreSeries,
+
+  /// <summary>Intel Xeon 3000 Dual-Core series processor.</summary>
   IntelXeon3000DualCoreSeries,
+
+  /// <summary>Intel Xeon 5300 Quad-Core series processor.</summary>
   IntelXeon5300QuadCoreSeries,
+
+  /// <summary>Intel Xeon 5100 Dual-Core series processor.</summary>
   IntelXeon5100DualCoreSeries,
+
+  /// <summary>Intel Xeon 5000 Dual-Core series processor.</summary>
   IntelXeon5000DualCoreSeries,
+
+  /// <summary>Intel Xeon LV Dual-Core processor.</summary>
   IntelXeonLVDualCore,
+
+  /// <summary>Intel Xeon ULV Dual-Core processor.</summary>
   IntelXeonULVDualCore,
+
+  /// <summary>Intel Xeon 7100 series processor.</summary>
   IntelXeon7100Series,
+
+  /// <summary>Intel Xeon 5400 series processor.</summary>
   IntelXeon5400Series,
+
+  /// <summary>Intel Xeon Quad-Core processor.</summary>
   IntelXeonQuadCore,
+
+  /// <summary>Intel Xeon 5200 Dual-Core series processor.</summary>
   IntelXeon5200DualCoreSeries,
+
+  /// <summary>Intel Xeon 7200 Dual-Core series processor.</summary>
   IntelXeon7200DualCoreSeries,
+
+  /// <summary>Intel Xeon 7300 Quad-Core series processor.</summary>
   IntelXeon7300QuadCoreSeries,
+
+  /// <summary>Intel Xeon 7400 Quad-Core series processor.</summary>
   IntelXeon7400QuadCoreSeries,
+
+  /// <summary>Intel Xeon 7400 Multi-Core series processor.</summary>
   IntelXeon7400MultiCoreSeries,
+
+  /// <summary>Intel Pentium III Xeon processor.</summary>
   IntelPentiumIIIXeon,
+
+  /// <summary>Intel Pentium III with SpeedStep technology processor.</summary>
   IntelPentiumIIISpeedStep,
+
+  /// <summary>Intel Pentium 4 processor.</summary>
   IntelPentium4,
+
+  /// <summary>Intel Xeon processor.</summary>
   IntelXeon,
+
+  /// <summary>IBM AS/400 family processor.</summary>
   As400,
+
+  /// <summary>Intel Xeon MP processor.</summary>
   IntelXeonMP,
+
+  /// <summary>AMD Athlon XP processor.</summary>
   AmdAthlonXP,
+
+  /// <summary>AMD Athlon MP processor.</summary>
   AmdAthlonMP,
+
+  /// <summary>Intel Itanium 2 processor.</summary>
   IntelItanium2,
+
+  /// <summary>Intel Pentium M processor.</summary>
   IntelPentiumM,
+
+  /// <summary>Intel Celeron D processor.</summary>
   IntelCeleronD,
+
+  /// <summary>Intel Pentium D processor.</summary>
   IntelPentiumD,
+
+  /// <summary>Intel Pentium Extreme Edition processor.</summary>
   IntelPentiumExtreme,
+
+  /// <summary>Intel Core Solo processor.</summary>
   IntelCoreSolo,
+
+  /// <summary>Intel Core 2 Duo processor.</summary>
   IntelCore2Duo = 191,
+
+  /// <summary>Intel Core 2 Solo processor.</summary>
   IntelCore2Solo,
+
+  /// <summary>Intel Core 2 Extreme processor.</summary>
   IntelCore2Extreme,
+
+  /// <summary>Intel Core 2 Quad processor.</summary>
   IntelCore2Quad,
+
+  /// <summary>Intel Core 2 Extreme mobile processor.</summary>
   IntelCore2ExtremeMobile,
+
+  /// <summary>Intel Core 2 Duo mobile processor.</summary>
   IntelCore2DuoMobile,
+
+  /// <summary>Intel Core 2 Solo mobile processor.</summary>
   IntelCore2SoloMobile,
+
+  /// <summary>Intel Core i7 processor.</summary>
   IntelCoreI7,
+
+  /// <summary>Intel Celeron Dual-Core processor.</summary>
   IntelCeleronDualCore,
+
+  /// <summary>IBM 390 family processor.</summary>
   Ibm390,
+
+  /// <summary>PowerPC G4 processor.</summary>
   PowerPcG4,
+
+  /// <summary>PowerPC G5 processor.</summary>
   PowerPcG5,
+
+  /// <summary>ESA/390 G6 processor.</summary>
   Esa390G6,
+
+  /// <summary>z/Architecture processor.</summary>
   ZArchitecture,
+
+  /// <summary>Intel Core i5 processor.</summary>
   IntelCoreI5,
+
+  /// <summary>Intel Core i3 processor.</summary>
   IntelCoreI3,
+
+  /// <summary>Intel Core i9 processor.</summary>
   IntelCoreI9,
+
+  /// <summary>VIA C7-M processor.</summary>
   ViaC7M = 210,
+
+  /// <summary>VIA C7-D processor.</summary>
   ViaC7D,
+
+  /// <summary>VIA C7 processor.</summary>
   ViaC7,
+
+  /// <summary>VIA Eden processor.</summary>
   ViaEden,
+
+  /// <summary>Intel Xeon Multi-Core processor.</summary>
   IntelXeonMultiCore,
+
+  /// <summary>Intel Xeon 3xxx Dual-Core series processor.</summary>
   IntelXeon3xxxDualCoreSeries,
+
+  /// <summary>Intel Xeon 3xxx Quad-Core series processor.</summary>
   IntelXeon3xxxQuadCoreSeries,
+
+  /// <summary>VIA Nano processor.</summary>
   ViaNano,
+
+  /// <summary>Intel Xeon 5xxx Dual-Core series processor.</summary>
   IntelXeon5xxxDualCoreSeries,
+
+  /// <summary>Intel Xeon 5xxx Quad-Core series processor.</summary>
   IntelXeon5xxxQuadCoreSeries,
+
+  /// <summary>Intel Xeon 7xxx Dual-Core series processor.</summary>
   IntelXeon7xxxDualCoreSeries = 221,
+
+  /// <summary>Intel Xeon 7xxx Quad-Core series processor.</summary>
   IntelXeon7xxxQuadCoreSeries,
+
+  /// <summary>Intel Xeon 7xxx Multi-Core series processor.</summary>
   IntelXeon7xxxMultiCoreSeries,
+
+  /// <summary>Intel Xeon 3400 Multi-Core series processor.</summary>
   IntelXeon3400MultiCoreSeries,
+
+  /// <summary>AMD Opteron 3000 series processor.</summary>
   AmdOpteron3000Series = 228,
+
+  /// <summary>AMD Sempron II processor.</summary>
   AmdSempronII,
+
+  /// <summary>AMD Opteron Quad-Core embedded processor.</summary>
   AmdOpteronQuadCoreEmbedded,
+
+  /// <summary>AMD Phenom Triple-Core processor.</summary>
   AmdPhenomTripleCore,
+
+  /// <summary>AMD Turion Ultra Dual-Core mobile processor.</summary>
   AmdTurionUltraDualCoreMobile,
+
+  /// <summary>AMD Turion Dual-Core mobile processor.</summary>
   AmdTurionDualCoreMobile,
+
+  /// <summary>AMD Turion Dual-Core processor.</summary>
   AmdTurionDualCore,
+
+  /// <summary>AMD Athlon Dual-Core processor.</summary>
   AmdAthlonDualCore,
+
+  /// <summary>AMD Sempron SI processor.</summary>
   AmdSempronSI,
+
+  /// <summary>AMD Phenom II processor.</summary>
   AmdPhenomII,
+
+  /// <summary>AMD Athlon II processor.</summary>
   AmdAthlonII,
+
+  /// <summary>AMD Opteron Six-Core processor.</summary>
   AmdOpteronSixCore,
+
+  /// <summary>AMD Sempron M processor.</summary>
   AmdSempronM,
+
+  /// <summary>Intel i860 processor.</summary>
   IntelI860 = 250,
+
+  /// <summary>Intel i960 processor.</summary>
   IntelI960,
+
+  /// <summary>ARMv7 architecture processor.</summary>
   ArmV7 = 256,
+
+  /// <summary>ARMv8 architecture processor.</summary>
   ArmV8,
+
+  /// <summary>Hitachi SH-3 processor.</summary>
   HitachiSh3,
+
+  /// <summary>Hitachi SH-4 processor.</summary>
   HitachiSh4,
+
+  /// <summary>ARM family processor.</summary>
   Arm,
+
+  /// <summary>StrongARM processor.</summary>
   StrongArm,
+
+  /// <summary>6x86 processor.</summary>
   _686,
+
+  /// <summary>MediaGX processor.</summary>
   MediaGX,
+
+  /// <summary>MII processor.</summary>
   MII,
+
+  /// <summary>WinChip processor.</summary>
   WinChip,
+
+  /// <summary>DSP (digital signal processor).</summary>
   Dsp,
+
+  /// <summary>Video processor.</summary>
   VideoProcessor
 }
 
@@ -293,13 +805,28 @@ public enum ProcessorFamily {
 /// </summary>
 [Flags]
 public enum ProcessorCharacteristics {
+  /// <summary>No characteristics are defined.</summary>
   None = 0,
+
+  /// <summary>The processor is 64-bit capable.</summary>
   _64BitCapable = 1,
+
+  /// <summary>The processor is multi-core.</summary>
   MultiCore = 2,
+
+  /// <summary>The processor supports multiple hardware threads.</summary>
   HardwareThread = 4,
+
+  /// <summary>The processor supports execute protection.</summary>
   ExecuteProtection = 8,
+
+  /// <summary>The processor supports enhanced virtualization.</summary>
   EnhancedVirtualization = 16,
+
+  /// <summary>The processor supports power/performance control.</summary>
   PowerPerformanceControl = 32,
+
+  /// <summary>The processor is 128-bit capable.</summary>
   _128BitCapable = 64
 }
 
@@ -307,11 +834,22 @@ public enum ProcessorCharacteristics {
 /// Processor type based on <see href="https://www.dmtf.org/dsp/DSP0134">DMTF SMBIOS Reference Specification v.3.3.0, Chapter 7.5.1</see>.
 /// </summary>
 public enum ProcessorType {
+  /// <summary>An other processor type.</summary>
   Other = 1,
+
+  /// <summary>An unknown processor type.</summary>
   Unknown,
+
+  /// <summary>A central processor (CPU).</summary>
   CentralProcessor,
+
+  /// <summary>A math processor.</summary>
   MathProcessor,
+
+  /// <summary>A DSP (digital signal) processor.</summary>
   DspProcessor,
+
+  /// <summary>A video processor.</summary>
   VideoProcessor
 }
 
@@ -319,60 +857,169 @@ public enum ProcessorType {
 /// Processor socket based on <see href="https://www.dmtf.org/dsp/DSP0134">DMTF SMBIOS Reference Specification v.3.3.0, Chapter 7.5.5</see>.
 /// </summary>
 public enum ProcessorSocket {
+  /// <summary>An other socket type.</summary>
   Other = 1,
+
+  /// <summary>An unknown socket type.</summary>
   Unknown,
+
+  /// <summary>A daughter board socket.</summary>
   DaughterBoard,
+
+  /// <summary>A ZIF (zero insertion force) socket.</summary>
   ZifSocket,
+
+  /// <summary>A replaceable piggy-back socket.</summary>
   PiggyBack,
+
+  /// <summary>No socket.</summary>
   None,
+
+  /// <summary>A LIF (low insertion force) socket.</summary>
   LifSocket,
+
+  /// <summary>Socket ZIF 423.</summary>
   Zif423 = 13,
+
+  /// <summary>Socket A (Socket 462).</summary>
   A,
+
+  /// <summary>Socket ZIF 478.</summary>
   Zif478,
+
+  /// <summary>Socket ZIF 754.</summary>
   Zif754,
+
+  /// <summary>Socket ZIF 940.</summary>
   Zif940,
+
+  /// <summary>Socket ZIF 939.</summary>
   Zif939,
+
+  /// <summary>Socket mPGA604.</summary>
   MPga604,
+
+  /// <summary>Socket LGA771.</summary>
   Lga771,
+
+  /// <summary>Socket LGA775.</summary>
   Lga775,
+
+  /// <summary>Socket S1.</summary>
   S1,
+
+  /// <summary>Socket AM2.</summary>
   AM2,
+
+  /// <summary>Socket F (1207).</summary>
   F,
+
+  /// <summary>Socket LGA1366.</summary>
   Lga1366,
+
+  /// <summary>Socket G34.</summary>
   G34,
+
+  /// <summary>Socket AM3.</summary>
   AM3,
+
+  /// <summary>Socket C32.</summary>
   C32,
+
+  /// <summary>Socket LGA1156.</summary>
   Lga1156,
+
+  /// <summary>Socket LGA1567.</summary>
   Lga1567,
+
+  /// <summary>Socket PGA988A.</summary>
   Pga988A,
+
+  /// <summary>Socket BGA1288.</summary>
   Bga1288,
+
+  /// <summary>Socket rPGA988B.</summary>
   RPga088B,
+
+  /// <summary>Socket BGA1023.</summary>
   Bga1023,
+
+  /// <summary>Socket BGA1224.</summary>
   Bga1224,
+
+  /// <summary>Socket LGA1155.</summary>
   Lga1155,
+
+  /// <summary>Socket LGA1356.</summary>
   Lga1356,
+
+  /// <summary>Socket LGA2011.</summary>
   Lga2011,
+
+  /// <summary>Socket FS1.</summary>
   FS1,
+
+  /// <summary>Socket FS2.</summary>
   FS2,
+
+  /// <summary>Socket FM1.</summary>
   FM1,
+
+  /// <summary>Socket FM2.</summary>
   FM2,
+
+  /// <summary>Socket LGA2011-3.</summary>
   Lga20113,
+
+  /// <summary>Socket LGA1356-3.</summary>
   Lga13563,
+
+  /// <summary>Socket LGA1150.</summary>
   Lga1150,
+
+  /// <summary>Socket BGA1168.</summary>
   Bga1168,
+
+  /// <summary>Socket BGA1234.</summary>
   Bga1234,
+
+  /// <summary>Socket BGA1364.</summary>
   Bga1364,
+
+  /// <summary>Socket AM4.</summary>
   AM4,
+
+  /// <summary>Socket LGA1151.</summary>
   Lga1151,
+
+  /// <summary>Socket BGA1356.</summary>
   Bga1356,
+
+  /// <summary>Socket BGA1440.</summary>
   Bga1440,
+
+  /// <summary>Socket BGA1515.</summary>
   Bga1515,
+
+  /// <summary>Socket LGA3647-1.</summary>
   Lga36471,
+
+  /// <summary>Socket SP3.</summary>
   SP3,
+
+  /// <summary>Socket SP3r2.</summary>
   SP3R2,
+
+  /// <summary>Socket LGA2066.</summary>
   Lga2066,
+
+  /// <summary>Socket BGA1510.</summary>
   Bga1510,
+
+  /// <summary>Socket BGA1528.</summary>
   Bga1528,
+
+  /// <summary>Socket LGA4189.</summary>
   Lga4189
 }
 
@@ -380,14 +1027,31 @@ public enum ProcessorSocket {
 /// System wake-up type based on <see href="https://www.dmtf.org/dsp/DSP0134">DMTF SMBIOS Reference Specification v.3.3.0, Chapter 7.2.2</see>.
 /// </summary>
 public enum SystemWakeUp {
+  /// <summary>A reserved wake-up type.</summary>
   Reserved,
+
+  /// <summary>An other wake-up type.</summary>
   Other,
+
+  /// <summary>An unknown wake-up type.</summary>
   Unknown,
+
+  /// <summary>The system was woken by an APM timer.</summary>
   ApmTimer,
+
+  /// <summary>The system was woken by a modem ring.</summary>
   ModemRing,
+
+  /// <summary>The system was woken by a LAN remote request.</summary>
   LanRemote,
+
+  /// <summary>The system was woken by the power switch.</summary>
   PowerSwitch,
+
+  /// <summary>The system was woken by a PCI PME# signal.</summary>
   PciPme,
+
+  /// <summary>The system was woken because AC power was restored.</summary>
   AcPowerRestored
 }
 
@@ -395,19 +1059,46 @@ public enum SystemWakeUp {
 /// Cache associativity based on <see href="https://www.dmtf.org/dsp/DSP0134">DMTF SMBIOS Reference Specification v.3.3.0, Chapter 7.8.5</see>.
 /// </summary>
 public enum CacheAssociativity {
+  /// <summary>An other associativity type.</summary>
   Other = 1,
+
+  /// <summary>An unknown associativity type.</summary>
   Unknown,
+
+  /// <summary>Direct-mapped cache.</summary>
   DirectMapped,
+
+  /// <summary>2-way set-associative cache.</summary>
   _2Way,
+
+  /// <summary>4-way set-associative cache.</summary>
   _4Way,
+
+  /// <summary>Fully associative cache.</summary>
   FullyAssociative,
+
+  /// <summary>8-way set-associative cache.</summary>
   _8Way,
+
+  /// <summary>16-way set-associative cache.</summary>
   _16Way,
+
+  /// <summary>12-way set-associative cache.</summary>
   _12Way,
+
+  /// <summary>24-way set-associative cache.</summary>
   _24Way,
+
+  /// <summary>32-way set-associative cache.</summary>
   _32Way,
+
+  /// <summary>48-way set-associative cache.</summary>
   _48Way,
+
+  /// <summary>64-way set-associative cache.</summary>
   _64Way,
+
+  /// <summary>20-way set-associative cache.</summary>
   _20Way
 }
 
@@ -415,9 +1106,16 @@ public enum CacheAssociativity {
 /// Processor cache level.
 /// </summary>
 public enum CacheDesignation {
+  /// <summary>An other or unspecified cache level.</summary>
   Other,
+
+  /// <summary>Level 1 (L1) cache.</summary>
   L1,
+
+  /// <summary>Level 2 (L2) cache.</summary>
   L2,
+
+  /// <summary>Level 3 (L3) cache.</summary>
   L3
 }
 
@@ -425,40 +1123,106 @@ public enum CacheDesignation {
 /// Memory type.
 /// </summary>
 public enum MemoryType {
+  /// <summary>An other memory type.</summary>
   Other = 0x01,
+
+  /// <summary>An unknown memory type.</summary>
   Unknown = 0x02,
+
+  /// <summary>DRAM (Dynamic Random-Access Memory).</summary>
   DRAM = 0x03,
+
+  /// <summary>EDRAM (Enhanced Dynamic Random-Access Memory).</summary>
   EDRAM = 0x04,
+
+  /// <summary>VRAM (Video Random-Access Memory).</summary>
   VRAM = 0x05,
+
+  /// <summary>SRAM (Static Random-Access Memory).</summary>
   SRAM = 0x06,
+
+  /// <summary>RAM (Random-Access Memory).</summary>
   RAM = 0x07,
+
+  /// <summary>ROM (Read-Only Memory).</summary>
   ROM = 0x08,
+
+  /// <summary>Flash memory.</summary>
   FLASH = 0x09,
+
+  /// <summary>EEPROM (Electrically Erasable Programmable Read-Only Memory).</summary>
   EEPROM = 0x0a,
+
+  /// <summary>FEPROM (Flash Erasable Programmable Read-Only Memory).</summary>
   FEPROM = 0x0b,
+
+  /// <summary>EPROM (Erasable Programmable Read-Only Memory).</summary>
   EPROM = 0x0c,
+
+  /// <summary>CDRAM (Cached Dynamic Random-Access Memory).</summary>
   CDRAM = 0x0d,
+
+  /// <summary>3DRAM (3D Random-Access Memory).</summary>
   _3DRAM = 0x0e,
+
+  /// <summary>SDRAM (Synchronous Dynamic Random-Access Memory).</summary>
   SDRAM = 0x0f,
+
+  /// <summary>SGRAM (Synchronous Graphics Random-Access Memory).</summary>
   SGRAM = 0x10,
+
+  /// <summary>RDRAM (Rambus Dynamic Random-Access Memory).</summary>
   RDRAM = 0x11,
+
+  /// <summary>DDR (Double Data Rate) SDRAM.</summary>
   DDR = 0x12,
+
+  /// <summary>DDR2 SDRAM.</summary>
   DDR2 = 0x13,
+
+  /// <summary>DDR2 FB-DIMM (Fully Buffered DIMM).</summary>
   DDR2_FBDIMM = 0x14,
+
+  /// <summary>DDR3 SDRAM.</summary>
   DDR3 = 0x18,
+
+  /// <summary>FBD2 (Fully Buffered DIMM 2).</summary>
   FBD2 = 0x19,
+
+  /// <summary>DDR4 SDRAM.</summary>
   DDR4 = 0x1a,
+
+  /// <summary>LPDDR (Low-Power DDR) SDRAM.</summary>
   LPDDR = 0x1b,
+
+  /// <summary>LPDDR2 SDRAM.</summary>
   LPDDR2 = 0x1c,
+
+  /// <summary>LPDDR3 SDRAM.</summary>
   LPDDR3 = 0x1d,
+
+  /// <summary>LPDDR4 SDRAM.</summary>
   LPDDR4 = 0x1e,
+
+  /// <summary>A logical non-volatile device.</summary>
   LogicalNonVolatileDevice = 0x1f,
+
+  /// <summary>HBM (High Bandwidth Memory).</summary>
   HBM = 0x20,
+
+  /// <summary>HBM2 (High Bandwidth Memory 2).</summary>
   HBM2 = 0x21,
+
+  /// <summary>DDR5 SDRAM.</summary>
   DDR5 = 0x22,
+
+  /// <summary>LPDDR5 SDRAM.</summary>
   LPDDR5 = 0x23
 }
 
+/// <summary>
+/// Base class providing helpers for reading typed values and strings from raw SMBIOS structure data.
+/// </summary>
 public class InformationBase {
   private readonly byte[] _data;
   private readonly IList<string> _strings;

@@ -290,7 +290,10 @@ public class Computer : IComputer {
     }
   }
 
-  //// <inheritdoc />
+  /// <summary>
+  /// Generates a text report describing all groups, hardware, sensors and parameters currently tracked.
+  /// </summary>
+  /// <returns>A report describing the current state of the <see cref="Computer" />.</returns>
   public string GetReport() {
     lock (_lock) {
       using StringWriter w = new(CultureInfo.InvariantCulture);

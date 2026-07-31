@@ -24,7 +24,11 @@ public class SystemSlotInformationTests
         SlotHeight height = SlotHeight.FullHeight,
         byte peerGroupingCount = 0)
     {
-        var payload = new byte[0x16 - 4];
+        // DSP0134 §7.10 with no peer groups (PeerGroupingCount @0x12 = 0):
+        //   0x11 DataBusWidth (base), 0x12 PeerGroupingCount, 0x13 SlotInformation,
+        //   0x14 SlotPhysicalWidth, 0x15 SlotPitch WORD, 0x17 SlotHeight.
+        // Structure length = 0x18, so payload spans offsets 0x04..0x17 (20 bytes).
+        var payload = new byte[0x18 - 4];
         payload[0x00] = 1; // SlotDesignation string
         payload[0x01] = (byte)type;
         payload[0x02] = (byte)busWidth;
@@ -38,11 +42,13 @@ public class SystemSlotInformationTests
         payload[0x0A] = (byte)(segmentGroup >> 8);
         payload[0x0B] = busNumber;
         payload[0x0C] = deviceFunction;
-        payload[0x0D] = physicalWidth;
-        payload[0x0E] = (byte)slotPitch;
-        payload[0x0F] = (byte)(slotPitch >> 8);
-        payload[0x10] = (byte)height;
-        payload[0x11] = peerGroupingCount;
+        payload[0x0D] = 0;                    // DataBusWidth (base) @0x11
+        payload[0x0E] = peerGroupingCount;    // PeerGroupingCount @0x12
+        payload[0x0F] = 0;                    // SlotInformation @0x13
+        payload[0x10] = physicalWidth;        // SlotPhysicalWidth @0x14
+        payload[0x11] = (byte)slotPitch;      // SlotPitch WORD @0x15
+        payload[0x12] = (byte)(slotPitch >> 8);
+        payload[0x13] = (byte)height;         // SlotHeight @0x17
         return payload;
     }
 
@@ -162,5 +168,48 @@ public class SystemSlotInformationTests
         var slot = smbios.SystemSlots.First();
         Assert.Equal(4, slot.SlotPhysicalWidth);
         Assert.Equal(55, slot.SlotPitch);
+    }
+
+    [Fact]
+    public void Decode_PeerGroups_ParsedAndTailFieldsFollow()
+    {
+        // DSP0134 §7.10: PeerGroupingCount @0x12, then n * 5-byte peer groups
+        // @0x13, then the v3.4 tail (SlotInformation, PhysicalWidth, Pitch WORD,
+        // Height). With 2 peer groups the tail begins at 0x13 + 10 = 0x1D.
+        // Structure length = tail + 5 = 0x22 -> payload spans 0x04..0x21 (30 bytes).
+        var payload = new byte[0x22 - 4];
+        payload[0x00] = 1;                              // SlotDesignation string
+        payload[0x01] = (byte)SystemSlotType.PciExpressGen5X16;
+        payload[0x02] = (byte)SlotDataBusWidth.X16;
+        payload[0x03] = (byte)SlotUsage.InUse;
+        payload[0x04] = (byte)SlotLength.LongLength;
+        payload[0x0E] = 2;                              // PeerGroupingCount @0x12
+
+        // Peer group 0 @0x13 (payload index 0x0F): seg=0x0001, bus=0x02, devfn=0x18, width=0x0D
+        payload[0x0F] = 0x01; payload[0x10] = 0x00; payload[0x11] = 0x02; payload[0x12] = 0x18; payload[0x13] = 0x0D;
+        // Peer group 1 @0x18 (payload index 0x14): seg=0x0003, bus=0x04, devfn=0x28, width=0x0B
+        payload[0x14] = 0x03; payload[0x15] = 0x00; payload[0x16] = 0x04; payload[0x17] = 0x28; payload[0x18] = 0x0B;
+
+        // Tail @0x1D (payload index 0x19): SlotInformation, PhysicalWidth, Pitch WORD, Height
+        payload[0x19] = 0x07;                           // SlotInformation @0x1D
+        payload[0x1A] = 8;                              // SlotPhysicalWidth @0x1E
+        payload[0x1B] = 55; payload[0x1C] = 0x00;       // SlotPitch @0x1F = 55
+        payload[0x1D] = (byte)SlotHeight.FullHeight;    // SlotHeight @0x21
+
+        var smbios = SmbiosTable.FromRawTableData(MakeTable(MakeStructure(9, 0x0037, payload, new[] { "PEER_SLOT" })));
+        var slot = smbios.SystemSlots.First();
+
+        Assert.Equal(2, slot.PeerGroupingCount);
+        Assert.Equal(2, slot.PeerGroups.Count);
+        Assert.Equal((ushort)0x0001, slot.PeerGroups[0].SegmentGroupNumber);
+        Assert.Equal((byte)0x02, slot.PeerGroups[0].BusNumber);
+        Assert.Equal(3, slot.PeerGroups[0].DeviceNumber);
+        Assert.Equal((byte)0x0B, slot.PeerGroups[1].DataBusWidth);
+
+        // Tail fields must be read from after the peer-group array, not a fixed offset.
+        Assert.Equal((byte)0x07, slot.SlotInformation);
+        Assert.Equal(8, slot.SlotPhysicalWidth);
+        Assert.Equal(55, slot.SlotPitch);
+        Assert.Equal(SlotHeight.FullHeight, slot.SlotHeight);
     }
 }

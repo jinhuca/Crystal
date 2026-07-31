@@ -1,7 +1,7 @@
 namespace Crystal.Smbios.Types;
 
 /// <summary>
-/// Type 18 — Memory Error Information (32-bit) (DSP0134 §7.18)
+/// Type 18 — 32-Bit Memory Error Information (DSP0134 §7.19)
 /// </summary>
 public sealed class T018_MemoryErrorInformation32 : IMemoryErrorInformation, ISmbiosDecodedStructure {
   public SmbiosStructureType StructureType { get; init; }
@@ -9,34 +9,37 @@ public sealed class T018_MemoryErrorInformation32 : IMemoryErrorInformation, ISm
   public ushort Handle { get; init; }
   public byte ErrorType { get; init; }
   public byte ErrorGranularity { get; init; }
+  public byte ErrorOperation { get; init; }
   public uint VendorSyndrome { get; init; }
-  public ushort MemoryArrayHandle { get; init; }
-  public ushort DeviceHandle { get; init; }
-  public uint PhysicalAddress { get; init; }
-  public uint AddressResolution { get; init; }
+  public uint MemoryArrayErrorAddress { get; init; }
+  public uint DeviceErrorAddress { get; init; }
+  public uint ErrorResolution { get; init; }
 
   // IMemoryErrorInformation
   byte IMemoryErrorInformation.ErrorType => ErrorType;
   byte IMemoryErrorInformation.ErrorGranularity => ErrorGranularity;
+  byte IMemoryErrorInformation.ErrorOperation => ErrorOperation;
   ulong IMemoryErrorInformation.VendorSyndrome => VendorSyndrome;
-  ushort IMemoryErrorInformation.MemoryArrayHandle => MemoryArrayHandle;
-  ushort IMemoryErrorInformation.DeviceHandle => DeviceHandle;
-  ulong IMemoryErrorInformation.PhysicalAddress => PhysicalAddress;
-  ulong IMemoryErrorInformation.AddressResolution => AddressResolution;
+  ulong IMemoryErrorInformation.MemoryArrayErrorAddress => MemoryArrayErrorAddress;
+  ulong IMemoryErrorInformation.DeviceErrorAddress => DeviceErrorAddress;
+  ulong IMemoryErrorInformation.ErrorResolution => ErrorResolution;
   bool IMemoryErrorInformation.Is64Bit => false;
 
   internal static T018_MemoryErrorInformation32 Decode(SmbiosRawStructure s) {
+    // DSP0134 §7.19: Error Type @0x04, Granularity @0x05, Operation @0x06,
+    // Vendor Syndrome DWORD @0x07, Memory Array Error Address DWORD @0x0B,
+    // Device Error Address DWORD @0x0F, Error Resolution DWORD @0x13.
     return new T018_MemoryErrorInformation32 {
       StructureType = s.Type,
       Length = s.Length,
       Handle = s.Handle,
       ErrorType = s.Length > 0x04 ? s.ReadByte(0x04) : (byte)0,
       ErrorGranularity = s.Length > 0x05 ? s.ReadByte(0x05) : (byte)0,
-      VendorSyndrome = s.Length > 0x09 ? s.ReadDWord(0x06) : 0u,
-      MemoryArrayHandle = s.Length > 0x0B ? s.ReadWord(0x0A) : (ushort)0,
-      DeviceHandle = s.Length > 0x0D ? s.ReadWord(0x0C) : (ushort)0,
-      PhysicalAddress = s.Length > 0x11 ? s.ReadDWord(0x0E) : 0u,
-      AddressResolution = s.Length > 0x15 ? s.ReadDWord(0x12) : 0u,
+      ErrorOperation = s.Length > 0x06 ? s.ReadByte(0x06) : (byte)0,
+      VendorSyndrome = s.Length > 0x0A ? s.ReadDWord(0x07) : 0u,
+      MemoryArrayErrorAddress = s.Length > 0x0E ? s.ReadDWord(0x0B) : 0u,
+      DeviceErrorAddress = s.Length > 0x12 ? s.ReadDWord(0x0F) : 0u,
+      ErrorResolution = s.Length > 0x16 ? s.ReadDWord(0x13) : 0u,
     };
   }
 }

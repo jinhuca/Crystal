@@ -11,7 +11,7 @@ public sealed class CacheMemoryDemoTests
     {
         using var console = new TestConsoleWriter();
 
-        await CliDemos.DumpCacheMemoryAsync(DemoProviders.CacheMemory(), console.Writer);
+        await CliDemos.DumpCacheMemoryAsync(DemoProviders.CacheMemory(), console.Writer, TestContext.Current.CancellationToken);
 
         Assert.Contains("Cache Memory", console.Output);
     }
@@ -21,7 +21,7 @@ public sealed class CacheMemoryDemoTests
     {
         using var console = new TestConsoleWriter();
 
-        await CliDemos.DumpCacheMemoryAsync(DemoProviders.CacheMemory(), console.Writer);
+        await CliDemos.DumpCacheMemoryAsync(DemoProviders.CacheMemory(), console.Writer, TestContext.Current.CancellationToken);
 
         Assert.Contains("L3 Cache", console.Output);
         Assert.Contains("Level: L3", console.Output);
@@ -35,7 +35,7 @@ public sealed class CacheMemoryDemoTests
     {
         using var console = new TestConsoleWriter();
 
-        await CliDemos.DumpCacheMemoryAsync(DemoProviders.Empty("Win32_CacheMemory"), console.Writer);
+        await CliDemos.DumpCacheMemoryAsync(DemoProviders.Empty("Win32_CacheMemory"), console.Writer, TestContext.Current.CancellationToken);
 
         Assert.Contains("Cache Memory", console.Output);
         Assert.DoesNotContain("L3 Cache", console.Output);

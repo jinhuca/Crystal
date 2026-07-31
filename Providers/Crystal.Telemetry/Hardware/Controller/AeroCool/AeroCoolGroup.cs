@@ -4,10 +4,17 @@ using System.Text;
 
 namespace Crystal.Telemetry.Hardware.Controller.AeroCool;
 
+/// <summary>
+/// <see cref="IGroup" /> containing all detected AeroCool <see cref="IHardware" />.
+/// </summary>
 public class AeroCoolGroup : IGroup {
   private readonly List<IHardware> _hardware = new();
   private readonly StringBuilder _report = new();
 
+  /// <summary>
+  /// Initializes a new instance of the <see cref="AeroCoolGroup" /> class and detects supported AeroCool devices.
+  /// </summary>
+  /// <param name="settings">Additional settings passed to each detected <see cref="IHardware" />.</param>
   public AeroCoolGroup(ISettings settings) {
     _report.AppendLine("AeroCool Hardware");
     _report.AppendLine();
@@ -29,8 +36,10 @@ public class AeroCoolGroup : IGroup {
     }
   }
 
+  /// <inheritdoc />
   public IReadOnlyList<IHardware> Hardware => _hardware;
 
+  /// <inheritdoc />
   public void Close() {
     foreach (IHardware iHardware in _hardware) {
       if (iHardware is Hardware hardware)
@@ -38,6 +47,7 @@ public class AeroCoolGroup : IGroup {
     }
   }
 
+  /// <inheritdoc />
   public string GetReport() {
     return _report.ToString();
   }

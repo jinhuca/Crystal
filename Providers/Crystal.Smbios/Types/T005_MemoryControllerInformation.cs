@@ -113,6 +113,9 @@ public sealed class T005_MemoryControllerInformation : ISmbiosDecodedStructure {
   /// <summary>Handles of the Memory Module Information (Type 6) structures controlled by this controller.</summary>
   public IReadOnlyList<ushort> AssociatedMemorySlotHandles { get; init; } = Array.Empty<ushort>();
 
+  /// <summary>Enabled Error Correcting Capabilities (v2.1+); located after the associated-handle array.</summary>
+  public MemoryControllerErrorCorrectingCapability EnabledErrorCorrectingCapabilities { get; init; }
+
   internal static T005_MemoryControllerInformation Decode(SmbiosRawStructure s) {
     byte slotCount = s.Length > 0x0E ? s.ReadByte(0x0E) : (byte)0;
     var handles = new List<ushort>(slotCount);
@@ -121,6 +124,12 @@ public sealed class T005_MemoryControllerInformation : ISmbiosDecodedStructure {
       if (s.Length < offset + 2) break;
       handles.Add(s.ReadWord(offset));
     }
+
+    // Enabled Error Correcting Capabilities BYTE follows the handle array (v2.1+).
+    int enabledEccOffset = 0x0F + slotCount * 2;
+    var enabledEcc = s.Length > enabledEccOffset
+        ? (MemoryControllerErrorCorrectingCapability)s.ReadByte(enabledEccOffset)
+        : default;
 
     return new T005_MemoryControllerInformation {
       StructureType = s.Type,
@@ -136,6 +145,7 @@ public sealed class T005_MemoryControllerInformation : ISmbiosDecodedStructure {
       SupportedVoltages = (MemoryModuleVoltageFlags)s.ReadByte(0x0D),
       AssociatedMemorySlotCount = slotCount,
       AssociatedMemorySlotHandles = handles,
+      EnabledErrorCorrectingCapabilities = enabledEcc,
     };
   }
 }

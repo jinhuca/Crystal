@@ -11,6 +11,9 @@ using PInvoke = Windows.Win32.PInvoke;
 
 namespace Crystal.Telemetry.PawnIo;
 
+/// <summary>
+/// Wraps the PawnIO driver, providing loading and execution of PawnIO modules.
+/// </summary>
 public class PawnIo {
   private const uint DEVICE_TYPE = 41394u << 16;
   private const int FN_NAME_LENGTH = 32;
@@ -81,11 +84,21 @@ public class PawnIo {
     return new PawnIo(null);
   }
 
+  /// <summary>
+  /// Closes the underlying handle to the PawnIO driver.
+  /// </summary>
   public void Close() {
     if (IsLoaded)
       _handle.Close();
   }
 
+  /// <summary>
+  /// Executes the named function of the loaded PawnIO module.
+  /// </summary>
+  /// <param name="name">The name of the function to execute.</param>
+  /// <param name="input">The input values passed to the function.</param>
+  /// <param name="outLength">The expected number of output values.</param>
+  /// <returns>The output values returned by the function.</returns>
   public unsafe long[] Execute(string name, long[] input, int outLength) {
     if (IsLoaded) {
       byte[] output = new byte[outLength * sizeof(long)];
@@ -107,6 +120,16 @@ public class PawnIo {
     return new long[outLength];
   }
 
+  /// <summary>
+  /// Executes the named function of the loaded PawnIO module and returns an HRESULT status code.
+  /// </summary>
+  /// <param name="name">The name of the function to execute.</param>
+  /// <param name="inBuffer">The buffer containing the input values.</param>
+  /// <param name="inSize">The number of input values to pass from <paramref name="inBuffer" />.</param>
+  /// <param name="outBuffer">The buffer that receives the output values.</param>
+  /// <param name="outSize">The number of output values expected in <paramref name="outBuffer" />.</param>
+  /// <param name="returnSize">On return, contains the number of output values actually written.</param>
+  /// <returns>An HRESULT indicating success (0) or the failure code.</returns>
   public unsafe int ExecuteHr(string name, long[] inBuffer, uint inSize, long[] outBuffer, uint outSize, out uint returnSize) {
     if (inBuffer.Length < inSize)
       throw new ArgumentOutOfRangeException(nameof(inSize));

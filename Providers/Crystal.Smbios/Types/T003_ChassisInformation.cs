@@ -111,21 +111,23 @@ public sealed class T003_ChassisInformation : ISmbiosDecodedStructure {
     ChassisLockState lockState = (ChassisLockState)((rawTypeByte >> 7) & 0x01);
     PhysicalChassisType physicalType = (PhysicalChassisType)(rawTypeByte & 0x7F);
 
-    byte elemCount = s.Length > 0x15 ? s.ReadByte(0x15) : (byte)0;
-    byte elemLength = s.Length > 0x16 ? s.ReadByte(0x16) : (byte)0;
+    // DSP0134 §7.4: Contained Element Count (n) @0x13, Record Length (m) @0x14,
+    // Contained Elements (n*m) @0x15, SKU Number STRING @0x15+n*m.
+    byte elemCount = s.Length > 0x13 ? s.ReadByte(0x13) : (byte)0;
+    byte elemLength = s.Length > 0x14 ? s.ReadByte(0x14) : (byte)0;
     byte[] extractedElements = Array.Empty<byte>();
 
     if (elemCount > 0 && elemLength > 0) {
       int totalBytes = elemCount * elemLength;
-      if (s.Length >= 0x17 + totalBytes) {
+      if (s.Length >= 0x15 + totalBytes) {
         extractedElements = new byte[totalBytes];
         for (int i = 0; i < totalBytes; i++) {
-          extractedElements[i] = s.ReadByte(0x17 + i);
+          extractedElements[i] = s.ReadByte(0x15 + i);
         }
       }
     }
 
-    int skuOffset = 0x17 + (elemCount * elemLength);
+    int skuOffset = 0x15 + (elemCount * elemLength);
 
     return new T003_ChassisInformation {
       StructureType = s.Type,

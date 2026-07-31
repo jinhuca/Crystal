@@ -3,12 +3,30 @@ using System.Text;
 
 namespace Crystal.Telemetry.Hardware.Cpu;
 
+/// <summary>
+/// Identifies the manufacturer of a CPU.
+/// </summary>
 public enum Vendor {
+  /// <summary>
+  /// The vendor is unknown or unrecognized.
+  /// </summary>
   Unknown,
+
+  /// <summary>
+  /// The CPU is manufactured by Intel.
+  /// </summary>
   Intel,
+
+  /// <summary>
+  /// The CPU is manufactured by AMD.
+  /// </summary>
   AMD
 }
 
+/// <summary>
+/// Represents the CPUID information for a single logical processor (thread), including vendor,
+/// family/model/stepping, brand string, topology identifiers, and the raw CPUID leaf data.
+/// </summary>
 public class CpuId {
   /// <summary>
   /// Initializes a new instance of the <see cref="CpuId" /> class.
@@ -178,37 +196,89 @@ public class CpuId {
     ThreadId = ApicId - (ProcessorId << (int)(coreMaskWith + threadMaskWith)) - (CoreId << (int)threadMaskWith);
   }
 
+  /// <summary>
+  /// Gets the group affinity that was used to query CPUID for this logical processor.
+  /// </summary>
   public GroupAffinity Affinity { get; }
 
+  /// <summary>
+  /// Gets the local APIC identifier of this logical processor.
+  /// </summary>
   public uint ApicId { get; }
 
+  /// <summary>
+  /// Gets the raw processor brand string reported by the CPU.
+  /// </summary>
   public string BrandString { get; } = string.Empty;
 
+  /// <summary>
+  /// Gets the core identifier of this logical processor within its package.
+  /// </summary>
   public uint CoreId { get; }
+
+  /// <summary>
+  /// Gets the type of the core (for example, performance or efficient) for this logical processor.
+  /// </summary>
   public CoreType CoreType { get; } = CoreType.Unknown;
 
+  /// <summary>
+  /// Gets the raw standard CPUID leaf data, indexed by leaf and register (EAX, EBX, ECX, EDX).
+  /// </summary>
   public uint[,] Data { get; } = new uint[0, 0];
 
+  /// <summary>
+  /// Gets the raw extended CPUID leaf data, indexed by leaf and register (EAX, EBX, ECX, EDX).
+  /// </summary>
   public uint[,] ExtData { get; } = new uint[0, 0];
 
+  /// <summary>
+  /// Gets the CPU family, combining the base and extended family fields.
+  /// </summary>
   public uint Family { get; }
 
+  /// <summary>
+  /// Gets the processor group index of this logical processor.
+  /// </summary>
   public int Group { get; }
 
+  /// <summary>
+  /// Gets the CPU model, combining the base and extended model fields.
+  /// </summary>
   public uint Model { get; }
 
+  /// <summary>
+  /// Gets the cleaned-up, human-readable processor name derived from the brand string.
+  /// </summary>
   public string Name { get; } = string.Empty;
 
+  /// <summary>
+  /// Gets the package type identifier of the CPU.
+  /// </summary>
   public uint PkgType { get; }
 
+  /// <summary>
+  /// Gets the processor (package) identifier of this logical processor.
+  /// </summary>
   public uint ProcessorId { get; }
 
+  /// <summary>
+  /// Gets the CPU stepping identifier.
+  /// </summary>
   public uint Stepping { get; }
 
+  /// <summary>
+  /// Gets the thread index within the processor group for this logical processor.
+  /// </summary>
   public int Thread { get; }
 
+  /// <summary>
+  /// Gets the thread identifier of this logical processor within its core.
+  /// </summary>
   public uint ThreadId { get; }
 
+  /// <summary>
+  /// Gets the manufacturer of the CPU.
+  /// </summary>
   public Vendor Vendor { get; } = Vendor.Unknown;
 
   /// <summary>
@@ -257,7 +327,14 @@ public class CpuId {
   }
 
   // ReSharper disable InconsistentNaming
+  /// <summary>
+  /// The base CPUID function number (leaf 0) used to query standard CPUID leaves.
+  /// </summary>
   public const uint CPUID_0 = 0;
+
+  /// <summary>
+  /// The base CPUID function number for extended CPUID leaves.
+  /// </summary>
   public const uint CPUID_EXT = 0x80000000;
   // ReSharper restore InconsistentNaming
 }

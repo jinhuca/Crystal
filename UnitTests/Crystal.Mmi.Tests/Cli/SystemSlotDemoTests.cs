@@ -11,7 +11,7 @@ public sealed class SystemSlotDemoTests
     {
         using var console = new TestConsoleWriter();
 
-        await CliDemos.DumpSystemSlotsAsync(DemoProviders.SystemSlot(), console.Writer);
+        await CliDemos.DumpSystemSlotsAsync(DemoProviders.SystemSlot(), console.Writer, TestContext.Current.CancellationToken);
 
         Assert.Contains("System Slots", console.Output);
     }
@@ -21,7 +21,7 @@ public sealed class SystemSlotDemoTests
     {
         using var console = new TestConsoleWriter();
 
-        await CliDemos.DumpSystemSlotsAsync(DemoProviders.SystemSlot(), console.Writer);
+        await CliDemos.DumpSystemSlotsAsync(DemoProviders.SystemSlot(), console.Writer, TestContext.Current.CancellationToken);
 
         Assert.Contains("PCIEX16_1", console.Output);
         Assert.Contains("PCI Express x16 Slot", console.Output);
@@ -38,7 +38,7 @@ public sealed class SystemSlotDemoTests
     {
         using var console = new TestConsoleWriter();
 
-        await CliDemos.DumpSystemSlotsAsync(DemoProviders.Empty("Win32_SystemSlot"), console.Writer);
+        await CliDemos.DumpSystemSlotsAsync(DemoProviders.Empty("Win32_SystemSlot"), console.Writer, TestContext.Current.CancellationToken);
 
         Assert.Contains("System Slots", console.Output);
         Assert.DoesNotContain("PCIEX16_1", console.Output);

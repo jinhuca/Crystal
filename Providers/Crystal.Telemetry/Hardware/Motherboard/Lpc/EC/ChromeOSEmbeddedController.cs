@@ -2,6 +2,9 @@
 
 namespace Crystal.Telemetry.Hardware.Motherboard.Lpc.EC;
 
+/// <summary>
+/// <see cref="EmbeddedController" /> implementation for ChromeOS-based embedded controllers.
+/// </summary>
 public class ChromeOSEmbeddedController : EmbeddedController {
   private const byte EC_FAN_SPEED_ENTRIES = 4;
   private const ushort EC_FAN_SPEED_NOT_PRESENT = 0xffff;
@@ -18,8 +21,18 @@ public class ChromeOSEmbeddedController : EmbeddedController {
    */
   private const byte EC_TEMP_SENSOR_OFFSET = 200;
 
+  /// <summary>
+  /// Initializes a new instance of the <see cref="ChromeOSEmbeddedController" /> class.
+  /// </summary>
+  /// <param name="sources">The embedded controller sources to read.</param>
+  /// <param name="settings">Additional settings passed by the <see cref="IComputer" />.</param>
   public ChromeOSEmbeddedController(IEnumerable<EmbeddedControllerSource> sources, ISettings settings) : base(sources, settings) { }
 
+  /// <summary>
+  /// Detects the available temperature and fan sensors and creates a new <see cref="ChromeOSEmbeddedController" /> instance for them.
+  /// </summary>
+  /// <param name="settings">Additional settings passed by the <see cref="IComputer" />.</param>
+  /// <returns>A new <see cref="ChromeOSEmbeddedController" /> instance.</returns>
   public static ChromeOSEmbeddedController Create(ISettings settings) {
     List<EmbeddedControllerSource> sources = [];
 
@@ -75,6 +88,7 @@ public class ChromeOSEmbeddedController : EmbeddedController {
     return new ChromeOSEmbeddedController(sources, settings);
   }
 
+  /// <inheritdoc />
   protected override IEmbeddedControllerIO AcquireIOInterface() {
     return new ChromeOSEmbeddedControllerIO();
   }

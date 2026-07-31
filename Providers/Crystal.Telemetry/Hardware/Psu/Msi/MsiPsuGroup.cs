@@ -5,6 +5,9 @@ using System.Text;
 
 namespace Crystal.Telemetry.Hardware.Psu.Msi;
 
+/// <summary>
+/// <see cref="IGroup" /> containing all detected MSI Ai series PSU <see cref="IHardware" />.
+/// </summary>
 public class MsiPsuGroup : IGroup {
   private static readonly int[] _productIds =
   {
@@ -15,6 +18,10 @@ public class MsiPsuGroup : IGroup {
   private readonly List<IHardware> _hardware;
   private readonly StringBuilder _report;
 
+  /// <summary>
+  /// Initializes a new instance of the <see cref="MsiPsuGroup" /> class and detects supported MSI PSU devices.
+  /// </summary>
+  /// <param name="settings">Additional settings passed to each detected <see cref="IHardware" />.</param>
   public MsiPsuGroup(ISettings settings) {
     _report = new StringBuilder();
     _report.AppendLine("MSI Ai series PSU Hardware");
@@ -36,8 +43,10 @@ public class MsiPsuGroup : IGroup {
     }
   }
 
+  /// <inheritdoc />
   public IReadOnlyList<IHardware> Hardware => _hardware;
 
+  /// <inheritdoc />
   public void Close() {
     foreach (IHardware iHardware in _hardware) {
       if (iHardware is Hardware hardware)
@@ -45,6 +54,7 @@ public class MsiPsuGroup : IGroup {
     }
   }
 
+  /// <inheritdoc />
   public string GetReport() {
     return _report.ToString();
   }

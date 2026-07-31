@@ -23,20 +23,24 @@ public class MemoryDeviceTests {
     rawBytes[0x10] = 1;    // Device Locator String index 1
     rawBytes[0x11] = 2;    // Bank Locator String index 2
     rawBytes[0x12] = 0x1A; // MemoryType: DDR4 (0x1A)
-    rawBytes[0x14] = 0x00; rawBytes[0x15] = 0x41; // TypeDetail: Synchronous | Registered
+    // DSP0134 §7.18: TypeDetail WORD @0x13, Speed WORD @0x15, Manufacturer @0x17,
+    // Serial @0x18, AssetTag @0x19, PartNumber @0x1A, Attributes @0x1B,
+    // Extended Size DWORD @0x1C, Configured Speed @0x20, voltages @0x22/0x24/0x26,
+    // Technology @0x28.
+    rawBytes[0x13] = 0x80; rawBytes[0x14] = 0x40; // TypeDetail: Synchronous (0x0080) | Registered (0x4000)
 
     // Speed: 3200 MT/s (0x0C80)
-    rawBytes[0x16] = 0x80; rawBytes[0x17] = 0x0C;
-    rawBytes[0x18] = 3;    // Manufacturer index 3
-    rawBytes[0x19] = 4;    // Serial Number index 4
-    rawBytes[0x1B] = 5;    // Part Number index 5
-    rawBytes[0x1C] = 0x02; // Attributes: Rank count 2 (Dual Rank)
+    rawBytes[0x15] = 0x80; rawBytes[0x16] = 0x0C;
+    rawBytes[0x17] = 3;    // Manufacturer index 3
+    rawBytes[0x18] = 4;    // Serial Number index 4
+    rawBytes[0x1A] = 5;    // Part Number index 5
+    rawBytes[0x1B] = 0x02; // Attributes: Rank count 2 (Dual Rank)
 
     // Configured Speed: 3200 MT/s (0x0C80)
-    rawBytes[0x21] = 0x80; rawBytes[0x22] = 0x0C;
+    rawBytes[0x20] = 0x80; rawBytes[0x21] = 0x0C;
     // Configured Voltage: 1200 mV (0x04B0)
-    rawBytes[0x27] = 0xB0; rawBytes[0x28] = 0x04;
-    rawBytes[0x29] = 0x03; // Technology: DRAM
+    rawBytes[0x26] = 0xB0; rawBytes[0x27] = 0x04;
+    rawBytes[0x28] = 0x03; // Technology: DRAM
 
     var stringTable = new List<string> {
       "DIMM_A2",
@@ -86,11 +90,11 @@ public class MemoryDeviceTests {
     rawBytes[0x0C] = 0xFF; rawBytes[0x0D] = 0x7F;
     rawBytes[0x12] = 0x22; // MemoryType: DDR5 (0x22)
 
-    // ExtendedSizeMegabytes: 65536 MB (64GB) -> 0x00010000
-    rawBytes[0x1D] = 0x00; rawBytes[0x1E] = 0x00; rawBytes[0x1F] = 0x01; rawBytes[0x20] = 0x00;
+    // ExtendedSize DWORD @0x1C: 65536 MB (64GB) -> 0x00010000
+    rawBytes[0x1C] = 0x00; rawBytes[0x1D] = 0x00; rawBytes[0x1E] = 0x01; rawBytes[0x1F] = 0x00;
 
-    // Speed: 5600 MT/s -> 0x15E0
-    rawBytes[0x16] = 0xE0; rawBytes[0x17] = 0x15;
+    // Speed WORD @0x15: 5600 MT/s -> 0x15E0
+    rawBytes[0x15] = 0xE0; rawBytes[0x16] = 0x15;
 
     var mockStructure = new MockSmbiosRawStructure(
       SmbiosStructureType.MemoryDevice,

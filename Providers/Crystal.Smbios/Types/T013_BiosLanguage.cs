@@ -25,8 +25,9 @@ public sealed class T013_BiosLanguage : ISmbiosDecodedStructure {
       Handle = s.Handle,
       InstallableLanguages = s.Length > 0x04 ? s.ReadByte(0x04) : (byte)0,
       Flags = s.Length > 0x05 ? s.ReadByte(0x05) : (byte)0,
-      // Current language is a 1-based string number at offset 0x06 per spec
-      CurrentLanguage = s.Length > 0x06 ? s.GetString(s.ReadByte(0x06)) : null,
+      // DSP0134 §7.13: offsets 0x06–0x14 are Reserved (15 bytes); the Current
+      // Language string number is at offset 0x15.
+      CurrentLanguage = s.Length > 0x15 ? s.GetString(s.ReadByte(0x15)) : null,
     };
   }
 }

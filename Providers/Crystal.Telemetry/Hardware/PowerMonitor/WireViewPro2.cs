@@ -15,6 +15,9 @@ namespace Crystal.Telemetry.Hardware.PowerMonitor;
 /// Thermal Grizzly WireView Pro II power monitor.
 /// </summary>
 public sealed class WireViewPro2 : Hardware, IPowerMonitor {
+  /// <summary>
+  /// The welcome message reported by the device, used to identify it.
+  /// </summary>
   public const string WelcomeMessage = "Thermal Grizzly WireView Pro II";
 
   /// <summary>
@@ -40,6 +43,13 @@ public sealed class WireViewPro2 : Hardware, IPowerMonitor {
   private readonly object _serialPortSync = new();
   private SharedSerialPort _serialPort;
 
+  /// <summary>
+  /// Initializes a new instance of the <see cref="WireViewPro2"/> class and attempts to
+  /// connect to the device on the specified serial port.
+  /// </summary>
+  /// <param name="portName">The name of the serial port to connect to.</param>
+  /// <param name="settings">The settings used to persist sensor configuration.</param>
+  /// <param name="baud">The baud rate to use for the serial connection.</param>
   public WireViewPro2(string portName, ISettings settings, int baud = 115200)
       : base("WireView Pro II", new Identifier("gpu-powermonitor", portName), settings) {
     _portName = portName;
@@ -52,16 +62,36 @@ public sealed class WireViewPro2 : Hardware, IPowerMonitor {
     }
   }
 
+  /// <summary>
+  /// Gets the hardware type, which is always <see cref="HardwareType.PowerMonitor"/>.
+  /// </summary>
   public override HardwareType HardwareType => HardwareType.PowerMonitor;
 
+  /// <summary>
+  /// Gets a value indicating whether the device is currently connected.
+  /// </summary>
   public bool IsConnected { get; private set; }
 
+  /// <summary>
+  /// Gets the unique identifier reported by the device.
+  /// </summary>
   public string UniqueID { get; private set; }
 
+  /// <summary>
+  /// Gets the vendor data read from the device, if available.
+  /// </summary>
   public VendorDataStruct? VendorData { get; private set; }
 
+  /// <summary>
+  /// Gets the configuration structure version reported by the device.
+  /// </summary>
   public int ConfigVersion { get; private set; }
 
+  /// <summary>
+  /// Scans the available serial ports and returns any connected WireView Pro II devices.
+  /// </summary>
+  /// <param name="settings">The settings used to persist sensor configuration.</param>
+  /// <returns>A list of detected <see cref="WireViewPro2"/> devices.</returns>
   public static List<WireViewPro2> TryFindDevices(ISettings settings) {
     var devices = new List<WireViewPro2>();
 
@@ -93,6 +123,10 @@ public sealed class WireViewPro2 : Hardware, IPowerMonitor {
     return devices;
   }
 
+  /// <summary>
+  /// Builds a diagnostic report describing the device, its sensors and vendor data.
+  /// </summary>
+  /// <returns>A multi-line report string.</returns>
   public override string GetReport() {
     var sb = new StringBuilder();
     sb.AppendLine(Name);
@@ -112,12 +146,18 @@ public sealed class WireViewPro2 : Hardware, IPowerMonitor {
     return sb.ToString();
   }
 
+  /// <summary>
+  /// Disconnects from the device and releases its resources.
+  /// </summary>
   public override void Close() {
     Disconnect();
 
     base.Close();
   }
 
+  /// <summary>
+  /// Reads the latest device data and updates all sensors.
+  /// </summary>
   public override void Update() {
     var deviceData = GetDeviceData();
 
@@ -126,6 +166,10 @@ public sealed class WireViewPro2 : Hardware, IPowerMonitor {
     }
   }
 
+  /// <summary>
+  /// Reads the current sensor values and configuration from the device.
+  /// </summary>
+  /// <returns>The mapped device data, or <see langword="null"/> if it could not be read.</returns>
   public DeviceData GetDeviceData() {
     SensorStruct? sensorValues = null;
     DeviceConfigStructV3? config = null;
@@ -150,6 +194,10 @@ public sealed class WireViewPro2 : Hardware, IPowerMonitor {
     return null;
   }
 
+  /// <summary>
+  /// Reads the device configuration, converting it to the latest structure version if needed.
+  /// </summary>
+  /// <returns>The device configuration, or <see langword="null"/> if it could not be read.</returns>
   public DeviceConfigStructV3? ReadConfig() {
     if (!IsConnected) {
       return null;
@@ -191,6 +239,11 @@ public sealed class WireViewPro2 : Hardware, IPowerMonitor {
     }
   }
 
+  /// <summary>
+  /// Writes the given configuration to the device, converting it to the structure version
+  /// expected by the device's firmware.
+  /// </summary>
+  /// <param name="config">The configuration to write.</param>
   public void WriteConfig(DeviceConfigStructV3 config) {
     if (!IsConnected) {
       return;
@@ -239,6 +292,10 @@ public sealed class WireViewPro2 : Hardware, IPowerMonitor {
     }
   }
 
+  /// <summary>
+  /// Sends a non-volatile memory command to the device.
+  /// </summary>
+  /// <param name="cmd">The non-volatile memory command to send.</param>
   public void NonVolatileMemoryCommand(NVM_CMD cmd) {
     if (!IsConnected) {
       return;
@@ -255,6 +312,10 @@ public sealed class WireViewPro2 : Hardware, IPowerMonitor {
         ]);
   }
 
+  /// <summary>
+  /// Sends a screen command to the device to change its display.
+  /// </summary>
+  /// <param name="cmd">The screen command to send.</param>
   public void ScreenCmd(SCREEN_CMD cmd) {
     if (!IsConnected) {
       return;
@@ -263,6 +324,11 @@ public sealed class WireViewPro2 : Hardware, IPowerMonitor {
     SendData([(byte)UsbCmd.CMD_SCREEN_CHANGE, (byte)cmd]);
   }
 
+  /// <summary>
+  /// Clears the fault status and fault log on the device.
+  /// </summary>
+  /// <param name="faultStatusMask">A bit mask selecting which fault status entries to clear.</param>
+  /// <param name="faultLogMask">A bit mask selecting which fault log entries to clear.</param>
   public void ClearFaults(int faultStatusMask = 0xFFFF, int faultLogMask = 0xFFFF) {
     if (!IsConnected) {
       return;

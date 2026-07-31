@@ -20,16 +20,8 @@ public sealed class T021_BuiltInPointingDevice : ISmbiosDecodedStructure {
   /// <summary>Number of physical buttons (0 = unknown/not reported).</summary>
   public byte NumberOfButtons { get; init; }
 
-  /// <summary>Device capabilities (byte 0x07 - optional, available in SMBIOS 2.1+).</summary>
-  public PointingDeviceCapabilities Capabilities { get; init; }
-
-  /// <summary>Accuracy in 1/10 of a percentage point (0 = not specified). Byte 0x08 - optional.</summary>
-  public byte Accuracy { get; init; }
-
-  /// <summary>Track speed in arbitrary units (0 = not specified). Byte 0x09 - optional.</summary>
-  public byte TrackSpeed { get; init; }
-
   internal static T021_BuiltInPointingDevice Decode(SmbiosRawStructure s) {
+    // DSP0134 §7.22: Type @0x04, Interface @0x05, Number of Buttons @0x06.
     return new T021_BuiltInPointingDevice {
       StructureType = s.Type,
       Length = s.Length,
@@ -37,9 +29,6 @@ public sealed class T021_BuiltInPointingDevice : ISmbiosDecodedStructure {
       DeviceType = s.Length > 0x04 ? (PointingDeviceType)s.ReadByte(0x04) : PointingDeviceType.Other,
       Interface = s.Length > 0x05 ? (PointingDeviceInterface)s.ReadByte(0x05) : PointingDeviceInterface.Unknown,
       NumberOfButtons = s.Length > 0x06 ? s.ReadByte(0x06) : (byte)0,
-      Capabilities = s.Length > 0x07 ? (PointingDeviceCapabilities)s.ReadByte(0x07) : PointingDeviceCapabilities.None,
-      Accuracy = s.Length > 0x08 ? s.ReadByte(0x08) : (byte)0,
-      TrackSpeed = s.Length > 0x09 ? s.ReadByte(0x09) : (byte)0,
     };
   }
 }
@@ -85,21 +74,9 @@ public enum PointingDeviceInterface : byte {
   HpHil = 0x06,
   BusMouse = 0x07,
   Adb = 0x08,
-  BusMouseDb9 = 0x09,
-  Usb = 0x0A,
-  I2c = 0x0B,
-  Spi = 0x0C,
-}
-
-/// <summary>
-/// DSP0134 §7.11.3 ─ Pointing Device Capabilities (Byte 0x07 - optional).
-/// Bitmap indicating which device capabilities are supported or specified.
-/// </summary>
-[Flags]
-public enum PointingDeviceCapabilities : byte {
-  None = 0x00,
-  AccuracySpecified = 0x01,  // Bit 0: Accuracy field is specified
-  ResolutionSpecified = 0x02,  // Bit 1: Resolution is specified
-  MovementSpeedSpecified = 0x04, // Bit 2: Movement speed is specified
-  ButtonConfiguration = 0x08,  // Bit 3: Button count is configured
+  BusMouseDb9 = 0xA0,
+  BusMouseMicroDin = 0xA1,
+  Usb = 0xA2,
+  I2c = 0xA3,
+  Spi = 0xA4,
 }

@@ -11,7 +11,7 @@ public sealed class PhysicalMemoryArrayDemoTests
     {
         using var console = new TestConsoleWriter();
 
-        await CliDemos.DumpPhysicalMemoryArraysAsync(DemoProviders.PhysicalMemoryArray(), console.Writer);
+        await CliDemos.DumpPhysicalMemoryArraysAsync(DemoProviders.PhysicalMemoryArray(), console.Writer, TestContext.Current.CancellationToken);
 
         Assert.Contains("Physical Memory Arrays", console.Output);
     }
@@ -21,7 +21,7 @@ public sealed class PhysicalMemoryArrayDemoTests
     {
         using var console = new TestConsoleWriter();
 
-        await CliDemos.DumpPhysicalMemoryArraysAsync(DemoProviders.PhysicalMemoryArray(), console.Writer);
+        await CliDemos.DumpPhysicalMemoryArraysAsync(DemoProviders.PhysicalMemoryArray(), console.Writer, TestContext.Current.CancellationToken);
 
         Assert.Contains("Physical Memory Array", console.Output);
         Assert.Contains("Dell Inc.", console.Output);
@@ -37,7 +37,7 @@ public sealed class PhysicalMemoryArrayDemoTests
     {
         using var console = new TestConsoleWriter();
 
-        await CliDemos.DumpPhysicalMemoryArraysAsync(DemoProviders.Empty("Win32_PhysicalMemoryArray"), console.Writer);
+        await CliDemos.DumpPhysicalMemoryArraysAsync(DemoProviders.Empty("Win32_PhysicalMemoryArray"), console.Writer, TestContext.Current.CancellationToken);
 
         Assert.Contains("Physical Memory Arrays", console.Output);
         Assert.DoesNotContain("Memory Devices:", console.Output);

@@ -8,14 +8,16 @@ public interface IMemoryErrorInformation
 {
     byte ErrorType { get; }
     byte ErrorGranularity { get; }
-    /// <summary>Vendor-specific syndrome value when present (width varies). Always exposed as ulong.</summary>
+    /// <summary>Memory error operation being performed when the error occurred (DSP0134 §7.19.3).</summary>
+    byte ErrorOperation { get; }
+    /// <summary>Vendor-specific ECC syndrome; 0 when unknown. Width varies; always exposed as ulong.</summary>
     ulong VendorSyndrome { get; }
-    ushort MemoryArrayHandle { get; }
-    ushort DeviceHandle { get; }
-    /// <summary>Physical address where the error occurred, when present. Width varies; expressed as ulong.</summary>
-    ulong PhysicalAddress { get; }
-    /// <summary>Address resolution / mask when present. Expressed as ulong.</summary>
-    ulong AddressResolution { get; }
+    /// <summary>Physical address of the error relative to the start of the Memory Array. Expressed as ulong.</summary>
+    ulong MemoryArrayErrorAddress { get; }
+    /// <summary>Physical address of the error relative to the start of the Memory Device. Expressed as ulong.</summary>
+    ulong DeviceErrorAddress { get; }
+    /// <summary>Range within which this error can be determined, when detected. Expressed as ulong.</summary>
+    ulong ErrorResolution { get; }
     /// <summary>True when this instance represents the 64-bit Type 33 variant.</summary>
     bool Is64Bit { get; }
 }

@@ -11,8 +11,11 @@ namespace Crystal.Telemetry.Hardware;
 /// </para>
 /// </summary>
 public abstract class Hardware : IHardware {
+  /// <summary>The set of sensors that are currently active for this hardware.</summary>
   protected readonly HashSet<ISensor> _active = new();
+  /// <summary>The component name.</summary>
   protected readonly string _name;
+  /// <summary>The settings provided by the owning computer.</summary>
   protected readonly ISettings _settings;
   private string _customName;
 
@@ -108,8 +111,14 @@ public abstract class Hardware : IHardware {
   }
 
 #pragma warning disable 67
+  /// <summary>
+  /// Event triggered when a new <see cref="ISensor"/> is added to this <see cref="Hardware"/>.
+  /// </summary>
   public event SensorEventHandler SensorAdded;
 
+  /// <summary>
+  /// Event triggered when an <see cref="ISensor"/> is removed from this <see cref="Hardware"/>.
+  /// </summary>
   public event SensorEventHandler SensorRemoved;
 #pragma warning restore 67
 }

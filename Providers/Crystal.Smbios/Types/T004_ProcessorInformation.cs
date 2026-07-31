@@ -32,6 +32,7 @@ public sealed class T004_ProcessorInformation : ISmbiosDecodedStructure {
   public ushort CoreEnabled2 { get; init; }
   public byte ThreadCount { get; init; }
   public ushort ThreadCount2 { get; init; }
+  public ushort ThreadEnabled { get; init; }
   public ushort ProcessorCharacteristics { get; init; }
 
   public int LogicalCoreCount => CoreCount2 != 0 ? CoreCount2 : CoreCount == 0xFF ? 0 : CoreCount;
@@ -68,6 +69,8 @@ public sealed class T004_ProcessorInformation : ISmbiosDecodedStructure {
       ProcessorFamily2 = s.Length > 0x29 ? s.ReadWord(0x28) : (ushort)0,
       CoreCount2 = s.Length > 0x2B ? s.ReadWord(0x2A) : (ushort)0,
       CoreEnabled2 = s.Length > 0x2D ? s.ReadWord(0x2C) : (ushort)0,
+      ThreadCount2 = s.Length > 0x2F ? s.ReadWord(0x2E) : (ushort)0,
+      ThreadEnabled = s.Length > 0x31 ? s.ReadWord(0x30) : (ushort)0,
     };
   }
 }

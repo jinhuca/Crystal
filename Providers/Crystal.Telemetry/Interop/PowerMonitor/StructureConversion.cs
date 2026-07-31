@@ -2,9 +2,17 @@
 
 using WVP2C = WireViewPro2Constants;
 
+/// <summary>
+/// Provides conversions between the different versions of the WireView Pro device configuration structures.
+/// </summary>
 public static class StructureConversion {
   //1 <-> 2
 
+  /// <summary>
+  /// Converts a version 1 device configuration structure to version 2.
+  /// </summary>
+  /// <param name="configV1">The version 1 configuration to convert.</param>
+  /// <returns>The equivalent version 2 configuration.</returns>
   public static DeviceConfigStructV2 ConvertConfigV1ToV2(DeviceConfigStructV1 configV1) {
     DeviceConfigStructV2 configV2 = new DeviceConfigStructV2 {
       Crc = configV1.Crc,
@@ -30,6 +38,11 @@ public static class StructureConversion {
     return configV2;
   }
 
+  /// <summary>
+  /// Converts a version 2 device configuration structure to version 1.
+  /// </summary>
+  /// <param name="configV2">The version 2 configuration to convert.</param>
+  /// <returns>The equivalent version 1 configuration.</returns>
   public static DeviceConfigStructV1 ConvertConfigV2ToV1(DeviceConfigStructV2 configV2) {
     DeviceConfigStructV1 configV1 = new DeviceConfigStructV1 {
       Crc = configV2.Crc,
@@ -56,11 +69,21 @@ public static class StructureConversion {
 
   //1 <-> 3
 
+  /// <summary>
+  /// Converts a version 1 device configuration structure to version 3.
+  /// </summary>
+  /// <param name="configV1">The version 1 configuration to convert.</param>
+  /// <returns>The equivalent version 3 configuration.</returns>
   public static DeviceConfigStructV3 ConvertConfigV1ToV3(DeviceConfigStructV1 configV1) {
     DeviceConfigStructV2 configV2 = ConvertConfigV1ToV2(configV1);
     return ConvertConfigV2ToV3(configV2);
   }
 
+  /// <summary>
+  /// Converts a version 3 device configuration structure to version 1.
+  /// </summary>
+  /// <param name="configV3">The version 3 configuration to convert.</param>
+  /// <returns>The equivalent version 1 configuration.</returns>
   public static DeviceConfigStructV1 ConvertConfigV3ToV1(DeviceConfigStructV3 configV3) {
     DeviceConfigStructV2 configV2 = ConvertConfigV3ToV2(configV3);
     return ConvertConfigV2ToV1(configV2);
@@ -68,6 +91,11 @@ public static class StructureConversion {
 
   //2 <-> 3
 
+  /// <summary>
+  /// Converts a version 2 device configuration structure to version 3.
+  /// </summary>
+  /// <param name="configV2">The version 2 configuration to convert.</param>
+  /// <returns>The equivalent version 3 configuration.</returns>
   public static DeviceConfigStructV3 ConvertConfigV2ToV3(DeviceConfigStructV2 configV2) {
     DeviceConfigStructV3 configV3 = new DeviceConfigStructV3 {
       Crc = configV2.Crc,
@@ -109,6 +137,11 @@ public static class StructureConversion {
     return configV3;
   }
 
+  /// <summary>
+  /// Converts a version 3 device configuration structure to version 2.
+  /// </summary>
+  /// <param name="configV3">The version 3 configuration to convert.</param>
+  /// <returns>The equivalent version 2 configuration.</returns>
   public static DeviceConfigStructV2 ConvertConfigV3ToV2(DeviceConfigStructV3 configV3) {
     DeviceConfigStructV2 configV2 = new DeviceConfigStructV2 {
       Crc = configV3.Crc,

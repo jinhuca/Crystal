@@ -55,7 +55,7 @@ internal static class TestType15Synthetic {
       Console.WriteLine($"  LogAreaLength: {log.LogAreaLength}");
       Console.WriteLine($"  LogHeaderStartOffset: {log.LogHeaderStartOffset}");
       Console.WriteLine($"  LogHeaderFormat: {log.LogHeaderFormat}");
-      Console.WriteLine($"  LogHeaderLength: {log.LogHeaderLength}");
+      Console.WriteLine($"  LogDataStartOffset: {log.LogDataStartOffset}");
       Console.WriteLine($"  AccessMethod: {log.AccessMethod}");
       Console.WriteLine($"  FormattedArea bytes: {BitConverter.ToString(log.FormattedArea.ToArray())}");
     }

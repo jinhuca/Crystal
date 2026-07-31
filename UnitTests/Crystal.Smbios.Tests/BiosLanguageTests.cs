@@ -10,10 +10,13 @@ public class BiosLanguageTests
     [Fact]
     public void Decode_PopulatesAllFields()
     {
-        var payload = new byte[0x07 - 4]; // offsets 0x04..0x06
-        payload[0x00] = 2; // two installable languages
-        payload[0x01] = 0x01; // flags (arbitrary)
-        payload[0x02] = 1; // current language = string #1
+        // DSP0134 §7.13: Installable Languages @0x04, Flags @0x05, 15 reserved
+        // bytes @0x06-0x14, Current Language string number @0x15. Structure
+        // length = 0x16, so payload spans offsets 0x04..0x15 (18 bytes).
+        var payload = new byte[0x16 - 4];
+        payload[0x00] = 2;    // two installable languages (@0x04)
+        payload[0x01] = 0x01; // flags (@0x05)
+        payload[0x11] = 1;    // current language = string #1 (@0x15)
 
         var table  = MakeTable(MakeStructure(13, 0x0090, payload, new[] { "en-US", "fr-FR" }));
         var smbios = SmbiosTable.FromRawTableData(table);
