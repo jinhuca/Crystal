@@ -33,7 +33,7 @@
     <Project Path="TryIt/TryIt01_PInvoke/TryIt01_PInvoke.csproj" Id="f4f46e8b-a092-464c-a99d-c8374c69fe1b" />
   </Folder>
   <Folder Name="/UnitTests/">
-    <Project Path="UnitTests/Crystal.Controls.UnitTests/Crystal.Controls.UnitTests.csproj" />
+    <Project Path="UnitTests/Crystal.Controls.Tests/Crystal.Controls.Tests.csproj" />
     <Project Path="UnitTests/Crystal.Mmi.Tests/Crystal.Mmi.Tests.csproj" />
     <Project Path="UnitTests/Crystal.Smbios.Tests/Crystal.Smbios.Tests.csproj" />
     <Project Path="UnitTests/Crystal.Telemetry.Tests/Crystal.Telemetry.Tests.csproj">

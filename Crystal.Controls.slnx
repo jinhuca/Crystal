@@ -1,5 +1,5 @@
 <Solution>
   <Project Path="Shared/Crystal.Controls/Crystal.Controls.csproj" />
   <Project Path="SmokeTests/Crystal.Controls.Demo/Crystal.Controls.Demo.csproj" />
-  <Project Path="UnitTests/Crystal.Controls.UnitTests/Crystal.Controls.UnitTests.csproj" />
+  <Project Path="UnitTests/Crystal.Controls.Tests/Crystal.Controls.Tests.csproj" />
 </Solution>
