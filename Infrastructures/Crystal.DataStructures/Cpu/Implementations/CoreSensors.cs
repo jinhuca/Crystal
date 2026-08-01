@@ -1,7 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Crystal.DataStructures.Cpu.Implementations; 
+﻿namespace Crystal.DataStructures.Cpu.Implementations; 
 internal class CoreSensors {
 }

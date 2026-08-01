@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>net10.0</TargetFrameworks>
-    <Platforms>x64;x86;ARM64</Platforms>
     <RuntimeIdentifiers>win-x64;win-x86;win-arm64;linux-x64;linux-arm64</RuntimeIdentifiers>
     <AssemblyName>Crystal.Telemetry</AssemblyName>
     <RootNamespace>Crystal.Telemetry</RootNamespace>

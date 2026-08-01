@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Crystal.DataStructures.Cpu.Definitions;
+﻿namespace Crystal.DataStructures.Cpu.Definitions;
 
 public static class QueryDefinitions {
   public static string CpuBusSpeed = "Bus Speed";
