@@ -5,7 +5,7 @@ using Xunit;
 namespace Crystal.Controls.Tests.RangeBars;
 
 public class ValueFormatConverterTests {
-  private static readonly ValueFormatConverter Converter = new();
+  private static readonly BarValueFormatConverter Converter = new();
 
   [Fact]
   public void Convert_FormatsValueWithSuppliedFormat() {

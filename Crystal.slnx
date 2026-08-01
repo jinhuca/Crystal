@@ -1,7 +1,13 @@
 <Solution>
   <Folder Name="/Build/" />
+  <Folder Name="/Infrastructures/">
+    <Project Path="Infrastructures/Crystal.Constants/Crystal.Constants.csproj" Id="114f60e5-fc86-440a-875d-ed2e217a8546" />
+    <Project Path="Infrastructures/Crystal.Converters/Crystal.Converters.csproj" Id="d0f3e02d-de4c-43e3-9d56-3536730e47d3" />
+    <Project Path="Infrastructures/Crystal.DataStructures/Crystal.DataStructures.csproj" Id="cde0cd77-9c66-4d18-b649-bb2bfd54232f" />
+  </Folder>
   <Folder Name="/Modules/">
     <Project Path="Modules/BiosModule/BiosModule.csproj" Id="c1b31da1-27c9-4607-a2fc-582db4f16c78" />
+    <Project Path="Modules/CpuModule/CpuModule.csproj" Id="938f4d05-b902-4a27-bc70-f673f23a15a4" />
     <Project Path="Modules/ResourceModule/ResourceModule.csproj" />
   </Folder>
   <Folder Name="/Providers/">
@@ -11,14 +17,10 @@
       <Platform Project="x64" />
     </Project>
   </Folder>
-  <Folder Name="/Services/" />
-  <Folder Name="/Shared/">
-    <Project Path="Shared/Crystal.CliConverters/Crystal.CliConverters.csproj" Id="6f6758f4-c675-45f6-9025-4d35f2396cdc" />
-    <Project Path="Shared/Crystal.Controls/Crystal.Controls.csproj" />
-    <Project Path="Shared/Crystal.Information/Crystal.Information.csproj">
-      <Platform Project="x64" />
-    </Project>
-    <Project Path="Shared/Crystal.WpfConverters/Crystal.WpfConverters.csproj" Id="a829b8b6-9258-4c8d-9749-bdccbf065b6b" />
+  <Folder Name="/Services/">
+    <Project Path="Services/Crystal.InventoryServices/Crystal.InventoryServices.csproj" Id="314bac7b-19c5-46a2-844a-84a7742fdffd" />
+    <Project Path="Services/Crystal.PnpServices/Crystal.PnpServices.csproj" Id="9dec4f22-b419-4c63-9757-1b45ce5c2542" />
+    <Project Path="Services/Crystal.SensorServices/Crystal.SensorServices.csproj" Id="5832eca6-fe8e-4255-a240-b142fea4c469" />
   </Folder>
   <Folder Name="/Shell/">
     <Project Path="Shell/Crystal.NewShell/Crystal.NewShell.csproj" Id="34c04727-c18d-49e7-bdb5-9bb18e95078b" />
@@ -31,6 +33,10 @@
   </Folder>
   <Folder Name="/TryIt/">
     <Project Path="TryIt/TryIt01_PInvoke/TryIt01_PInvoke.csproj" Id="f4f46e8b-a092-464c-a99d-c8374c69fe1b" />
+  </Folder>
+  <Folder Name="/UI/">
+    <Project Path="UI/Crystal.Controls/Crystal.Controls.csproj" />
+    <Project Path="UI/Crystal.WpfConverters/Crystal.WpfConverters.csproj" />
   </Folder>
   <Folder Name="/UnitTests/">
     <Project Path="UnitTests/Crystal.Controls.Tests/Crystal.Controls.Tests.csproj" />

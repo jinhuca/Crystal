@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Shared\Crystal.Controls\Crystal.Controls.csproj" />
+    <ProjectReference Include="..\..\UI\Crystal.Controls\Crystal.Controls.csproj" />
   </ItemGroup>
 
 </Project>

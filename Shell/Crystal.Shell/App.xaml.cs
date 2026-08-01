@@ -2,11 +2,9 @@
 using System.Data;
 using System.Windows;
 
-namespace CrystalShell {
-  /// <summary>
-  /// Interaction logic for App.xaml
-  /// </summary>
-  public partial class App : Application {
-  }
-
+namespace CrystalShell; 
+/// <summary>
+/// Interaction logic for App.xaml
+/// </summary>
+public partial class App : Application {
 }

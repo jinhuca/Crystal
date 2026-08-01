@@ -1,11 +1,11 @@
-using System.Globalization;
 using Crystal.Controls.PerformanceGraphs.Controls;
+using System.Globalization;
 using Xunit;
 
 namespace Crystal.Controls.Tests.PerformanceGraphs;
 
 public class ValueFormatConverterTests {
-  private static readonly ValueFormatConverter Converter = new();
+  private static readonly GraphValueFormatConverter Converter = new();
 
   [Fact]
   public void Convert_AppliesPercentFormat() {

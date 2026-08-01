@@ -5,7 +5,7 @@ using Xunit;
 namespace Crystal.Controls.Tests.MeterGauges;
 
 public class ValueFormatConverterTests {
-  private static readonly ValueFormatConverter Converter = new();
+  private static readonly MeterValueFormatConverter Converter = new();
 
   [Fact]
   public void Convert_FormatsValueWithSuppliedFormat() {

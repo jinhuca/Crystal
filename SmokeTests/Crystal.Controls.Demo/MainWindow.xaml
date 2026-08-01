@@ -9,7 +9,7 @@
 				xmlns:gaugeControls="clr-namespace:Crystal.Controls.MeterGauges.Controls;assembly=Crystal.Controls"
 				xmlns:barControls="clr-namespace:Crystal.Controls.RangeBars.Controls;assembly=Crystal.Controls"
         mc:Ignorable="d"
-        Title="MainWindow" Height="620" Width="1180" Background="Black">
+        Title="MainWindow" Height="750" Width="1180" Background="Black">
 	<Grid Margin="16">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*"/>
