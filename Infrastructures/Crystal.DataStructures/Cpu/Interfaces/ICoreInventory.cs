@@ -1,3 +1,3 @@
 ﻿namespace Crystal.DataStructures.Cpu.Interfaces; 
-internal interface ICpuSensors {
+internal interface ICoreInventory {
 }

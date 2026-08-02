@@ -1,10 +1,9 @@
 ﻿using Crystal.DataStructures.Cpu.Definitions;
 using Crystal.DataStructures.Cpu.Interfaces;
-using Crystal.DataStructures.Cpu.Interfaces.CpuCore;
 
 namespace Crystal.DataStructures.Cpu.Implementations;
 
-public class CpuSpecs : BindableBase, ICpuSpecs {
+public class CpuInventory : BindableBase, ICpuInventory {
   private string? _brandName;
   public string? BrandName {
     get => _brandName;
@@ -82,5 +81,4 @@ public class CpuSpecs : BindableBase, ICpuSpecs {
     get => _cpuInstructionInfo;
     set => SetProperty(ref _cpuInstructionInfo, value);
   }
-  public ICoreSpecs? CoreSpecs { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 }
