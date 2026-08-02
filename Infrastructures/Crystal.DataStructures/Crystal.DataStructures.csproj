@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Providers\Crystal.Telemetry\Crystal.Telemetry.csproj" />
+    <ProjectReference Include="..\..\Providers\Crystal.Provider.Telemetry\Crystal.Provider.Telemetry.csproj" />
   </ItemGroup>
 
 </Project>

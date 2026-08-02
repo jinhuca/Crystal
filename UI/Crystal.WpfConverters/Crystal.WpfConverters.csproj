@@ -5,7 +5,6 @@
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <ImplicitUsings>enable</ImplicitUsings>
-    <BaseOutputPath>$(SolutionDir)\Build\</BaseOutputPath>
   </PropertyGroup>
 
 </Project>

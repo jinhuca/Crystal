@@ -1,0 +1,10 @@
+<Project>
+
+  <!-- Redirect all build outputs (Debug/Release binaries and intermediate obj) to the solution-level Build folder. -->
+  <PropertyGroup>
+    <BuildRoot>$(MSBuildThisFileDirectory)Build\</BuildRoot>
+    <BaseOutputPath>$(BuildRoot)bin\$(MSBuildProjectName)\</BaseOutputPath>
+    <BaseIntermediateOutputPath>$(BuildRoot)obj\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+
+</Project>

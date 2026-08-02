@@ -1,4 +1,4 @@
-﻿using Crystal.Telemetry.Hardware;
+﻿using Crystal.Provider.Telemetry.Hardware;
 using System;
 using System.Collections.Generic;
 using System.Text;

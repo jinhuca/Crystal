@@ -1,5 +1,5 @@
 <Solution>
-  <Project Path="Providers/Crystal.Mmi/Crystal.Mmi.csproj" />
-  <Project Path="SmokeTests/Crystal.Mmi.Cli/Crystal.Mmi.Cli.csproj" />
-  <Project Path="UnitTests/Crystal.Mmi.Tests/Crystal.Mmi.Tests.csproj" />
+  <Project Path="Providers/Crystal.Provider.Mmi/Crystal.Provider.Mmi.csproj" />
+  <Project Path="SmokeTests/Crystal.Provider.Mmi.Cli/Crystal.Provider.Mmi.Cli.csproj" />
+  <Project Path="UnitTests/Crystal.Provider.Mmi.Tests/Crystal.Provider.Mmi.Tests.csproj" />
 </Solution>

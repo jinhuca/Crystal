@@ -11,16 +11,16 @@
     <Project Path="Modules/ResourceModule/ResourceModule.csproj" />
   </Folder>
   <Folder Name="/Providers/">
-    <Project Path="Providers/Crystal.Mmi/Crystal.Mmi.csproj" />
-    <Project Path="Providers/Crystal.Smbios/Crystal.Smbios.csproj" />
-    <Project Path="Providers/Crystal.Telemetry/Crystal.Telemetry.csproj">
+    <Project Path="Providers/Crystal.Provider.Mmi/Crystal.Provider.Mmi.csproj" />
+    <Project Path="Providers/Crystal.Provider.Smbios/Crystal.Provider.Smbios.csproj" />
+    <Project Path="Providers/Crystal.Provider.Telemetry/Crystal.Provider.Telemetry.csproj">
       <Platform Project="x64" />
     </Project>
   </Folder>
   <Folder Name="/Services/">
-    <Project Path="Services/Crystal.InventoryServices/Crystal.InventoryServices.csproj" Id="314bac7b-19c5-46a2-844a-84a7742fdffd" />
-    <Project Path="Services/Crystal.PnpServices/Crystal.PnpServices.csproj" Id="9dec4f22-b419-4c63-9757-1b45ce5c2542" />
-    <Project Path="Services/Crystal.SensorServices/Crystal.SensorServices.csproj" Id="5832eca6-fe8e-4255-a240-b142fea4c469" />
+    <Project Path="Services/Crystal.Service.Inventory/Crystal.Service.Inventory.csproj" />
+    <Project Path="Services/Crystal.Service.Pnp/Crystal.Services.Pnp.csproj" />
+    <Project Path="Services/Crystal.Service.Sensors/Crystal.Service.Sensors.csproj" />
   </Folder>
   <Folder Name="/Shell/">
     <Project Path="Shell/Crystal.NewShell/Crystal.NewShell.csproj" Id="34c04727-c18d-49e7-bdb5-9bb18e95078b" />
@@ -28,8 +28,8 @@
   </Folder>
   <Folder Name="/SmokeTests/">
     <Project Path="SmokeTests/Crystal.Controls.Demo/Crystal.Controls.Demo.csproj" />
-    <Project Path="SmokeTests/Crystal.Mmi.Cli/Crystal.Mmi.Cli.csproj" />
-    <Project Path="SmokeTests/Crystal.Smbios.Cli/Crystal.Smbios.Cli.csproj" />
+    <Project Path="SmokeTests/Crystal.Provider.Mmi.Cli/Crystal.Provider.Mmi.Cli.csproj" />
+    <Project Path="SmokeTests/Crystal.Provider.Smbios.Cli/Crystal.Provider.Smbios.Cli.csproj" />
   </Folder>
   <Folder Name="/TryIt/">
     <Project Path="TryIt/TryIt01_PInvoke/TryIt01_PInvoke.csproj" Id="f4f46e8b-a092-464c-a99d-c8374c69fe1b" />
@@ -40,9 +40,9 @@
   </Folder>
   <Folder Name="/UnitTests/">
     <Project Path="UnitTests/Crystal.Controls.Tests/Crystal.Controls.Tests.csproj" />
-    <Project Path="UnitTests/Crystal.Mmi.Tests/Crystal.Mmi.Tests.csproj" />
-    <Project Path="UnitTests/Crystal.Smbios.Tests/Crystal.Smbios.Tests.csproj" />
-    <Project Path="UnitTests/Crystal.Telemetry.Tests/Crystal.Telemetry.Tests.csproj">
+    <Project Path="UnitTests/Crystal.Provider.Mmi.Tests/Crystal.Provider.Mmi.Tests.csproj" />
+    <Project Path="UnitTests/Crystal.Provider.Smbios.Tests/Crystal.Provider.Smbios.Tests.csproj" />
+    <Project Path="UnitTests/Crystal.Provider.Telemetry.Tests/Crystal.Provider.Telemetry.Tests.csproj">
       <Platform Project="x64" />
     </Project>
   </Folder>

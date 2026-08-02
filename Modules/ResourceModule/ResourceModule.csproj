@@ -1,12 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <IntermediateOutputPath>$(SolutionDir)\Build\Intermediate\</IntermediateOutputPath>
     <TargetFramework>net10.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <ImplicitUsings>enable</ImplicitUsings>
-    <BaseOutputPath>$(SolutionDir)\Build\</BaseOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
