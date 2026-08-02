@@ -1,4 +1,9 @@
 <Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
   <Folder Name="/Build/" />
   <Folder Name="/Infrastructures/">
     <Project Path="Infrastructures/Crystal.Constants/Crystal.Constants.csproj" Id="114f60e5-fc86-440a-875d-ed2e217a8546" />
@@ -12,9 +17,12 @@
   </Folder>
   <Folder Name="/Providers/">
     <Project Path="Providers/Crystal.Provider.Mmi/Crystal.Provider.Mmi.csproj" />
+    <Project Path="Providers/Crystal.Provider.PInvokes/Crystal.Provider.PInvokes.vcxproj" Id="33754478-e016-4dbb-9eab-656ee14abb50" />
     <Project Path="Providers/Crystal.Provider.Smbios/Crystal.Provider.Smbios.csproj" />
     <Project Path="Providers/Crystal.Provider.Telemetry/Crystal.Provider.Telemetry.csproj">
-      <Platform Project="x64" />
+      <Platform Solution="*|Any CPU" Project="x64" />
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
     </Project>
   </Folder>
   <Folder Name="/Services/">
@@ -43,7 +51,9 @@
     <Project Path="UnitTests/Crystal.Provider.Mmi.Tests/Crystal.Provider.Mmi.Tests.csproj" />
     <Project Path="UnitTests/Crystal.Provider.Smbios.Tests/Crystal.Provider.Smbios.Tests.csproj" />
     <Project Path="UnitTests/Crystal.Provider.Telemetry.Tests/Crystal.Provider.Telemetry.Tests.csproj">
-      <Platform Project="x64" />
+      <Platform Solution="*|Any CPU" Project="x64" />
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
     </Project>
   </Folder>
 </Solution>

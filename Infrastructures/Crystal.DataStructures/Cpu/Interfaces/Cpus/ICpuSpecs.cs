@@ -1,7 +1,8 @@
 ﻿using Crystal.DataStructures.Cpu.Definitions;
 
-namespace Crystal.DataStructures.Cpu.Interfaces; 
-public interface ICpuInventory {
+namespace Crystal.DataStructures.Cpu.Interfaces.Cpus; 
+
+public interface ICpuSpecs {
   string? BrandName { get; set; }
   string? VendorName { get; set; }
   int? FamilyId { get; set; }

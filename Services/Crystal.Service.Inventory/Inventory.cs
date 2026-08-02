@@ -1,4 +1,4 @@
-﻿namespace Crystal.InventoryServices; 
+﻿namespace Crystal.Service.Inventory; 
 public class Inventory {
 
 }
