@@ -39,6 +39,10 @@
     <Project Path="SmokeTests/Crystal.Provider.Mmi.Cli/Crystal.Provider.Mmi.Cli.csproj" />
     <Project Path="SmokeTests/Crystal.Provider.Smbios.Cli/Crystal.Provider.Smbios.Cli.csproj" />
   </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path="Directory.Build.props" />
+    <File Path="nuget.config" />
+  </Folder>
   <Folder Name="/TryIt/">
     <Project Path="TryIt/TryIt01_PInvoke/TryIt01_PInvoke.csproj" Id="f4f46e8b-a092-464c-a99d-c8374c69fe1b" />
   </Folder>

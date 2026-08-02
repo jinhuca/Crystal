@@ -1,10 +1,17 @@
 <Project>
+	<PropertyGroup>
+		<RepoRoot>$(MSBuildThisFileDirectory)</RepoRoot>
 
-  <!-- Redirect all build outputs (Debug/Release binaries and intermediate obj) to the solution-level Build folder. -->
-  <PropertyGroup>
-    <BuildRoot>$(MSBuildThisFileDirectory)Build\</BuildRoot>
-    <BaseOutputPath>$(BuildRoot)bin\$(MSBuildProjectName)\</BaseOutputPath>
-    <BaseIntermediateOutputPath>$(BuildRoot)obj\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
-  </PropertyGroup>
+		<!-- SDK-style C# project settings -->
+		<BaseOutputPath>$(RepoRoot)Build\</BaseOutputPath>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+		<BaseIntermediateOutputPath>$(RepoRoot)Build\Obj\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
+	</PropertyGroup>
 
+	<!-- C++ (vcxproj) projects: same idea, different macro names -->
+	<PropertyGroup Condition="'$(MSBuildProjectExtension)'=='.vcxproj'">
+		<OutDir>$(RepoRoot)Build\$(Configuration)\</OutDir>
+		<IntDir>$(RepoRoot)Build\Obj\$(MSBuildProjectName)\$(Platform)\$(Configuration)\</IntDir>
+	</PropertyGroup>
 </Project>
