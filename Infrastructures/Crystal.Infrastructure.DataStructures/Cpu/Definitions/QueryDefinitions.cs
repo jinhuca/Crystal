@@ -1,4 +1,4 @@
-﻿namespace Crystal.DataStructures.Cpu.Definitions;
+﻿namespace Crystal.Infrastructure.DataStructures.Cpu.Definitions;
 
 public static class QueryDefinitions {
   public static string CpuBusSpeed = "Bus Speed";

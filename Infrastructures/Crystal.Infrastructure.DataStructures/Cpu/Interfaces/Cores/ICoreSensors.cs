@@ -1,9 +1,9 @@
-﻿using Crystal.DataStructures.Sensors;
+﻿using Crystal.Infrastructure.DataStructures.Sensors;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Crystal.DataStructures.Cpu.Interfaces.Cores;
+namespace Crystal.Infrastructure.DataStructures.Cpu.Interfaces.Cores;
 
 public interface ICoreSensors {
   string Name { get; set; }

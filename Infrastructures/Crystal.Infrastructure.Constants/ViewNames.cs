@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Crystal.Constants;
+namespace Crystal.Infrastructure.Constants;
 
 public static class ViewNames {
   public static string HomeViewName { get; set; } = "HomeContentView";

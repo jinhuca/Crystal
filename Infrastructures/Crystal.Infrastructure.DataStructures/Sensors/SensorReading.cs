@@ -1,6 +1,6 @@
 ﻿using Crystal.Provider.Telemetry.Hardware;
 
-namespace Crystal.DataStructures.Sensors;
+namespace Crystal.Infrastructure.DataStructures.Sensors;
 
 public record SensorReading(
     string HardwareName,

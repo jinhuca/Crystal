@@ -6,9 +6,9 @@
   </Configurations>
   <Folder Name="/Build/" />
   <Folder Name="/Infrastructures/">
-    <Project Path="Infrastructures/Crystal.Constants/Crystal.Constants.csproj" Id="114f60e5-fc86-440a-875d-ed2e217a8546" />
-    <Project Path="Infrastructures/Crystal.Converters/Crystal.Converters.csproj" Id="d0f3e02d-de4c-43e3-9d56-3536730e47d3" />
-    <Project Path="Infrastructures/Crystal.DataStructures/Crystal.DataStructures.csproj" Id="cde0cd77-9c66-4d18-b649-bb2bfd54232f" />
+    <Project Path="Infrastructures/Crystal.Infrastructure.Constants/Crystal.Infrastructure.Constants.csproj" />
+    <Project Path="Infrastructures/Crystal.Infrastructure.Converters/Crystal.Infrastructure.Converters.csproj" />
+    <Project Path="Infrastructures/Crystal.Infrastructure.DataStructures/Crystal.Infrastructure.DataStructures.csproj" />
   </Folder>
   <Folder Name="/Modules/">
     <Project Path="Modules/BiosModule/BiosModule.csproj" Id="c1b31da1-27c9-4607-a2fc-582db4f16c78" />

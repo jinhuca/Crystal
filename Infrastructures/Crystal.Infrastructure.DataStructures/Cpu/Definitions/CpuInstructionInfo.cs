@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace Crystal.DataStructures.Cpu.Definitions;
+namespace Crystal.Infrastructure.DataStructures.Cpu.Definitions;
 
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 public struct CpuInstructionInfo {

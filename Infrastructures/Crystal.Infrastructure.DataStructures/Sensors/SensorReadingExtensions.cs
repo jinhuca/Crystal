@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Crystal.DataStructures.Sensors;
+namespace Crystal.Infrastructure.DataStructures.Sensors;
 
 public static class SensorReadingExtensions {
   public static string? UnitFor(SensorType sensorType) => sensorType switch {

@@ -1,4 +1,4 @@
-﻿namespace Crystal.Converters;
+﻿namespace Crystal.Infrastructure.Converters;
 
 public class ByteUnitConverters {
   public static string ConvertBytesToReadableUnit(ulong bytes) {

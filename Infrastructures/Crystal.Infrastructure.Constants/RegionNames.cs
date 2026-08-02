@@ -1,4 +1,4 @@
-﻿namespace Crystal.Constants;
+﻿namespace Crystal.Infrastructure.Constants;
 
 public static class RegionNames {
   public static string MainRegionName { get; set; } = "MainRegion";

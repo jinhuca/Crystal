@@ -1,6 +1,6 @@
-﻿using Crystal.DataStructures.Sensors;
+﻿using Crystal.Infrastructure.DataStructures.Sensors;
 
-namespace Crystal.DataStructures.Cpu.Interfaces.Cpus;
+namespace Crystal.Infrastructure.DataStructures.Cpu.Interfaces.Cpus;
 
 public interface ICpuSensors {
   SensorReading BusSpeed { get; set; }

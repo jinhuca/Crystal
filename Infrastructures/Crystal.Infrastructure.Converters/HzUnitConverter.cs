@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Crystal.Converters;
+namespace Crystal.Infrastructure.Converters;
 
 public class HzUnitConverter {
   public static string ConvertMHzToReadableUnit(double frequencyInMHz) {

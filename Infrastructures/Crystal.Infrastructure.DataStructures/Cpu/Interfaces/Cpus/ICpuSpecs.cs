@@ -1,6 +1,6 @@
-﻿using Crystal.DataStructures.Cpu.Definitions;
+﻿using Crystal.Infrastructure.DataStructures.Cpu.Definitions;
 
-namespace Crystal.DataStructures.Cpu.Interfaces.Cpus; 
+namespace Crystal.Infrastructure.DataStructures.Cpu.Interfaces.Cpus; 
 
 public interface ICpuSpecs {
   string? BrandName { get; set; }

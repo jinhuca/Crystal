@@ -1,7 +1,7 @@
-﻿using Crystal.DataStructures.Cpu.Definitions;
-using Crystal.DataStructures.Cpu.Interfaces.Cpus;
+﻿using Crystal.Infrastructure.DataStructures.Cpu.Definitions;
+using Crystal.Infrastructure.DataStructures.Cpu.Interfaces.Cpus;
 
-namespace Crystal.DataStructures.Cpu.Implementations;
+namespace Crystal.Infrastructure.DataStructures.Cpu.Implementations;
 
 public class CpuInventory : BindableBase, ICpuSpecs {
   private string? _brandName;
