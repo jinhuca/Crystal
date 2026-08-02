@@ -38,23 +38,6 @@ extern "C" __declspec(dllexport) bool VirtualizationEnabled() {
   return false;
 }
 
-/*
-extern "C" __declspec(dllexport) bool _3DNOW() {
-  return InstructionSet::_3DNOW();
-}
-
-extern "C" __declspec(dllexport) bool _3DNOWEXT() {
-  return InstructionSet::_3DNOWEXT();
-}
-
-extern "C" __declspec(dllexport) bool ABM() {
-  return InstructionSet::ABM();
-}
-
-extern "C" __declspec(dllexport) bool ADX() {
-  return InstructionSet::ADX();
-}
-*/
 struct InstructionSetStruct {
   bool _3DNOW;
   bool _3DNOWEXT;

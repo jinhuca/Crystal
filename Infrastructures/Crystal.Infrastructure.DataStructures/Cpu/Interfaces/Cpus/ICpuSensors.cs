@@ -3,7 +3,6 @@
 namespace Crystal.Infrastructure.DataStructures.Cpu.Interfaces.Cpus;
 
 public interface ICpuSensors {
-  SensorReading BusSpeed { get; set; }
   SensorReading CpuSpeed { get; set; }
   SensorReading Voltage { get; set; }
   SensorReading PlatformPower { get; set; }

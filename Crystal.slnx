@@ -16,6 +16,7 @@
     <Project Path="Modules/ResourceModule/ResourceModule.csproj" />
   </Folder>
   <Folder Name="/Providers/">
+    <Project Path="Providers/Crystal.Provider.CpuId/Crystal.Provider.CpuId.csproj" />
     <Project Path="Providers/Crystal.Provider.Mmi/Crystal.Provider.Mmi.csproj" />
     <Project Path="Providers/Crystal.Provider.PInvokes/Crystal.Provider.PInvokes.vcxproj" Id="33754478-e016-4dbb-9eab-656ee14abb50" />
     <Project Path="Providers/Crystal.Provider.Smbios/Crystal.Provider.Smbios.csproj" />
@@ -26,6 +27,7 @@
     </Project>
   </Folder>
   <Folder Name="/Services/">
+    <Project Path="Services/Crystal.Service.Cpu/Crystal.Service.Cpu.csproj" />
     <Project Path="Services/Crystal.Service.Inventory/Crystal.Service.Inventory.csproj" />
     <Project Path="Services/Crystal.Service.Pnp/Crystal.Services.Pnp.csproj" />
     <Project Path="Services/Crystal.Service.Sensors/Crystal.Service.Sensors.csproj" />
@@ -38,6 +40,7 @@
     <Project Path="SmokeTests/Crystal.Controls.Demo/Crystal.Controls.Demo.csproj" />
     <Project Path="SmokeTests/Crystal.Provider.Mmi.Cli/Crystal.Provider.Mmi.Cli.csproj" />
     <Project Path="SmokeTests/Crystal.Provider.Smbios.Cli/Crystal.Provider.Smbios.Cli.csproj" />
+    <Project Path="SmokeTests/Crystal.Service.Cpu.Cli/Crystal.Service.Cpu.Cli.csproj" />
   </Folder>
   <Folder Name="/Solution Items/">
     <File Path="Directory.Build.props" />
