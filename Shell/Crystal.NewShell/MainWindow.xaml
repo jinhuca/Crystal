@@ -4,12 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:prism="http://prismlibrary.com/"
-        xmlns:cpu="clr-namespace:CpuModule;assembly=CpuModule"
+        xmlns:const="clr-namespace:Crystal.Infrastructure.Constants;assembly=Crystal.Infrastructure.Constants"
         xmlns:local="clr-namespace:Crystal.NewShell"
         mc:Ignorable="d"
         Title="Crystal" Height="860" Width="1600"
         Background="Black">
     <Grid>
-        <ContentControl prism:RegionManager.RegionName="{x:Static cpu:CpuModule.ContentRegion}"/>
+        <ContentControl prism:RegionManager.RegionName="{x:Static const:RegionNames.MainContentRegionName}"/>
     </Grid>
 </Window>

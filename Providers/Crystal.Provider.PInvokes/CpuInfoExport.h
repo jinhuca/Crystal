@@ -220,7 +220,7 @@ extern "C" __declspec(dllexport) UINT32 GetPhysicalCoreCount() {
     }
     return physicalCores;
   }
-  // If the function fails, return 0
+  // Ensure all control paths return a value
   return 0;
 }
 

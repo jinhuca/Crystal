@@ -28,11 +28,16 @@ public static class CimAsyncExtensions {
 
       if (error != null) throw error;
 
+      T item;
+      bool hasItem;
       lock (queue) {
-        if (queue.Count > 0) {
-          yield return queue.Dequeue();
-          continue;
-        }
+        hasItem = queue.Count > 0;
+        item = hasItem ? queue.Dequeue() : default!;
+      }
+
+      if (hasItem) {
+        yield return item;
+        continue;
       }
 
       if (completed) break;

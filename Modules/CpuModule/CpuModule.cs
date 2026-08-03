@@ -2,6 +2,8 @@ using CpuModule.Models;
 using CpuModule.ViewModels.Implementations;
 using CpuModule.ViewModels.Interfaces;
 using CpuModule.Views;
+using Crystal.Infrastructure.Constants;
+using Crystal.Infrastructure.Constants.Navigation;
 using Crystal.Provider.CpuId;
 using Crystal.Provider.Mmi.HardwareFeatures.Processor;
 using Crystal.Provider.Mmi.MmiEngine;
@@ -11,14 +13,11 @@ using Crystal.Service.Cpu;
 namespace CpuModule;
 
 /// <summary>
-/// Prism module for the CPU dashboard. Registers the provider→service→model→view-model
-/// chain and injects <see cref="CpuView"/> into the shell's main content region.
+/// Prism module for CPU. Registers the provider→service→model→view-model chain, injects the
+/// compact <see cref="CpuSummaryView"/> into the dashboard's CPU tile region, and registers
+/// the full-scale <see cref="CpuDetailView"/> for navigation.
 /// </summary>
 public class CpuModule(IRegionManager regionManager) : IModule {
-  /// <summary>Region the shell exposes for module content. Kept public so the shell can
-  /// declare the matching <c>prism:RegionManager.RegionName</c>.</summary>
-  public const string ContentRegion = "ContentRegion";
-
   private readonly IRegionManager _regionManager = regionManager;
 
   public void RegisterTypes(IContainerRegistry containerRegistry) {
@@ -50,18 +49,21 @@ public class CpuModule(IRegionManager regionManager) : IModule {
     containerRegistry.Register<ICpuSensorViewModel, CpuSensorsViewModel>();
     containerRegistry.Register<ICpuViewModel, CpuViewModel>();
 
-    // Register the view for region navigation.
-    containerRegistry.RegisterForNavigation<CpuView>();
+    // Register the detail view for region navigation (swapped into the shell's main region).
+    containerRegistry.RegisterForNavigation<CpuDetailView>(DetailViewNames.Cpu);
 
-    // CpuView sets prism:ViewModelLocator.AutoWireViewModel="True". The default convention
-    // looks for CpuModule.ViewModels.CpuViewModel; our VM lives under .Implementations and is
-    // resolved by its interface, so map it explicitly. The factory resolves through the
-    // container, so the VM's constructor dependencies are injected.
-    ViewModelLocationProvider.Register<CpuView>(
+    // Both views set prism:ViewModelLocator.AutoWireViewModel="True". The default convention
+    // looks for CpuModule.ViewModels.<ViewName>Model; our VM lives under .Implementations and is
+    // resolved by its interface, so map both views to it explicitly. Each view gets its own VM
+    // instance (Register, not singleton), so their live graphs never share sample buffers.
+    ViewModelLocationProvider.Register<CpuSummaryView>(
+        () => ContainerLocator.Container.Resolve<ICpuViewModel>());
+    ViewModelLocationProvider.Register<CpuDetailView>(
         () => ContainerLocator.Container.Resolve<ICpuViewModel>());
   }
 
   public void OnInitialized(IContainerProvider containerProvider) {
-    _regionManager.RegisterViewWithRegion(ContentRegion, typeof(CpuView));
+    // Inject the compact summary tile into the dashboard's CPU region.
+    _regionManager.RegisterViewWithRegion(RegionNames.CpuRegionName, typeof(CpuSummaryView));
   }
 }

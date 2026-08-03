@@ -6,8 +6,10 @@ using Crystal.Controls.PerformanceGraphs.Themes;
 
 namespace CpuModule.Views;
 
-public partial class CpuView : UserControl {
-  public CpuView() {
+/// <summary>Full-scale CPU view: static specs, five live gauges + history graphs, and
+/// the instruction-set grid. Reached by selecting the CPU summary tile on the dashboard.</summary>
+public partial class CpuDetailView : UserControl {
+  public CpuDetailView() {
     InitializeComponent();
     Loaded += OnLoaded;
   }

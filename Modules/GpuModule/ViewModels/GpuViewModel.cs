@@ -1,0 +1,57 @@
+using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Input;
+using Crystal.Infrastructure.Constants.Navigation;
+using GpuModule.Models;
+
+namespace GpuModule.ViewModels;
+
+public sealed class GpuViewModel : BindableBase, IGpuViewModel, IDisposable {
+  private readonly IDisposable _specsSubscription;
+  private readonly IDisposable _sensorsSubscription;
+
+  public GpuViewModel(IGpuModel model, IEventAggregator events) {
+    ShowDetailCommand = new DelegateCommand(
+        () => events.GetEvent<ShowDetailEvent>().Publish(DetailViewNames.Gpu));
+    ShowDashboardCommand = new DelegateCommand(
+        () => events.GetEvent<ShowDashboardEvent>().Publish());
+
+    _specsSubscription = model.Specs.Subscribe(s => OnUi(() => ApplySpecs(s)));
+    _sensorsSubscription = model.Sensors.Subscribe(s => OnUi(() => ApplyLoads(s)));
+  }
+
+  public ObservableCollection<GpuAdapterViewModel> Adapters { get; } = [];
+  public ICommand ShowDetailCommand { get; }
+  public ICommand ShowDashboardCommand { get; }
+
+  private void ApplySpecs(GpuSnapshot snapshot) {
+    // Rebuild the adapter list on the (rare) spec emission. Integrated first so it lands in
+    // the left column, matching the reference design.
+    Adapters.Clear();
+    foreach (var info in snapshot.Adapters.OrderBy(a => a.Kind)) {
+      var vm = new GpuAdapterViewModel();
+      vm.UpdateSpecs(info);
+      Adapters.Add(vm);
+    }
+    ApplyLoads(snapshot);
+  }
+
+  private void ApplyLoads(GpuSnapshot snapshot) {
+    foreach (var adapter in Adapters) {
+      var reading = snapshot.Loads.FirstOrDefault(l =>
+          string.Equals(l.AdapterName, adapter.Name, StringComparison.OrdinalIgnoreCase));
+      if (reading is not null) adapter.UpdateLoad(reading.CoreLoadPercent);
+    }
+  }
+
+  private static void OnUi(Action action) {
+    var dispatcher = Application.Current?.Dispatcher;
+    if (dispatcher is null || dispatcher.CheckAccess()) action();
+    else dispatcher.Invoke(action);
+  }
+
+  public void Dispose() {
+    _specsSubscription.Dispose();
+    _sensorsSubscription.Dispose();
+  }
+}

@@ -9,9 +9,13 @@
     <!-- Crystal.Provider.Telemetry (transitive) depends on Mono.Posix.NETStandard, whose only
          net-compatible assembly lives under runtimes/<rid>/lib. A RID-agnostic build resolves no
          runtime asset and omits it from deps.json, so the app throws FileNotFoundException at
-         startup. Pinning the RID makes NuGet resolve the win-x64 asset and copy it to output. -->
+         startup. Using both RuntimeIdentifier and RuntimeIdentifiers ensures both single-RID builds
+         and multi-RID restores generate net10.0-windows/win-x64 target in project.assets.json. -->
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
     <SelfContained>false</SelfContained>
+    <!-- Ensure the build always uses RID-specific assets even when no -r is passed -->
+    <UseRidGraph>true</UseRidGraph>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,6 +27,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Modules\CpuModule\CpuModule.csproj" />
+    <ProjectReference Include="..\..\Modules\GpuModule\GpuModule.csproj" />
+    <ProjectReference Include="..\..\Modules\MemoryModule\MemoryModule.csproj" />
+    <ProjectReference Include="..\..\Modules\StorageModule\StorageModule.csproj" />
+    <ProjectReference Include="..\..\Modules\BiosModule\BiosModule.csproj" />
+    <ProjectReference Include="..\..\Modules\NetworkModule\NetworkModule.csproj" />
+    <ProjectReference Include="..\..\Infrastructures\Crystal.Infrastructure.Constants\Crystal.Infrastructure.Constants.csproj" />
   </ItemGroup>
 
 </Project>
