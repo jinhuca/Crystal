@@ -1,6 +1,9 @@
 using System.Windows;
+using Crystal.Infrastructure.Constants;
 using Crystal.NewShell.Navigation;
+using Crystal.NewShell.Startup;
 using Crystal.NewShell.Views;
+using Crystal.Service.Sensors;
 
 namespace Crystal.NewShell;
 
@@ -21,6 +24,16 @@ public partial class App : PrismApplication {
     // Long-lived: subscribes to weakly-referenced navigation events, so it must not be
     // collected. Resolved eagerly in OnInitialized.
     containerRegistry.RegisterSingleton<NavigationController>();
+
+    // System-wide sensor stream shared by every module that subscribes. SensorMonitor owns the
+    // polling lifetime and the hardware session, so it must be a singleton. Built via a factory:
+    // its ctor's optional TimeSpan?/IScheduler? params can't be resolved by the container, and we
+    // want the default 1-second poll cadence.
+    containerRegistry.RegisterSingleton<SensorMonitor>(_ => new SensorMonitor());
+
+    // Warms the heavy module singletons off the UI thread behind a loading screen (see
+    // OnInitialized), so opening their ring-0 hardware sessions no longer freezes startup.
+    containerRegistry.RegisterSingleton<StartupLoader>();
   }
 
   protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog) {
@@ -32,9 +45,27 @@ public partial class App : PrismApplication {
     moduleCatalog.AddModule<NetworkModule.NetworkModule>();
   }
 
-  protected override void OnInitialized() {
+  protected override async void OnInitialized() {
     base.OnInitialized();
-    // Show the dashboard once modules have registered their summary tiles.
+
+    // The shell window is already visible at this point. Building the dashboard resolves every
+    // module's singleton model, and each opens a ring-0 hardware session in its constructor -
+    // doing that synchronously on the UI thread froze the window at startup. Instead: show a
+    // lightweight loading overlay now, warm those singletons on a background thread (reporting
+    // per-component progress), then swap in the dashboard, whose tiles reuse the warmed instances.
+    var regionManager = Container.Resolve<IRegionManager>();
+    var loader = Container.Resolve<StartupLoader>();
+
+    var loadingViewModel = new LoadingViewModel(loader.ComponentNames);
+    var loadingView = new LoadingView { DataContext = loadingViewModel };
+    regionManager.Regions[RegionNames.MainContentRegionName].Add(loadingView);
+
+    // Progress<T> captures the UI SynchronizationContext, so Report runs back on the UI thread.
+    var progress = new Progress<StartupProgress>(loadingViewModel.Report);
+    await loader.WarmUpAsync(progress);
+
+    // Warmed and back on the UI thread: swap the overlay for the dashboard.
+    regionManager.Regions[RegionNames.MainContentRegionName].Remove(loadingView);
     Container.Resolve<NavigationController>().NavigateToDashboard();
   }
 }
