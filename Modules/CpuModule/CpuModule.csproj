@@ -13,4 +13,13 @@
     <PackageReference Include="Prism.Wpf" Version="9.0.537" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Services\Crystal.Service.Cpu\Crystal.Service.Cpu.csproj" />
+    <ProjectReference Include="..\..\UI\Crystal.Controls\Crystal.Controls.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ViewModels\Definitions\" />
+  </ItemGroup>
+
 </Project>
