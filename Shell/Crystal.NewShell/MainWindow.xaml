@@ -1,12 +1,15 @@
-﻿<Window x:Class="Crystal.NewShell.MainWindow"
+<Window x:Class="Crystal.NewShell.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:prism="http://prismlibrary.com/"
+        xmlns:cpu="clr-namespace:CpuModule;assembly=CpuModule"
         xmlns:local="clr-namespace:Crystal.NewShell"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Crystal" Height="860" Width="1600"
+        Background="Black">
     <Grid>
-
+        <ContentControl prism:RegionManager.RegionName="{x:Static cpu:CpuModule.ContentRegion}"/>
     </Grid>
 </Window>

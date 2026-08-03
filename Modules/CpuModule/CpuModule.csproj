@@ -15,11 +15,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Services\Crystal.Service.Cpu\Crystal.Service.Cpu.csproj" />
+    <ProjectReference Include="..\..\Providers\Crystal.Provider.CpuId\Crystal.Provider.CpuId.csproj" />
+    <ProjectReference Include="..\..\Providers\Crystal.Provider.Mmi\Crystal.Provider.Mmi.csproj" />
+    <ProjectReference Include="..\..\Providers\Crystal.Provider.Smbios\Crystal.Provider.Smbios.csproj" />
     <ProjectReference Include="..\..\UI\Crystal.Controls\Crystal.Controls.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ViewModels\Definitions\" />
   </ItemGroup>
 
 </Project>

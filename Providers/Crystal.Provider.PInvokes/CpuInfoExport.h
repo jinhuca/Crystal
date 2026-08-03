@@ -220,6 +220,8 @@ extern "C" __declspec(dllexport) UINT32 GetPhysicalCoreCount() {
     }
     return physicalCores;
   }
+  // If the function fails, return 0
+  return 0;
 }
 
 extern "C" __declspec(dllexport) UINT32 GetLogicalCoreCount() {

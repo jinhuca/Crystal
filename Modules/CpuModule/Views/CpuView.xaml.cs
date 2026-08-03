@@ -1,23 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using CpuModule.ViewModels.Interfaces;
+using Crystal.Controls.MeterGauges.Themes;
+using Crystal.Controls.PerformanceGraphs.Themes;
 
-namespace CpuModule.Views {
-  /// <summary>
-  /// Interaction logic for CpuView.xaml
-  /// </summary>
-  public partial class CpuView : UserControl {
-    public CpuView() {
-      InitializeComponent();
-    }
+namespace CpuModule.Views;
+
+public partial class CpuView : UserControl {
+  public CpuView() {
+    InitializeComponent();
+    Loaded += OnLoaded;
+  }
+
+  private void OnLoaded(object sender, RoutedEventArgs e) {
+    // The wrapped PerformanceGraph instances are produced by each view's control template,
+    // so they aren't available until after the template is applied (i.e. at Loaded, not ctor).
+    if (UtilizationView.Graph is not { } utilization) return;
+    if (VoltageView.Graph is not { } voltage) return;
+    if (ClockView.Graph is not { } clock) return;
+    if (PowerView.Graph is not { } power) return;
+    if (TemperatureView.Graph is not { } temperature) return;
+
+    // Accent each plot to match the reference image, and mirror the accent onto its gauge.
+    utilization.ApplyTheme(GraphThemes.Rose());
+    voltage.ApplyTheme(GraphThemes.Emerald());
+    clock.ApplyTheme(GraphThemes.Amber());
+    power.ApplyTheme(GraphThemes.Rose());
+    temperature.ApplyTheme(GraphThemes.Rose());
+
+    if (DataContext is ICpuViewModel vm)
+      vm.SensorsViewModel.AttachGraphs(utilization, voltage, clock, power, temperature);
   }
 }

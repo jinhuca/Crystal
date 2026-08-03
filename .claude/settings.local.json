@@ -17,7 +17,17 @@
       "Bash(dotnet test *)",
       "Bash(taskkill //PID 37808 //F)",
       "Bash(tasklist //FI \"IMAGENAME eq dotnet.exe\")",
-      "Bash(grep -iA 15 \"Assert\\\\|Expected\\\\|Actual\\\\|Stack\\\\|Error Message\")"
+      "Bash(grep -iA 15 \"Assert\\\\|Expected\\\\|Actual\\\\|Stack\\\\|Error Message\")",
+      "Bash(\"/c/Program Files/Microsoft Visual Studio/2022/Professional/MSBuild/Current/Bin/MSBuild.exe\" Crystal.slnx -t:Rebuild -p:Configuration=Debug -v:normal -nologo)",
+      "Bash(sed -E 's/.*\\(warning [A-Z]+[0-9]+\\):.*/\\\\1/')",
+      "Bash(echo \"exit: $?\")",
+      "Bash(sed -E 's/.*\\(warning [A-Z]+[0-9]+\\).*/\\\\1/')",
+      "Bash(xargs -I{} sh -c 'echo \"--- {} ---\"; cat \"{}\"')",
+      "Bash(dotnet run *)",
+      "Bash(xargs cat)",
+      "Bash(xargs grep -l \"ISmbiosProcessorProvider\\\\|class SmbiosProcessorProvider\")",
+      "Bash(xargs grep -l \"IWmiHardwareProvider\\\\|class WmiHardwareProvider\")",
+      "Bash(powershell.exe -NoProfile -Command '$a=[System.Reflection.Assembly]::LoadFile\\('\\\\''D:\\\\Crystal\\\\Build\\\\Debug\\\\Crystal.Provider.Telemetry.dll'\\\\''\\); $a.GetManifestResourceNames\\(\\) | Where-Object { $_ -match '\\\\''PawnIo'\\\\'' }')"
     ]
   }
 }

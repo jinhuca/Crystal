@@ -71,7 +71,10 @@ public class PawnIo {
     if (handle.IsInvalid)
       return new PawnIo(null);
 
-    using Stream stream = assembly.GetManifestResourceStream("Crystal." + resourceName);
+    using Stream stream = assembly.GetManifestResourceStream(resourceName);
+    if (stream is null)
+      return new PawnIo(null);
+
     using MemoryStream memory = new();
     stream.CopyTo(memory);
     byte[] bin = memory.ToArray();
