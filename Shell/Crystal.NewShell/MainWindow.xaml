@@ -7,7 +7,7 @@
         xmlns:const="clr-namespace:Crystal.Infrastructure.Constants;assembly=Crystal.Infrastructure.Constants"
         xmlns:local="clr-namespace:Crystal.NewShell"
         mc:Ignorable="d"
-        Title="Crystal" Height="860" Width="1600"
+        Title="Crystal" Height="960" Width="1600"
         Background="Black">
     <Grid>
         <ContentControl prism:RegionManager.RegionName="{x:Static const:RegionNames.MainContentRegionName}"/>

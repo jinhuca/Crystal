@@ -1,3 +1,5 @@
+using System.Collections.ObjectModel;
+using CpuModule.ViewModels;
 using Crystal.Controls.PerformanceGraphs;
 using Crystal.Infrastructure.DataStructures.Cpu.Interfaces;
 
@@ -26,6 +28,10 @@ public interface ICpuSensorViewModel {
   /// unelevated) they stay empty, so this remains false and the view surfaces a notice.
   /// </summary>
   bool MsrSensorsAvailable { get; }
+
+  /// <summary>Per-physical-core load, one entry per core on the first socket. Rows are created
+  /// once (on the first emission that reports cores) and updated in place thereafter.</summary>
+  ObservableCollection<CoreLoadViewModel> CoreLoads { get; }
 
   /// <summary>
   /// Hands the view model the history graphs it should feed on each update. Every graph is

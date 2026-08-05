@@ -1,3 +1,5 @@
+using System.Collections.ObjectModel;
+using CpuModule.ViewModels;
 using CpuModule.ViewModels.Interfaces;
 using Crystal.Controls.PerformanceGraphs;
 using Crystal.Infrastructure.DataStructures.Cpu.Interfaces;
@@ -24,6 +26,8 @@ public sealed class CpuSensorsViewModel : BindableBase, ICpuSensorViewModel {
   public double Power { get => _power; private set => SetProperty(ref _power, value); }
   public double Temperature { get => _temperature; private set => SetProperty(ref _temperature, value); }
   public bool MsrSensorsAvailable { get => _msrSensorsAvailable; private set => SetProperty(ref _msrSensorsAvailable, value); }
+
+  public ObservableCollection<CoreLoadViewModel> CoreLoads { get; } = [];
 
   public void AttachGraphs(PerformanceGraph? utilization = null, PerformanceGraph? voltage = null,
                            PerformanceGraph? clock = null, PerformanceGraph? power = null,
@@ -59,10 +63,23 @@ public sealed class CpuSensorsViewModel : BindableBase, ICpuSensorViewModel {
       MsrSensorsAvailable = true;
     }
 
+    UpdateCoreLoads(socket.Cores);
+
     _utilizationGraph?.AddValue(Load);
     _voltageGraph?.AddValue(Voltage);
     _clockGraph?.AddValue(SpeedGhz);
     _powerGraph?.AddValue(Power);
     _temperatureGraph?.AddValue(Temperature);
+  }
+
+  // Core count is fixed for a given CPU, so the rows are created once (labelled C00, C01, …)
+  // and their Load is updated in place — avoids clearing/rebuilding the bound collection on
+  // every 1-second emission, which would reset selection and churn the visual tree.
+  private void UpdateCoreLoads(IReadOnlyList<ICoreInfo> cores) {
+    for (int i = 0; i < cores.Count; i++) {
+      double load = cores[i].Sensors.Load.Value ?? 0;
+      if (i < CoreLoads.Count) CoreLoads[i].Load = load;
+      else CoreLoads.Add(new CoreLoadViewModel($"C{i:00}") { Load = load });
+    }
   }
 }
