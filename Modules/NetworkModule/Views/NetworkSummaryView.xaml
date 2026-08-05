@@ -10,21 +10,28 @@
              mc:Ignorable="d"
              d:DesignHeight="240" d:DesignWidth="380"
              Background="Transparent" Foreground="White"
-             FontFamily="Segoe UI"
-             ToolTip="Double-click to open the Network detail view">
+             FontFamily="Segoe UI">
   <Border Background="Transparent" MouseLeftButtonDown="OnTileClick">
-    <Grid Margin="14">
+    <Grid Margin="10">
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>
         <RowDefinition Height="Auto"/>
         <RowDefinition Height="*"/>
       </Grid.RowDefinitions>
 
-      <TextBlock Grid.Row="0" Text="Network" Foreground="#3E9BE8" FontSize="20"
-                 FontWeight="SemiBold" Margin="0,0,0,8"/>
+      <!-- Dense header bar: accent tick + title, thin divider rule below -->
+      <Border Grid.Row="0" BorderBrush="#2A2A2A" BorderThickness="0,0,0,1"
+              Padding="0,0,0,4" Margin="0,0,0,6">
+        <StackPanel Orientation="Horizontal">
+          <Border Width="3" Background="#3E9BE8" Margin="0,1,8,1"/>
+          <TextBlock Text="NETWORK" Foreground="#E6E6E6" FontSize="12" FontWeight="SemiBold"
+                     VerticalAlignment="Center"/>
+        </StackPanel>
+      </Border>
 
       <!-- Interface count -->
-      <TextBlock Grid.Row="1" Foreground="#8A94A0" FontSize="12" Margin="0,0,0,8">
+      <TextBlock Grid.Row="1" Foreground="#8A94A0" FontSize="11" FontFamily="Consolas"
+                 Margin="0,0,0,8">
         <Run Text="{Binding Adapters.Count, Mode=OneWay}"/>
         <Run Text="active interface(s)"/>
       </TextBlock>

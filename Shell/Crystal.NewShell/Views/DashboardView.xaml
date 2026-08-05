@@ -10,18 +10,19 @@
              Background="Black" Foreground="White"
              FontFamily="Segoe UI">
   <UserControl.Resources>
+    <!-- HWiNFO-style panel: sharp edges, thin border, tight gutters, dense packing. -->
     <Style x:Key="Tile" TargetType="Border">
       <Setter Property="BorderBrush" Value="#3A3A3A"/>
       <Setter Property="BorderThickness" Value="1"/>
-      <Setter Property="CornerRadius" Value="4"/>
-      <Setter Property="Margin" Value="8"/>
+      <Setter Property="CornerRadius" Value="0"/>
+      <Setter Property="Margin" Value="3"/>
       <Setter Property="Background" Value="#0A0A0A"/>
     </Style>
   </UserControl.Resources>
 
   <!-- Six columns are the common multiple of the row layouts below: row 2 splits into
        three (each spans 2), row 3 into two (each spans 3), row 1 spans all six. -->
-  <Grid Margin="8">
+  <Grid Margin="3">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="*"/>
       <ColumnDefinition Width="*"/>

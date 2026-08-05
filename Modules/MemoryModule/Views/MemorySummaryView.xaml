@@ -10,28 +10,36 @@
              mc:Ignorable="d"
              d:DesignHeight="240" d:DesignWidth="380"
              Background="Transparent" Foreground="White"
-             FontFamily="Segoe UI"
-             ToolTip="Double-click to open the Memory detail view">
+             FontFamily="Segoe UI">
   <Border Background="Transparent" MouseLeftButtonDown="OnTileClick">
-    <Grid Margin="14">
+    <Grid Margin="10">
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>
         <RowDefinition Height="Auto"/>
         <RowDefinition Height="*"/>
       </Grid.RowDefinitions>
 
-      <TextBlock Grid.Row="0" Text="Memory" Foreground="#3E9BE8" FontSize="20"
-                 FontWeight="SemiBold" Margin="0,0,0,8"/>
+      <!-- Dense header bar: accent tick + title, thin divider rule below -->
+      <Border Grid.Row="0" BorderBrush="#2A2A2A" BorderThickness="0,0,0,1"
+              Padding="0,0,0,4" Margin="0,0,0,6">
+        <StackPanel Orientation="Horizontal">
+          <Border Width="3" Background="#3E9BE8" Margin="0,1,8,1"/>
+          <TextBlock Text="MEMORY" Foreground="#E6E6E6" FontSize="12" FontWeight="SemiBold"
+                     VerticalAlignment="Center"/>
+        </StackPanel>
+      </Border>
 
       <!-- Total installed + slots / max speed -->
       <StackPanel Grid.Row="1" Margin="0,0,0,8">
         <TextBlock HorizontalAlignment="Left">
-          <Run Text="{Binding TotalCapacityLabel, Mode=OneWay}" FontSize="24" FontWeight="Light"/>
-          <Run Text=" total" Foreground="#8A94A0" FontSize="12"/>
+          <Run Text="{Binding TotalCapacityLabel, Mode=OneWay}" FontSize="16" FontFamily="Consolas"/>
+          <Run Text=" total" Foreground="#8A94A0" FontSize="11"/>
         </TextBlock>
         <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
-          <TextBlock Text="{Binding SlotsLabel}" Foreground="#8A94A0" FontSize="12" Margin="0,0,14,0"/>
-          <TextBlock Text="{Binding MaxSpeedLabel}" Foreground="#8A94A0" FontSize="12"/>
+          <TextBlock Text="{Binding SlotsLabel}" Foreground="#8A94A0" FontSize="11"
+                     FontFamily="Consolas" Margin="0,0,14,0"/>
+          <TextBlock Text="{Binding MaxSpeedLabel}" Foreground="#8A94A0" FontSize="11"
+                     FontFamily="Consolas"/>
         </StackPanel>
       </StackPanel>
 

@@ -8,35 +8,41 @@
              mc:Ignorable="d"
              d:DesignHeight="140" d:DesignWidth="1100"
              Background="Transparent" Foreground="White"
-             FontFamily="Segoe UI"
-             ToolTip="Double-click to open the BIOS detail view">
+             FontFamily="Segoe UI">
   <Border Background="Transparent" MouseLeftButtonDown="OnTileClick">
-    <Grid Margin="14">
+    <Grid Margin="10">
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>
         <RowDefinition Height="*"/>
       </Grid.RowDefinitions>
 
-      <TextBlock Grid.Row="0" Text="BIOS" Foreground="#3E9BE8" FontSize="20"
-                 FontWeight="SemiBold" Margin="0,0,0,12"/>
+      <!-- Dense header bar: accent tick + title, thin divider rule below -->
+      <Border Grid.Row="0" BorderBrush="#2A2A2A" BorderThickness="0,0,0,1"
+              Padding="0,0,0,4" Margin="0,0,0,8">
+        <StackPanel Orientation="Horizontal">
+          <Border Width="3" Background="#3E9BE8" Margin="0,1,8,1"/>
+          <TextBlock Text="BIOS" Foreground="#E6E6E6" FontSize="12" FontWeight="SemiBold"
+                     VerticalAlignment="Center"/>
+        </StackPanel>
+      </Border>
 
       <!-- Full-width strip: key fields laid out horizontally per the reference design -->
       <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center">
         <StackPanel Margin="0,0,56,0">
-          <TextBlock Text="Manufacturer" Foreground="#8A94A0" FontSize="12"/>
-          <TextBlock Text="{Binding Manufacturer}" FontSize="16"/>
+          <TextBlock Text="Manufacturer" Foreground="#8A94A0" FontSize="11"/>
+          <TextBlock Text="{Binding Manufacturer}" FontSize="13" FontFamily="Consolas"/>
         </StackPanel>
         <StackPanel Margin="0,0,56,0">
-          <TextBlock Text="Version" Foreground="#8A94A0" FontSize="12"/>
-          <TextBlock Text="{Binding Version}" FontSize="16"/>
+          <TextBlock Text="Version" Foreground="#8A94A0" FontSize="11"/>
+          <TextBlock Text="{Binding Version}" FontSize="13" FontFamily="Consolas"/>
         </StackPanel>
         <StackPanel Margin="0,0,56,0">
-          <TextBlock Text="Release date" Foreground="#8A94A0" FontSize="12"/>
-          <TextBlock Text="{Binding ReleaseDate}" FontSize="16"/>
+          <TextBlock Text="Release date" Foreground="#8A94A0" FontSize="11"/>
+          <TextBlock Text="{Binding ReleaseDate}" FontSize="13" FontFamily="Consolas"/>
         </StackPanel>
         <StackPanel>
-          <TextBlock Text="SMBIOS" Foreground="#8A94A0" FontSize="12"/>
-          <TextBlock Text="{Binding SmbiosSpecVersion}" FontSize="16"/>
+          <TextBlock Text="SMBIOS" Foreground="#8A94A0" FontSize="11"/>
+          <TextBlock Text="{Binding SmbiosSpecVersion}" FontSize="13" FontFamily="Consolas"/>
         </StackPanel>
       </StackPanel>
     </Grid>

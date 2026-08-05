@@ -6,28 +6,34 @@
              xmlns:prism="http://prismlibrary.com/"
              xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs.Controls;assembly=Crystal.Controls"
              xmlns:gauges="clr-namespace:Crystal.Controls.MeterGauges.Controls;assembly=Crystal.Controls"
+             xmlns:local="clr-namespace:CpuModule.Views"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
              d:DesignHeight="240" d:DesignWidth="760"
              Background="Transparent" Foreground="White"
-             FontFamily="Segoe UI"
-             ToolTip="Double-click to open the CPU detail view">
+             FontFamily="Segoe UI">
+  <UserControl.Resources>
+    <local:LoadToBrushConverter x:Key="LoadToBrush"/>
+  </UserControl.Resources>
   <Border Background="Transparent" MouseLeftButtonDown="OnTileClick">
-    <Grid Margin="14">
+    <Grid Margin="10">
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>
         <RowDefinition Height="*"/>
         <RowDefinition Height="Auto"/>
       </Grid.RowDefinitions>
 
-      <!-- Header: title + brand -->
-      <StackPanel Grid.Row="0" Orientation="Horizontal">
-        <TextBlock Text="CPU" Foreground="#3E9BE8" FontSize="20" FontWeight="SemiBold"
-                   VerticalAlignment="Center" Margin="0,0,16,0"/>
-        <TextBlock DataContext="{Binding SpecsViewModel}" Text="{Binding Brand}"
-                   Foreground="#DDDDDD" FontSize="13" VerticalAlignment="Center"
-                   TextTrimming="CharacterEllipsis"/>
-      </StackPanel>
+      <!-- Dense header bar: accent tick + title + inline detail, thin divider rule below -->
+      <Border Grid.Row="0" BorderBrush="#2A2A2A" BorderThickness="0,0,0,1" Padding="0,0,0,4">
+        <StackPanel Orientation="Horizontal">
+          <Border Width="3" Background="#3E9BE8" Margin="0,1,8,1"/>
+          <TextBlock Text="CPU" Foreground="#E6E6E6" FontSize="12" FontWeight="SemiBold"
+                     VerticalAlignment="Center" Margin="0,0,12,0"/>
+          <TextBlock DataContext="{Binding SpecsViewModel}" Text="{Binding Brand}"
+                     Foreground="#8A94A0" FontSize="11" FontFamily="Consolas"
+                     VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+        </StackPanel>
+      </Border>
 
       <!-- Value gauge + load percentage graph + per-core load list -->
       <Grid Grid.Row="1" DataContext="{Binding SensorsViewModel}" Margin="0,8">
@@ -64,14 +70,16 @@
                     <ColumnDefinition Width="56"/>
                     <ColumnDefinition Width="*"/>
                   </Grid.ColumnDefinitions>
-                  <TextBlock Grid.Column="0" Text="{Binding Label}" Foreground="#DDDDDD"
+                  <TextBlock Grid.Column="0" Text="{Binding Label}" Foreground="#8A94A0"
                              FontSize="11" FontFamily="Consolas" VerticalAlignment="Center"/>
                   <TextBlock Grid.Column="1" Text="{Binding Load, StringFormat={}{0:0.00}%}"
-                             Foreground="#3BD15A" FontSize="11" FontFamily="Consolas"
+                             Foreground="{Binding Load, Converter={StaticResource LoadToBrush}}"
+                             FontSize="11" FontFamily="Consolas"
                              TextAlignment="Right" Margin="0,0,8,0" VerticalAlignment="Center"/>
                   <ProgressBar Grid.Column="2" Minimum="0" Maximum="100" Value="{Binding Load}"
                                Height="9" VerticalAlignment="Center"
-                               Background="#1A1A1A" BorderBrush="#3A3A3A" Foreground="#E82A7A"/>
+                               Background="#1A1A1A" BorderBrush="#3A3A3A"
+                               Foreground="{Binding Load, Converter={StaticResource LoadToBrush}}"/>
                 </Grid>
               </DataTemplate>
             </ItemsControl.ItemTemplate>
@@ -81,7 +89,7 @@
 
       <!-- Instruction feature hint -->
       <TextBlock Grid.Row="2" DataContext="{Binding SpecsViewModel}"
-                 Foreground="#9AA0A6" FontSize="12"
+                 Foreground="#8A94A0" FontSize="11" FontFamily="Consolas"
                  Text="{Binding LogicalCores, StringFormat=Instruction Feature · {0} logical cores}"/>
     </Grid>
   </Border>

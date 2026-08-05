@@ -1,4 +1,7 @@
+using System;
+using System.Threading;
 using System.Windows;
+using System.Windows.Threading;
 using Crystal.Infrastructure.Constants;
 using Crystal.NewShell.Navigation;
 using Crystal.NewShell.Startup;
@@ -14,6 +17,59 @@ namespace Crystal.NewShell;
 /// view for navigation.
 /// </summary>
 public partial class App : PrismApplication {
+  // Machine-unique names. The app opens ring-0 MSR/driver sessions (PawnIO, the LHM fork), so a
+  // second instance would contend for the same hardware handles and double the polling load —
+  // instead, a second launch signals the running instance to surface itself, then exits.
+  private const string InstanceMutexName = @"Local\Crystal.NewShell.SingleInstance";
+  private const string ActivateEventName = @"Local\Crystal.NewShell.Activate";
+
+  private Mutex? _instanceMutex;
+  private EventWaitHandle? _activateSignal;
+  private RegisteredWaitHandle? _activateRegistration;
+
+  protected override void OnStartup(StartupEventArgs e) {
+    _instanceMutex = new Mutex(initiallyOwned: true, InstanceMutexName, out bool isFirstInstance);
+
+    // The activate signal exists whether we are first or second: the first instance waits on it;
+    // a second instance sets it to ask the first to come forward.
+    _activateSignal = new EventWaitHandle(false, EventResetMode.AutoReset, ActivateEventName);
+
+    if (!isFirstInstance) {
+      // Another instance already owns the mutex — wake it and quit before Prism initializes
+      // (base.OnStartup is what opens the container and hardware sessions).
+      _activateSignal.Set();
+      Shutdown();
+      return;
+    }
+
+    // First instance: register a background waiter that brings the main window forward whenever
+    // a later launch signals. ThreadPool.RegisterWaitForSingleObject fires on a pool thread, so
+    // marshal back onto the UI dispatcher before touching windows.
+    _activateRegistration = ThreadPool.RegisterWaitForSingleObject(
+        _activateSignal, (_, _) => Dispatcher.BeginInvoke(ActivateMainWindow),
+        state: null, millisecondsTimeOutInterval: Timeout.Infinite, executeOnlyOnce: false);
+
+    base.OnStartup(e);
+  }
+
+  private void ActivateMainWindow() {
+    if (MainWindow is not { } window) return;
+    if (window.WindowState == WindowState.Minimized) window.WindowState = WindowState.Normal;
+    window.Show();
+    window.Activate();
+    // Momentary Topmost flip forces the window to the foreground even when the caller isn't the
+    // foreground process (Windows otherwise only flashes the taskbar button).
+    window.Topmost = true;
+    window.Topmost = false;
+  }
+
+  protected override void OnExit(ExitEventArgs e) {
+    _activateRegistration?.Unregister(null);
+    _activateSignal?.Dispose();
+    _instanceMutex?.Dispose();
+    base.OnExit(e);
+  }
+
   protected override Window CreateShell() => Container.Resolve<MainWindow>();
 
   protected override void RegisterTypes(IContainerRegistry containerRegistry) {
@@ -21,9 +77,16 @@ public partial class App : PrismApplication {
     // NavigationController can swap back to it from any detail view.
     containerRegistry.RegisterForNavigation<DashboardView>();
 
-    // Long-lived: subscribes to weakly-referenced navigation events, so it must not be
-    // collected. Resolved eagerly in OnInitialized.
+    // Long-lived: resolved eagerly in OnInitialized.
     containerRegistry.RegisterSingleton<NavigationController>();
+
+    // Persists detail-window placement (position/size/pin) across sessions; shared by the
+    // window service.
+    containerRegistry.RegisterSingleton<WindowLayoutStore>();
+
+    // Long-lived: subscribes to weakly-referenced navigation events (ShowDetail/ShowDashboard),
+    // so it must not be collected. Resolved eagerly in OnInitialized.
+    containerRegistry.RegisterSingleton<DetailWindowService>();
 
     // System-wide sensor stream shared by every module that subscribes. SensorMonitor owns the
     // polling lifetime and the hardware session, so it must be a singleton. Built via a factory:
@@ -67,5 +130,12 @@ public partial class App : PrismApplication {
     // Warmed and back on the UI thread: swap the overlay for the dashboard.
     regionManager.Regions[RegionNames.MainContentRegionName].Remove(loadingView);
     Container.Resolve<NavigationController>().NavigateToDashboard();
+
+    // Eagerly resolve so it starts listening for detail-open requests: it holds only weak
+    // event references and would otherwise be collected before any tile is clicked.
+    var detailWindows = Container.Resolve<DetailWindowService>();
+
+    // Reopen whatever detail windows were open when the app last exited.
+    detailWindows.RestoreSession();
   }
 }
