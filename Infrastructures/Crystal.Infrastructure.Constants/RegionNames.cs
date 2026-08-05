@@ -10,6 +10,7 @@ public static class RegionNames {
   public static string StorageRegionName { get; set; } = "StorageRegion";
   public static string BiosRegionName { get; set; } = "BiosRegion";
   public static string NetworkSummaryRegionName { get; set; } = "NetworkSummaryRegion";
+  public static string ProcessesRegionName { get; set; } = "ProcessesRegion";
   public static string StatisticsRegionName { get; set; } = "StatisticsRegion";
   public static string MainContentRegionName { get; set; } = "MainContentRegion";
 }

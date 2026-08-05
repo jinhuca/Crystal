@@ -20,10 +20,16 @@
     </Style>
   </UserControl.Resources>
 
-  <!-- Six columns are the common multiple of the row layouts below: row 2 splits into
-       three (each spans 2), row 3 into two (each spans 3), row 1 spans all six. -->
+  <!-- Twelve columns are the common multiple of the row layouts below: row 1 splits in two
+       (each spans 6), row 2 into four (each spans 3), row 3 spans all twelve. -->
   <Grid Margin="3">
     <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="*"/>
       <ColumnDefinition Width="*"/>
       <ColumnDefinition Width="*"/>
       <ColumnDefinition Width="*"/>
@@ -34,31 +40,34 @@
     <Grid.RowDefinitions>
       <RowDefinition Height="*"/>
       <RowDefinition Height="*"/>
-      <RowDefinition Height="*"/>
+      <RowDefinition Height="1.4*"/>
     </Grid.RowDefinitions>
 
-    <!-- Row 1: CPU, full width -->
+    <!-- Row 1: CPU, GPU -->
     <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6" Style="{StaticResource Tile}">
       <ContentControl prism:RegionManager.RegionName="{x:Static const:RegionNames.CpuRegionName}"/>
     </Border>
-
-    <!-- Row 2: GPU, Memory, Storage -->
-    <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource Tile}">
+    <Border Grid.Row="0" Grid.Column="6" Grid.ColumnSpan="6" Style="{StaticResource Tile}">
       <ContentControl prism:RegionManager.RegionName="{x:Static const:RegionNames.GpuSummaryRegionName}"/>
     </Border>
-    <Border Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Style="{StaticResource Tile}">
+
+    <!-- Row 2: Memory, Storage, Network, BIOS -->
+    <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource Tile}">
       <ContentControl prism:RegionManager.RegionName="{x:Static const:RegionNames.MemoryRegionName}"/>
     </Border>
-    <Border Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="2" Style="{StaticResource Tile}">
+    <Border Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="3" Style="{StaticResource Tile}">
       <ContentControl prism:RegionManager.RegionName="{x:Static const:RegionNames.StorageRegionName}"/>
     </Border>
-
-    <!-- Row 3: Network, BIOS -->
-    <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource Tile}">
+    <Border Grid.Row="1" Grid.Column="6" Grid.ColumnSpan="3" Style="{StaticResource Tile}">
       <ContentControl prism:RegionManager.RegionName="{x:Static const:RegionNames.NetworkSummaryRegionName}"/>
     </Border>
-    <Border Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="3" Style="{StaticResource Tile}">
+    <Border Grid.Row="1" Grid.Column="9" Grid.ColumnSpan="3" Style="{StaticResource Tile}">
       <ContentControl prism:RegionManager.RegionName="{x:Static const:RegionNames.BiosRegionName}"/>
+    </Border>
+
+    <!-- Row 3: Processes, full width -->
+    <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="12" Style="{StaticResource Tile}">
+      <ContentControl prism:RegionManager.RegionName="{x:Static const:RegionNames.ProcessesRegionName}"/>
     </Border>
   </Grid>
 </UserControl>

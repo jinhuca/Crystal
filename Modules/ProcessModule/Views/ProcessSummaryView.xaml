@@ -1,0 +1,142 @@
+<UserControl x:Class="ProcessModule.Views.ProcessSummaryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:local="clr-namespace:ProcessModule.Views"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             mc:Ignorable="d"
+             d:DesignHeight="360" d:DesignWidth="1400"
+             Background="Transparent" Foreground="White"
+             FontFamily="Segoe UI">
+  <UserControl.Resources>
+    <local:ByteRateConverter x:Key="ByteRate"/>
+    <local:NullablePercentConverter x:Key="NullablePercent"/>
+    <local:LoadToBrushConverter x:Key="LoadToBrush"/>
+
+    <!-- Dense, sharp-edged column header matching the HWiNFO tile styling. -->
+    <Style x:Key="HeaderStyle" TargetType="GridViewColumnHeader">
+      <Setter Property="HorizontalContentAlignment" Value="Left"/>
+      <Setter Property="Padding" Value="8,3,8,3"/>
+      <Setter Property="Background" Value="#141414"/>
+      <Setter Property="Foreground" Value="#8A94A0"/>
+      <Setter Property="BorderBrush" Value="#2A2A2A"/>
+      <Setter Property="BorderThickness" Value="0,0,1,1"/>
+      <Setter Property="FontSize" Value="11"/>
+      <Setter Property="FontWeight" Value="SemiBold"/>
+    </Style>
+
+    <!-- Flat, tight rows; no rounded selection highlight. -->
+    <Style x:Key="RowStyle" TargetType="ListViewItem">
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="Foreground" Value="#DDDDDD"/>
+      <Setter Property="Padding" Value="0"/>
+      <Setter Property="BorderThickness" Value="0"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="ListViewItem">
+            <Border x:Name="Bd" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+              <GridViewRowPresenter VerticalAlignment="Center"/>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsSelected" Value="True">
+                <Setter TargetName="Bd" Property="Background" Value="#1E3A52"/>
+              </Trigger>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="Bd" Property="Background" Value="#161616"/>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+  </UserControl.Resources>
+
+  <Grid Margin="10">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+
+    <!-- Dense header bar: accent tick + title, thin divider rule below -->
+    <Border Grid.Row="0" BorderBrush="#2A2A2A" BorderThickness="0,0,0,1"
+            Padding="0,0,0,4" Margin="0,0,0,6">
+      <StackPanel Orientation="Horizontal">
+        <Border Width="3" Background="#3E9BE8" Margin="0,1,8,1"/>
+        <TextBlock Text="PROCESSES" Foreground="#E6E6E6" FontSize="12" FontWeight="SemiBold"
+                   VerticalAlignment="Center" Margin="0,0,12,0"/>
+        <TextBlock Text="{Binding Rows.Count, StringFormat={}{0} active}"
+                   Foreground="#8A94A0" FontSize="11" FontFamily="Consolas"
+                   VerticalAlignment="Center"/>
+      </StackPanel>
+    </Border>
+
+    <ListView Grid.Row="1" ItemsSource="{Binding Rows}"
+              Background="Transparent" BorderThickness="0" Foreground="#DDDDDD"
+              ItemContainerStyle="{StaticResource RowStyle}"
+              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+              VirtualizingPanel.IsVirtualizing="True"
+              VirtualizingPanel.VirtualizationMode="Recycling">
+      <ListView.View>
+        <GridView ColumnHeaderContainerStyle="{StaticResource HeaderStyle}">
+          <GridViewColumn Header="Name" Width="320">
+            <GridViewColumn.CellTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding Name}" Foreground="#DDDDDD"
+                           FontFamily="Consolas" FontSize="11" Margin="8,2"
+                           TextTrimming="CharacterEllipsis"/>
+              </DataTemplate>
+            </GridViewColumn.CellTemplate>
+          </GridViewColumn>
+          <GridViewColumn Header="CPU" Width="110">
+            <GridViewColumn.CellTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding CpuPercent, StringFormat={}{0:0.0}%}"
+                           Foreground="{Binding CpuPercent, Converter={StaticResource LoadToBrush}}"
+                           FontFamily="Consolas" FontSize="11" Margin="8,2"
+                           TextAlignment="Right"/>
+              </DataTemplate>
+            </GridViewColumn.CellTemplate>
+          </GridViewColumn>
+          <GridViewColumn Header="GPU" Width="110">
+            <GridViewColumn.CellTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding GpuPercent, Converter={StaticResource NullablePercent}}"
+                           Foreground="#C8C8C8" FontFamily="Consolas" FontSize="11"
+                           Margin="8,2" TextAlignment="Right"/>
+              </DataTemplate>
+            </GridViewColumn.CellTemplate>
+          </GridViewColumn>
+          <GridViewColumn Header="Memory" Width="130">
+            <GridViewColumn.CellTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding WorkingSetMb, StringFormat={}{0:0} MB}"
+                           Foreground="#C8C8C8" FontFamily="Consolas" FontSize="11"
+                           Margin="8,2" TextAlignment="Right"/>
+              </DataTemplate>
+            </GridViewColumn.CellTemplate>
+          </GridViewColumn>
+          <GridViewColumn Header="Disk" Width="130">
+            <GridViewColumn.CellTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding DiskBytesPerSec, Converter={StaticResource ByteRate}}"
+                           Foreground="#C8C8C8" FontFamily="Consolas" FontSize="11"
+                           Margin="8,2" TextAlignment="Right"/>
+              </DataTemplate>
+            </GridViewColumn.CellTemplate>
+          </GridViewColumn>
+          <GridViewColumn Header="Network" Width="130">
+            <GridViewColumn.CellTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding NetBytesPerSec, Converter={StaticResource ByteRate}}"
+                           Foreground="#C8C8C8" FontFamily="Consolas" FontSize="11"
+                           Margin="8,2" TextAlignment="Right"/>
+              </DataTemplate>
+            </GridViewColumn.CellTemplate>
+          </GridViewColumn>
+        </GridView>
+      </ListView.View>
+    </ListView>
+  </Grid>
+</UserControl>

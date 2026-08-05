@@ -4,6 +4,7 @@ using Crystal.Service.Sensors;
 using GpuModule.Models;
 using MemoryModule.Models;
 using NetworkModule.Models;
+using ProcessModule.Models;
 using StorageModule.Models;
 
 namespace Crystal.NewShell.Startup;
@@ -35,6 +36,7 @@ public sealed class StartupLoader {
     ("Storage", () => _container.Resolve<IStorageModel>()),
     ("Network", () => _container.Resolve<INetworkModel>()),
     ("BIOS", () => _container.Resolve<IBiosModel>()),
+    ("Processes", () => _container.Resolve<IProcessModel>()),
   };
 
   /// <summary>Names of the components to warm, in load order — used to seed the loading checklist.</summary>

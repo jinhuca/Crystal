@@ -17,10 +17,12 @@
     <Project Path="Modules/MemoryModule/MemoryModule.csproj" />
     <Project Path="Modules/StorageModule/StorageModule.csproj" />
     <Project Path="Modules/NetworkModule/NetworkModule.csproj" />
+    <Project Path="Modules/ProcessModule/ProcessModule.csproj" />
     <Project Path="Modules/ResourceModule/ResourceModule.csproj" />
   </Folder>
   <Folder Name="/Providers/">
     <Project Path="Providers/Crystal.Provider.CpuId/Crystal.Provider.CpuId.csproj" />
+    <Project Path="Providers/Crystal.Provider.Etw/Crystal.Provider.Etw.csproj" />
     <Project Path="Providers/Crystal.Provider.Mmi/Crystal.Provider.Mmi.csproj" />
     <Project Path="Providers/Crystal.Provider.PInvokes/Crystal.Provider.PInvokes.vcxproj" Id="33754478-e016-4dbb-9eab-656ee14abb50" />
     <Project Path="Providers/Crystal.Provider.Smbios/Crystal.Provider.Smbios.csproj" />

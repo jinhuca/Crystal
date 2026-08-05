@@ -106,6 +106,7 @@ public partial class App : PrismApplication {
     moduleCatalog.AddModule<StorageModule.StorageModule>();
     moduleCatalog.AddModule<BiosModule.BiosModule>();
     moduleCatalog.AddModule<NetworkModule.NetworkModule>();
+    moduleCatalog.AddModule<ProcessModule.ProcessModule>();
   }
 
   protected override async void OnInitialized() {

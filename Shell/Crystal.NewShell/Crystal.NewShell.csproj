@@ -16,6 +16,9 @@
     <SelfContained>false</SelfContained>
     <!-- Ensure the build always uses RID-specific assets even when no -r is passed -->
     <UseRidGraph>true</UseRidGraph>
+    <!-- Force a single UAC prompt at launch: the Processes tile's kernel ETW session and the ring-0
+         MSR sensors both need administrator rights. See app.manifest for the rationale. -->
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
   <ItemGroup>
@@ -32,6 +35,7 @@
     <ProjectReference Include="..\..\Modules\StorageModule\StorageModule.csproj" />
     <ProjectReference Include="..\..\Modules\BiosModule\BiosModule.csproj" />
     <ProjectReference Include="..\..\Modules\NetworkModule\NetworkModule.csproj" />
+    <ProjectReference Include="..\..\Modules\ProcessModule\ProcessModule.csproj" />
     <ProjectReference Include="..\..\Infrastructures\Crystal.Infrastructure.Constants\Crystal.Infrastructure.Constants.csproj" />
     <ProjectReference Include="..\..\Services\Crystal.Service.Sensors\Crystal.Service.Sensors.csproj" />
   </ItemGroup>
