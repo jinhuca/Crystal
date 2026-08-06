@@ -70,7 +70,7 @@ public partial class App : PrismApplication {
     base.OnExit(e);
   }
 
-  protected override Window CreateShell() => Container.Resolve<MainWindow>();
+  protected override Window CreateShell() => Container.Resolve<Shell>();
 
   protected override void RegisterTypes(IContainerRegistry containerRegistry) {
     // The dashboard is the shell's default content; register it for navigation so the

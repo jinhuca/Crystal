@@ -4,9 +4,9 @@ using Crystal.Shell.Navigation;
 
 namespace Crystal.Shell;
 /// <summary>
-/// Interaction logic for MainWindow.xaml
+/// Interaction logic for Shell.xaml
 /// </summary>
-public partial class MainWindow : Window {
+public partial class Shell : Window {
   // Segoe MDL2 Assets glyphs for the maximize (E922) and restore (E923) states.
   private const string MaximizeGlyph = "";
   private const string RestoreGlyph = "";
@@ -20,7 +20,7 @@ public partial class MainWindow : Window {
 
   private readonly WindowLayoutStore _layouts;
 
-  public MainWindow(WindowLayoutStore layouts) {
+  public Shell(WindowLayoutStore layouts) {
     _layouts = layouts;
     InitializeComponent();
     RestorePlacement();

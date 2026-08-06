@@ -72,5 +72,17 @@
       <Platform Solution="*|x64" Project="x64" />
       <Platform Solution="*|x86" Project="x86" />
     </Project>
+    <Project Path="UnitTests/Crystal.Infrastructure.Converters.Tests/Crystal.Infrastructure.Converters.Tests.csproj" />
+    <Project Path="UnitTests/Crystal.WpfConverters.Tests/Crystal.WpfConverters.Tests.csproj" />
+    <Project Path="UnitTests/Crystal.Infrastructure.DataStructures.Tests/Crystal.Infrastructure.DataStructures.Tests.csproj">
+      <Platform Solution="*|Any CPU" Project="x64" />
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
+    <Project Path="UnitTests/Crystal.Service.Cpu.Tests/Crystal.Service.Cpu.Tests.csproj">
+      <Platform Solution="*|Any CPU" Project="x64" />
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
   </Folder>
 </Solution>
