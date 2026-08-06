@@ -1,0 +1,71 @@
+<UserControl x:Class="GpuModule.Views.GpuSummaryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs.Controls;assembly=Crystal.Controls"
+             xmlns:gauges="clr-namespace:Crystal.Controls.MeterGauges.Controls;assembly=Crystal.Controls"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             mc:Ignorable="d"
+             d:DesignHeight="240" d:DesignWidth="760"
+             Background="Transparent" Foreground="White"
+             FontFamily="Segoe UI">
+  <Border Background="Transparent" MouseLeftButtonDown="OnTileClick">
+    <Grid Margin="10">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="*"/>
+      </Grid.RowDefinitions>
+
+      <!-- Dense header bar: accent tick + title, thin divider rule below -->
+      <Border Grid.Row="0" BorderBrush="#2A2A2A" BorderThickness="0,0,0,1"
+              Padding="0,0,0,4" Margin="0,0,0,6">
+        <StackPanel Orientation="Horizontal">
+          <Border Width="3" Background="#3E9BE8" Margin="0,1,8,1"/>
+          <TextBlock Text="GPU" Foreground="#E6E6E6" FontSize="12" FontWeight="SemiBold"
+                     VerticalAlignment="Center"/>
+        </StackPanel>
+      </Border>
+
+      <!-- One column per adapter: label, load value gauge, load-percentage graph -->
+      <ItemsControl Grid.Row="1" ItemsSource="{Binding Adapters}">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate>
+            <UniformGrid Rows="1"/>
+          </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <Grid Margin="4,0">
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+              </Grid.RowDefinitions>
+              <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,4">
+                <TextBlock Text="{Binding KindLabel}" Foreground="#C8C8C8"
+                           FontSize="12" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <TextBlock Text="{Binding Name}" Foreground="#DDDDDD" FontSize="13"
+                           VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+              </StackPanel>
+              <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="86"/>
+                  <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <gauges:MeterGaugeView Grid.Column="0" Title="Load" Unit="%"
+                                       MinValue="0" MaxValue="100" ValueFormat="{}{0:0}"
+                                       Value="{Binding Load}"/>
+                <graphs:PerformanceGraphView Grid.Column="1" Margin="6,0"
+                                             Loaded="OnGraphLoaded"
+                                             Title="Load Percentage" MinValue="0" MaxValue="100"
+                                             MaxValueFormat="{}{0}%" MaxTime="60"
+                                             MaxTimeFormat="{}{0}s" MinTime="0"/>
+              </Grid>
+            </Grid>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </Grid>
+  </Border>
+</UserControl>

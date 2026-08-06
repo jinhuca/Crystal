@@ -4,39 +4,73 @@ using NetworkModule.Models;
 namespace NetworkModule.ViewModels;
 
 /// <summary>
-/// One network interface in the detail view: its name plus live utilization and throughput, with
-/// a history graph. The graph is a ring buffer owned by <see cref="PerformanceGraph"/>, so the
-/// view hands the instance in via <see cref="AttachGraph"/> and the VM pushes samples into it.
+/// One network interface in the detail view: its name plus live download/upload throughput, each
+/// with its own history graph. The graphs are ring buffers owned by <see cref="PerformanceGraph"/>,
+/// so the view hands each instance in via the Attach methods and the VM pushes samples into them.
+/// Graph samples and scale are kept in KiB/s; the large text labels adapt their own units.
 /// </summary>
 public sealed class NetworkAdapterViewModel : BindableBase {
+  // Idle interfaces would otherwise auto-scale to a flat line; keep a small floor so the graph
+  // has a sane baseline, and let a decaying peak drive the scale up when traffic picks up.
+  private const double MinScaleKib = 64;
+  private const double PeakDecay = 0.9;
+
   private string _name = "—";
-  private double _load;
   private string _uploadLabel = "—";
   private string _downloadLabel = "—";
+  private double _downloadScaleMax = MinScaleKib;
+  private double _uploadScaleMax = MinScaleKib;
 
-  private PerformanceGraph? _loadGraph;
+  private PerformanceGraph? _downloadGraph;
+  private PerformanceGraph? _uploadGraph;
+  private double _downloadPeakKib;
+  private double _uploadPeakKib;
 
   public string Name { get => _name; private set => SetProperty(ref _name, value); }
-  public double Load { get => _load; private set => SetProperty(ref _load, value); }
   public string UploadLabel { get => _uploadLabel; private set => SetProperty(ref _uploadLabel, value); }
   public string DownloadLabel { get => _downloadLabel; private set => SetProperty(ref _downloadLabel, value); }
 
-  public void AttachGraph(PerformanceGraph graph) => _loadGraph = graph;
+  /// <summary>Top of the download graph's KiB/s scale (auto-scaled to a decaying peak).</summary>
+  public double DownloadScaleMax { get => _downloadScaleMax; private set => SetProperty(ref _downloadScaleMax, value); }
 
-  /// <summary>Pushes a fresh reading into the values and the history graph.</summary>
+  /// <summary>Top of the upload graph's KiB/s scale (auto-scaled to a decaying peak).</summary>
+  public double UploadScaleMax { get => _uploadScaleMax; private set => SetProperty(ref _uploadScaleMax, value); }
+
+  public void AttachDownloadGraph(PerformanceGraph graph) => _downloadGraph = graph;
+  public void AttachUploadGraph(PerformanceGraph graph) => _uploadGraph = graph;
+
+  /// <summary>Pushes a fresh reading into the labels and the two history graphs.</summary>
   public void Update(NetworkInterfaceReading reading) {
     Name = reading.Name;
-    Load = reading.UtilizationPercent;
-    UploadLabel = FormatSpeed(reading.UploadBytesPerSecond);
     DownloadLabel = FormatSpeed(reading.DownloadBytesPerSecond);
-    _loadGraph?.AddValue(reading.UtilizationPercent);
+    UploadLabel = FormatSpeed(reading.UploadBytesPerSecond);
+
+    var downloadKib = reading.DownloadBytesPerSecond / 1024d;
+    var uploadKib = reading.UploadBytesPerSecond / 1024d;
+
+    _downloadPeakKib = Math.Max(downloadKib, _downloadPeakKib * PeakDecay);
+    _uploadPeakKib = Math.Max(uploadKib, _uploadPeakKib * PeakDecay);
+    DownloadScaleMax = NiceScale(_downloadPeakKib);
+    UploadScaleMax = NiceScale(_uploadPeakKib);
+
+    _downloadGraph?.AddValue(downloadKib);
+    _uploadGraph?.AddValue(uploadKib);
+  }
+
+  // Round the peak up to a "nice" 1/2/5·10ⁿ value so the scale label stays readable and the plot
+  // doesn't jitter its ceiling on every sample.
+  private static double NiceScale(double kib) {
+    if (kib <= MinScaleKib) return MinScaleKib;
+    var magnitude = Math.Pow(10, Math.Floor(Math.Log10(kib)));
+    var normalized = kib / magnitude;
+    var nice = normalized <= 1 ? 1 : normalized <= 2 ? 2 : normalized <= 5 ? 5 : 10;
+    return nice * magnitude;
   }
 
   private static string FormatSpeed(double bytesPerSecond) {
-    var bits = bytesPerSecond * 8;
-    if (bits >= 1_000_000_000) return $"{bits / 1_000_000_000:0.0} Gbps";
-    if (bits >= 1_000_000) return $"{bits / 1_000_000:0.0} Mbps";
-    if (bits >= 1_000) return $"{bits / 1_000:0.0} Kbps";
-    return $"{bits:0} bps";
+    if (bytesPerSecond >= 1024d * 1024 * 1024) return $"{bytesPerSecond / (1024d * 1024 * 1024):0.00} GiB/s";
+    if (bytesPerSecond >= 1024d * 1024) return $"{bytesPerSecond / (1024d * 1024):0.00} MiB/s";
+    if (bytesPerSecond >= 1024d) return $"{bytesPerSecond / 1024d:0.00} KiB/s";
+    return $"{bytesPerSecond:0} B/s";
   }
 }

@@ -4,8 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:prism="http://prismlibrary.com/"
-             xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs.Controls;assembly=Crystal.Controls"
-             xmlns:gauges="clr-namespace:Crystal.Controls.MeterGauges.Controls;assembly=Crystal.Controls"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
              d:DesignHeight="240" d:DesignWidth="380"
@@ -36,21 +34,24 @@
         <Run Text="active interface(s)"/>
       </TextBlock>
 
-      <!-- Live utilization: gauge + load-percentage graph -->
-      <Grid Grid.Row="2">
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="110"/>
-          <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <gauges:MeterGaugeView Grid.Column="0" Title="Utilization" Unit="%"
-                               MinValue="0" MaxValue="100" ValueFormat="{}{0:0}"
-                               Value="{Binding Load}"/>
-        <graphs:PerformanceGraphView x:Name="UtilizationView" Grid.Column="1" Margin="8,0"
-                                     Loaded="OnGraphLoaded"
-                                     Title="Utilization Percentage" MinValue="0" MaxValue="100"
-                                     MaxValueFormat="{}{0}%" MaxTime="60"
-                                     MaxTimeFormat="{}{0}s" MinTime="0"/>
-      </Grid>
+      <!-- Live throughput: download over upload -->
+      <StackPanel Grid.Row="2" VerticalAlignment="Center">
+        <TextBlock Text="download" Foreground="#8A94A0" FontSize="12" FontFamily="Consolas"
+                   Margin="0,0,0,2"/>
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+          <TextBlock Text="&#x25BC;" Foreground="#3BD15A" FontSize="16"
+                     VerticalAlignment="Center" Margin="0,0,8,0"/>
+          <TextBlock Text="{Binding DownloadLabel}" Foreground="#E6E6E6" FontSize="18"
+                     FontFamily="Consolas" VerticalAlignment="Center"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
+          <TextBlock Text="&#x25B2;" Foreground="#E89B2A" FontSize="16"
+                     VerticalAlignment="Center" Margin="0,0,8,0"/>
+          <TextBlock Text="{Binding UploadLabel}" Foreground="#E6E6E6" FontSize="18"
+                     FontFamily="Consolas" VerticalAlignment="Center"/>
+        </StackPanel>
+        <TextBlock Text="upload" Foreground="#8A94A0" FontSize="12" FontFamily="Consolas"/>
+      </StackPanel>
     </Grid>
   </Border>
 </UserControl>

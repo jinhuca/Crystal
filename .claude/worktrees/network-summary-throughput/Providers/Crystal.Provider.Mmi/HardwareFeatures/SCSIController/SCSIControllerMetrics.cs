@@ -1,0 +1,35 @@
+namespace Crystal.Provider.Mmi.HardwareFeatures.SCSIController;
+
+public record SCSIControllerMetrics(
+  ushort? Availability,
+  string? Caption,
+  uint? ConfigManagerErrorCode,
+  bool? ConfigManagerUserConfig,
+  uint? ControllerTimeouts,
+  string? CreationClassName,
+  string? Description,
+  string? DeviceID,
+  string? DeviceMap,          // deprecated
+  string? DriverName,
+  bool? ErrorCleared,
+  string? ErrorDescription,
+  string? HardwareVersion,
+  uint? Index,
+  DateTime? InstallDate,
+  uint? LastErrorCode,
+  string? Manufacturer,
+  uint? MaxDataWidth,
+  uint? MaxNumberControlled,
+  ulong? MaxTransferRate,
+  string? Name,
+  string? PNPDeviceID,
+  ushort[]? PowerManagementCapabilities,
+  bool? PowerManagementSupported,
+  ushort? ProtectionManagement,
+  ushort? ProtocolSupported,
+  string? Status,
+  ushort? StatusInfo,
+  string? SystemCreationClassName,
+  string? SystemName,
+  DateTime? TimeOfLastReset
+);

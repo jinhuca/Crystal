@@ -1,7 +1,6 @@
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
-using Crystal.Controls.PerformanceGraphs;
 using Crystal.Infrastructure.Constants.Navigation;
 using NetworkModule.Models;
 
@@ -9,8 +8,8 @@ namespace NetworkModule.ViewModels;
 
 public sealed class NetworkViewModel : BindableBase, INetworkViewModel, IDisposable {
   private readonly IDisposable _sensorsSubscription;
-  private double _load;
-  private PerformanceGraph? _loadGraph;
+  private string _downloadLabel = "—";
+  private string _uploadLabel = "—";
 
   public NetworkViewModel(INetworkModel model, IEventAggregator events) {
     ShowDetailCommand = new DelegateCommand(
@@ -22,27 +21,35 @@ public sealed class NetworkViewModel : BindableBase, INetworkViewModel, IDisposa
   }
 
   public ObservableCollection<NetworkAdapterViewModel> Adapters { get; } = [];
-  public double Load { get => _load; private set => SetProperty(ref _load, value); }
+  public string DownloadLabel { get => _downloadLabel; private set => SetProperty(ref _downloadLabel, value); }
+  public string UploadLabel { get => _uploadLabel; private set => SetProperty(ref _uploadLabel, value); }
   public ICommand ShowDetailCommand { get; }
   public ICommand ShowDashboardCommand { get; }
-
-  public void AttachGraph(PerformanceGraph graph) => _loadGraph = graph;
 
   private void Apply(NetworkSnapshot snapshot) {
     // Reconcile the adapter list against the current interfaces (they can come and go as NICs
     // connect/disconnect), keyed by name.
     SyncAdapters(snapshot.Interfaces);
 
-    var overall = 0.0;
+    var totalDownload = 0.0;
+    var totalUpload = 0.0;
     foreach (var reading in snapshot.Interfaces) {
       var adapter = Adapters.FirstOrDefault(a =>
           string.Equals(a.Name, reading.Name, StringComparison.OrdinalIgnoreCase));
       adapter?.Update(reading);
-      overall = Math.Max(overall, reading.UtilizationPercent);
+      totalDownload += reading.DownloadBytesPerSecond;
+      totalUpload += reading.UploadBytesPerSecond;
     }
 
-    Load = overall;
-    _loadGraph?.AddValue(overall);
+    DownloadLabel = FormatSpeed(totalDownload);
+    UploadLabel = FormatSpeed(totalUpload);
+  }
+
+  private static string FormatSpeed(double bytesPerSecond) {
+    if (bytesPerSecond >= 1024d * 1024 * 1024) return $"{bytesPerSecond / (1024d * 1024 * 1024):0.00} GiB/s";
+    if (bytesPerSecond >= 1024d * 1024) return $"{bytesPerSecond / (1024d * 1024):0.00} MiB/s";
+    if (bytesPerSecond >= 1024d) return $"{bytesPerSecond / 1024d:0.00} KiB/s";
+    return $"{bytesPerSecond:0} B/s";
   }
 
   private void SyncAdapters(IReadOnlyList<NetworkInterfaceReading> interfaces) {

@@ -1,0 +1,69 @@
+using CpuModule.Models;
+using CpuModule.ViewModels.Implementations;
+using CpuModule.ViewModels.Interfaces;
+using CpuModule.Views;
+using Crystal.Infrastructure.Constants;
+using Crystal.Infrastructure.Constants.Navigation;
+using Crystal.Provider.CpuId;
+using Crystal.Provider.Mmi.HardwareFeatures.Processor;
+using Crystal.Provider.Mmi.MmiEngine;
+using Crystal.Provider.Smbios.HardwareFeatures.Processor;
+using Crystal.Service.Cpu;
+
+namespace CpuModule;
+
+/// <summary>
+/// Prism module for CPU. Registers the provider→service→model→view-model chain, injects the
+/// compact <see cref="CpuSummaryView"/> into the dashboard's CPU tile region, and registers
+/// the full-scale <see cref="CpuDetailView"/> for navigation.
+/// </summary>
+public class CpuModule(IRegionManager regionManager) : IModule {
+  private readonly IRegionManager _regionManager = regionManager;
+
+  public void RegisterTypes(IContainerRegistry containerRegistry) {
+    // Hardware providers behind Crystal.Service.Cpu (see CpuInfoBuilder's ctor).
+    containerRegistry.Register<ICpuIdProvider, CpuIdProvider>();
+    containerRegistry.Register<ISmbiosProcessorProvider, SmbiosProcessorProvider>();
+    containerRegistry.Register<IWmiHardwareProvider, WmiHardwareProvider>();
+    containerRegistry.Register<ICpuSpecsResolver, CpuSpecsResolver>();
+    containerRegistry.RegisterSingleton<ICpuTelemetrySource, TelemetryCpuSensorSource>();
+
+    // Built via a factory: CpuInfoBuilder's telemetry parameter is optional (defaults to null),
+    // and Unity won't inject an optional ctor parameter — leaving it null makes every sensor read
+    // empty (0.00). Resolve it explicitly so live sensors are wired in.
+    containerRegistry.Register<CpuInfoBuilder>(cp => new CpuInfoBuilder(
+        cp.Resolve<ICpuIdProvider>(),
+        cp.Resolve<ISmbiosProcessorProvider>(),
+        cp.Resolve<IWmiHardwareProvider>(),
+        cp.Resolve<ICpuSpecsResolver>(),
+        cp.Resolve<ICpuTelemetrySource>()));
+
+    // CpuMonitor owns the polling lifetime and its Specs replay cache, so it must be a singleton.
+    // Built via a factory: its ctor's optional TimeSpan?/IScheduler? params can't be resolved by
+    // the container, and we want the default 1-second poll cadence.
+    containerRegistry.RegisterSingleton<CpuMonitor>(cp => new CpuMonitor(cp.Resolve<CpuInfoBuilder>()));
+    containerRegistry.RegisterSingleton<ICpuModel, CpuModel>();
+
+    // View models. The sub-view models are per-consumer; the root VM composes them.
+    containerRegistry.Register<ICpuSpecsViewModel, CpuSpecsViewModel>();
+    containerRegistry.Register<ICpuSensorViewModel, CpuSensorsViewModel>();
+    containerRegistry.Register<ICpuViewModel, CpuViewModel>();
+
+    // Register the detail view for region navigation (swapped into the shell's main region).
+    containerRegistry.RegisterForNavigation<CpuDetailView>(DetailViewNames.Cpu);
+
+    // Both views set prism:ViewModelLocator.AutoWireViewModel="True". The default convention
+    // looks for CpuModule.ViewModels.<ViewName>Model; our VM lives under .Implementations and is
+    // resolved by its interface, so map both views to it explicitly. Each view gets its own VM
+    // instance (Register, not singleton), so their live graphs never share sample buffers.
+    ViewModelLocationProvider.Register<CpuSummaryView>(
+        () => ContainerLocator.Container.Resolve<ICpuViewModel>());
+    ViewModelLocationProvider.Register<CpuDetailView>(
+        () => ContainerLocator.Container.Resolve<ICpuViewModel>());
+  }
+
+  public void OnInitialized(IContainerProvider containerProvider) {
+    // Inject the compact summary tile into the dashboard's CPU region.
+    _regionManager.RegisterViewWithRegion(RegionNames.CpuRegionName, typeof(CpuSummaryView));
+  }
+}

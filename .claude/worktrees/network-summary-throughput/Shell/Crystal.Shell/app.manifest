@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<assembly manifestVersion="1.0" xmlns="urn:schemas-microsoft-com:asm.v1">
+  <assemblyIdentity version="1.0.0.0" name="Crystal.Shell"/>
+
+  <!-- Crystal opens a real-time kernel ETW session (per-process GPU/disk/network in the Processes
+       tile) and ring-0 MSR sensors, both of which require administrator rights. Requesting it here
+       means a single UAC prompt at launch instead of the features silently degrading. -->
+  <trustInfo xmlns="urn:schemas-microsoft-com:asm.v3">
+    <security>
+      <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v2">
+        <requestedExecutionLevel level="requireAdministrator" uiAccess="false"/>
+      </requestedPrivileges>
+    </security>
+  </trustInfo>
+
+  <!-- Declare Windows 10/11 compatibility so version-gated APIs and per-monitor DPI behave. -->
+  <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">
+    <application>
+      <supportedOS Id="{8e0f7a12-bfb3-4fe8-b9a5-48fd50a15a9a}"/>
+    </application>
+  </compatibility>
+
+  <!-- DPI awareness. WPF lays out in device-independent pixels (1 DIP = 1/96"), so all our XAML
+       sizes and the persisted window bounds are already scale-correct. Declaring PerMonitorV2 tells
+       Windows to hand WPF the real per-monitor scale factor and re-notify on monitor changes, so the
+       framework re-renders crisply instead of bitmap-stretching. This matters for the windowed detail
+       views, which are meant to sit on a second monitor that may run a different scale than the main
+       display. true/PerMonitor are listed as fallbacks for older Windows 10 builds that ignore V2. -->
+  <application xmlns="urn:schemas-microsoft-com:asm.v3">
+    <windowsSettings>
+      <dpiAware xmlns="http://schemas.microsoft.com/SMI/2005/WindowsSettings">true/PM</dpiAware>
+      <dpiAwareness xmlns="http://schemas.microsoft.com/SMI/2016/WindowsSettings">PerMonitorV2, PerMonitor</dpiAwareness>
+    </windowsSettings>
+  </application>
+</assembly>

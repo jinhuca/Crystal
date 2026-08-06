@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:prism="http://prismlibrary.com/"
              xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs.Controls;assembly=Crystal.Controls"
-             xmlns:gauges="clr-namespace:Crystal.Controls.MeterGauges.Controls;assembly=Crystal.Controls"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
              d:DesignHeight="720" d:DesignWidth="1100"
@@ -41,7 +40,7 @@
         <ItemsControl.ItemTemplate>
           <DataTemplate>
             <Border Margin="8" Padding="18" Background="#161B22" CornerRadius="8"
-                    Width="500" Height="260">
+                    Width="500" Height="300">
               <Grid>
                 <Grid.RowDefinitions>
                   <RowDefinition Height="Auto"/>
@@ -52,31 +51,35 @@
                 <TextBlock Grid.Row="0" Text="{Binding Name}" Foreground="#3E9BE8"
                            FontSize="16" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
 
-                <!-- Throughput -->
+                <!-- Current throughput readout -->
                 <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,6,0,12">
                   <StackPanel Orientation="Horizontal" Margin="0,0,24,0">
-                    <TextBlock Text="&#x2193; " Foreground="#3BD15A"/>
-                    <TextBlock Text="{Binding DownloadLabel}" Foreground="White"/>
+                    <TextBlock Text="&#x25BC; " Foreground="#3BD15A"/>
+                    <TextBlock Text="{Binding DownloadLabel}" Foreground="White" FontFamily="Consolas"/>
                   </StackPanel>
                   <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="&#x2191; " Foreground="#E89B2A"/>
-                    <TextBlock Text="{Binding UploadLabel}" Foreground="White"/>
+                    <TextBlock Text="&#x25B2; " Foreground="#E89B2A"/>
+                    <TextBlock Text="{Binding UploadLabel}" Foreground="White" FontFamily="Consolas"/>
                   </StackPanel>
                 </StackPanel>
 
-                <!-- Live utilization: gauge + history graph -->
+                <!-- Download over upload history graphs -->
                 <Grid Grid.Row="2">
-                  <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="140"/>
-                    <ColumnDefinition Width="*"/>
-                  </Grid.ColumnDefinitions>
-                  <gauges:MeterGaugeView Grid.Column="0" Title="Utilization" Unit="%"
-                                         MinValue="0" MaxValue="100" ValueFormat="{}{0:0}"
-                                         Value="{Binding Load}"/>
-                  <graphs:PerformanceGraphView Grid.Column="1" Margin="12,0"
-                                               Loaded="OnGraphLoaded"
-                                               Title="Utilization Percentage" MinValue="0" MaxValue="100"
-                                               MaxValueFormat="{}{0}%" MaxTime="60"
+                  <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                  </Grid.RowDefinitions>
+                  <graphs:PerformanceGraphView Grid.Row="0" Margin="0,0,0,6"
+                                               x:Name="DownloadView" Loaded="OnDownloadGraphLoaded"
+                                               Title="Download" MinValue="0"
+                                               MaxValue="{Binding DownloadScaleMax}"
+                                               MaxValueFormat="{}{0:0} KiB/s" MaxTime="60"
+                                               MaxTimeFormat="{}{0}s" MinTime="0"/>
+                  <graphs:PerformanceGraphView Grid.Row="1"
+                                               x:Name="UploadView" Loaded="OnUploadGraphLoaded"
+                                               Title="Upload" MinValue="0"
+                                               MaxValue="{Binding UploadScaleMax}"
+                                               MaxValueFormat="{}{0:0} KiB/s" MaxTime="60"
                                                MaxTimeFormat="{}{0}s" MinTime="0"/>
                 </Grid>
               </Grid>

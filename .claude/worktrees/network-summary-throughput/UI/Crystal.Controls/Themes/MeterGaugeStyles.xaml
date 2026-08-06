@@ -1,0 +1,58 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:Crystal.Controls.MeterGauges.Controls"
+                    xmlns:gauges="clr-namespace:Crystal.Controls.MeterGauges">
+
+  <controls:MeterValueFormatConverter x:Key="ValueFormatConverter"/>
+
+  <Style TargetType="{x:Type controls:MeterGaugeView}">
+    <Setter Property="Foreground" Value="White"/>
+    <Setter Property="Background" Value="Black"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type controls:MeterGaugeView}">
+          <Grid Background="{TemplateBinding Background}">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Title -->
+            <TextBlock Grid.Row="0"
+                       Text="{TemplateBinding Title}"
+                       Foreground="{TemplateBinding Foreground}"
+                       FontSize="22"
+                       HorizontalAlignment="Center"
+                       Margin="0,4,0,0"/>
+
+            <!-- Gauge arc with the value + unit stacked at its center -->
+            <Grid Grid.Row="1">
+              <gauges:MeterGauge x:Name="PART_Gauge"/>
+
+              <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock FontSize="40"
+                           HorizontalAlignment="Center">
+                  <TextBlock.Foreground>
+                    <SolidColorBrush Color="#E8A33D"/>
+                  </TextBlock.Foreground>
+                  <TextBlock.Text>
+                    <MultiBinding Converter="{StaticResource ValueFormatConverter}">
+                      <Binding Path="Value" RelativeSource="{RelativeSource TemplatedParent}"/>
+                      <Binding Path="ValueFormat" RelativeSource="{RelativeSource TemplatedParent}"/>
+                    </MultiBinding>
+                  </TextBlock.Text>
+                </TextBlock>
+                <TextBlock Text="{TemplateBinding Unit}"
+                           Foreground="{TemplateBinding Foreground}"
+                           FontSize="16"
+                           HorizontalAlignment="Center"
+                           Margin="0,2,0,0"/>
+              </StackPanel>
+            </Grid>
+          </Grid>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+</ResourceDictionary>
