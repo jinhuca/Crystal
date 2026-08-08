@@ -67,9 +67,9 @@ public class BoardTelemetrySelectorTests {
     ]);
 
     var t = BoardTelemetrySelector.Select(snapshot);
-    Assert.Equal(3.31f, t.Rail3V3);
-    Assert.Equal(5.01f, t.Rail5V);
-    Assert.Equal(12.05f, t.Rail12V);
+    Assert.Equal(3.31f, t.Rail3V3.Value);
+    Assert.Equal(5.01f, t.Rail5V.Value);
+    Assert.Equal(12.05f, t.Rail12V.Value);
   }
 
   [Fact]
@@ -80,9 +80,28 @@ public class BoardTelemetrySelectorTests {
     ]);
 
     var t = BoardTelemetrySelector.Select(snapshot);
-    Assert.Equal(3.31f, t.Rail3V3);
-    Assert.Null(t.Rail5V);
-    Assert.Null(t.Rail12V);
+    Assert.Equal(3.31f, t.Rail3V3.Value);
+    Assert.Null(t.Rail5V.Value);
+    Assert.Null(t.Rail12V.Value);
+  }
+
+  [Fact]
+  public void Rail_carries_the_sensor_running_min_and_max() {
+    var snapshot = new SensorSnapshot([
+        new SensorReading("SuperIO", HardwareType.SuperIO, "+12V", SensorType.Voltage,
+            Value: 12.05f, Min: 11.90f, Max: 12.13f, Unit: "V"),
+    ]);
+
+    var rail = BoardTelemetrySelector.Select(snapshot).Rail12V;
+    Assert.Equal(12.05f, rail.Value);
+    Assert.Equal(11.90f, rail.Min);
+    Assert.Equal(12.13f, rail.Max);
+  }
+
+  [Fact]
+  public void An_absent_rail_is_the_none_reading() {
+    var rail = BoardTelemetrySelector.Select(new SensorSnapshot([])).Rail5V;
+    Assert.Same(RailReading.None, rail);
   }
 
   [Fact]

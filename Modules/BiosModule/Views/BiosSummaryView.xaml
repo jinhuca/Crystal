@@ -45,6 +45,18 @@
           <Style x:Key="FieldCell" TargetType="StackPanel">
             <Setter Property="Margin" Value="0,0,0,10"/>
           </Style>
+          <!-- Dim min–max sub-line under a rail; collapses until both bounds are known. -->
+          <Style x:Key="RangeHint" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#5A6470"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="FontFamily" Value="Consolas"/>
+            <Setter Property="Margin" Value="0,-1,16,0"/>
+            <Style.Triggers>
+              <Trigger Property="Text" Value="">
+                <Setter Property="Visibility" Value="Collapsed"/>
+              </Trigger>
+            </Style.Triggers>
+          </Style>
         </StackPanel.Resources>
 
         <!-- Static firmware identity: manufacturer/version + security posture -->
@@ -161,21 +173,24 @@
             <TextBlock Text="{Binding ChassisFanRpm}" Style="{StaticResource FieldValue}"/>
           </StackPanel>
 
-          <!-- Row 1: voltage rails -->
+          <!-- Row 1: voltage rails, each with a dim min–max stability sub-line -->
           <StackPanel Grid.Row="1" Grid.Column="0">
             <TextBlock Text="+3.3V" Style="{StaticResource FieldLabel}"/>
             <TextBlock Text="{Binding Rail3V3}" Style="{StaticResource FieldValue}"
                        Foreground="{Binding Rail3V3Severity, Converter={StaticResource SeverityToBrush}}"/>
+            <TextBlock Text="{Binding Rail3V3Range}" Style="{StaticResource RangeHint}"/>
           </StackPanel>
           <StackPanel Grid.Row="1" Grid.Column="1">
             <TextBlock Text="+5V" Style="{StaticResource FieldLabel}"/>
             <TextBlock Text="{Binding Rail5V}" Style="{StaticResource FieldValue}"
                        Foreground="{Binding Rail5VSeverity, Converter={StaticResource SeverityToBrush}}"/>
+            <TextBlock Text="{Binding Rail5VRange}" Style="{StaticResource RangeHint}"/>
           </StackPanel>
           <StackPanel Grid.Row="1" Grid.Column="2">
             <TextBlock Text="+12V" Style="{StaticResource FieldLabel}"/>
             <TextBlock Text="{Binding Rail12V}" Style="{StaticResource FieldValue}"
                        Foreground="{Binding Rail12VSeverity, Converter={StaticResource SeverityToBrush}}"/>
+            <TextBlock Text="{Binding Rail12VRange}" Style="{StaticResource RangeHint}"/>
           </StackPanel>
         </Grid>
       </StackPanel>

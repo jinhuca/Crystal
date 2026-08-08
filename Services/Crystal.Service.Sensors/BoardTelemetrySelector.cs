@@ -6,16 +6,23 @@ using Crystal.Provider.Telemetry.Hardware;
 
 namespace Crystal.Service.Sensors;
 
+/// <summary>A voltage-rail reading with the running min/max the sensor has observed this session,
+/// so the tile can hint at rail stability alongside the current value.</summary>
+public sealed record RailReading(float? Value, float? Min, float? Max) {
+  public static RailReading None { get; } = new(null, null, null);
+}
+
 /// <summary>Board-level live telemetry the BIOS tile headlines, picked out of a
 /// <see cref="SensorSnapshot"/>'s <see cref="SensorCategory.Motherboard"/> readings.</summary>
 public sealed record BoardTelemetry(
     float? BoardTemperature,
     float? CmosVoltage,
     float? ChassisFanRpm,
-    float? Rail3V3,
-    float? Rail5V,
-    float? Rail12V) {
-  public static BoardTelemetry Empty { get; } = new(null, null, null, null, null, null);
+    RailReading Rail3V3,
+    RailReading Rail5V,
+    RailReading Rail12V) {
+  public static BoardTelemetry Empty { get; } =
+      new(null, null, null, RailReading.None, RailReading.None, RailReading.None);
 }
 
 /// <summary>
@@ -76,10 +83,13 @@ public static class BoardTelemetrySelector {
   public static bool IsCmosRail(string? name) =>
       Contains(name, "VBAT") || Contains(name, "CMOS") || Contains(name, "Battery");
 
-  // A voltage rail named for its nominal value (e.g. "+12V", "+3.3V", "+5V").
-  private static float? Rail(IReadOnlyList<SensorReading> board, string nominal) =>
-      board.FirstOrDefault(r => r.SensorType == SensorType.Voltage && r.Value is not null &&
-          RailMatches(r.SensorName, nominal))?.Value;
+  // A voltage rail named for its nominal value (e.g. "+12V", "+3.3V", "+5V"), with the
+  // sensor's running min/max carried alongside the current value.
+  private static RailReading Rail(IReadOnlyList<SensorReading> board, string nominal) {
+    var reading = board.FirstOrDefault(r => r.SensorType == SensorType.Voltage && r.Value is not null &&
+        RailMatches(r.SensorName, nominal));
+    return reading is null ? RailReading.None : new RailReading(reading.Value, reading.Min, reading.Max);
+  }
 
   // Match "+12V"/"12V" without also matching "3.3V" for the "3" query or "5V" inside "3.5V".
   private static bool RailMatches(string? name, string nominal) {

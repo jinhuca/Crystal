@@ -29,13 +29,15 @@ public class BiosViewModelSeverityTests {
     return new BiosViewModel(model, new EventAggregator());
   }
 
+  private static RailReading Rail(float value) => new(value, null, null);
+
   [Fact]
   public void Healthy_telemetry_leaves_every_reading_normal() {
     var vm = CreateVm(out var model);
 
     model.TelemetrySubject.OnNext(new BoardTelemetry(
         BoardTemperature: 35f, CmosVoltage: 3.0f, ChassisFanRpm: 800f,
-        Rail3V3: 3.31f, Rail5V: 5.01f, Rail12V: 12.02f));
+        Rail3V3: Rail(3.31f), Rail5V: Rail(5.01f), Rail12V: Rail(12.02f)));
 
     Assert.Equal(ReadingSeverity.Normal, vm.CmosSeverity);
     Assert.Equal(ReadingSeverity.Normal, vm.Rail3V3Severity);
@@ -49,12 +51,27 @@ public class BiosViewModelSeverityTests {
 
     model.TelemetrySubject.OnNext(new BoardTelemetry(
         BoardTemperature: 35f, CmosVoltage: 2.6f, ChassisFanRpm: 800f,
-        Rail3V3: 3.31f, Rail5V: 5.4f, Rail12V: 10.4f));
+        Rail3V3: Rail(3.31f), Rail5V: Rail(5.4f), Rail12V: Rail(10.4f)));
 
     Assert.Equal(ReadingSeverity.Warning, vm.CmosSeverity);   // 2.6 V weak cell
     Assert.Equal(ReadingSeverity.Normal, vm.Rail3V3Severity); // in spec
     Assert.Equal(ReadingSeverity.Warning, vm.Rail5VSeverity); // +8%
     Assert.Equal(ReadingSeverity.Critical, vm.Rail12VSeverity); // -13%
+  }
+
+  [Fact]
+  public void Rail_range_formats_min_max_when_both_known_and_is_empty_otherwise() {
+    var vm = CreateVm(out var model);
+
+    model.TelemetrySubject.OnNext(new BoardTelemetry(
+        BoardTemperature: 35f, CmosVoltage: 3.0f, ChassisFanRpm: 800f,
+        Rail3V3: new RailReading(3.31f, 3.28f, 3.34f),  // both bounds → formatted
+        Rail5V: new RailReading(5.01f, null, 5.05f),    // partial → empty
+        Rail12V: RailReading.None));                    // absent → empty
+
+    Assert.Equal("3.28–3.34", vm.Rail3V3Range);
+    Assert.Equal("", vm.Rail5VRange);
+    Assert.Equal("", vm.Rail12VRange);
   }
 
   [Fact]

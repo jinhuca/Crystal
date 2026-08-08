@@ -52,6 +52,9 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
   private string _rail3V3 = Dash;
   private string _rail5V = Dash;
   private string _rail12V = Dash;
+  private string _rail3V3Range = "";
+  private string _rail5VRange = "";
+  private string _rail12VRange = "";
   private ReadingSeverity _cmosSeverity;
   private ReadingSeverity _rail3V3Severity;
   private ReadingSeverity _rail5VSeverity;
@@ -114,6 +117,9 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
   public string Rail3V3 { get => _rail3V3; private set => SetProperty(ref _rail3V3, value); }
   public string Rail5V { get => _rail5V; private set => SetProperty(ref _rail5V, value); }
   public string Rail12V { get => _rail12V; private set => SetProperty(ref _rail12V, value); }
+  public string Rail3V3Range { get => _rail3V3Range; private set => SetProperty(ref _rail3V3Range, value); }
+  public string Rail5VRange { get => _rail5VRange; private set => SetProperty(ref _rail5VRange, value); }
+  public string Rail12VRange { get => _rail12VRange; private set => SetProperty(ref _rail12VRange, value); }
   public ReadingSeverity CmosSeverity { get => _cmosSeverity; private set => SetProperty(ref _cmosSeverity, value); }
   public ReadingSeverity Rail3V3Severity { get => _rail3V3Severity; private set => SetProperty(ref _rail3V3Severity, value); }
   public ReadingSeverity Rail5VSeverity { get => _rail5VSeverity; private set => SetProperty(ref _rail5VSeverity, value); }
@@ -171,15 +177,23 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
     BoardTemperature = Reading(t.BoardTemperature, "°C", "0.0");
     CmosVoltage = Reading(t.CmosVoltage, "V", "0.00");
     ChassisFanRpm = Reading(t.ChassisFanRpm, "RPM", "0");
-    Rail3V3 = Reading(t.Rail3V3, "V", "0.00");
-    Rail5V = Reading(t.Rail5V, "V", "0.00");
-    Rail12V = Reading(t.Rail12V, "V", "0.00");
+    Rail3V3 = Reading(t.Rail3V3.Value, "V", "0.00");
+    Rail5V = Reading(t.Rail5V.Value, "V", "0.00");
+    Rail12V = Reading(t.Rail12V.Value, "V", "0.00");
+
+    Rail3V3Range = RailRange(t.Rail3V3);
+    Rail5VRange = RailRange(t.Rail5V);
+    Rail12VRange = RailRange(t.Rail12V);
 
     CmosSeverity = BoardReadingSeverity.Cmos(t.CmosVoltage);
-    Rail3V3Severity = BoardReadingSeverity.Rail(t.Rail3V3, 3.3f);
-    Rail5VSeverity = BoardReadingSeverity.Rail(t.Rail5V, 5f);
-    Rail12VSeverity = BoardReadingSeverity.Rail(t.Rail12V, 12f);
+    Rail3V3Severity = BoardReadingSeverity.Rail(t.Rail3V3.Value, 3.3f);
+    Rail5VSeverity = BoardReadingSeverity.Rail(t.Rail5V.Value, 5f);
+    Rail12VSeverity = BoardReadingSeverity.Rail(t.Rail12V.Value, 12f);
   }
+
+  // "11.90–12.10" once both bounds are known; empty until then so the sub-line stays hidden.
+  private static string RailRange(RailReading rail) =>
+      rail is { Min: { } min, Max: { } max } ? $"{min:0.00}–{max:0.00}" : "";
 
   private void ApplyBoardReadings(IReadOnlyList<SensorReading> readings) {
     BoardSensors.Clear();

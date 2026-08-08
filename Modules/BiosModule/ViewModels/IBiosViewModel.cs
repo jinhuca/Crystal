@@ -52,6 +52,9 @@ public interface IBiosViewModel {
   string Rail3V3 { get; }
   string Rail5V { get; }
   string Rail12V { get; }
+  string Rail3V3Range { get; }
+  string Rail5VRange { get; }
+  string Rail12VRange { get; }
   ReadingSeverity CmosSeverity { get; }
   ReadingSeverity Rail3V3Severity { get; }
   ReadingSeverity Rail5VSeverity { get; }
