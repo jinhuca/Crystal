@@ -29,7 +29,8 @@ internal sealed class SegmentedBarRenderer {
       int capacity,
       double minValue,
       double maxValue,
-      int rows) {
+      int rows,
+      bool flip = false) {
     int count = values.Count;
     if (count == 0) return;
     if (bounds.Width <= 0 || bounds.Height <= 0) return;
@@ -68,21 +69,38 @@ internal sealed class SegmentedBarRenderer {
           partialFraction = partialFraction < 0 ? 0 : (partialFraction > 1 ? 1 : partialFraction);
         }
 
-        // Fully-lit segments, stacked from the bottom row upward.
-        for (int seg = 0; seg < fullSegments; seg++) {
-          double rowBottom = bounds.Bottom - seg * rowHeight;
-          double segBottom = rowBottom - segmentPadding;
-          AddRectangleFigure(ctx, left, segBottom - segmentHeight, barWidth, segmentHeight);
-        }
+        if (flip) {
+          // Mirrored (180°) variant: segments stack from the top row downward, and the partial
+          // segment grows downward from the top anchor — the whole meter reads as hanging from
+          // the top edge instead of rising from the bottom.
+          for (int seg = 0; seg < fullSegments; seg++) {
+            double rowTop = bounds.Top + seg * rowHeight;
+            double segTop = rowTop + segmentPadding;
+            AddRectangleFigure(ctx, left, segTop, barWidth, segmentHeight);
+          }
 
-        // The partially-lit segment just above the fully-lit ones (if any) grows upward from
-        // the same bottom anchor a full segment in that row would use, so it reads as "this
-        // row is X% lit" rather than jumping straight from empty to full.
-        if (partialFraction > 0) {
-          double rowBottom = bounds.Bottom - fullSegments * rowHeight;
-          double segBottom = rowBottom - segmentPadding;
-          double partialHeight = partialFraction * segmentHeight;
-          AddRectangleFigure(ctx, left, segBottom - partialHeight, barWidth, partialHeight);
+          if (partialFraction > 0) {
+            double rowTop = bounds.Top + fullSegments * rowHeight;
+            double segTop = rowTop + segmentPadding;
+            AddRectangleFigure(ctx, left, segTop, barWidth, partialFraction * segmentHeight);
+          }
+        } else {
+          // Fully-lit segments, stacked from the bottom row upward.
+          for (int seg = 0; seg < fullSegments; seg++) {
+            double rowBottom = bounds.Bottom - seg * rowHeight;
+            double segBottom = rowBottom - segmentPadding;
+            AddRectangleFigure(ctx, left, segBottom - segmentHeight, barWidth, segmentHeight);
+          }
+
+          // The partially-lit segment just above the fully-lit ones (if any) grows upward from
+          // the same bottom anchor a full segment in that row would use, so it reads as "this
+          // row is X% lit" rather than jumping straight from empty to full.
+          if (partialFraction > 0) {
+            double rowBottom = bounds.Bottom - fullSegments * rowHeight;
+            double segBottom = rowBottom - segmentPadding;
+            double partialHeight = partialFraction * segmentHeight;
+            AddRectangleFigure(ctx, left, segBottom - partialHeight, barWidth, partialHeight);
+          }
         }
       }
     }

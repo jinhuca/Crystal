@@ -19,6 +19,11 @@ public class PerformanceGraph : FrameworkElement {
       DependencyProperty.Register(nameof(Kind), typeof(GraphKind), typeof(PerformanceGraph),
           new FrameworkPropertyMetadata(GraphKind.Line, FrameworkPropertyMetadataOptions.AffectsRender));
 
+  /// <summary>Identifies the <see cref="Flip"/> dependency property.</summary>
+  public static readonly DependencyProperty FlipProperty =
+      DependencyProperty.Register(nameof(Flip), typeof(bool), typeof(PerformanceGraph),
+          new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsRender));
+
   /// <summary>Identifies the <see cref="MinValue"/> dependency property.</summary>
   public static readonly DependencyProperty MinValueProperty =
       DependencyProperty.Register(nameof(MinValue), typeof(double), typeof(PerformanceGraph),
@@ -106,6 +111,14 @@ public class PerformanceGraph : FrameworkElement {
     set => SetValue(KindProperty, value);
   }
 
+  /// <summary>When true, a <see cref="GraphKind.SegmentedBar"/> is drawn mirrored (180°): its
+  /// segments hang from the top edge and grow downward instead of rising from the bottom. Has no
+  /// effect on the other kinds.</summary>
+  public bool Flip {
+    get => (bool)GetValue(FlipProperty);
+    set => SetValue(FlipProperty, value);
+  }
+
   /// <summary>Values at or below this map to the bottom edge of the plot area.</summary>
   public double MinValue {
     get => (double)GetValue(MinValueProperty);
@@ -173,12 +186,22 @@ public class PerformanceGraph : FrameworkElement {
 
   /// <summary>Appends a new sample, dropping the oldest once <see cref="Capacity"/> is exceeded. O(1).</summary>
   public void AddValue(double value) {
+    // Sensor streams push from a background thread; InvalidateVisual (and the
+    // buffer) require this element's dispatcher, so hop onto it if we're not already there.
+    if (!CheckAccess()) {
+      Dispatcher.BeginInvoke(() => AddValue(value));
+      return;
+    }
     _values.Add(value);
     InvalidateVisual();
   }
 
   /// <summary>Discards all buffered samples.</summary>
   public void ClearValues() {
+    if (!CheckAccess()) {
+      Dispatcher.BeginInvoke(ClearValues);
+      return;
+    }
     _values.Clear();
     InvalidateVisual();
   }
@@ -240,7 +263,7 @@ public class PerformanceGraph : FrameworkElement {
         _barRender.Draw(dc, bounds, _graphStyle, _values, _historyLength, MinValue, MaxValue);
         break;
       case GraphKind.SegmentedBar:
-        _segmentedBarRender.Draw(dc, bounds, _graphStyle, _values, _historyLength, MinValue, MaxValue, Rows);
+        _segmentedBarRender.Draw(dc, bounds, _graphStyle, _values, _historyLength, MinValue, MaxValue, Rows, Flip);
         break;
       default:
         _filledLineRender.Draw(dc, bounds, _graphStyle, _values, _historyLength, MinValue, MaxValue);

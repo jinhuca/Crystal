@@ -5,5 +5,6 @@
     <ResourceDictionary Source="/Crystal.Controls;component/Themes/PerformanceGraphStyles.xaml"/>
     <ResourceDictionary Source="/Crystal.Controls;component/Themes/RangeBarStyles.xaml"/>
     <ResourceDictionary Source="/Crystal.Controls;component/Themes/ScrollBarStyles.xaml"/>
+    <ResourceDictionary Source="/Crystal.Controls;component/Themes/LoadingHostStyles.xaml"/>
   </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

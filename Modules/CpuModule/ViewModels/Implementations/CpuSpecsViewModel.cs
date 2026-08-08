@@ -58,11 +58,11 @@ public sealed class CpuSpecsViewModel : BindableBase, ICpuSpecsViewModel {
     Virtualization = s.VirtualizationEnabled ?? s.VirtualizationSupported;
 
     if (s.CacheInfo is { } cache) {
-      // CPUID/SMBIOS report L1..L3 as totals in KB; the SMBIOS "Line Size" field is
-      // per-cache, so surface the L1 line size as the representative value.
-      L1CacheKb = cache.L1_cache_size;
-      L2CacheKb = cache.L2_cache_size;
-      L3CacheKb = cache.L3_cache_size;
+      // CpuCacheInfo stores totals in bytes; convert to KB for display. The SMBIOS
+      // "Line Size" field is per-cache, so surface the L1 line size as the representative value.
+      L1CacheKb = cache.L1_cache_size / 1024.0;
+      L2CacheKb = cache.L2_cache_size / 1024.0;
+      L3CacheKb = cache.L3_cache_size / 1024.0;
       LineSizeBytes = cache.L1_cache_line_size;
     }
 

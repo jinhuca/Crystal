@@ -1,6 +1,7 @@
 using BiosModule.Models;
 using BiosModule.ViewModels;
 using BiosModule.Views;
+using Crystal.Controls.Loading;
 using Crystal.Infrastructure.Constants;
 using Crystal.Infrastructure.Constants.Navigation;
 using Crystal.Provider.Mmi.MmiEngine;
@@ -32,6 +33,14 @@ public class BiosModule(IRegionManager regionManager) : IModule {
   }
 
   public void OnInitialized(IContainerProvider containerProvider) {
-    _regionManager.RegisterViewWithRegion(RegionNames.BiosRegionName, typeof(BiosSummaryView));
+    // Self-warming loading tile: spinner now, warm the model singleton off the UI thread, swap in
+    // the real view when ready. See CpuModule for the rationale.
+    _regionManager.RegisterViewWithRegion(RegionNames.BiosRegionName, () => {
+      var host = new LoadingHost { Label = "BIOS" };
+      host.Begin(
+          () => containerProvider.Resolve<IBiosModel>(),
+          () => new BiosSummaryView());
+      return host;
+    });
   }
 }

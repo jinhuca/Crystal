@@ -1,3 +1,4 @@
+using Crystal.Controls.Loading;
 using Crystal.Infrastructure.Constants;
 using Crystal.Infrastructure.Constants.Navigation;
 using Crystal.Provider.Mmi.MmiEngine;
@@ -39,6 +40,14 @@ public class MemoryModule(IRegionManager regionManager) : IModule {
   }
 
   public void OnInitialized(IContainerProvider containerProvider) {
-    _regionManager.RegisterViewWithRegion(RegionNames.MemoryRegionName, typeof(MemorySummaryView));
+    // Self-warming loading tile: spinner now, warm the model singleton off the UI thread, swap in
+    // the real view when ready. See CpuModule for the rationale.
+    _regionManager.RegisterViewWithRegion(RegionNames.MemoryRegionName, () => {
+      var host = new LoadingHost { Label = "Memory" };
+      host.Begin(
+          () => containerProvider.Resolve<IMemoryModel>(),
+          () => new MemorySummaryView());
+      return host;
+    });
   }
 }

@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using CpuModule.Models;
 using CpuModule.ViewModels;
 using CpuModule.ViewModels.Interfaces;
 using Crystal.Controls.PerformanceGraphs;
@@ -13,6 +14,9 @@ public sealed class CpuSensorsViewModel : BindableBase, ICpuSensorViewModel {
   private double _power;
   private double _temperature;
   private bool _msrSensorsAvailable;
+  private int _processCount;
+  private int _threadCount;
+  private int _handleCount;
 
   private PerformanceGraph? _utilizationGraph;
   private PerformanceGraph? _voltageGraph;
@@ -26,6 +30,9 @@ public sealed class CpuSensorsViewModel : BindableBase, ICpuSensorViewModel {
   public double Power { get => _power; private set => SetProperty(ref _power, value); }
   public double Temperature { get => _temperature; private set => SetProperty(ref _temperature, value); }
   public bool MsrSensorsAvailable { get => _msrSensorsAvailable; private set => SetProperty(ref _msrSensorsAvailable, value); }
+  public int ProcessCount { get => _processCount; private set => SetProperty(ref _processCount, value); }
+  public int ThreadCount { get => _threadCount; private set => SetProperty(ref _threadCount, value); }
+  public int HandleCount { get => _handleCount; private set => SetProperty(ref _handleCount, value); }
 
   public ObservableCollection<CoreLoadViewModel> CoreLoads { get; } = [];
 
@@ -70,6 +77,12 @@ public sealed class CpuSensorsViewModel : BindableBase, ICpuSensorViewModel {
     _clockGraph?.AddValue(SpeedGhz);
     _powerGraph?.AddValue(Power);
     _temperatureGraph?.AddValue(Temperature);
+  }
+
+  public void UpdateSystemStats(SystemStats stats) {
+    ProcessCount = stats.Processes;
+    ThreadCount = stats.Threads;
+    HandleCount = stats.Handles;
   }
 
   // Core count is fixed for a given CPU, so the rows are created once (labelled C00, C01, …)

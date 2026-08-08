@@ -15,5 +15,7 @@ public sealed record GpuAdapterInfo(
     double? VideoRamGB,
     string DisplayMode,
     string? DriverVersion,
+    DateTime? DriverDate,
     string? VideoProcessor,
+    string? PhysicalLocation,
     uint? RefreshRateHz);

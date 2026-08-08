@@ -1,5 +1,6 @@
 using System.Windows.Controls;
 using Crystal.Controls.PerformanceGraphs.Controls;
+using Crystal.Controls.PerformanceGraphs.Kinds;
 using Crystal.Controls.PerformanceGraphs.Themes;
 using GpuModule.ViewModels;
 
@@ -17,7 +18,7 @@ public partial class GpuDetailView : UserControl {
     if (sender is not PerformanceGraphView view) return;
     if (view.Graph is not { } graph) return;
     if (view.DataContext is not GpuAdapterViewModel adapter) return;
-    graph.ApplyTheme(GraphThemes.Rose());
+    graph.ApplyTheme(GraphThemes.Rose(GraphKind.SegmentedBar));
     adapter.AttachGraph(graph);
   }
 }

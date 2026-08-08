@@ -1,5 +1,6 @@
 using System.Windows.Controls;
 using Crystal.Controls.PerformanceGraphs.Controls;
+using Crystal.Controls.PerformanceGraphs.Kinds;
 using Crystal.Controls.PerformanceGraphs.Themes;
 using NetworkModule.ViewModels;
 
@@ -17,7 +18,7 @@ public partial class NetworkDetailView : UserControl {
     if (sender is not PerformanceGraphView view) return;
     if (view.Graph is not { } graph) return;
     if (view.DataContext is not NetworkAdapterViewModel adapter) return;
-    graph.ApplyTheme(GraphThemes.Emerald());
+    graph.ApplyTheme(GraphThemes.Emerald(GraphKind.SegmentedBar));
     adapter.AttachDownloadGraph(graph);
   }
 
@@ -25,7 +26,7 @@ public partial class NetworkDetailView : UserControl {
     if (sender is not PerformanceGraphView view) return;
     if (view.Graph is not { } graph) return;
     if (view.DataContext is not NetworkAdapterViewModel adapter) return;
-    graph.ApplyTheme(GraphThemes.Amber());
+    graph.ApplyTheme(GraphThemes.Amber(GraphKind.SegmentedBar));
     adapter.AttachUploadGraph(graph);
   }
 }

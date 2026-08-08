@@ -66,7 +66,7 @@ public struct MMIOMapping {
 /// allowing discovery, mapping, and memory-mapped I/O read/write operations.
 /// </summary>
 public class IsaBridgeEc {
-  private readonly PawnIo _pawnIO = PawnIo.LoadModuleFromResource(typeof(IsaBridgeEc).Assembly, $"{nameof(Crystal.Provider.Telemetry)}.Resources.PawnIo.IsaBridgeEC.bin");
+  private readonly PawnIo _pawnIO = PawnIo.LoadModuleFromResource(typeof(IsaBridgeEc).Assembly, "Crystal.Provider.Telemetry.Resources.PawnIo.IsaBridgeEC.bin");
 
   /// <summary>
   /// Queries the driver for the Super I/O MMIO regions and returns the first and second discovered mappings.

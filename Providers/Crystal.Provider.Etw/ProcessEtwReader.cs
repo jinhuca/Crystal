@@ -86,6 +86,10 @@ public sealed class ProcessEtwReader : IProcessEtwSource {
     // same-named leftover first so startup is self-healing instead of one-shot.
     StopStaleSession();
 
+    // DxgKrnl's manifest has an event template TraceEvent can't fully lay out; enabling it spews a
+    // benign "Array is variable sized..." line to System.Diagnostics.Trace. Swallow just that line.
+    TraceEventNoiseFilter.Install();
+
     _session = new TraceEventSession(SessionName) {
       StopOnDispose = true,
     };

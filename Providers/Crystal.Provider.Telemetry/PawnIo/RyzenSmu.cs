@@ -7,7 +7,7 @@ namespace Crystal.Provider.Telemetry.PawnIo;
 /// Provides access to the AMD Ryzen System Management Unit (SMU) via the PawnIO driver.
 /// </summary>
 public class RyzenSmu {
-  private readonly PawnIo _pawnIO = PawnIo.LoadModuleFromResource(typeof(IntelMsr).Assembly, $"{nameof(Crystal.Provider.Telemetry)}.Resources.PawnIo.RyzenSMU.bin");
+  private readonly PawnIo _pawnIO = PawnIo.LoadModuleFromResource(typeof(IntelMsr).Assembly, "Crystal.Provider.Telemetry.Resources.PawnIo.RyzenSMU.bin");
 
   /// <summary>
   /// Reads the SMU firmware version.

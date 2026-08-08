@@ -4,7 +4,7 @@
 /// Provides access to the ACPI embedded controller via the PawnIO LpcACPIEC module.
 /// </summary>
 public class LpcAcpiEc {
-  private readonly PawnIo _pawnIO = PawnIo.LoadModuleFromResource(typeof(AmdFamily0F).Assembly, $"{nameof(Crystal.Provider.Telemetry)}.Resources.PawnIo.LpcACPIEC.bin");
+  private readonly PawnIo _pawnIO = PawnIo.LoadModuleFromResource(typeof(AmdFamily0F).Assembly, "Crystal.Provider.Telemetry.Resources.PawnIo.LpcACPIEC.bin");
 
   /// <summary>
   /// Reads a byte from the specified embedded controller port.

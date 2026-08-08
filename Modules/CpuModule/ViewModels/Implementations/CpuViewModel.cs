@@ -4,14 +4,16 @@ using CpuModule.Models;
 using CpuModule.ViewModels.Interfaces;
 using Crystal.Infrastructure.Constants.Navigation;
 
+
 namespace CpuModule.ViewModels.Implementations;
 
 public sealed class CpuViewModel : BindableBase, ICpuViewModel, IDisposable {
   private readonly IDisposable _specsSubscription;
   private readonly IDisposable _sensorsSubscription;
+  private readonly IDisposable _statsSubscription;
 
-  public CpuViewModel(ICpuModel model, ICpuSpecsViewModel specs, ICpuSensorViewModel sensors,
-                      IEventAggregator events) {
+  public CpuViewModel(ICpuModel model, SystemStatsMonitor systemStats, ICpuSpecsViewModel specs,
+                      ICpuSensorViewModel sensors, IEventAggregator events) {
     SpecsViewModel = specs;
     SensorsViewModel = sensors;
 
@@ -25,6 +27,7 @@ public sealed class CpuViewModel : BindableBase, ICpuViewModel, IDisposable {
     // bound properties / the instruction-set ObservableCollection.
     _specsSubscription = model.Specs.Subscribe(info => OnUi(() => SpecsViewModel.Update(info)));
     _sensorsSubscription = model.Sensors.Subscribe(info => OnUi(() => SensorsViewModel.Update(info)));
+    _statsSubscription = systemStats.Stats.Subscribe(s => OnUi(() => SensorsViewModel.UpdateSystemStats(s)));
   }
 
   public ICpuSpecsViewModel SpecsViewModel { get; }
@@ -41,5 +44,6 @@ public sealed class CpuViewModel : BindableBase, ICpuViewModel, IDisposable {
   public void Dispose() {
     _specsSubscription.Dispose();
     _sensorsSubscription.Dispose();
+    _statsSubscription.Dispose();
   }
 }

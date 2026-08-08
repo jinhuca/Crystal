@@ -50,12 +50,16 @@ public static class GraphThemes {
   }
 
   private static Brush CreateVerticalGlow(Color accent) {
+    // The gradient is mapped to the full plot height (bright near MaxValue, faint at the
+    // baseline). A low reading only exposes the bottom of that gradient, so the fill must stay
+    // opaque enough there to read clearly — hence a solid floor rather than fading to fully
+    // transparent, which left sub-10% values with no visible fill at all.
     var brush = new LinearGradientBrush {
       StartPoint = new Point(0, 0),
       EndPoint = new Point(0, 1)
     };
-    brush.GradientStops.Add(new GradientStop(Color.FromArgb(0xB0, accent.R, accent.G, accent.B), 0));
-    brush.GradientStops.Add(new GradientStop(Color.FromArgb(0x00, accent.R, accent.G, accent.B), 1));
+    brush.GradientStops.Add(new GradientStop(Color.FromArgb(0xC0, accent.R, accent.G, accent.B), 0));
+    brush.GradientStops.Add(new GradientStop(Color.FromArgb(0x50, accent.R, accent.G, accent.B), 1));
     return Freeze(brush);
   }
 

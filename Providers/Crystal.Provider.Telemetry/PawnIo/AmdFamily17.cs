@@ -4,7 +4,7 @@
 /// Provides access to AMD Family 17h (and later) processor registers via the PawnIO driver.
 /// </summary>
 public class AmdFamily17 {
-  private readonly PawnIo _pawnIo = PawnIo.LoadModuleFromResource(typeof(AmdFamily0F).Assembly, $"{nameof(Crystal.Provider.Telemetry)}.Resources.PawnIo.AMDFamily17.bin");
+  private readonly PawnIo _pawnIo = PawnIo.LoadModuleFromResource(typeof(AmdFamily0F).Assembly, "Crystal.Provider.Telemetry.Resources.PawnIo.AMDFamily17.bin");
 
   /// <summary>
   /// Reads a value from the System Management Network (SMN) at the specified offset.

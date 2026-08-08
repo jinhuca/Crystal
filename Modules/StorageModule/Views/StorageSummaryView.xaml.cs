@@ -1,22 +1,32 @@
 using System.Windows.Controls;
 using System.Windows.Input;
+using Crystal.Controls.PerformanceGraphs;
+using Crystal.Controls.PerformanceGraphs.Kinds;
 using Crystal.Controls.PerformanceGraphs.Themes;
 using StorageModule.ViewModels;
 
 namespace StorageModule.Views;
 
-/// <summary>Compact Storage tile on the dashboard: total capacity and drive count, plus a live
-/// Activity gauge and activity-percentage history graph. Double-clicking opens the full detail view.</summary>
+/// <summary>Compact Storage tile on the dashboard: total capacity and per-drive identity, plus
+/// live active-time-% and transfer-rate history graphs each with a big-value readout (matching the
+/// Memory/GPU tiles). Double-clicking opens the full detail view.</summary>
 public partial class StorageSummaryView : UserControl {
   public StorageSummaryView() {
     InitializeComponent();
   }
 
-  private void OnGraphLoaded(object sender, System.Windows.RoutedEventArgs e) {
-    if (UtilizationView.Graph is not { } utilization) return;
-    utilization.ApplyTheme(GraphThemes.Amber());
+  private void OnLoadGraphLoaded(object sender, System.Windows.RoutedEventArgs e) {
+    if (sender is not PerformanceGraph graph) return;
+    graph.ApplyTheme(GraphThemes.Amber(GraphKind.Line));
     if (DataContext is IStorageViewModel vm)
-      vm.AttachGraph(utilization);
+      vm.AttachGraph(graph);
+  }
+
+  private void OnTransferGraphLoaded(object sender, System.Windows.RoutedEventArgs e) {
+    if (sender is not PerformanceGraph graph) return;
+    graph.ApplyTheme(GraphThemes.Sky(GraphKind.Line));
+    if (DataContext is IStorageViewModel vm)
+      vm.AttachTransferGraph(graph);
   }
 
   private void OnTileClick(object sender, MouseButtonEventArgs e) {

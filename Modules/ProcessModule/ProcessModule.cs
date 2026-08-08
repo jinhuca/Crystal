@@ -1,3 +1,4 @@
+using Crystal.Controls.Loading;
 using Crystal.Infrastructure.Constants;
 using Crystal.Provider.Etw;
 using Crystal.Provider.Mmi.MmiEngine;
@@ -37,6 +38,14 @@ public class ProcessModule(IRegionManager regionManager) : IModule {
   }
 
   public void OnInitialized(IContainerProvider containerProvider) {
-    _regionManager.RegisterViewWithRegion(RegionNames.ProcessesRegionName, typeof(ProcessSummaryView));
+    // Self-warming loading tile: spinner now, warm the model singleton off the UI thread, swap in
+    // the real view when ready. See CpuModule for the rationale.
+    _regionManager.RegisterViewWithRegion(RegionNames.ProcessesRegionName, () => {
+      var host = new LoadingHost { Label = "Processes" };
+      host.Begin(
+          () => containerProvider.Resolve<IProcessModel>(),
+          () => new ProcessSummaryView());
+      return host;
+    });
   }
 }

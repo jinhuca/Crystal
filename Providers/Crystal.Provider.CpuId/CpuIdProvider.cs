@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using System.Runtime.Intrinsics.X86;
 using System.Text;
 using Crystal.Infrastructure.DataStructures.Cpu.Definitions;
@@ -7,9 +8,10 @@ namespace Crystal.Provider.CpuId;
 /// <summary>
 /// Managed CPUID provider built on <see cref="X86Base.CpuId"/>. Decodes vendor,
 /// brand, family/model/stepping, clocks (leaf 0x16), virtualization support and
-/// the instruction-set feature flags. Cache topology is left to SMBIOS — CPUID's
-/// deterministic-cache leaf reports per-logical-core sizes that don't map cleanly
-/// onto the L1/L2/L3 total the UI wants.
+/// the instruction-set feature flags. Cache totals come from the Windows
+/// <c>GetLogicalProcessorInformation</c> API (summed per level, the way Task
+/// Manager reports them) rather than SMBIOS, whose BIOS-supplied Type 7 values
+/// are rounded/generic and disagree with the OS on hybrid CPUs.
 /// </summary>
 public sealed class CpuIdProvider : ICpuIdProvider {
   public CpuIdRawData Query() {
@@ -20,7 +22,7 @@ public sealed class CpuIdProvider : ICpuIdProvider {
           BaseSpeedMHz: 0, BusSpeedMHz: 0,
           PhysicalCoreCount: 0, LogicalCoreCount: (uint)Environment.ProcessorCount,
           VirtualizationSupported: false, VirtualizationFirmwareEnabled: false,
-          CacheInfo: null, InstructionSet: null);
+          CacheInfo: QueryCacheInfo(), InstructionSet: null);
     }
 
     var (maxLeaf, vb, vc, vd) = X86Base.CpuId(0, 0);
@@ -72,8 +74,85 @@ public sealed class CpuIdProvider : ICpuIdProvider {
         VirtualizationSupported: virtualizationSupported,
         // CPUID can't observe the firmware toggle; only WMI can. Report false here and let WMI override.
         VirtualizationFirmwareEnabled: false,
-        CacheInfo: null,
+        CacheInfo: QueryCacheInfo(),
         InstructionSet: instructionSet);
+  }
+
+  /// <summary>
+  /// Sums each cache level across every reported cache descriptor, mirroring how Task Manager
+  /// derives its totals via <c>GetLogicalProcessorInformation</c>. Returns null if the API is
+  /// unavailable or reports no cache, so the resolver can fall back to SMBIOS. Sizes are in bytes.
+  /// </summary>
+  private static CpuCacheInfo? QueryCacheInfo() {
+    uint bufferSize = 0;
+    GetLogicalProcessorInformation(nint.Zero, ref bufferSize);
+    if (bufferSize == 0) return null;
+
+    int structSize = Marshal.SizeOf<SYSTEM_LOGICAL_PROCESSOR_INFORMATION>();
+    int count = (int)(bufferSize / structSize);
+    if (count <= 0) return null;
+
+    nint buffer = Marshal.AllocHGlobal((int)bufferSize);
+    try {
+      if (!GetLogicalProcessorInformation(buffer, ref bufferSize)) return null;
+
+      var cache = new CpuCacheInfo();
+      nint ptr = buffer;
+      for (int i = 0; i < count; i++, ptr += structSize) {
+        var info = Marshal.PtrToStructure<SYSTEM_LOGICAL_PROCESSOR_INFORMATION>(ptr);
+        if (info.Relationship != RelationCache) continue;
+
+        var c = info.Cache;
+        switch (c.Level) {
+          case 1:
+            cache.L1_cache_size += c.Size;
+            cache.L1_cache_line_size = c.LineSize;
+            break;
+          case 2:
+            cache.L2_cache_size += c.Size;
+            cache.L2_cache_line_size = c.LineSize;
+            break;
+          case 3:
+            cache.L3_cache_size += c.Size;
+            cache.L3_cache_line_size = c.LineSize;
+            break;
+        }
+      }
+
+      if (cache.L1_cache_size == 0 && cache.L2_cache_size == 0 && cache.L3_cache_size == 0) return null;
+      return cache;
+    }
+    finally {
+      Marshal.FreeHGlobal(buffer);
+    }
+  }
+
+  private const int RelationCache = 2;
+
+  [DllImport("kernel32.dll", SetLastError = true)]
+  [return: MarshalAs(UnmanagedType.Bool)]
+  private static extern bool GetLogicalProcessorInformation(nint buffer, ref uint returnLength);
+
+  // Mirrors the native SYSTEM_LOGICAL_PROCESSOR_INFORMATION (x64 layout — the managed default
+  // platform). The trailing union's ULONGLONG Reserved[2] arm forces 8-byte alignment, so the
+  // Cache descriptor sits at offset 16 (not 12); the two reserved qwords overlay it to pin the
+  // union offset and total size (32 bytes) exactly.
+  [StructLayout(LayoutKind.Explicit)]
+  private struct SYSTEM_LOGICAL_PROCESSOR_INFORMATION {
+    [FieldOffset(0)] public ulong ProcessorMask;
+    [FieldOffset(8)] public int Relationship;
+    [FieldOffset(16)] public CACHE_DESCRIPTOR Cache;
+    [FieldOffset(16)] private readonly ulong _reserved0;
+    [FieldOffset(24)] private readonly ulong _reserved1;
+  }
+
+  [StructLayout(LayoutKind.Sequential)]
+  private struct CACHE_DESCRIPTOR {
+    public byte Level;
+    public byte Associativity;
+    public ushort LineSize;
+    public int Size;
+    public int Type;
   }
 
   private static (uint family, uint model, uint stepping) DecodeFms(int eax) {

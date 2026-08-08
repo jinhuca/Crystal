@@ -6,7 +6,7 @@ namespace Crystal.Provider.Telemetry.PawnIo;
 /// Provides access to a ChromeOS embedded controller via the PawnIO LpcCrOSEC module.
 /// </summary>
 public class LpcCrOSEc {
-  private readonly PawnIo _pawnIO = PawnIo.LoadModuleFromResource(typeof(LpcCrOSEc).Assembly, $"{nameof(Crystal.Provider.Telemetry)}.Resources.PawnIo.LpcCrOSEC.bin");
+  private readonly PawnIo _pawnIO = PawnIo.LoadModuleFromResource(typeof(LpcCrOSEc).Assembly, "Crystal.Provider.Telemetry.Resources.PawnIo.LpcCrOSEC.bin");
 
   /// <summary>
   /// Sends a command to the embedded controller and returns its response.

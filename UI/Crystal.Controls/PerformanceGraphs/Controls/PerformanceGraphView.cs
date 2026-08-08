@@ -60,6 +60,16 @@ public class PerformanceGraphView : Control {
     set => SetValue(MaxValueFormatProperty, value);
   }
 
+  /// <summary>When true, a segmented-bar graph is drawn mirrored (180°). Drives <see cref="PerformanceGraph.Flip"/>.</summary>
+  public static readonly DependencyProperty FlipProperty =
+      DependencyProperty.Register(nameof(Flip), typeof(bool), typeof(PerformanceGraphView),
+          new FrameworkPropertyMetadata(false, OnFlipChanged));
+
+  public bool Flip {
+    get => (bool)GetValue(FlipProperty);
+    set => SetValue(FlipProperty, value);
+  }
+
   /// <summary>Bottom of the graph's value scale. Drives <see cref="PerformanceGraph.MinValue"/>.</summary>
   public static readonly DependencyProperty MinValueProperty =
       DependencyProperty.Register(nameof(MinValue), typeof(double), typeof(PerformanceGraphView),
@@ -121,6 +131,7 @@ public class PerformanceGraphView : Control {
       // push their current values so the plot starts in sync.
       Graph.MaxValue = MaxValue;
       Graph.MinValue = MinValue;
+      Graph.Flip = Flip;
     }
   }
 
@@ -130,5 +141,9 @@ public class PerformanceGraphView : Control {
 
   private static void OnMinValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
     if (((PerformanceGraphView)d).Graph is { } graph) graph.MinValue = (double)e.NewValue;
+  }
+
+  private static void OnFlipChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+    if (((PerformanceGraphView)d).Graph is { } graph) graph.Flip = (bool)e.NewValue;
   }
 }

@@ -1,3 +1,4 @@
+using Microsoft.Win32;
 using Crystal.Provider.Mmi.HardwareFeatures.VideoController;
 using Crystal.Provider.Mmi.MmiEngine;
 
@@ -44,7 +45,66 @@ public sealed class GpuInfoBuilder {
         VideoRamGB: c.VideoRamInGB,
         DisplayMode: c.FormattedDisplayMode,
         DriverVersion: c.DriverVersion,
+        DriverDate: ReadDriverDate(c.PNPDeviceID) ?? c.InfDate ?? c.InstallDate,
         VideoProcessor: c.VideoProcessor,
+        PhysicalLocation: ReadPhysicalLocation(c.PNPDeviceID),
         RefreshRateHz: c.CurrentRefreshRate);
+  }
+
+  // Win32_VideoController.InfDate/InstallDate are almost always empty, so the "Driver Date" field
+  // reads blank. The reliable value lives in the driver's class key: the device's PnP enumeration
+  // key holds a "Driver" value (a relative path like "{4d36e968-...}\0000") pointing under
+  // Control\Class, where "DriverDate" is stored as a "M-D-YYYY" string. We resolve that here.
+  private static DateTime? ReadDriverDate(string? pnpDeviceId) {
+    if (string.IsNullOrWhiteSpace(pnpDeviceId)) return null;
+    try {
+      using var enumKey = Registry.LocalMachine.OpenSubKey(
+          $@"SYSTEM\CurrentControlSet\Enum\{pnpDeviceId}");
+      if (enumKey?.GetValue("Driver") is not string driverPath || string.IsNullOrWhiteSpace(driverPath))
+        return null;
+
+      using var classKey = Registry.LocalMachine.OpenSubKey(
+          $@"SYSTEM\CurrentControlSet\Control\Class\{driverPath}");
+      if (classKey?.GetValue("DriverDate") is not string raw || string.IsNullOrWhiteSpace(raw))
+        return null;
+
+      return DateTime.TryParse(raw, System.Globalization.CultureInfo.InvariantCulture,
+          System.Globalization.DateTimeStyles.None, out var date) ? date : null;
+    } catch {
+      return null;
+    }
+  }
+
+  // The "PCI bus X, device Y, function Z" string isn't a Win32_VideoController property; it's the
+  // device's LocationInformation, stored in the registry under its PnP enumeration key. Windows
+  // stores it as an indirect resource reference, e.g.
+  //   "@System32\drivers\pci.sys,#65536;PCI bus %1, device %2, function %3;(11,0,0)"
+  // The trailing segments carry everything we need: a "%1/%2/%3" template plus a "(11,0,0)" arg
+  // tuple. We parse those directly rather than calling SHLoadIndirectString, whose relative
+  // resource path (no %SystemRoot%) fails to load on many systems and yields an empty string.
+  private static string? ReadPhysicalLocation(string? pnpDeviceId) {
+    if (string.IsNullOrWhiteSpace(pnpDeviceId)) return null;
+    try {
+      using var key = Registry.LocalMachine.OpenSubKey(
+          $@"SYSTEM\CurrentControlSet\Enum\{pnpDeviceId}");
+      if (key?.GetValue("LocationInformation") is not string raw || string.IsNullOrWhiteSpace(raw))
+        return null;
+
+      // Plain (non-indirect) values are already the final text.
+      if (!raw.StartsWith('@')) return raw;
+
+      var segments = raw.Split(';');
+      var template = Array.Find(segments, s => s.Contains("%1"));
+      var args = Array.Find(segments, s => s.StartsWith('(') && s.EndsWith(')'));
+      if (template is null || args is null) return null;
+
+      var values = args.Trim('(', ')').Split(',');
+      var result = template;
+      for (int i = 0; i < values.Length; i++)
+        result = result.Replace($"%{i + 1}", values[i].Trim());
+      return result;
+    } catch {
+      return null;
+    }
   }
 }

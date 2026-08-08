@@ -11,10 +11,16 @@ public interface IMemoryViewModel {
   string SlotsLabel { get; }
   string MaxSpeedLabel { get; }
   double Load { get; }
+  double? UsedGB { get; }
+  double? TotalCapacityGB { get; }
   ObservableCollection<MemoryModuleViewModel> Modules { get; }
+  ObservableCollection<MemoryModuleViewModel> SummaryModules { get; }
 
-  /// <summary>Hands the summary tile's load-history graph to the VM so it can push samples.</summary>
+  /// <summary>Hands the summary tile's utilization-history graph to the VM so it can push samples.</summary>
   void AttachGraph(PerformanceGraph graph);
+
+  /// <summary>Hands the summary tile's used-GB history graph to the VM so it can push samples.</summary>
+  void AttachUsedGraph(PerformanceGraph graph);
 
   ICommand ShowDetailCommand { get; }
   ICommand ShowDashboardCommand { get; }

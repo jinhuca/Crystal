@@ -9,7 +9,7 @@ namespace MemoryModule.Models;
 /// polling only runs while subscribed).</summary>
 public sealed class MemoryModel : IMemoryModel, IDisposable {
   private readonly IConnectableObservable<MemorySnapshot> _specs;
-  private readonly IObservable<double> _load;
+  private readonly IObservable<MemoryLoadReading> _load;
   private readonly IDisposable _connection;
 
   public MemoryModel(MemoryInfoBuilder builder, MemoryLoadSource loads,
@@ -30,7 +30,7 @@ public sealed class MemoryModel : IMemoryModel, IDisposable {
   }
 
   public IObservable<MemorySnapshot> Specs => _specs.AsObservable();
-  public IObservable<double> Load => _load;
+  public IObservable<MemoryLoadReading> Load => _load;
 
   public void Dispose() => _connection.Dispose();
 }

@@ -40,7 +40,10 @@ public sealed class TelemetryCpuSensorSource : ICpuTelemetrySource {
 
     var sensors = cpu.Sensors;
     return new CpuSensors {
-      CpuSpeed = Read(sensors, cpu.Name, SensorType.Clock, "Bus Speed"),
+      // "Bus Speed" is only the ~100 MHz reference clock; the meaningful CPU speed
+      // is the current core clock. Prefer an AMD package-average clock when present,
+      // otherwise take the fastest per-core clock (the boosting core).
+      CpuSpeed = ReadCoreClock(sensors, cpu.Name),
       Voltage = Read(sensors, cpu.Name, SensorType.Voltage, "CPU Core", "Core (SVI2 TFN)"),
       PackagePower = Read(sensors, cpu.Name, SensorType.Power, "CPU Package", "Package"),
       CoresPower = Read(sensors, cpu.Name, SensorType.Power, "CPU Cores"),
@@ -105,6 +108,24 @@ public sealed class TelemetryCpuSensorSource : ICpuTelemetrySource {
       if (match is not null) break;
     }
     return SensorReadingExtensions.ToReading(match, hardwareName, HardwareType.Cpu);
+  }
+
+  // The current CPU clock: an AMD package-average clock if the part exposes one,
+  // else the fastest individual core clock. "Bus Speed" (the ~100 MHz reference)
+  // is excluded because it is not the operating frequency users expect to see.
+  private static SensorReading ReadCoreClock(ISensor[] sensors, string hardwareName) {
+    var avg = sensors.FirstOrDefault(s => s.SensorType == SensorType.Clock
+                                          && s.Name.Equals("Cores (Average)", StringComparison.OrdinalIgnoreCase));
+    if (avg is not null)
+      return SensorReadingExtensions.ToReading(avg, hardwareName, HardwareType.Cpu);
+
+    ISensor? best = null;
+    foreach (var s in sensors) {
+      if (s.SensorType != SensorType.Clock) continue;
+      if (s.Name.StartsWith("Bus", StringComparison.OrdinalIgnoreCase)) continue;
+      if (best is null || (s.Value ?? 0) > (best.Value ?? 0)) best = s;
+    }
+    return SensorReadingExtensions.ToReading(best, hardwareName, HardwareType.Cpu);
   }
 
   private static SensorReading MaxByPrefix(ISensor[] sensors, string hardwareName, SensorType type, string namePrefix) {

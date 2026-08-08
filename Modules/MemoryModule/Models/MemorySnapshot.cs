@@ -17,3 +17,7 @@ public record MemorySnapshot(
     double? TotalCapacityGB,
     int PopulatedSlots,
     uint? MaxSpeedMHz);
+
+/// <summary>A live physical-memory reading: used percentage (0-100) plus used and available
+/// capacity in GB (each nullable when the matching data sensor is unavailable).</summary>
+public sealed record MemoryLoadReading(double LoadPercent, double? UsedGB, double? AvailableGB);

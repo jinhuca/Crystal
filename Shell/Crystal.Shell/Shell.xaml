@@ -15,7 +15,7 @@
          UseAeroCaptionButtons=False) so the window's own 1dip BorderBrush is the only visible
          edge and we draw our own min/max/close buttons in the title bar below. -->
     <shell:WindowChrome.WindowChrome>
-        <shell:WindowChrome CaptionHeight="32"
+        <shell:WindowChrome CaptionHeight="43"
                             GlassFrameThickness="0"
                             CornerRadius="0"
                             ResizeBorderThickness="6"
@@ -30,9 +30,9 @@
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Foreground" Value="#DDDDDD"/>
             <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Width" Value="46"/>
+            <Setter Property="Width" Value="61"/>
             <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
-            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="FontSize" Value="18"/>
             <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -63,22 +63,30 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="32"/>
+            <RowDefinition Height="43"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!-- Title bar: shares the window's black content background; the left region is the drag
              surface, the right region holds the custom caption buttons. -->
         <Grid Grid.Row="0" Background="{Binding Background, RelativeSource={RelativeSource AncestorType=Window}}">
-            <TextBlock Text="Crystal" Foreground="#8A94A0" FontFamily="Segoe UI" FontSize="12"
+            <TextBlock Text="Crystal" Foreground="#8A94A0" FontFamily="Segoe UI" FontSize="16"
                        VerticalAlignment="Center" Margin="10,0,0,0"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock x:Name="DateTimeText" Foreground="#C8D0D8" FontFamily="Segoe UI" FontSize="16"
+                           VerticalAlignment="Center"/>
+                <TextBlock Text="|" Foreground="#5A6470" FontFamily="Segoe UI" FontSize="16"
+                           VerticalAlignment="Center" Margin="12,0,12,0"/>
+                <TextBlock x:Name="UptimeText" Foreground="#C8D0D8" FontFamily="Segoe UI" FontSize="16"
+                           VerticalAlignment="Center"/>
+            </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button x:Name="MinimizeButton" Style="{StaticResource CaptionButtonStyle}"
-                        Click="OnMinimizeClick" ToolTip="Minimize" Content="&#xE921;"/>
+                        Click="OnMinimizeClick" Content="&#xE921;"/>
                 <Button x:Name="MaximizeButton" Style="{StaticResource CaptionButtonStyle}"
-                        Click="OnMaximizeRestoreClick" ToolTip="Maximize" Content="&#xE922;"/>
+                        Click="OnMaximizeRestoreClick" Content="&#xE922;"/>
                 <Button x:Name="CloseButton" Style="{StaticResource CloseButtonStyle}"
-                        Click="OnCloseClick" ToolTip="Close" Content="&#xE8BB;"/>
+                        Click="OnCloseClick" Content="&#xE8BB;"/>
             </StackPanel>
         </Grid>
 

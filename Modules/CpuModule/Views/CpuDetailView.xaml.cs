@@ -2,6 +2,7 @@ using System.Windows;
 using System.Windows.Controls;
 using CpuModule.ViewModels.Interfaces;
 using Crystal.Controls.MeterGauges.Themes;
+using Crystal.Controls.PerformanceGraphs.Kinds;
 using Crystal.Controls.PerformanceGraphs.Themes;
 
 namespace CpuModule.Views;
@@ -24,11 +25,13 @@ public partial class CpuDetailView : UserControl {
     if (TemperatureView.Graph is not { } temperature) return;
 
     // Accent each plot to match the reference image, and mirror the accent onto its gauge.
-    utilization.ApplyTheme(GraphThemes.Rose());
-    voltage.ApplyTheme(GraphThemes.Emerald());
-    clock.ApplyTheme(GraphThemes.Amber());
-    power.ApplyTheme(GraphThemes.Rose());
-    temperature.ApplyTheme(GraphThemes.Rose());
+    // Themes are built for the segmented-bar kind so the fill is a flat solid, not the
+    // line-style vertical gradient (which repeats per segment and looks broken).
+    utilization.ApplyTheme(GraphThemes.Rose(GraphKind.SegmentedBar));
+    voltage.ApplyTheme(GraphThemes.Emerald(GraphKind.SegmentedBar));
+    clock.ApplyTheme(GraphThemes.Amber(GraphKind.SegmentedBar));
+    power.ApplyTheme(GraphThemes.Rose(GraphKind.SegmentedBar));
+    temperature.ApplyTheme(GraphThemes.Rose(GraphKind.SegmentedBar));
 
     if (DataContext is ICpuViewModel vm)
       vm.SensorsViewModel.AttachGraphs(utilization, voltage, clock, power, temperature);

@@ -1,3 +1,4 @@
+using Crystal.Controls.Loading;
 using Crystal.Infrastructure.Constants;
 using Crystal.Infrastructure.Constants.Navigation;
 using NetworkModule.Models;
@@ -37,6 +38,14 @@ public class NetworkModule(IRegionManager regionManager) : IModule {
   }
 
   public void OnInitialized(IContainerProvider containerProvider) {
-    _regionManager.RegisterViewWithRegion(RegionNames.NetworkSummaryRegionName, typeof(NetworkSummaryView));
+    // Self-warming loading tile: spinner now, warm the model singleton off the UI thread, swap in
+    // the real view when ready. See CpuModule for the rationale.
+    _regionManager.RegisterViewWithRegion(RegionNames.NetworkSummaryRegionName, () => {
+      var host = new LoadingHost { Label = "Network" };
+      host.Begin(
+          () => containerProvider.Resolve<INetworkModel>(),
+          () => new NetworkSummaryView());
+      return host;
+    });
   }
 }

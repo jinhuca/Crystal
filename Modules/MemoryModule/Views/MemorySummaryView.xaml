@@ -4,13 +4,32 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:prism="http://prismlibrary.com/"
-             xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs.Controls;assembly=Crystal.Controls"
-             xmlns:gauges="clr-namespace:Crystal.Controls.MeterGauges.Controls;assembly=Crystal.Controls"
+             xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs;assembly=Crystal.Controls"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
              d:DesignHeight="240" d:DesignWidth="380"
              Background="Transparent" Foreground="White"
              FontFamily="Segoe UI">
+  <UserControl.Resources>
+    <!-- Metric readout to the right of each graph: big value, unit on the next line, dim caption. -->
+    <Style x:Key="MetricValue" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="#E6E6E6"/>
+      <Setter Property="FontSize" Value="24"/>
+      <Setter Property="FontFamily" Value="Consolas"/>
+      <Setter Property="LineHeight" Value="26"/>
+    </Style>
+    <Style x:Key="MetricUnit" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="#C0C0C0"/>
+      <Setter Property="FontSize" Value="12"/>
+      <Setter Property="FontFamily" Value="Consolas"/>
+    </Style>
+    <Style x:Key="MetricCaption" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="#8A94A0"/>
+      <Setter Property="FontSize" Value="11"/>
+      <Setter Property="FontFamily" Value="Consolas"/>
+    </Style>
+  </UserControl.Resources>
+
   <Border Background="Transparent" MouseLeftButtonDown="OnTileClick">
     <Grid Margin="10">
       <Grid.RowDefinitions>
@@ -29,34 +48,88 @@
         </StackPanel>
       </Border>
 
-      <!-- Total installed + slots / max speed -->
-      <StackPanel Grid.Row="1" Margin="0,0,0,8">
-        <TextBlock HorizontalAlignment="Left">
-          <Run Text="{Binding TotalCapacityLabel, Mode=OneWay}" FontSize="16" FontFamily="Consolas"/>
-          <Run Text=" total" Foreground="#8A94A0" FontSize="11"/>
-        </TextBlock>
-        <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+      <!-- Single summary line (total · populated · max speed), then a dense per-slot list where
+           each row adds slot type (form factor) and manufacturer. -->
+      <StackPanel Grid.Row="1" Margin="0,0,0,6">
+        <StackPanel Orientation="Horizontal">
+          <TextBlock VerticalAlignment="Center">
+            <Run Text="{Binding TotalCapacityLabel, Mode=OneWay}" FontSize="16" FontFamily="Consolas"/>
+            <Run Text=" total" Foreground="#8A94A0" FontSize="11"/>
+          </TextBlock>
           <TextBlock Text="{Binding SlotsLabel}" Foreground="#8A94A0" FontSize="11"
-                     FontFamily="Consolas" Margin="0,0,14,0"/>
+                     FontFamily="Consolas" VerticalAlignment="Center" Margin="16,0,0,0"/>
           <TextBlock Text="{Binding MaxSpeedLabel}" Foreground="#8A94A0" FontSize="11"
-                     FontFamily="Consolas"/>
+                     FontFamily="Consolas" VerticalAlignment="Center" Margin="14,0,0,0"/>
         </StackPanel>
+
+        <!-- One row per populated slot: label · capacity · speed · type · manufacturer. -->
+        <ItemsControl ItemsSource="{Binding SummaryModules}" Margin="0,4,0,0">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <Grid Margin="0,1">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="Auto"/>
+                  <ColumnDefinition Width="Auto"/>
+                  <ColumnDefinition Width="Auto"/>
+                  <ColumnDefinition Width="Auto"/>
+                  <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="{Binding SlotLabel}" Foreground="#8A94A0"
+                           FontSize="11" FontFamily="Consolas" Width="130" Margin="0,0,6,0"/>
+                <TextBlock Grid.Column="1" Text="{Binding CapacityLabel}" Foreground="#C8C8C8"
+                           FontSize="11" FontFamily="Consolas" Width="46" Margin="0,0,6,0"/>
+                <TextBlock Grid.Column="2" Text="{Binding SpeedLabel}" Foreground="#C8C8C8"
+                           FontSize="11" FontFamily="Consolas" Width="62" Margin="0,0,6,0"/>
+                <TextBlock Grid.Column="3" Text="{Binding FormFactor}" Foreground="#C8C8C8"
+                           FontSize="11" FontFamily="Consolas" Width="98" Margin="0,0,6,0"/>
+                <TextBlock Grid.Column="4" Text="{Binding Manufacturer}" Foreground="#C8C8C8"
+                           FontSize="11" FontFamily="Consolas"/>
+              </Grid>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
       </StackPanel>
 
-      <!-- Live utilization: gauge + load-percentage graph -->
+      <!-- Utilization (top) + Used (bottom) stacked graphs, each with a big value / unit / caption
+           readout to the right — matching the GPU tile layout. -->
       <Grid Grid.Row="2">
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="110"/>
-          <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <gauges:MeterGaugeView Grid.Column="0" Title="Load" Unit="%"
-                               MinValue="0" MaxValue="100" ValueFormat="{}{0:0}"
-                               Value="{Binding Load}"/>
-        <graphs:PerformanceGraphView x:Name="UtilizationView" Grid.Column="1" Margin="8,0"
-                                     Loaded="OnGraphLoaded"
-                                     Title="Load Percentage" MinValue="0" MaxValue="100"
-                                     MaxValueFormat="{}{0}%" MaxTime="60"
-                                     MaxTimeFormat="{}{0}s" MinTime="0"/>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="*"/>
+          <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="0,0,0,6">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+          <graphs:PerformanceGraph Grid.Column="0"
+                                   Loaded="OnLoadGraphLoaded"
+                                   Kind="Line"
+                                   MinValue="0" MaxValue="100"/>
+          <StackPanel Grid.Column="1" Margin="10,0,0,0" Width="96" VerticalAlignment="Center">
+            <TextBlock Text="{Binding Load, StringFormat={}{0:0.00}}" Style="{StaticResource MetricValue}"/>
+            <TextBlock Text="%" Style="{StaticResource MetricUnit}"/>
+            <TextBlock Text="Utilization" Style="{StaticResource MetricCaption}"/>
+          </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="1">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+          <graphs:PerformanceGraph Grid.Column="0"
+                                   Loaded="OnUsedGraphLoaded"
+                                   Kind="Line"
+                                   MinValue="0"
+                                   MaxValue="{Binding TotalCapacityGB, TargetNullValue=64}"/>
+          <StackPanel Grid.Column="1" Margin="10,0,0,0" Width="96" VerticalAlignment="Center">
+            <TextBlock Text="{Binding UsedGB, StringFormat={}{0:0.0}, TargetNullValue=—}" Style="{StaticResource MetricValue}"/>
+            <TextBlock Text="GB" Style="{StaticResource MetricUnit}"/>
+            <TextBlock Text="Used" Style="{StaticResource MetricCaption}"/>
+          </StackPanel>
+        </Grid>
       </Grid>
     </Grid>
   </Border>

@@ -1,5 +1,7 @@
+using System;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Threading;
 using Crystal.Shell.Navigation;
 
 namespace Crystal.Shell;
@@ -19,6 +21,7 @@ public partial class Shell : Window {
   private const string LayoutKey = "MainWindow";
 
   private readonly WindowLayoutStore _layouts;
+  private readonly DispatcherTimer _clock;
 
   public Shell(WindowLayoutStore layouts) {
     _layouts = layouts;
@@ -27,6 +30,17 @@ public partial class Shell : Window {
     StateChanged += (_, _) => UpdateMaximizeButton();
     Closing += OnClosing;
     UpdateMaximizeButton();
+
+    _clock = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+    _clock.Tick += (_, _) => UpdateClock();
+    _clock.Start();
+    UpdateClock();
+  }
+
+  private void UpdateClock() {
+    DateTimeText.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+    // TimeSpan formatted as "d.hh:mm:ss" to match the requested "3.21:22:12" uptime style.
+    UptimeText.Text = TimeSpan.FromMilliseconds(Environment.TickCount64).ToString(@"d\.hh\:mm\:ss");
   }
 
   private void OnMinimizeClick(object sender, RoutedEventArgs e) =>
@@ -42,7 +56,6 @@ public partial class Shell : Window {
   private void UpdateMaximizeButton() {
     bool maximized = WindowState == WindowState.Maximized;
     MaximizeButton.Content = maximized ? RestoreGlyph : MaximizeGlyph;
-    MaximizeButton.ToolTip = maximized ? "Restore" : "Maximize";
   }
 
   // Restore the last-saved position, size and maximized state. A saved rect is used only if a

@@ -9,7 +9,7 @@ namespace StorageModule.Models;
 /// (ref-counted, so polling only runs while subscribed).</summary>
 public sealed class StorageModel : IStorageModel, IDisposable {
   private readonly IConnectableObservable<StorageSnapshot> _specs;
-  private readonly IObservable<double> _load;
+  private readonly IObservable<StorageLoadReading> _load;
   private readonly IDisposable _connection;
 
   public StorageModel(StorageInfoBuilder builder, StorageLoadSource loads,
@@ -30,7 +30,7 @@ public sealed class StorageModel : IStorageModel, IDisposable {
   }
 
   public IObservable<StorageSnapshot> Specs => _specs.AsObservable();
-  public IObservable<double> Load => _load;
+  public IObservable<StorageLoadReading> Load => _load;
 
   public void Dispose() => _connection.Dispose();
 }

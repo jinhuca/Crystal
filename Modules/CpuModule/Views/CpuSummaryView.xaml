@@ -4,70 +4,174 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:prism="http://prismlibrary.com/"
-             xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs.Controls;assembly=Crystal.Controls"
-             xmlns:gauges="clr-namespace:Crystal.Controls.MeterGauges.Controls;assembly=Crystal.Controls"
+             xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs;assembly=Crystal.Controls"
              xmlns:local="clr-namespace:CpuModule.Views"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
-             d:DesignHeight="240" d:DesignWidth="760"
+             d:DesignHeight="240" d:DesignWidth="1000"
              Background="Transparent" Foreground="White"
              FontFamily="Segoe UI">
   <UserControl.Resources>
     <local:LoadToBrushConverter x:Key="LoadToBrush"/>
+
+    <!-- Metric readout to the right of each graph: big value, unit on the next line, dim caption. -->
+    <Style x:Key="MetricValue" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="#E6E6E6"/>
+      <Setter Property="FontSize" Value="24"/>
+      <Setter Property="FontFamily" Value="Consolas"/>
+      <Setter Property="LineHeight" Value="26"/>
+    </Style>
+    <Style x:Key="MetricUnit" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="#C0C0C0"/>
+      <Setter Property="FontSize" Value="12"/>
+      <Setter Property="FontFamily" Value="Consolas"/>
+    </Style>
+    <Style x:Key="MetricCaption" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="#8A94A0"/>
+      <Setter Property="FontSize" Value="11"/>
+      <Setter Property="FontFamily" Value="Consolas"/>
+    </Style>
+    <Style x:Key="HeaderSpec" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="#8A94A0"/>
+      <Setter Property="FontSize" Value="11"/>
+      <Setter Property="FontFamily" Value="Consolas"/>
+      <Setter Property="VerticalAlignment" Value="Center"/>
+      <Setter Property="Margin" Value="0,0,16,0"/>
+    </Style>
+    <!-- Process/thread/handle totals in the footer: larger than the header specs. -->
+    <Style x:Key="FooterStat" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="#B0B0B0"/>
+      <Setter Property="FontSize" Value="14"/>
+      <Setter Property="FontFamily" Value="Consolas"/>
+      <Setter Property="VerticalAlignment" Value="Center"/>
+      <Setter Property="Margin" Value="0,0,20,0"/>
+    </Style>
   </UserControl.Resources>
+
   <Border Background="Transparent" MouseLeftButtonDown="OnTileClick">
     <Grid Margin="10">
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>
         <RowDefinition Height="*"/>
-        <RowDefinition Height="Auto"/>
       </Grid.RowDefinitions>
 
-      <!-- Dense header bar: accent tick + title + inline detail, thin divider rule below -->
+      <!-- ============ Header: title + inline specs (left), slot (right) ============ -->
       <Border Grid.Row="0" BorderBrush="#2A2A2A" BorderThickness="0,0,0,1" Padding="0,0,0,4">
-        <StackPanel Orientation="Horizontal">
-          <Border Width="3" Background="#3E9BE8" Margin="0,1,8,1"/>
-          <TextBlock Text="CPU" Foreground="#E6E6E6" FontSize="12" FontWeight="SemiBold"
-                     VerticalAlignment="Center" Margin="0,0,12,0"/>
-          <TextBlock DataContext="{Binding SpecsViewModel}" Text="{Binding Brand}"
-                     Foreground="#8A94A0" FontSize="11" FontFamily="Consolas"
-                     VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
-        </StackPanel>
+        <Grid DataContext="{Binding SpecsViewModel}">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+          <StackPanel Grid.Column="0" Orientation="Horizontal">
+            <Border Width="3" Background="#3E9BE8" Margin="0,1,8,1"/>
+            <TextBlock Text="CPU" Foreground="#E6E6E6" FontSize="12" FontWeight="SemiBold"
+                       VerticalAlignment="Center" Margin="0,0,16,0"/>
+            <TextBlock Text="{Binding Brand}" Style="{StaticResource HeaderSpec}"
+                       TextTrimming="CharacterEllipsis"/>
+            <TextBlock Text="{Binding PhysicalCores, StringFormat=Physical Cores: {0}}" Style="{StaticResource HeaderSpec}"/>
+            <TextBlock Text="{Binding LogicalCores, StringFormat=Logical Cores: {0}}" Style="{StaticResource HeaderSpec}"/>
+            <TextBlock Text="{Binding L1CacheKb, StringFormat=L1: {0:N0} KB}" Style="{StaticResource HeaderSpec}"/>
+            <TextBlock Text="{Binding L2CacheKb, StringFormat=L2: {0:N0} KB}" Style="{StaticResource HeaderSpec}"/>
+            <TextBlock Text="{Binding L3CacheKb, StringFormat=L3: {0:N0} KB}" Style="{StaticResource HeaderSpec}"/>
+            <TextBlock Text="{Binding BaseSpeedMHz, StringFormat=Base Speed: {0:N0} MHz}" Style="{StaticResource HeaderSpec}"/>
+          </StackPanel>
+          <TextBlock Grid.Column="1" Text="{Binding Socket, StringFormat=Slot# {0}}"
+                     Foreground="#8A94A0" FontSize="11" FontFamily="Consolas" VerticalAlignment="Center"/>
+        </Grid>
       </Border>
 
-      <!-- Value gauge + load percentage graph + per-core load list -->
-      <Grid Grid.Row="1" DataContext="{Binding SensorsViewModel}" Margin="0,8">
+      <!-- ============ Bars + per-core list ============ -->
+      <Grid Grid.Row="1" DataContext="{Binding SensorsViewModel}" Margin="0,6,0,0">
         <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="110"/>
+          <ColumnDefinition Width="*"/>
           <ColumnDefinition Width="*"/>
           <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <gauges:MeterGaugeView Grid.Column="0" Title="Load" Unit="%"
-                               MinValue="0" MaxValue="100" ValueFormat="{}{0:0}"
-                               Value="{Binding Load}"/>
-        <graphs:PerformanceGraphView x:Name="UtilizationView" Grid.Column="1" Margin="8,0"
-                                     Title="Load Percentage" MinValue="0" MaxValue="100"
-                                     MaxValueFormat="{}{0}%" MaxTime="60"
-                                     MaxTimeFormat="{}{0}s" MinTime="0"/>
+        <!-- Left group: Clock (top) + Power (bottom) -->
+        <Grid Grid.Column="0" Margin="0,0,16,0" VerticalAlignment="Top">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="86"/>
+            <RowDefinition Height="86"/>
+          </Grid.RowDefinitions>
 
-        <!-- Per-core load: "C## <load>% [bar 0-100]", 8 cores per column, wrapping rightward. -->
-        <ScrollViewer Grid.Column="2" Margin="12,0,0,0"
-                      VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
-          <ItemsControl ItemsSource="{Binding CoreLoads}">
+          <Grid Grid.Row="0" Margin="0,0,0,6">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <graphs:PerformanceGraph x:Name="ClockBar" Grid.Column="0" Kind="Line" MinHeight="40" MinValue="0" MaxValue="6"/>
+            <StackPanel Grid.Column="1" Margin="10,0,0,0" Width="96" VerticalAlignment="Center">
+              <TextBlock Text="{Binding SpeedGhz, StringFormat={}{0:0.00}}" Style="{StaticResource MetricValue}"/>
+              <TextBlock Text="GHz" Style="{StaticResource MetricUnit}"/>
+              <TextBlock Text="Clock" Style="{StaticResource MetricCaption}"/>
+            </StackPanel>
+          </Grid>
+
+          <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <graphs:PerformanceGraph x:Name="PowerBar" Grid.Column="0" Kind="Line" MinHeight="40" MinValue="0" MaxValue="100"/>
+            <StackPanel Grid.Column="1" Margin="10,0,0,0" Width="96" VerticalAlignment="Center">
+              <TextBlock Text="{Binding Power, StringFormat={}{0:0.00}}" Style="{StaticResource MetricValue}"/>
+              <TextBlock Text="Watts" Style="{StaticResource MetricUnit}"/>
+              <TextBlock Text="Power" Style="{StaticResource MetricCaption}"/>
+            </StackPanel>
+          </Grid>
+        </Grid>
+
+        <!-- Center group: Utilization (top) + Temperature (bottom) -->
+        <Grid Grid.Column="1" Margin="0,0,16,0" VerticalAlignment="Top">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="86"/>
+            <RowDefinition Height="86"/>
+          </Grid.RowDefinitions>
+
+          <Grid Grid.Row="0" Margin="0,0,0,6">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <graphs:PerformanceGraph x:Name="UtilizationBar" Grid.Column="0" Kind="Line" MinHeight="40" MinValue="0" MaxValue="100"/>
+            <StackPanel Grid.Column="1" Margin="10,0,0,0" Width="96" VerticalAlignment="Center">
+              <TextBlock Text="{Binding Load, StringFormat={}{0:0.00}}" Style="{StaticResource MetricValue}"/>
+              <TextBlock Text="%" Style="{StaticResource MetricUnit}"/>
+              <TextBlock Text="Utilization" Style="{StaticResource MetricCaption}"/>
+            </StackPanel>
+          </Grid>
+
+          <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <graphs:PerformanceGraph x:Name="TemperatureBar" Grid.Column="0" Kind="Line" MinHeight="40" MinValue="0" MaxValue="120"/>
+            <StackPanel Grid.Column="1" Margin="10,0,0,0" Width="96" VerticalAlignment="Center">
+              <TextBlock Text="{Binding Temperature, StringFormat={}{0:0.00}}" Style="{StaticResource MetricValue}"/>
+              <TextBlock Text="°C" Style="{StaticResource MetricUnit}"/>
+              <TextBlock Text="Temperature" Style="{StaticResource MetricCaption}"/>
+            </StackPanel>
+          </Grid>
+        </Grid>
+
+        <!-- Right group: per-core load, filling top-to-bottom then wrapping into the next column,
+             with the process/thread/handle totals pinned to the bottom (level with the
+             Temperature graph). -->
+        <DockPanel Grid.Column="2" LastChildFill="False">
+          <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding CoreLoads}">
             <ItemsControl.ItemsPanel>
               <ItemsPanelTemplate>
-                <!-- Fill each column top-to-bottom, then wrap into the next column.
-                     ItemHeight * 8 caps a column at 8 cores; cores 9+ flow rightward. -->
-                <WrapPanel Orientation="Vertical" MaxHeight="176" ItemHeight="22" ItemWidth="200"/>
+                <WrapPanel Orientation="Vertical" MaxHeight="144" ItemHeight="24" ItemWidth="180"/>
               </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
               <DataTemplate>
-                <Grid Margin="0,1,16,1">
+                <Grid Margin="0,1,12,1">
                   <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="34"/>
-                    <ColumnDefinition Width="56"/>
+                    <ColumnDefinition Width="52"/>
                     <ColumnDefinition Width="*"/>
                   </Grid.ColumnDefinitions>
                   <TextBlock Grid.Column="0" Text="{Binding Label}" Foreground="#8A94A0"
@@ -84,13 +188,15 @@
               </DataTemplate>
             </ItemsControl.ItemTemplate>
           </ItemsControl>
-        </ScrollViewer>
-      </Grid>
 
-      <!-- Instruction feature hint -->
-      <TextBlock Grid.Row="2" DataContext="{Binding SpecsViewModel}"
-                 Foreground="#8A94A0" FontSize="11" FontFamily="Consolas"
-                 Text="{Binding LogicalCores, StringFormat=Instruction Feature · {0} logical cores}"/>
+          <!-- Process totals, pinned to the bottom of the column. -->
+          <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="0,8,0,0">
+            <TextBlock Text="{Binding ProcessCount, StringFormat=Processes: {0:N0}}" Style="{StaticResource FooterStat}"/>
+            <TextBlock Text="{Binding ThreadCount, StringFormat=Threads: {0:N0}}" Style="{StaticResource FooterStat}"/>
+            <TextBlock Text="{Binding HandleCount, StringFormat=Handles: {0:N0}}" Style="{StaticResource FooterStat}"/>
+          </StackPanel>
+        </DockPanel>
+      </Grid>
     </Grid>
   </Border>
 </UserControl>

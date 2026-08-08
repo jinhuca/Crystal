@@ -30,6 +30,7 @@ public sealed class StorageInfoBuilder {
       CapacityGB: d.Size is { } bytes ? Math.Round(bytes / BytesPerGB, 1) : null,
       InterfaceType: d.InterfaceType,
       MediaType: d.MediaType,
+      Manufacturer: d.Manufacturer?.Trim(),
       SerialNumber: d.SerialNumber?.Trim(),
       FirmwareRevision: d.FirmwareRevision?.Trim(),
       Partitions: d.Partitions);

@@ -7,7 +7,7 @@ namespace Crystal.Provider.Telemetry.PawnIo;
 /// </summary>
 public class IntelMsr {
   private readonly long[] _inArray = new long[1];
-  private readonly PawnIo _pawnIO = PawnIo.LoadModuleFromResource(typeof(IntelMsr).Assembly, $"{nameof(Crystal.Provider.Telemetry)}.Resources.PawnIo.IntelMSR.bin");
+  private readonly PawnIo _pawnIO = PawnIo.LoadModuleFromResource(typeof(IntelMsr).Assembly, "Crystal.Provider.Telemetry.Resources.PawnIo.IntelMSR.bin");
 
   /// <summary>
   /// Reads the full 64-bit value of the specified model-specific register.

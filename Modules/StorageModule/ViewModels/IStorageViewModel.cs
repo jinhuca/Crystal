@@ -10,10 +10,16 @@ public interface IStorageViewModel {
   string TotalCapacityLabel { get; }
   string DriveCountLabel { get; }
   double Load { get; }
+  double TransferRateMBps { get; }
+  double TransferMaxMBps { get; }
   ObservableCollection<StorageDriveViewModel> Drives { get; }
+  ObservableCollection<StorageDriveViewModel> SummaryDrives { get; }
 
-  /// <summary>Hands the summary tile's load-history graph to the VM so it can push samples.</summary>
+  /// <summary>Hands the summary tile's activity-history graph to the VM so it can push samples.</summary>
   void AttachGraph(PerformanceGraph graph);
+
+  /// <summary>Hands the summary tile's transfer-rate history graph to the VM so it can push samples.</summary>
+  void AttachTransferGraph(PerformanceGraph graph);
 
   ICommand ShowDetailCommand { get; }
   ICommand ShowDashboardCommand { get; }

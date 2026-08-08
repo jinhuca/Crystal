@@ -7,7 +7,7 @@ namespace Crystal.Provider.Telemetry.PawnIo;
 /// through the PawnIO kernel driver module.
 /// </summary>
 public class AmdFamily10 {
-  private readonly PawnIo _pawnIo = PawnIo.LoadModuleFromResource(typeof(AmdFamily0F).Assembly, $"{nameof(Crystal.Provider.Telemetry)}.Resources.PawnIo.AMDFamily10.bin");
+  private readonly PawnIo _pawnIo = PawnIo.LoadModuleFromResource(typeof(AmdFamily0F).Assembly, "Crystal.Provider.Telemetry.Resources.PawnIo.AMDFamily10.bin");
 
   /// <summary>
   /// Measures the time-stamp counter multiplier.

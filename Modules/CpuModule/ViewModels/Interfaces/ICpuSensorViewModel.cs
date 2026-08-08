@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using CpuModule.Models;
 using CpuModule.ViewModels;
 using Crystal.Controls.PerformanceGraphs;
 using Crystal.Infrastructure.DataStructures.Cpu.Interfaces;
@@ -22,6 +23,15 @@ public interface ICpuSensorViewModel {
   double Power { get; }
   double Temperature { get; }
 
+  /// <summary>Number of running processes system-wide.</summary>
+  int ProcessCount { get; }
+
+  /// <summary>Total threads across every running process.</summary>
+  int ThreadCount { get; }
+
+  /// <summary>Total open handles across every running process.</summary>
+  int HandleCount { get; }
+
   /// <summary>
   /// True once any MSR-backed reading (voltage, power, temperature, clock) has produced a
   /// value. These come from the ring-0 PawnIO driver; when it is absent (or the process is
@@ -44,4 +54,7 @@ public interface ICpuSensorViewModel {
 
   /// <summary>Reads the socket's live sensors and pushes samples into the attached graphs.</summary>
   void Update(ISystemCpuInfo info);
+
+  /// <summary>Updates the system-wide process/thread/handle totals shown in the footer.</summary>
+  void UpdateSystemStats(SystemStats stats);
 }

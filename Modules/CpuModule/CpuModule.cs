@@ -2,6 +2,7 @@ using CpuModule.Models;
 using CpuModule.ViewModels.Implementations;
 using CpuModule.ViewModels.Interfaces;
 using CpuModule.Views;
+using Crystal.Controls.Loading;
 using Crystal.Infrastructure.Constants;
 using Crystal.Infrastructure.Constants.Navigation;
 using Crystal.Provider.CpuId;
@@ -44,6 +45,11 @@ public class CpuModule(IRegionManager regionManager) : IModule {
     containerRegistry.RegisterSingleton<CpuMonitor>(cp => new CpuMonitor(cp.Resolve<CpuInfoBuilder>()));
     containerRegistry.RegisterSingleton<ICpuModel, CpuModel>();
 
+    // System-wide process/thread/handle totals for the summary footer. Singleton so its
+    // ref-counted poll timer is shared; built via a factory because its optional
+    // TimeSpan?/IScheduler? ctor params can't be resolved by the container (default 1s cadence).
+    containerRegistry.RegisterSingleton<SystemStatsMonitor>(_ => new SystemStatsMonitor());
+
     // View models. The sub-view models are per-consumer; the root VM composes them.
     containerRegistry.Register<ICpuSpecsViewModel, CpuSpecsViewModel>();
     containerRegistry.Register<ICpuSensorViewModel, CpuSensorsViewModel>();
@@ -63,7 +69,16 @@ public class CpuModule(IRegionManager regionManager) : IModule {
   }
 
   public void OnInitialized(IContainerProvider containerProvider) {
-    // Inject the compact summary tile into the dashboard's CPU region.
-    _regionManager.RegisterViewWithRegion(RegionNames.CpuRegionName, typeof(CpuSummaryView));
+    // Inject a self-warming loading tile into the dashboard's CPU region: it shows a spinner
+    // immediately and warms the heavy model singleton (which opens a ring-0 session) on a
+    // background thread, swapping in the real summary view when ready. This keeps startup snappy
+    // and independent per component, so one slow tile never blocks the rest of the dashboard.
+    _regionManager.RegisterViewWithRegion(RegionNames.CpuRegionName, () => {
+      var host = new LoadingHost { Label = "CPU" };
+      host.Begin(
+          () => containerProvider.Resolve<ICpuModel>(),
+          () => new CpuSummaryView());
+      return host;
+    });
   }
 }
