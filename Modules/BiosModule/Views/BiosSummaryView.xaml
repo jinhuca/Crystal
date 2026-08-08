@@ -4,12 +4,43 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:prism="http://prismlibrary.com/"
-             xmlns:views="clr-namespace:BiosModule.Views"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
              d:DesignHeight="240" d:DesignWidth="1100"
              Background="Transparent" Foreground="White"
              FontFamily="Segoe UI">
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/BiosModule;component/Views/BiosResources.xaml"/>
+      </ResourceDictionary.MergedDictionaries>
+      <Style x:Key="FieldLabel" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource BiosLabelBrush}"/>
+        <Setter Property="FontSize" Value="11"/>
+      </Style>
+      <Style x:Key="FieldValue" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="FontFamily" Value="Consolas"/>
+        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+        <Setter Property="Margin" Value="0,0,16,0"/>
+      </Style>
+      <Style x:Key="FieldCell" TargetType="StackPanel">
+        <Setter Property="Margin" Value="0,0,0,10"/>
+      </Style>
+      <!-- Dim min–max sub-line under a rail; collapses until both bounds are known. -->
+      <Style x:Key="RangeHint" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource BiosDimBrush}"/>
+        <Setter Property="FontSize" Value="10"/>
+        <Setter Property="FontFamily" Value="Consolas"/>
+        <Setter Property="Margin" Value="0,-1,16,0"/>
+        <Style.Triggers>
+          <Trigger Property="Text" Value="">
+            <Setter Property="Visibility" Value="Collapsed"/>
+          </Trigger>
+        </Style.Triggers>
+      </Style>
+    </ResourceDictionary>
+  </UserControl.Resources>
   <Border Background="Transparent" MouseLeftButtonDown="OnTileClick">
     <Grid Margin="10">
       <Grid.RowDefinitions>
@@ -18,47 +49,17 @@
       </Grid.RowDefinitions>
 
       <!-- Dense header bar: accent tick + title, thin divider rule below -->
-      <Border Grid.Row="0" BorderBrush="#2A2A2A" BorderThickness="0,0,0,1"
+      <Border Grid.Row="0" BorderBrush="{StaticResource BiosRuleBrush}" BorderThickness="0,0,0,1"
               Padding="0,0,0,4" Margin="0,0,0,8">
         <StackPanel Orientation="Horizontal">
-          <Border Width="3" Background="#3E9BE8" Margin="0,1,8,1"/>
-          <TextBlock Text="BIOS" Foreground="#E6E6E6" FontSize="12" FontWeight="SemiBold"
+          <Border Width="3" Background="{StaticResource BiosAccentBrush}" Margin="0,1,8,1"/>
+          <TextBlock Text="BIOS" Foreground="{StaticResource BiosValueBrush}" FontSize="12" FontWeight="SemiBold"
                      VerticalAlignment="Center"/>
         </StackPanel>
       </Border>
 
       <!-- Essential static identity (top) + live board telemetry (bottom). -->
       <StackPanel Grid.Row="1" VerticalAlignment="Top">
-        <StackPanel.Resources>
-          <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
-          <views:ReadingSeverityToBrushConverter x:Key="SeverityToBrush"/>
-          <Style x:Key="FieldLabel" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="#8A94A0"/>
-            <Setter Property="FontSize" Value="11"/>
-          </Style>
-          <Style x:Key="FieldValue" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="13"/>
-            <Setter Property="FontFamily" Value="Consolas"/>
-            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
-            <Setter Property="Margin" Value="0,0,16,0"/>
-          </Style>
-          <Style x:Key="FieldCell" TargetType="StackPanel">
-            <Setter Property="Margin" Value="0,0,0,10"/>
-          </Style>
-          <!-- Dim min–max sub-line under a rail; collapses until both bounds are known. -->
-          <Style x:Key="RangeHint" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="#5A6470"/>
-            <Setter Property="FontSize" Value="10"/>
-            <Setter Property="FontFamily" Value="Consolas"/>
-            <Setter Property="Margin" Value="0,-1,16,0"/>
-            <Style.Triggers>
-              <Trigger Property="Text" Value="">
-                <Setter Property="Visibility" Value="Collapsed"/>
-              </Trigger>
-            </Style.Triggers>
-          </Style>
-        </StackPanel.Resources>
-
         <!-- Static firmware identity: manufacturer/version + security posture -->
         <Grid>
           <Grid.ColumnDefinitions>
@@ -89,7 +90,7 @@
         <!-- Board section rule + header. The dot and label track live state: green "LIVE BOARD" only
              when readings are actually arriving, otherwise a dim "BOARD" so the pulse never implies
              live data the machine can't produce (common on laptops with no Super I/O sensors). -->
-        <Border BorderBrush="#2A2A2A" BorderThickness="0,1,0,0" Margin="0,2,0,8" Padding="0,8,0,0">
+        <Border BorderBrush="{StaticResource BiosRuleBrush}" BorderThickness="0,1,0,0" Margin="0,2,0,8" Padding="0,8,0,0">
           <StackPanel Orientation="Horizontal">
             <Border Width="6" Height="6" CornerRadius="3" VerticalAlignment="Center" Margin="0,0,6,0">
               <Border.Style>
@@ -103,7 +104,7 @@
                 </Style>
               </Border.Style>
             </Border>
-            <TextBlock Foreground="#5A6470" FontSize="10" FontWeight="SemiBold"
+            <TextBlock Foreground="{StaticResource BiosDimBrush}" FontSize="10" FontWeight="SemiBold"
                        VerticalAlignment="Center">
               <TextBlock.Style>
                 <Style TargetType="TextBlock">
@@ -120,7 +121,7 @@
         </Border>
 
         <!-- Driver/availability note shown in place of the readings when the board can't be read -->
-        <TextBlock Text="{Binding BoardSensorStatus}" Foreground="#8A94A0" FontSize="11"
+        <TextBlock Text="{Binding BoardSensorStatus}" Foreground="{StaticResource BiosLabelBrush}" FontSize="11"
                    TextWrapping="Wrap" Margin="0,0,0,8"
                    Visibility="{Binding HasBoardSensorStatus, Converter={StaticResource BoolToVisibility}}"/>
 

@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:prism="http://prismlibrary.com/"
-             xmlns:views="clr-namespace:BiosModule.Views"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
              d:DesignHeight="720" d:DesignWidth="1100"
@@ -30,23 +29,26 @@
 
     <Border Grid.Row="1" VerticalAlignment="Top" Padding="24" Background="#161B22" CornerRadius="8">
       <Border.Resources>
-        <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
-        <views:ReadingSeverityToBrushConverter x:Key="SeverityToBrush"/>
-        <Style x:Key="SectionHeader" TargetType="TextBlock">
-          <Setter Property="Foreground" Value="#3E9BE8"/>
-          <Setter Property="FontSize" Value="13"/>
-          <Setter Property="FontWeight" Value="SemiBold"/>
-          <Setter Property="Margin" Value="0,14,0,4"/>
-        </Style>
-        <Style x:Key="FieldLabel" TargetType="TextBlock">
-          <Setter Property="Foreground" Value="#8A94A0"/>
-          <Setter Property="Margin" Value="0,4"/>
-        </Style>
-        <Style x:Key="FieldValue" TargetType="TextBlock">
-          <Setter Property="FontFamily" Value="Consolas"/>
-          <Setter Property="Margin" Value="0,4"/>
-          <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
-        </Style>
+        <ResourceDictionary>
+          <ResourceDictionary.MergedDictionaries>
+            <ResourceDictionary Source="/BiosModule;component/Views/BiosResources.xaml"/>
+          </ResourceDictionary.MergedDictionaries>
+          <Style x:Key="SectionHeader" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource BiosAccentBrush}"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="0,14,0,4"/>
+          </Style>
+          <Style x:Key="FieldLabel" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource BiosLabelBrush}"/>
+            <Setter Property="Margin" Value="0,4"/>
+          </Style>
+          <Style x:Key="FieldValue" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Consolas"/>
+            <Setter Property="Margin" Value="0,4"/>
+            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+          </Style>
+        </ResourceDictionary>
       </Border.Resources>
       <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel>
