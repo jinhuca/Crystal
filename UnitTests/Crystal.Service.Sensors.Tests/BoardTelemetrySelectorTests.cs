@@ -58,6 +58,42 @@ public class BoardTelemetrySelectorTests {
     Assert.Equal(900f, BoardTelemetrySelector.Select(snapshot).ChassisFanRpm);
   }
 
+  private static SensorReading Fan(string name, float? value, float? max) =>
+      new("SuperIO", HardwareType.SuperIO, name, SensorType.Fan, value, null, max, "RPM");
+
+  [Fact]
+  public void ChassisFanRow_prefers_a_chassis_named_fan_over_the_cpu_fan() {
+    var rows = new SensorSnapshot([
+        Board("CPU Fan", SensorType.Fan, 1600f),
+        Fan("Chassis Fan #1", 700f, 1400f),
+    ])[SensorCategory.Motherboard];
+
+    Assert.Equal("Chassis Fan #1", BoardTelemetrySelector.ChassisFanRow(rows)!.SensorName);
+  }
+
+  [Fact]
+  public void ChassisFanRow_keeps_the_same_fan_across_a_stall() {
+    // The chassis fan (highest observed Max) has stalled to 0 while a smaller fan still spins.
+    // Selection is by capacity, so the stalled fan stays chosen rather than the pick jumping.
+    var rows = new SensorSnapshot([
+        Fan("Fan #2", 600f, 800f),
+        Fan("Fan #1", 0f, 1500f),
+    ])[SensorCategory.Motherboard];
+
+    var pick = BoardTelemetrySelector.ChassisFanRow(rows)!;
+    Assert.Equal("Fan #1", pick.SensorName);
+    Assert.Equal(0f, pick.Value);
+  }
+
+  [Fact]
+  public void ChassisFanRow_is_null_when_only_the_cpu_fan_is_present() {
+    var rows = new SensorSnapshot([
+        Board("CPU Fan", SensorType.Fan, 1600f),
+    ])[SensorCategory.Motherboard];
+
+    Assert.Null(BoardTelemetrySelector.ChassisFanRow(rows));
+  }
+
   [Fact]
   public void Rails_match_their_nominal_voltage_without_crosstalk() {
     var snapshot = new SensorSnapshot([
@@ -83,6 +119,27 @@ public class BoardTelemetrySelectorTests {
     Assert.Equal(3.31f, t.Rail3V3.Value);
     Assert.Null(t.Rail5V.Value);
     Assert.Null(t.Rail12V.Value);
+  }
+
+  [Fact]
+  public void The_12V_query_does_not_pick_up_the_negative_12V_rail() {
+    // A board exposing both −12V and +12V must headline the positive rail on the tile, not the
+    // negative one — the leading minus is a sign, not a rail boundary.
+    var snapshot = new SensorSnapshot([
+        Board("-12V", SensorType.Voltage, -12.1f),
+        Board("+12V", SensorType.Voltage, 12.05f),
+    ]);
+
+    Assert.Equal(12.05f, BoardTelemetrySelector.Select(snapshot).Rail12V.Value);
+  }
+
+  [Fact]
+  public void The_negative_12V_rail_alone_is_not_taken_as_the_positive_rail() {
+    var snapshot = new SensorSnapshot([
+        Board("-12V", SensorType.Voltage, -12.1f),
+    ]);
+
+    Assert.Null(BoardTelemetrySelector.Select(snapshot).Rail12V.Value);
   }
 
   [Fact]
@@ -128,15 +185,20 @@ public class BoardTelemetrySelectorTests {
   [InlineData("3.3V", 3.3f)]
   [InlineData("+5V", 5f)]
   [InlineData("+12V", 12f)]
+  [InlineData("-12V", -12f)]    // negative rail keeps its sign
+  [InlineData("3VSB", 3.3f)]    // 3.3V standby
+  [InlineData("AVCC", 3.3f)]    // SuperIO analog 3.3V supply
+  [InlineData("3VCC", 3.3f)]
+  [InlineData("5VSB", 5f)]      // 5V standby
   public void RailNominal_maps_a_rail_name_to_its_nominal_voltage(string name, float expected) =>
       Assert.Equal(expected, BoardTelemetrySelector.RailNominal(name));
 
   [Theory]
-  [InlineData("VBAT")]          // a rail, but not one with an ATX nominal
-  [InlineData("VCore")]
+  [InlineData("VCore")]         // variable rail — no universal nominal
+  [InlineData("VDIMM")]
   [InlineData("Temperature #1")]
   [InlineData(null)]
-  public void RailNominal_is_null_for_names_that_are_not_atx_rails(string? name) =>
+  public void RailNominal_is_null_for_names_that_are_not_fixed_rails(string? name) =>
       Assert.Null(BoardTelemetrySelector.RailNominal(name));
 
   [Theory]

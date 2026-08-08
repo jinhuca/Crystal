@@ -165,7 +165,7 @@ public class BiosViewModelSeverityTests {
         Board("+5V", SensorType.Voltage, 5.02f),       // in spec
         Board("VBAT", SensorType.Voltage, 2.6f),       // weak CMOS cell → warning
         Board("VCore", SensorType.Voltage, 0.3f),      // unknown rail → not graded
-        Board("System", SensorType.Temperature, 90f),  // temps are never graded
+        Board("System", SensorType.Temperature, 40f),  // cool board temp → normal
     ]);
 
     ReadingSeverity Row(string name) =>
@@ -176,6 +176,21 @@ public class BiosViewModelSeverityTests {
     Assert.Equal(ReadingSeverity.Warning, Row("VBAT"));
     Assert.Equal(ReadingSeverity.Normal, Row("VCore"));
     Assert.Equal(ReadingSeverity.Normal, Row("System"));
+  }
+
+  [Theory]
+  [InlineData(40f, ReadingSeverity.Normal)]    // idle board temp
+  [InlineData(59f, ReadingSeverity.Normal)]    // just under the warm mark
+  [InlineData(60f, ReadingSeverity.Warning)]   // warm
+  [InlineData(69f, ReadingSeverity.Warning)]
+  [InlineData(70f, ReadingSeverity.Critical)]  // hot
+  [InlineData(85f, ReadingSeverity.Critical)]
+  public void Board_temperature_rows_grade_on_their_own_thresholds(float celsius, ReadingSeverity expected) {
+    var vm = CreateVm(out var model);
+
+    model.ReadingsSubject.OnNext([Board("VRM", SensorType.Temperature, celsius)]);
+
+    Assert.Equal(expected, vm.BoardSensors.Single(r => r.Name == "VRM").Severity);
   }
 
   [Theory]
@@ -220,6 +235,33 @@ public class BiosViewModelSeverityTests {
     ]);
 
     Assert.Equal(ReadingSeverity.Normal, vm.BoardSensors.Single(r => r.Name == "Chassis Fan").Severity);
+  }
+
+  [Fact]
+  public void Chassis_fan_presence_and_stall_severity_are_exposed_for_the_trend() {
+    var vm = CreateVm(out var model);
+
+    model.TelemetrySubject.OnNext(new BoardTelemetry(
+        BoardTemperature: 65f, CmosVoltage: 3.0f, ChassisFanRpm: 0f,
+        Rail3V3: Rail(3.31f), Rail5V: Rail(5.01f), Rail12V: Rail(12.02f)));
+    model.ReadingsSubject.OnNext([
+        BoardFan("Chassis Fan", 0f, 1400f),  // stalled while board hot → critical
+    ]);
+
+    Assert.True(vm.HasChassisFan);
+    Assert.Equal(ReadingSeverity.Critical, vm.ChassisFanSeverity);
+  }
+
+  [Fact]
+  public void No_chassis_fan_is_reported_when_only_the_cpu_fan_is_present() {
+    var vm = CreateVm(out var model);
+
+    model.ReadingsSubject.OnNext([
+        Board("CPU Fan", SensorType.Fan, 1600f),
+    ]);
+
+    Assert.False(vm.HasChassisFan);
+    Assert.Equal(ReadingSeverity.Normal, vm.ChassisFanSeverity);
   }
 
   [Fact]

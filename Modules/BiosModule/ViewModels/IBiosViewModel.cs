@@ -62,6 +62,8 @@ public interface IBiosViewModel {
   ReadingSeverity Rail12VSeverity { get; }
   ReadingSeverity BoardHealth { get; }
   string BoardHealthDetail { get; }
+  ReadingSeverity ChassisFanSeverity { get; }
+  bool HasChassisFan { get; }
   ObservableCollection<BoardSensorRowViewModel> BoardSensors { get; }
   bool HasBoardSensors { get; }
 
@@ -70,6 +72,7 @@ public interface IBiosViewModel {
   bool HasBoardSensorStatus { get; }
 
   void AttachRailGraphs(PerformanceGraph rail3V3, PerformanceGraph rail5V, PerformanceGraph rail12V);
+  void AttachFanGraph(PerformanceGraph fan);
 
   ICommand ShowDetailCommand { get; }
   ICommand ShowDashboardCommand { get; }

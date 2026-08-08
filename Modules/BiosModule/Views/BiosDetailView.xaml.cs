@@ -22,4 +22,11 @@ public partial class BiosDetailView : UserControl {
     if (DataContext is IBiosViewModel vm)
       vm.AttachRailGraphs(Rail3V3Graph, Rail5VGraph, Rail12VGraph);
   }
+
+  private void OnFanGraphLoaded(object sender, RoutedEventArgs e) {
+    if (sender is PerformanceGraph graph)
+      graph.ApplyTheme(GraphThemes.Sky(GraphKind.Line));
+    if (DataContext is IBiosViewModel vm)
+      vm.AttachFanGraph(FanGraph);
+  }
 }

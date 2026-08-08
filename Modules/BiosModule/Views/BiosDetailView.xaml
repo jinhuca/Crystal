@@ -273,6 +273,22 @@
                          VerticalAlignment="Center" TextAlignment="Right"
                          Foreground="{Binding Rail12VSeverity, Converter={StaticResource SeverityToBrush}}"/>
             </Grid>
+            <!-- Chassis fan trend: 0–2500 RPM, so a stall drops the line to the floor. Shown only
+                 when the board exposes a chassis/system fan. -->
+            <Grid Margin="0,4,0,0"
+                  Visibility="{Binding HasChassisFan, Converter={StaticResource BoolToVisibility}}">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="70"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="90"/>
+              </Grid.ColumnDefinitions>
+              <TextBlock Grid.Column="0" Text="Fan" Style="{StaticResource FieldLabel}" VerticalAlignment="Center"/>
+              <graphs:PerformanceGraph Grid.Column="1" x:Name="FanGraph" Style="{StaticResource RailGraph}"
+                                       Loaded="OnFanGraphLoaded" MinValue="0" MaxValue="2500"/>
+              <TextBlock Grid.Column="2" Text="{Binding ChassisFanRpm}" Style="{StaticResource FieldValue}"
+                         VerticalAlignment="Center" TextAlignment="Right"
+                         Foreground="{Binding ChassisFanSeverity, Converter={StaticResource SeverityToBrush}}"/>
+            </Grid>
           </StackPanel>
         </StackPanel>
       </ScrollViewer>

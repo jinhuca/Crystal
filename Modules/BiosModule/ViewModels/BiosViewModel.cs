@@ -74,6 +74,10 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
   private ReadingSeverity? _rail3V3GraphSeverity;
   private ReadingSeverity? _rail5VGraphSeverity;
   private ReadingSeverity? _rail12VGraphSeverity;
+  private PerformanceGraph? _fanGraph;
+  private ReadingSeverity? _fanGraphSeverity;
+  private ReadingSeverity _chassisFanSeverity;
+  private bool _hasChassisFan;
   // Latest board temperature, cached from the telemetry tick so the board-readings tick can grade
   // fan stall against it (a stopped fan only matters once the board is warm). Both observables tick
   // together off the shared SensorMonitor, so this is at most one 1-second tick stale.
@@ -165,6 +169,20 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
     _rail12VGraph = rail12V;
     _rail3V3GraphSeverity = _rail5VGraphSeverity = _rail12VGraphSeverity = null;
   }
+
+  // The chassis-fan trend. Kept separate from the rail graphs because it's sourced from the board
+  // rows (which include a stalled fan's 0 RPM) rather than the headline telemetry, whose selector
+  // drops zeros — so a stall shows as the line falling to the floor, not the plot going stale.
+  public void AttachFanGraph(PerformanceGraph fan) {
+    _fanGraph = fan;
+    _fanGraphSeverity = null;
+  }
+
+  // Whether a chassis/system fan was found among the board rows, so the detail view can hide the
+  // fan trend when the board exposes no such sensor.
+  public bool HasChassisFan { get => _hasChassisFan; private set => SetProperty(ref _hasChassisFan, value); }
+  // Stall severity of the headlined chassis fan, tinting its trend line to match the row value.
+  public ReadingSeverity ChassisFanSeverity { get => _chassisFanSeverity; private set => SetProperty(ref _chassisFanSeverity, value); }
 
   private void Apply(FirmwareSnapshot s) {
     Manufacturer = Text(s.Manufacturer);
@@ -288,6 +306,16 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
     BoardHealth = offenders.Count > 0 ? offenders.Max(o => o.Severity) : ReadingSeverity.Normal;
     BoardHealthDetail = HealthDetail(offenders);
 
+    // Trend the chassis fan from the board rows so a stall plots as the line dropping to the floor
+    // (the headline selector drops zeros, which would freeze the plot instead). A null reading feeds
+    // 0 for the same reason. Tint the line to match the fan's stall severity.
+    var fan = BoardTelemetrySelector.ChassisFanRow(readings);
+    HasChassisFan = fan is not null;
+    ChassisFanSeverity = fan is null ? ReadingSeverity.Normal
+        : BoardReadingSeverity.Fan(fan.Value, fan.Max, _boardTemperatureC);
+    if (HasChassisFan) _fanGraph?.AddValue(fan!.Value ?? 0d);
+    _fanGraphSeverity = ThemeGraph(_fanGraph, ChassisFanSeverity, _fanGraphSeverity);
+
     // With no readings, explain why. The registry-installed flag alone is misleading (it can be
     // true while the device won't open), so the accessible probe is authoritative: driver not
     // installed, installed-but-not-accessible (not running / not elevated), or accessible but the
@@ -305,8 +333,9 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
   }
 
   // Voltage rows we can map to a known fixed rail are graded against it; the CMOS cell uses its own
-  // absolute-volts rule. Fans are graded for stall against the current board temperature. Temps and
-  // variable-voltage rows (VCore, DRAM…) stay Normal — we have no spec to judge them against.
+  // absolute-volts rule. Board temperatures grade on their own thresholds; fans are graded for
+  // stall against the current board temperature. Variable-voltage rows (VCore, DRAM…) stay Normal —
+  // we have no spec to judge them against.
   private ReadingSeverity RowSeverity(SensorReading r) {
     switch (r.SensorType) {
       case SensorType.Voltage:
@@ -314,6 +343,8 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
         return BoardTelemetrySelector.RailNominal(r.SensorName) is { } nominal
             ? BoardReadingSeverity.Rail(r.Value, nominal)
             : ReadingSeverity.Normal;
+      case SensorType.Temperature:
+        return BoardReadingSeverity.Temperature(r.Value);
       case SensorType.Fan:
         return BoardReadingSeverity.Fan(r.Value, r.Max, _boardTemperatureC);
       default:

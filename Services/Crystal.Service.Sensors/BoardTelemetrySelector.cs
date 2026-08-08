@@ -93,6 +93,19 @@ public static class BoardTelemetrySelector {
   public static bool IsCmosRail(string? name) =>
       Contains(name, "VBAT") || Contains(name, "CMOS") || Contains(name, "Battery");
 
+  /// <summary>Picks the chassis/system fan row to trend, keeping stalled (0 RPM) readings — unlike
+  /// <see cref="ChassisFan"/>, which drops zeros for the headline value. Selection is by running
+  /// <see cref="SensorReading.Max"/> (the fan's observed capacity), so the same physical fan stays
+  /// chosen across a stall rather than the pick jumping to whichever header is spinning this tick.
+  /// Prefers a Chassis/System-named header; excludes the CPU fan. Null when the board has none.</summary>
+  public static SensorReading? ChassisFanRow(IReadOnlyList<SensorReading> board) {
+    var fans = board.Where(r => r.SensorType == SensorType.Fan && r.Value is not null &&
+        !Contains(r.SensorName, "CPU")).ToList();
+    if (fans.Count == 0) return null;
+    var named = fans.Where(r => Contains(r.SensorName, "Chassis") || Contains(r.SensorName, "System")).ToList();
+    return (named.Count > 0 ? named : fans).OrderByDescending(r => r.Max ?? r.Value ?? 0f).First();
+  }
+
   // A voltage rail named for its nominal value (e.g. "+12V", "+3.3V", "+5V"), with the
   // sensor's running min/max carried alongside the current value.
   private static RailReading Rail(IReadOnlyList<SensorReading> board, string nominal) {
@@ -101,15 +114,19 @@ public static class BoardTelemetrySelector {
     return reading is null ? RailReading.None : new RailReading(reading.Value, reading.Min, reading.Max);
   }
 
-  // Match "+12V"/"12V" without also matching "3.3V" for the "3" query or "5V" inside "3.5V".
+  // Match "+12V"/"12V" without also matching "3.3V" for the "3" query or "5V" inside "3.5V". A
+  // negative rail ("−12V") only matches a signed query ("-12"), never the positive "12" — otherwise
+  // the +12V selector would headline the −12V sensor on boards that expose both.
   private static bool RailMatches(string? name, string nominal) {
     if (name is null) return false;
+    bool signedQuery = nominal.Length > 0 && (nominal[0] == '-' || nominal[0] == '−');
     int idx = name.IndexOf(nominal, StringComparison.OrdinalIgnoreCase);
     while (idx >= 0) {
       char before = idx > 0 ? name[idx - 1] : '\0';
       int after = idx + nominal.Length;
       char afterCh = after < name.Length ? name[after] : '\0';
-      bool boundaryBefore = !char.IsDigit(before) && before != '.';
+      bool negativeSign = before is '-' or '−';
+      bool boundaryBefore = !char.IsDigit(before) && before != '.' && (signedQuery || !negativeSign);
       bool endsRail = afterCh is 'V' or 'v';
       if (boundaryBefore && endsRail) return true;
       idx = name.IndexOf(nominal, idx + 1, StringComparison.OrdinalIgnoreCase);

@@ -24,6 +24,18 @@ public static class BoardReadingSeverity {
     };
   }
 
+  // Board-area temperatures (System / VRM / PCH / chipset) normally idle 30–50 °C. These are
+  // ambient/board sensors, not silicon junction temps, so a sustained high reading points at
+  // airflow or VRM trouble: warn from 60 °C, critical from 70 °C.
+  private const float BoardWarmC = 60f;
+  private const float BoardHotC = 70f;
+
+  public static ReadingSeverity Temperature(float? celsius) => celsius switch {
+    >= BoardHotC => ReadingSeverity.Critical,
+    >= BoardWarmC => ReadingSeverity.Warning,
+    _ => ReadingSeverity.Normal,
+  };
+
   // A healthy CR2032 reads ~3.0 V; BIOS warns of a dead clock battery around 2.7 V and below.
   public static ReadingSeverity Cmos(float? value) {
     if (value is not { } v) return ReadingSeverity.Normal;
