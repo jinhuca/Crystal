@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:prism="http://prismlibrary.com/"
              xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs.Controls;assembly=Crystal.Controls"
+             xmlns:local="clr-namespace:NetworkModule.Views"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
              d:DesignHeight="720" d:DesignWidth="1100"
@@ -12,11 +13,97 @@
              FontFamily="Segoe UI">
   <UserControl.Resources>
     <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+
+    <!-- Dense, sharp-edged column header matching the HWiNFO tile styling (mirrors the Process tile). -->
+    <Style x:Key="TalkerHeaderStyle" TargetType="GridViewColumnHeader">
+      <Setter Property="HorizontalContentAlignment" Value="Left"/>
+      <Setter Property="VerticalContentAlignment" Value="Center"/>
+      <Setter Property="Padding" Value="8,0"/>
+      <Setter Property="Height" Value="24"/>
+      <Setter Property="Background" Value="#141414"/>
+      <Setter Property="Foreground" Value="#8A94A0"/>
+      <Setter Property="BorderBrush" Value="#2A2A2A"/>
+      <Setter Property="BorderThickness" Value="0,0,1,1"/>
+      <Setter Property="FontSize" Value="11"/>
+      <Setter Property="FontWeight" Value="SemiBold"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="GridViewColumnHeader">
+            <Border x:Name="HeaderBorder" Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}">
+              <ContentPresenter Margin="{TemplateBinding Padding}" VerticalAlignment="Center"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                RecognizesAccessKey="True" SnapsToDevicePixels="True"/>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="HeaderBorder" Property="Background" Value="#1C1C1C"/>
+                <Setter Property="Foreground" Value="#C8C8C8"/>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <!-- Flat, tight rows; hover is a flat fill (no selection needed here). -->
+    <Style x:Key="TalkerRowStyle" TargetType="ListViewItem">
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="Foreground" Value="#DDDDDD"/>
+      <Setter Property="Padding" Value="0"/>
+      <Setter Property="Height" Value="22"/>
+      <Setter Property="BorderThickness" Value="0"/>
+      <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+      <Setter Property="SnapsToDevicePixels" Value="True"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="ListViewItem">
+            <Border x:Name="Bd" Background="{TemplateBinding Background}" BorderThickness="0"
+                    SnapsToDevicePixels="True">
+              <GridViewRowPresenter VerticalAlignment="Center"
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="Bd" Property="Background" Value="#1B2733"/>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <!-- Flat dark ListView chrome, no default 3D border. -->
+    <Style x:Key="TalkerListViewStyle" TargetType="ListView">
+      <Setter Property="Background" Value="#0D0D0D"/>
+      <Setter Property="Foreground" Value="#DDDDDD"/>
+      <Setter Property="BorderBrush" Value="#2A2A2A"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="SnapsToDevicePixels" Value="True"/>
+      <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+      <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="ListView">
+            <Border BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+              <ScrollViewer Padding="{TemplateBinding Padding}"
+                            Style="{DynamicResource {x:Static GridView.GridViewScrollViewerStyleKey}}">
+                <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+              </ScrollViewer>
+            </Border>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
   </UserControl.Resources>
   <Grid Margin="24">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="*"/>
+      <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
 
     <!-- Header + Back control -->
@@ -49,6 +136,7 @@
                   <RowDefinition Height="Auto"/>
                   <RowDefinition Height="Auto"/>
                   <RowDefinition Height="Auto"/>
+                  <RowDefinition Height="Auto"/>
                   <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
@@ -56,7 +144,7 @@
                            FontSize="16" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
 
                 <!-- Current throughput readout -->
-                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,6,0,12">
+                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,6,0,8">
                   <StackPanel Orientation="Horizontal" Margin="0,0,24,0">
                     <TextBlock Text="&#x25BC; " Foreground="#3BD15A"/>
                     <TextBlock Text="{Binding DownloadLabel}" Foreground="White" FontFamily="Consolas"/>
@@ -67,8 +155,28 @@
                   </StackPanel>
                 </StackPanel>
 
+                <!-- Dense spec strip: utilization, link speed, and cumulative session totals -->
+                <WrapPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,12">
+                  <StackPanel Orientation="Horizontal" Margin="0,0,20,0">
+                    <TextBlock Text="Util " Foreground="#8A94A0" FontFamily="Consolas"/>
+                    <TextBlock Text="{Binding UtilizationLabel}" Foreground="White" FontFamily="Consolas"/>
+                  </StackPanel>
+                  <StackPanel Orientation="Horizontal" Margin="0,0,20,0">
+                    <TextBlock Text="Link " Foreground="#8A94A0" FontFamily="Consolas"/>
+                    <TextBlock Text="{Binding LinkSpeedLabel}" Foreground="White" FontFamily="Consolas"/>
+                  </StackPanel>
+                  <StackPanel Orientation="Horizontal" Margin="0,0,20,0">
+                    <TextBlock Text="&#x25BC; total " Foreground="#8A94A0" FontFamily="Consolas"/>
+                    <TextBlock Text="{Binding DataDownloadedLabel}" Foreground="White" FontFamily="Consolas"/>
+                  </StackPanel>
+                  <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="&#x25B2; total " Foreground="#8A94A0" FontFamily="Consolas"/>
+                    <TextBlock Text="{Binding DataUploadedLabel}" Foreground="White" FontFamily="Consolas"/>
+                  </StackPanel>
+                </WrapPanel>
+
                 <!-- Wi-Fi radio detail (only for an associated wireless adapter) -->
-                <Border Grid.Row="2" Margin="0,0,0,12" Padding="10,8" Background="#11161D"
+                <Border Grid.Row="3" Margin="0,0,0,12" Padding="10,8" Background="#11161D"
                         CornerRadius="4" Visibility="{Binding IsWifi, Converter={StaticResource BoolToVisibility}}">
                   <Grid>
                     <Grid.ColumnDefinitions>
@@ -89,16 +197,20 @@
                                Foreground="White" FontFamily="Consolas" TextTrimming="CharacterEllipsis"/>
 
                     <TextBlock Grid.Row="1" Grid.Column="0" Text="Signal" Foreground="#8A94A0" Margin="0,0,12,2"/>
-                    <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding WifiSignal}"
-                               Foreground="White" FontFamily="Consolas"/>
+                    <StackPanel Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Orientation="Horizontal">
+                      <TextBlock Text="{Binding WifiSignalBars}" Foreground="#3BD15A"
+                                 FontFamily="Consolas" Margin="0,0,8,0"/>
+                      <TextBlock Text="{Binding WifiSignal}" Foreground="White" FontFamily="Consolas"/>
+                    </StackPanel>
 
                     <TextBlock Grid.Row="2" Grid.Column="0" Text="Radio" Foreground="#8A94A0" Margin="0,0,12,0"/>
                     <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding WifiPhyType}"
                                Foreground="White" FontFamily="Consolas"/>
-                    <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding WifiBand}"
-                               Foreground="White" FontFamily="Consolas" Margin="0,0,12,0"/>
-                    <TextBlock Grid.Row="2" Grid.Column="3" Text="{Binding WifiChannel, StringFormat=ch {0}}"
-                               Foreground="#8A94A0" FontFamily="Consolas"/>
+                    <TextBlock Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Foreground="White"
+                               FontFamily="Consolas" Margin="0,0,0,0">
+                      <Run Text="{Binding WifiBand, Mode=OneWay}"/>
+                      <Run Text="{Binding WifiChannel, Mode=OneWay, StringFormat=(ch {0})}" Foreground="#8A94A0"/>
+                    </TextBlock>
 
                     <!-- Live signal-strength history, fixed 0-100% scale -->
                     <graphs:PerformanceGraphView Grid.Row="3" Grid.ColumnSpan="4" Height="56" Margin="0,8,0,0"
@@ -110,7 +222,7 @@
                 </Border>
 
                 <!-- Download over upload history graphs -->
-                <Grid Grid.Row="3">
+                <Grid Grid.Row="4">
                   <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
@@ -134,5 +246,60 @@
         </ItemsControl.ItemTemplate>
       </ItemsControl>
     </ScrollViewer>
+
+    <!-- Per-process network top talkers: which processes are using the network right now, ranked
+         by current combined throughput. Backed by the shared ETW session. -->
+    <Border Grid.Row="2" Margin="8,16,8,0" Padding="18,14" Background="#161B22" CornerRadius="8">
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="Top talkers" Foreground="#3E9BE8"
+                   FontSize="16" FontWeight="SemiBold" Margin="0,0,0,8"/>
+
+        <!-- Status line when the per-process backend isn't running (typically not elevated) -->
+        <TextBlock Grid.Row="1" Text="{Binding TopTalkersStatusLabel}" Foreground="#8A94A0"
+                   FontFamily="Consolas" TextWrapping="Wrap"
+                   Visibility="{Binding HasTopTalkersStatus, Converter={StaticResource BoolToVisibility}}"/>
+
+        <ListView Grid.Row="2" ItemsSource="{Binding TopTalkersView}" MaxHeight="240"
+                  GridViewColumnHeader.Click="OnTopTalkersHeaderClick"
+                  Style="{StaticResource TalkerListViewStyle}"
+                  ItemContainerStyle="{StaticResource TalkerRowStyle}">
+          <ListView.View>
+            <GridView ColumnHeaderContainerStyle="{StaticResource TalkerHeaderStyle}">
+              <GridViewColumn Header="Process" Width="300" local:GridViewSort.SortProperty="Name">
+                <GridViewColumn.CellTemplate>
+                  <DataTemplate>
+                    <TextBlock Text="{Binding Name}" Foreground="#E6E6E6" FontFamily="Consolas"
+                               FontSize="12" Margin="8,2" TextTrimming="CharacterEllipsis"/>
+                  </DataTemplate>
+                </GridViewColumn.CellTemplate>
+              </GridViewColumn>
+              <GridViewColumn Header="PID" Width="90" local:GridViewSort.SortProperty="ProcessId">
+                <GridViewColumn.CellTemplate>
+                  <DataTemplate>
+                    <TextBlock Text="{Binding ProcessId}" Foreground="#8A94A0" FontFamily="Consolas"
+                               FontSize="12" Margin="8,2" TextAlignment="Right"/>
+                  </DataTemplate>
+                </GridViewColumn.CellTemplate>
+              </GridViewColumn>
+              <GridViewColumn Header="Network" Width="120"
+                              local:GridViewSort.SortProperty="RateBytesPerSecond">
+                <GridViewColumn.CellTemplate>
+                  <DataTemplate>
+                    <TextBlock Text="{Binding RateLabel}" Foreground="#3BD15A" FontFamily="Consolas"
+                               FontSize="12" Margin="8,2" TextAlignment="Right"/>
+                  </DataTemplate>
+                </GridViewColumn.CellTemplate>
+              </GridViewColumn>
+            </GridView>
+          </ListView.View>
+        </ListView>
+      </Grid>
+    </Border>
   </Grid>
 </UserControl>

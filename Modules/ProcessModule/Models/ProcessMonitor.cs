@@ -1,4 +1,5 @@
 using System.Reactive.Concurrency;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using Crystal.Provider.Etw;
 using Crystal.Provider.Mmi.MmiEngine;
@@ -18,7 +19,7 @@ namespace ProcessModule.Models;
 /// </summary>
 public sealed class ProcessMonitor {
   private readonly IWmiHardwareProvider _provider;
-  private readonly IProcessEtwSource? _etw;
+  private readonly EtwRateBroadcaster? _etw;
   private readonly int _logicalCores;
   private readonly IObservable<IReadOnlyList<ProcessSample>> _samples;
 
@@ -26,7 +27,12 @@ public sealed class ProcessMonitor {
   private readonly Dictionary<uint, ulong> _lastCpuTime = new();
   private long _lastTimestampTicks;
 
-  public ProcessMonitor(IWmiHardwareProvider provider, IProcessEtwSource? etw = null,
+  // Latest per-PID ETW rates from the shared broadcaster. The broadcaster owns the single
+  // SnapshotRates() poll (it can't have two callers — a snapshot resets the interval); we just read
+  // whatever it last published. Written from the broadcaster's scheduler, read on the poll thread.
+  private volatile IReadOnlyDictionary<uint, ProcessEtwMetrics>? _latestRates;
+
+  public ProcessMonitor(IWmiHardwareProvider provider, EtwRateBroadcaster? etw = null,
                         TimeSpan? pollInterval = null, IScheduler? scheduler = null) {
     ArgumentNullException.ThrowIfNull(provider);
     _provider = provider;
@@ -41,10 +47,17 @@ public sealed class ProcessMonitor {
     // let two SampleAsync calls run concurrently and corrupt the shared _lastCpuTime / _lastTimestamp
     // state (a Dictionary written from two threads throws IndexOutOfRangeException). One poll is ever
     // in flight here, so that mutable baseline needs no locking.
-    _samples = Observable
+    var poll = Observable
         .Defer(() => Observable.FromAsync(SampleAsync))
         .Concat(Observable.Empty<IReadOnlyList<ProcessSample>>().Delay(interval, scheduler))
-        .Repeat()
+        .Repeat();
+
+    // Keep the broadcaster subscribed exactly as long as this stream has subscribers, so its single
+    // ETW poll is ref-counted alongside ours. Each poll reads the latest published snapshot.
+    _samples = Observable
+        .Using(
+            () => _etw?.Rates.Subscribe(r => _latestRates = r) ?? Disposable.Empty,
+            _ => poll)
         .Publish()
         .RefCount();
   }
@@ -61,8 +74,9 @@ public sealed class ProcessMonitor {
   private async Task<IReadOnlyList<ProcessSample>> SampleAsync(CancellationToken ct) {
     var metrics = await _provider.ToSafeProcessMetricsAsync(ct);
 
-    // ETW rates cover the window since the last snapshot; pull once per poll and overlay by PID.
-    var etwRates = _etw?.SnapshotRates();
+    // The shared broadcaster owns the single SnapshotRates() poll; read its latest published
+    // snapshot and overlay by PID. Null until the first broadcast (or when no ETW source exists).
+    var etwRates = _latestRates;
 
     // Snapshot which PIDs own a visible window this poll, to split Apps from Background Processes.
     var windowedPids = VisibleWindowScanner.GetPidsWithVisibleWindows();

@@ -11,17 +11,25 @@ namespace NetworkModule.Models;
 public sealed class NetworkModel : INetworkModel {
   private readonly IObservable<NetworkSnapshot> _sensors;
 
-  public NetworkModel(NetworkLoadSource loads, TimeSpan? pollInterval = null, IScheduler? scheduler = null) {
+  public NetworkModel(NetworkLoadSource loads, ProcessNetworkSource processNetwork,
+                      TimeSpan? pollInterval = null, IScheduler? scheduler = null) {
     ArgumentNullException.ThrowIfNull(loads);
+    ArgumentNullException.ThrowIfNull(processNetwork);
     var interval = pollInterval ?? TimeSpan.FromSeconds(1);
     scheduler ??= DefaultScheduler.Instance;
 
     _sensors = Observable
         .Interval(interval, scheduler)
-        .Select(_ => new NetworkSnapshot(loads.Read()))
+        .Select(_ => loads.Read())
         .Publish()
         .RefCount();
+
+    // The per-process stream is driven by the shared ETW broadcaster's own cadence, so it needs no
+    // interval here — just forward it.
+    TopTalkers = processNetwork.TopTalkers;
   }
 
   public IObservable<NetworkSnapshot> Sensors => _sensors;
+
+  public IObservable<ProcessNetworkSnapshot> TopTalkers { get; }
 }

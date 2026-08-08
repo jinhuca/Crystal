@@ -21,6 +21,7 @@ namespace Crystal.Provider.Telemetry.Hardware.Network;
 public sealed class WlanSource : IWlanSource {
   private const uint ClientVersion = 2; // Vista+ WLAN API
   private const int ErrorSuccess = 0;
+  private const uint IntfStateNotReady = 0; // wlan_interface_state_not_ready (radio off/disabled)
   private const uint IntfStateConnected = 1; // wlan_interface_state_connected
   private const uint OpcodeCurrentConnection = 7; // wlan_intf_opcode_current_connection
   private const uint OpcodeChannelNumber = 8; // wlan_intf_opcode_channel_number
@@ -61,12 +62,20 @@ public sealed class WlanSource : IWlanSource {
 
       for (int i = 0; i < count; i++) {
         var info = Marshal.PtrToStructure<WlanInterfaceInfo>(firstEntry + (i * entrySize));
-        if (info.isState != IntfStateConnected)
-          continue;
+        var state = MapState(info.isState);
 
-        var reading = ReadConnection(clientHandle, info.InterfaceGuid);
-        if (reading is not null)
-          readings.Add(reading);
+        // Connection attributes only exist while associated; a not-ready/disconnected interface
+        // still gets a reading so the UI can show "disabled"/"disconnected" rather than nothing.
+        var reading = state == WlanInterfaceState.Connected
+            ? ReadConnection(clientHandle, info.InterfaceGuid)
+            : null;
+
+        readings.Add(reading ?? new WlanReading(
+            InterfaceGuid: info.InterfaceGuid,
+            State: state == WlanInterfaceState.Connected ? WlanInterfaceState.Disconnected : state,
+            Ssid: null, SignalQualityPercent: null, RssiDbm: null, PhyType: null,
+            ChannelNumber: null, Band: null, RxRateKbps: null, TxRateKbps: null,
+            Bssid: null, Security: null));
       }
 
       return readings;
@@ -91,6 +100,7 @@ public sealed class WlanSource : IWlanSource {
 
       return new WlanReading(
           InterfaceGuid: interfaceGuid,
+          State: WlanInterfaceState.Connected,
           Ssid: DecodeSsid(assoc.dot11Ssid),
           SignalQualityPercent: quality,
           RssiDbm: QualityToRssi(quality),
@@ -125,6 +135,16 @@ public sealed class WlanSource : IWlanSource {
         WlanFreeMemory(dataPtr);
     }
   }
+
+  // WLAN_INTERFACE_STATE: 0 not_ready, 1 connected, 2 ad_hoc_formed, 3 disconnecting,
+  // 4 disconnected, 5 associating, 6 discovering, 7 authenticating. Only "connected" is truly
+  // associated; not_ready means the radio is off/disabled; everything else is a transient
+  // on-but-unassociated state we present as "disconnected".
+  private static WlanInterfaceState MapState(uint isState) => isState switch {
+    IntfStateConnected => WlanInterfaceState.Connected,
+    IntfStateNotReady => WlanInterfaceState.Disabled,
+    _ => WlanInterfaceState.Disconnected,
+  };
 
   private static string? DecodeSsid(Dot11Ssid ssid) {
     if (ssid.SSIDLength == 0)

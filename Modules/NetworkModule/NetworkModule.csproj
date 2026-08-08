@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Providers\Crystal.Provider.Telemetry\Crystal.Provider.Telemetry.csproj" />
+    <ProjectReference Include="..\..\Providers\Crystal.Provider.Etw\Crystal.Provider.Etw.csproj" />
     <ProjectReference Include="..\..\UI\Crystal.Controls\Crystal.Controls.csproj" />
     <ProjectReference Include="..\..\Infrastructures\Crystal.Infrastructure.Constants\Crystal.Infrastructure.Constants.csproj" />
   </ItemGroup>

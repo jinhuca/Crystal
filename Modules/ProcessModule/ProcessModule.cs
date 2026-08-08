@@ -23,11 +23,17 @@ public class ProcessModule(IRegionManager regionManager) : IModule {
     // for the app lifetime, so it must be a singleton. If the session can't start it stays inert.
     containerRegistry.RegisterSingleton<IProcessEtwSource, ProcessEtwReader>();
 
+    // The broadcaster owns the single SnapshotRates() poll and multicasts it, so the process list
+    // and the network top-talkers view share one destructive snapshot instead of stealing each
+    // other's interval. Singleton; built via a factory for its optional TimeSpan?/IScheduler? params.
+    containerRegistry.RegisterSingleton<EtwRateBroadcaster>(
+        cp => new EtwRateBroadcaster(cp.Resolve<IProcessEtwSource>()));
+
     // ProcessMonitor owns the poll cadence and the cross-poll CPU-time baseline, so it must be a
     // singleton. Built via a factory: its optional TimeSpan?/IScheduler? params can't be resolved
     // by the container, and we want the default 1-second cadence.
     containerRegistry.RegisterSingleton<ProcessMonitor>(
-        cp => new ProcessMonitor(cp.Resolve<IWmiHardwareProvider>(), cp.Resolve<IProcessEtwSource>()));
+        cp => new ProcessMonitor(cp.Resolve<IWmiHardwareProvider>(), cp.Resolve<EtwRateBroadcaster>()));
     containerRegistry.RegisterSingleton<IProcessModel, ProcessModel>();
 
     // One VM instance per view; the tile is the only consumer today.

@@ -4,13 +4,15 @@ using System;
 namespace Crystal.Provider.Telemetry.Hardware.Network;
 
 /// <summary>
-/// A snapshot of one associated Wi-Fi interface's radio state, keyed by the adapter's
+/// A snapshot of one WLAN interface's radio state, keyed by the adapter's
 /// <see cref="InterfaceGuid"/> (matches <see cref="System.Net.NetworkInformation.NetworkInterface.Id"/>).
-/// Every field beyond the key is optional: a wired NIC produces no reading at all, and a Wi-Fi NIC
-/// that is enabled but not associated yields nulls for the connection-specific values.
+/// One reading is produced per present WLAN interface regardless of association; <see cref="State"/>
+/// says whether it is connected, idle, or radio-off. All connection-specific fields (SSID, signal,
+/// rates, …) are null unless <see cref="State"/> is <see cref="WlanInterfaceState.Connected"/>.
 /// </summary>
 public sealed record WlanReading(
     Guid InterfaceGuid,
+    WlanInterfaceState State,
     string? Ssid,
     int? SignalQualityPercent,
     int? RssiDbm,

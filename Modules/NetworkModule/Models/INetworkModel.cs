@@ -7,4 +7,8 @@ namespace NetworkModule.Models;
 /// </summary>
 public interface INetworkModel {
   IObservable<NetworkSnapshot> Sensors { get; }
+
+  /// <summary>Per-process network top-talkers, re-emitted on the same cadence as <see cref="Sensors"/>
+  /// while subscribed. Sourced from the shared ETW broadcaster; empty when ETW isn't running.</summary>
+  IObservable<ProcessNetworkSnapshot> TopTalkers { get; }
 }

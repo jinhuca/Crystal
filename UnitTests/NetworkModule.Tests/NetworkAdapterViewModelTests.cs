@@ -66,6 +66,54 @@ public class NetworkAdapterViewModelTests {
   }
 
   [Fact]
+  public void Update_formats_utilization_link_speed_and_data_totals() {
+    var vm = new NetworkAdapterViewModel();
+
+    vm.Update(new NetworkInterfaceReading(
+        "Ethernet", UtilizationPercent: 42.5, UploadBytesPerSecond: 0, DownloadBytesPerSecond: 0,
+        DataUploadedGb: 0.5, DataDownloadedGb: 3.25, LinkSpeedBitsPerSecond: 1_000_000_000));
+
+    Assert.Equal("42.5%", vm.UtilizationLabel);
+    Assert.Equal("1.0 Gbps", vm.LinkSpeedLabel);
+    Assert.Equal("3.25 GiB", vm.DataDownloadedLabel);
+    Assert.Equal("512.0 MiB", vm.DataUploadedLabel);
+  }
+
+  [Fact]
+  public void Unknown_link_speed_renders_as_placeholder() {
+    var vm = new NetworkAdapterViewModel();
+
+    vm.Update(new NetworkInterfaceReading(
+        "Ethernet", UtilizationPercent: 0, UploadBytesPerSecond: 0, DownloadBytesPerSecond: 0,
+        LinkSpeedBitsPerSecond: 0));
+
+    Assert.Equal("—", vm.LinkSpeedLabel);
+  }
+
+  [Theory]
+  [InlineData(0, "▁▁▁▁")]
+  [InlineData(20, "▂▁▁▁")]
+  [InlineData(50, "▂▄▁▁")]
+  [InlineData(72, "▂▄▆▁")]
+  [InlineData(100, "▂▄▆█")]
+  public void Signal_bars_fill_proportionally_to_quality(int signal, string expected) {
+    var vm = new NetworkAdapterViewModel();
+
+    vm.Update(Wifi(signal: signal));
+
+    Assert.Equal(expected, vm.WifiSignalBars);
+  }
+
+  [Fact]
+  public void Signal_bars_are_empty_when_quality_is_unavailable() {
+    var vm = new NetworkAdapterViewModel();
+
+    vm.Update(Wifi(signal: null, rssi: null));
+
+    Assert.Equal("▁▁▁▁", vm.WifiSignalBars);
+  }
+
+  [Fact]
   public void Switching_from_wifi_to_wired_clears_the_wifi_flag() {
     var vm = new NetworkAdapterViewModel();
 
