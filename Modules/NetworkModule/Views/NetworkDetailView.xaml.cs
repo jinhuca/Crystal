@@ -29,4 +29,12 @@ public partial class NetworkDetailView : UserControl {
     graph.ApplyTheme(GraphThemes.Amber(GraphKind.SegmentedBar));
     adapter.AttachUploadGraph(graph);
   }
+
+  private void OnSignalGraphLoaded(object sender, System.Windows.RoutedEventArgs e) {
+    if (sender is not PerformanceGraphView view) return;
+    if (view.Graph is not { } graph) return;
+    if (view.DataContext is not NetworkAdapterViewModel adapter) return;
+    graph.ApplyTheme(GraphThemes.Sky(GraphKind.Line));
+    adapter.AttachSignalGraph(graph);
+  }
 }

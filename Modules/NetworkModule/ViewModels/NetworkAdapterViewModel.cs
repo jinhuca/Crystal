@@ -21,8 +21,16 @@ public sealed class NetworkAdapterViewModel : BindableBase {
   private double _downloadScaleMax = MinScaleKib;
   private double _uploadScaleMax = MinScaleKib;
 
+  private bool _isWifi;
+  private string _wifiSsid = "—";
+  private string _wifiSignal = "—";
+  private string _wifiPhyType = "—";
+  private string _wifiBand = "—";
+  private string _wifiChannel = "—";
+
   private PerformanceGraph? _downloadGraph;
   private PerformanceGraph? _uploadGraph;
+  private PerformanceGraph? _signalGraph;
   private double _downloadPeakKib;
   private double _uploadPeakKib;
 
@@ -36,8 +44,17 @@ public sealed class NetworkAdapterViewModel : BindableBase {
   /// <summary>Top of the upload graph's KiB/s scale (auto-scaled to a decaying peak).</summary>
   public double UploadScaleMax { get => _uploadScaleMax; private set => SetProperty(ref _uploadScaleMax, value); }
 
+  /// <summary>True when this interface is an associated Wi-Fi radio; drives the Wi-Fi block's visibility.</summary>
+  public bool IsWifi { get => _isWifi; private set => SetProperty(ref _isWifi, value); }
+  public string WifiSsid { get => _wifiSsid; private set => SetProperty(ref _wifiSsid, value); }
+  public string WifiSignal { get => _wifiSignal; private set => SetProperty(ref _wifiSignal, value); }
+  public string WifiPhyType { get => _wifiPhyType; private set => SetProperty(ref _wifiPhyType, value); }
+  public string WifiBand { get => _wifiBand; private set => SetProperty(ref _wifiBand, value); }
+  public string WifiChannel { get => _wifiChannel; private set => SetProperty(ref _wifiChannel, value); }
+
   public void AttachDownloadGraph(PerformanceGraph graph) => _downloadGraph = graph;
   public void AttachUploadGraph(PerformanceGraph graph) => _uploadGraph = graph;
+  public void AttachSignalGraph(PerformanceGraph graph) => _signalGraph = graph;
 
   /// <summary>Pushes a fresh reading into the labels and the two history graphs.</summary>
   public void Update(NetworkInterfaceReading reading) {
@@ -55,6 +72,27 @@ public sealed class NetworkAdapterViewModel : BindableBase {
 
     _downloadGraph?.AddValue(downloadKib);
     _uploadGraph?.AddValue(uploadKib);
+
+    ApplyWifi(reading);
+  }
+
+  // A connected Wi-Fi adapter reports a signal quality; wired NICs report none. Populate the Wi-Fi
+  // block only in that case and leave the placeholders ("—") otherwise so a wired card stays clean.
+  private void ApplyWifi(NetworkInterfaceReading reading) {
+    IsWifi = reading.WifiSignalPercent is not null || reading.WifiSsid is not null;
+    if (!IsWifi) return;
+
+    WifiSsid = reading.WifiSsid ?? "—";
+    WifiSignal = reading.WifiSignalPercent is { } pct
+        ? (reading.WifiRssiDbm is { } dbm ? $"{pct}%  ({dbm} dBm)" : $"{pct}%")
+        : "—";
+    WifiPhyType = reading.WifiPhyType ?? "—";
+    WifiBand = reading.WifiBand ?? "—";
+    WifiChannel = reading.WifiChannel is { } ch ? ch.ToString() : "—";
+
+    // Signal quality is already a 0-100 percentage, so the graph uses a fixed scale (no auto-scale).
+    if (reading.WifiSignalPercent is { } signal)
+      _signalGraph?.AddValue(signal);
   }
 
   // Round the peak up to a "nice" 1/2/5·10ⁿ value so the scale label stays readable and the plot

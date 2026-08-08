@@ -9,6 +9,9 @@
              d:DesignHeight="240" d:DesignWidth="380"
              Background="Transparent" Foreground="White"
              FontFamily="Segoe UI">
+  <UserControl.Resources>
+    <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+  </UserControl.Resources>
   <Border Background="Transparent" MouseLeftButtonDown="OnTileClick">
     <Grid Margin="10">
       <Grid.RowDefinitions>
@@ -51,6 +54,27 @@
                      FontFamily="Consolas" VerticalAlignment="Center"/>
         </StackPanel>
         <TextBlock Text="upload" Foreground="#8A94A0" FontSize="12" FontFamily="Consolas"/>
+
+        <!-- Wi-Fi block (only when a wireless adapter is connected): SSID + signal, then the
+             negotiated link rate, security suite, and BSSID as dim spec rows. -->
+        <StackPanel Margin="0,10,0,0"
+                    Visibility="{Binding HasWifi, Converter={StaticResource BoolToVisibility}}">
+          <StackPanel Orientation="Horizontal">
+            <TextBlock Text="&#x1F4F6;" Foreground="#3E9BE8" FontSize="14"
+                       VerticalAlignment="Center" Margin="0,0,8,0"/>
+            <TextBlock Text="{Binding WifiLabel}" Foreground="#E6E6E6" FontSize="13"
+                       FontFamily="Consolas" VerticalAlignment="Center"
+                       TextTrimming="CharacterEllipsis"/>
+          </StackPanel>
+          <TextBlock Text="{Binding WifiLinkRate, StringFormat=Link: {0}}" Foreground="#8A94A0"
+                     FontSize="11" FontFamily="Consolas" Margin="22,3,0,0"/>
+          <TextBlock Text="{Binding WifiSecurity, StringFormat=Security: {0}}" Foreground="#8A94A0"
+                     FontSize="11" FontFamily="Consolas" Margin="22,1,0,0"
+                     TextTrimming="CharacterEllipsis"/>
+          <TextBlock Text="{Binding WifiBssid, StringFormat=BSSID: {0}}" Foreground="#8A94A0"
+                     FontSize="11" FontFamily="Consolas" Margin="22,1,0,0"
+                     TextTrimming="CharacterEllipsis"/>
+        </StackPanel>
       </StackPanel>
     </Grid>
   </Border>

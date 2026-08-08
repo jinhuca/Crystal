@@ -1,5 +1,6 @@
 using System.Net.NetworkInformation;
 using Crystal.Provider.Telemetry.Hardware;
+using Crystal.Provider.Telemetry.Hardware.Network;
 
 namespace NetworkModule.Models;
 
@@ -7,7 +8,8 @@ namespace NetworkModule.Models;
 /// Reads live per-interface network activity from the Telemetry provider (a LibreHardwareMonitor
 /// fork). Every network interface exposes a "Network Utilization" <see cref="SensorType.Load"/>
 /// sensor (clamped 0-100%) plus "Upload Speed"/"Download Speed" throughput sensors; we read those
-/// per interface and key them by the interface name.
+/// per interface and key them by the interface name. For Wi-Fi adapters we additionally merge in
+/// radio state (SSID, signal, band, channel, PHY type) from <see cref="IWlanSource"/>.
 /// </summary>
 public sealed class NetworkLoadSource : IDisposable {
   private const string UtilizationSensorName = "Network Utilization";
@@ -15,9 +17,12 @@ public sealed class NetworkLoadSource : IDisposable {
   private const string DownloadSpeedSensorName = "Download Speed";
 
   private readonly Computer _computer;
+  private readonly IWlanSource _wlan;
   private bool _disposed;
 
-  public NetworkLoadSource() {
+  public NetworkLoadSource(IWlanSource wlan) {
+    ArgumentNullException.ThrowIfNull(wlan);
+    _wlan = wlan;
     _computer = new Computer { IsNetworkEnabled = true };
     _computer.Open();
   }
@@ -29,17 +34,53 @@ public sealed class NetworkLoadSource : IDisposable {
     // a down/virtual NIC reports Speed 0, so its utilization comes back NaN/Infinity.
     var connected = ConnectedInterfaceNames();
 
+    // WLAN readings are keyed by interface GUID; the rest of the pipeline keys by friendly name, so
+    // resolve GUID→name once and index the Wi-Fi data by name to merge it per adapter below.
+    var wifiByName = ReadWifiByName();
+
     var readings = new List<NetworkInterfaceReading>();
     foreach (var nic in _computer.Hardware.Where(h => h.HardwareType == HardwareType.Network)) {
       if (!connected.Contains(nic.Name)) continue;
       nic.Update();
+      wifiByName.TryGetValue(nic.Name, out var wifi);
       readings.Add(new NetworkInterfaceReading(
           Name: nic.Name,
           UtilizationPercent: Clamp(FindLoad(nic, UtilizationSensorName)),
           UploadBytesPerSecond: Sanitize(FindThroughput(nic, UploadSpeedSensorName)),
-          DownloadBytesPerSecond: Sanitize(FindThroughput(nic, DownloadSpeedSensorName))));
+          DownloadBytesPerSecond: Sanitize(FindThroughput(nic, DownloadSpeedSensorName)),
+          WifiSsid: wifi?.Ssid,
+          WifiSignalPercent: wifi?.SignalQualityPercent,
+          WifiRssiDbm: wifi?.RssiDbm,
+          WifiPhyType: wifi?.PhyType,
+          WifiChannel: wifi?.ChannelNumber,
+          WifiBand: wifi?.Band,
+          WifiRxRateKbps: wifi?.RxRateKbps,
+          WifiTxRateKbps: wifi?.TxRateKbps,
+          WifiBssid: wifi?.Bssid,
+          WifiSecurity: wifi?.Security));
     }
     return readings;
+  }
+
+  // Joins WLAN readings (keyed by interface GUID) to the friendly interface name used elsewhere in
+  // the pipeline. NetworkInterface.Id is the adapter's GUID string ("{XXXX-...}").
+  private Dictionary<string, WlanReading> ReadWifiByName() {
+    var wifi = _wlan.Read();
+    if (wifi.Count == 0)
+      return [];
+
+    var guidToName = new Dictionary<Guid, string>();
+    foreach (var nic in NetworkInterface.GetAllNetworkInterfaces()) {
+      if (Guid.TryParse(nic.Id, out var guid))
+        guidToName[guid] = nic.Name;
+    }
+
+    var byName = new Dictionary<string, WlanReading>(StringComparer.OrdinalIgnoreCase);
+    foreach (var reading in wifi) {
+      if (guidToName.TryGetValue(reading.InterfaceGuid, out var name))
+        byName[name] = reading;
+    }
+    return byName;
   }
 
   private static HashSet<string> ConnectedInterfaceNames() {

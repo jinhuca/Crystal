@@ -1,6 +1,7 @@
 using Crystal.Controls.Loading;
 using Crystal.Infrastructure.Constants;
 using Crystal.Infrastructure.Constants.Navigation;
+using Crystal.Provider.Telemetry.Hardware.Network;
 using NetworkModule.Models;
 using NetworkModule.ViewModels;
 using NetworkModule.Views;
@@ -17,6 +18,10 @@ public class NetworkModule(IRegionManager regionManager) : IModule {
   private readonly IRegionManager _regionManager = regionManager;
 
   public void RegisterTypes(IContainerRegistry containerRegistry) {
+    // Wi-Fi radio state source (wlanapi). NetworkLoadSource depends on the interface so it can be
+    // faked in tests.
+    containerRegistry.RegisterSingleton<IWlanSource, WlanSource>();
+
     // NetworkLoadSource owns an open LibreHardwareMonitor Computer; keep one for the app lifetime.
     containerRegistry.RegisterSingleton<NetworkLoadSource>();
 
