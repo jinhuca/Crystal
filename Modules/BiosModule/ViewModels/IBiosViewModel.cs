@@ -59,6 +59,7 @@ public interface IBiosViewModel {
   ReadingSeverity Rail3V3Severity { get; }
   ReadingSeverity Rail5VSeverity { get; }
   ReadingSeverity Rail12VSeverity { get; }
+  ReadingSeverity BoardHealth { get; }
   ObservableCollection<BoardSensorRowViewModel> BoardSensors { get; }
   bool HasBoardSensors { get; }
 

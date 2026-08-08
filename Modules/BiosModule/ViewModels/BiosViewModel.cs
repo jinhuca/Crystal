@@ -59,6 +59,7 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
   private ReadingSeverity _rail3V3Severity;
   private ReadingSeverity _rail5VSeverity;
   private ReadingSeverity _rail12VSeverity;
+  private ReadingSeverity _boardHealth;
   private bool _hasBoardSensors;
   private readonly bool _driverInstalled;
   private readonly bool _driverAccessible;
@@ -124,6 +125,9 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
   public ReadingSeverity Rail3V3Severity { get => _rail3V3Severity; private set => SetProperty(ref _rail3V3Severity, value); }
   public ReadingSeverity Rail5VSeverity { get => _rail5VSeverity; private set => SetProperty(ref _rail5VSeverity, value); }
   public ReadingSeverity Rail12VSeverity { get => _rail12VSeverity; private set => SetProperty(ref _rail12VSeverity, value); }
+  // Worst severity across the graded rails/CMOS — drives the tile's status dot so board health
+  // reads at a glance without expanding the detail view.
+  public ReadingSeverity BoardHealth { get => _boardHealth; private set => SetProperty(ref _boardHealth, value); }
   public ObservableCollection<BoardSensorRowViewModel> BoardSensors { get; } = [];
   public bool HasBoardSensors { get => _hasBoardSensors; private set => SetProperty(ref _hasBoardSensors, value); }
   public string BoardSensorStatus { get => _boardSensorStatus; private set => SetProperty(ref _boardSensorStatus, value); }
@@ -189,7 +193,10 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
     Rail3V3Severity = BoardReadingSeverity.Rail(t.Rail3V3.Value, 3.3f);
     Rail5VSeverity = BoardReadingSeverity.Rail(t.Rail5V.Value, 5f);
     Rail12VSeverity = BoardReadingSeverity.Rail(t.Rail12V.Value, 12f);
+    BoardHealth = Worst(CmosSeverity, Rail3V3Severity, Rail5VSeverity, Rail12VSeverity);
   }
+
+  private static ReadingSeverity Worst(params ReadingSeverity[] severities) => severities.Max();
 
   // "11.90–12.10" once both bounds are known; empty until then so the sub-line stays hidden.
   private static string RailRange(RailReading rail) =>

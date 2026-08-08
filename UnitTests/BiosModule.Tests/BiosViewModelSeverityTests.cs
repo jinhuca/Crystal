@@ -75,6 +75,40 @@ public class BiosViewModelSeverityTests {
   }
 
   [Fact]
+  public void Board_health_is_the_worst_severity_across_the_graded_rails() {
+    var vm = CreateVm(out var model);
+
+    // Everything healthy except +12V at -13% (critical) → whole-board rollup is Critical.
+    model.TelemetrySubject.OnNext(new BoardTelemetry(
+        BoardTemperature: 35f, CmosVoltage: 3.0f, ChassisFanRpm: 800f,
+        Rail3V3: Rail(3.31f), Rail5V: Rail(5.4f), Rail12V: Rail(10.4f)));
+
+    Assert.Equal(ReadingSeverity.Critical, vm.BoardHealth);
+  }
+
+  [Fact]
+  public void Board_health_reports_warning_when_nothing_is_critical() {
+    var vm = CreateVm(out var model);
+
+    model.TelemetrySubject.OnNext(new BoardTelemetry(
+        BoardTemperature: 35f, CmosVoltage: 2.6f, ChassisFanRpm: 800f,  // weak cell → warning
+        Rail3V3: Rail(3.31f), Rail5V: Rail(5.01f), Rail12V: Rail(12.02f)));
+
+    Assert.Equal(ReadingSeverity.Warning, vm.BoardHealth);
+  }
+
+  [Fact]
+  public void Board_health_is_normal_when_every_rail_is_in_spec() {
+    var vm = CreateVm(out var model);
+
+    model.TelemetrySubject.OnNext(new BoardTelemetry(
+        BoardTemperature: 35f, CmosVoltage: 3.0f, ChassisFanRpm: 800f,
+        Rail3V3: Rail(3.31f), Rail5V: Rail(5.01f), Rail12V: Rail(12.02f)));
+
+    Assert.Equal(ReadingSeverity.Normal, vm.BoardHealth);
+  }
+
+  [Fact]
   public void Missing_readings_stay_normal() {
     var vm = CreateVm(out var model);
 

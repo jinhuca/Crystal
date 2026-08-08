@@ -95,10 +95,18 @@
             <Border Width="6" Height="6" CornerRadius="3" VerticalAlignment="Center" Margin="0,0,6,0">
               <Border.Style>
                 <Style TargetType="Border">
+                  <!-- Dim until sensors arrive; then green healthy, amber/red as BoardHealth
+                       worsens. Ordered so the critical trigger wins when several match. -->
                   <Setter Property="Background" Value="#3A424C"/>
                   <Style.Triggers>
                     <DataTrigger Binding="{Binding HasBoardSensors}" Value="True">
                       <Setter Property="Background" Value="#3BD15A"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding BoardHealth}" Value="Warning">
+                      <Setter Property="Background" Value="#E8B33E"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding BoardHealth}" Value="Critical">
+                      <Setter Property="Background" Value="#E85C5C"/>
                     </DataTrigger>
                   </Style.Triggers>
                 </Style>
@@ -108,10 +116,17 @@
                        VerticalAlignment="Center">
               <TextBlock.Style>
                 <Style TargetType="TextBlock">
+                  <!-- Spell out degraded health next to the dot so it doesn't rely on color alone. -->
                   <Setter Property="Text" Value="BOARD"/>
                   <Style.Triggers>
                     <DataTrigger Binding="{Binding HasBoardSensors}" Value="True">
                       <Setter Property="Text" Value="LIVE BOARD"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding BoardHealth}" Value="Warning">
+                      <Setter Property="Text" Value="LIVE BOARD · WARNING"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding BoardHealth}" Value="Critical">
+                      <Setter Property="Text" Value="LIVE BOARD · CRITICAL"/>
                     </DataTrigger>
                   </Style.Triggers>
                 </Style>
