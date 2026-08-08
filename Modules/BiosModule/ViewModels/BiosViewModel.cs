@@ -6,6 +6,7 @@ using System.Windows.Input;
 using BiosModule.Models;
 using Crystal.Infrastructure.Constants.Navigation;
 using Crystal.Infrastructure.DataStructures.Sensors;
+using Crystal.Provider.Telemetry.Hardware;
 using Crystal.Provider.Smbios.HardwareFeatures.Firmware;
 using Crystal.Provider.Smbios.Types;
 using Crystal.Service.Bios;
@@ -188,7 +189,8 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
           Text(r.SensorName),
           FormatValue(r.Value, unit),
           FormatValue(r.Min, unit),
-          FormatValue(r.Max, unit)));
+          FormatValue(r.Max, unit),
+          RowSeverity(r)));
     }
     HasBoardSensors = BoardSensors.Count > 0;
 
@@ -206,6 +208,17 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
           : "No board sensors detected on this system.";
       HasBoardSensorStatus = true;
     }
+  }
+
+  // Only voltage rows we can map to a known rail are graded; the CMOS cell and ATX rails reuse the
+  // same name heuristic the summary telemetry does. Temps, fans and unrecognized voltages stay
+  // Normal — we have no spec to judge them against.
+  private static ReadingSeverity RowSeverity(SensorReading r) {
+    if (r.SensorType != SensorType.Voltage) return ReadingSeverity.Normal;
+    if (BoardTelemetrySelector.IsCmosRail(r.SensorName)) return BoardReadingSeverity.Cmos(r.Value);
+    return BoardTelemetrySelector.RailNominal(r.SensorName) is { } nominal
+        ? BoardReadingSeverity.Rail(r.Value, nominal)
+        : ReadingSeverity.Normal;
   }
 
   private static string Reading(float? value, string unit, string format) =>

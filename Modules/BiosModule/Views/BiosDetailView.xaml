@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:prism="http://prismlibrary.com/"
+             xmlns:views="clr-namespace:BiosModule.Views"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
              d:DesignHeight="720" d:DesignWidth="1100"
@@ -30,6 +31,7 @@
     <Border Grid.Row="1" VerticalAlignment="Top" Padding="24" Background="#161B22" CornerRadius="8">
       <Border.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+        <views:ReadingSeverityToBrushConverter x:Key="SeverityToBrush"/>
         <Style x:Key="SectionHeader" TargetType="TextBlock">
           <Setter Property="Foreground" Value="#3E9BE8"/>
           <Setter Property="FontSize" Value="13"/>
@@ -183,7 +185,14 @@
             <ListView.View>
               <GridView>
                 <GridViewColumn Header="Sensor" Width="320" DisplayMemberBinding="{Binding Name}"/>
-                <GridViewColumn Header="Value" Width="160" DisplayMemberBinding="{Binding Value}"/>
+                <GridViewColumn Header="Value" Width="160">
+                  <GridViewColumn.CellTemplate>
+                    <DataTemplate>
+                      <TextBlock Text="{Binding Value}"
+                                 Foreground="{Binding Severity, Converter={StaticResource SeverityToBrush}}"/>
+                    </DataTemplate>
+                  </GridViewColumn.CellTemplate>
+                </GridViewColumn>
                 <GridViewColumn Header="Min" Width="160" DisplayMemberBinding="{Binding Min}"/>
                 <GridViewColumn Header="Max" Width="160" DisplayMemberBinding="{Binding Max}"/>
               </GridView>

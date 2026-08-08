@@ -74,20 +74,66 @@
           </StackPanel>
         </Grid>
 
-        <!-- Live board telemetry: dim section rule, then readings updating on the 1s sensor poll -->
+        <!-- Board section rule + header. The dot and label track live state: green "LIVE BOARD" only
+             when readings are actually arriving, otherwise a dim "BOARD" so the pulse never implies
+             live data the machine can't produce (common on laptops with no Super I/O sensors). -->
         <Border BorderBrush="#2A2A2A" BorderThickness="0,1,0,0" Margin="0,2,0,8" Padding="0,8,0,0">
           <StackPanel Orientation="Horizontal">
-            <Border Width="6" Height="6" CornerRadius="3" Background="#3BD15A"
-                    VerticalAlignment="Center" Margin="0,0,6,0"/>
-            <TextBlock Text="LIVE BOARD" Foreground="#5A6470" FontSize="10" FontWeight="SemiBold"
-                       VerticalAlignment="Center"/>
+            <Border Width="6" Height="6" CornerRadius="3" VerticalAlignment="Center" Margin="0,0,6,0">
+              <Border.Style>
+                <Style TargetType="Border">
+                  <Setter Property="Background" Value="#3A424C"/>
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding HasBoardSensors}" Value="True">
+                      <Setter Property="Background" Value="#3BD15A"/>
+                    </DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </Border.Style>
+            </Border>
+            <TextBlock Foreground="#5A6470" FontSize="10" FontWeight="SemiBold"
+                       VerticalAlignment="Center">
+              <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                  <Setter Property="Text" Value="BOARD"/>
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding HasBoardSensors}" Value="True">
+                      <Setter Property="Text" Value="LIVE BOARD"/>
+                    </DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </TextBlock.Style>
+            </TextBlock>
           </StackPanel>
         </Border>
 
         <!-- Driver/availability note shown in place of the readings when the board can't be read -->
         <TextBlock Text="{Binding BoardSensorStatus}" Foreground="#8A94A0" FontSize="11"
-                   TextWrapping="Wrap" Margin="0,0,0,4"
+                   TextWrapping="Wrap" Margin="0,0,0,8"
                    Visibility="{Binding HasBoardSensorStatus, Converter={StaticResource BoolToVisibility}}"/>
+
+        <!-- Backfill: with no live sensors the readings grid collapses, so surface static firmware
+             detail here to keep the tile dense. Shown exactly when the status note is (no sensors). -->
+        <Grid Visibility="{Binding HasBoardSensorStatus, Converter={StaticResource BoolToVisibility}}">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+          </Grid.ColumnDefinitions>
+
+          <StackPanel Grid.Column="0" Style="{StaticResource FieldCell}">
+            <TextBlock Text="ROM size" Style="{StaticResource FieldLabel}"/>
+            <TextBlock Text="{Binding RomSize}" Style="{StaticResource FieldValue}"/>
+          </StackPanel>
+          <StackPanel Grid.Column="1" Style="{StaticResource FieldCell}">
+            <TextBlock Text="Release date" Style="{StaticResource FieldLabel}"/>
+            <TextBlock Text="{Binding ReleaseDate}" Style="{StaticResource FieldValue}"/>
+          </StackPanel>
+          <StackPanel Grid.Column="2" Style="{StaticResource FieldCell}">
+            <TextBlock Text="TPM" Style="{StaticResource FieldLabel}"/>
+            <TextBlock Text="{Binding Tpm}" Style="{StaticResource FieldValue}"/>
+          </StackPanel>
+        </Grid>
 
         <Grid Visibility="{Binding HasBoardSensors, Converter={StaticResource BoolToVisibility}}">
           <Grid.ColumnDefinitions>

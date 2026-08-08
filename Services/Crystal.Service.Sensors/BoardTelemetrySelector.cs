@@ -62,6 +62,20 @@ public static class BoardTelemetrySelector {
     return named ?? fans.Select(r => r.Value).DefaultIfEmpty(null).Max();
   }
 
+  /// <summary>The nominal rail voltage a sensor name denotes (+3.3V → 3.3, +5V → 5, +12V → 12),
+  /// or null when it names no known ATX rail. Lets callers grade an arbitrary voltage reading
+  /// against the same rail-naming heuristic this selector uses.</summary>
+  public static float? RailNominal(string? name) {
+    if (RailMatches(name, "3.3")) return 3.3f;
+    if (RailMatches(name, "5")) return 5f;
+    if (RailMatches(name, "12")) return 12f;
+    return null;
+  }
+
+  /// <summary>Whether a sensor name denotes the CMOS coin-cell rail (VBAT / CMOS / battery).</summary>
+  public static bool IsCmosRail(string? name) =>
+      Contains(name, "VBAT") || Contains(name, "CMOS") || Contains(name, "Battery");
+
   // A voltage rail named for its nominal value (e.g. "+12V", "+3.3V", "+5V").
   private static float? Rail(IReadOnlyList<SensorReading> board, string nominal) =>
       board.FirstOrDefault(r => r.SensorType == SensorType.Voltage && r.Value is not null &&

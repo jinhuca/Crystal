@@ -103,4 +103,34 @@ public class BoardTelemetrySelectorTests {
 
     Assert.Equal(BoardTelemetry.Empty, t);
   }
+
+  [Theory]
+  [InlineData("+3.3V", 3.3f)]
+  [InlineData("3.3V", 3.3f)]
+  [InlineData("+5V", 5f)]
+  [InlineData("+12V", 12f)]
+  public void RailNominal_maps_a_rail_name_to_its_nominal_voltage(string name, float expected) =>
+      Assert.Equal(expected, BoardTelemetrySelector.RailNominal(name));
+
+  [Theory]
+  [InlineData("VBAT")]          // a rail, but not one with an ATX nominal
+  [InlineData("VCore")]
+  [InlineData("Temperature #1")]
+  [InlineData(null)]
+  public void RailNominal_is_null_for_names_that_are_not_atx_rails(string? name) =>
+      Assert.Null(BoardTelemetrySelector.RailNominal(name));
+
+  [Theory]
+  [InlineData("VBAT")]
+  [InlineData("CMOS Battery")]
+  [InlineData("Battery")]
+  public void IsCmosRail_recognizes_the_coin_cell_names(string name) =>
+      Assert.True(BoardTelemetrySelector.IsCmosRail(name));
+
+  [Theory]
+  [InlineData("+12V")]
+  [InlineData("VCore")]
+  [InlineData(null)]
+  public void IsCmosRail_rejects_other_names(string? name) =>
+      Assert.False(BoardTelemetrySelector.IsCmosRail(name));
 }
