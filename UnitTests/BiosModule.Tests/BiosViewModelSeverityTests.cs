@@ -75,13 +75,15 @@ public class BiosViewModelSeverityTests {
   }
 
   [Fact]
-  public void Board_health_is_the_worst_severity_across_the_graded_rails() {
+  public void Board_health_is_the_worst_severity_across_the_graded_rows() {
     var vm = CreateVm(out var model);
 
     // Everything healthy except +12V at -13% (critical) → whole-board rollup is Critical.
-    model.TelemetrySubject.OnNext(new BoardTelemetry(
-        BoardTemperature: 35f, CmosVoltage: 3.0f, ChassisFanRpm: 800f,
-        Rail3V3: Rail(3.31f), Rail5V: Rail(5.4f), Rail12V: Rail(10.4f)));
+    model.ReadingsSubject.OnNext([
+        Board("+3.3V", SensorType.Voltage, 3.31f),
+        Board("+5V", SensorType.Voltage, 5.4f),   // +8% → warning
+        Board("+12V", SensorType.Voltage, 10.4f), // -13% → critical
+    ]);
 
     Assert.Equal(ReadingSeverity.Critical, vm.BoardHealth);
   }
@@ -90,42 +92,50 @@ public class BiosViewModelSeverityTests {
   public void Board_health_reports_warning_when_nothing_is_critical() {
     var vm = CreateVm(out var model);
 
-    model.TelemetrySubject.OnNext(new BoardTelemetry(
-        BoardTemperature: 35f, CmosVoltage: 2.6f, ChassisFanRpm: 800f,  // weak cell → warning
-        Rail3V3: Rail(3.31f), Rail5V: Rail(5.01f), Rail12V: Rail(12.02f)));
+    model.ReadingsSubject.OnNext([
+        Board("VBAT", SensorType.Voltage, 2.6f),   // weak cell → warning
+        Board("+5V", SensorType.Voltage, 5.01f),
+        Board("+12V", SensorType.Voltage, 12.02f),
+    ]);
 
     Assert.Equal(ReadingSeverity.Warning, vm.BoardHealth);
   }
 
   [Fact]
-  public void Board_health_is_normal_when_every_rail_is_in_spec() {
+  public void Board_health_is_normal_when_every_row_is_in_spec() {
     var vm = CreateVm(out var model);
 
-    model.TelemetrySubject.OnNext(new BoardTelemetry(
-        BoardTemperature: 35f, CmosVoltage: 3.0f, ChassisFanRpm: 800f,
-        Rail3V3: Rail(3.31f), Rail5V: Rail(5.01f), Rail12V: Rail(12.02f)));
+    model.ReadingsSubject.OnNext([
+        Board("+3.3V", SensorType.Voltage, 3.31f),
+        Board("+5V", SensorType.Voltage, 5.01f),
+        Board("+12V", SensorType.Voltage, 12.02f),
+    ]);
 
     Assert.Equal(ReadingSeverity.Normal, vm.BoardHealth);
   }
 
   [Fact]
-  public void Board_health_detail_names_offending_rails_worst_first() {
+  public void Board_health_detail_names_offending_rows_worst_first() {
     var vm = CreateVm(out var model);
 
-    model.TelemetrySubject.OnNext(new BoardTelemetry(
-        BoardTemperature: 35f, CmosVoltage: 2.6f, ChassisFanRpm: 800f,  // CMOS warning
-        Rail3V3: Rail(3.31f), Rail5V: Rail(5.4f), Rail12V: Rail(10.4f))); // +5V warning, +12V critical
+    model.ReadingsSubject.OnNext([
+        Board("VBAT", SensorType.Voltage, 2.6f),  // CMOS warning
+        Board("+5V", SensorType.Voltage, 5.4f),   // +8% → warning
+        Board("+12V", SensorType.Voltage, 10.4f), // -13% → critical
+    ]);
 
-    Assert.Equal("+12V critical · +5V warning · CMOS warning", vm.BoardHealthDetail);
+    Assert.Equal("+12V critical · +5V warning · VBAT warning", vm.BoardHealthDetail);
   }
 
   [Fact]
   public void Board_health_detail_is_empty_when_everything_is_in_spec() {
     var vm = CreateVm(out var model);
 
-    model.TelemetrySubject.OnNext(new BoardTelemetry(
-        BoardTemperature: 35f, CmosVoltage: 3.0f, ChassisFanRpm: 800f,
-        Rail3V3: Rail(3.31f), Rail5V: Rail(5.01f), Rail12V: Rail(12.02f)));
+    model.ReadingsSubject.OnNext([
+        Board("+3.3V", SensorType.Voltage, 3.31f),
+        Board("+5V", SensorType.Voltage, 5.01f),
+        Board("+12V", SensorType.Voltage, 12.02f),
+    ]);
 
     Assert.Equal("", vm.BoardHealthDetail);
   }
@@ -142,6 +152,9 @@ public class BiosViewModelSeverityTests {
 
   private static SensorReading Board(string name, SensorType type, float? value) =>
       new("SuperIO", HardwareType.SuperIO, name, type, value, null, null, null);
+
+  private static SensorReading BoardFan(string name, float? value, float? max) =>
+      new("SuperIO", HardwareType.SuperIO, name, SensorType.Fan, value, null, max, "RPM");
 
   [Fact]
   public void Board_rows_grade_only_recognized_rails() {
@@ -163,5 +176,63 @@ public class BiosViewModelSeverityTests {
     Assert.Equal(ReadingSeverity.Warning, Row("VBAT"));
     Assert.Equal(ReadingSeverity.Normal, Row("VCore"));
     Assert.Equal(ReadingSeverity.Normal, Row("System"));
+  }
+
+  [Theory]
+  [InlineData("3VSB", 2.9f, ReadingSeverity.Critical)]   // 3.3V standby, -12%
+  [InlineData("AVCC", 3.1f, ReadingSeverity.Warning)]    // 3.3V analog supply, -6% → warning
+  [InlineData("5VSB", 5.5f, ReadingSeverity.Warning)]    // 5V standby, +10% boundary → warning
+  [InlineData("-12V", -10.4f, ReadingSeverity.Critical)] // negative rail, -13% on magnitude
+  [InlineData("-12V", -12.1f, ReadingSeverity.Normal)]   // negative rail in spec
+  public void Broadened_rails_are_graded_against_their_nominal(string name, float value, ReadingSeverity expected) {
+    var vm = CreateVm(out var model);
+
+    model.ReadingsSubject.OnNext([Board(name, SensorType.Voltage, value)]);
+
+    Assert.Equal(expected, vm.BoardSensors.Single(r => r.Name == name).Severity);
+  }
+
+  [Fact]
+  public void Stalled_fan_is_flagged_only_when_the_board_is_warm() {
+    var vm = CreateVm(out var model);
+
+    // Board hot enough that a stopped fan is a real risk.
+    model.TelemetrySubject.OnNext(new BoardTelemetry(
+        BoardTemperature: 65f, CmosVoltage: 3.0f, ChassisFanRpm: 0f,
+        Rail3V3: Rail(3.31f), Rail5V: Rail(5.01f), Rail12V: Rail(12.02f)));
+    model.ReadingsSubject.OnNext([
+        BoardFan("Chassis Fan", 0f, 1400f),  // spun before, now stopped, board hot → critical
+    ]);
+
+    Assert.Equal(ReadingSeverity.Critical, vm.BoardSensors.Single(r => r.Name == "Chassis Fan").Severity);
+    Assert.Equal(ReadingSeverity.Critical, vm.BoardHealth);
+  }
+
+  [Fact]
+  public void Idle_fan_is_not_flagged_while_the_board_is_cool() {
+    var vm = CreateVm(out var model);
+
+    model.TelemetrySubject.OnNext(new BoardTelemetry(
+        BoardTemperature: 30f, CmosVoltage: 3.0f, ChassisFanRpm: 0f,
+        Rail3V3: Rail(3.31f), Rail5V: Rail(5.01f), Rail12V: Rail(12.02f)));
+    model.ReadingsSubject.OnNext([
+        BoardFan("Chassis Fan", 0f, 1400f),  // semi-passive: intentionally stopped while cool
+    ]);
+
+    Assert.Equal(ReadingSeverity.Normal, vm.BoardSensors.Single(r => r.Name == "Chassis Fan").Severity);
+  }
+
+  [Fact]
+  public void Unpopulated_fan_header_reading_zero_is_never_flagged() {
+    var vm = CreateVm(out var model);
+
+    model.TelemetrySubject.OnNext(new BoardTelemetry(
+        BoardTemperature: 70f, CmosVoltage: 3.0f, ChassisFanRpm: 0f,
+        Rail3V3: Rail(3.31f), Rail5V: Rail(5.01f), Rail12V: Rail(12.02f)));
+    model.ReadingsSubject.OnNext([
+        BoardFan("Fan #3", 0f, 0f),  // never spun this session → empty connector, not a stall
+    ]);
+
+    Assert.Equal(ReadingSeverity.Normal, vm.BoardSensors.Single(r => r.Name == "Fan #3").Severity);
   }
 }

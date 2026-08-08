@@ -69,10 +69,20 @@ public static class BoardTelemetrySelector {
     return named ?? fans.Select(r => r.Value).DefaultIfEmpty(null).Max();
   }
 
-  /// <summary>The nominal rail voltage a sensor name denotes (+3.3V → 3.3, +5V → 5, +12V → 12),
-  /// or null when it names no known ATX rail. Lets callers grade an arbitrary voltage reading
-  /// against the same rail-naming heuristic this selector uses.</summary>
+  /// <summary>The nominal rail voltage a sensor name denotes, or null when it names no fixed-voltage
+  /// rail we can grade. Covers the three main ATX rails and their standby/auxiliary siblings —
+  /// +3.3V/+5V/+12V, the −12V rail, standby rails (3VSB/5VSB), and the SuperIO analog 3.3V supply
+  /// (AVCC/3VCC) — all of which sit at a known voltage. Variable rails whose "nominal" depends on
+  /// the platform (VCore, DRAM/VDIMM, VTT, VCCSA…) return null: there is no universal target to
+  /// judge them against, so callers leave them ungraded rather than flag a false fault.</summary>
   public static float? RailNominal(string? name) {
+    if (name is null) return null;
+    // −12V first: its "12" would otherwise match the +12V query (the leading '-' reads as a rail
+    // boundary), grading a healthy −12V rail against +12 and always flagging it critical.
+    if (RailMatches(name, "-12")) return -12f;
+    // Standby / analog 3.3V supplies that RailMatches' "+3.3V"-style rule doesn't catch by shape.
+    if (Contains(name, "3VSB") || Contains(name, "AVCC") || Contains(name, "3VCC")) return 3.3f;
+    if (Contains(name, "5VSB")) return 5f;
     if (RailMatches(name, "3.3")) return 3.3f;
     if (RailMatches(name, "5")) return 5f;
     if (RailMatches(name, "12")) return 12f;

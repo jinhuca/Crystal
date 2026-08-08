@@ -3,8 +3,11 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using BiosModule.Models;
 using Crystal.Controls.PerformanceGraphs;
+using Crystal.Controls.PerformanceGraphs.Kinds;
+using Crystal.Controls.PerformanceGraphs.Themes;
 using Crystal.Infrastructure.Constants.Navigation;
 using Crystal.Infrastructure.DataStructures.Sensors;
 using Crystal.Provider.Telemetry.Hardware;
@@ -66,6 +69,15 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
   private PerformanceGraph? _rail3V3Graph;
   private PerformanceGraph? _rail5VGraph;
   private PerformanceGraph? _rail12VGraph;
+  // Last severity themed onto each graph, so the trend line is only re-tinted when it actually
+  // changes band rather than reallocating brushes on every 1-second tick.
+  private ReadingSeverity? _rail3V3GraphSeverity;
+  private ReadingSeverity? _rail5VGraphSeverity;
+  private ReadingSeverity? _rail12VGraphSeverity;
+  // Latest board temperature, cached from the telemetry tick so the board-readings tick can grade
+  // fan stall against it (a stopped fan only matters once the board is warm). Both observables tick
+  // together off the shared SensorMonitor, so this is at most one 1-second tick stale.
+  private float? _boardTemperatureC;
   private readonly bool _driverInstalled;
   private readonly bool _driverAccessible;
   private string _boardSensorStatus = Dash;
@@ -145,11 +157,13 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
   public ICommand ShowDashboardCommand { get; }
 
   // A view supplies its own graph instances (buffers must not be shared between the tile and the
-  // detail window). Seed with the latest reading so a freshly-opened detail view isn't blank.
+  // detail window). Clear the themed-severity cache so the next tick re-tints these fresh graphs
+  // regardless of what the previous ones were showing.
   public void AttachRailGraphs(PerformanceGraph rail3V3, PerformanceGraph rail5V, PerformanceGraph rail12V) {
     _rail3V3Graph = rail3V3;
     _rail5VGraph = rail5V;
     _rail12VGraph = rail12V;
+    _rail3V3GraphSeverity = _rail5VGraphSeverity = _rail12VGraphSeverity = null;
   }
 
   private void Apply(FirmwareSnapshot s) {
@@ -194,6 +208,7 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
   }
 
   private void ApplyTelemetry(BoardTelemetry t) {
+    _boardTemperatureC = t.BoardTemperature;
     BoardTemperature = Reading(t.BoardTemperature, "°C", "0.0");
     CmosVoltage = Reading(t.CmosVoltage, "V", "0.00");
     ChassisFanRpm = Reading(t.ChassisFanRpm, "RPM", "0");
@@ -215,20 +230,38 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
     Rail3V3Severity = BoardReadingSeverity.Rail(t.Rail3V3.Value, 3.3f);
     Rail5VSeverity = BoardReadingSeverity.Rail(t.Rail5V.Value, 5f);
     Rail12VSeverity = BoardReadingSeverity.Rail(t.Rail12V.Value, 12f);
-    BoardHealth = Worst(CmosSeverity, Rail3V3Severity, Rail5VSeverity, Rail12VSeverity);
-    BoardHealthDetail = HealthDetail(
-        ("+3.3V", Rail3V3Severity), ("+5V", Rail5VSeverity),
-        ("+12V", Rail12VSeverity), ("CMOS", CmosSeverity));
+
+    // BoardHealth/BoardHealthDetail are rolled up in ApplyBoardReadings, which sees every graded
+    // board row (all rails + fan stall), not just the four headline readings shown here.
+
+    // Tint each trend line to match its rail's severity, so the graph agrees with the value color.
+    _rail3V3GraphSeverity = ThemeGraph(_rail3V3Graph, Rail3V3Severity, _rail3V3GraphSeverity);
+    _rail5VGraphSeverity = ThemeGraph(_rail5VGraph, Rail5VSeverity, _rail5VGraphSeverity);
+    _rail12VGraphSeverity = ThemeGraph(_rail12VGraph, Rail12VSeverity, _rail12VGraphSeverity);
   }
 
-  private static ReadingSeverity Worst(params ReadingSeverity[] severities) => severities.Max();
+  // Re-themes a rail graph only when its severity band changes, returning the newly-applied
+  // severity so the caller can track it. No-op if the graph isn't attached or nothing changed.
+  private static ReadingSeverity? ThemeGraph(PerformanceGraph? graph, ReadingSeverity severity, ReadingSeverity? applied) {
+    if (graph is null || severity == applied) return applied;
+    graph.ApplyTheme(SeverityTheme(severity));
+    return severity;
+  }
+
+  private static GraphTheme SeverityTheme(ReadingSeverity severity) => severity switch {
+    ReadingSeverity.Warning => GraphThemes.Amber(GraphKind.Line),
+    ReadingSeverity.Critical => GraphThemes.FromAccent(CriticalAccent, GraphKind.Line),
+    _ => GraphThemes.Sky(GraphKind.Line),
+  };
+
+  // Matches the #E85C5C critical value color used by ReadingSeverityToBrushConverter.
+  private static readonly Color CriticalAccent = Color.FromRgb(0xE8, 0x5C, 0x5C);
 
   // "+12V critical · CMOS warning", worst first; empty when nothing is out of tolerance.
-  private static string HealthDetail(params (string Name, ReadingSeverity Severity)[] rails) =>
-      string.Join(" · ", rails
-          .Where(r => r.Severity != ReadingSeverity.Normal)
-          .OrderByDescending(r => r.Severity)
-          .Select(r => $"{r.Name} {r.Severity.ToString().ToLowerInvariant()}"));
+  private static string HealthDetail(IReadOnlyList<(string Name, ReadingSeverity Severity)> offenders) =>
+      string.Join(" · ", offenders
+          .OrderByDescending(o => o.Severity)
+          .Select(o => $"{o.Name} {o.Severity.ToString().ToLowerInvariant()}"));
 
   // "11.90–12.10" once both bounds are known; empty until then so the sub-line stays hidden.
   private static string RailRange(RailReading rail) =>
@@ -236,16 +269,24 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
 
   private void ApplyBoardReadings(IReadOnlyList<SensorReading> readings) {
     BoardSensors.Clear();
+    var offenders = new List<(string Name, ReadingSeverity Severity)>();
     foreach (var r in readings.OrderBy(r => r.SensorType).ThenBy(r => r.SensorName)) {
       string unit = r.Unit ?? "";
+      var severity = RowSeverity(r);
+      if (severity != ReadingSeverity.Normal) offenders.Add((Text(r.SensorName), severity));
       BoardSensors.Add(new BoardSensorRowViewModel(
           Text(r.SensorName),
           FormatValue(r.Value, unit),
           FormatValue(r.Min, unit),
           FormatValue(r.Max, unit),
-          RowSeverity(r)));
+          severity));
     }
     HasBoardSensors = BoardSensors.Count > 0;
+
+    // Whole-board rollup over every graded row (all rails + fan stall), not just the four headline
+    // readings — so a broadened rail or a stalled fan lifts the tile dot and is named in the tooltip.
+    BoardHealth = offenders.Count > 0 ? offenders.Max(o => o.Severity) : ReadingSeverity.Normal;
+    BoardHealthDetail = HealthDetail(offenders);
 
     // With no readings, explain why. The registry-installed flag alone is misleading (it can be
     // true while the device won't open), so the accessible probe is authoritative: driver not
@@ -263,15 +304,21 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
     }
   }
 
-  // Only voltage rows we can map to a known rail are graded; the CMOS cell and ATX rails reuse the
-  // same name heuristic the summary telemetry does. Temps, fans and unrecognized voltages stay
-  // Normal — we have no spec to judge them against.
-  private static ReadingSeverity RowSeverity(SensorReading r) {
-    if (r.SensorType != SensorType.Voltage) return ReadingSeverity.Normal;
-    if (BoardTelemetrySelector.IsCmosRail(r.SensorName)) return BoardReadingSeverity.Cmos(r.Value);
-    return BoardTelemetrySelector.RailNominal(r.SensorName) is { } nominal
-        ? BoardReadingSeverity.Rail(r.Value, nominal)
-        : ReadingSeverity.Normal;
+  // Voltage rows we can map to a known fixed rail are graded against it; the CMOS cell uses its own
+  // absolute-volts rule. Fans are graded for stall against the current board temperature. Temps and
+  // variable-voltage rows (VCore, DRAM…) stay Normal — we have no spec to judge them against.
+  private ReadingSeverity RowSeverity(SensorReading r) {
+    switch (r.SensorType) {
+      case SensorType.Voltage:
+        if (BoardTelemetrySelector.IsCmosRail(r.SensorName)) return BoardReadingSeverity.Cmos(r.Value);
+        return BoardTelemetrySelector.RailNominal(r.SensorName) is { } nominal
+            ? BoardReadingSeverity.Rail(r.Value, nominal)
+            : ReadingSeverity.Normal;
+      case SensorType.Fan:
+        return BoardReadingSeverity.Fan(r.Value, r.Max, _boardTemperatureC);
+      default:
+        return ReadingSeverity.Normal;
+    }
   }
 
   private static string Reading(float? value, string unit, string format) =>
