@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using Crystal.Controls.PerformanceGraphs;
 
 namespace BiosModule.ViewModels;
 
@@ -60,12 +61,15 @@ public interface IBiosViewModel {
   ReadingSeverity Rail5VSeverity { get; }
   ReadingSeverity Rail12VSeverity { get; }
   ReadingSeverity BoardHealth { get; }
+  string BoardHealthDetail { get; }
   ObservableCollection<BoardSensorRowViewModel> BoardSensors { get; }
   bool HasBoardSensors { get; }
 
   // Shown in place of empty live readings when board sensors can't be read.
   string BoardSensorStatus { get; }
   bool HasBoardSensorStatus { get; }
+
+  void AttachRailGraphs(PerformanceGraph rail3V3, PerformanceGraph rail5V, PerformanceGraph rail12V);
 
   ICommand ShowDetailCommand { get; }
   ICommand ShowDashboardCommand { get; }

@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:prism="http://prismlibrary.com/"
+             xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs;assembly=Crystal.Controls"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
              d:DesignHeight="240" d:DesignWidth="1100"
@@ -38,6 +39,12 @@
             <Setter Property="Visibility" Value="Collapsed"/>
           </Trigger>
         </Style.Triggers>
+      </Style>
+      <!-- Compact per-rail sparkline: fixed height, no border, right-margin matches the rail
+           value/range columns. Its accent theme is applied per severity in code-behind. -->
+      <Style x:Key="RailSpark" TargetType="graphs:PerformanceGraph">
+        <Setter Property="Height" Value="16"/>
+        <Setter Property="Margin" Value="0,2,16,0"/>
       </Style>
     </ResourceDictionary>
   </UserControl.Resources>
@@ -91,7 +98,19 @@
              when readings are actually arriving, otherwise a dim "BOARD" so the pulse never implies
              live data the machine can't produce (common on laptops with no Super I/O sensors). -->
         <Border BorderBrush="{StaticResource BiosRuleBrush}" BorderThickness="0,1,0,0" Margin="0,2,0,8" Padding="0,8,0,0">
-          <StackPanel Orientation="Horizontal">
+          <!-- Tooltip names the offending rails; only shown when something is out of tolerance. -->
+          <StackPanel Orientation="Horizontal" Background="Transparent"
+                      ToolTip="{Binding BoardHealthDetail}">
+            <StackPanel.Style>
+              <Style TargetType="StackPanel">
+                <Setter Property="ToolTipService.IsEnabled" Value="True"/>
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding BoardHealthDetail}" Value="">
+                    <Setter Property="ToolTipService.IsEnabled" Value="False"/>
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </StackPanel.Style>
             <Border Width="6" Height="6" CornerRadius="3" VerticalAlignment="Center" Margin="0,0,6,0">
               <Border.Style>
                 <Style TargetType="Border">
@@ -189,24 +208,32 @@
             <TextBlock Text="{Binding ChassisFanRpm}" Style="{StaticResource FieldValue}"/>
           </StackPanel>
 
-          <!-- Row 1: voltage rails, each with a dim min–max stability sub-line -->
+          <!-- Row 1: voltage rails, each with a dim min–max stability sub-line and a compact
+               sparkline. The graph's Y-axis is nominal ±10%, so the plot edges are the critical
+               band — a rail hugging the centerline reads as rock-steady at a glance. -->
           <StackPanel Grid.Row="1" Grid.Column="0">
             <TextBlock Text="+3.3V" Style="{StaticResource FieldLabel}"/>
             <TextBlock Text="{Binding Rail3V3}" Style="{StaticResource FieldValue}"
                        Foreground="{Binding Rail3V3Severity, Converter={StaticResource SeverityToBrush}}"/>
             <TextBlock Text="{Binding Rail3V3Range}" Style="{StaticResource RangeHint}"/>
+            <graphs:PerformanceGraph x:Name="Rail3V3Spark" Style="{StaticResource RailSpark}"
+                                     Loaded="OnGraphLoaded" MinValue="2.97" MaxValue="3.63"/>
           </StackPanel>
           <StackPanel Grid.Row="1" Grid.Column="1">
             <TextBlock Text="+5V" Style="{StaticResource FieldLabel}"/>
             <TextBlock Text="{Binding Rail5V}" Style="{StaticResource FieldValue}"
                        Foreground="{Binding Rail5VSeverity, Converter={StaticResource SeverityToBrush}}"/>
             <TextBlock Text="{Binding Rail5VRange}" Style="{StaticResource RangeHint}"/>
+            <graphs:PerformanceGraph x:Name="Rail5VSpark" Style="{StaticResource RailSpark}"
+                                     Loaded="OnGraphLoaded" MinValue="4.5" MaxValue="5.5"/>
           </StackPanel>
           <StackPanel Grid.Row="1" Grid.Column="2">
             <TextBlock Text="+12V" Style="{StaticResource FieldLabel}"/>
             <TextBlock Text="{Binding Rail12V}" Style="{StaticResource FieldValue}"
                        Foreground="{Binding Rail12VSeverity, Converter={StaticResource SeverityToBrush}}"/>
             <TextBlock Text="{Binding Rail12VRange}" Style="{StaticResource RangeHint}"/>
+            <graphs:PerformanceGraph x:Name="Rail12VSpark" Style="{StaticResource RailSpark}"
+                                     Loaded="OnGraphLoaded" MinValue="10.8" MaxValue="13.2"/>
           </StackPanel>
         </Grid>
       </StackPanel>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using BiosModule.Models;
+using Crystal.Controls.PerformanceGraphs;
 using Crystal.Infrastructure.Constants.Navigation;
 using Crystal.Infrastructure.DataStructures.Sensors;
 using Crystal.Provider.Telemetry.Hardware;
@@ -60,7 +61,11 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
   private ReadingSeverity _rail5VSeverity;
   private ReadingSeverity _rail12VSeverity;
   private ReadingSeverity _boardHealth;
+  private string _boardHealthDetail = "";
   private bool _hasBoardSensors;
+  private PerformanceGraph? _rail3V3Graph;
+  private PerformanceGraph? _rail5VGraph;
+  private PerformanceGraph? _rail12VGraph;
   private readonly bool _driverInstalled;
   private readonly bool _driverAccessible;
   private string _boardSensorStatus = Dash;
@@ -128,6 +133,9 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
   // Worst severity across the graded rails/CMOS — drives the tile's status dot so board health
   // reads at a glance without expanding the detail view.
   public ReadingSeverity BoardHealth { get => _boardHealth; private set => SetProperty(ref _boardHealth, value); }
+  // Names the out-of-tolerance rails (e.g. "+12V critical · CMOS warning") so the dot's tooltip
+  // says what's wrong; empty while everything is in spec.
+  public string BoardHealthDetail { get => _boardHealthDetail; private set => SetProperty(ref _boardHealthDetail, value); }
   public ObservableCollection<BoardSensorRowViewModel> BoardSensors { get; } = [];
   public bool HasBoardSensors { get => _hasBoardSensors; private set => SetProperty(ref _hasBoardSensors, value); }
   public string BoardSensorStatus { get => _boardSensorStatus; private set => SetProperty(ref _boardSensorStatus, value); }
@@ -135,6 +143,14 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
 
   public ICommand ShowDetailCommand { get; }
   public ICommand ShowDashboardCommand { get; }
+
+  // A view supplies its own graph instances (buffers must not be shared between the tile and the
+  // detail window). Seed with the latest reading so a freshly-opened detail view isn't blank.
+  public void AttachRailGraphs(PerformanceGraph rail3V3, PerformanceGraph rail5V, PerformanceGraph rail12V) {
+    _rail3V3Graph = rail3V3;
+    _rail5VGraph = rail5V;
+    _rail12VGraph = rail12V;
+  }
 
   private void Apply(FirmwareSnapshot s) {
     Manufacturer = Text(s.Manufacturer);
@@ -189,14 +205,30 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
     Rail5VRange = RailRange(t.Rail5V);
     Rail12VRange = RailRange(t.Rail12V);
 
+    // Trend each rail against its nominal so droop/ripple is visible; a missing reading skips the
+    // tick rather than plotting a false zero that would swamp the ±10%-of-nominal window.
+    if (t.Rail3V3.Value is { } v3) _rail3V3Graph?.AddValue(v3);
+    if (t.Rail5V.Value is { } v5) _rail5VGraph?.AddValue(v5);
+    if (t.Rail12V.Value is { } v12) _rail12VGraph?.AddValue(v12);
+
     CmosSeverity = BoardReadingSeverity.Cmos(t.CmosVoltage);
     Rail3V3Severity = BoardReadingSeverity.Rail(t.Rail3V3.Value, 3.3f);
     Rail5VSeverity = BoardReadingSeverity.Rail(t.Rail5V.Value, 5f);
     Rail12VSeverity = BoardReadingSeverity.Rail(t.Rail12V.Value, 12f);
     BoardHealth = Worst(CmosSeverity, Rail3V3Severity, Rail5VSeverity, Rail12VSeverity);
+    BoardHealthDetail = HealthDetail(
+        ("+3.3V", Rail3V3Severity), ("+5V", Rail5VSeverity),
+        ("+12V", Rail12VSeverity), ("CMOS", CmosSeverity));
   }
 
   private static ReadingSeverity Worst(params ReadingSeverity[] severities) => severities.Max();
+
+  // "+12V critical · CMOS warning", worst first; empty when nothing is out of tolerance.
+  private static string HealthDetail(params (string Name, ReadingSeverity Severity)[] rails) =>
+      string.Join(" · ", rails
+          .Where(r => r.Severity != ReadingSeverity.Normal)
+          .OrderByDescending(r => r.Severity)
+          .Select(r => $"{r.Name} {r.Severity.ToString().ToLowerInvariant()}"));
 
   // "11.90–12.10" once both bounds are known; empty until then so the sub-line stays hidden.
   private static string RailRange(RailReading rail) =>

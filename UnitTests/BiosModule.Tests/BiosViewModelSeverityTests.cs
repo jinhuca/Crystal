@@ -109,6 +109,28 @@ public class BiosViewModelSeverityTests {
   }
 
   [Fact]
+  public void Board_health_detail_names_offending_rails_worst_first() {
+    var vm = CreateVm(out var model);
+
+    model.TelemetrySubject.OnNext(new BoardTelemetry(
+        BoardTemperature: 35f, CmosVoltage: 2.6f, ChassisFanRpm: 800f,  // CMOS warning
+        Rail3V3: Rail(3.31f), Rail5V: Rail(5.4f), Rail12V: Rail(10.4f))); // +5V warning, +12V critical
+
+    Assert.Equal("+12V critical · +5V warning · CMOS warning", vm.BoardHealthDetail);
+  }
+
+  [Fact]
+  public void Board_health_detail_is_empty_when_everything_is_in_spec() {
+    var vm = CreateVm(out var model);
+
+    model.TelemetrySubject.OnNext(new BoardTelemetry(
+        BoardTemperature: 35f, CmosVoltage: 3.0f, ChassisFanRpm: 800f,
+        Rail3V3: Rail(3.31f), Rail5V: Rail(5.01f), Rail12V: Rail(12.02f)));
+
+    Assert.Equal("", vm.BoardHealthDetail);
+  }
+
+  [Fact]
   public void Missing_readings_stay_normal() {
     var vm = CreateVm(out var model);
 

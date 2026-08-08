@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:prism="http://prismlibrary.com/"
+             xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs;assembly=Crystal.Controls"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
              d:DesignHeight="720" d:DesignWidth="1100"
@@ -47,6 +48,10 @@
             <Setter Property="FontFamily" Value="Consolas"/>
             <Setter Property="Margin" Value="0,4"/>
             <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+          </Style>
+          <!-- Full-size rail trend graph; Y-axis is nominal ±10% (set per rail on the instance). -->
+          <Style x:Key="RailGraph" TargetType="graphs:PerformanceGraph">
+            <Setter Property="Height" Value="48"/>
           </Style>
         </ResourceDictionary>
       </Border.Resources>
@@ -181,6 +186,7 @@
             <!-- Whole-board health rollup, matching the summary tile. Hidden while healthy so it
                  only draws the eye when a rail or the CMOS cell is out of tolerance. -->
             <TextBlock VerticalAlignment="Center" Margin="10,10,0,0" FontSize="11" FontWeight="SemiBold"
+                       ToolTip="{Binding BoardHealthDetail}"
                        Foreground="{Binding BoardHealth, Converter={StaticResource SeverityToBrush}}">
               <TextBlock.Style>
                 <Style TargetType="TextBlock">
@@ -222,6 +228,52 @@
               </GridView>
             </ListView.View>
           </ListView>
+
+          <!-- ── Rail voltage trends ─────────────────────────────────── -->
+          <!-- Each graph's Y-axis is nominal ±10%, so the plot edges mark the critical band and a
+               healthy rail tracks the centerline. Shown only when live board sensors are present. -->
+          <StackPanel Visibility="{Binding HasBoardSensors, Converter={StaticResource BoolToVisibility}}">
+            <TextBlock Text="Rail trends (live)" Style="{StaticResource SectionHeader}"/>
+            <Grid Margin="0,4,0,0">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="70"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="90"/>
+              </Grid.ColumnDefinitions>
+              <TextBlock Grid.Column="0" Text="+3.3V" Style="{StaticResource FieldLabel}" VerticalAlignment="Center"/>
+              <graphs:PerformanceGraph Grid.Column="1" x:Name="Rail3V3Graph" Style="{StaticResource RailGraph}"
+                                       Loaded="OnGraphLoaded" MinValue="2.97" MaxValue="3.63"/>
+              <TextBlock Grid.Column="2" Text="{Binding Rail3V3}" Style="{StaticResource FieldValue}"
+                         VerticalAlignment="Center" TextAlignment="Right"
+                         Foreground="{Binding Rail3V3Severity, Converter={StaticResource SeverityToBrush}}"/>
+            </Grid>
+            <Grid Margin="0,4,0,0">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="70"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="90"/>
+              </Grid.ColumnDefinitions>
+              <TextBlock Grid.Column="0" Text="+5V" Style="{StaticResource FieldLabel}" VerticalAlignment="Center"/>
+              <graphs:PerformanceGraph Grid.Column="1" x:Name="Rail5VGraph" Style="{StaticResource RailGraph}"
+                                       Loaded="OnGraphLoaded" MinValue="4.5" MaxValue="5.5"/>
+              <TextBlock Grid.Column="2" Text="{Binding Rail5V}" Style="{StaticResource FieldValue}"
+                         VerticalAlignment="Center" TextAlignment="Right"
+                         Foreground="{Binding Rail5VSeverity, Converter={StaticResource SeverityToBrush}}"/>
+            </Grid>
+            <Grid Margin="0,4,0,0">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="70"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="90"/>
+              </Grid.ColumnDefinitions>
+              <TextBlock Grid.Column="0" Text="+12V" Style="{StaticResource FieldLabel}" VerticalAlignment="Center"/>
+              <graphs:PerformanceGraph Grid.Column="1" x:Name="Rail12VGraph" Style="{StaticResource RailGraph}"
+                                       Loaded="OnGraphLoaded" MinValue="10.8" MaxValue="13.2"/>
+              <TextBlock Grid.Column="2" Text="{Binding Rail12V}" Style="{StaticResource FieldValue}"
+                         VerticalAlignment="Center" TextAlignment="Right"
+                         Foreground="{Binding Rail12VSeverity, Converter={StaticResource SeverityToBrush}}"/>
+            </Grid>
+          </StackPanel>
         </StackPanel>
       </ScrollViewer>
     </Border>

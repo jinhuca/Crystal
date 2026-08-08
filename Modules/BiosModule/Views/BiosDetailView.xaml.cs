@@ -1,4 +1,9 @@
+using System.Windows;
 using System.Windows.Controls;
+using BiosModule.ViewModels;
+using Crystal.Controls.PerformanceGraphs;
+using Crystal.Controls.PerformanceGraphs.Kinds;
+using Crystal.Controls.PerformanceGraphs.Themes;
 
 namespace BiosModule.Views;
 
@@ -7,5 +12,14 @@ namespace BiosModule.Views;
 public partial class BiosDetailView : UserControl {
   public BiosDetailView() {
     InitializeComponent();
+  }
+
+  // Per-graph rather than a root Loaded handler: a root-element Loaded collides with the
+  // BiosModule namespace/class name in WPF's generated code. The VM attach is idempotent.
+  private void OnGraphLoaded(object sender, RoutedEventArgs e) {
+    if (sender is PerformanceGraph graph)
+      graph.ApplyTheme(GraphThemes.Sky(GraphKind.Line));
+    if (DataContext is IBiosViewModel vm)
+      vm.AttachRailGraphs(Rail3V3Graph, Rail5VGraph, Rail12VGraph);
   }
 }
