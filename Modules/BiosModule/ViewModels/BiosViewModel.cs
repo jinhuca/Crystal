@@ -78,6 +78,9 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
   private ReadingSeverity? _fanGraphSeverity;
   private ReadingSeverity _chassisFanSeverity;
   private bool _hasChassisFan;
+  private PerformanceGraph? _boardTempGraph;
+  private ReadingSeverity? _boardTempGraphSeverity;
+  private ReadingSeverity _boardTemperatureSeverity;
   // Latest board temperature, cached from the telemetry tick so the board-readings tick can grade
   // fan stall against it (a stopped fan only matters once the board is warm). Both observables tick
   // together off the shared SensorMonitor, so this is at most one 1-second tick stale.
@@ -164,9 +167,9 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
   // detail window). Clear the themed-severity cache so the next tick re-tints these fresh graphs
   // regardless of what the previous ones were showing.
   public void AttachRailGraphs(PerformanceGraph rail3V3, PerformanceGraph rail5V, PerformanceGraph rail12V) {
-    _rail3V3Graph = rail3V3;
-    _rail5VGraph = rail5V;
-    _rail12VGraph = rail12V;
+    _rail3V3Graph = ResetMarkers(rail3V3);
+    _rail5VGraph = ResetMarkers(rail5V);
+    _rail12VGraph = ResetMarkers(rail12V);
     _rail3V3GraphSeverity = _rail5VGraphSeverity = _rail12VGraphSeverity = null;
   }
 
@@ -174,9 +177,35 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
   // rows (which include a stalled fan's 0 RPM) rather than the headline telemetry, whose selector
   // drops zeros — so a stall shows as the line falling to the floor, not the plot going stale.
   public void AttachFanGraph(PerformanceGraph fan) {
-    _fanGraph = fan;
+    _fanGraph = ResetMarkers(fan);
     _fanGraphSeverity = null;
   }
+
+  // The board-temperature trend, fed from the headline telemetry alongside the rails.
+  public void AttachBoardTempGraph(PerformanceGraph boardTemp) {
+    _boardTempGraph = ResetMarkers(boardTemp);
+    _boardTempGraphSeverity = null;
+  }
+
+  // A freshly-attached graph starts with no session history, so clear any extreme markers so the
+  // first samples set them rather than folding into a stale attach-time value.
+  private static PerformanceGraph ResetMarkers(PerformanceGraph graph) {
+    graph.LowMarker = double.NaN;
+    graph.HighMarker = double.NaN;
+    return graph;
+  }
+
+  // Plots a sample and folds it into the graph's session low/high markers, so a past dip or spike
+  // leaves a dashed reference line even after the live value recovers.
+  private static void Feed(PerformanceGraph? graph, double value) {
+    if (graph is null) return;
+    graph.AddValue(value);
+    graph.LowMarker = double.IsNaN(graph.LowMarker) ? value : System.Math.Min(graph.LowMarker, value);
+    graph.HighMarker = double.IsNaN(graph.HighMarker) ? value : System.Math.Max(graph.HighMarker, value);
+  }
+
+  // Severity of the headline board temperature, tinting its trend line to match the value color.
+  public ReadingSeverity BoardTemperatureSeverity { get => _boardTemperatureSeverity; private set => SetProperty(ref _boardTemperatureSeverity, value); }
 
   // Whether a chassis/system fan was found among the board rows, so the detail view can hide the
   // fan trend when the board exposes no such sensor.
@@ -240,22 +269,25 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
 
     // Trend each rail against its nominal so droop/ripple is visible; a missing reading skips the
     // tick rather than plotting a false zero that would swamp the ±10%-of-nominal window.
-    if (t.Rail3V3.Value is { } v3) _rail3V3Graph?.AddValue(v3);
-    if (t.Rail5V.Value is { } v5) _rail5VGraph?.AddValue(v5);
-    if (t.Rail12V.Value is { } v12) _rail12VGraph?.AddValue(v12);
+    if (t.Rail3V3.Value is { } v3) Feed(_rail3V3Graph, v3);
+    if (t.Rail5V.Value is { } v5) Feed(_rail5VGraph, v5);
+    if (t.Rail12V.Value is { } v12) Feed(_rail12VGraph, v12);
+    if (t.BoardTemperature is { } bt) Feed(_boardTempGraph, bt);
 
     CmosSeverity = BoardReadingSeverity.Cmos(t.CmosVoltage);
     Rail3V3Severity = BoardReadingSeverity.Rail(t.Rail3V3.Value, 3.3f);
     Rail5VSeverity = BoardReadingSeverity.Rail(t.Rail5V.Value, 5f);
     Rail12VSeverity = BoardReadingSeverity.Rail(t.Rail12V.Value, 12f);
+    BoardTemperatureSeverity = BoardReadingSeverity.Temperature(t.BoardTemperature);
 
     // BoardHealth/BoardHealthDetail are rolled up in ApplyBoardReadings, which sees every graded
     // board row (all rails + fan stall), not just the four headline readings shown here.
 
-    // Tint each trend line to match its rail's severity, so the graph agrees with the value color.
+    // Tint each trend line to match its severity, so the graph agrees with the value color.
     _rail3V3GraphSeverity = ThemeGraph(_rail3V3Graph, Rail3V3Severity, _rail3V3GraphSeverity);
     _rail5VGraphSeverity = ThemeGraph(_rail5VGraph, Rail5VSeverity, _rail5VGraphSeverity);
     _rail12VGraphSeverity = ThemeGraph(_rail12VGraph, Rail12VSeverity, _rail12VGraphSeverity);
+    _boardTempGraphSeverity = ThemeGraph(_boardTempGraph, BoardTemperatureSeverity, _boardTempGraphSeverity);
   }
 
   // Re-themes a rail graph only when its severity band changes, returning the newly-applied
@@ -313,7 +345,7 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
     HasChassisFan = fan is not null;
     ChassisFanSeverity = fan is null ? ReadingSeverity.Normal
         : BoardReadingSeverity.Fan(fan.Value, fan.Max, _boardTemperatureC);
-    if (HasChassisFan) _fanGraph?.AddValue(fan!.Value ?? 0d);
+    if (HasChassisFan) Feed(_fanGraph, fan!.Value ?? 0d);
     _fanGraphSeverity = ThemeGraph(_fanGraph, ChassisFanSeverity, _fanGraphSeverity);
 
     // With no readings, explain why. The registry-installed flag alone is misleading (it can be

@@ -20,6 +20,10 @@ internal sealed class GraphStyle {
 
   public Pen LinePen { get; set; }
 
+  // Null until a MarkerBrush is set on the control — no markers are drawn by default, so existing
+  // graphs are unaffected.
+  public Pen? MarkerPen { get; set; }
+
   public Brush FillBrush { get; set; }
 
   public Brush BackgroundBrush { get; set; }

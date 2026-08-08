@@ -64,12 +64,28 @@ public class PerformanceGraph : FrameworkElement {
       DependencyProperty.Register(nameof(BorderBrush), typeof(Brush), typeof(PerformanceGraph),
           new FrameworkPropertyMetadata(Brushes.Black, FrameworkPropertyMetadataOptions.AffectsRender, OnBorderBrushChanged));
 
+  /// <summary>Identifies the <see cref="MarkerBrush"/> dependency property.</summary>
+  public static readonly DependencyProperty MarkerBrushProperty =
+      DependencyProperty.Register(nameof(MarkerBrush), typeof(Brush), typeof(PerformanceGraph),
+          new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender, OnMarkerBrushChanged));
+
+  /// <summary>Identifies the <see cref="LowMarker"/> dependency property.</summary>
+  public static readonly DependencyProperty LowMarkerProperty =
+      DependencyProperty.Register(nameof(LowMarker), typeof(double), typeof(PerformanceGraph),
+          new FrameworkPropertyMetadata(double.NaN, FrameworkPropertyMetadataOptions.AffectsRender));
+
+  /// <summary>Identifies the <see cref="HighMarker"/> dependency property.</summary>
+  public static readonly DependencyProperty HighMarkerProperty =
+      DependencyProperty.Register(nameof(HighMarker), typeof(double), typeof(PerformanceGraph),
+          new FrameworkPropertyMetadata(double.NaN, FrameworkPropertyMetadataOptions.AffectsRender));
+
   private readonly BackgroundRenderer _backgroundRender = new();
   private readonly GridRenderer _gridRender;
   private readonly FilledLineRenderer _filledLineRender = new();
   private readonly BarRenderer _barRender = new();
   private readonly SegmentedBarRenderer _segmentedBarRender = new();
   private readonly BorderRenderer _borderRender = new();
+  private readonly MarkerRenderer _markerRender = new();
   private readonly GraphStyle _graphStyle = new();
 
   // Right-aligned sample buffer: index 0 is oldest, [Count-1] is the most recent value.
@@ -167,6 +183,27 @@ public class PerformanceGraph : FrameworkElement {
     set => SetValue(BorderBrushProperty, value);
   }
 
+  /// <summary>Brush for the horizontal session-extreme marker lines. Null (the default) draws no
+  /// markers, so a graph opts in only by setting this.</summary>
+  public Brush? MarkerBrush {
+    get => (Brush?)GetValue(MarkerBrushProperty);
+    set => SetValue(MarkerBrushProperty, value);
+  }
+
+  /// <summary>Data value at which to draw the low marker line (e.g. the lowest sample seen this
+  /// session). <see cref="double.NaN"/> (the default) draws nothing.</summary>
+  public double LowMarker {
+    get => (double)GetValue(LowMarkerProperty);
+    set => SetValue(LowMarkerProperty, value);
+  }
+
+  /// <summary>Data value at which to draw the high marker line (e.g. the highest sample seen this
+  /// session). <see cref="double.NaN"/> (the default) draws nothing.</summary>
+  public double HighMarker {
+    get => (double)GetValue(HighMarkerProperty);
+    set => SetValue(HighMarkerProperty, value);
+  }
+
   /// <summary>
   /// Applies every property the given theme sets, leaving anything it leaves null untouched.
   /// A theme's fill brush is typically chosen for a specific <see cref="Kind"/> — see
@@ -232,6 +269,11 @@ public class PerformanceGraph : FrameworkElement {
     graph._graphStyle.BorderPen = Helpers.CreateFrozenPen((Brush)e.NewValue, graph._graphStyle.BorderPen.Thickness);
   }
 
+  private static void OnMarkerBrushChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+    var graph = (PerformanceGraph)d;
+    graph._graphStyle.MarkerPen = e.NewValue is Brush brush ? Helpers.CreateDashedPen(brush, 2) : null;
+  }
+
   protected override Size MeasureOverride(Size availableSize) {
     // Provide a default desired size if constraints are infinite
     double width = double.IsInfinity(availableSize.Width) ? 200 : availableSize.Width;
@@ -269,6 +311,11 @@ public class PerformanceGraph : FrameworkElement {
         _filledLineRender.Draw(dc, bounds, _graphStyle, _values, _historyLength, MinValue, MaxValue);
         break;
     }
+
+    // Session-extreme markers over the data line but under the border, so a recovered dip/spike
+    // stays visible. No-ops unless MarkerBrush is set and the value is a real number.
+    _markerRender.Draw(dc, bounds, _graphStyle, LowMarker, MinValue, MaxValue);
+    _markerRender.Draw(dc, bounds, _graphStyle, HighMarker, MinValue, MaxValue);
 
     // Border drawn last so its edge stays crisp over the fill/grid instead of being covered.
     _borderRender.Draw(dc, bounds, _graphStyle);

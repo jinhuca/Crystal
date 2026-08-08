@@ -49,9 +49,11 @@
             <Setter Property="Margin" Value="0,4"/>
             <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
           </Style>
-          <!-- Full-size rail trend graph; Y-axis is nominal ±10% (set per rail on the instance). -->
+          <!-- Full-size rail trend graph; Y-axis is nominal ±10% (set per rail on the instance).
+               MarkerBrush turns on the session low/high dashed reference lines. -->
           <Style x:Key="RailGraph" TargetType="graphs:PerformanceGraph">
             <Setter Property="Height" Value="48"/>
+            <Setter Property="MarkerBrush" Value="#6E7681"/>
           </Style>
         </ResourceDictionary>
       </Border.Resources>
@@ -234,6 +236,21 @@
                healthy rail tracks the centerline. Shown only when live board sensors are present. -->
           <StackPanel Visibility="{Binding HasBoardSensors, Converter={StaticResource BoolToVisibility}}">
             <TextBlock Text="Rail trends (live)" Style="{StaticResource SectionHeader}"/>
+            <!-- Board temperature: 20–90 °C so the 60/70 °C warn/critical bands sit in the upper
+                 portion and a healthy idle board tracks the lower third. -->
+            <Grid Margin="0,4,0,0">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="70"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="90"/>
+              </Grid.ColumnDefinitions>
+              <TextBlock Grid.Column="0" Text="Board" Style="{StaticResource FieldLabel}" VerticalAlignment="Center"/>
+              <graphs:PerformanceGraph Grid.Column="1" x:Name="BoardTempGraph" Style="{StaticResource RailGraph}"
+                                       Loaded="OnBoardTempGraphLoaded" MinValue="20" MaxValue="90"/>
+              <TextBlock Grid.Column="2" Text="{Binding BoardTemperature}" Style="{StaticResource FieldValue}"
+                         VerticalAlignment="Center" TextAlignment="Right"
+                         Foreground="{Binding BoardTemperatureSeverity, Converter={StaticResource SeverityToBrush}}"/>
+            </Grid>
             <Grid Margin="0,4,0,0">
               <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="70"/>

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reactive.Subjects;
 using BiosModule.Models;
 using BiosModule.ViewModels;
+using Crystal.Controls.PerformanceGraphs;
 using Crystal.Infrastructure.DataStructures.Sensors;
 using Crystal.Provider.Telemetry.Hardware;
 using Crystal.Service.Bios;
@@ -237,6 +238,20 @@ public class BiosViewModelSeverityTests {
     Assert.Equal(ReadingSeverity.Normal, vm.BoardSensors.Single(r => r.Name == "Chassis Fan").Severity);
   }
 
+  [Theory]
+  [InlineData(40f, ReadingSeverity.Normal)]
+  [InlineData(62f, ReadingSeverity.Warning)]
+  [InlineData(72f, ReadingSeverity.Critical)]
+  public void Board_temperature_severity_is_exposed_for_the_trend(float celsius, ReadingSeverity expected) {
+    var vm = CreateVm(out var model);
+
+    model.TelemetrySubject.OnNext(new BoardTelemetry(
+        BoardTemperature: celsius, CmosVoltage: 3.0f, ChassisFanRpm: 800f,
+        Rail3V3: Rail(3.31f), Rail5V: Rail(5.01f), Rail12V: Rail(12.02f)));
+
+    Assert.Equal(expected, vm.BoardTemperatureSeverity);
+  }
+
   [Fact]
   public void Chassis_fan_presence_and_stall_severity_are_exposed_for_the_trend() {
     var vm = CreateVm(out var model);
@@ -251,6 +266,39 @@ public class BiosViewModelSeverityTests {
     Assert.True(vm.HasChassisFan);
     Assert.Equal(ReadingSeverity.Critical, vm.ChassisFanSeverity);
   }
+
+  [Fact]
+  public void Rail_graph_markers_track_the_session_low_and_high() => StaRunner.Run(() => {
+    var vm = CreateVm(out var model);
+    var g3 = new PerformanceGraph();
+    var g5 = new PerformanceGraph();
+    var g12 = new PerformanceGraph();
+    vm.AttachRailGraphs(g3, g5, g12);
+
+    model.TelemetrySubject.OnNext(new BoardTelemetry(
+        BoardTemperature: 35f, CmosVoltage: 3.0f, ChassisFanRpm: 800f,
+        Rail3V3: Rail(3.31f), Rail5V: Rail(5.01f), Rail12V: Rail(12.20f)));
+    model.TelemetrySubject.OnNext(new BoardTelemetry(
+        BoardTemperature: 35f, CmosVoltage: 3.0f, ChassisFanRpm: 800f,
+        Rail3V3: Rail(3.28f), Rail5V: Rail(5.05f), Rail12V: Rail(11.90f)));
+
+    // +12V saw 12.20 then 11.90 → low marker at the dip, high marker at the peak.
+    Assert.Equal(11.90, g12.LowMarker, 3);
+    Assert.Equal(12.20, g12.HighMarker, 3);
+  });
+
+  [Fact]
+  public void Attaching_a_fresh_graph_resets_its_markers() => StaRunner.Run(() => {
+    var vm = CreateVm(out var model);
+    var g3 = new PerformanceGraph { LowMarker = 1.0, HighMarker = 9.0 };
+    var g5 = new PerformanceGraph();
+    var g12 = new PerformanceGraph();
+
+    vm.AttachRailGraphs(g3, g5, g12);
+
+    Assert.True(double.IsNaN(g3.LowMarker));
+    Assert.True(double.IsNaN(g3.HighMarker));
+  });
 
   [Fact]
   public void No_chassis_fan_is_reported_when_only_the_cpu_fan_is_present() {

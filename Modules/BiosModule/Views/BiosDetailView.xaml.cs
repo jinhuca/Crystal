@@ -29,4 +29,11 @@ public partial class BiosDetailView : UserControl {
     if (DataContext is IBiosViewModel vm)
       vm.AttachFanGraph(FanGraph);
   }
+
+  private void OnBoardTempGraphLoaded(object sender, RoutedEventArgs e) {
+    if (sender is PerformanceGraph graph)
+      graph.ApplyTheme(GraphThemes.Sky(GraphKind.Line));
+    if (DataContext is IBiosViewModel vm)
+      vm.AttachBoardTempGraph(BoardTempGraph);
+  }
 }
