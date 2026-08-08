@@ -176,7 +176,29 @@
           </ListView>
 
           <!-- ── Live board sensors (shared SensorMonitor, 1s cadence) ─── -->
-          <TextBlock Text="Board sensors (live)" Style="{StaticResource SectionHeader}"/>
+          <StackPanel Orientation="Horizontal">
+            <TextBlock Text="Board sensors (live)" Style="{StaticResource SectionHeader}"/>
+            <!-- Whole-board health rollup, matching the summary tile. Hidden while healthy so it
+                 only draws the eye when a rail or the CMOS cell is out of tolerance. -->
+            <TextBlock VerticalAlignment="Center" Margin="10,10,0,0" FontSize="11" FontWeight="SemiBold"
+                       Foreground="{Binding BoardHealth, Converter={StaticResource SeverityToBrush}}">
+              <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                  <Setter Property="Visibility" Value="Collapsed"/>
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding BoardHealth}" Value="Warning">
+                      <Setter Property="Visibility" Value="Visible"/>
+                      <Setter Property="Text" Value="WARNING"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding BoardHealth}" Value="Critical">
+                      <Setter Property="Visibility" Value="Visible"/>
+                      <Setter Property="Text" Value="CRITICAL"/>
+                    </DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </TextBlock.Style>
+            </TextBlock>
+          </StackPanel>
           <TextBlock Text="{Binding BoardSensorStatus}" Style="{StaticResource FieldLabel}"
                      TextWrapping="Wrap"
                      Visibility="{Binding HasBoardSensorStatus, Converter={StaticResource BoolToVisibility}}"/>
