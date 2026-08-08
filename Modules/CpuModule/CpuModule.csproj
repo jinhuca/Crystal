@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Services\Crystal.Service.Cpu\Crystal.Service.Cpu.csproj" />
+    <ProjectReference Include="..\..\Services\Crystal.Service.Sensors\Crystal.Service.Sensors.csproj" />
     <ProjectReference Include="..\..\Providers\Crystal.Provider.CpuId\Crystal.Provider.CpuId.csproj" />
     <ProjectReference Include="..\..\Providers\Crystal.Provider.Mmi\Crystal.Provider.Mmi.csproj" />
     <ProjectReference Include="..\..\Providers\Crystal.Provider.Smbios\Crystal.Provider.Smbios.csproj" />

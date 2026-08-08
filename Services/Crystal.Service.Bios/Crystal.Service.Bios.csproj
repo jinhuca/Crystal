@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Crystal.Service.Bios</RootNamespace>
+    <AssemblyName>Crystal.Service.Bios</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Reactive" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Providers\Crystal.Provider.Mmi\Crystal.Provider.Mmi.csproj" />
+    <ProjectReference Include="..\..\Providers\Crystal.Provider.Smbios\Crystal.Provider.Smbios.csproj" />
+  </ItemGroup>
+
+</Project>

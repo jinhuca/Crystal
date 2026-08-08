@@ -16,7 +16,11 @@ namespace ProcessModule.ViewModels;
 /// </summary>
 public sealed class ProcessListViewModel : BindableBase, IDisposable {
   private readonly IDisposable _subscription;
+  private readonly IDisposable _statsSubscription;
   private readonly Dictionary<uint, ProcessRowViewModel> _rowsByPid = new();
+  private int _processCount;
+  private int _threadCount;
+  private int _handleCount;
 
   // PID of the process hosting this dashboard, used to preselect our own row on first load.
   private readonly uint _ownPid = (uint)Environment.ProcessId;
@@ -28,7 +32,7 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
   private string _nameFilter = string.Empty;
   private string _pidFilter = string.Empty;
 
-  public ProcessListViewModel(IProcessModel model) {
+  public ProcessListViewModel(IProcessModel model, SystemStatsMonitor systemStats) {
     MetricsStatusError = model.MetricsStatusError;
 
     RowsView = new ListCollectionView(Rows);
@@ -38,10 +42,26 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
     RowsView.Filter = MatchesFilters;
     ApplySortDescriptions();
 
+    // Live shaping: let the view re-sort/re-group/re-filter incrementally as row properties change,
+    // instead of a full Refresh() on every poll. Refresh() raises a CollectionChanged.Reset, which
+    // regenerates the whole virtualized list and recomputes the scroll extent each second — that is
+    // what makes the scrollbar flash. With live shaping the view emits fine-grained moves instead.
+    EnableLiveShaping();
+
     _subscription = model.Processes.Subscribe(samples => OnUi(() => Apply(samples)));
+    _statsSubscription = systemStats.Stats.Subscribe(s => OnUi(() => UpdateSystemStats(s)));
   }
 
   public ObservableCollection<ProcessRowViewModel> Rows { get; } = [];
+
+  /// <summary>Number of running processes system-wide, shown in the summary header.</summary>
+  public int ProcessCount { get => _processCount; private set => SetProperty(ref _processCount, value); }
+
+  /// <summary>Total threads across every running process.</summary>
+  public int ThreadCount { get => _threadCount; private set => SetProperty(ref _threadCount, value); }
+
+  /// <summary>Total open handles across every running process.</summary>
+  public int HandleCount { get => _handleCount; private set => SetProperty(ref _handleCount, value); }
 
   /// <summary>
   /// Null when per-process GPU/Disk/Network are live; otherwise a short reason they're blank (ETW
@@ -75,6 +95,31 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
   public string PidFilter {
     get => _pidFilter;
     set { if (SetProperty(ref _pidFilter, value ?? string.Empty)) RowsView.Refresh(); }
+  }
+
+  // Turn on live sorting/grouping/filtering and tell the view which properties to watch. Without
+  // these the view can't know a row's sort key or filter result changed without a full Refresh().
+  private void EnableLiveShaping() {
+    RowsView.IsLiveSorting = true;
+    RowsView.IsLiveGrouping = true;
+    RowsView.IsLiveFiltering = true;
+
+    foreach (var property in new[] {
+        nameof(ProcessRowViewModel.Name),
+        nameof(ProcessRowViewModel.ProcessId),
+        nameof(ProcessRowViewModel.Category),
+        nameof(ProcessRowViewModel.CategoryName),
+        nameof(ProcessRowViewModel.Status),
+        nameof(ProcessRowViewModel.CpuPercent),
+        nameof(ProcessRowViewModel.GpuPercent),
+        nameof(ProcessRowViewModel.WorkingSetMb),
+        nameof(ProcessRowViewModel.DiskBytesPerSec),
+        nameof(ProcessRowViewModel.NetBytesPerSec),
+    }) {
+      RowsView.LiveSortingProperties.Add(property);
+      RowsView.LiveFilteringProperties.Add(property);
+      RowsView.LiveGroupingProperties.Add(property);
+    }
   }
 
   private bool MatchesFilters(object item) {
@@ -146,8 +191,9 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
       }
     }
 
-    // Live metric values changed in place, so re-apply grouping/sorting for this poll.
-    RowsView.Refresh();
+    // No RowsView.Refresh() here: live shaping (see EnableLiveShaping) re-sorts/re-groups/re-filters
+    // incrementally as each row's bound properties change, so the view stays current without the
+    // full Reset that made the scrollbar flash every second.
 
     // Default the selection to this app's own process once it first appears in the list.
     if (!_hasSelectedDefault && _rowsByPid.TryGetValue(_ownPid, out var ownRow)) {
@@ -156,11 +202,20 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
     }
   }
 
+  private void UpdateSystemStats(SystemStats stats) {
+    ProcessCount = stats.Processes;
+    ThreadCount = stats.Threads;
+    HandleCount = stats.Handles;
+  }
+
   private static void OnUi(Action action) {
     var dispatcher = Application.Current?.Dispatcher;
     if (dispatcher is null || dispatcher.CheckAccess()) action();
     else dispatcher.Invoke(action);
   }
 
-  public void Dispose() => _subscription.Dispose();
+  public void Dispose() {
+    _subscription.Dispose();
+    _statsSubscription.Dispose();
+  }
 }

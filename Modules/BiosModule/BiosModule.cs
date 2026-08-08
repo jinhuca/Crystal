@@ -4,7 +4,11 @@ using BiosModule.Views;
 using Crystal.Controls.Loading;
 using Crystal.Infrastructure.Constants;
 using Crystal.Infrastructure.Constants.Navigation;
+using Crystal.Provider.Mmi.HardwareFeatures.FirmwareSecurity;
 using Crystal.Provider.Mmi.MmiEngine;
+using Crystal.Provider.Smbios.HardwareFeatures.Firmware;
+using Crystal.Service.Bios;
+using Crystal.Service.Sensors;
 
 namespace BiosModule;
 
@@ -18,7 +22,15 @@ public class BiosModule(IRegionManager regionManager) : IModule {
 
   public void RegisterTypes(IContainerRegistry containerRegistry) {
     containerRegistry.Register<IWmiHardwareProvider, WmiHardwareProvider>();
-    containerRegistry.Register<BiosInfoBuilder>();
+    containerRegistry.Register<ISmbiosFirmwareProvider, SmbiosFirmwareProvider>();
+    containerRegistry.Register<IFirmwareSecurityProvider, FirmwareSecurityProvider>();
+    containerRegistry.Register<FirmwareInfoBuilder>();
+    containerRegistry.RegisterSingleton<BiosMonitor>();
+
+    // Live board telemetry, projected from the shell's shared SensorMonitor (there is no separate
+    // Motherboard module; the BIOS tile is the board's home). Optional ctor param → factory lambda.
+    containerRegistry.RegisterSingleton<BoardSensorMonitor>(
+        cp => new BoardSensorMonitor(cp.Resolve<SensorMonitor>()));
 
     containerRegistry.RegisterSingleton<IBiosModel, BiosModel>();
 

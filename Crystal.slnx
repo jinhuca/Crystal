@@ -33,6 +33,7 @@
     </Project>
   </Folder>
   <Folder Name="/Services/">
+    <Project Path="Services/Crystal.Service.Bios/Crystal.Service.Bios.csproj" />
     <Project Path="Services/Crystal.Service.Cpu/Crystal.Service.Cpu.csproj" />
     <Project Path="Services/Crystal.Service.Inventory/Crystal.Service.Inventory.csproj" />
     <Project Path="Services/Crystal.Service.Pnp/Crystal.Services.Pnp.csproj" />

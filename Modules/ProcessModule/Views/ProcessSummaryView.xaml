@@ -37,15 +37,28 @@
         <Setter Property="Template">
           <Setter.Value>
             <ControlTemplate TargetType="GridViewColumnHeader">
-              <Border x:Name="HeaderBorder" Background="{TemplateBinding Background}"
-                      BorderBrush="{TemplateBinding BorderBrush}"
-                      BorderThickness="{TemplateBinding BorderThickness}">
-                <ContentPresenter x:Name="HeaderContent" Margin="{TemplateBinding Padding}"
-                                  VerticalAlignment="Center"
-                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                  RecognizesAccessKey="True"
-                                  SnapsToDevicePixels="True"/>
-              </Border>
+              <Grid>
+                <Border x:Name="HeaderBorder" Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                  <ContentPresenter x:Name="HeaderContent" Margin="{TemplateBinding Padding}"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    RecognizesAccessKey="True"
+                                    SnapsToDevicePixels="True"/>
+                </Border>
+                <!-- Drag handle at the right edge for resizing the column. -->
+                <Thumb x:Name="PART_HeaderGripper" HorizontalAlignment="Right"
+                       Width="8" Cursor="SizeWE" Background="Transparent">
+                  <Thumb.Template>
+                    <ControlTemplate TargetType="Thumb">
+                      <Border Background="{TemplateBinding Background}" Padding="0">
+                        <Rectangle Width="1" HorizontalAlignment="Center" Fill="#2A2A2A"/>
+                      </Border>
+                    </ControlTemplate>
+                  </Thumb.Template>
+                </Thumb>
+              </Grid>
               <ControlTemplate.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                   <Setter TargetName="HeaderBorder" Property="Background" Value="#1C1C1C"/>
@@ -137,7 +150,11 @@
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
-        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+        <!-- Visible (not Auto): the list re-sorts/refreshes every second, and Auto would re-decide
+             whether the scrollbar is needed on each tick — toggling the GridView header's right-edge
+             padding filler and making the grey block above the scrollbar flicker. Reserving the
+             scrollbar space permanently stops that flash. -->
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Visible"/>
         <Setter Property="Template">
           <Setter.Value>
             <ControlTemplate TargetType="ListView">
@@ -163,25 +180,57 @@
       <RowDefinition Height="*"/>
     </Grid.RowDefinitions>
 
-    <!-- Dense header bar: accent tick + title, thin divider rule below -->
+    <!-- Dense header bar: accent tick + title on the left, Name/PID search on the right -->
     <Border Grid.Row="0" BorderBrush="#2A2A2A" BorderThickness="0,0,0,1"
             Padding="0,0,0,4" Margin="0,0,0,6">
-      <StackPanel Orientation="Horizontal">
-        <Border Width="3" Background="#3E9BE8" Margin="0,1,8,1"/>
-        <TextBlock Text="PROCESSES" Foreground="#E6E6E6" FontSize="12" FontWeight="SemiBold"
-                   VerticalAlignment="Center" Margin="0,0,12,0"/>
-        <TextBlock Text="{Binding Rows.Count, StringFormat={}{0} active}"
-                   Foreground="#8A94A0" FontSize="11" FontFamily="Consolas"
-                   VerticalAlignment="Center"/>
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
 
-        <!-- Warning shown only when the ETW session failed to start; explains blank GPU/Disk/Network. -->
-        <Border Background="#3A2A12" BorderBrush="#7A5A1E" BorderThickness="1"
-                Padding="8,1" Margin="12,0,0,0" VerticalAlignment="Center"
-                Visibility="{Binding HasMetricsStatusError, Converter={StaticResource BoolToVisibility}}">
-          <TextBlock Foreground="#E0B84C" FontSize="11" FontFamily="Consolas"
-                     Text="{Binding MetricsStatusError, StringFormat=GPU/Disk/Network unavailable: {0}}"/>
-        </Border>
-      </StackPanel>
+        <StackPanel Grid.Column="0" Orientation="Horizontal">
+          <Border Width="3" Background="#3E9BE8" Margin="0,1,8,1"/>
+          <TextBlock Text="PROCESSES" Foreground="#E6E6E6" FontSize="12" FontWeight="SemiBold"
+                     VerticalAlignment="Center" Margin="0,0,12,0"/>
+          <TextBlock Text="{Binding Rows.Count, StringFormat={}{0} active}"
+                     Foreground="#8A94A0" FontSize="11" FontFamily="Consolas"
+                     VerticalAlignment="Center"/>
+
+          <!-- System-wide totals, right after the active count -->
+          <TextBlock Text="{Binding ProcessCount, StringFormat=Processes: {0:N0}}"
+                     Foreground="#8A94A0" FontSize="11" FontFamily="Consolas"
+                     VerticalAlignment="Center" Margin="16,0,0,0"/>
+          <TextBlock Text="{Binding ThreadCount, StringFormat=Threads: {0:N0}}"
+                     Foreground="#8A94A0" FontSize="11" FontFamily="Consolas"
+                     VerticalAlignment="Center" Margin="16,0,0,0"/>
+          <TextBlock Text="{Binding HandleCount, StringFormat=Handles: {0:N0}}"
+                     Foreground="#8A94A0" FontSize="11" FontFamily="Consolas"
+                     VerticalAlignment="Center" Margin="16,0,0,0"/>
+
+          <!-- Warning shown only when the ETW session failed to start; explains blank GPU/Disk/Network. -->
+          <Border Background="#3A2A12" BorderBrush="#7A5A1E" BorderThickness="1"
+                  Padding="8,1" Margin="12,0,0,0" VerticalAlignment="Center"
+                  Visibility="{Binding HasMetricsStatusError, Converter={StaticResource BoolToVisibility}}">
+            <TextBlock Foreground="#E0B84C" FontSize="11" FontFamily="Consolas"
+                       Text="{Binding MetricsStatusError, StringFormat=GPU/Disk/Network unavailable: {0}}"/>
+          </Border>
+        </StackPanel>
+
+        <!-- Name / PID filters, moved up from the column headers -->
+        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+          <TextBlock Text="Name" Foreground="#8A94A0" FontSize="11" FontFamily="Consolas"
+                     VerticalAlignment="Center" Margin="0,0,6,0"/>
+          <TextBox Style="{StaticResource HeaderSearchBoxStyle}" Width="160" Height="18"
+                   ToolTip="Filter by process name"
+                   Text="{Binding NameFilter, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+          <TextBlock Text="PID" Foreground="#8A94A0" FontSize="11" FontFamily="Consolas"
+                     VerticalAlignment="Center" Margin="16,0,6,0"/>
+          <TextBox Style="{StaticResource HeaderSearchBoxStyle}" Width="80" Height="18"
+                   ToolTip="Filter by PID"
+                   Text="{Binding PidFilter, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        </StackPanel>
+      </Grid>
     </Border>
 
     <!-- Master (list) on the left, detail panel on the right, split by a draggable separator. -->
@@ -225,20 +274,7 @@
         </ListView.GroupStyle>
         <ListView.View>
           <GridView ColumnHeaderContainerStyle="{StaticResource HeaderStyle}">
-            <GridViewColumn Width="260" local:GridViewSort.SortProperty="Name">
-              <GridViewColumn.HeaderTemplate>
-                <DataTemplate>
-                  <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Name" VerticalAlignment="Center"/>
-                    <TextBox Style="{StaticResource HeaderSearchBoxStyle}" Width="150" Height="18"
-                             Margin="10,0,0,0"
-                             ToolTip="Filter by process name"
-                             Text="{Binding DataContext.NameFilter,
-                                    RelativeSource={RelativeSource AncestorType=UserControl},
-                                    UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                  </StackPanel>
-                </DataTemplate>
-              </GridViewColumn.HeaderTemplate>
+            <GridViewColumn Header="Name" Width="260" local:GridViewSort.SortProperty="Name">
               <GridViewColumn.CellTemplate>
                 <DataTemplate>
                   <TextBlock Text="{Binding Name}" Foreground="#DDDDDD"
@@ -247,20 +283,7 @@
                 </DataTemplate>
               </GridViewColumn.CellTemplate>
             </GridViewColumn>
-            <GridViewColumn Width="130" local:GridViewSort.SortProperty="ProcessId">
-              <GridViewColumn.HeaderTemplate>
-                <DataTemplate>
-                  <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="PID" VerticalAlignment="Center"/>
-                    <TextBox Style="{StaticResource HeaderSearchBoxStyle}" Width="70" Height="18"
-                             Margin="8,0,0,0"
-                             ToolTip="Filter by PID"
-                             Text="{Binding DataContext.PidFilter,
-                                    RelativeSource={RelativeSource AncestorType=UserControl},
-                                    UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                  </StackPanel>
-                </DataTemplate>
-              </GridViewColumn.HeaderTemplate>
+            <GridViewColumn Header="PID" Width="130" local:GridViewSort.SortProperty="ProcessId">
               <GridViewColumn.CellTemplate>
                 <DataTemplate>
                   <TextBlock Text="{Binding ProcessId}" Foreground="#8A94A0"

@@ -10,6 +10,7 @@ using Crystal.Provider.Mmi.HardwareFeatures.Processor;
 using Crystal.Provider.Mmi.MmiEngine;
 using Crystal.Provider.Smbios.HardwareFeatures.Processor;
 using Crystal.Service.Cpu;
+using Crystal.Service.Sensors;
 
 namespace CpuModule;
 
@@ -45,10 +46,9 @@ public class CpuModule(IRegionManager regionManager) : IModule {
     containerRegistry.RegisterSingleton<CpuMonitor>(cp => new CpuMonitor(cp.Resolve<CpuInfoBuilder>()));
     containerRegistry.RegisterSingleton<ICpuModel, CpuModel>();
 
-    // System-wide process/thread/handle totals for the summary footer. Singleton so its
-    // ref-counted poll timer is shared; built via a factory because its optional
-    // TimeSpan?/IScheduler? ctor params can't be resolved by the container (default 1s cadence).
-    containerRegistry.RegisterSingleton<SystemStatsMonitor>(_ => new SystemStatsMonitor());
+    // CPU fan RPM, projected from the shell's shared SensorMonitor (CPU hardware emits no fan; it
+    // comes from the motherboard SuperIO). Built via a factory to inject that singleton.
+    containerRegistry.RegisterSingleton<CpuFanMonitor>(cp => new CpuFanMonitor(cp.Resolve<SensorMonitor>()));
 
     // View models. The sub-view models are per-consumer; the root VM composes them.
     containerRegistry.Register<ICpuSpecsViewModel, CpuSpecsViewModel>();

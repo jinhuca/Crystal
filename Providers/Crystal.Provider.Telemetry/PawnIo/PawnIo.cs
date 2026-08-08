@@ -52,6 +52,25 @@ public class PawnIo {
   public static Version Version { get; }
 
   /// <summary>
+  /// Gets a value indicating whether the PawnIO driver device can actually be opened right now.
+  /// Unlike <see cref="IsInstalled"/> (a registry check), this verifies the driver is running and
+  /// accessible to this process — which additionally requires the process to be elevated. Returns
+  /// false when PawnIO isn't installed, isn't running, or the caller lacks the rights to open it.
+  /// </summary>
+  public static unsafe bool IsAccessible {
+    get {
+      using SafeFileHandle handle = PInvoke.CreateFile(@"\\?\GLOBALROOT\Device\PawnIO",
+                                                       (uint)FileAccess.ReadWrite,
+                                                       FILE_SHARE_MODE.FILE_SHARE_READ | FILE_SHARE_MODE.FILE_SHARE_WRITE,
+                                                       null,
+                                                       FILE_CREATION_DISPOSITION.OPEN_EXISTING,
+                                                       FILE_FLAGS_AND_ATTRIBUTES.FILE_ATTRIBUTE_NORMAL,
+                                                       null);
+      return !handle.IsInvalid;
+    }
+  }
+
+  /// <summary>
   /// Gets a value indicating whether the underlying handle is currently valid and open.
   /// </summary>
   public bool IsLoaded => _handle is {

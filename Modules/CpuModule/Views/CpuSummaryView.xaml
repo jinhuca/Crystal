@@ -157,8 +157,7 @@
         </Grid>
 
         <!-- Right group: per-core load, filling top-to-bottom then wrapping into the next column,
-             with the process/thread/handle totals pinned to the bottom (level with the
-             Temperature graph). -->
+             with the CPU fan readout pinned to the bottom (level with the Temperature graph). -->
         <DockPanel Grid.Column="2" LastChildFill="False">
           <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding CoreLoads}">
             <ItemsControl.ItemsPanel>
@@ -189,11 +188,9 @@
             </ItemsControl.ItemTemplate>
           </ItemsControl>
 
-          <!-- Process totals, pinned to the bottom of the column. -->
+          <!-- CPU fan readout, pinned to the bottom of the column. -->
           <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="0,8,0,0">
-            <TextBlock Text="{Binding ProcessCount, StringFormat=Processes: {0:N0}}" Style="{StaticResource FooterStat}"/>
-            <TextBlock Text="{Binding ThreadCount, StringFormat=Threads: {0:N0}}" Style="{StaticResource FooterStat}"/>
-            <TextBlock Text="{Binding HandleCount, StringFormat=Handles: {0:N0}}" Style="{StaticResource FooterStat}"/>
+            <TextBlock Text="{Binding FanRpm, StringFormat=CPU Fan: {0:N0} RPM}" Style="{StaticResource FooterStat}"/>
           </StackPanel>
         </DockPanel>
       </Grid>

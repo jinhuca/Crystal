@@ -36,6 +36,11 @@ public class ProcessModule(IRegionManager regionManager) : IModule {
         cp => new ProcessMonitor(cp.Resolve<IWmiHardwareProvider>(), cp.Resolve<EtwRateBroadcaster>()));
     containerRegistry.RegisterSingleton<IProcessModel, ProcessModel>();
 
+    // System-wide process/thread/handle totals for the summary header. Singleton so its
+    // ref-counted poll timer is shared; built via a factory because its optional
+    // TimeSpan?/IScheduler? ctor params can't be resolved by the container (default 1s cadence).
+    containerRegistry.RegisterSingleton<SystemStatsMonitor>(_ => new SystemStatsMonitor());
+
     // One VM instance per view; the tile is the only consumer today.
     containerRegistry.Register<ProcessListViewModel>();
 

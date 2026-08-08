@@ -23,14 +23,11 @@ public interface ICpuSensorViewModel {
   double Power { get; }
   double Temperature { get; }
 
-  /// <summary>Number of running processes system-wide.</summary>
-  int ProcessCount { get; }
+  /// <summary>CPU fan speed in RPM, sourced from the motherboard SuperIO fan headers by name.</summary>
+  int FanRpm { get; }
 
-  /// <summary>Total threads across every running process.</summary>
-  int ThreadCount { get; }
-
-  /// <summary>Total open handles across every running process.</summary>
-  int HandleCount { get; }
+  /// <summary>True once a CPU fan reading has been seen; drives whether the fan readout shows.</summary>
+  bool HasCpuFan { get; }
 
   /// <summary>
   /// True once any MSR-backed reading (voltage, power, temperature, clock) has produced a
@@ -55,6 +52,6 @@ public interface ICpuSensorViewModel {
   /// <summary>Reads the socket's live sensors and pushes samples into the attached graphs.</summary>
   void Update(ISystemCpuInfo info);
 
-  /// <summary>Updates the system-wide process/thread/handle totals shown in the footer.</summary>
-  void UpdateSystemStats(SystemStats stats);
+  /// <summary>Updates the CPU fan readout. Null means no CPU fan was detected this poll.</summary>
+  void UpdateFan(float? rpm);
 }

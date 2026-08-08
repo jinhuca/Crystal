@@ -28,38 +28,169 @@
     </Grid>
 
     <Border Grid.Row="1" VerticalAlignment="Top" Padding="24" Background="#161B22" CornerRadius="8">
-      <Grid>
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="220"/>
-          <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-          <RowDefinition Height="Auto"/>
-          <RowDefinition Height="Auto"/>
-          <RowDefinition Height="Auto"/>
-          <RowDefinition Height="Auto"/>
-          <RowDefinition Height="Auto"/>
-          <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+      <Border.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+        <Style x:Key="SectionHeader" TargetType="TextBlock">
+          <Setter Property="Foreground" Value="#3E9BE8"/>
+          <Setter Property="FontSize" Value="13"/>
+          <Setter Property="FontWeight" Value="SemiBold"/>
+          <Setter Property="Margin" Value="0,14,0,4"/>
+        </Style>
+        <Style x:Key="FieldLabel" TargetType="TextBlock">
+          <Setter Property="Foreground" Value="#8A94A0"/>
+          <Setter Property="Margin" Value="0,4"/>
+        </Style>
+        <Style x:Key="FieldValue" TargetType="TextBlock">
+          <Setter Property="FontFamily" Value="Consolas"/>
+          <Setter Property="Margin" Value="0,4"/>
+          <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+        </Style>
+      </Border.Resources>
+      <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel>
+          <!-- ── BIOS / firmware ─────────────────────────────────────── -->
+          <TextBlock Text="Firmware" Style="{StaticResource SectionHeader}" Margin="0,0,0,4"/>
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="220"/>
+              <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Grid.Column="0" Text="Manufacturer" Foreground="#8A94A0" Margin="0,6"/>
-        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Manufacturer}" Margin="0,6"/>
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Manufacturer" Style="{StaticResource FieldLabel}"/>
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Manufacturer}" Style="{StaticResource FieldValue}"/>
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Version" Style="{StaticResource FieldLabel}"/>
+            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Version}" Style="{StaticResource FieldValue}"/>
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Release date" Style="{StaticResource FieldLabel}"/>
+            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding ReleaseDate}" Style="{StaticResource FieldValue}"/>
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="Firmware interface" Style="{StaticResource FieldLabel}"/>
+            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding FirmwareInterface}" Style="{StaticResource FieldValue}"/>
+            <TextBlock Grid.Row="4" Grid.Column="0" Text="ROM size" Style="{StaticResource FieldLabel}"/>
+            <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding RomSize}" Style="{StaticResource FieldValue}"/>
+            <TextBlock Grid.Row="5" Grid.Column="0" Text="BIOS revision" Style="{StaticResource FieldLabel}"/>
+            <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding BiosRevision}" Style="{StaticResource FieldValue}"/>
+            <TextBlock Grid.Row="6" Grid.Column="0" Text="EC firmware revision" Style="{StaticResource FieldLabel}"/>
+            <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding EmbeddedControllerRevision}" Style="{StaticResource FieldValue}"/>
+            <TextBlock Grid.Row="7" Grid.Column="0" Text="SMBIOS version" Style="{StaticResource FieldLabel}"/>
+            <TextBlock Grid.Row="7" Grid.Column="1" Text="{Binding SmbiosSpecVersion}" Style="{StaticResource FieldValue}"/>
+            <TextBlock Grid.Row="8" Grid.Column="0" Text="Serial number" Style="{StaticResource FieldLabel}"/>
+            <TextBlock Grid.Row="8" Grid.Column="1" Text="{Binding SerialNumber}" Style="{StaticResource FieldValue}"/>
+            <TextBlock Grid.Row="9" Grid.Column="0" Text="Status" Style="{StaticResource FieldLabel}"/>
+            <TextBlock Grid.Row="9" Grid.Column="1" Text="{Binding Status}" Style="{StaticResource FieldValue}"/>
+          </Grid>
 
-        <TextBlock Grid.Row="1" Grid.Column="0" Text="Version" Foreground="#8A94A0" Margin="0,6"/>
-        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Version}" Margin="0,6"/>
+          <!-- ── System / baseboard / chassis ────────────────────────── -->
+          <TextBlock Text="System &amp; baseboard" Style="{StaticResource SectionHeader}"/>
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="220"/>
+              <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="2" Grid.Column="0" Text="Release date" Foreground="#8A94A0" Margin="0,6"/>
-        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding ReleaseDate}" Margin="0,6"/>
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="System manufacturer" Style="{StaticResource FieldLabel}"/>
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding SystemManufacturer}" Style="{StaticResource FieldValue}"/>
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="System product" Style="{StaticResource FieldLabel}"/>
+            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SystemProduct}" Style="{StaticResource FieldValue}"/>
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Baseboard manufacturer" Style="{StaticResource FieldLabel}"/>
+            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding BaseboardManufacturer}" Style="{StaticResource FieldValue}"/>
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="Baseboard product" Style="{StaticResource FieldLabel}"/>
+            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding BaseboardProduct}" Style="{StaticResource FieldValue}"/>
+            <TextBlock Grid.Row="4" Grid.Column="0" Text="Chassis type" Style="{StaticResource FieldLabel}"/>
+            <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding ChassisType}" Style="{StaticResource FieldValue}"/>
+          </Grid>
 
-        <TextBlock Grid.Row="3" Grid.Column="0" Text="SMBIOS version" Foreground="#8A94A0" Margin="0,6"/>
-        <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding SmbiosSpecVersion}" Margin="0,6"/>
+          <!-- ── Capabilities ────────────────────────────────────────── -->
+          <TextBlock Text="Capabilities" Style="{StaticResource SectionHeader}"/>
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="220"/>
+              <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="4" Grid.Column="0" Text="Serial number" Foreground="#8A94A0" Margin="0,6"/>
-        <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding SerialNumber}" Margin="0,6"/>
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Flash upgradeable" Style="{StaticResource FieldLabel}"/>
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding FlashUpgradeable}" Style="{StaticResource FieldValue}"/>
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Selectable boot" Style="{StaticResource FieldLabel}"/>
+            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SelectableBoot}" Style="{StaticResource FieldValue}"/>
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Boot from CD" Style="{StaticResource FieldLabel}"/>
+            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding BootFromCd}" Style="{StaticResource FieldValue}"/>
+          </Grid>
 
-        <TextBlock Grid.Row="5" Grid.Column="0" Text="Status" Foreground="#8A94A0" Margin="0,6"/>
-        <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding Status}" Margin="0,6"/>
-      </Grid>
+          <!-- ── Security / TPM / boot ───────────────────────────────── -->
+          <TextBlock Text="Security &amp; boot" Style="{StaticResource SectionHeader}"/>
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="220"/>
+              <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Secure Boot" Style="{StaticResource FieldLabel}"/>
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding SecureBoot}" Style="{StaticResource FieldValue}"/>
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="TPM" Style="{StaticResource FieldLabel}"/>
+            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Tpm}" Style="{StaticResource FieldValue}"/>
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="TPM manufacturer" Style="{StaticResource FieldLabel}"/>
+            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding TpmManufacturer}" Style="{StaticResource FieldValue}"/>
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="Administrator password" Style="{StaticResource FieldLabel}"/>
+            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding AdministratorPassword}" Style="{StaticResource FieldValue}"/>
+            <TextBlock Grid.Row="4" Grid.Column="0" Text="Power-on password" Style="{StaticResource FieldLabel}"/>
+            <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding PowerOnPassword}" Style="{StaticResource FieldValue}"/>
+            <TextBlock Grid.Row="5" Grid.Column="0" Text="Boot status" Style="{StaticResource FieldLabel}"/>
+            <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding BootStatus}" Style="{StaticResource FieldValue}"/>
+          </Grid>
+
+          <!-- ── Firmware inventory (SMBIOS Type 45) ─────────────────── -->
+          <TextBlock Text="Firmware inventory" Style="{StaticResource SectionHeader}"
+                     Visibility="{Binding HasFirmwareInventory, Converter={StaticResource BoolToVisibility}}"/>
+          <ListView ItemsSource="{Binding FirmwareInventory}" Margin="0,4,0,0"
+                    Background="#101317" BorderBrush="#2A2A2A" BorderThickness="1"
+                    Foreground="#D6D6D6" FontFamily="Consolas"
+                    Visibility="{Binding HasFirmwareInventory, Converter={StaticResource BoolToVisibility}}">
+            <ListView.View>
+              <GridView>
+                <GridViewColumn Header="Component" Width="320" DisplayMemberBinding="{Binding Name}"/>
+                <GridViewColumn Header="Version" Width="200" DisplayMemberBinding="{Binding Version}"/>
+                <GridViewColumn Header="Date" Width="140" DisplayMemberBinding="{Binding ReleaseDate}"/>
+                <GridViewColumn Header="State" Width="120" DisplayMemberBinding="{Binding State}"/>
+              </GridView>
+            </ListView.View>
+          </ListView>
+
+          <!-- ── Live board sensors (shared SensorMonitor, 1s cadence) ─── -->
+          <TextBlock Text="Board sensors (live)" Style="{StaticResource SectionHeader}"/>
+          <TextBlock Text="{Binding BoardSensorStatus}" Style="{StaticResource FieldLabel}"
+                     TextWrapping="Wrap"
+                     Visibility="{Binding HasBoardSensorStatus, Converter={StaticResource BoolToVisibility}}"/>
+          <ListView ItemsSource="{Binding BoardSensors}" Margin="0,4,0,0"
+                    Background="#101317" BorderBrush="#2A2A2A" BorderThickness="1"
+                    Foreground="#D6D6D6" FontFamily="Consolas"
+                    Visibility="{Binding HasBoardSensors, Converter={StaticResource BoolToVisibility}}">
+            <ListView.View>
+              <GridView>
+                <GridViewColumn Header="Sensor" Width="320" DisplayMemberBinding="{Binding Name}"/>
+                <GridViewColumn Header="Value" Width="160" DisplayMemberBinding="{Binding Value}"/>
+                <GridViewColumn Header="Min" Width="160" DisplayMemberBinding="{Binding Min}"/>
+                <GridViewColumn Header="Max" Width="160" DisplayMemberBinding="{Binding Max}"/>
+              </GridView>
+            </ListView.View>
+          </ListView>
+        </StackPanel>
+      </ScrollViewer>
     </Border>
   </Grid>
 </UserControl>

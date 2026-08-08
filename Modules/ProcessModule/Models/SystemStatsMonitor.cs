@@ -2,7 +2,7 @@ using System.Diagnostics;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 
-namespace CpuModule.Models;
+namespace ProcessModule.Models;
 
 /// <summary>
 /// Polls the OS process table on a cadence and emits system-wide totals — process count and the

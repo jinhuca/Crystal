@@ -13,10 +13,9 @@ public sealed class CpuSensorsViewModel : BindableBase, ICpuSensorViewModel {
   private double _speedGhz;
   private double _power;
   private double _temperature;
+  private int _fanRpm;
+  private bool _hasCpuFan;
   private bool _msrSensorsAvailable;
-  private int _processCount;
-  private int _threadCount;
-  private int _handleCount;
 
   private PerformanceGraph? _utilizationGraph;
   private PerformanceGraph? _voltageGraph;
@@ -29,10 +28,9 @@ public sealed class CpuSensorsViewModel : BindableBase, ICpuSensorViewModel {
   public double SpeedGhz { get => _speedGhz; private set => SetProperty(ref _speedGhz, value); }
   public double Power { get => _power; private set => SetProperty(ref _power, value); }
   public double Temperature { get => _temperature; private set => SetProperty(ref _temperature, value); }
+  public int FanRpm { get => _fanRpm; private set => SetProperty(ref _fanRpm, value); }
+  public bool HasCpuFan { get => _hasCpuFan; private set => SetProperty(ref _hasCpuFan, value); }
   public bool MsrSensorsAvailable { get => _msrSensorsAvailable; private set => SetProperty(ref _msrSensorsAvailable, value); }
-  public int ProcessCount { get => _processCount; private set => SetProperty(ref _processCount, value); }
-  public int ThreadCount { get => _threadCount; private set => SetProperty(ref _threadCount, value); }
-  public int HandleCount { get => _handleCount; private set => SetProperty(ref _handleCount, value); }
 
   public ObservableCollection<CoreLoadViewModel> CoreLoads { get; } = [];
 
@@ -79,10 +77,12 @@ public sealed class CpuSensorsViewModel : BindableBase, ICpuSensorViewModel {
     _temperatureGraph?.AddValue(Temperature);
   }
 
-  public void UpdateSystemStats(SystemStats stats) {
-    ProcessCount = stats.Processes;
-    ThreadCount = stats.Threads;
-    HandleCount = stats.Handles;
+  // Latch HasCpuFan once a fan is seen: a machine with a CPU fan header keeps the readout even if
+  // a single poll momentarily reports null, avoiding the row flickering in and out.
+  public void UpdateFan(float? rpm) {
+    if (rpm is not { } value) return;
+    HasCpuFan = true;
+    FanRpm = (int)value;
   }
 
   // Core count is fixed for a given CPU, so the rows are created once (labelled C00, C01, …)

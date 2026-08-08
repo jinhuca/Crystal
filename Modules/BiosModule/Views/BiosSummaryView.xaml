@@ -4,9 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:prism="http://prismlibrary.com/"
+             xmlns:views="clr-namespace:BiosModule.Views"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
-             d:DesignHeight="140" d:DesignWidth="1100"
+             d:DesignHeight="240" d:DesignWidth="1100"
              Background="Transparent" Foreground="White"
              FontFamily="Segoe UI">
   <Border Background="Transparent" MouseLeftButtonDown="OnTileClick">
@@ -26,24 +27,111 @@
         </StackPanel>
       </Border>
 
-      <!-- Full-width strip: key fields laid out horizontally per the reference design -->
-      <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center">
-        <StackPanel Margin="0,0,56,0">
-          <TextBlock Text="Manufacturer" Foreground="#8A94A0" FontSize="11"/>
-          <TextBlock Text="{Binding Manufacturer}" FontSize="13" FontFamily="Consolas"/>
-        </StackPanel>
-        <StackPanel Margin="0,0,56,0">
-          <TextBlock Text="Version" Foreground="#8A94A0" FontSize="11"/>
-          <TextBlock Text="{Binding Version}" FontSize="13" FontFamily="Consolas"/>
-        </StackPanel>
-        <StackPanel Margin="0,0,56,0">
-          <TextBlock Text="Release date" Foreground="#8A94A0" FontSize="11"/>
-          <TextBlock Text="{Binding ReleaseDate}" FontSize="13" FontFamily="Consolas"/>
-        </StackPanel>
-        <StackPanel>
-          <TextBlock Text="SMBIOS" Foreground="#8A94A0" FontSize="11"/>
-          <TextBlock Text="{Binding SmbiosSpecVersion}" FontSize="13" FontFamily="Consolas"/>
-        </StackPanel>
+      <!-- Essential static identity (top) + live board telemetry (bottom). -->
+      <StackPanel Grid.Row="1" VerticalAlignment="Top">
+        <StackPanel.Resources>
+          <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+          <views:ReadingSeverityToBrushConverter x:Key="SeverityToBrush"/>
+          <Style x:Key="FieldLabel" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#8A94A0"/>
+            <Setter Property="FontSize" Value="11"/>
+          </Style>
+          <Style x:Key="FieldValue" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontFamily" Value="Consolas"/>
+            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+            <Setter Property="Margin" Value="0,0,16,0"/>
+          </Style>
+          <Style x:Key="FieldCell" TargetType="StackPanel">
+            <Setter Property="Margin" Value="0,0,0,10"/>
+          </Style>
+        </StackPanel.Resources>
+
+        <!-- Static firmware identity: manufacturer/version + security posture -->
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+          </Grid.ColumnDefinitions>
+
+          <StackPanel Grid.Column="0" Style="{StaticResource FieldCell}">
+            <TextBlock Text="Manufacturer" Style="{StaticResource FieldLabel}"/>
+            <TextBlock Text="{Binding Manufacturer}" Style="{StaticResource FieldValue}"/>
+          </StackPanel>
+          <StackPanel Grid.Column="1" Style="{StaticResource FieldCell}">
+            <TextBlock Text="Version" Style="{StaticResource FieldLabel}"/>
+            <TextBlock Text="{Binding Version}" Style="{StaticResource FieldValue}"/>
+          </StackPanel>
+          <StackPanel Grid.Column="2" Style="{StaticResource FieldCell}">
+            <TextBlock Text="Interface" Style="{StaticResource FieldLabel}"/>
+            <TextBlock Text="{Binding FirmwareInterface}" Style="{StaticResource FieldValue}"/>
+          </StackPanel>
+          <StackPanel Grid.Column="3" Style="{StaticResource FieldCell}">
+            <TextBlock Text="Secure Boot" Style="{StaticResource FieldLabel}"/>
+            <TextBlock Text="{Binding SecureBoot}" Style="{StaticResource FieldValue}"/>
+          </StackPanel>
+        </Grid>
+
+        <!-- Live board telemetry: dim section rule, then readings updating on the 1s sensor poll -->
+        <Border BorderBrush="#2A2A2A" BorderThickness="0,1,0,0" Margin="0,2,0,8" Padding="0,8,0,0">
+          <StackPanel Orientation="Horizontal">
+            <Border Width="6" Height="6" CornerRadius="3" Background="#3BD15A"
+                    VerticalAlignment="Center" Margin="0,0,6,0"/>
+            <TextBlock Text="LIVE BOARD" Foreground="#5A6470" FontSize="10" FontWeight="SemiBold"
+                       VerticalAlignment="Center"/>
+          </StackPanel>
+        </Border>
+
+        <!-- Driver/availability note shown in place of the readings when the board can't be read -->
+        <TextBlock Text="{Binding BoardSensorStatus}" Foreground="#8A94A0" FontSize="11"
+                   TextWrapping="Wrap" Margin="0,0,0,4"
+                   Visibility="{Binding HasBoardSensorStatus, Converter={StaticResource BoolToVisibility}}"/>
+
+        <Grid Visibility="{Binding HasBoardSensors, Converter={StaticResource BoolToVisibility}}">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+          </Grid.ColumnDefinitions>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+          </Grid.RowDefinitions>
+
+          <!-- Row 0: CMOS battery / board temp / chassis fan -->
+          <StackPanel Grid.Row="0" Grid.Column="0" Style="{StaticResource FieldCell}">
+            <TextBlock Text="CMOS battery" Style="{StaticResource FieldLabel}"/>
+            <TextBlock Text="{Binding CmosVoltage}" Style="{StaticResource FieldValue}"
+                       Foreground="{Binding CmosSeverity, Converter={StaticResource SeverityToBrush}}"/>
+          </StackPanel>
+          <StackPanel Grid.Row="0" Grid.Column="1" Style="{StaticResource FieldCell}">
+            <TextBlock Text="Board temp" Style="{StaticResource FieldLabel}"/>
+            <TextBlock Text="{Binding BoardTemperature}" Style="{StaticResource FieldValue}"/>
+          </StackPanel>
+          <StackPanel Grid.Row="0" Grid.Column="2" Style="{StaticResource FieldCell}">
+            <TextBlock Text="Chassis fan" Style="{StaticResource FieldLabel}"/>
+            <TextBlock Text="{Binding ChassisFanRpm}" Style="{StaticResource FieldValue}"/>
+          </StackPanel>
+
+          <!-- Row 1: voltage rails -->
+          <StackPanel Grid.Row="1" Grid.Column="0">
+            <TextBlock Text="+3.3V" Style="{StaticResource FieldLabel}"/>
+            <TextBlock Text="{Binding Rail3V3}" Style="{StaticResource FieldValue}"
+                       Foreground="{Binding Rail3V3Severity, Converter={StaticResource SeverityToBrush}}"/>
+          </StackPanel>
+          <StackPanel Grid.Row="1" Grid.Column="1">
+            <TextBlock Text="+5V" Style="{StaticResource FieldLabel}"/>
+            <TextBlock Text="{Binding Rail5V}" Style="{StaticResource FieldValue}"
+                       Foreground="{Binding Rail5VSeverity, Converter={StaticResource SeverityToBrush}}"/>
+          </StackPanel>
+          <StackPanel Grid.Row="1" Grid.Column="2">
+            <TextBlock Text="+12V" Style="{StaticResource FieldLabel}"/>
+            <TextBlock Text="{Binding Rail12V}" Style="{StaticResource FieldValue}"
+                       Foreground="{Binding Rail12VSeverity, Converter={StaticResource SeverityToBrush}}"/>
+          </StackPanel>
+        </Grid>
       </StackPanel>
     </Grid>
   </Border>

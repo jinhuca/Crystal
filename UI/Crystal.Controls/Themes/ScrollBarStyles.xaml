@@ -25,40 +25,126 @@
     </Setter>
   </Style>
 
-  <Style x:Key="CrystalScrollBarStyle" TargetType="ScrollBar">
+  <!-- Flat line (step) button carrying an arrow glyph. The glyph is a Path so it can be rotated per
+       direction (up/down/left/right) from the ScrollBar template triggers below. -->
+  <Style x:Key="CrystalScrollLineButtonStyle" TargetType="RepeatButton">
     <Setter Property="OverridesDefaultStyle" Value="True"/>
+    <Setter Property="Focusable" Value="False"/>
+    <Setter Property="IsTabStop" Value="False"/>
     <Setter Property="Background" Value="#0A0A0A"/>
     <Setter Property="Template">
       <Setter.Value>
-        <ControlTemplate TargetType="ScrollBar">
-          <Grid x:Name="Root" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
-            <Track x:Name="PART_Track" IsDirectionReversed="True">
-              <Track.Thumb>
-                <Thumb Style="{StaticResource CrystalScrollThumbStyle}"/>
-              </Track.Thumb>
-              <!-- Invisible page buttons so click-in-trough paging still works. -->
-              <Track.IncreaseRepeatButton>
-                <RepeatButton Command="ScrollBar.PageDownCommand" Background="Transparent"
-                              BorderThickness="0" Focusable="False" IsTabStop="False" Opacity="0"/>
-              </Track.IncreaseRepeatButton>
-              <Track.DecreaseRepeatButton>
-                <RepeatButton Command="ScrollBar.PageUpCommand" Background="Transparent"
-                              BorderThickness="0" Focusable="False" IsTabStop="False" Opacity="0"/>
-              </Track.DecreaseRepeatButton>
-            </Track>
-          </Grid>
+        <ControlTemplate TargetType="RepeatButton">
+          <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                  BorderBrush="#2A2A2A" BorderThickness="1" SnapsToDevicePixels="True">
+            <Path x:Name="Arrow" HorizontalAlignment="Center" VerticalAlignment="Center"
+                  Fill="#8A94A0" Stretch="Uniform" Width="6" Height="4"
+                  Data="M 0,4 L 4,0 L 8,4 Z"/>
+          </Border>
           <ControlTemplate.Triggers>
-            <Trigger Property="Orientation" Value="Horizontal">
-              <Setter TargetName="Root" Property="Height" Value="10"/>
-              <Setter TargetName="PART_Track" Property="IsDirectionReversed" Value="False"/>
+            <Trigger Property="IsMouseOver" Value="True">
+              <Setter TargetName="Bd" Property="Background" Value="#1C1C1C"/>
+              <Setter TargetName="Arrow" Property="Fill" Value="#C8C8C8"/>
             </Trigger>
-            <Trigger Property="Orientation" Value="Vertical">
-              <Setter TargetName="Root" Property="Width" Value="10"/>
+            <Trigger Property="IsPressed" Value="True">
+              <Setter TargetName="Arrow" Property="Fill" Value="#3E9BE8"/>
             </Trigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
       </Setter.Value>
     </Setter>
+  </Style>
+
+  <!-- Vertical layout: up-arrow button, track, down-arrow button. -->
+  <ControlTemplate x:Key="CrystalScrollBarVerticalTemplate" TargetType="ScrollBar">
+    <Grid Width="10" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="10"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="10"/>
+      </Grid.RowDefinitions>
+
+      <RepeatButton Grid.Row="0" Command="ScrollBar.LineUpCommand"
+                    Style="{StaticResource CrystalScrollLineButtonStyle}"/>
+
+      <Track x:Name="PART_Track" Grid.Row="1" IsDirectionReversed="True">
+        <Track.Thumb>
+          <Thumb Style="{StaticResource CrystalScrollThumbStyle}"/>
+        </Track.Thumb>
+        <Track.IncreaseRepeatButton>
+          <RepeatButton Command="ScrollBar.PageDownCommand" Background="Transparent"
+                        BorderThickness="0" Focusable="False" IsTabStop="False" Opacity="0"/>
+        </Track.IncreaseRepeatButton>
+        <Track.DecreaseRepeatButton>
+          <RepeatButton Command="ScrollBar.PageUpCommand" Background="Transparent"
+                        BorderThickness="0" Focusable="False" IsTabStop="False" Opacity="0"/>
+        </Track.DecreaseRepeatButton>
+      </Track>
+
+      <!-- Down button reuses the up-arrow glyph, rotated 180°. -->
+      <RepeatButton Grid.Row="2" Command="ScrollBar.LineDownCommand"
+                    Style="{StaticResource CrystalScrollLineButtonStyle}"
+                    RenderTransformOrigin="0.5,0.5">
+        <RepeatButton.RenderTransform>
+          <RotateTransform Angle="180"/>
+        </RepeatButton.RenderTransform>
+      </RepeatButton>
+    </Grid>
+  </ControlTemplate>
+
+  <!-- Horizontal layout: left-arrow button, track, right-arrow button. -->
+  <ControlTemplate x:Key="CrystalScrollBarHorizontalTemplate" TargetType="ScrollBar">
+    <Grid Height="10" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="10"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="10"/>
+      </Grid.ColumnDefinitions>
+
+      <RepeatButton Grid.Column="0" Command="ScrollBar.LineLeftCommand"
+                    Style="{StaticResource CrystalScrollLineButtonStyle}"
+                    RenderTransformOrigin="0.5,0.5">
+        <RepeatButton.RenderTransform>
+          <RotateTransform Angle="-90"/>
+        </RepeatButton.RenderTransform>
+      </RepeatButton>
+
+      <Track x:Name="PART_Track" Grid.Column="1" IsDirectionReversed="False">
+        <Track.Thumb>
+          <Thumb Style="{StaticResource CrystalScrollThumbStyle}"/>
+        </Track.Thumb>
+        <Track.IncreaseRepeatButton>
+          <RepeatButton Command="ScrollBar.PageRightCommand" Background="Transparent"
+                        BorderThickness="0" Focusable="False" IsTabStop="False" Opacity="0"/>
+        </Track.IncreaseRepeatButton>
+        <Track.DecreaseRepeatButton>
+          <RepeatButton Command="ScrollBar.PageLeftCommand" Background="Transparent"
+                        BorderThickness="0" Focusable="False" IsTabStop="False" Opacity="0"/>
+        </Track.DecreaseRepeatButton>
+      </Track>
+
+      <RepeatButton Grid.Column="2" Command="ScrollBar.LineRightCommand"
+                    Style="{StaticResource CrystalScrollLineButtonStyle}"
+                    RenderTransformOrigin="0.5,0.5">
+        <RepeatButton.RenderTransform>
+          <RotateTransform Angle="90"/>
+        </RepeatButton.RenderTransform>
+      </RepeatButton>
+    </Grid>
+  </ControlTemplate>
+
+  <Style x:Key="CrystalScrollBarStyle" TargetType="ScrollBar">
+    <Setter Property="OverridesDefaultStyle" Value="True"/>
+    <Setter Property="Background" Value="#0A0A0A"/>
+    <Setter Property="Width" Value="10"/>
+    <Setter Property="Template" Value="{StaticResource CrystalScrollBarVerticalTemplate}"/>
+    <Style.Triggers>
+      <Trigger Property="Orientation" Value="Horizontal">
+        <Setter Property="Width" Value="Auto"/>
+        <Setter Property="Height" Value="10"/>
+        <Setter Property="Template" Value="{StaticResource CrystalScrollBarHorizontalTemplate}"/>
+      </Trigger>
+    </Style.Triggers>
   </Style>
 
 </ResourceDictionary>

@@ -10,9 +10,9 @@ namespace CpuModule.ViewModels.Implementations;
 public sealed class CpuViewModel : BindableBase, ICpuViewModel, IDisposable {
   private readonly IDisposable _specsSubscription;
   private readonly IDisposable _sensorsSubscription;
-  private readonly IDisposable _statsSubscription;
+  private readonly IDisposable _fanSubscription;
 
-  public CpuViewModel(ICpuModel model, SystemStatsMonitor systemStats, ICpuSpecsViewModel specs,
+  public CpuViewModel(ICpuModel model, CpuFanMonitor cpuFan, ICpuSpecsViewModel specs,
                       ICpuSensorViewModel sensors, IEventAggregator events) {
     SpecsViewModel = specs;
     SensorsViewModel = sensors;
@@ -27,7 +27,7 @@ public sealed class CpuViewModel : BindableBase, ICpuViewModel, IDisposable {
     // bound properties / the instruction-set ObservableCollection.
     _specsSubscription = model.Specs.Subscribe(info => OnUi(() => SpecsViewModel.Update(info)));
     _sensorsSubscription = model.Sensors.Subscribe(info => OnUi(() => SensorsViewModel.Update(info)));
-    _statsSubscription = systemStats.Stats.Subscribe(s => OnUi(() => SensorsViewModel.UpdateSystemStats(s)));
+    _fanSubscription = cpuFan.Rpm.Subscribe(rpm => OnUi(() => SensorsViewModel.UpdateFan(rpm)));
   }
 
   public ICpuSpecsViewModel SpecsViewModel { get; }
@@ -44,6 +44,6 @@ public sealed class CpuViewModel : BindableBase, ICpuViewModel, IDisposable {
   public void Dispose() {
     _specsSubscription.Dispose();
     _sensorsSubscription.Dispose();
-    _statsSubscription.Dispose();
+    _fanSubscription.Dispose();
   }
 }
