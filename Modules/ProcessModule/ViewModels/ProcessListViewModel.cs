@@ -21,6 +21,7 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
   private int _processCount;
   private int _threadCount;
   private int _handleCount;
+  private int _hogCount;
 
   // PID of the process hosting this dashboard, used to preselect our own row on first load.
   private readonly uint _ownPid = (uint)Environment.ProcessId;
@@ -31,8 +32,13 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
   private ListSortDirection _sortDirection = ListSortDirection.Descending;
   private string _nameFilter = string.Empty;
   private string _pidFilter = string.Empty;
+  private bool _peaksResetThisSession;
+  private readonly Func<DateTimeOffset> _clock;
 
-  public ProcessListViewModel(IProcessModel model, SystemStatsMonitor systemStats) {
+  // clock is optional so Unity's default registration works (optional ctor params aren't injected);
+  // tests pass a fixed clock for a deterministic export timestamp.
+  public ProcessListViewModel(IProcessModel model, SystemStatsMonitor systemStats, Func<DateTimeOffset>? clock = null) {
+    _clock = clock ?? (() => DateTimeOffset.Now);
     MetricsStatusError = model.MetricsStatusError;
 
     RowsView = new ListCollectionView(Rows);
@@ -63,6 +69,11 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
   /// <summary>Total open handles across every running process.</summary>
   public int HandleCount { get => _handleCount; private set => SetProperty(ref _handleCount, value); }
 
+  /// <summary>Number of processes whose session CPU or memory peak has crossed the sustained-hog
+  /// threshold — the count of tinted rows. Shown in the header so spikes are visible without
+  /// scanning the list.</summary>
+  public int HogCount { get => _hogCount; private set => SetProperty(ref _hogCount, value); }
+
   /// <summary>
   /// Null when per-process GPU/Disk/Network are live; otherwise a short reason they're blank (ETW
   /// session couldn't start — typically "not elevated"). Bound to a warning banner in the view.
@@ -87,14 +98,24 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
   /// search box in the Name column header.</summary>
   public string NameFilter {
     get => _nameFilter;
-    set { if (SetProperty(ref _nameFilter, value ?? string.Empty)) RowsView.Refresh(); }
+    set {
+      if (SetProperty(ref _nameFilter, value ?? string.Empty)) {
+        RowsView.Refresh();
+        RaisePropertyChanged(nameof(HasVisibleRows));
+      }
+    }
   }
 
   /// <summary>Substring filter on the PID (matched against its decimal text); empty shows all. Bound
   /// to the search box in the PID column header.</summary>
   public string PidFilter {
     get => _pidFilter;
-    set { if (SetProperty(ref _pidFilter, value ?? string.Empty)) RowsView.Refresh(); }
+    set {
+      if (SetProperty(ref _pidFilter, value ?? string.Empty)) {
+        RowsView.Refresh();
+        RaisePropertyChanged(nameof(HasVisibleRows));
+      }
+    }
   }
 
   // Turn on live sorting/grouping/filtering and tell the view which properties to watch. Without
@@ -111,6 +132,8 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
         nameof(ProcessRowViewModel.CategoryName),
         nameof(ProcessRowViewModel.Status),
         nameof(ProcessRowViewModel.CpuPercent),
+        nameof(ProcessRowViewModel.PeakCpuPercent),
+        nameof(ProcessRowViewModel.PeakWorkingSetMb),
         nameof(ProcessRowViewModel.GpuPercent),
         nameof(ProcessRowViewModel.WorkingSetMb),
         nameof(ProcessRowViewModel.DiskBytesPerSec),
@@ -200,6 +223,108 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
       SelectedRow = ownRow;
       _hasSelectedDefault = true;
     }
+
+    RaisePropertyChanged(nameof(HasVisibleRows));
+    RecomputeHogCount();
+  }
+
+  // Count the flagged rows across the whole list (not the filtered view) — a hog stays counted even
+  // when a name/PID filter hides it, so the header reflects the true session state.
+  private void RecomputeHogCount() {
+    int count = 0;
+    foreach (var row in Rows)
+      if (row.IsSustainedCpuHog || row.IsMemoryHog) count++;
+    HogCount = count;
+  }
+
+  /// <summary>True when there is at least one visible row (post-filter) to copy or save. Bound to
+  /// the enabled state of the Copy/Save controls.</summary>
+  public bool HasVisibleRows => !RowsView.IsEmpty;
+
+  /// <summary>
+  /// The currently-visible rows (post-filter, in the current group/sort order) as tab-separated
+  /// text, with a provenance header. Mirrors what the list shows, so a filtered view exports only
+  /// the shown rows. Null GPU/Disk/Network read as "-" (the same placeholder the grid shows).
+  /// Returns "" when nothing is visible.
+  /// </summary>
+  public string RowsAsText() {
+    if (RowsView.IsEmpty) return "";
+    var sb = new System.Text.StringBuilder();
+    sb.AppendLine($"# Exported {_clock().LocalDateTime:yyyy-MM-dd HH:mm:ss}");
+    var shown = RowsView.Cast<ProcessRowViewModel>().ToList();
+    sb.AppendLine($"# {shown.Count} process(es)");
+    // Per-category breakdown of the exported rows (post-filter), so a pasted snapshot states its
+    // composition. Only lists categories that are present.
+    int apps = shown.Count(r => r.Category == ProcessCategory.App);
+    int background = shown.Count(r => r.Category == ProcessCategory.BackgroundProcess);
+    int windows = shown.Count(r => r.Category == ProcessCategory.WindowsProcess);
+    var parts = new List<string>();
+    if (apps > 0) parts.Add($"{apps} app(s)");
+    if (background > 0) parts.Add($"{background} background");
+    if (windows > 0) parts.Add($"{windows} windows");
+    if (parts.Count > 0) sb.AppendLine($"# {string.Join(", ", parts)}");
+    // State the ordering so a pasted snapshot isn't read as unsorted. Rows always group by category
+    // first, then by the user-chosen column — call that out.
+    string direction = _sortDirection == ListSortDirection.Ascending ? "ascending" : "descending";
+    sb.AppendLine($"# Sorted by category, then {SortColumnLabel(_sortProperty)} {direction}");
+    // If peaks were reset mid-session, the CPU pk / Mem pk columns cover only the window since the
+    // reset, not the whole session — say so rather than let a partial peak read as the session max.
+    if (_peaksResetThisSession)
+      sb.AppendLine("# Peaks were reset this session — CPU pk / Mem pk cover only the window since the last reset");
+    // Session-wide hog count (matches the header badge), not the visible subset — flags how many
+    // processes spiked even if a filter is hiding some of them.
+    if (HogCount > 0)
+      sb.AppendLine($"# {HogCount} sustained hog(s): peak CPU ≥ {ProcessRowViewModel.SustainedCpuHogThreshold:0}% or peak memory ≥ {ProcessRowViewModel.MemoryHogThresholdMb:0} MB");
+    // Explain the "-" placeholders when the ETW backend isn't live (typically not elevated), so a
+    // reader doesn't take the blank GPU/Disk/Network columns for genuine zero activity.
+    if (!string.IsNullOrEmpty(MetricsStatusError))
+      sb.AppendLine($"# GPU/Disk/Network unavailable ({MetricsStatusError}) — shown as '-'");
+    if (_nameFilter.Length > 0 || _pidFilter.Length > 0)
+      sb.AppendLine("# Filtered view: only rows matching the active name/PID filter");
+    sb.AppendLine("Group\tName\tPID\tStatus\tCPU%\tCPU pk%\tGPU%\tMemory MB\tMem pk MB\tDisk B/s\tNet B/s");
+    foreach (var r in RowsView.Cast<ProcessRowViewModel>()) {
+      sb.AppendLine(string.Join('\t',
+          r.CategoryName,
+          r.Name,
+          r.ProcessId,
+          r.Status ?? "",
+          r.CpuPercent.ToString("0.0"),
+          r.PeakCpuPercent.ToString("0.0"),
+          Cell(r.GpuPercent, "0.0"),
+          r.WorkingSetMb.ToString("0"),
+          r.PeakWorkingSetMb.ToString("0"),
+          Cell(r.DiskBytesPerSec, "0"),
+          Cell(r.NetBytesPerSec, "0")));
+    }
+    return sb.ToString();
+  }
+
+  // A null metric (ETW not live) reads as "-", matching the grid's placeholder rather than a
+  // misleading 0.
+  private static string Cell(double? value, string format) =>
+      value is { } v ? v.ToString(format) : "-";
+
+  // Map a row-VM sort property to the column label shown in the grid, for the export's ordering note.
+  private static string SortColumnLabel(string property) => property switch {
+    nameof(ProcessRowViewModel.Name) => "Name",
+    nameof(ProcessRowViewModel.ProcessId) => "PID",
+    nameof(ProcessRowViewModel.Status) => "Status",
+    nameof(ProcessRowViewModel.CpuPercent) => "CPU",
+    nameof(ProcessRowViewModel.PeakCpuPercent) => "CPU pk",
+    nameof(ProcessRowViewModel.GpuPercent) => "GPU",
+    nameof(ProcessRowViewModel.WorkingSetMb) => "Memory",
+    nameof(ProcessRowViewModel.PeakWorkingSetMb) => "Mem pk",
+    nameof(ProcessRowViewModel.DiskBytesPerSec) => "Disk",
+    nameof(ProcessRowViewModel.NetBytesPerSec) => "Network",
+    _ => property,
+  };
+
+  /// <summary>Resets every row's session peaks to its current live reading — a fresh high-water
+  /// window for the whole list. Peaks re-establish from live values on the next poll.</summary>
+  public void ResetAllPeaks() {
+    foreach (var row in Rows) row.ResetPeaks();
+    RecomputeHogCount();
+    _peaksResetThisSession = true;
   }
 
   private void UpdateSystemStats(SystemStats stats) {

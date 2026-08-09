@@ -208,6 +208,25 @@
                      Foreground="#8A94A0" FontSize="11" FontFamily="Consolas"
                      VerticalAlignment="Center" Margin="16,0,0,0"/>
 
+          <!-- Sustained-hog badge: amber, shown only when at least one process has crossed a peak
+               threshold this session. -->
+          <Border Background="#3A2A12" BorderBrush="#7A5A1E" BorderThickness="1"
+                  Padding="8,1" Margin="16,0,0,0" VerticalAlignment="Center">
+            <Border.Style>
+              <Style TargetType="Border">
+                <Setter Property="Visibility" Value="Visible"/>
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding HogCount}" Value="0">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </Border.Style>
+            <TextBlock Foreground="#E0B84C" FontSize="11" FontFamily="Consolas"
+                       Text="{Binding HogCount, StringFormat={}{0} hog(s)}"
+                       ToolTip="Processes whose session CPU or memory peak crossed the hog threshold"/>
+          </Border>
+
           <!-- Warning shown only when the ETW session failed to start; explains blank GPU/Disk/Network. -->
           <Border Background="#3A2A12" BorderBrush="#7A5A1E" BorderThickness="1"
                   Padding="8,1" Margin="12,0,0,0" VerticalAlignment="Center"
@@ -229,6 +248,21 @@
           <TextBox Style="{StaticResource HeaderSearchBoxStyle}" Width="80" Height="18"
                    ToolTip="Filter by PID"
                    Text="{Binding PidFilter, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+          <Button Content="Copy" Height="18" Margin="16,0,0,0" Padding="8,0"
+                  Foreground="#C8C8C8" Background="#1C1C1C" BorderBrush="#3A3A3A"
+                  FontSize="11" FontFamily="Consolas"
+                  ToolTip="Copy the visible rows to the clipboard as tab-separated text"
+                  IsEnabled="{Binding HasVisibleRows}" Click="OnCopyRows"/>
+          <Button Content="Save…" Height="18" Margin="6,0,0,0" Padding="8,0"
+                  Foreground="#C8C8C8" Background="#1C1C1C" BorderBrush="#3A3A3A"
+                  FontSize="11" FontFamily="Consolas"
+                  ToolTip="Save the visible rows to a file"
+                  IsEnabled="{Binding HasVisibleRows}" Click="OnSaveRows"/>
+          <Button Content="Reset pk" Height="18" Margin="6,0,0,0" Padding="8,0"
+                  Foreground="#C8C8C8" Background="#1C1C1C" BorderBrush="#3A3A3A"
+                  FontSize="11" FontFamily="Consolas"
+                  ToolTip="Reset all session CPU/memory peaks to the current readings"
+                  IsEnabled="{Binding HasVisibleRows}" Click="OnResetPeaks"/>
         </StackPanel>
       </Grid>
     </Border>
@@ -311,6 +345,30 @@
                 </DataTemplate>
               </GridViewColumn.CellTemplate>
             </GridViewColumn>
+            <GridViewColumn Header="CPU pk" Width="80" local:GridViewSort.SortProperty="PeakCpuPercent">
+              <GridViewColumn.CellTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding PeakCpuPercent, StringFormat={}{0:0.0}%}"
+                             FontFamily="Consolas" FontSize="11"
+                             Margin="8,2" TextAlignment="Right"
+                             ToolTip="Session peak CPU">
+                    <TextBlock.Style>
+                      <Style TargetType="TextBlock">
+                        <!-- Dim by default; tint amber once the peak crossed the sustained-hog
+                             threshold, flagging a process that spiked hard even if idle now. -->
+                        <Setter Property="Foreground" Value="#6E7A86"/>
+                        <Style.Triggers>
+                          <DataTrigger Binding="{Binding IsSustainedCpuHog}" Value="True">
+                            <Setter Property="Foreground" Value="#E8B32A"/>
+                            <Setter Property="FontWeight" Value="SemiBold"/>
+                          </DataTrigger>
+                        </Style.Triggers>
+                      </Style>
+                    </TextBlock.Style>
+                  </TextBlock>
+                </DataTemplate>
+              </GridViewColumn.CellTemplate>
+            </GridViewColumn>
             <GridViewColumn Header="GPU" Width="80" local:GridViewSort.SortProperty="GpuPercent">
               <GridViewColumn.CellTemplate>
                 <DataTemplate>
@@ -326,6 +384,28 @@
                   <TextBlock Text="{Binding WorkingSetMb, StringFormat={}{0:0} MB}"
                              Foreground="#C8C8C8" FontFamily="Consolas" FontSize="11"
                              Margin="8,2" TextAlignment="Right"/>
+                </DataTemplate>
+              </GridViewColumn.CellTemplate>
+            </GridViewColumn>
+            <GridViewColumn Header="Mem pk" Width="90" local:GridViewSort.SortProperty="PeakWorkingSetMb">
+              <GridViewColumn.CellTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding PeakWorkingSetMb, StringFormat={}{0:0} MB}"
+                             FontFamily="Consolas" FontSize="11"
+                             Margin="8,2" TextAlignment="Right"
+                             ToolTip="Session peak working set">
+                    <TextBlock.Style>
+                      <Style TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="#6E7A86"/>
+                        <Style.Triggers>
+                          <DataTrigger Binding="{Binding IsMemoryHog}" Value="True">
+                            <Setter Property="Foreground" Value="#E8B32A"/>
+                            <Setter Property="FontWeight" Value="SemiBold"/>
+                          </DataTrigger>
+                        </Style.Triggers>
+                      </Style>
+                    </TextBlock.Style>
+                  </TextBlock>
                 </DataTemplate>
               </GridViewColumn.CellTemplate>
             </GridViewColumn>
@@ -409,6 +489,16 @@
                          Foreground="{Binding CpuPercent, Converter={StaticResource LoadToBrush}}"
                          FontSize="12" FontFamily="Consolas" TextAlignment="Right"/>
             </Grid>
+            <Grid Margin="0,1">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+              </Grid.ColumnDefinitions>
+              <TextBlock Grid.Column="0" Text="CPU peak" Foreground="#5A6470"
+                         FontSize="11" FontFamily="Consolas"/>
+              <TextBlock Grid.Column="1" Text="{Binding PeakCpuPercent, StringFormat={}{0:0.0}%}"
+                         Foreground="#6E7A86" FontSize="11" FontFamily="Consolas" TextAlignment="Right"/>
+            </Grid>
             <Grid Margin="0,2">
               <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -428,6 +518,16 @@
                          FontSize="12" FontFamily="Consolas"/>
               <TextBlock Grid.Column="1" Text="{Binding WorkingSetMb, StringFormat={}{0:0} MB}"
                          Foreground="#DDDDDD" FontSize="12" FontFamily="Consolas" TextAlignment="Right"/>
+            </Grid>
+            <Grid Margin="0,1">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+              </Grid.ColumnDefinitions>
+              <TextBlock Grid.Column="0" Text="Memory peak" Foreground="#5A6470"
+                         FontSize="11" FontFamily="Consolas"/>
+              <TextBlock Grid.Column="1" Text="{Binding PeakWorkingSetMb, StringFormat={}{0:0} MB}"
+                         Foreground="#6E7A86" FontSize="11" FontFamily="Consolas" TextAlignment="Right"/>
             </Grid>
             <Grid Margin="0,2">
               <Grid.ColumnDefinitions>

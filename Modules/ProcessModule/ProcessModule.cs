@@ -41,8 +41,11 @@ public class ProcessModule(IRegionManager regionManager) : IModule {
     // TimeSpan?/IScheduler? ctor params can't be resolved by the container (default 1s cadence).
     containerRegistry.RegisterSingleton<SystemStatsMonitor>(_ => new SystemStatsMonitor());
 
-    // One VM instance per view; the tile is the only consumer today.
-    containerRegistry.Register<ProcessListViewModel>();
+    // One VM instance per view; the tile is the only consumer today. Built via a factory because
+    // its optional Func<DateTimeOffset>? clock param isn't injected by Unity (it defaults to the
+    // system clock for the live export timestamp).
+    containerRegistry.Register<ProcessListViewModel>(
+        cp => new ProcessListViewModel(cp.Resolve<IProcessModel>(), cp.Resolve<SystemStatsMonitor>()));
 
     ViewModelLocationProvider.Register<ProcessSummaryView>(
         () => ContainerLocator.Container.Resolve<ProcessListViewModel>());
