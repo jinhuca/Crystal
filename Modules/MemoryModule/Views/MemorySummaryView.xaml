@@ -48,46 +48,17 @@
         </StackPanel>
       </Border>
 
-      <!-- Single summary line (total · populated · max speed), then a dense per-slot list where
-           each row adds slot type (form factor) and manufacturer. -->
-      <StackPanel Grid.Row="1" Margin="0,0,0,6">
-        <StackPanel Orientation="Horizontal">
-          <TextBlock VerticalAlignment="Center">
-            <Run Text="{Binding TotalCapacityLabel, Mode=OneWay}" FontSize="16" FontFamily="Consolas"/>
-            <Run Text=" total" Foreground="#8A94A0" FontSize="11"/>
-          </TextBlock>
-          <TextBlock Text="{Binding SlotsLabel}" Foreground="#8A94A0" FontSize="11"
-                     FontFamily="Consolas" VerticalAlignment="Center" Margin="16,0,0,0"/>
-          <TextBlock Text="{Binding MaxSpeedLabel}" Foreground="#8A94A0" FontSize="11"
-                     FontFamily="Consolas" VerticalAlignment="Center" Margin="14,0,0,0"/>
-        </StackPanel>
-
-        <!-- One row per populated slot: label · capacity · speed · type · manufacturer. -->
-        <ItemsControl ItemsSource="{Binding SummaryModules}" Margin="0,4,0,0">
-          <ItemsControl.ItemTemplate>
-            <DataTemplate>
-              <Grid Margin="0,1">
-                <Grid.ColumnDefinitions>
-                  <ColumnDefinition Width="Auto"/>
-                  <ColumnDefinition Width="Auto"/>
-                  <ColumnDefinition Width="Auto"/>
-                  <ColumnDefinition Width="Auto"/>
-                  <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Text="{Binding SlotLabel}" Foreground="#8A94A0"
-                           FontSize="11" FontFamily="Consolas" Width="130" Margin="0,0,6,0"/>
-                <TextBlock Grid.Column="1" Text="{Binding CapacityLabel}" Foreground="#C8C8C8"
-                           FontSize="11" FontFamily="Consolas" Width="46" Margin="0,0,6,0"/>
-                <TextBlock Grid.Column="2" Text="{Binding SpeedLabel}" Foreground="#C8C8C8"
-                           FontSize="11" FontFamily="Consolas" Width="62" Margin="0,0,6,0"/>
-                <TextBlock Grid.Column="3" Text="{Binding FormFactor}" Foreground="#C8C8C8"
-                           FontSize="11" FontFamily="Consolas" Width="98" Margin="0,0,6,0"/>
-                <TextBlock Grid.Column="4" Text="{Binding Manufacturer}" Foreground="#C8C8C8"
-                           FontSize="11" FontFamily="Consolas"/>
-              </Grid>
-            </DataTemplate>
-          </ItemsControl.ItemTemplate>
-        </ItemsControl>
+      <!-- Single roll-up line (total · populated · max speed). The per-slot inventory lives in the
+           detail view, so the tile stays a compact live-metrics glance. -->
+      <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,6">
+        <TextBlock VerticalAlignment="Center">
+          <Run Text="{Binding TotalCapacityLabel, Mode=OneWay}" FontSize="16" FontFamily="Consolas"/>
+          <Run Text=" total" Foreground="#8A94A0" FontSize="11"/>
+        </TextBlock>
+        <TextBlock Text="{Binding SlotsLabel}" Foreground="#8A94A0" FontSize="11"
+                   FontFamily="Consolas" VerticalAlignment="Center" Margin="16,0,0,0"/>
+        <TextBlock Text="{Binding MaxSpeedLabel}" Foreground="#8A94A0" FontSize="11"
+                   FontFamily="Consolas" VerticalAlignment="Center" Margin="14,0,0,0"/>
       </StackPanel>
 
       <!-- Utilization (top) + Used (bottom) stacked graphs, each with a big value / unit / caption

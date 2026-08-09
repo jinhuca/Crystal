@@ -4,78 +4,163 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:prism="http://prismlibrary.com/"
+             xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs.Controls;assembly=Crystal.Controls"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
-             d:DesignHeight="720" d:DesignWidth="1100"
+             d:DesignHeight="820" d:DesignWidth="1100"
              Background="#101317" Foreground="White"
              FontFamily="Segoe UI">
-  <Grid Margin="24">
+  <UserControl.Resources>
+    <!-- Task Manager-style stat cell: dim caption on top, large light value below. -->
+    <Style x:Key="StatCaption" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="#8A94A0"/>
+      <Setter Property="FontSize" Value="12"/>
+      <Setter Property="Margin" Value="0,0,0,1"/>
+    </Style>
+    <Style x:Key="StatValue" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="#E6E6E6"/>
+      <Setter Property="FontSize" Value="22"/>
+      <Setter Property="FontWeight" Value="Light"/>
+    </Style>
+    <!-- Compact label:value row used in the right-hand spec column. -->
+    <Style x:Key="SpecCaption" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="#8A94A0"/>
+      <Setter Property="FontSize" Value="13"/>
+      <Setter Property="Margin" Value="0,3"/>
+    </Style>
+    <Style x:Key="SpecValue" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="#C8D0D8"/>
+      <Setter Property="FontSize" Value="13"/>
+      <Setter Property="Margin" Value="24,3,0,3"/>
+    </Style>
+  </UserControl.Resources>
+
+  <Grid Margin="24,18">
     <Grid.RowDefinitions>
-      <RowDefinition Height="Auto"/>
-      <RowDefinition Height="Auto"/>
-      <RowDefinition Height="*"/>
+      <RowDefinition Height="Auto"/>   <!-- back + title + total/type -->
+      <RowDefinition Height="Auto"/>   <!-- "Memory usage" caption + max -->
+      <RowDefinition Height="*"/>      <!-- usage graph -->
+      <RowDefinition Height="Auto"/>   <!-- "Memory composition" caption -->
+      <RowDefinition Height="Auto"/>   <!-- composition bar -->
+      <RowDefinition Height="Auto"/>   <!-- stats grid -->
+      <RowDefinition Height="Auto"/>   <!-- per-slot module list -->
     </Grid.RowDefinitions>
 
-    <Grid Grid.Row="0" Margin="0,0,0,16">
+    <!-- ============ Header: back + title + total/type ============ -->
+    <Grid Grid.Row="0" Margin="0,0,0,12">
       <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"/>
         <ColumnDefinition Width="Auto"/>
         <ColumnDefinition Width="*"/>
       </Grid.ColumnDefinitions>
       <Button Grid.Column="0" Content="&#x2190; Back" Padding="14,6"
+              VerticalAlignment="Center" Margin="0,0,20,0"
               Background="#1E2A38" Foreground="White" BorderThickness="0"
               Command="{Binding ShowDashboardCommand}"/>
-      <TextBlock Grid.Column="1" Text="Memory" Foreground="#3E9BE8" FontSize="28"
-                 FontWeight="SemiBold" VerticalAlignment="Center" Margin="16,0,0,0"/>
+      <TextBlock Grid.Column="1" Text="Memory" Foreground="#3E9BE8" FontSize="30"
+                 FontWeight="SemiBold" VerticalAlignment="Center"/>
+      <TextBlock Grid.Column="2" Text="{Binding HeaderSpecLabel}" Foreground="#C8D0D8"
+                 FontSize="18" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                 Margin="0,0,0,4"/>
     </Grid>
 
-    <!-- Rolled-up totals -->
-    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,20">
-      <StackPanel Margin="0,0,48,0">
-        <TextBlock Text="{Binding TotalCapacityLabel}" FontSize="30" FontWeight="Light"/>
-        <TextBlock Text="Total installed" Foreground="#8A94A0" FontSize="12"/>
-      </StackPanel>
-      <StackPanel Margin="0,0,48,0">
-        <TextBlock Text="{Binding SlotsLabel}" FontSize="30" FontWeight="Light"/>
-        <TextBlock Text="Slots" Foreground="#8A94A0" FontSize="12"/>
-      </StackPanel>
-      <StackPanel>
-        <TextBlock Text="{Binding MaxSpeedLabel}" FontSize="30" FontWeight="Light"/>
-        <TextBlock Text="Max speed" Foreground="#8A94A0" FontSize="12"/>
-      </StackPanel>
-    </StackPanel>
+    <!-- ============ Memory usage graph ============ -->
+    <Grid Grid.Row="1" Margin="0,0,0,2">
+      <TextBlock Text="Memory usage" Foreground="#C8D0D8" FontSize="13" HorizontalAlignment="Left"/>
+      <TextBlock Text="{Binding UsageLabel}" Foreground="#8A94A0" FontSize="13" HorizontalAlignment="Right"/>
+    </Grid>
+    <graphs:PerformanceGraphView x:Name="UsageView" Grid.Row="2" Margin="0,0,0,14"
+                                 MinValue="0" MaxValue="{Binding TotalCapacityGB, TargetNullValue=64}"
+                                 MaxValueFormat="{}{0:0.#} GB"
+                                 MaxTime="60" MaxTimeFormat="{}{0} seconds" MinTime="0"/>
 
-    <!-- Per-slot module list -->
-    <ItemsControl Grid.Row="2" ItemsSource="{Binding Modules}">
+    <!-- ============ Memory composition ============ -->
+    <TextBlock Grid.Row="3" Text="Memory composition" Foreground="#C8D0D8" FontSize="13"
+               Margin="0,0,0,4"/>
+    <!-- In-use fraction as a flat horizontal fill; ProgressBar drives width from 0-1 with no converter. -->
+    <ProgressBar Grid.Row="4" Height="52" Minimum="0" Maximum="1"
+                 Value="{Binding CompositionInUseFraction, Mode=OneWay}"
+                 Margin="0,0,0,18" BorderBrush="#2E4A6A" BorderThickness="1"
+                 Background="#12233A" Foreground="#1F4E7A"
+                 ToolTip="{Binding InUseLabel}"/>
+
+    <!-- ============ Stats grid ============ -->
+    <Grid Grid.Row="5" Margin="0,0,0,18">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="1.4*"/>
+      </Grid.ColumnDefinitions>
+
+      <!-- Column 1: In use / Committed / Paged pool -->
+      <StackPanel Grid.Column="0">
+        <StackPanel Margin="0,0,0,14">
+          <TextBlock Text="In use (Compressed)" Style="{StaticResource StatCaption}"/>
+          <TextBlock Text="{Binding InUseLabel}" Style="{StaticResource StatValue}"/>
+        </StackPanel>
+        <StackPanel Margin="0,0,0,14">
+          <TextBlock Text="Committed" Style="{StaticResource StatCaption}"/>
+          <TextBlock Text="{Binding CommittedLabel}" Style="{StaticResource StatValue}"/>
+        </StackPanel>
+        <StackPanel>
+          <TextBlock Text="Paged pool" Style="{StaticResource StatCaption}"/>
+          <TextBlock Text="{Binding PagedPoolLabel}" Style="{StaticResource StatValue}"/>
+        </StackPanel>
+      </StackPanel>
+
+      <!-- Column 2: Available / Cached / Non-paged pool -->
+      <StackPanel Grid.Column="1">
+        <StackPanel Margin="0,0,0,14">
+          <TextBlock Text="Available" Style="{StaticResource StatCaption}"/>
+          <TextBlock Text="{Binding AvailableLabel}" Style="{StaticResource StatValue}"/>
+        </StackPanel>
+        <StackPanel Margin="0,0,0,14">
+          <TextBlock Text="Cached" Style="{StaticResource StatCaption}"/>
+          <TextBlock Text="{Binding CachedLabel}" Style="{StaticResource StatValue}"/>
+        </StackPanel>
+        <StackPanel>
+          <TextBlock Text="Non-paged pool" Style="{StaticResource StatCaption}"/>
+          <TextBlock Text="{Binding NonPagedPoolLabel}" Style="{StaticResource StatValue}"/>
+        </StackPanel>
+      </StackPanel>
+
+      <!-- Column 3: right-hand spec pairs (Speed / Slots used / Form factor / Hardware reserved) -->
+      <Grid Grid.Column="2" VerticalAlignment="Top">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Speed:" Style="{StaticResource SpecCaption}"/>
+        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding SpeedLabel}" Style="{StaticResource SpecValue}"/>
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Slots used:" Style="{StaticResource SpecCaption}"/>
+        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SlotsUsedLabel}" Style="{StaticResource SpecValue}"/>
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Form factor:" Style="{StaticResource SpecCaption}"/>
+        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding FormFactorLabel}" Style="{StaticResource SpecValue}"/>
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="Hardware reserved:" Style="{StaticResource SpecCaption}"/>
+        <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding HardwareReservedLabel}" Style="{StaticResource SpecValue}"/>
+      </Grid>
+    </Grid>
+
+    <!-- ============ Per-slot module inventory ============ -->
+    <ItemsControl Grid.Row="6" ItemsSource="{Binding Modules}">
       <ItemsControl.ItemTemplate>
         <DataTemplate>
-          <Border Margin="0,0,0,10" Padding="16" Background="#161B22" CornerRadius="8">
-            <Grid>
-              <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-              </Grid.RowDefinitions>
-              <StackPanel Grid.Row="0" Orientation="Horizontal">
-                <TextBlock Text="{Binding SlotLabel}" Foreground="#3E9BE8" FontSize="16"
-                           FontWeight="SemiBold" Width="140"/>
-                <TextBlock Text="{Binding CapacityLabel}" FontSize="16" Width="100"/>
-                <TextBlock Text="{Binding SpeedLabel}" Foreground="#C8C8C8" Width="120"/>
-                <TextBlock Text="{Binding FormFactor}" Foreground="#C8C8C8"/>
-              </StackPanel>
-              <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,8,0,0">
-                <StackPanel Width="260">
-                  <TextBlock Text="Manufacturer" Foreground="#8A94A0" FontSize="11"/>
-                  <TextBlock Text="{Binding Manufacturer}"/>
-                </StackPanel>
-                <StackPanel Width="260">
-                  <TextBlock Text="Part number" Foreground="#8A94A0" FontSize="11"/>
-                  <TextBlock Text="{Binding PartNumber}"/>
-                </StackPanel>
-                <StackPanel>
-                  <TextBlock Text="Configured speed" Foreground="#8A94A0" FontSize="11"/>
-                  <TextBlock Text="{Binding ConfiguredSpeedLabel}"/>
-                </StackPanel>
-              </StackPanel>
-            </Grid>
+          <Border Margin="0,0,0,8" Padding="14,10" Background="#161B22" CornerRadius="6">
+            <StackPanel Orientation="Horizontal">
+              <TextBlock Text="{Binding SlotLabel}" Foreground="#3E9BE8" FontSize="14"
+                         FontWeight="SemiBold" Width="150" VerticalAlignment="Center"/>
+              <TextBlock Text="{Binding CapacityLabel}" FontSize="14" Width="90" VerticalAlignment="Center"/>
+              <TextBlock Text="{Binding SpeedLabel}" Foreground="#C8C8C8" Width="110" VerticalAlignment="Center"/>
+              <TextBlock Text="{Binding FormFactor}" Foreground="#C8C8C8" Width="170" VerticalAlignment="Center"/>
+              <TextBlock Text="{Binding Manufacturer}" Foreground="#C8C8C8" Width="140" VerticalAlignment="Center"/>
+              <TextBlock Text="{Binding PartNumber}" Foreground="#8A94A0" VerticalAlignment="Center"/>
+            </StackPanel>
           </Border>
         </DataTemplate>
       </ItemsControl.ItemTemplate>

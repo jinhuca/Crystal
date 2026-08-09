@@ -13,7 +13,9 @@ public interface IStorageViewModel {
   double TransferRateMBps { get; }
   double TransferMaxMBps { get; }
   ObservableCollection<StorageDriveViewModel> Drives { get; }
-  ObservableCollection<StorageDriveViewModel> SummaryDrives { get; }
+
+  /// <summary>The disk whose graphs and stats the detail view currently shows.</summary>
+  StorageDriveViewModel? SelectedDisk { get; set; }
 
   /// <summary>Hands the summary tile's activity-history graph to the VM so it can push samples.</summary>
   void AttachGraph(PerformanceGraph graph);

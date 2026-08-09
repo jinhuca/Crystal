@@ -34,7 +34,8 @@ public record PhysicalMemoryMetrics(
     string? Tag,
     ushort? TotalWidth,
     ushort? TypeDetail,           // 128 = Synchronous, 4 = Non-volatile, etc.
-    string? Version
+    string? Version,
+    ushort? SMBIOSMemoryType = null  // SMBIOS memory technology code: 26 = DDR4, 34 = DDR5, etc.
 ) {
   // --- RUNTIME PRESENTATION HELPERS ---
 
@@ -45,6 +46,18 @@ public record PhysicalMemoryMetrics(
     13 => "Row of chips",
     15 => "SIMM",
     _ => "Unknown Form Factor"
+  };
+
+  // Translates the SMBIOS memory-type code (Win32_PhysicalMemory.SMBIOSMemoryType) into the common
+  // technology name. Returns null when absent/unrecognized so callers can fall back or omit it.
+  public string? MemoryTypeName => SMBIOSMemoryType switch {
+    20 => "DDR",
+    21 => "DDR2",
+    24 => "DDR3",
+    26 => "DDR4",
+    34 => "DDR5",
+    35 => "LPDDR5",
+    _ => null
   };
 
   // Computes individual capacity into a clean gigabytes representation format

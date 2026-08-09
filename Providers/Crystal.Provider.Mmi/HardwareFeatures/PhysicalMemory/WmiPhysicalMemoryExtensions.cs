@@ -61,7 +61,8 @@ public static class WmiPhysicalMemoryExtensions {
             Tag: GetStr("Tag"),
             TotalWidth: (ushort?)GetInt("TotalWidth"),
             TypeDetail: (ushort?)GetInt("TypeDetail"),
-            Version: GetStr("Version")
+            Version: GetStr("Version"),
+            SMBIOSMemoryType: (ushort?)GetInt("SMBIOSMemoryType")
         ));
       }
 

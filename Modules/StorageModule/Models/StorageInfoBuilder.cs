@@ -33,5 +33,6 @@ public sealed class StorageInfoBuilder {
       Manufacturer: d.Manufacturer?.Trim(),
       SerialNumber: d.SerialNumber?.Trim(),
       FirmwareRevision: d.FirmwareRevision?.Trim(),
-      Partitions: d.Partitions);
+      Partitions: d.Partitions,
+      DriveIndex: (int?)d.Index);
 }

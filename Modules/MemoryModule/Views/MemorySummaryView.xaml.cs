@@ -24,7 +24,9 @@ public partial class MemorySummaryView : UserControl {
 
   private void OnUsedGraphLoaded(object sender, System.Windows.RoutedEventArgs e) {
     if (sender is not PerformanceGraph graph) return;
-    graph.ApplyTheme(GraphThemes.Emerald(GraphKind.Line));
+    // Sky matches the detail view's "Memory usage" graph so the shared used-GB metric reads the
+    // same accent across both views.
+    graph.ApplyTheme(GraphThemes.Sky(GraphKind.Line));
     if (DataContext is IMemoryViewModel vm)
       vm.AttachUsedGraph(graph);
   }

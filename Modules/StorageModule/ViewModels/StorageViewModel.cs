@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using Crystal.Controls.PerformanceGraphs;
@@ -11,9 +9,9 @@ namespace StorageModule.ViewModels;
 
 public sealed class StorageViewModel : BindableBase, IStorageViewModel, IDisposable {
   // Transfer rate has no natural ceiling (an NVMe drive bursts past 3 GB/s, an HDD idles near
-  // zero), so the graph's Y-axis tracks the rolling peak over the visible window instead of a fixed
-  // max. Keep the same number of samples the graph plots, floor the axis so an idle disk doesn't
-  // zoom into noise, and round the peak up to a "nice" value for readable gridlines.
+  // zero), so the tile graph's Y-axis tracks the rolling peak over the visible window instead of a
+  // fixed max. Keep the same number of samples the graph plots, floor the axis so an idle disk
+  // doesn't zoom into noise, and round the peak up to a "nice" value for readable gridlines.
   private const int TransferWindow = 60;
   private const double TransferFloorMBps = 100;
 
@@ -25,6 +23,7 @@ public sealed class StorageViewModel : BindableBase, IStorageViewModel, IDisposa
   private double _load;
   private double _transferRateMBps;
   private double _transferMaxMBps = TransferFloorMBps;
+  private StorageDriveViewModel? _selectedDisk;
   private PerformanceGraph? _loadGraph;
   private PerformanceGraph? _transferGraph;
 
@@ -44,12 +43,11 @@ public sealed class StorageViewModel : BindableBase, IStorageViewModel, IDisposa
   public double TransferRateMBps { get => _transferRateMBps; private set => SetProperty(ref _transferRateMBps, value); }
   public double TransferMaxMBps { get => _transferMaxMBps; private set => SetProperty(ref _transferMaxMBps, value); }
 
-  /// <summary>Every physical drive — bound by the detail view.</summary>
+  /// <summary>Every physical disk — the detail view's selector list.</summary>
   public ObservableCollection<StorageDriveViewModel> Drives { get; } = [];
 
-  /// <summary>The first two fixed hard drives — bound by the compact dashboard tile so it stays
-  /// dense; the detail view shows the rest.</summary>
-  public ObservableCollection<StorageDriveViewModel> SummaryDrives { get; } = [];
+  /// <summary>The disk whose graphs and stats the detail view currently shows.</summary>
+  public StorageDriveViewModel? SelectedDisk { get => _selectedDisk; set => SetProperty(ref _selectedDisk, value); }
 
   public ICommand ShowDetailCommand { get; }
   public ICommand ShowDashboardCommand { get; }
@@ -64,22 +62,28 @@ public sealed class StorageViewModel : BindableBase, IStorageViewModel, IDisposa
     Drives.Clear();
     foreach (var drive in snapshot.Drives)
       Drives.Add(new StorageDriveViewModel(drive));
-
-    // The tile lists only the first two fixed hard drives to stay compact; everything else
-    // (removable/external media, or additional fixed disks) lives in the detail view.
-    SummaryDrives.Clear();
-    foreach (var drive in Drives.Where(d => d.IsFixedHardDrive).Take(2))
-      SummaryDrives.Add(drive);
+    SelectedDisk ??= Drives.FirstOrDefault();
   }
 
   private void ApplyLoad(StorageLoadReading reading) {
-    Load = reading.ActivityPercent;
-    _loadGraph?.AddValue(reading.ActivityPercent);
+    // Route each disk's sample to its matching per-disk VM (joined by physical-disk index).
+    double maxActivity = 0;
+    double totalTransfer = 0;
+    foreach (var disk in reading.Disks) {
+      var vm = Drives.FirstOrDefault(d => d.DriveIndex == disk.DriveIndex);
+      vm?.Update(disk);
 
-    TransferRateMBps = reading.TransferRateMBps;
-    _transferGraph?.AddValue(reading.TransferRateMBps);
+      if (disk.ActivityPercent > maxActivity) maxActivity = disk.ActivityPercent;
+      totalTransfer += disk.ReadRateMBps + disk.WriteRateMBps;
+    }
 
-    _transferSamples.Enqueue(reading.TransferRateMBps);
+    // The dashboard tile stays aggregate: busiest disk's activity + system-wide transfer rate.
+    Load = maxActivity;
+    _loadGraph?.AddValue(maxActivity);
+
+    TransferRateMBps = totalTransfer;
+    _transferGraph?.AddValue(totalTransfer);
+    _transferSamples.Enqueue(totalTransfer);
     while (_transferSamples.Count > TransferWindow) _transferSamples.Dequeue();
     TransferMaxMBps = NiceCeiling(Math.Max(TransferFloorMBps, _transferSamples.Max()));
   }

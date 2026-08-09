@@ -48,44 +48,15 @@
         </StackPanel>
       </Border>
 
-      <!-- Single summary line (total · drive count), then a dense per-drive list where each row
-           shows model · size · type · interface · manufacturer. -->
-      <StackPanel Grid.Row="1" Margin="0,0,0,6">
-        <StackPanel Orientation="Horizontal">
-          <TextBlock VerticalAlignment="Center">
-            <Run Text="{Binding TotalCapacityLabel, Mode=OneWay}" FontSize="16" FontFamily="Consolas"/>
-            <Run Text=" total" Foreground="#8A94A0" FontSize="11"/>
-          </TextBlock>
-          <TextBlock Text="{Binding DriveCountLabel}" Foreground="#8A94A0" FontSize="11"
-                     FontFamily="Consolas" VerticalAlignment="Center" Margin="16,0,0,0"/>
-        </StackPanel>
-
-        <ItemsControl ItemsSource="{Binding SummaryDrives}" Margin="0,4,0,0">
-          <ItemsControl.ItemTemplate>
-            <DataTemplate>
-              <Grid Margin="0,1">
-                <Grid.ColumnDefinitions>
-                  <ColumnDefinition Width="Auto"/>
-                  <ColumnDefinition Width="Auto"/>
-                  <ColumnDefinition Width="Auto"/>
-                  <ColumnDefinition Width="Auto"/>
-                  <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Text="{Binding Model}" Foreground="#8A94A0"
-                           FontSize="11" FontFamily="Consolas" Width="150" Margin="0,0,6,0"
-                           TextTrimming="CharacterEllipsis"/>
-                <TextBlock Grid.Column="1" Text="{Binding CapacityLabel}" Foreground="#C8C8C8"
-                           FontSize="11" FontFamily="Consolas" Width="62" Margin="0,0,6,0"/>
-                <TextBlock Grid.Column="2" Text="{Binding ShortMediaType}" Foreground="#C8C8C8"
-                           FontSize="11" FontFamily="Consolas" Width="52" Margin="0,0,6,0"/>
-                <TextBlock Grid.Column="3" Text="{Binding InterfaceType}" Foreground="#C8C8C8"
-                           FontSize="11" FontFamily="Consolas" Width="44" Margin="0,0,6,0"/>
-                <TextBlock Grid.Column="4" Text="{Binding Manufacturer}" Foreground="#C8C8C8"
-                           FontSize="11" FontFamily="Consolas" TextTrimming="CharacterEllipsis"/>
-              </Grid>
-            </DataTemplate>
-          </ItemsControl.ItemTemplate>
-        </ItemsControl>
+      <!-- Single roll-up line (total · drive count). The per-disk inventory lives in the detail
+           view, so the tile stays a compact live-metrics glance. -->
+      <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,6">
+        <TextBlock VerticalAlignment="Center">
+          <Run Text="{Binding TotalCapacityLabel, Mode=OneWay}" FontSize="16" FontFamily="Consolas"/>
+          <Run Text=" total" Foreground="#8A94A0" FontSize="11"/>
+        </TextBlock>
+        <TextBlock Text="{Binding DriveCountLabel}" Foreground="#8A94A0" FontSize="11"
+                   FontFamily="Consolas" VerticalAlignment="Center" Margin="16,0,0,0"/>
       </StackPanel>
 
       <!-- Activity (top) + Transfer (bottom) stacked graphs, each with a big value / unit / caption

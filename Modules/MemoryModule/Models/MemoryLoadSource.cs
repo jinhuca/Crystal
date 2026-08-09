@@ -21,17 +21,25 @@ public sealed class MemoryLoadSource : IDisposable {
     _computer.Open();
   }
 
-  /// <summary>Re-samples memory and returns the used percentage plus used/available GB (load 0 and
-  /// GB null when unavailable).</summary>
+  /// <summary>Re-samples memory and returns the used percentage plus used/available GB from the
+  /// telemetry provider, augmented with the kernel-memory figures (committed, cached, pool,
+  /// hardware reserved) from <see cref="KernelMemoryInfo"/>. GB fields are null when unavailable.</summary>
   public MemoryLoadReading Read() {
+    var kernel = KernelMemoryInfo.Read();
+
     var memory = _computer.Hardware.FirstOrDefault(h => h.HardwareType == HardwareType.Memory);
-    if (memory is null) return new MemoryLoadReading(0, null, null);
+    if (memory is null)
+      return new MemoryLoadReading(0, null, null,
+          kernel.CommittedGB, kernel.CommitLimitGB, kernel.CachedGB,
+          kernel.PagedPoolGB, kernel.NonPagedPoolGB, kernel.HardwareReservedGB);
 
     memory.Update();
     var load = FindSensor(memory, SensorType.Load, LoadSensorName);
     var used = FindSensor(memory, SensorType.Data, UsedSensorName);
     var available = FindSensor(memory, SensorType.Data, AvailableSensorName);
-    return new MemoryLoadReading(load?.Value ?? 0, used?.Value, available?.Value);
+    return new MemoryLoadReading(load?.Value ?? 0, used?.Value, available?.Value,
+        kernel.CommittedGB, kernel.CommitLimitGB, kernel.CachedGB,
+        kernel.PagedPoolGB, kernel.NonPagedPoolGB, kernel.HardwareReservedGB);
   }
 
   private static ISensor? FindSensor(IHardware memory, SensorType type, string name) =>
