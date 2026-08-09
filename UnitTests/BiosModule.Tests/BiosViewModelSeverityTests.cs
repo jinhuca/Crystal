@@ -30,6 +30,11 @@ public class BiosViewModelSeverityTests {
     return new BiosViewModel(model, new EventAggregator());
   }
 
+  private static BiosViewModel CreateVm(out FakeBiosModel model, Func<DateTimeOffset> clock) {
+    model = new FakeBiosModel();
+    return new BiosViewModel(model, new EventAggregator(), clock);
+  }
+
   private static RailReading Rail(float value) => new(value, null, null);
 
   [Fact]
@@ -129,6 +134,30 @@ public class BiosViewModelSeverityTests {
   }
 
   [Fact]
+  public void Board_health_summary_counts_offenders_by_severity_criticals_first() {
+    var vm = CreateVm(out var model);
+
+    model.ReadingsSubject.OnNext([
+        Board("VBAT", SensorType.Voltage, 2.6f),   // CMOS warning
+        Board("+5V", SensorType.Voltage, 5.4f),    // +8% → warning
+        Board("+12V", SensorType.Voltage, 10.4f),  // -13% → critical
+    ]);
+
+    Assert.Equal("1 critical · 2 warnings", vm.BoardHealthSummary);
+  }
+
+  [Fact]
+  public void Board_health_summary_singularizes_a_lone_warning_and_is_empty_when_healthy() {
+    var vm = CreateVm(out var model);
+
+    model.ReadingsSubject.OnNext([Board("+5V", SensorType.Voltage, 5.4f)]);  // one warning
+    Assert.Equal("1 warning", vm.BoardHealthSummary);
+
+    model.ReadingsSubject.OnNext([Board("+5V", SensorType.Voltage, 5.01f)]); // recovers
+    Assert.Equal("", vm.BoardHealthSummary);
+  }
+
+  [Fact]
   public void Board_health_detail_is_empty_when_everything_is_in_spec() {
     var vm = CreateVm(out var model);
 
@@ -154,6 +183,51 @@ public class BiosViewModelSeverityTests {
   private static SensorReading Board(string name, SensorType type, float? value) =>
       new("SuperIO", HardwareType.SuperIO, name, type, value, null, null, null);
 
+  private static SensorReading Board(string name, SensorType type, float? value, float? min, float? max) =>
+      new("SuperIO", HardwareType.SuperIO, name, type, value, min, max, null);
+
+  [Fact]
+  public void Row_min_max_are_graded_so_a_recovered_dip_still_shows_in_the_column() {
+    var vm = CreateVm(out var model);
+
+    // +12V is in spec now, but dipped to 10.4 (critical) and peaked at 12.1 (in spec) earlier.
+    model.ReadingsSubject.OnNext([Board("+12V", SensorType.Voltage, 12.02f, 10.4f, 12.1f)]);
+
+    var row = vm.BoardSensors.Single(r => r.Name == "+12V");
+    Assert.Equal(ReadingSeverity.Normal, row.Severity);      // live value is fine
+    Assert.Equal(ReadingSeverity.Critical, row.MinSeverity); // the recorded dip is not
+    Assert.Equal(ReadingSeverity.Normal, row.MaxSeverity);
+  }
+
+  [Fact]
+  public void Row_max_is_graded_for_temperatures() {
+    var vm = CreateVm(out var model);
+
+    // Board temp idles fine now but peaked at 72 (critical).
+    model.ReadingsSubject.OnNext([Board("System", SensorType.Temperature, 40f, 35f, 72f)]);
+
+    var row = vm.BoardSensors.Single(r => r.Name == "System");
+    Assert.Equal(ReadingSeverity.Normal, row.Severity);
+    Assert.Equal(ReadingSeverity.Normal, row.MinSeverity);
+    Assert.Equal(ReadingSeverity.Critical, row.MaxSeverity);
+  }
+
+  [Fact]
+  public void Fan_min_max_are_never_graded() {
+    var vm = CreateVm(out var model);
+
+    model.TelemetrySubject.OnNext(new BoardTelemetry(
+        BoardTemperature: 65f, CmosVoltage: 3.0f, ChassisFanRpm: 0f,
+        Rail3V3: Rail(3.31f), Rail5V: Rail(5.01f), Rail12V: Rail(12.02f)));
+    // A fan whose recorded Min is 0 RPM: that's an idle extreme, not a judgeable stall.
+    model.ReadingsSubject.OnNext([Board("Chassis Fan", SensorType.Fan, 0f, 0f, 1400f)]);
+
+    var row = vm.BoardSensors.Single(r => r.Name == "Chassis Fan");
+    Assert.Equal(ReadingSeverity.Critical, row.Severity);    // live stall while hot → flagged
+    Assert.Equal(ReadingSeverity.Normal, row.MinSeverity);   // but the 0-RPM extreme is not
+    Assert.Equal(ReadingSeverity.Normal, row.MaxSeverity);
+  }
+
   private static SensorReading BoardFan(string name, float? value, float? max) =>
       new("SuperIO", HardwareType.SuperIO, name, SensorType.Fan, value, null, max, "RPM");
 
@@ -177,6 +251,36 @@ public class BiosViewModelSeverityTests {
     Assert.Equal(ReadingSeverity.Warning, Row("VBAT"));
     Assert.Equal(ReadingSeverity.Normal, Row("VCore"));
     Assert.Equal(ReadingSeverity.Normal, Row("System"));
+  }
+
+  [Fact]
+  public void Board_rows_default_to_worst_severity_first() {
+    var vm = CreateVm(out var model);
+
+    model.ReadingsSubject.OnNext([
+        Board("+3.3V", SensorType.Voltage, 3.31f),  // normal
+        Board("VBAT", SensorType.Voltage, 2.6f),    // warning
+        Board("+12V", SensorType.Voltage, 10.4f),   // critical
+        Board("+5V", SensorType.Voltage, 5.01f),    // normal
+    ]);
+
+    var order = vm.BoardSensors.Select(r => r.Name).ToList();
+    Assert.Equal("+12V", order[0]);   // critical first
+    Assert.Equal("VBAT", order[1]);   // then warning
+    // Remaining two are normal, ordered by name.
+    Assert.Equal(["+3.3V", "+5V"], order.Skip(2));
+  }
+
+  [Fact]
+  public void Row_sort_keys_are_numeric_and_missing_readings_are_nan() {
+    var vm = CreateVm(out var model);
+
+    model.ReadingsSubject.OnNext([Board("+12V", SensorType.Voltage, 12.0f, 11.9f, null)]);
+
+    var row = vm.BoardSensors.Single(r => r.Name == "+12V");
+    Assert.Equal(12.0, row.ValueSort, 3);
+    Assert.Equal(11.9, row.MinSort, 3);
+    Assert.True(double.IsNaN(row.MaxSort));
   }
 
   [Theory]
@@ -310,6 +414,336 @@ public class BiosViewModelSeverityTests {
 
     Assert.False(vm.HasChassisFan);
     Assert.Equal(ReadingSeverity.Normal, vm.ChassisFanSeverity);
+  }
+
+  [Fact]
+  public void An_out_of_spec_reading_leaves_a_health_event_after_it_recovers() {
+    var now = new DateTimeOffset(2026, 8, 8, 12, 0, 0, TimeSpan.Zero);
+    var vm = CreateVm(out var model, () => now);
+
+    // +12V goes critical, then recovers on the next tick.
+    model.ReadingsSubject.OnNext([Board("+12V", SensorType.Voltage, 10.4f)]);
+    Assert.True(vm.HasHealthEvents);
+    Assert.True(vm.HealthEvents.Single().Ongoing);
+
+    model.ReadingsSubject.OnNext([Board("+12V", SensorType.Voltage, 12.02f)]);
+
+    // The live table is clean, but the episode persists as recovered history.
+    Assert.Equal(ReadingSeverity.Normal, vm.BoardHealth);
+    var e = vm.HealthEvents.Single();
+    Assert.Equal("+12V", e.SensorName);
+    Assert.Equal(ReadingSeverity.Critical, e.Severity);
+    Assert.Equal("10.4", e.PeakValue);  // the reading that triggered the peak (this fake row carries no unit)
+    Assert.False(e.Ongoing);
+  }
+
+  [Fact]
+  public void Clear_history_empties_the_event_log_and_resets_graph_markers() => StaRunner.Run(() => {
+    var now = new DateTimeOffset(2026, 8, 8, 12, 0, 0, TimeSpan.Zero);
+    var vm = CreateVm(out var model, () => now);
+    var g3 = new PerformanceGraph();
+    var g5 = new PerformanceGraph();
+    var g12 = new PerformanceGraph();
+    vm.AttachRailGraphs(g3, g5, g12);
+
+    // A dip records an event and moves the +12V graph's session markers off NaN.
+    model.TelemetrySubject.OnNext(new BoardTelemetry(
+        BoardTemperature: 35f, CmosVoltage: 3.0f, ChassisFanRpm: 800f,
+        Rail3V3: Rail(3.31f), Rail5V: Rail(5.01f), Rail12V: Rail(11.90f)));
+    model.ReadingsSubject.OnNext([Board("+12V", SensorType.Voltage, 10.4f)]);
+    Assert.True(vm.HasHealthEvents);
+    Assert.False(double.IsNaN(g12.LowMarker));
+
+    vm.ClearHistoryCommand.Execute(null);
+
+    Assert.False(vm.HasHealthEvents);
+    Assert.Empty(vm.HealthEvents);
+    Assert.True(double.IsNaN(g12.LowMarker));
+    Assert.True(double.IsNaN(g12.HighMarker));
+  });
+
+  [Fact]
+  public void A_healthy_board_records_no_health_events() {
+    var vm = CreateVm(out var model);
+
+    model.ReadingsSubject.OnNext([Board("+12V", SensorType.Voltage, 12.02f)]);
+
+    Assert.False(vm.HasHealthEvents);
+    Assert.Empty(vm.HealthEvents);
+  }
+
+  [Fact]
+  public void Health_events_export_as_tab_separated_text_with_a_header() {
+    var now = new DateTimeOffset(2026, 8, 8, 12, 0, 0, TimeSpan.Zero);
+    var vm = CreateVm(out var model, () => now);
+
+    model.ReadingsSubject.OnNext([Board("+12V", SensorType.Voltage, 10.4f)]);  // ongoing critical
+
+    var lines = vm.HealthEventsAsText()
+        .Split('\n', StringSplitOptions.RemoveEmptyEntries)
+        .Select(l => l.TrimEnd('\r'))
+        .ToArray();
+
+    Assert.Equal($"# Exported {now.LocalDateTime:yyyy-MM-dd HH:mm:ss}", lines[0]);
+    Assert.Equal("# 1 event(s), 1 ongoing", lines[1]);
+    Assert.Equal("Started\tSensor\tPeak\tReading\tPeak at\tDuration", lines[2]);
+    var cols = lines[3].Split('\t');
+    Assert.Equal("+12V", cols[1]);
+    Assert.Equal("Critical", cols[2]);
+    Assert.Equal("10.4", cols[3]);
+    Assert.Equal(now.LocalDateTime.ToString("HH:mm:ss"), cols[4]);  // peak captured at the first (only) tick
+    Assert.StartsWith("ongoing", cols[5]);
+  }
+
+  [Fact]
+  public void Cap_note_surfaces_once_the_retention_limit_evicts_older_events() {
+    var vm = CreateVm(out var model);
+
+    Assert.Equal("", vm.HealthEventsCapNote);           // nothing dropped yet
+
+    // Open then recover 60 distinct rails (a critical dip, then healthy) → 60 closed episodes, of
+    // which the log keeps 50 and reports 10 dropped.
+    for (int i = 0; i < 60; i++) {
+      model.ReadingsSubject.OnNext([Board($"+12V#{i}", SensorType.Voltage, 10.4f)]);  // critical
+      model.ReadingsSubject.OnNext([Board($"+12V#{i}", SensorType.Voltage, 12.02f)]); // recovers
+    }
+
+    Assert.Equal("+10 older dropped", vm.HealthEventsCapNote);
+  }
+
+  [Fact]
+  public void Export_states_it_is_truncated_once_the_cap_drops_older_events() {
+    var vm = CreateVm(out var model);
+
+    for (int i = 0; i < 60; i++) {
+      model.ReadingsSubject.OnNext([Board($"+12V#{i}", SensorType.Voltage, 10.4f)]);  // critical
+      model.ReadingsSubject.OnNext([Board($"+12V#{i}", SensorType.Voltage, 12.02f)]); // recovers
+    }
+
+    var text = vm.HealthEventsAsText();
+
+    Assert.Contains("# 10 older recovered event(s) dropped by the retention cap", text);
+  }
+
+  [Fact]
+  public void Export_omits_the_truncation_note_when_nothing_was_dropped() {
+    var vm = CreateVm(out var model);
+
+    model.ReadingsSubject.OnNext([Board("+12V", SensorType.Voltage, 10.4f)]);
+
+    Assert.DoesNotContain("dropped by the retention cap", vm.HealthEventsAsText());
+  }
+
+  [Fact]
+  public void Filtered_export_is_flagged_and_carries_only_the_shown_rows() {
+    var vm = CreateVm(out var model);
+
+    model.ReadingsSubject.OnNext([
+        Board("+5V", SensorType.Voltage, 5.4f),    // warning
+        Board("+12V", SensorType.Voltage, 10.4f),  // critical
+    ]);
+    vm.ShowCriticalOnly = true;
+
+    var lines = vm.HealthEventsAsText()
+        .Split('\n', StringSplitOptions.RemoveEmptyEntries)
+        .Select(l => l.TrimEnd('\r'))
+        .ToArray();
+
+    Assert.StartsWith("# Exported ", lines[0]);                        // provenance stamp first
+    Assert.Equal("# 1 event(s), 1 ongoing", lines[1]);                 // then the row count (the critical row is ongoing)
+    Assert.Equal("# Filtered view: critical events only", lines[2]);   // then the filter note
+    Assert.Equal("Started\tSensor\tPeak\tReading\tPeak at\tDuration", lines[3]);
+    var row = Assert.Single(lines.Skip(4));                            // only the critical row exported
+    Assert.Contains("+12V", row);
+    Assert.DoesNotContain("+5V", string.Join("\n", lines));
+  }
+
+  [Fact]
+  public void Export_leads_with_the_capture_timestamp_from_the_clock() {
+    var now = new DateTimeOffset(2026, 8, 8, 14, 30, 0, TimeSpan.Zero);
+    var vm = CreateVm(out var model, () => now);
+
+    model.ReadingsSubject.OnNext([Board("+12V", SensorType.Voltage, 10.4f)]);
+
+    var text = vm.HealthEventsAsText();
+
+    Assert.StartsWith($"# Exported {now.LocalDateTime:yyyy-MM-dd HH:mm:ss}", text);
+  }
+
+  [Fact]
+  public void Export_summarizes_the_row_count_and_how_many_are_ongoing() {
+    var vm = CreateVm(out var model);
+
+    model.ReadingsSubject.OnNext([
+        Board("+5V", SensorType.Voltage, 5.4f),    // warning, stays open → ongoing
+        Board("+12V", SensorType.Voltage, 10.4f),  // critical, stays open → ongoing
+    ]);
+    model.ReadingsSubject.OnNext([
+        Board("+5V", SensorType.Voltage, 5.02f),   // +5V recovers → closed
+        Board("+12V", SensorType.Voltage, 10.4f),  // +12V still critical → ongoing
+    ]);
+
+    var text = vm.HealthEventsAsText();
+
+    Assert.Contains("# 2 event(s), 1 ongoing", text);
+  }
+
+  [Fact]
+  public void Export_count_omits_the_ongoing_clause_when_all_events_have_recovered() {
+    var vm = CreateVm(out var model);
+
+    model.ReadingsSubject.OnNext([Board("+12V", SensorType.Voltage, 10.4f)]);   // critical, open
+    model.ReadingsSubject.OnNext([Board("+12V", SensorType.Voltage, 12.02f)]);  // recovers → closed
+
+    var text = vm.HealthEventsAsText();
+
+    Assert.Contains("# 1 event(s)", text);
+    Assert.DoesNotContain("ongoing", text);
+  }
+
+  [Fact]
+  public void Health_events_export_is_empty_when_the_log_is_empty() {
+    var vm = CreateVm(out var model);
+
+    model.ReadingsSubject.OnNext([Board("+12V", SensorType.Voltage, 12.02f)]);  // healthy → no events
+
+    Assert.Equal("", vm.HealthEventsAsText());
+  }
+
+  [Fact]
+  public void Health_events_summary_counts_total_and_ongoing() {
+    var now = new DateTimeOffset(2026, 8, 8, 12, 0, 0, TimeSpan.Zero);
+    var vm = CreateVm(out var model, () => now);
+
+    // Two distinct rails go out of spec and stay there → two ongoing episodes.
+    model.ReadingsSubject.OnNext([
+        Board("+12V", SensorType.Voltage, 10.4f),
+        Board("+5V", SensorType.Voltage, 5.4f),
+    ]);
+
+    Assert.Equal("2 events · 2 ongoing", vm.HealthEventsSummary);
+  }
+
+  [Fact]
+  public void Health_events_summary_drops_the_ongoing_clause_once_everything_recovers() {
+    var now = new DateTimeOffset(2026, 8, 8, 12, 0, 0, TimeSpan.Zero);
+    var vm = CreateVm(out var model, () => now);
+
+    model.ReadingsSubject.OnNext([Board("+12V", SensorType.Voltage, 10.4f)]);  // one ongoing
+    Assert.Equal("1 event · 1 ongoing", vm.HealthEventsSummary);
+
+    model.ReadingsSubject.OnNext([Board("+12V", SensorType.Voltage, 12.02f)]); // recovers → closed
+
+    Assert.Equal("1 event", vm.HealthEventsSummary);
+  }
+
+  [Fact]
+  public void Health_events_summary_is_empty_when_the_log_is_empty() {
+    var vm = CreateVm(out var model);
+
+    model.ReadingsSubject.OnNext([Board("+12V", SensorType.Voltage, 12.02f)]);  // healthy
+
+    Assert.Equal("", vm.HealthEventsSummary);
+  }
+
+  [Fact]
+  public void Session_peak_names_the_worst_episode_and_survives_recovery() {
+    var now = new DateTimeOffset(2026, 8, 8, 12, 0, 0, TimeSpan.Zero);
+    var vm = CreateVm(out var model, () => now);
+
+    // +12V critical outranks the +5V warning → it's the session peak.
+    model.ReadingsSubject.OnNext([
+        Board("+5V", SensorType.Voltage, 5.4f),    // warning
+        Board("+12V", SensorType.Voltage, 10.4f),  // critical
+    ]);
+    Assert.Equal("+12V 10.4", vm.SessionPeak);
+    Assert.Equal(ReadingSeverity.Critical, vm.SessionPeakSeverity);
+
+    // Everything recovers: the live rollup clears, but the session peak persists as a record.
+    model.ReadingsSubject.OnNext([
+        Board("+5V", SensorType.Voltage, 5.01f),
+        Board("+12V", SensorType.Voltage, 12.02f),
+    ]);
+    Assert.Equal(ReadingSeverity.Normal, vm.BoardHealth);
+    Assert.Equal("+12V 10.4", vm.SessionPeak);
+    Assert.Equal(ReadingSeverity.Critical, vm.SessionPeakSeverity);
+  }
+
+  [Fact]
+  public void Session_peak_is_empty_on_a_healthy_board() {
+    var vm = CreateVm(out var model);
+
+    model.ReadingsSubject.OnNext([Board("+12V", SensorType.Voltage, 12.02f)]);
+
+    Assert.Equal("", vm.SessionPeak);
+    Assert.Equal(ReadingSeverity.Normal, vm.SessionPeakSeverity);
+  }
+
+  [Fact]
+  public void Critical_only_filter_hides_warning_rows_but_keeps_the_full_count_and_peak() {
+    var vm = CreateVm(out var model);
+
+    model.ReadingsSubject.OnNext([
+        Board("+5V", SensorType.Voltage, 5.4f),    // warning
+        Board("+12V", SensorType.Voltage, 10.4f),  // critical
+    ]);
+    Assert.Equal(2, vm.HealthEvents.Count);
+
+    vm.ShowCriticalOnly = true;
+
+    // Only the critical row remains in the table...
+    var shown = Assert.Single(vm.HealthEvents);
+    Assert.Equal("+12V", shown.SensorName);
+    Assert.Equal(ReadingSeverity.Critical, shown.Severity);
+    // ...but the headline count and the tile peak still reflect the full log.
+    Assert.Equal("2 events · 2 ongoing", vm.HealthEventsSummary);
+    Assert.Equal("+12V 10.4", vm.SessionPeak);
+    // ...and a hint reports what's being suppressed, so the table doesn't read as empty.
+    Assert.Equal("1 hidden", vm.HealthEventsFilterHint);
+  }
+
+  [Fact]
+  public void Filter_hint_is_empty_when_the_filter_is_off_or_hides_nothing() {
+    var vm = CreateVm(out var model);
+
+    model.ReadingsSubject.OnNext([
+        Board("+5V", SensorType.Voltage, 5.4f),    // warning
+        Board("+12V", SensorType.Voltage, 10.4f),  // critical
+    ]);
+    Assert.Equal("", vm.HealthEventsFilterHint);   // filter off → no hint
+
+    vm.ShowCriticalOnly = true;
+    Assert.Equal("1 hidden", vm.HealthEventsFilterHint);
+
+    vm.ShowCriticalOnly = false;
+    Assert.Equal("", vm.HealthEventsFilterHint);   // back off → hint clears
+  }
+
+  [Fact]
+  public void Filter_hint_is_empty_when_all_rows_are_critical() {
+    var vm = CreateVm(out var model);
+
+    model.ReadingsSubject.OnNext([Board("+12V", SensorType.Voltage, 10.4f)]);  // critical only
+    vm.ShowCriticalOnly = true;
+
+    Assert.Single(vm.HealthEvents);
+    Assert.Equal("", vm.HealthEventsFilterHint);   // filter on but nothing hidden
+  }
+
+  [Fact]
+  public void Toggling_the_filter_off_restores_the_hidden_rows() {
+    var vm = CreateVm(out var model);
+
+    model.ReadingsSubject.OnNext([
+        Board("+5V", SensorType.Voltage, 5.4f),    // warning
+        Board("+12V", SensorType.Voltage, 10.4f),  // critical
+    ]);
+
+    vm.ShowCriticalOnly = true;
+    Assert.Single(vm.HealthEvents);
+
+    vm.ShowCriticalOnly = false;
+    Assert.Equal(2, vm.HealthEvents.Count);
   }
 
   [Fact]

@@ -50,10 +50,12 @@
             <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
           </Style>
           <!-- Full-size rail trend graph; Y-axis is nominal ±10% (set per rail on the instance).
-               MarkerBrush turns on the session low/high dashed reference lines. -->
+               MarkerBrush turns on the session low/high dashed reference lines; MarkerFormat labels
+               them with two-decimal volts (board temp / fan override this per-instance). -->
           <Style x:Key="RailGraph" TargetType="graphs:PerformanceGraph">
             <Setter Property="Height" Value="48"/>
             <Setter Property="MarkerBrush" Value="#6E7681"/>
+            <Setter Property="MarkerFormat" Value="0.00"/>
           </Style>
         </ResourceDictionary>
       </Border.Resources>
@@ -185,6 +187,12 @@
           <!-- ── Live board sensors (shared SensorMonitor, 1s cadence) ─── -->
           <StackPanel Orientation="Horizontal">
             <TextBlock Text="Board sensors (live)" Style="{StaticResource SectionHeader}"/>
+            <!-- Resets the session health log and trend-graph buffers for a fresh observation
+                 window. Shown only when there's history to clear. -->
+            <Button Content="Clear history" Padding="8,2" Margin="12,10,0,0" FontSize="11"
+                    Background="#1E2A38" Foreground="#9DB2C8" BorderThickness="0"
+                    Click="OnClearHistory"
+                    Visibility="{Binding HasBoardSensors, Converter={StaticResource BoolToVisibility}}"/>
             <!-- Whole-board health rollup, matching the summary tile. Hidden while healthy so it
                  only draws the eye when a rail or the CMOS cell is out of tolerance. -->
             <TextBlock VerticalAlignment="Center" Margin="10,10,0,0" FontSize="11" FontWeight="SemiBold"
@@ -210,9 +218,13 @@
           <TextBlock Text="{Binding BoardSensorStatus}" Style="{StaticResource FieldLabel}"
                      TextWrapping="Wrap"
                      Visibility="{Binding HasBoardSensorStatus, Converter={StaticResource BoolToVisibility}}"/>
-          <ListView ItemsSource="{Binding BoardSensors}" Margin="0,4,0,0"
+          <!-- Column headers are clickable to re-sort; the default order (set in the view model) is
+               worst-severity first. Sort keys are numeric (Value/Min/Max) so "10 V" ranks above
+               "9 V", not lexically below it. -->
+          <ListView x:Name="BoardSensorList" ItemsSource="{Binding BoardSensors}" Margin="0,4,0,0"
                     Background="#101317" BorderBrush="#2A2A2A" BorderThickness="1"
                     Foreground="#D6D6D6" FontFamily="Consolas"
+                    GridViewColumnHeader.Click="OnBoardSensorHeaderClick"
                     Visibility="{Binding HasBoardSensors, Converter={StaticResource BoolToVisibility}}">
             <ListView.View>
               <GridView>
@@ -225,11 +237,131 @@
                     </DataTemplate>
                   </GridViewColumn.CellTemplate>
                 </GridViewColumn>
-                <GridViewColumn Header="Min" Width="160" DisplayMemberBinding="{Binding Min}"/>
-                <GridViewColumn Header="Max" Width="160" DisplayMemberBinding="{Binding Max}"/>
+                <GridViewColumn Header="Min" Width="160">
+                  <GridViewColumn.CellTemplate>
+                    <DataTemplate>
+                      <TextBlock Text="{Binding Min}"
+                                 Foreground="{Binding MinSeverity, Converter={StaticResource SeverityToBrush}}"/>
+                    </DataTemplate>
+                  </GridViewColumn.CellTemplate>
+                </GridViewColumn>
+                <GridViewColumn Header="Max" Width="160">
+                  <GridViewColumn.CellTemplate>
+                    <DataTemplate>
+                      <TextBlock Text="{Binding Max}"
+                                 Foreground="{Binding MaxSeverity, Converter={StaticResource SeverityToBrush}}"/>
+                    </DataTemplate>
+                  </GridViewColumn.CellTemplate>
+                </GridViewColumn>
               </GridView>
             </ListView.View>
           </ListView>
+
+          <!-- ── Board health events (this session) ──────────────────── -->
+          <!-- Durable trail of out-of-spec episodes: a rail that dipped critical then recovered
+               still shows here after it vanishes from the live table. Hidden until something first
+               leaves spec, so a healthy board never draws an empty log. -->
+          <StackPanel Visibility="{Binding HasHealthEvents, Converter={StaticResource BoolToVisibility}}">
+            <StackPanel Orientation="Horizontal">
+              <TextBlock Text="Health events (this session)" Style="{StaticResource SectionHeader}"/>
+              <!-- Compact count of logged episodes, e.g. "3 events · 1 ongoing"; empty when none. -->
+              <TextBlock Text="{Binding HealthEventsSummary}" VerticalAlignment="Center"
+                         Margin="10,10,0,0" FontSize="11" Foreground="{StaticResource BiosDimBrush}"/>
+              <!-- "+N older dropped" once the retention cap evicts the oldest events; collapses until then. -->
+              <TextBlock Text="{Binding HealthEventsCapNote}" VerticalAlignment="Center"
+                         Margin="8,10,0,0" FontSize="11" FontStyle="Italic"
+                         Foreground="{StaticResource BiosDimBrush}">
+                <TextBlock.Style>
+                  <Style TargetType="TextBlock">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                      <DataTrigger Binding="{Binding HealthEventsCapNote}" Value="">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                      </DataTrigger>
+                    </Style.Triggers>
+                  </Style>
+                </TextBlock.Style>
+              </TextBlock>
+              <!-- Copies the log as tab-separated text so a fault trail can be pasted into a bug report. -->
+              <Button Content="Copy" Padding="8,2" Margin="12,10,0,0" FontSize="11"
+                      Background="#1E2A38" Foreground="#9DB2C8" BorderThickness="0"
+                      IsEnabled="{Binding HasHealthEvents}"
+                      Click="OnCopyHealthEvents"/>
+              <!-- Writes the same tab-separated log to a file the user picks, for archiving/attaching. -->
+              <Button Content="Save…" Padding="8,2" Margin="6,10,0,0" FontSize="11"
+                      Background="#1E2A38" Foreground="#9DB2C8" BorderThickness="0"
+                      IsEnabled="{Binding HasHealthEvents}"
+                      Click="OnSaveHealthEvents"/>
+              <!-- Narrows the table to critical episodes only; the count/peak still reflect the full
+                   log, so this is a view filter, not a data change. -->
+              <CheckBox Content="Critical only" VerticalAlignment="Center" Margin="12,10,0,0"
+                        FontSize="11" Foreground="{StaticResource BiosDimBrush}"
+                        IsChecked="{Binding ShowCriticalOnly, Mode=TwoWay}"/>
+              <!-- "N hidden" when the filter is suppressing rows, so the narrowed table doesn't read
+                   as empty. Collapses when nothing is hidden. -->
+              <TextBlock Text="{Binding HealthEventsFilterHint}" VerticalAlignment="Center"
+                         Margin="6,10,0,0" FontSize="11" FontStyle="Italic"
+                         Foreground="{StaticResource BiosDimBrush}">
+                <TextBlock.Style>
+                  <Style TargetType="TextBlock">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                      <DataTrigger Binding="{Binding HealthEventsFilterHint}" Value="">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                      </DataTrigger>
+                    </Style.Triggers>
+                  </Style>
+                </TextBlock.Style>
+              </TextBlock>
+            </StackPanel>
+            <!-- Column headers are clickable to re-sort; the default order (set in the view model) is
+                 ongoing-first then newest. Started/Duration sort on numeric keys (ticks/seconds) and
+                 Peak on the severity enum, so ordering is chronological/by-length/by-severity rather
+                 than lexical. -->
+            <ListView x:Name="HealthEventList" ItemsSource="{Binding HealthEvents}" Margin="0,4,0,0"
+                      Background="#101317" BorderBrush="#2A2A2A" BorderThickness="1"
+                      Foreground="#D6D6D6" FontFamily="Consolas"
+                      GridViewColumnHeader.Click="OnHealthEventHeaderClick">
+              <!-- Hovering a row shows its full detail (full-date start/end, peak, duration) that the
+                   abbreviated columns leave out. -->
+              <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                  <Setter Property="ToolTip" Value="{Binding Detail}"/>
+                </Style>
+              </ListView.ItemContainerStyle>
+              <ListView.View>
+                <GridView>
+                  <GridViewColumn Header="Started" Width="120" DisplayMemberBinding="{Binding Started}"/>
+                  <!-- Relative age of the episode start, ticking forward each refresh; sorts on the
+                       same StartedSort key as Started, so newest-first == youngest-age-first. -->
+                  <GridViewColumn Header="Age" Width="100" DisplayMemberBinding="{Binding Age}"/>
+                  <GridViewColumn Header="Sensor" Width="200" DisplayMemberBinding="{Binding SensorName}"/>
+                  <!-- Peak severity band plus the actual reading captured at that moment, both tinted
+                       so the number that triggered the fault reads at the row's severity color. -->
+                  <GridViewColumn Header="Peak" Width="120">
+                    <GridViewColumn.CellTemplate>
+                      <DataTemplate>
+                        <TextBlock Text="{Binding Severity}"
+                                   Foreground="{Binding Severity, Converter={StaticResource SeverityToBrush}}"/>
+                      </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                  </GridViewColumn>
+                  <GridViewColumn Header="Reading" Width="120">
+                    <GridViewColumn.CellTemplate>
+                      <DataTemplate>
+                        <TextBlock Text="{Binding PeakValue}"
+                                   Foreground="{Binding Severity, Converter={StaticResource SeverityToBrush}}"/>
+                      </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                  </GridViewColumn>
+                  <!-- When the peak reading was captured (may be after the episode started, if it
+                       escalated). Sorts on the numeric tick key, not the HH:mm:ss string. -->
+                  <GridViewColumn Header="Peak at" Width="100" DisplayMemberBinding="{Binding PeakAt}"/>
+                  <GridViewColumn Header="Duration" Width="160" DisplayMemberBinding="{Binding Duration}"/>
+                </GridView>
+              </ListView.View>
+            </ListView>
+          </StackPanel>
 
           <!-- ── Rail voltage trends ─────────────────────────────────── -->
           <!-- Each graph's Y-axis is nominal ±10%, so the plot edges mark the critical band and a
@@ -246,7 +378,7 @@
               </Grid.ColumnDefinitions>
               <TextBlock Grid.Column="0" Text="Board" Style="{StaticResource FieldLabel}" VerticalAlignment="Center"/>
               <graphs:PerformanceGraph Grid.Column="1" x:Name="BoardTempGraph" Style="{StaticResource RailGraph}"
-                                       Loaded="OnBoardTempGraphLoaded" MinValue="20" MaxValue="90"/>
+                                       Loaded="OnBoardTempGraphLoaded" MinValue="20" MaxValue="90" MarkerFormat="0.0"/>
               <TextBlock Grid.Column="2" Text="{Binding BoardTemperature}" Style="{StaticResource FieldValue}"
                          VerticalAlignment="Center" TextAlignment="Right"
                          Foreground="{Binding BoardTemperatureSeverity, Converter={StaticResource SeverityToBrush}}"/>
@@ -301,7 +433,7 @@
               </Grid.ColumnDefinitions>
               <TextBlock Grid.Column="0" Text="Fan" Style="{StaticResource FieldLabel}" VerticalAlignment="Center"/>
               <graphs:PerformanceGraph Grid.Column="1" x:Name="FanGraph" Style="{StaticResource RailGraph}"
-                                       Loaded="OnFanGraphLoaded" MinValue="0" MaxValue="2500"/>
+                                       Loaded="OnFanGraphLoaded" MinValue="0" MaxValue="2500" MarkerFormat="0"/>
               <TextBlock Grid.Column="2" Text="{Binding ChassisFanRpm}" Style="{StaticResource FieldValue}"
                          VerticalAlignment="Center" TextAlignment="Right"
                          Foreground="{Binding ChassisFanSeverity, Converter={StaticResource SeverityToBrush}}"/>

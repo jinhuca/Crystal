@@ -79,6 +79,11 @@ public class PerformanceGraph : FrameworkElement {
       DependencyProperty.Register(nameof(HighMarker), typeof(double), typeof(PerformanceGraph),
           new FrameworkPropertyMetadata(double.NaN, FrameworkPropertyMetadataOptions.AffectsRender));
 
+  /// <summary>Identifies the <see cref="MarkerFormat"/> dependency property.</summary>
+  public static readonly DependencyProperty MarkerFormatProperty =
+      DependencyProperty.Register(nameof(MarkerFormat), typeof(string), typeof(PerformanceGraph),
+          new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender));
+
   private readonly BackgroundRenderer _backgroundRender = new();
   private readonly GridRenderer _gridRender;
   private readonly FilledLineRenderer _filledLineRender = new();
@@ -204,6 +209,13 @@ public class PerformanceGraph : FrameworkElement {
     set => SetValue(HighMarkerProperty, value);
   }
 
+  /// <summary>Numeric format string (e.g. "0.00") for the value printed beside each marker line.
+  /// Null (the default) draws the lines without labels, so a graph opts into labels by setting this.</summary>
+  public string? MarkerFormat {
+    get => (string?)GetValue(MarkerFormatProperty);
+    set => SetValue(MarkerFormatProperty, value);
+  }
+
   /// <summary>
   /// Applies every property the given theme sets, leaving anything it leaves null untouched.
   /// A theme's fill brush is typically chosen for a specific <see cref="Kind"/> — see
@@ -313,11 +325,23 @@ public class PerformanceGraph : FrameworkElement {
     }
 
     // Session-extreme markers over the data line but under the border, so a recovered dip/spike
-    // stays visible. No-ops unless MarkerBrush is set and the value is a real number.
-    _markerRender.Draw(dc, bounds, _graphStyle, LowMarker, MinValue, MaxValue);
-    _markerRender.Draw(dc, bounds, _graphStyle, HighMarker, MinValue, MaxValue);
+    // stays visible. No-ops unless MarkerBrush is set and the value is a real number. When
+    // MarkerFormat is set, each line is labeled with its value: the high label drops below its line,
+    // the low label lifts above its, so neither is clipped at the plot edge.
+    double dpi = VisualTreeHelper.GetDpi(this).PixelsPerDip;
+    _markerRender.Draw(dc, bounds, _graphStyle, LowMarker, MinValue, MaxValue,
+        FormatMarker(LowMarker), topBiased: false, dpi);
+    _markerRender.Draw(dc, bounds, _graphStyle, HighMarker, MinValue, MaxValue,
+        FormatMarker(HighMarker), topBiased: true, dpi);
 
     // Border drawn last so its edge stays crisp over the fill/grid instead of being covered.
     _borderRender.Draw(dc, bounds, _graphStyle);
   }
+
+  // The label for a marker value, or null to draw the line unlabeled — when no format is set, or the
+  // value is NaN (the marker itself is a no-op then anyway).
+  private string? FormatMarker(double value) =>
+      MarkerFormat is { } format && !double.IsNaN(value)
+          ? value.ToString(format, System.Globalization.CultureInfo.InvariantCulture)
+          : null;
 }

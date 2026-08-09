@@ -43,6 +43,33 @@ public class PerformanceGraphMarkerTests {
     Assert.True(highRow < lowRow, $"high marker should sit above low, got high@{highRow} low@{lowRow}");
   });
 
+  [Fact]
+  public void MarkerFormat_LabelsTheLine_AddingMarkColoredPixels() => StaRunner.Run(() => {
+    var unlabeled = NewGraph();
+    unlabeled.MarkerBrush = new SolidColorBrush(Mark);
+    unlabeled.HighMarker = 90;
+
+    var labeled = NewGraph();
+    labeled.MarkerBrush = new SolidColorBrush(Mark);
+    labeled.HighMarker = 90;
+    labeled.MarkerFormat = "0.0";  // adds a "90.0" glyph run in the same mark color
+
+    int lineOnly = new PixelRenderer(unlabeled, 240, 120).CountColor(Mark);
+    int lineAndLabel = new PixelRenderer(labeled, 240, 120).CountColor(Mark);
+
+    Assert.True(lineAndLabel > lineOnly,
+        $"labeled marker should paint more mark pixels than the bare line, got {lineAndLabel} vs {lineOnly}");
+  });
+
+  [Fact]
+  public void MarkerFormat_WithoutValue_DrawsNothing() => StaRunner.Run(() => {
+    var graph = NewGraph();
+    graph.MarkerBrush = new SolidColorBrush(Mark);
+    graph.MarkerFormat = "0.0";  // format set, but markers are NaN → still nothing drawn
+
+    Assert.Equal(0, new PixelRenderer(graph, 240, 120).CountColor(Mark));
+  });
+
   // Neutral background/grid/border/line so the only Mark-colored pixels come from the marker layer.
   private static PerformanceGraph NewGraph() => new() {
     Kind = GraphKind.Line,

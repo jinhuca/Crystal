@@ -65,6 +65,7 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
   private ReadingSeverity _rail12VSeverity;
   private ReadingSeverity _boardHealth;
   private string _boardHealthDetail = "";
+  private string _boardHealthSummary = "";
   private bool _hasBoardSensors;
   private PerformanceGraph? _rail3V3Graph;
   private PerformanceGraph? _rail5VGraph;
@@ -89,14 +90,32 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
   private readonly bool _driverAccessible;
   private string _boardSensorStatus = Dash;
   private bool _hasBoardSensorStatus;
+  // Session record of out-of-spec episodes, so a rail that dipped critical then recovered still
+  // leaves a durable trail rather than vanishing from the UI the moment it comes back in spec.
+  private readonly BoardHealthLog _healthLog;
+  private readonly Func<DateTimeOffset> _clock;
+  private bool _hasHealthEvents;
+  private bool _showCriticalOnly;
+  private string _healthEventsFilterHint = "";
+  private string _healthEventsCapNote = "";
+  private string _healthEventsSummary = "";
+  private string _sessionPeak = "";
+  private ReadingSeverity _sessionPeakSeverity;
 
-  public BiosViewModel(IBiosModel model, IEventAggregator events) {
+  public BiosViewModel(IBiosModel model, IEventAggregator events)
+      : this(model, events, () => DateTimeOffset.Now) { }
+
+  // Clock is injected so the health log's timestamps and durations are testable off a fake clock.
+  internal BiosViewModel(IBiosModel model, IEventAggregator events, Func<DateTimeOffset> clock) {
+    _clock = clock;
+    _healthLog = new BoardHealthLog(clock);
     _driverInstalled = model.BoardSensorDriverInstalled;
     _driverAccessible = model.BoardSensorDriverAccessible;
     ShowDetailCommand = new DelegateCommand(
         () => events.GetEvent<ShowDetailEvent>().Publish(DetailViewNames.Bios));
     ShowDashboardCommand = new DelegateCommand(
         () => events.GetEvent<ShowDashboardEvent>().Publish());
+    ClearHistoryCommand = new DelegateCommand(ClearHistory);
 
     _firmwareSubscription = model.Firmware.Subscribe(s => OnUi(() => Apply(s)));
     _telemetrySubscription = model.BoardTelemetry.Subscribe(t => OnUi(() => ApplyTelemetry(t)));
@@ -155,13 +174,42 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
   // Names the out-of-tolerance rails (e.g. "+12V critical · CMOS warning") so the dot's tooltip
   // says what's wrong; empty while everything is in spec.
   public string BoardHealthDetail { get => _boardHealthDetail; private set => SetProperty(ref _boardHealthDetail, value); }
+  // Compact count of out-of-spec rows for the tile badge, e.g. "1 critical · 2 warnings"; empty
+  // while everything is in spec. Distinct from BoardHealthDetail, which names each offending sensor.
+  public string BoardHealthSummary { get => _boardHealthSummary; private set => SetProperty(ref _boardHealthSummary, value); }
   public ObservableCollection<BoardSensorRowViewModel> BoardSensors { get; } = [];
   public bool HasBoardSensors { get => _hasBoardSensors; private set => SetProperty(ref _hasBoardSensors, value); }
+  // Session log of out-of-spec episodes, ongoing first. Empty until something first leaves spec.
+  public ObservableCollection<BoardHealthEventViewModel> HealthEvents { get; } = [];
+  public bool HasHealthEvents { get => _hasHealthEvents; private set => SetProperty(ref _hasHealthEvents, value); }
+  // When true the table shows only critical episodes; the count headline and tile peak stay computed
+  // from the full log. Toggling re-filters the already-logged rows immediately (no wait for a tick).
+  public bool ShowCriticalOnly {
+    get => _showCriticalOnly;
+    set { if (SetProperty(ref _showCriticalOnly, value)) RefreshHealthEvents(); }
+  }
+  // "N hidden" while the critical-only filter suppresses rows; empty when the filter is off or
+  // nothing is hidden — so the narrowed table doesn't read as an empty log.
+  public string HealthEventsFilterHint { get => _healthEventsFilterHint; private set => SetProperty(ref _healthEventsFilterHint, value); }
+  // "+N older dropped" once the retention cap has evicted the oldest recovered episodes; empty until
+  // then. Signals the trail is truncated so the oldest kept row isn't read as the session's first.
+  public string HealthEventsCapNote { get => _healthEventsCapNote; private set => SetProperty(ref _healthEventsCapNote, value); }
+  // "3 events · 1 ongoing" beside the section header; empty when the log is empty.
+  public string HealthEventsSummary { get => _healthEventsSummary; private set => SetProperty(ref _healthEventsSummary, value); }
+  // The worst episode this session ("+12V 10.4 V") and its severity, for the tile's peak badge —
+  // so the dashboard shows the session's worst moment without expanding the detail view. Empty /
+  // Normal when nothing has left spec.
+  public string SessionPeak { get => _sessionPeak; private set => SetProperty(ref _sessionPeak, value); }
+  public ReadingSeverity SessionPeakSeverity { get => _sessionPeakSeverity; private set => SetProperty(ref _sessionPeakSeverity, value); }
   public string BoardSensorStatus { get => _boardSensorStatus; private set => SetProperty(ref _boardSensorStatus, value); }
   public bool HasBoardSensorStatus { get => _hasBoardSensorStatus; private set => SetProperty(ref _hasBoardSensorStatus, value); }
 
   public ICommand ShowDetailCommand { get; }
   public ICommand ShowDashboardCommand { get; }
+  // Resets the session-scoped history this view model owns: the health event log and the trend
+  // graph buffers/markers. Recorded Min/Max in the row table come from the shared upstream sensor
+  // accumulators and are not reset here (that would need a cross-module SensorMonitor reset).
+  public ICommand ClearHistoryCommand { get; }
 
   // A view supplies its own graph instances (buffers must not be shared between the tile and the
   // detail window). Clear the themed-severity cache so the next tick re-tints these fresh graphs
@@ -307,11 +355,116 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
   // Matches the #E85C5C critical value color used by ReadingSeverityToBrushConverter.
   private static readonly Color CriticalAccent = Color.FromRgb(0xE8, 0x5C, 0x5C);
 
+  // Rebuilds the bound event list from the log's snapshot. Rebuilt wholesale each tick (the list is
+  // small and capped) so ongoing-episode durations advance and recovered ones settle without
+  // tracking per-row identity in the view.
+  private void RefreshHealthEvents() {
+    var now = _clock();
+    var all = _healthLog.Snapshot()
+        .Select(e => new BoardHealthEventViewModel(e, now))
+        .ToList();
+
+    // The displayed rows can be narrowed to critical-only, but everything below the table (the
+    // count headline, the tile's session peak) is computed from the full set — the filter is a
+    // display convenience, not a change to what the session actually recorded.
+    HealthEvents.Clear();
+    foreach (var e in all) {
+      if (_showCriticalOnly && e.Severity != ReadingSeverity.Critical) continue;
+      HealthEvents.Add(e);
+    }
+    HasHealthEvents = all.Count > 0;
+    HealthEventsSummary = HealthEventsHeadline(all);
+
+    // How many rows the critical-only filter is currently hiding, so the table reads as "narrowed",
+    // not "empty". Blank when the filter is off or nothing is hidden.
+    int hidden = all.Count - HealthEvents.Count;
+    HealthEventsFilterHint = _showCriticalOnly && hidden > 0 ? $"{hidden} hidden" : "";
+
+    // When the retention cap has evicted the oldest recovered episodes, say so — otherwise the
+    // bottom of the table looks like the session's first fault when it's really just the oldest kept.
+    int dropped = _healthLog.DroppedCount;
+    HealthEventsCapNote = dropped > 0 ? $"+{dropped} older dropped" : "";
+
+    // Single worst episode for the tile: highest severity wins, ties broken by the most recent start
+    // so the freshest of equally-severe faults is the one surfaced. The peak reading is already
+    // formatted with its unit on the row, so reuse it verbatim.
+    var worst = all
+        .OrderByDescending(e => e.Severity)
+        .ThenByDescending(e => e.StartedSort)
+        .FirstOrDefault();
+    SessionPeak = worst is null ? "" : $"{worst.SensorName} {worst.PeakValue}".Trim();
+    SessionPeakSeverity = worst?.Severity ?? ReadingSeverity.Normal;
+  }
+
+  // "3 events · 1 ongoing" for the section header — total episode count plus how many are still
+  // active, so an unresolved fault reads at a glance. Empty when nothing's logged; the "ongoing"
+  // clause is dropped once everything has recovered.
+  private static string HealthEventsHeadline(IReadOnlyCollection<BoardHealthEventViewModel> all) {
+    int total = all.Count;
+    if (total == 0) return "";
+    int ongoing = all.Count(e => e.Ongoing);
+    string events = $"{total} event{(total == 1 ? "" : "s")}";
+    return ongoing > 0 ? $"{events} · {ongoing} ongoing" : events;
+  }
+
+  // Tab-separated dump of the current event rows (header + one line each), so the fault trail can be
+  // pasted straight into a bug report or spreadsheet. Projects the already-formatted view-model rows
+  // so the pasted text matches exactly what the table shows. Empty when there's nothing logged.
+  public string HealthEventsAsText() {
+    if (HealthEvents.Count == 0) return "";
+    var sb = new System.Text.StringBuilder();
+    // Stamp the export with when it was captured, so a pasted/saved log carries its own provenance
+    // (event timestamps are clock-of-day only; this pins the date). Uses the injected clock.
+    sb.AppendLine($"# Exported {_clock().LocalDateTime:yyyy-MM-dd HH:mm:ss}");
+    // Summarize the payload so a pasted/saved dump is self-describing: how many rows it holds and
+    // how many are still open. Counts the exported (post-filter) rows so it matches what follows.
+    int ongoing = HealthEvents.Count(e => e.Ongoing);
+    sb.AppendLine(ongoing > 0
+        ? $"# {HealthEvents.Count} event(s), {ongoing} ongoing"
+        : $"# {HealthEvents.Count} event(s)");
+    // The export mirrors the table, so with the critical-only filter on it carries only the shown
+    // rows. Lead with a note so a filtered dump isn't mistaken for the whole log when pasted.
+    if (_showCriticalOnly) sb.AppendLine("# Filtered view: critical events only");
+    // If the retention cap has evicted older episodes, say so — an exported log should state that
+    // it's incomplete rather than looking like the session's full history.
+    if (_healthLog.DroppedCount > 0)
+      sb.AppendLine($"# {_healthLog.DroppedCount} older recovered event(s) dropped by the retention cap");
+    sb.AppendLine("Started\tSensor\tPeak\tReading\tPeak at\tDuration");
+    foreach (var e in HealthEvents) {
+      sb.AppendLine($"{e.Started}\t{e.SensorName}\t{e.Severity}\t{e.PeakValue}\t{e.PeakAt}\t{e.Duration}");
+    }
+    return sb.ToString();
+  }
+
+  // Starts a fresh observation window: drops the health log and empties every trend graph's buffer
+  // and session low/high markers. The next poll repopulates the graphs and reopens any still-out-of-
+  // spec episode. Upstream Min/Max in the row table are owned by the shared monitor, not reset here.
+  private void ClearHistory() {
+    _healthLog.Clear();
+    RefreshHealthEvents();
+    foreach (var g in new[] { _rail3V3Graph, _rail5VGraph, _rail12VGraph, _fanGraph, _boardTempGraph }) {
+      if (g is null) continue;
+      g.ClearValues();
+      ResetMarkers(g);
+    }
+  }
+
   // "+12V critical · CMOS warning", worst first; empty when nothing is out of tolerance.
-  private static string HealthDetail(IReadOnlyList<(string Name, ReadingSeverity Severity)> offenders) =>
+  private static string HealthDetail(IReadOnlyList<(string Name, ReadingSeverity Severity, string Value)> offenders) =>
       string.Join(" · ", offenders
           .OrderByDescending(o => o.Severity)
           .Select(o => $"{o.Name} {o.Severity.ToString().ToLowerInvariant()}"));
+
+  // "1 critical · 2 warnings" for the tile badge, criticals first; empty when in spec. Counts, not
+  // names — the tooltip (BoardHealthDetail) carries the names, so the badge stays glanceable.
+  private static string HealthSummary(IReadOnlyList<(string Name, ReadingSeverity Severity, string Value)> offenders) {
+    int critical = offenders.Count(o => o.Severity == ReadingSeverity.Critical);
+    int warning = offenders.Count(o => o.Severity == ReadingSeverity.Warning);
+    var parts = new List<string>(2);
+    if (critical > 0) parts.Add($"{critical} critical");
+    if (warning > 0) parts.Add($"{warning} warning{(warning == 1 ? "" : "s")}");
+    return string.Join(" · ", parts);
+  }
 
   // "11.90–12.10" once both bounds are known; empty until then so the sub-line stays hidden.
   private static string RailRange(RailReading rail) =>
@@ -319,17 +472,28 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
 
   private void ApplyBoardReadings(IReadOnlyList<SensorReading> readings) {
     BoardSensors.Clear();
-    var offenders = new List<(string Name, ReadingSeverity Severity)>();
-    foreach (var r in readings.OrderBy(r => r.SensorType).ThenBy(r => r.SensorName)) {
+    var offenders = new List<(string Name, ReadingSeverity Severity, string Value)>();
+    // Grade every row first, then present worst-first (severity desc), falling back to sensor type
+    // then name so same-severity rows keep a stable, readable order. This is only the default order;
+    // the detail view lets the user re-sort by any column.
+    var graded = readings
+        .Select(r => (Reading: r, Severity: RowSeverity(r)))
+        .OrderByDescending(x => x.Severity)
+        .ThenBy(x => x.Reading.SensorType)
+        .ThenBy(x => x.Reading.SensorName);
+    foreach (var (r, severity) in graded) {
       string unit = r.Unit ?? "";
-      var severity = RowSeverity(r);
-      if (severity != ReadingSeverity.Normal) offenders.Add((Text(r.SensorName), severity));
+      string value = FormatValue(r.Value, unit);
+      if (severity != ReadingSeverity.Normal) offenders.Add((Text(r.SensorName), severity, value));
       BoardSensors.Add(new BoardSensorRowViewModel(
           Text(r.SensorName),
-          FormatValue(r.Value, unit),
+          value,
           FormatValue(r.Min, unit),
           FormatValue(r.Max, unit),
-          severity));
+          severity,
+          GradeExtreme(r, r.Min),
+          GradeExtreme(r, r.Max),
+          r.Value, r.Min, r.Max));
     }
     HasBoardSensors = BoardSensors.Count > 0;
 
@@ -337,6 +501,13 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
     // readings — so a broadened rail or a stalled fan lifts the tile dot and is named in the tooltip.
     BoardHealth = offenders.Count > 0 ? offenders.Max(o => o.Severity) : ReadingSeverity.Normal;
     BoardHealthDetail = HealthDetail(offenders);
+    BoardHealthSummary = HealthSummary(offenders);
+
+    // Fold this tick's offenders into the session log, then re-project it: an ongoing episode's
+    // duration ticks up live, and a just-recovered one moves into history. offenders already spans
+    // every graded row (rails, CMOS, board temp, fan stall) since they all flow through RowSeverity.
+    _healthLog.Observe(offenders);
+    RefreshHealthEvents();
 
     // Trend the chassis fan from the board rows so a stall plots as the line dropping to the floor
     // (the headline selector drops zeros, which would freeze the plot instead). A null reading feeds
@@ -368,17 +539,25 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
   // absolute-volts rule. Board temperatures grade on their own thresholds; fans are graded for
   // stall against the current board temperature. Variable-voltage rows (VCore, DRAM…) stay Normal —
   // we have no spec to judge them against.
-  private ReadingSeverity RowSeverity(SensorReading r) {
+  private ReadingSeverity RowSeverity(SensorReading r) =>
+      r.SensorType == SensorType.Fan
+          ? BoardReadingSeverity.Fan(r.Value, r.Max, _boardTemperatureC)
+          : GradeExtreme(r, r.Value);
+
+  // Grades a single value against the row's spec, the same way the live value is graded, but
+  // omitting fan-stall logic (a fan's recorded Min/Max RPM is a spun-up/idle extreme, not a stall we
+  // can judge without the concurrent board temperature). Used both for the live value of non-fan
+  // rows and for the recorded Min/Max extremes, so a rail that dipped critical then recovered still
+  // shows a red Min column.
+  private static ReadingSeverity GradeExtreme(SensorReading r, float? value) {
     switch (r.SensorType) {
       case SensorType.Voltage:
-        if (BoardTelemetrySelector.IsCmosRail(r.SensorName)) return BoardReadingSeverity.Cmos(r.Value);
+        if (BoardTelemetrySelector.IsCmosRail(r.SensorName)) return BoardReadingSeverity.Cmos(value);
         return BoardTelemetrySelector.RailNominal(r.SensorName) is { } nominal
-            ? BoardReadingSeverity.Rail(r.Value, nominal)
+            ? BoardReadingSeverity.Rail(value, nominal)
             : ReadingSeverity.Normal;
       case SensorType.Temperature:
-        return BoardReadingSeverity.Temperature(r.Value);
-      case SensorType.Fan:
-        return BoardReadingSeverity.Fan(r.Value, r.Max, _boardTemperatureC);
+        return BoardReadingSeverity.Temperature(value);
       default:
         return ReadingSeverity.Normal;
     }

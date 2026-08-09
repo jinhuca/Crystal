@@ -135,17 +135,46 @@
                        VerticalAlignment="Center">
               <TextBlock.Style>
                 <Style TargetType="TextBlock">
-                  <!-- Spell out degraded health next to the dot so it doesn't rely on color alone. -->
+                  <!-- Dim "BOARD" until sensors arrive, "LIVE BOARD" once they do. The severity
+                       count rides in the badge to the right rather than in this label. -->
                   <Setter Property="Text" Value="BOARD"/>
                   <Style.Triggers>
                     <DataTrigger Binding="{Binding HasBoardSensors}" Value="True">
                       <Setter Property="Text" Value="LIVE BOARD"/>
                     </DataTrigger>
-                    <DataTrigger Binding="{Binding BoardHealth}" Value="Warning">
-                      <Setter Property="Text" Value="LIVE BOARD · WARNING"/>
+                  </Style.Triggers>
+                </Style>
+              </TextBlock.Style>
+            </TextBlock>
+            <!-- Severity-count badge, e.g. "1 critical · 2 warnings"; tinted by worst severity and
+                 hidden while the board is healthy so it only draws the eye when something's wrong. -->
+            <TextBlock FontSize="10" FontWeight="SemiBold" VerticalAlignment="Center" Margin="8,0,0,0"
+                       Text="{Binding BoardHealthSummary}"
+                       Foreground="{Binding BoardHealth, Converter={StaticResource SeverityToBrush}}">
+              <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                  <Setter Property="Visibility" Value="Visible"/>
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding BoardHealthSummary}" Value="">
+                      <Setter Property="Visibility" Value="Collapsed"/>
                     </DataTrigger>
-                    <DataTrigger Binding="{Binding BoardHealth}" Value="Critical">
-                      <Setter Property="Text" Value="LIVE BOARD · CRITICAL"/>
+                  </Style.Triggers>
+                </Style>
+              </TextBlock.Style>
+            </TextBlock>
+            <!-- Session worst-peak badge, e.g. "peak +12V 10.4 V", tinted by that episode's severity.
+                 Persists after a transient fault recovers (unlike the live count above, which clears),
+                 so the tile still records the session's worst moment. Hidden until something's logged. -->
+            <TextBlock FontSize="10" VerticalAlignment="Center" Margin="10,0,0,0"
+                       Foreground="{Binding SessionPeakSeverity, Converter={StaticResource SeverityToBrush}}">
+              <Run Text="peak" Foreground="{StaticResource BiosDimBrush}"/>
+              <Run Text="{Binding SessionPeak, Mode=OneWay}"/>
+              <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                  <Setter Property="Visibility" Value="Visible"/>
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding SessionPeak}" Value="">
+                      <Setter Property="Visibility" Value="Collapsed"/>
                     </DataTrigger>
                   </Style.Triggers>
                 </Style>
