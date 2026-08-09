@@ -14,16 +14,16 @@
     <Style x:Key="Tile" TargetType="Border">
       <Setter Property="BorderBrush" Value="#3A3A3A"/>
       <Setter Property="BorderThickness" Value="1"/>
-      <Setter Property="CornerRadius" Value="0"/>
-      <Setter Property="Margin" Value="3"/>
-      <Setter Property="Background" Value="#0A0A0A"/>
+      <Setter Property="CornerRadius" Value="8"/>
+      <Setter Property="Margin" Value="3,0"/>
+      <Setter Property="Background" Value="#FF151515"/>
     </Style>
 
     <!-- Horizontal grab bar between rows: a thin rule centered in a taller hit area so the target
          is comfortable but reads as a hairline, brightening to the accent on hover. Matches the
          master/detail splitter styling in the Processes view. -->
     <Style x:Key="RowSplitter" TargetType="GridSplitter">
-      <Setter Property="Height" Value="7"/>
+      <Setter Property="Height" Value="3"/>
       <Setter Property="HorizontalAlignment" Value="Stretch"/>
       <Setter Property="VerticalAlignment" Value="Center"/>
       <Setter Property="Background" Value="Transparent"/>
@@ -37,7 +37,7 @@
         <Setter.Value>
           <ControlTemplate TargetType="GridSplitter">
             <Grid Background="{TemplateBinding Background}">
-              <Border x:Name="Rule" Height="1" Background="#2A2A2A" VerticalAlignment="Center"/>
+              <Border x:Name="Rule" Height="6" Background="Transparent" VerticalAlignment="Center"/>
             </Grid>
             <ControlTemplate.Triggers>
               <Trigger Property="IsMouseOver" Value="True">
