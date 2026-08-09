@@ -9,6 +9,7 @@
         xmlns:local="clr-namespace:Crystal.Shell"
         mc:Ignorable="d"
         Title="Crystal" Height="1040" Width="1720"
+        Icon="Crystal.ico"
         Background="Black"
         BorderBrush="#3E9BE8" BorderThickness="1">
     <!-- Strip the OS-drawn frame and its native caption buttons (GlassFrameThickness=0,

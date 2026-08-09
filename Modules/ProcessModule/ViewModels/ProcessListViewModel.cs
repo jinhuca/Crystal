@@ -35,10 +35,15 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
   private bool _peaksResetThisSession;
   private readonly Func<DateTimeOffset> _clock;
 
-  // clock is optional so Unity's default registration works (optional ctor params aren't injected);
-  // tests pass a fixed clock for a deterministic export timestamp.
-  public ProcessListViewModel(IProcessModel model, SystemStatsMonitor systemStats, Func<DateTimeOffset>? clock = null) {
+  // Extracts per-process shell icons off the UI thread; null in tests where no provider is supplied.
+  private readonly ProcessIconProvider? _iconProvider;
+
+  // clock and iconProvider are optional so Unity's default registration works (optional ctor params
+  // aren't injected); tests pass a fixed clock for a deterministic export timestamp and skip icons.
+  public ProcessListViewModel(IProcessModel model, SystemStatsMonitor systemStats,
+                              ProcessIconProvider? iconProvider = null, Func<DateTimeOffset>? clock = null) {
     _clock = clock ?? (() => DateTimeOffset.Now);
+    _iconProvider = iconProvider;
     MetricsStatusError = model.MetricsStatusError;
 
     RowsView = new ListCollectionView(Rows);
@@ -224,8 +229,35 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
       _hasSelectedDefault = true;
     }
 
+    ResolveIcons();
+
     RaisePropertyChanged(nameof(HasVisibleRows));
     RecomputeHogCount();
+  }
+
+  // Resolve shell icons for rows that don't have one yet but now know their executable path. The
+  // provider caches by path and extraction touches disk/shell, so we do it on a background thread
+  // and assign the frozen result back on the UI thread. A row's path can arrive a poll or two after
+  // it first appears (WMI briefly returns it empty), so this runs every poll, not just on add — but
+  // it only ever looks at rows still missing an icon, so steady state does no work.
+  private void ResolveIcons() {
+    if (_iconProvider is null) return;
+
+    List<ProcessRowViewModel>? pending = null;
+    foreach (var row in Rows) {
+      if (row.IconSource is null && !string.IsNullOrEmpty(row.ExecutablePath))
+        (pending ??= []).Add(row);
+    }
+    if (pending is null) return;
+
+    var toResolve = pending;
+    Task.Run(() => {
+      foreach (var row in toResolve) {
+        var path = row.ExecutablePath;
+        var icon = _iconProvider.GetIcon(path);
+        if (icon is not null) OnUi(() => row.IconSource = icon);
+      }
+    });
   }
 
   // Count the flagged rows across the whole list (not the filtered view) — a hog stays counted even

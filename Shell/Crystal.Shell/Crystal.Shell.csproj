@@ -19,7 +19,13 @@
     <!-- Force a single UAC prompt at launch: the Processes tile's kernel ETW session and the ring-0
          MSR sensors both need administrator rights. See app.manifest for the rationale. -->
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Crystal.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Ship the icon so the window can load it at runtime via pack URI. -->
+    <Resource Include="Crystal.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Prism.Core" Version="9.0.537" />

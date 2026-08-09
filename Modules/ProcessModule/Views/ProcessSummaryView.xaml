@@ -311,9 +311,18 @@
             <GridViewColumn Header="Name" Width="260" local:GridViewSort.SortProperty="Name">
               <GridViewColumn.CellTemplate>
                 <DataTemplate>
-                  <TextBlock Text="{Binding Name}" Foreground="#DDDDDD"
-                             FontFamily="Consolas" FontSize="11" Margin="8,2"
-                             TextTrimming="CharacterEllipsis"/>
+                  <StackPanel Orientation="Horizontal" Margin="8,2">
+                    <!-- Per-process shell icon (Task Manager-style). Fixed 16px box so rows stay
+                         aligned whether or not the icon has resolved yet; RenderOptions keeps the
+                         small bitmap crisp instead of blurred. -->
+                    <Image Source="{Binding IconSource}" Width="16" Height="16"
+                           Margin="0,0,6,0" VerticalAlignment="Center"
+                           RenderOptions.BitmapScalingMode="NearestNeighbor"
+                           SnapsToDevicePixels="True"/>
+                    <TextBlock Text="{Binding Name}" Foreground="#DDDDDD"
+                               FontFamily="Consolas" FontSize="11" VerticalAlignment="Center"
+                               TextTrimming="CharacterEllipsis"/>
+                  </StackPanel>
                 </DataTemplate>
               </GridViewColumn.CellTemplate>
             </GridViewColumn>

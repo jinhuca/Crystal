@@ -15,4 +15,5 @@ public sealed record ProcessSample(
     string? Status = null,
     double? GpuPercent = null,
     double? DiskBytesPerSec = null,
-    double? NetBytesPerSec = null);
+    double? NetBytesPerSec = null,
+    string? ExecutablePath = null);

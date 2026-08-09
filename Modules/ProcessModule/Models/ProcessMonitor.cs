@@ -133,7 +133,11 @@ public sealed class ProcessMonitor {
           Status: string.IsNullOrWhiteSpace(m.Status) ? "Running" : m.Status,
           GpuPercent: gpu,
           DiskBytesPerSec: disk,
-          NetBytesPerSec: net));
+          NetBytesPerSec: net,
+          // Full path to the on-disk image, used to extract the per-process shell icon. Empty/null
+          // for protected system processes WMI can't read the path of; the UI falls back to a
+          // generic icon in that case.
+          ExecutablePath: string.IsNullOrWhiteSpace(m.ExecutablePath) ? null : m.ExecutablePath));
     }
 
     // Replace the baseline so exited processes don't linger and skew the next diff.

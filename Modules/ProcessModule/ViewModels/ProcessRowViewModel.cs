@@ -1,3 +1,4 @@
+using System.Windows.Media;
 using ProcessModule.Models;
 
 namespace ProcessModule.ViewModels;
@@ -14,6 +15,8 @@ public sealed class ProcessRowViewModel : BindableBase {
   private double? _gpuPercent;
   private double? _diskBytesPerSec;
   private double? _netBytesPerSec;
+  private string? _executablePath;
+  private ImageSource? _iconSource;
 
   public ProcessRowViewModel(uint processId, string name) {
     ProcessId = processId;
@@ -22,6 +25,15 @@ public sealed class ProcessRowViewModel : BindableBase {
 
   public uint ProcessId { get; }
   public string Name { get; }
+
+  /// <summary>Full path to the process image on disk, or null for processes WMI can't read the path
+  /// of. Drives icon resolution and is refreshed each poll (it can arrive late for a process that
+  /// was briefly unreadable at creation).</summary>
+  public string? ExecutablePath { get => _executablePath; set => SetProperty(ref _executablePath, value); }
+
+  /// <summary>The process's shell icon (Task Manager-style), or null when unresolved — the view
+  /// shows a generic placeholder then. Frozen, so it binds safely from any thread.</summary>
+  public ImageSource? IconSource { get => _iconSource; set => SetProperty(ref _iconSource, value); }
 
   public double CpuPercent { get => _cpuPercent; set => SetProperty(ref _cpuPercent, value); }
   public double WorkingSetMb { get => _workingSetMb; set => SetProperty(ref _workingSetMb, value); }
@@ -79,5 +91,6 @@ public sealed class ProcessRowViewModel : BindableBase {
     GpuPercent = s.GpuPercent;
     DiskBytesPerSec = s.DiskBytesPerSec;
     NetBytesPerSec = s.NetBytesPerSec;
+    ExecutablePath = s.ExecutablePath;
   }
 }

@@ -19,7 +19,7 @@ public class ProcessListViewModelTests {
 
   private static ProcessListViewModel CreateVm(out FakeProcessModel model, Func<DateTimeOffset> clock) {
     model = new FakeProcessModel();
-    return new ProcessListViewModel(model, InertStats(), clock);
+    return new ProcessListViewModel(model, InertStats(), clock: clock);
   }
 
   private static ProcessSample Sample(
@@ -513,7 +513,7 @@ public class ProcessListViewModelTests {
     StaRunner.Run(() => {
       var model = new FakeProcessModel { MetricsStatusError = "not elevated" };
       var vm = new ProcessListViewModel(model, InertStats(),
-          () => new DateTimeOffset(2026, 8, 8, 14, 30, 0, TimeSpan.Zero));
+          clock: () => new DateTimeOffset(2026, 8, 8, 14, 30, 0, TimeSpan.Zero));
       model.Samples.OnNext([Sample(1, "chrome", cpu: 10, mem: 100)]);
 
       var text = vm.RowsAsText();
