@@ -78,6 +78,27 @@ public class MemoryViewModelTests {
   }
 
   [Fact]
+  public void Summary_header_labels_report_total_slots_and_speed() {
+    var vm = CreateVm(out var model);
+
+    model.SpecsSubject.OnNext(Specs(totalGB: 64, populated: 4, speed: 2133));
+
+    // These three feed the summary tile's inline header (total · populated · max speed).
+    Assert.Equal("64 GB", vm.TotalCapacityLabel);
+    Assert.Equal("4 populated", vm.SlotsLabel);
+    Assert.Equal("2133 MHz", vm.MaxSpeedLabel);
+  }
+
+  [Fact]
+  public void Summary_max_speed_is_placeholder_when_unknown() {
+    var vm = CreateVm(out var model);
+
+    model.SpecsSubject.OnNext(Specs(speed: null));
+
+    Assert.Equal("—", vm.MaxSpeedLabel);
+  }
+
+  [Fact]
   public void Specs_populate_the_module_list() {
     var vm = CreateVm(out var model);
 

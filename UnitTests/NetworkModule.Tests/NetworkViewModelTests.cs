@@ -30,6 +30,27 @@ public class NetworkViewModelTests {
           WifiSecurity: "WPA2-Personal / CCMP");
 
   [Fact]
+  public void Adapters_reflect_the_active_interface_count() {
+    var vm = CreateVm(out var model);
+
+    // The summary tile's header binds Adapters.Count as "N active interface(s)".
+    model.Subject.OnNext(new NetworkSnapshot([Wired("Ethernet"), Wifi("Wi-Fi", "HomeNet", 72)]));
+
+    Assert.Equal(2, vm.Adapters.Count);
+  }
+
+  [Fact]
+  public void Adapters_reconcile_by_name_across_polls() {
+    var vm = CreateVm(out var model);
+
+    model.Subject.OnNext(new NetworkSnapshot([Wired("Ethernet"), Wired("Ethernet 2")]));
+    // A later poll drops one interface and adds another; the count follows and no stale row lingers.
+    model.Subject.OnNext(new NetworkSnapshot([Wired("Ethernet"), Wifi("Wi-Fi", "HomeNet", 72)]));
+
+    Assert.Equal(2, vm.Adapters.Count);
+  }
+
+  [Fact]
   public void No_wifi_adapter_hides_the_wifi_row() {
     var vm = CreateVm(out var model);
 
