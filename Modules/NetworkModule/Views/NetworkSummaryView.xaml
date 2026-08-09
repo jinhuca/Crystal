@@ -20,29 +20,24 @@
       </Grid.ColumnDefinitions>
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>
-        <RowDefinition Height="Auto"/>
         <RowDefinition Height="*"/>
       </Grid.RowDefinitions>
 
-      <!-- Dense header bar: accent tick + title, thin divider rule below -->
+      <!-- Dense header bar: accent tick + title + inline active-interface count, thin divider below. -->
       <Border Grid.Row="0" Grid.ColumnSpan="2" BorderBrush="#2A2A2A" BorderThickness="0,0,0,1"
               Padding="0,0,0,4" Margin="0,0,0,6">
         <StackPanel Orientation="Horizontal">
           <Border Width="3" Background="#3E9BE8" Margin="0,1,8,1"/>
           <TextBlock Text="NETWORK" Foreground="#E6E6E6" FontSize="12" FontWeight="SemiBold"
-                     VerticalAlignment="Center"/>
+                     VerticalAlignment="Center" Margin="0,0,16,0"/>
+          <TextBlock Foreground="#8A94A0" FontSize="11" FontFamily="Consolas" VerticalAlignment="Center">
+            <Run Text="{Binding Adapters.Count, Mode=OneWay}" Foreground="#E6E6E6"/><Run Text=" active interface(s)"/>
+          </TextBlock>
         </StackPanel>
       </Border>
 
-      <!-- Interface count -->
-      <TextBlock Grid.Row="1" Grid.Column="0" Foreground="#8A94A0" FontSize="11" FontFamily="Consolas"
-                 Margin="0,0,0,8">
-        <Run Text="{Binding Adapters.Count, Mode=OneWay}"/>
-        <Run Text="active interface(s)"/>
-      </TextBlock>
-
       <!-- Live throughput: download over upload -->
-      <StackPanel Grid.Row="2" Grid.Column="0" VerticalAlignment="Top">
+      <StackPanel Grid.Row="1" Grid.Column="0" VerticalAlignment="Top">
         <TextBlock Text="download" Foreground="#8A94A0" FontSize="12" FontFamily="Consolas"
                    Margin="0,0,0,2"/>
         <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
@@ -93,7 +88,7 @@
 
       <!-- Top talkers: the busiest processes on the network right now (rate descending, capped).
            Backed by the shared ETW session; blank with a muted note when it isn't running. -->
-      <StackPanel Grid.Row="2" Grid.Column="1" Margin="20,0,0,0"
+      <StackPanel Grid.Row="1" Grid.Column="1" Margin="20,0,0,0"
                   Width="200" VerticalAlignment="Top">
         <TextBlock Text="top talkers" Foreground="#8A94A0" FontSize="11" FontFamily="Consolas"
                    Margin="0,0,0,4"/>

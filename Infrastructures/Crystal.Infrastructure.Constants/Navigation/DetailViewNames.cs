@@ -12,4 +12,5 @@ public static class DetailViewNames {
   public const string Storage = "StorageDetailView";
   public const string Bios = "BiosDetailView";
   public const string Network = "NetworkDetailView";
+  public const string Os = "OsDetailView";
 }

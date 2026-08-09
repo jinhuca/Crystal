@@ -28,7 +28,9 @@
       <Style x:Key="FieldCell" TargetType="StackPanel">
         <Setter Property="Margin" Value="0,0,0,10"/>
       </Style>
-      <!-- Dim min–max sub-line under a rail; collapses until both bounds are known. -->
+      <!-- Dim min–max sub-line under a rail. Hidden (not Collapsed) when a bound is missing so the
+           line's height is still reserved: otherwise a rail with no range would pull its sparkline
+           up a line and break horizontal alignment with the neighbouring rails' graphs. -->
       <Style x:Key="RangeHint" TargetType="TextBlock">
         <Setter Property="Foreground" Value="{StaticResource BiosDimBrush}"/>
         <Setter Property="FontSize" Value="10"/>
@@ -36,7 +38,7 @@
         <Setter Property="Margin" Value="0,-1,16,0"/>
         <Style.Triggers>
           <Trigger Property="Text" Value="">
-            <Setter Property="Visibility" Value="Collapsed"/>
+            <Setter Property="Visibility" Value="Hidden"/>
           </Trigger>
         </Style.Triggers>
       </Style>

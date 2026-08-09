@@ -31,6 +31,7 @@ public sealed class DetailWindowService {
         [DetailViewNames.Storage] = typeof(StorageModule.Views.StorageDetailView),
         [DetailViewNames.Bios] = typeof(BiosModule.Views.BiosDetailView),
         [DetailViewNames.Network] = typeof(NetworkModule.Views.NetworkDetailView),
+        [DetailViewNames.Os] = typeof(OSModule.Views.OsDetailView),
       };
 
   private const double DefaultWidth = 1280;

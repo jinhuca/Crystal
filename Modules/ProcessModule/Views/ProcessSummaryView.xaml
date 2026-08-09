@@ -129,6 +129,93 @@
         </Setter>
       </Style>
 
+      <!-- Flat dark toolbar button matching the tile palette: templated so hover/press/disabled read
+           as deliberate dark-theme states instead of the default light-blue system chrome. The
+           per-state colours ride in named brush resources so the destructive variant below can reuse
+           the same template with a red palette via BasedOn. -->
+      <Style x:Key="ToolbarButtonStyle" TargetType="Button">
+        <Setter Property="Height" Value="18"/>
+        <Setter Property="Padding" Value="8,0"/>
+        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="FontFamily" Value="Consolas"/>
+        <Setter Property="Foreground" Value="#C8C8C8"/>
+        <Setter Property="Background" Value="#1C1C1C"/>
+        <Setter Property="BorderBrush" Value="#3A3A3A"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="Button">
+              <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                      BorderBrush="{TemplateBinding BorderBrush}"
+                      BorderThickness="{TemplateBinding BorderThickness}"
+                      SnapsToDevicePixels="True">
+                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
+                                  Margin="{TemplateBinding Padding}" RecognizesAccessKey="True"/>
+              </Border>
+              <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                  <Setter TargetName="Bd" Property="Background" Value="#2A2A2A"/>
+                  <Setter TargetName="Bd" Property="BorderBrush" Value="#4A4A4A"/>
+                  <Setter Property="Foreground" Value="#E6E6E6"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                  <Setter TargetName="Bd" Property="Background" Value="#3E9BE8"/>
+                  <Setter TargetName="Bd" Property="BorderBrush" Value="#3E9BE8"/>
+                  <Setter Property="Foreground" Value="#0A0A0A"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                  <Setter TargetName="Bd" Property="Background" Value="#161616"/>
+                  <Setter TargetName="Bd" Property="BorderBrush" Value="#2A2A2A"/>
+                  <Setter Property="Foreground" Value="#5A6470"/>
+                  <Setter Property="Cursor" Value="Arrow"/>
+                </Trigger>
+              </ControlTemplate.Triggers>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style>
+
+      <!-- Destructive variant (End task): red resting palette, brighter red on hover/press so the
+           terminate action stays visually distinct from the neutral toolbar buttons. -->
+      <Style x:Key="DangerButtonStyle" TargetType="Button" BasedOn="{StaticResource ToolbarButtonStyle}">
+        <Setter Property="Foreground" Value="#E8A0A0"/>
+        <Setter Property="Background" Value="#2A1414"/>
+        <Setter Property="BorderBrush" Value="#7A2E2E"/>
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="Button">
+              <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                      BorderBrush="{TemplateBinding BorderBrush}"
+                      BorderThickness="{TemplateBinding BorderThickness}"
+                      SnapsToDevicePixels="True">
+                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
+                                  Margin="{TemplateBinding Padding}" RecognizesAccessKey="True"/>
+              </Border>
+              <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                  <Setter TargetName="Bd" Property="Background" Value="#3A1A1A"/>
+                  <Setter TargetName="Bd" Property="BorderBrush" Value="#A03A3A"/>
+                  <Setter Property="Foreground" Value="#F5C0C0"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                  <Setter TargetName="Bd" Property="Background" Value="#C43C3C"/>
+                  <Setter TargetName="Bd" Property="BorderBrush" Value="#C43C3C"/>
+                  <Setter Property="Foreground" Value="#0A0A0A"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                  <Setter TargetName="Bd" Property="Background" Value="#1A1010"/>
+                  <Setter TargetName="Bd" Property="BorderBrush" Value="#4A2626"/>
+                  <Setter Property="Foreground" Value="#6E5050"/>
+                  <Setter Property="Cursor" Value="Arrow"/>
+                </Trigger>
+              </ControlTemplate.Triggers>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style>
+
       <Style x:Key="RowMenuSeparatorStyle" TargetType="Separator">
         <Setter Property="Margin" Value="0,3"/>
         <Setter Property="Template">
@@ -328,30 +415,20 @@
           <TextBox Style="{StaticResource HeaderSearchBoxStyle}" Width="80" Height="18"
                    ToolTip="Filter by PID"
                    Text="{Binding PidFilter, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-          <Button Content="Copy" Height="18" Margin="16,0,0,0" Padding="8,0"
-                  Foreground="#C8C8C8" Background="#1C1C1C" BorderBrush="#3A3A3A"
-                  FontSize="11" FontFamily="Consolas"
+          <Button Content="Copy" Margin="16,0,0,0" Style="{StaticResource ToolbarButtonStyle}"
                   ToolTip="Copy the visible rows to the clipboard as tab-separated text"
                   IsEnabled="{Binding HasVisibleRows}" Click="OnCopyRows"/>
-          <Button Content="Save…" Height="18" Margin="6,0,0,0" Padding="8,0"
-                  Foreground="#C8C8C8" Background="#1C1C1C" BorderBrush="#3A3A3A"
-                  FontSize="11" FontFamily="Consolas"
+          <Button Content="Save…" Margin="6,0,0,0" Style="{StaticResource ToolbarButtonStyle}"
                   ToolTip="Save the visible rows to a file"
                   IsEnabled="{Binding HasVisibleRows}" Click="OnSaveRows"/>
-          <Button Content="Reset pk" Height="18" Margin="6,0,0,0" Padding="8,0"
-                  Foreground="#C8C8C8" Background="#1C1C1C" BorderBrush="#3A3A3A"
-                  FontSize="11" FontFamily="Consolas"
+          <Button Content="Reset pk" Margin="6,0,0,0" Style="{StaticResource ToolbarButtonStyle}"
                   ToolTip="Reset all session CPU/memory peaks to the current readings"
                   IsEnabled="{Binding HasVisibleRows}" Click="OnResetPeaks"/>
-          <Button Content="Run new task" Height="18" Margin="16,0,0,0" Padding="8,0"
-                  Foreground="#C8C8C8" Background="#1C1C1C" BorderBrush="#3A3A3A"
-                  FontSize="11" FontFamily="Consolas"
+          <Button Content="Run new task" Margin="16,0,0,0" Style="{StaticResource ToolbarButtonStyle}"
                   ToolTip="Launch a new process (optionally as administrator)"
                   Click="OnRunNewTask"/>
           <!-- Destructive, so it reads red and is disabled until a row is selected. -->
-          <Button Content="End task" Height="18" Margin="6,0,0,0" Padding="8,0"
-                  Foreground="#E8A0A0" Background="#2A1414" BorderBrush="#7A2E2E"
-                  FontSize="11" FontFamily="Consolas"
+          <Button Content="End task" Margin="6,0,0,0" Style="{StaticResource DangerButtonStyle}"
                   ToolTip="Terminate the selected process"
                   IsEnabled="{Binding CanEndSelectedTask}" Click="OnEndTask"/>
         </StackPanel>

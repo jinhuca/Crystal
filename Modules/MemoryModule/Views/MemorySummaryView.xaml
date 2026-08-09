@@ -28,42 +28,42 @@
       <Setter Property="FontSize" Value="11"/>
       <Setter Property="FontFamily" Value="Consolas"/>
     </Style>
+    <!-- Dim inline spec shown next to the title in the header, matching the CPU tile. -->
+    <Style x:Key="HeaderSpec" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="#8A94A0"/>
+      <Setter Property="FontSize" Value="11"/>
+      <Setter Property="FontFamily" Value="Consolas"/>
+      <Setter Property="VerticalAlignment" Value="Center"/>
+      <Setter Property="Margin" Value="0,0,16,0"/>
+    </Style>
   </UserControl.Resources>
 
   <Border Background="Transparent" MouseLeftButtonDown="OnTileClick">
     <Grid Margin="10">
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>
-        <RowDefinition Height="Auto"/>
         <RowDefinition Height="*"/>
       </Grid.RowDefinitions>
 
-      <!-- Dense header bar: accent tick + title, thin divider rule below -->
+      <!-- Dense header bar: accent tick + title + inline roll-up (total · populated · max speed),
+           thin divider rule below. The per-slot inventory lives in the detail view. -->
       <Border Grid.Row="0" BorderBrush="#2A2A2A" BorderThickness="0,0,0,1"
               Padding="0,0,0,4" Margin="0,0,0,6">
         <StackPanel Orientation="Horizontal">
           <Border Width="3" Background="#3E9BE8" Margin="0,1,8,1"/>
           <TextBlock Text="MEMORY" Foreground="#E6E6E6" FontSize="12" FontWeight="SemiBold"
-                     VerticalAlignment="Center"/>
+                     VerticalAlignment="Center" Margin="0,0,16,0"/>
+          <TextBlock Style="{StaticResource HeaderSpec}">
+            <Run Text="{Binding TotalCapacityLabel, Mode=OneWay}" Foreground="#E6E6E6"/><Run Text=" total"/>
+          </TextBlock>
+          <TextBlock Text="{Binding SlotsLabel}" Style="{StaticResource HeaderSpec}"/>
+          <TextBlock Text="{Binding MaxSpeedLabel}" Style="{StaticResource HeaderSpec}"/>
         </StackPanel>
       </Border>
 
-      <!-- Single roll-up line (total · populated · max speed). The per-slot inventory lives in the
-           detail view, so the tile stays a compact live-metrics glance. -->
-      <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,6">
-        <TextBlock VerticalAlignment="Center">
-          <Run Text="{Binding TotalCapacityLabel, Mode=OneWay}" FontSize="16" FontFamily="Consolas"/>
-          <Run Text=" total" Foreground="#8A94A0" FontSize="11"/>
-        </TextBlock>
-        <TextBlock Text="{Binding SlotsLabel}" Foreground="#8A94A0" FontSize="11"
-                   FontFamily="Consolas" VerticalAlignment="Center" Margin="16,0,0,0"/>
-        <TextBlock Text="{Binding MaxSpeedLabel}" Foreground="#8A94A0" FontSize="11"
-                   FontFamily="Consolas" VerticalAlignment="Center" Margin="14,0,0,0"/>
-      </StackPanel>
-
       <!-- Utilization (top) + Used (bottom) stacked graphs, each with a big value / unit / caption
            readout to the right — matching the GPU tile layout. -->
-      <Grid Grid.Row="2">
+      <Grid Grid.Row="1">
         <Grid.RowDefinitions>
           <RowDefinition Height="*"/>
           <RowDefinition Height="*"/>

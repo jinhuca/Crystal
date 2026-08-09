@@ -18,6 +18,7 @@
     <Project Path="Modules/StorageModule/StorageModule.csproj" />
     <Project Path="Modules/NetworkModule/NetworkModule.csproj" />
     <Project Path="Modules/ProcessModule/ProcessModule.csproj" />
+    <Project Path="Modules/OSModule/OSModule.csproj" />
     <Project Path="Modules/ResourceModule/ResourceModule.csproj" />
   </Folder>
   <Folder Name="/Providers/">
@@ -106,6 +107,11 @@
       <Platform Solution="*|x86" Project="x86" />
     </Project>
     <Project Path="UnitTests/StorageModule.Tests/StorageModule.Tests.csproj">
+      <Platform Solution="*|Any CPU" Project="x64" />
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
+    <Project Path="UnitTests/OSModule.Tests/OSModule.Tests.csproj">
       <Platform Solution="*|Any CPU" Project="x64" />
       <Platform Solution="*|x64" Project="x64" />
       <Platform Solution="*|x86" Project="x86" />

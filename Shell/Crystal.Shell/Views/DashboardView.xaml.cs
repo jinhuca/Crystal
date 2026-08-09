@@ -17,16 +17,32 @@ public partial class DashboardView : UserControl {
   private static readonly GridLength ComponentsDefault = new(1.2, GridUnitType.Star);
   private static readonly GridLength ProcessesDefault = new(1.6, GridUnitType.Star);
 
+  // Default width for each Row #3 tile column (Memory/Storage/Network/BIOS): equal star shares.
+  private static readonly GridLength ComponentColumnDefault = new(1, GridUnitType.Star);
+
+  // Default widths for the bottom row's Processes (2*) and OS (1*) tile columns.
+  private static readonly GridLength ProcessesColumnDefault = new(2, GridUnitType.Star);
+  private static readonly GridLength OsColumnDefault = new(1, GridUnitType.Star);
+
   public DashboardView() {
     InitializeComponent();
   }
 
-  /// <summary>Restores the resizable rows to their default star proportions, undoing any
-  /// splitter drags. The MinHeight floors defined in XAML are unaffected.</summary>
+  /// <summary>Restores the resizable rows and the Row #3 tile columns to their default star
+  /// proportions, undoing any splitter drags. The MinHeight/MinWidth floors defined in XAML are
+  /// unaffected.</summary>
   public void ResetLayout() {
     CpuRow.Height = CpuDefault;
     GpuRow.Height = GpuDefault;
     ComponentsRow.Height = ComponentsDefault;
     ProcessesRow.Height = ProcessesDefault;
+
+    MemoryCol.Width = ComponentColumnDefault;
+    StorageCol.Width = ComponentColumnDefault;
+    NetworkCol.Width = ComponentColumnDefault;
+    BiosCol.Width = ComponentColumnDefault;
+
+    ProcessesCol.Width = ProcessesColumnDefault;
+    OsCol.Width = OsColumnDefault;
   }
 }

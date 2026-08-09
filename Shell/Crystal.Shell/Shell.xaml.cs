@@ -39,11 +39,8 @@ public partial class Shell : Window {
     UpdateClock();
   }
 
-  private void UpdateClock() {
-    DateTimeText.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-    // TimeSpan formatted as "d.hh:mm:ss" to match the requested "3.21:22:12" uptime style.
-    UptimeText.Text = TimeSpan.FromMilliseconds(Environment.TickCount64).ToString(@"d\.hh\:mm\:ss");
-  }
+  private void UpdateClock() =>
+      DateTimeText.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
   private void OnMinimizeClick(object sender, RoutedEventArgs e) =>
       WindowState = WindowState.Minimized;

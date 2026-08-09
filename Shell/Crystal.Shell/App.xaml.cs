@@ -99,6 +99,7 @@ public partial class App : PrismApplication {
     moduleCatalog.AddModule<BiosModule.BiosModule>();
     moduleCatalog.AddModule<NetworkModule.NetworkModule>();
     moduleCatalog.AddModule<ProcessModule.ProcessModule>();
+    moduleCatalog.AddModule<OSModule.OSModule>();
   }
 
   protected override void OnInitialized() {

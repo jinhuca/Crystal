@@ -28,18 +28,6 @@
       <Setter Property="FontSize" Value="11"/>
       <Setter Property="FontFamily" Value="Consolas"/>
     </Style>
-
-    <!-- Per-adapter identity shown as a header above that adapter's graphs. -->
-    <Style x:Key="SpecKind" TargetType="TextBlock">
-      <Setter Property="Foreground" Value="#3E9BE8"/>
-      <Setter Property="FontSize" Value="14"/>
-      <Setter Property="FontWeight" Value="SemiBold"/>
-    </Style>
-    <Style x:Key="SpecName" TargetType="TextBlock">
-      <Setter Property="Foreground" Value="#DDDDDD"/>
-      <Setter Property="FontSize" Value="12"/>
-      <Setter Property="VerticalAlignment" Value="Center"/>
-    </Style>
   </UserControl.Resources>
 
   <Border Background="Transparent" MouseLeftButtonDown="OnTileClick">
@@ -49,19 +37,37 @@
         <RowDefinition Height="*"/>
       </Grid.RowDefinitions>
 
-      <!-- Dense header bar: accent tick + title, thin divider rule below. -->
+      <!-- Dense header bar: accent tick + title + inline per-adapter identity (kind + name), thin
+           divider rule below. With multiple adapters each identity lists in the header, mirroring
+           the CPU tile's inline specs; the static spec block lives in the detail view. -->
       <Border Grid.Row="0" BorderBrush="#2A2A2A" BorderThickness="0,0,0,1"
               Padding="0,0,0,4" Margin="0,0,0,6">
         <StackPanel Orientation="Horizontal">
           <Border Width="3" Background="#3E9BE8" Margin="0,1,8,1"/>
           <TextBlock Text="GPU" Foreground="#E6E6E6" FontSize="12" FontWeight="SemiBold"
-                     VerticalAlignment="Center"/>
+                     VerticalAlignment="Center" Margin="0,0,16,0"/>
+          <ItemsControl ItemsSource="{Binding Adapters}" VerticalAlignment="Center">
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate>
+                <StackPanel Orientation="Horizontal"/>
+              </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <StackPanel Orientation="Horizontal" Margin="0,0,20,0">
+                  <TextBlock Text="{Binding KindLabel}" Foreground="#3E9BE8" FontSize="11"
+                             FontWeight="SemiBold" VerticalAlignment="Center"/>
+                  <TextBlock Text="{Binding Name}" Foreground="#8A94A0" FontSize="11" FontFamily="Consolas"
+                             VerticalAlignment="Center" Margin="8,0,0,0" TextTrimming="CharacterEllipsis"/>
+                </StackPanel>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
         </StackPanel>
       </Border>
 
-      <!-- One block per adapter, laid out side by side. Each adapter shows an inline identity
-           header, then two graph columns (Utilization + Temperature | Clock + Power) that span
-           the adapter's full width; the static spec block now lives in the detail view. -->
+      <!-- One block per adapter, laid out side by side. Two graph columns (Utilization + Temperature
+           | Clock + Power) span the adapter's full width; identity now rides in the tile header. -->
       <ItemsControl Grid.Row="1" ItemsSource="{Binding Adapters}">
         <ItemsControl.ItemsPanel>
           <ItemsPanelTemplate>
@@ -71,19 +77,8 @@
         <ItemsControl.ItemTemplate>
           <DataTemplate>
             <Grid Margin="0,0,16,0" VerticalAlignment="Top">
-              <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-              </Grid.RowDefinitions>
-
-              <!-- Inline identity header: kind + name. -->
-              <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,8">
-                <TextBlock Text="{Binding KindLabel}" Style="{StaticResource SpecKind}"/>
-                <TextBlock Text="{Binding Name}" Style="{StaticResource SpecName}" Margin="8,0,0,0"/>
-              </StackPanel>
-
               <!-- Two graph columns spanning the adapter's full width. -->
-              <Grid Grid.Row="1" VerticalAlignment="Top">
+              <Grid VerticalAlignment="Top">
                 <Grid.ColumnDefinitions>
                   <ColumnDefinition Width="*"/>
                   <ColumnDefinition Width="*"/>
