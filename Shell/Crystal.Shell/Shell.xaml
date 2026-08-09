@@ -81,6 +81,9 @@
                            VerticalAlignment="Center"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="ResetLayoutButton" Style="{StaticResource CaptionButtonStyle}"
+                        Click="OnResetLayoutClick" Content="&#xE72C;"
+                        ToolTip="Reset dashboard layout"/>
                 <Button x:Name="MinimizeButton" Style="{StaticResource CaptionButtonStyle}"
                         Click="OnMinimizeClick" Content="&#xE921;"/>
                 <Button x:Name="MaximizeButton" Style="{StaticResource CaptionButtonStyle}"
@@ -90,7 +93,7 @@
             </StackPanel>
         </Grid>
 
-        <ContentControl Grid.Row="1"
+        <ContentControl x:Name="MainContent" Grid.Row="1"
                         prism:RegionManager.RegionName="{x:Static const:RegionNames.MainContentRegionName}"/>
     </Grid>
 </Window>

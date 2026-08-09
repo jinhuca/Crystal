@@ -1,8 +1,10 @@
 using System;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Threading;
 using Crystal.Shell.Navigation;
+using Crystal.Shell.Views;
 
 namespace Crystal.Shell;
 /// <summary>
@@ -52,6 +54,21 @@ public partial class Shell : Window {
           : WindowState.Maximized;
 
   private void OnCloseClick(object sender, RoutedEventArgs e) => Close();
+
+  // Reset the dashboard's resizable rows to their default proportions. The dashboard is injected
+  // into the content region by Prism, so we locate it in the visual tree rather than hold a ref.
+  private void OnResetLayoutClick(object sender, RoutedEventArgs e) =>
+      FindDescendant<DashboardView>(MainContent)?.ResetLayout();
+
+  private static T? FindDescendant<T>(DependencyObject root) where T : DependencyObject {
+    if (root is T match) return match;
+    int count = VisualTreeHelper.GetChildrenCount(root);
+    for (int i = 0; i < count; i++) {
+      var found = FindDescendant<T>(VisualTreeHelper.GetChild(root, i));
+      if (found is not null) return found;
+    }
+    return null;
+  }
 
   private void UpdateMaximizeButton() {
     bool maximized = WindowState == WindowState.Maximized;
