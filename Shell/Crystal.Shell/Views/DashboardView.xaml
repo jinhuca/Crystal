@@ -72,13 +72,13 @@
       <ColumnDefinition Width="*"/>
     </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
-      <RowDefinition x:Name="CpuRow" Height="1*" MinHeight="120"/>
+      <RowDefinition x:Name="CpuRow" Height="1*"/>
       <RowDefinition Height="Auto"/>
-      <RowDefinition x:Name="GpuRow" Height="1*" MinHeight="120"/>
+      <RowDefinition x:Name="GpuRow" Height="1*"/>
       <RowDefinition Height="Auto"/>
-      <RowDefinition x:Name="ComponentsRow" Height="1.2*" MinHeight="300"/>
+      <RowDefinition x:Name="ComponentsRow" Height="1.1*"/>
       <RowDefinition Height="Auto"/>
-      <RowDefinition x:Name="ProcessesRow" Height="1.6*" MinHeight="220"/>
+      <RowDefinition x:Name="ProcessesRow" Height="1.1*"/>
     </Grid.RowDefinitions>
 
     <!-- Row 1: CPU, full width -->
