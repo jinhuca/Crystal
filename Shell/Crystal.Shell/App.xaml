@@ -4,6 +4,15 @@
              xmlns:prism="http://prismlibrary.com/"
              xmlns:local="clr-namespace:Crystal.Shell">
     <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Crystal.Controls;component/Themes/ScrollBarStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
 
+            <!-- Apply the flat dark scrollbar to every ScrollBar app-wide (all detail windows and
+                 tiles), so no view falls back to the light default Windows scrollbar. Views can
+                 still override locally; a local BasedOn on this same key is a no-op. -->
+            <Style TargetType="ScrollBar" BasedOn="{StaticResource CrystalScrollBarStyle}"/>
+        </ResourceDictionary>
     </Application.Resources>
 </prism:PrismApplication>

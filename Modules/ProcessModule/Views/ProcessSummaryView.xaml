@@ -101,6 +101,73 @@
         </Setter>
       </Style>
 
+      <!-- Dark, flat menu item matching the dashboard palette: no icon gutter, flat accent-blue
+           hover, thin separators. Scoped to the row context menu below via its Resources. -->
+      <Style x:Key="RowMenuItemStyle" TargetType="MenuItem">
+        <Setter Property="Foreground" Value="#DDDDDD"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Padding" Value="10,4"/>
+        <Setter Property="Height" Value="24"/>
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="MenuItem">
+              <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                      Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
+                <ContentPresenter ContentSource="Header" VerticalAlignment="Center"
+                                  RecognizesAccessKey="True"/>
+              </Border>
+              <ControlTemplate.Triggers>
+                <Trigger Property="IsHighlighted" Value="True">
+                  <Setter TargetName="Bd" Property="Background" Value="#1E3A52"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                  <Setter Property="Foreground" Value="#5A6470"/>
+                </Trigger>
+              </ControlTemplate.Triggers>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style>
+
+      <Style x:Key="RowMenuSeparatorStyle" TargetType="Separator">
+        <Setter Property="Margin" Value="0,3"/>
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="Separator">
+              <Border Height="1" Background="#2A2A2A"/>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style>
+
+      <!-- Right-click menu for a process row, shared by every row via RowStyle. Defined as a keyed
+           resource (not inline in the setter) so its Click handlers wire up correctly. The chrome is
+           templated to a flat dark surface instead of the default 3D popup. -->
+      <ContextMenu x:Key="RowContextMenu" Background="#161616" BorderBrush="#3A3A3A"
+                   Foreground="#DDDDDD" FontFamily="Consolas" FontSize="11"
+                   HasDropShadow="True">
+        <ContextMenu.Resources>
+          <Style TargetType="MenuItem" BasedOn="{StaticResource RowMenuItemStyle}"/>
+          <Style TargetType="Separator" BasedOn="{StaticResource RowMenuSeparatorStyle}"/>
+        </ContextMenu.Resources>
+        <ContextMenu.Template>
+          <ControlTemplate TargetType="ContextMenu">
+            <Border Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1"
+                    Padding="2" SnapsToDevicePixels="True">
+              <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Cycle"/>
+            </Border>
+          </ControlTemplate>
+        </ContextMenu.Template>
+
+        <MenuItem Header="End task" Foreground="#E8A0A0" Click="OnEndTask"/>
+        <Separator/>
+        <MenuItem Header="Open file location" Click="OnOpenFileLocation"/>
+        <MenuItem Header="Copy name" Click="OnCopyName"/>
+        <MenuItem Header="Copy PID" Click="OnCopyPid"/>
+        <MenuItem Header="Copy image path" Click="OnCopyImagePath"/>
+      </ContextMenu>
+
       <!-- Flat, tight rows; hover and selection are flat fills (no rounded highlight). Ordering
            matters: IsMouseOver comes first so the selection fill (below) wins on a hovered
            selected row, and the MultiTrigger gives a slightly brighter blue for selected+hover. -->
@@ -112,6 +179,11 @@
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <!-- Right-click actions on a row. Opening the menu selects the row (WPF selects on
+             right-press), so the VM's SelectedRow is the target by the time End task fires. The
+             menu lives as a keyed resource, not inline here: an event handler on an element inside
+             a Style setter misaligns WPF's connection-id wiring at load. -->
+        <Setter Property="ContextMenu" Value="{StaticResource RowContextMenu}"/>
         <Setter Property="Template">
           <Setter.Value>
             <ControlTemplate TargetType="ListViewItem">
@@ -234,6 +306,14 @@
             <TextBlock Foreground="#E0B84C" FontSize="11" FontFamily="Consolas"
                        Text="{Binding MetricsStatusError, StringFormat=GPU/Disk/Network unavailable: {0}}"/>
           </Border>
+
+          <!-- Red toast for a failed End task / Run new task, shown only while there's a message. -->
+          <Border Background="#2A1414" BorderBrush="#7A2E2E" BorderThickness="1"
+                  Padding="8,1" Margin="12,0,0,0" VerticalAlignment="Center"
+                  Visibility="{Binding HasActionStatus, Converter={StaticResource BoolToVisibility}}">
+            <TextBlock Foreground="#E8A0A0" FontSize="11" FontFamily="Consolas"
+                       Text="{Binding ActionStatus}"/>
+          </Border>
         </StackPanel>
 
         <!-- Name / PID filters, moved up from the column headers -->
@@ -263,6 +343,17 @@
                   FontSize="11" FontFamily="Consolas"
                   ToolTip="Reset all session CPU/memory peaks to the current readings"
                   IsEnabled="{Binding HasVisibleRows}" Click="OnResetPeaks"/>
+          <Button Content="Run new task" Height="18" Margin="16,0,0,0" Padding="8,0"
+                  Foreground="#C8C8C8" Background="#1C1C1C" BorderBrush="#3A3A3A"
+                  FontSize="11" FontFamily="Consolas"
+                  ToolTip="Launch a new process (optionally as administrator)"
+                  Click="OnRunNewTask"/>
+          <!-- Destructive, so it reads red and is disabled until a row is selected. -->
+          <Button Content="End task" Height="18" Margin="6,0,0,0" Padding="8,0"
+                  Foreground="#E8A0A0" Background="#2A1414" BorderBrush="#7A2E2E"
+                  FontSize="11" FontFamily="Consolas"
+                  ToolTip="Terminate the selected process"
+                  IsEnabled="{Binding CanEndSelectedTask}" Click="OnEndTask"/>
         </StackPanel>
       </Grid>
     </Border>

@@ -81,4 +81,68 @@ public partial class ProcessSummaryView : UserControl {
   private void OnResetPeaks(object sender, RoutedEventArgs e) {
     if (DataContext is ProcessListViewModel vm) vm.ResetAllPeaks();
   }
+
+  // Terminates the selected process after a confirmation prompt — ending a process is destructive
+  // and can lose unsaved work, so we always confirm (this is the one place in the module that acts
+  // on the machine, not just the view). The actual kill and any failure message live on the VM.
+  private void OnEndTask(object sender, RoutedEventArgs e) {
+    if (DataContext is not ProcessListViewModel vm) return;
+    if (vm.SelectedRow is not { } row) return;
+
+    var answer = MessageBox.Show(
+        $"End \"{row.Name}\" (PID {row.ProcessId})?\n\nUnsaved data will be lost.",
+        "End task", MessageBoxButton.OKCancel, MessageBoxImage.Warning, MessageBoxResult.Cancel);
+    if (answer != MessageBoxResult.OK) return;
+
+    vm.EndSelectedTask();
+  }
+
+  // Prompts for a command line and launches it, like Task Manager's "Run new task". The prompt is a
+  // small modal window (WPF has no built-in input box); the launch and any failure message live on
+  // the VM. Cancelling the dialog is a no-op.
+  private void OnRunNewTask(object sender, RoutedEventArgs e) {
+    if (DataContext is not ProcessListViewModel vm) return;
+
+    var dialog = new RunNewTaskDialog { Owner = Window.GetWindow(this) };
+    if (dialog.ShowDialog() != true) return;
+
+    vm.StartTask(dialog.Command, dialog.RunAsAdmin);
+  }
+
+  // The row the context menu was opened on. The menu is shared across rows, so its DataContext is
+  // the row VM WPF placed on it when the row was right-clicked.
+  private static ProcessRowViewModel? MenuRow(object sender) =>
+      (sender as FrameworkElement)?.DataContext as ProcessRowViewModel;
+
+  // Opens Explorer with the process's image selected, like Task Manager's "Open file location".
+  // No-op (with a status message) when the path is unknown — protected processes hide it.
+  private void OnOpenFileLocation(object sender, RoutedEventArgs e) {
+    if (DataContext is not ProcessListViewModel vm) return;
+    if (MenuRow(sender) is not { } row) return;
+    vm.OpenFileLocation(row.ExecutablePath);
+  }
+
+  private void OnCopyName(object sender, RoutedEventArgs e) {
+    if (MenuRow(sender) is { } row) TrySetClipboard(row.Name);
+  }
+
+  private void OnCopyPid(object sender, RoutedEventArgs e) {
+    if (MenuRow(sender) is { } row) TrySetClipboard(row.ProcessId.ToString());
+  }
+
+  private void OnCopyImagePath(object sender, RoutedEventArgs e) {
+    if (MenuRow(sender) is { } row && !string.IsNullOrEmpty(row.ExecutablePath))
+      TrySetClipboard(row.ExecutablePath);
+  }
+
+  // The clipboard can transiently throw if another process holds it open; a failed copy is a no-op
+  // rather than a crash (same guard as the header Copy button).
+  private static void TrySetClipboard(string text) {
+    if (string.IsNullOrEmpty(text)) return;
+    try {
+      Clipboard.SetText(text);
+    }
+    catch (System.Runtime.InteropServices.COMException) {
+    }
+  }
 }

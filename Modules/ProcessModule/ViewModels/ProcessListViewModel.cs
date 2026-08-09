@@ -38,12 +38,20 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
   // Extracts per-process shell icons off the UI thread; null in tests where no provider is supplied.
   private readonly ProcessIconProvider? _iconProvider;
 
-  // clock and iconProvider are optional so Unity's default registration works (optional ctor params
-  // aren't injected); tests pass a fixed clock for a deterministic export timestamp and skip icons.
+  // Terminates / launches processes. Defaults to the real Win32 controller; tests inject a fake to
+  // assert on the calls without touching real processes.
+  private readonly IProcessController _controller;
+  private string? _actionStatus;
+
+  // clock, iconProvider and controller are optional so Unity's default registration works (optional
+  // ctor params aren't injected); tests pass a fixed clock for a deterministic export timestamp,
+  // skip icons, and inject a fake controller.
   public ProcessListViewModel(IProcessModel model, SystemStatsMonitor systemStats,
-                              ProcessIconProvider? iconProvider = null, Func<DateTimeOffset>? clock = null) {
+                              ProcessIconProvider? iconProvider = null, Func<DateTimeOffset>? clock = null,
+                              IProcessController? controller = null) {
     _clock = clock ?? (() => DateTimeOffset.Now);
     _iconProvider = iconProvider;
+    _controller = controller ?? new ProcessController();
     MetricsStatusError = model.MetricsStatusError;
 
     RowsView = new ListCollectionView(Rows);
@@ -96,7 +104,47 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
 
   public ProcessRowViewModel? SelectedRow {
     get => _selectedRow;
-    set => SetProperty(ref _selectedRow, value);
+    set {
+      if (SetProperty(ref _selectedRow, value)) RaisePropertyChanged(nameof(CanEndSelectedTask));
+    }
+  }
+
+  /// <summary>True when a row is selected and so eligible to be terminated. Bound to the End task
+  /// button's enabled state.</summary>
+  public bool CanEndSelectedTask => _selectedRow is not null;
+
+  /// <summary>Last End task / Run new task outcome message (a failure reason), or null when the last
+  /// action succeeded or none has run. Bound to a transient status line in the header.</summary>
+  public string? ActionStatus {
+    get => _actionStatus;
+    private set {
+      if (SetProperty(ref _actionStatus, value)) RaisePropertyChanged(nameof(HasActionStatus));
+    }
+  }
+
+  /// <summary>True when <see cref="ActionStatus"/> has a message to show.</summary>
+  public bool HasActionStatus => !string.IsNullOrEmpty(_actionStatus);
+
+  /// <summary>Terminates the selected process. No-op when nothing is selected. On failure the reason
+  /// is surfaced through <see cref="ActionStatus"/>; the exited row drops on the next poll.</summary>
+  public void EndSelectedTask() {
+    if (_selectedRow is not { } row) return;
+    var result = _controller.EndTask(row.ProcessId);
+    ActionStatus = result.Succeeded ? null : result.Message;
+  }
+
+  /// <summary>Launches a new process from a command line (optionally elevated), like Task Manager's
+  /// "Run new task". On failure the reason is surfaced through <see cref="ActionStatus"/>.</summary>
+  public void StartTask(string command, bool runAsAdmin = false) {
+    var result = _controller.StartTask(command, runAsAdmin);
+    ActionStatus = result.Succeeded ? null : result.Message;
+  }
+
+  /// <summary>Opens Explorer at the given process image, file selected. On failure (unknown path,
+  /// file gone) the reason is surfaced through <see cref="ActionStatus"/>.</summary>
+  public void OpenFileLocation(string? imagePath) {
+    var result = _controller.OpenFileLocation(imagePath);
+    ActionStatus = result.Succeeded ? null : result.Message;
   }
 
   /// <summary>Case-insensitive substring filter on the process name; empty shows all. Bound to the

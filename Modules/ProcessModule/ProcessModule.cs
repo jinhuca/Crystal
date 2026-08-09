@@ -45,12 +45,16 @@ public class ProcessModule(IRegionManager regionManager) : IModule {
     // built once. Extraction runs off the UI thread and returns frozen images.
     containerRegistry.RegisterSingleton<ProcessIconProvider>();
 
+    // Terminates / launches processes for the End task / Run new task actions. Stateless, so a
+    // singleton is fine.
+    containerRegistry.RegisterSingleton<IProcessController, ProcessController>();
+
     // One VM instance per view; the tile is the only consumer today. Built via a factory because
     // its optional Func<DateTimeOffset>? clock param isn't injected by Unity (it defaults to the
     // system clock for the live export timestamp).
     containerRegistry.Register<ProcessListViewModel>(
         cp => new ProcessListViewModel(cp.Resolve<IProcessModel>(), cp.Resolve<SystemStatsMonitor>(),
-            cp.Resolve<ProcessIconProvider>()));
+            cp.Resolve<ProcessIconProvider>(), controller: cp.Resolve<IProcessController>()));
 
     ViewModelLocationProvider.Register<ProcessSummaryView>(
         () => ContainerLocator.Container.Resolve<ProcessListViewModel>());
