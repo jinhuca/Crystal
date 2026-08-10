@@ -11,11 +11,11 @@
              FontFamily="Segoe UI">
   <UserControl.Resources>
     <Style x:Key="FieldLabel" TargetType="TextBlock">
-      <Setter Property="Foreground" Value="#8A94A0"/>
+      <Setter Property="Foreground" Value="{StaticResource LabelBrush}"/>
       <Setter Property="FontSize" Value="11"/>
     </Style>
     <Style x:Key="FieldValue" TargetType="TextBlock">
-      <Setter Property="Foreground" Value="#E6E6E6"/>
+      <Setter Property="Foreground" Value="{StaticResource ValueBrush}"/>
       <Setter Property="FontSize" Value="13"/>
       <Setter Property="FontFamily" Value="Consolas"/>
       <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
@@ -34,13 +34,13 @@
       </Grid.RowDefinitions>
 
       <!-- Dense header bar: accent tick + title + inline OS name, thin divider rule below. -->
-      <Border Grid.Row="0" BorderBrush="#2A2A2A" BorderThickness="0,0,0,1"
+      <Border Grid.Row="0" BorderBrush="{StaticResource DividerBrush}" BorderThickness="0,0,0,1"
               Padding="0,0,0,4" Margin="0,0,0,8">
         <StackPanel Orientation="Horizontal">
-          <Border Width="3" Background="#3E9BE8" Margin="0,1,8,1"/>
-          <TextBlock Text="OPERATING SYSTEM" Foreground="#E6E6E6" FontSize="12" FontWeight="SemiBold"
+          <Border Width="3" Background="{StaticResource AccentBrush}" Margin="0,1,8,1"/>
+          <TextBlock Text="OPERATING SYSTEM" Foreground="{StaticResource ValueBrush}" FontSize="12" FontWeight="SemiBold"
                      VerticalAlignment="Center" Margin="0,0,16,0"/>
-          <TextBlock Text="{Binding OsName}" Foreground="#E6E6E6" FontSize="11" FontFamily="Consolas"
+          <TextBlock Text="{Binding OsName}" Foreground="{StaticResource ValueBrush}" FontSize="11" FontFamily="Consolas"
                      VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
         </StackPanel>
       </Border>
@@ -69,11 +69,11 @@
 
         <!-- Uptime section rule + header. Uptime is the live value (green tick); last boot and
              install date are the fixed timestamps that frame it. -->
-        <Border BorderBrush="#2A2A2A" BorderThickness="0,1,0,0" Margin="0,2,0,8" Padding="0,8,0,0">
+        <Border BorderBrush="{StaticResource DividerBrush}" BorderThickness="0,1,0,0" Margin="0,2,0,8" Padding="0,8,0,0">
           <StackPanel Orientation="Horizontal">
-            <Border Width="6" Height="6" CornerRadius="3" Background="#3BD15A"
+            <Border Width="6" Height="6" CornerRadius="3" Background="{StaticResource OkBrush}"
                     VerticalAlignment="Center" Margin="0,0,6,0"/>
-            <TextBlock Text="UPTIME" Foreground="#8A94A0" FontSize="10" FontWeight="SemiBold"
+            <TextBlock Text="UPTIME" Foreground="{StaticResource LabelBrush}" FontSize="10" FontWeight="SemiBold"
                        VerticalAlignment="Center"/>
           </StackPanel>
         </Border>

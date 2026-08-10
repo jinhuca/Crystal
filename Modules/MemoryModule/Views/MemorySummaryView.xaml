@@ -11,31 +11,7 @@
              Background="Transparent" Foreground="White"
              FontFamily="Segoe UI">
   <UserControl.Resources>
-    <!-- Metric readout to the right of each graph: big value, unit on the next line, dim caption. -->
-    <Style x:Key="MetricValue" TargetType="TextBlock">
-      <Setter Property="Foreground" Value="#E6E6E6"/>
-      <Setter Property="FontSize" Value="24"/>
-      <Setter Property="FontFamily" Value="Consolas"/>
-      <Setter Property="LineHeight" Value="26"/>
-    </Style>
-    <Style x:Key="MetricUnit" TargetType="TextBlock">
-      <Setter Property="Foreground" Value="#C0C0C0"/>
-      <Setter Property="FontSize" Value="12"/>
-      <Setter Property="FontFamily" Value="Consolas"/>
-    </Style>
-    <Style x:Key="MetricCaption" TargetType="TextBlock">
-      <Setter Property="Foreground" Value="#8A94A0"/>
-      <Setter Property="FontSize" Value="11"/>
-      <Setter Property="FontFamily" Value="Consolas"/>
-    </Style>
-    <!-- Dim inline spec shown next to the title in the header, matching the CPU tile. -->
-    <Style x:Key="HeaderSpec" TargetType="TextBlock">
-      <Setter Property="Foreground" Value="#8A94A0"/>
-      <Setter Property="FontSize" Value="11"/>
-      <Setter Property="FontFamily" Value="Consolas"/>
-      <Setter Property="VerticalAlignment" Value="Center"/>
-      <Setter Property="Margin" Value="0,0,16,0"/>
-    </Style>
+    <!-- MetricValue, MetricUnit, MetricCaption, HeaderSpec now provided app-wide via Crystal.Resources (TextStyles.xaml). -->
   </UserControl.Resources>
 
   <Border Background="Transparent" MouseLeftButtonDown="OnTileClick">
@@ -47,14 +23,14 @@
 
       <!-- Dense header bar: accent tick + title + inline roll-up (total · populated · max speed),
            thin divider rule below. The per-slot inventory lives in the detail view. -->
-      <Border Grid.Row="0" BorderBrush="#2A2A2A" BorderThickness="0,0,0,1"
+      <Border Grid.Row="0" BorderBrush="{StaticResource DividerBrush}" BorderThickness="0,0,0,1"
               Padding="0,0,0,4" Margin="0,0,0,6">
         <StackPanel Orientation="Horizontal">
-          <Border Width="3" Background="#3E9BE8" Margin="0,1,8,1"/>
-          <TextBlock Text="MEMORY" Foreground="#E6E6E6" FontSize="12" FontWeight="SemiBold"
+          <Border Width="3" Background="{StaticResource AccentBrush}" Margin="0,1,8,1"/>
+          <TextBlock Text="MEMORY" Foreground="{StaticResource ValueBrush}" FontSize="12" FontWeight="SemiBold"
                      VerticalAlignment="Center" Margin="0,0,16,0"/>
           <TextBlock Style="{StaticResource HeaderSpec}">
-            <Run Text="{Binding TotalCapacityLabel, Mode=OneWay}" Foreground="#E6E6E6"/><Run Text=" total"/>
+            <Run Text="{Binding TotalCapacityLabel, Mode=OneWay}" Foreground="{StaticResource ValueBrush}"/><Run Text=" total"/>
           </TextBlock>
           <TextBlock Text="{Binding SlotsLabel}" Style="{StaticResource HeaderSpec}"/>
           <TextBlock Text="{Binding MaxSpeedLabel}" Style="{StaticResource HeaderSpec}"/>

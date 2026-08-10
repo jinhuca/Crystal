@@ -10,25 +10,8 @@
              d:DesignHeight="240" d:DesignWidth="760"
              Background="Transparent" Foreground="White"
              FontFamily="Segoe UI">
-  <UserControl.Resources>
-    <!-- Metric readout to the right of each graph: big value, unit on the next line, dim caption. -->
-    <Style x:Key="MetricValue" TargetType="TextBlock">
-      <Setter Property="Foreground" Value="#E6E6E6"/>
-      <Setter Property="FontSize" Value="24"/>
-      <Setter Property="FontFamily" Value="Consolas"/>
-      <Setter Property="LineHeight" Value="26"/>
-    </Style>
-    <Style x:Key="MetricUnit" TargetType="TextBlock">
-      <Setter Property="Foreground" Value="#C0C0C0"/>
-      <Setter Property="FontSize" Value="12"/>
-      <Setter Property="FontFamily" Value="Consolas"/>
-    </Style>
-    <Style x:Key="MetricCaption" TargetType="TextBlock">
-      <Setter Property="Foreground" Value="#8A94A0"/>
-      <Setter Property="FontSize" Value="11"/>
-      <Setter Property="FontFamily" Value="Consolas"/>
-    </Style>
-  </UserControl.Resources>
+  <!-- MetricValue/MetricUnit/MetricCaption now shared via Crystal.Resources -->
+
 
   <Border Background="Transparent" MouseLeftButtonDown="OnTileClick">
     <Grid Margin="10">
@@ -39,11 +22,11 @@
 
       <!-- Dense header bar: accent tick + title. Per-adapter identity rides directly above each
            adapter's graph block below, so the label sits with the graphs it owns. -->
-      <Border Grid.Row="0" BorderBrush="#2A2A2A" BorderThickness="0,0,0,1"
+      <Border Grid.Row="0" BorderBrush="{StaticResource DividerBrush}" BorderThickness="0,0,0,1"
               Padding="0,0,0,4" Margin="0,0,0,6">
         <StackPanel Orientation="Horizontal">
-          <Border Width="3" Background="#3E9BE8" Margin="0,1,8,1"/>
-          <TextBlock Text="GPU" Foreground="#E6E6E6" FontSize="12" FontWeight="SemiBold"
+          <Border Width="3" Background="{StaticResource AccentBrush}" Margin="0,1,8,1"/>
+          <TextBlock Text="GPU" Foreground="{StaticResource ValueBrush}" FontSize="12" FontWeight="SemiBold"
                      VerticalAlignment="Center"/>
         </StackPanel>
       </Border>
@@ -60,7 +43,7 @@
         <ItemsControl.ItemTemplate>
           <DataTemplate>
             <!-- Left accent bar binds the adapter's identity + graphs into one visual panel. -->
-            <Border Margin="0,0,16,0" BorderBrush="#2A2A2A" BorderThickness="1,0,0,0"
+            <Border Margin="0,0,16,0" BorderBrush="{StaticResource DividerBrush}" BorderThickness="1,0,0,0"
                     Padding="8,0,0,0" VerticalAlignment="Top">
               <Grid VerticalAlignment="Top">
                 <Grid.RowDefinitions>
@@ -70,9 +53,9 @@
 
                 <!-- Identity strip: kind (accent) + name (dim), directly above this adapter's graphs. -->
                 <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,6">
-                  <TextBlock Text="{Binding KindLabel}" Foreground="#3E9BE8" FontSize="11"
+                  <TextBlock Text="{Binding KindLabel}" Foreground="{StaticResource AccentBrush}" FontSize="11"
                              FontWeight="SemiBold" VerticalAlignment="Center"/>
-                  <TextBlock Text="{Binding Name}" Foreground="#8A94A0" FontSize="11" FontFamily="Consolas"
+                  <TextBlock Text="{Binding Name}" Foreground="{StaticResource LabelBrush}" FontSize="11" FontFamily="Consolas"
                              VerticalAlignment="Center" Margin="8,0,0,0" TextTrimming="CharacterEllipsis"/>
                 </StackPanel>
 

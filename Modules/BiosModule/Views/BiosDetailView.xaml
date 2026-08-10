@@ -8,7 +8,7 @@
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
              d:DesignHeight="720" d:DesignWidth="1100"
-             Background="#101317" Foreground="White"
+             Background="{StaticResource PanelBackgroundBrush}" Foreground="White"
              FontFamily="Segoe UI">
   <Grid Margin="24">
     <Grid.RowDefinitions>
@@ -24,11 +24,11 @@
       <Button Grid.Column="0" Content="&#x2190; Back" Padding="14,6"
               Background="#1E2A38" Foreground="White" BorderThickness="0"
               Command="{Binding ShowDashboardCommand}"/>
-      <TextBlock Grid.Column="1" Text="BIOS" Foreground="#3E9BE8" FontSize="28"
+      <TextBlock Grid.Column="1" Text="BIOS" Foreground="{StaticResource AccentBrush}" FontSize="28"
                  FontWeight="SemiBold" VerticalAlignment="Center" Margin="16,0,0,0"/>
     </Grid>
 
-    <Border Grid.Row="1" VerticalAlignment="Top" Padding="24" Background="#161B22" CornerRadius="8">
+    <Border Grid.Row="1" VerticalAlignment="Top" Padding="24" Background="{StaticResource SurfaceBackgroundBrush}" CornerRadius="8">
       <Border.Resources>
         <ResourceDictionary>
           <ResourceDictionary.MergedDictionaries>
@@ -171,7 +171,7 @@
           <TextBlock Text="Firmware inventory" Style="{StaticResource SectionHeader}"
                      Visibility="{Binding HasFirmwareInventory, Converter={StaticResource BoolToVisibility}}"/>
           <ListView ItemsSource="{Binding FirmwareInventory}" Margin="0,4,0,0"
-                    Background="#101317" BorderBrush="#2A2A2A" BorderThickness="1"
+                    Background="{StaticResource PanelBackgroundBrush}" BorderBrush="{StaticResource DividerBrush}" BorderThickness="1"
                     Foreground="#D6D6D6" FontFamily="Consolas"
                     Visibility="{Binding HasFirmwareInventory, Converter={StaticResource BoolToVisibility}}">
             <ListView.View>
@@ -222,7 +222,7 @@
                worst-severity first. Sort keys are numeric (Value/Min/Max) so "10 V" ranks above
                "9 V", not lexically below it. -->
           <ListView x:Name="BoardSensorList" ItemsSource="{Binding BoardSensors}" Margin="0,4,0,0"
-                    Background="#101317" BorderBrush="#2A2A2A" BorderThickness="1"
+                    Background="{StaticResource PanelBackgroundBrush}" BorderBrush="{StaticResource DividerBrush}" BorderThickness="1"
                     Foreground="#D6D6D6" FontFamily="Consolas"
                     GridViewColumnHeader.Click="OnBoardSensorHeaderClick"
                     Visibility="{Binding HasBoardSensors, Converter={StaticResource BoolToVisibility}}">
@@ -319,7 +319,7 @@
                  Peak on the severity enum, so ordering is chronological/by-length/by-severity rather
                  than lexical. -->
             <ListView x:Name="HealthEventList" ItemsSource="{Binding HealthEvents}" Margin="0,4,0,0"
-                      Background="#101317" BorderBrush="#2A2A2A" BorderThickness="1"
+                      Background="{StaticResource PanelBackgroundBrush}" BorderBrush="{StaticResource DividerBrush}" BorderThickness="1"
                       Foreground="#D6D6D6" FontFamily="Consolas"
                       GridViewColumnHeader.Click="OnHealthEventHeaderClick">
               <!-- Hovering a row shows its full detail (full-date start/end, peak, duration) that the

@@ -5,11 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:prism="http://prismlibrary.com/"
              xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs.Controls;assembly=Crystal.Controls"
-             xmlns:gauges="clr-namespace:Crystal.Controls.MeterGauges.Controls;assembly=Crystal.Controls"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
              d:DesignHeight="720" d:DesignWidth="1100"
-             Background="#101317" Foreground="White"
+             Background="{StaticResource PanelBackgroundBrush}" Foreground="White"
              FontFamily="Segoe UI">
   <Grid Margin="24">
     <Grid.RowDefinitions>
@@ -26,7 +25,7 @@
       <Button Grid.Column="0" Content="&#x2190; Back" Padding="14,6"
               Background="#1E2A38" Foreground="White" BorderThickness="0"
               Command="{Binding ShowDashboardCommand}"/>
-      <TextBlock Grid.Column="1" Text="GPU" Foreground="#3E9BE8" FontSize="28"
+      <TextBlock Grid.Column="1" Text="GPU" Foreground="{StaticResource AccentBrush}" FontSize="28"
                  FontWeight="SemiBold" VerticalAlignment="Center" Margin="16,0,0,0"/>
     </Grid>
 
@@ -39,7 +38,7 @@
       </ItemsControl.ItemsPanel>
       <ItemsControl.ItemTemplate>
         <DataTemplate>
-          <Border Margin="8" Padding="18" Background="#161B22" CornerRadius="8">
+          <Border Margin="8" Padding="18" Background="{StaticResource SurfaceBackgroundBrush}" CornerRadius="8">
             <Grid>
               <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -48,7 +47,7 @@
                 <RowDefinition Height="*"/>
               </Grid.RowDefinitions>
 
-              <TextBlock Grid.Row="0" Text="{Binding KindLabel}" Foreground="#3E9BE8"
+              <TextBlock Grid.Row="0" Text="{Binding KindLabel}" Foreground="{StaticResource AccentBrush}"
                          FontSize="18" FontWeight="SemiBold"/>
               <TextBlock Grid.Row="1" Text="{Binding Name}" Foreground="White"
                          FontSize="15" TextWrapping="Wrap" Margin="0,4,0,12"/>
@@ -67,33 +66,35 @@
                   <RowDefinition Height="Auto"/>
                   <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Grid.Column="0" Text="Video RAM" Foreground="#8A94A0" Margin="0,2,16,2"/>
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Video RAM" Foreground="{StaticResource LabelBrush}" Margin="0,2,16,2"/>
                 <TextBlock Grid.Row="0" Grid.Column="1" Foreground="White" Margin="0,2">
                   <TextBlock.Text>
                     <Binding Path="VideoRamGB" StringFormat="{}{0:0.#} GB" TargetNullValue="—"/>
                   </TextBlock.Text>
                 </TextBlock>
-                <TextBlock Grid.Row="1" Grid.Column="0" Text="Video Processor" Foreground="#8A94A0" Margin="0,2,16,2"/>
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Video Processor" Foreground="{StaticResource LabelBrush}" Margin="0,2,16,2"/>
                 <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding VideoProcessor, TargetNullValue=—}" Foreground="White" Margin="0,2" TextWrapping="Wrap"/>
-                <TextBlock Grid.Row="2" Grid.Column="0" Text="Display Mode" Foreground="#8A94A0" Margin="0,2,16,2"/>
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Display Mode" Foreground="{StaticResource LabelBrush}" Margin="0,2,16,2"/>
                 <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding DisplayMode}" Foreground="White" Margin="0,2" TextWrapping="Wrap"/>
-                <TextBlock Grid.Row="3" Grid.Column="0" Text="Physical Location" Foreground="#8A94A0" Margin="0,2,16,2"/>
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="Physical Location" Foreground="{StaticResource LabelBrush}" Margin="0,2,16,2"/>
                 <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding PhysicalLocation, TargetNullValue=—}" Foreground="White" Margin="0,2" TextWrapping="Wrap"/>
-                <TextBlock Grid.Row="4" Grid.Column="0" Text="Driver Version" Foreground="#8A94A0" Margin="0,2,16,2"/>
+                <TextBlock Grid.Row="4" Grid.Column="0" Text="Driver Version" Foreground="{StaticResource LabelBrush}" Margin="0,2,16,2"/>
                 <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding DriverVersion, TargetNullValue=—}" Foreground="White" Margin="0,2"/>
-                <TextBlock Grid.Row="5" Grid.Column="0" Text="Driver Date" Foreground="#8A94A0" Margin="0,2,16,2"/>
+                <TextBlock Grid.Row="5" Grid.Column="0" Text="Driver Date" Foreground="{StaticResource LabelBrush}" Margin="0,2,16,2"/>
                 <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding DriverDate, StringFormat={}{0:yyyy-MM-dd}, TargetNullValue=—}" Foreground="White" Margin="0,2"/>
               </Grid>
 
-              <!-- Live load: gauge + history graph -->
+              <!-- Live load: value readout + history graph -->
               <Grid Grid.Row="3">
                 <Grid.ColumnDefinitions>
                   <ColumnDefinition Width="150"/>
                   <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <gauges:MeterGaugeView Grid.Column="0" Title="Load" Unit="%"
-                                       MinValue="0" MaxValue="100" ValueFormat="{}{0:0}"
-                                       Value="{Binding Load}"/>
+                <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="8,0">
+                  <TextBlock Text="{Binding Load, StringFormat={}{0:0}}" Style="{StaticResource MetricValue}"/>
+                  <TextBlock Text="%" Style="{StaticResource MetricUnit}"/>
+                  <TextBlock Text="Load" Style="{StaticResource MetricCaption}"/>
+                </StackPanel>
                 <graphs:PerformanceGraphView Grid.Column="1" Margin="12,0"
                                              Loaded="OnGraphLoaded"
                                              Title="Load Percentage" MinValue="0" MaxValue="100"

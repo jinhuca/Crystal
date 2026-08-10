@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\UI\Crystal.Resources\Crystal.Resources.csproj" />
     <ProjectReference Include="..\..\UI\Crystal.Controls\Crystal.Controls.csproj" />
     <ProjectReference Include="..\..\Infrastructures\Crystal.Infrastructure.Constants\Crystal.Infrastructure.Constants.csproj" />
   </ItemGroup>

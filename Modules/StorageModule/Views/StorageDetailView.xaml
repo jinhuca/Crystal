@@ -8,26 +8,22 @@
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
              d:DesignHeight="760" d:DesignWidth="1100"
-             Background="#101317" Foreground="White"
+             Background="{StaticResource PanelBackgroundBrush}" Foreground="White"
              FontFamily="Segoe UI">
   <UserControl.Resources>
-    <Style x:Key="StatCaption" TargetType="TextBlock">
-      <Setter Property="Foreground" Value="#8A94A0"/>
-      <Setter Property="FontSize" Value="12"/>
-      <Setter Property="Margin" Value="0,0,0,1"/>
-    </Style>
+    <!-- StatCaption moved to Crystal.Resources (TextStyles.xaml); resolved app-wide as a shared style. -->
     <Style x:Key="StatValue" TargetType="TextBlock">
-      <Setter Property="Foreground" Value="#E6E6E6"/>
+      <Setter Property="Foreground" Value="{StaticResource ValueBrush}"/>
       <Setter Property="FontSize" Value="22"/>
       <Setter Property="FontWeight" Value="Light"/>
     </Style>
     <Style x:Key="SpecCaption" TargetType="TextBlock">
-      <Setter Property="Foreground" Value="#8A94A0"/>
+      <Setter Property="Foreground" Value="{StaticResource LabelBrush}"/>
       <Setter Property="FontSize" Value="13"/>
       <Setter Property="Margin" Value="0,3"/>
     </Style>
     <Style x:Key="SpecValue" TargetType="TextBlock">
-      <Setter Property="Foreground" Value="#C8D0D8"/>
+      <Setter Property="Foreground" Value="{StaticResource SpecValueBrush}"/>
       <Setter Property="FontSize" Value="13"/>
       <Setter Property="Margin" Value="24,3,0,3"/>
     </Style>
@@ -48,7 +44,7 @@
       <Button Grid.Column="0" Content="&#x2190; Back" Padding="14,6"
               Background="#1E2A38" Foreground="White" BorderThickness="0"
               Command="{Binding ShowDashboardCommand}"/>
-      <TextBlock Grid.Column="1" Text="Storage" Foreground="#3E9BE8" FontSize="28"
+      <TextBlock Grid.Column="1" Text="Storage" Foreground="{StaticResource AccentBrush}" FontSize="28"
                  FontWeight="SemiBold" VerticalAlignment="Center" Margin="16,0,0,0"/>
     </Grid>
 
@@ -73,14 +69,14 @@
             <Setter Property="Template">
               <Setter.Value>
                 <ControlTemplate TargetType="ListBoxItem">
-                  <Border x:Name="Bd" Background="#161B22" BorderBrush="#242C36"
+                  <Border x:Name="Bd" Background="{StaticResource SurfaceBackgroundBrush}" BorderBrush="#242C36"
                           BorderThickness="1" CornerRadius="4" Padding="12,10">
                     <ContentPresenter/>
                   </Border>
                   <ControlTemplate.Triggers>
                     <Trigger Property="IsSelected" Value="True">
                       <Setter TargetName="Bd" Property="Background" Value="#17324B"/>
-                      <Setter TargetName="Bd" Property="BorderBrush" Value="#3E9BE8"/>
+                      <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
                     </Trigger>
                     <MultiTrigger>
                       <MultiTrigger.Conditions>
@@ -98,12 +94,12 @@
         <ListBox.ItemTemplate>
           <DataTemplate>
             <StackPanel>
-              <TextBlock Text="{Binding HeaderLabel}" Foreground="#E6E6E6" FontSize="14" FontWeight="SemiBold"/>
-              <TextBlock Text="{Binding Model}" Foreground="#8A94A0" FontSize="11"
+              <TextBlock Text="{Binding HeaderLabel}" Foreground="{StaticResource ValueBrush}" FontSize="14" FontWeight="SemiBold"/>
+              <TextBlock Text="{Binding Model}" Foreground="{StaticResource LabelBrush}" FontSize="11"
                          TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
               <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
-                <TextBlock Text="{Binding ActivityLabel}" Foreground="#3E9BE8" FontSize="12" FontFamily="Consolas"/>
-                <TextBlock Text="{Binding CapacityLabel}" Foreground="#8A94A0" FontSize="12"
+                <TextBlock Text="{Binding ActivityLabel}" Foreground="{StaticResource AccentBrush}" FontSize="12" FontFamily="Consolas"/>
+                <TextBlock Text="{Binding CapacityLabel}" Foreground="{StaticResource LabelBrush}" FontSize="12"
                            FontFamily="Consolas" Margin="12,0,0,0"/>
               </StackPanel>
             </StackPanel>
@@ -126,16 +122,16 @@
               </Grid.RowDefinitions>
 
               <Grid Grid.Row="0" Margin="0,0,0,10">
-                <TextBlock Text="{Binding HeaderLabel}" Foreground="#E6E6E6" FontSize="20"
+                <TextBlock Text="{Binding HeaderLabel}" Foreground="{StaticResource ValueBrush}" FontSize="20"
                            FontWeight="Light" HorizontalAlignment="Left"/>
-                <TextBlock Text="{Binding Model}" Foreground="#8A94A0" FontSize="13"
+                <TextBlock Text="{Binding Model}" Foreground="{StaticResource LabelBrush}" FontSize="13"
                            HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
               </Grid>
 
               <!-- Active time -->
               <Grid Grid.Row="1" Margin="0,0,0,2">
-                <TextBlock Text="Active time" Foreground="#C8D0D8" FontSize="13" HorizontalAlignment="Left"/>
-                <TextBlock Text="{Binding ActivityLabel}" Foreground="#8A94A0" FontSize="13" HorizontalAlignment="Right"/>
+                <TextBlock Text="Active time" Foreground="{StaticResource SpecValueBrush}" FontSize="13" HorizontalAlignment="Left"/>
+                <TextBlock Text="{Binding ActivityLabel}" Foreground="{StaticResource LabelBrush}" FontSize="13" HorizontalAlignment="Right"/>
               </Grid>
               <graphs:PerformanceGraph Grid.Row="2" Margin="0,0,0,12"
                                        Loaded="OnActivityGraphLoaded"
@@ -143,7 +139,7 @@
 
               <!-- Disk transfer rate -->
               <Grid Grid.Row="3" Margin="0,0,0,2">
-                <TextBlock Text="Disk transfer rate" Foreground="#C8D0D8" FontSize="13" HorizontalAlignment="Left"/>
+                <TextBlock Text="Disk transfer rate" Foreground="{StaticResource SpecValueBrush}" FontSize="13" HorizontalAlignment="Left"/>
               </Grid>
               <graphs:PerformanceGraph Grid.Row="4" Margin="0,0,0,14"
                                        Loaded="OnTransferGraphLoaded"

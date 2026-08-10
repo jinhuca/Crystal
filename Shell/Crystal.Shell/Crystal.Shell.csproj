@@ -43,6 +43,7 @@
     <ProjectReference Include="..\..\Modules\NetworkModule\NetworkModule.csproj" />
     <ProjectReference Include="..\..\Modules\ProcessModule\ProcessModule.csproj" />
     <ProjectReference Include="..\..\Modules\OSModule\OSModule.csproj" />
+    <ProjectReference Include="..\..\UI\Crystal.Resources\Crystal.Resources.csproj" />
     <ProjectReference Include="..\..\Infrastructures\Crystal.Infrastructure.Constants\Crystal.Infrastructure.Constants.csproj" />
     <ProjectReference Include="..\..\Services\Crystal.Service.Sensors\Crystal.Service.Sensors.csproj" />
   </ItemGroup>

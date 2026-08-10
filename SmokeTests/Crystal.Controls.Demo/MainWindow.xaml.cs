@@ -25,7 +25,6 @@ public partial class MainWindow : Window {
     // MinValue/MaxValue are set in XAML on the view and auto-wire to the graph's scale.
     UtilizationGraph.ApplyTheme(GraphThemes.Rose());
     VoltageGraph.ApplyTheme(GraphThemes.Emerald());
-    VoltageGaugeView.Gauge?.ApplyTheme(Crystal.Controls.MeterGauges.Themes.GaugeThemes.Emerald());
     VoltageBar.Bar?.ApplyTheme(Crystal.Controls.RangeBars.Themes.RangeBarThemes.Emerald());
 
     _timer.Tick += OnTick;
@@ -50,7 +49,6 @@ public partial class MainWindow : Window {
     // Voltage stays essentially flat with tiny jitter, matching the reference graph.
     double voltage = 2.0 - _random.NextDouble() * 0.05;
     VoltageGraph.AddValue(voltage);
-    VoltageGaugeView.Value = voltage;
     VoltageBar.Value = voltage;
   }
 

@@ -121,7 +121,7 @@
                   <Setter Property="Background" Value="#3A424C"/>
                   <Style.Triggers>
                     <DataTrigger Binding="{Binding HasBoardSensors}" Value="True">
-                      <Setter Property="Background" Value="#3BD15A"/>
+                      <Setter Property="Background" Value="{StaticResource OkBrush}"/>
                     </DataTrigger>
                     <DataTrigger Binding="{Binding BoardHealth}" Value="Warning">
                       <Setter Property="Background" Value="#E8B33E"/>

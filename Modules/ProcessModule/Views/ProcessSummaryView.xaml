@@ -29,8 +29,8 @@
         <Setter Property="Padding" Value="8,0,8,0"/>
         <Setter Property="Height" Value="26"/>
         <Setter Property="Background" Value="#141414"/>
-        <Setter Property="Foreground" Value="#8A94A0"/>
-        <Setter Property="BorderBrush" Value="#2A2A2A"/>
+        <Setter Property="Foreground" Value="{StaticResource LabelBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource DividerBrush}"/>
         <Setter Property="BorderThickness" Value="0,0,1,1"/>
         <Setter Property="FontSize" Value="11"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
@@ -53,7 +53,7 @@
                   <Thumb.Template>
                     <ControlTemplate TargetType="Thumb">
                       <Border Background="{TemplateBinding Background}" Padding="0">
-                        <Rectangle Width="1" HorizontalAlignment="Center" Fill="#2A2A2A"/>
+                        <Rectangle Width="1" HorizontalAlignment="Center" Fill="{StaticResource DividerBrush}"/>
                       </Border>
                     </ControlTemplate>
                   </Thumb.Template>
@@ -62,7 +62,7 @@
               <ControlTemplate.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                   <Setter TargetName="HeaderBorder" Property="Background" Value="#1C1C1C"/>
-                  <Setter Property="Foreground" Value="#C8C8C8"/>
+                  <Setter Property="Foreground" Value="{StaticResource TextMutedBrush}"/>
                 </Trigger>
               </ControlTemplate.Triggers>
             </ControlTemplate>
@@ -73,9 +73,9 @@
       <!-- Compact dark search box embedded in the Name/PID column headers. -->
       <Style x:Key="HeaderSearchBoxStyle" TargetType="TextBox">
         <Setter Property="Background" Value="#0A0A0A"/>
-        <Setter Property="Foreground" Value="#DDDDDD"/>
-        <Setter Property="CaretBrush" Value="#DDDDDD"/>
-        <Setter Property="BorderBrush" Value="#3A3A3A"/>
+        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+        <Setter Property="CaretBrush" Value="{StaticResource TextPrimaryBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Padding" Value="4,1"/>
         <Setter Property="FontFamily" Value="Consolas"/>
@@ -93,7 +93,7 @@
               </Border>
               <ControlTemplate.Triggers>
                 <Trigger Property="IsKeyboardFocused" Value="True">
-                  <Setter TargetName="Bd" Property="BorderBrush" Value="#3E9BE8"/>
+                  <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
                 </Trigger>
               </ControlTemplate.Triggers>
             </ControlTemplate>
@@ -104,7 +104,7 @@
       <!-- Dark, flat menu item matching the dashboard palette: no icon gutter, flat accent-blue
            hover, thin separators. Scoped to the row context menu below via its Resources. -->
       <Style x:Key="RowMenuItemStyle" TargetType="MenuItem">
-        <Setter Property="Foreground" Value="#DDDDDD"/>
+        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Padding" Value="10,4"/>
         <Setter Property="Height" Value="24"/>
@@ -138,9 +138,9 @@
         <Setter Property="Padding" Value="8,0"/>
         <Setter Property="FontSize" Value="11"/>
         <Setter Property="FontFamily" Value="Consolas"/>
-        <Setter Property="Foreground" Value="#C8C8C8"/>
+        <Setter Property="Foreground" Value="{StaticResource TextMutedBrush}"/>
         <Setter Property="Background" Value="#1C1C1C"/>
-        <Setter Property="BorderBrush" Value="#3A3A3A"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="Cursor" Value="Hand"/>
@@ -156,18 +156,18 @@
               </Border>
               <ControlTemplate.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                  <Setter TargetName="Bd" Property="Background" Value="#2A2A2A"/>
+                  <Setter TargetName="Bd" Property="Background" Value="{StaticResource DividerBrush}"/>
                   <Setter TargetName="Bd" Property="BorderBrush" Value="#4A4A4A"/>
-                  <Setter Property="Foreground" Value="#E6E6E6"/>
+                  <Setter Property="Foreground" Value="{StaticResource ValueBrush}"/>
                 </Trigger>
                 <Trigger Property="IsPressed" Value="True">
-                  <Setter TargetName="Bd" Property="Background" Value="#3E9BE8"/>
-                  <Setter TargetName="Bd" Property="BorderBrush" Value="#3E9BE8"/>
+                  <Setter TargetName="Bd" Property="Background" Value="{StaticResource AccentBrush}"/>
+                  <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
                   <Setter Property="Foreground" Value="#0A0A0A"/>
                 </Trigger>
                 <Trigger Property="IsEnabled" Value="False">
                   <Setter TargetName="Bd" Property="Background" Value="#161616"/>
-                  <Setter TargetName="Bd" Property="BorderBrush" Value="#2A2A2A"/>
+                  <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource DividerBrush}"/>
                   <Setter Property="Foreground" Value="#5A6470"/>
                   <Setter Property="Cursor" Value="Arrow"/>
                 </Trigger>
@@ -200,8 +200,8 @@
                   <Setter Property="Foreground" Value="#F5C0C0"/>
                 </Trigger>
                 <Trigger Property="IsPressed" Value="True">
-                  <Setter TargetName="Bd" Property="Background" Value="#C43C3C"/>
-                  <Setter TargetName="Bd" Property="BorderBrush" Value="#C43C3C"/>
+                  <Setter TargetName="Bd" Property="Background" Value="{StaticResource DangerBrush}"/>
+                  <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource DangerBrush}"/>
                   <Setter Property="Foreground" Value="#0A0A0A"/>
                 </Trigger>
                 <Trigger Property="IsEnabled" Value="False">
@@ -222,7 +222,7 @@
         <Style.Triggers>
           <DataTrigger Binding="{Binding IsRecording}" Value="True">
             <Setter Property="Background" Value="#1C3A52"/>
-            <Setter Property="BorderBrush" Value="#3E9BE8"/>
+            <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
             <Setter Property="Foreground" Value="#8FD0FF"/>
           </DataTrigger>
         </Style.Triggers>
@@ -233,7 +233,7 @@
         <Setter Property="Template">
           <Setter.Value>
             <ControlTemplate TargetType="Separator">
-              <Border Height="1" Background="#2A2A2A"/>
+              <Border Height="1" Background="{StaticResource DividerBrush}"/>
             </ControlTemplate>
           </Setter.Value>
         </Setter>
@@ -242,8 +242,8 @@
       <!-- Right-click menu for a process row, shared by every row via RowStyle. Defined as a keyed
            resource (not inline in the setter) so its Click handlers wire up correctly. The chrome is
            templated to a flat dark surface instead of the default 3D popup. -->
-      <ContextMenu x:Key="RowContextMenu" Background="#161616" BorderBrush="#3A3A3A"
-                   Foreground="#DDDDDD" FontFamily="Consolas" FontSize="11"
+      <ContextMenu x:Key="RowContextMenu" Background="#161616" BorderBrush="{StaticResource BorderBrush}"
+                   Foreground="{StaticResource TextPrimaryBrush}" FontFamily="Consolas" FontSize="11"
                    HasDropShadow="True">
         <ContextMenu.Resources>
           <Style TargetType="MenuItem" BasedOn="{StaticResource RowMenuItemStyle}"/>
@@ -272,7 +272,7 @@
            selected row, and the MultiTrigger gives a slightly brighter blue for selected+hover. -->
       <Style x:Key="RowStyle" TargetType="ListViewItem">
         <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="Foreground" Value="#DDDDDD"/>
+        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
         <Setter Property="Padding" Value="0"/>
         <Setter Property="Height" Value="22"/>
         <Setter Property="BorderThickness" Value="0"/>
@@ -316,8 +316,8 @@
       <!-- Full ListView chrome: flat dark surface, no default 3D border, GridView header + scroll. -->
       <Style x:Key="ProcessListViewStyle" TargetType="ListView">
         <Setter Property="Background" Value="#0D0D0D"/>
-        <Setter Property="Foreground" Value="#DDDDDD"/>
-        <Setter Property="BorderBrush" Value="#2A2A2A"/>
+        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource DividerBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
@@ -352,7 +352,7 @@
     </Grid.RowDefinitions>
 
     <!-- Dense header bar: accent tick + title on the left, Name/PID search on the right -->
-    <Border Grid.Row="0" BorderBrush="#2A2A2A" BorderThickness="0,0,0,1"
+    <Border Grid.Row="0" BorderBrush="{StaticResource DividerBrush}" BorderThickness="0,0,0,1"
             Padding="0,0,0,4" Margin="0,0,0,6">
       <Grid>
         <Grid.ColumnDefinitions>
@@ -361,22 +361,22 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel Grid.Column="0" Orientation="Horizontal">
-          <Border Width="3" Background="#3E9BE8" Margin="0,1,8,1"/>
-          <TextBlock Text="PROCESSES" Foreground="#E6E6E6" FontSize="12" FontWeight="SemiBold"
+          <Border Width="3" Background="{StaticResource AccentBrush}" Margin="0,1,8,1"/>
+          <TextBlock Text="PROCESSES" Foreground="{StaticResource ValueBrush}" FontSize="12" FontWeight="SemiBold"
                      VerticalAlignment="Center" Margin="0,0,12,0"/>
           <TextBlock Text="{Binding Rows.Count, StringFormat={}{0} active}"
-                     Foreground="#8A94A0" FontSize="11" FontFamily="Consolas"
+                     Foreground="{StaticResource LabelBrush}" FontSize="11" FontFamily="Consolas"
                      VerticalAlignment="Center"/>
 
           <!-- System-wide totals, right after the active count -->
           <TextBlock Text="{Binding ProcessCount, StringFormat=Processes: {0:N0}}"
-                     Foreground="#8A94A0" FontSize="11" FontFamily="Consolas"
+                     Foreground="{StaticResource LabelBrush}" FontSize="11" FontFamily="Consolas"
                      VerticalAlignment="Center" Margin="16,0,0,0"/>
           <TextBlock Text="{Binding ThreadCount, StringFormat=Threads: {0:N0}}"
-                     Foreground="#8A94A0" FontSize="11" FontFamily="Consolas"
+                     Foreground="{StaticResource LabelBrush}" FontSize="11" FontFamily="Consolas"
                      VerticalAlignment="Center" Margin="16,0,0,0"/>
           <TextBlock Text="{Binding HandleCount, StringFormat=Handles: {0:N0}}"
-                     Foreground="#8A94A0" FontSize="11" FontFamily="Consolas"
+                     Foreground="{StaticResource LabelBrush}" FontSize="11" FontFamily="Consolas"
                      VerticalAlignment="Center" Margin="16,0,0,0"/>
 
           <!-- Sustained-hog badge: amber, shown only when at least one process has crossed a peak
@@ -417,12 +417,12 @@
 
         <!-- Name / PID filters, moved up from the column headers -->
         <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-          <TextBlock Text="Name" Foreground="#8A94A0" FontSize="11" FontFamily="Consolas"
+          <TextBlock Text="Name" Foreground="{StaticResource LabelBrush}" FontSize="11" FontFamily="Consolas"
                      VerticalAlignment="Center" Margin="0,0,6,0"/>
           <TextBox Style="{StaticResource HeaderSearchBoxStyle}" Width="160" Height="18"
                    ToolTip="Filter by process name"
                    Text="{Binding NameFilter, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-          <TextBlock Text="PID" Foreground="#8A94A0" FontSize="11" FontFamily="Consolas"
+          <TextBlock Text="PID" Foreground="{StaticResource LabelBrush}" FontSize="11" FontFamily="Consolas"
                      VerticalAlignment="Center" Margin="16,0,6,0"/>
           <TextBox Style="{StaticResource HeaderSearchBoxStyle}" Width="80" Height="18"
                    ToolTip="Filter by PID"
@@ -477,10 +477,10 @@
           <GroupStyle>
             <GroupStyle.HeaderTemplate>
               <DataTemplate>
-                <Border Background="#141414" BorderBrush="#2A2A2A" BorderThickness="0,0,0,1"
+                <Border Background="#141414" BorderBrush="{StaticResource DividerBrush}" BorderThickness="0,0,0,1"
                         Padding="8,3">
                   <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding Name}" Foreground="#3E9BE8" FontSize="11"
+                    <TextBlock Text="{Binding Name}" Foreground="{StaticResource AccentBrush}" FontSize="11"
                                FontWeight="SemiBold" FontFamily="Consolas"/>
                     <TextBlock Text="{Binding ItemCount, StringFormat={}({0})}"
                                Foreground="#5A6470" FontSize="11" FontFamily="Consolas"
@@ -493,7 +493,7 @@
         </ListView.GroupStyle>
         <ListView.View>
           <GridView ColumnHeaderContainerStyle="{StaticResource HeaderStyle}">
-            <GridViewColumn Header="Name" Width="170" local:GridViewSort.SortProperty="Name">
+            <GridViewColumn Header="Name" Width="260" local:GridViewSort.SortProperty="Name">
               <GridViewColumn.CellTemplate>
                 <DataTemplate>
                   <StackPanel Orientation="Horizontal" Margin="8,2">
@@ -504,32 +504,32 @@
                            Margin="0,0,6,0" VerticalAlignment="Center"
                            RenderOptions.BitmapScalingMode="NearestNeighbor"
                            SnapsToDevicePixels="True"/>
-                    <TextBlock Text="{Binding Name}" Foreground="#DDDDDD"
+                    <TextBlock Text="{Binding Name}" Foreground="{StaticResource TextPrimaryBrush}"
                                FontFamily="Consolas" FontSize="11" VerticalAlignment="Center"
                                TextTrimming="CharacterEllipsis"/>
                   </StackPanel>
                 </DataTemplate>
               </GridViewColumn.CellTemplate>
             </GridViewColumn>
-            <GridViewColumn Header="PID" Width="70" local:GridViewSort.SortProperty="ProcessId">
+            <GridViewColumn Header="PID" Width="130" local:GridViewSort.SortProperty="ProcessId">
               <GridViewColumn.CellTemplate>
                 <DataTemplate>
-                  <TextBlock Text="{Binding ProcessId}" Foreground="#8A94A0"
+                  <TextBlock Text="{Binding ProcessId}" Foreground="{StaticResource LabelBrush}"
                              FontFamily="Consolas" FontSize="11" Margin="8,2"
                              TextAlignment="Right"/>
                 </DataTemplate>
               </GridViewColumn.CellTemplate>
             </GridViewColumn>
-            <GridViewColumn Header="Status" Width="80" local:GridViewSort.SortProperty="Status">
+            <GridViewColumn Header="Status" Width="90" local:GridViewSort.SortProperty="Status">
               <GridViewColumn.CellTemplate>
                 <DataTemplate>
-                  <TextBlock Text="{Binding Status}" Foreground="#C8C8C8"
+                  <TextBlock Text="{Binding Status}" Foreground="{StaticResource TextMutedBrush}"
                              FontFamily="Consolas" FontSize="11" Margin="8,2"
                              TextTrimming="CharacterEllipsis"/>
                 </DataTemplate>
               </GridViewColumn.CellTemplate>
             </GridViewColumn>
-            <GridViewColumn Header="CPU" Width="60" local:GridViewSort.SortProperty="CpuPercent">
+            <GridViewColumn Header="CPU" Width="90" local:GridViewSort.SortProperty="CpuPercent">
               <GridViewColumn.CellTemplate>
                 <DataTemplate>
                   <TextBlock Text="{Binding CpuPercent, StringFormat={}{0:0.0}%}"
@@ -539,7 +539,7 @@
                 </DataTemplate>
               </GridViewColumn.CellTemplate>
             </GridViewColumn>
-            <GridViewColumn Header="CPU pk" Width="60" local:GridViewSort.SortProperty="PeakCpuPercent">
+            <GridViewColumn Header="CPU pk" Width="80" local:GridViewSort.SortProperty="PeakCpuPercent">
               <GridViewColumn.CellTemplate>
                 <DataTemplate>
                   <TextBlock Text="{Binding PeakCpuPercent, StringFormat={}{0:0.0}%}"
@@ -563,25 +563,25 @@
                 </DataTemplate>
               </GridViewColumn.CellTemplate>
             </GridViewColumn>
-            <GridViewColumn Header="GPU" Width="60" local:GridViewSort.SortProperty="GpuPercent">
+            <GridViewColumn Header="GPU" Width="80" local:GridViewSort.SortProperty="GpuPercent">
               <GridViewColumn.CellTemplate>
                 <DataTemplate>
                   <TextBlock Text="{Binding GpuPercent, Converter={StaticResource NullablePercent}}"
-                             Foreground="#C8C8C8" FontFamily="Consolas" FontSize="11"
+                             Foreground="{StaticResource TextMutedBrush}" FontFamily="Consolas" FontSize="11"
                              Margin="8,2" TextAlignment="Right"/>
                 </DataTemplate>
               </GridViewColumn.CellTemplate>
             </GridViewColumn>
-            <GridViewColumn Header="Memory" Width="80" local:GridViewSort.SortProperty="WorkingSetMb">
+            <GridViewColumn Header="Memory" Width="100" local:GridViewSort.SortProperty="WorkingSetMb">
               <GridViewColumn.CellTemplate>
                 <DataTemplate>
                   <TextBlock Text="{Binding WorkingSetMb, StringFormat={}{0:0} MB}"
-                             Foreground="#C8C8C8" FontFamily="Consolas" FontSize="11"
+                             Foreground="{StaticResource TextMutedBrush}" FontFamily="Consolas" FontSize="11"
                              Margin="8,2" TextAlignment="Right"/>
                 </DataTemplate>
               </GridViewColumn.CellTemplate>
             </GridViewColumn>
-            <GridViewColumn Header="Mem pk" Width="80" local:GridViewSort.SortProperty="PeakWorkingSetMb">
+            <GridViewColumn Header="Mem pk" Width="90" local:GridViewSort.SortProperty="PeakWorkingSetMb">
               <GridViewColumn.CellTemplate>
                 <DataTemplate>
                   <TextBlock Text="{Binding PeakWorkingSetMb, StringFormat={}{0:0} MB}"
@@ -603,20 +603,20 @@
                 </DataTemplate>
               </GridViewColumn.CellTemplate>
             </GridViewColumn>
-            <GridViewColumn Header="Disk" Width="90" local:GridViewSort.SortProperty="DiskBytesPerSec">
+            <GridViewColumn Header="Disk" Width="100" local:GridViewSort.SortProperty="DiskBytesPerSec">
               <GridViewColumn.CellTemplate>
                 <DataTemplate>
                   <TextBlock Text="{Binding DiskBytesPerSec, Converter={StaticResource ByteRate}}"
-                             Foreground="#C8C8C8" FontFamily="Consolas" FontSize="11"
+                             Foreground="{StaticResource TextMutedBrush}" FontFamily="Consolas" FontSize="11"
                              Margin="8,2" TextAlignment="Right"/>
                 </DataTemplate>
               </GridViewColumn.CellTemplate>
             </GridViewColumn>
-            <GridViewColumn Header="Network" Width="90" local:GridViewSort.SortProperty="NetBytesPerSec">
+            <GridViewColumn Header="Network" Width="100" local:GridViewSort.SortProperty="NetBytesPerSec">
               <GridViewColumn.CellTemplate>
                 <DataTemplate>
                   <TextBlock Text="{Binding NetBytesPerSec, Converter={StaticResource ByteRate}}"
-                             Foreground="#C8C8C8" FontFamily="Consolas" FontSize="11"
+                             Foreground="{StaticResource TextMutedBrush}" FontFamily="Consolas" FontSize="11"
                              Margin="8,2" TextAlignment="Right"/>
                 </DataTemplate>
               </GridViewColumn.CellTemplate>
@@ -634,11 +634,11 @@
         <GridSplitter.Template>
           <ControlTemplate TargetType="GridSplitter">
             <Grid Background="{TemplateBinding Background}">
-              <Border x:Name="Rule" Width="1" Background="#2A2A2A" HorizontalAlignment="Center"/>
+              <Border x:Name="Rule" Width="1" Background="{StaticResource DividerBrush}" HorizontalAlignment="Center"/>
             </Grid>
             <ControlTemplate.Triggers>
               <Trigger Property="IsMouseOver" Value="True">
-                <Setter TargetName="Rule" Property="Background" Value="#553E9BE8"/>
+                <Setter TargetName="Rule" Property="Background" Value="{StaticResource AccentBrush}"/>
                 <Setter TargetName="Rule" Property="Width" Value="2"/>
               </Trigger>
             </ControlTemplate.Triggers>
@@ -647,7 +647,7 @@
       </GridSplitter>
 
       <!-- Detail panel: live metrics for the selected process -->
-      <Border Grid.Column="2" Background="#101010" BorderBrush="#2A2A2A" BorderThickness="1">
+      <Border Grid.Column="2" Background="#101010" BorderBrush="{StaticResource DividerBrush}" BorderThickness="1">
         <Grid>
           <!-- Empty-state hint when nothing is selected -->
           <TextBlock Text="Select a process to view details"
@@ -658,18 +658,18 @@
           <StackPanel Margin="12,10" DataContext="{Binding SelectedRow}"
                       Visibility="{Binding Converter={StaticResource NullToVisibility}}">
             <!-- Process identity -->
-            <TextBlock Text="{Binding Name}" Foreground="#E6E6E6" FontSize="14"
+            <TextBlock Text="{Binding Name}" Foreground="{StaticResource ValueBrush}" FontSize="14"
                        FontWeight="SemiBold" FontFamily="Consolas"
                        TextTrimming="CharacterEllipsis"/>
             <StackPanel Orientation="Horizontal" Margin="0,2,0,10">
               <TextBlock Text="{Binding ProcessId, StringFormat=PID {0}}"
-                         Foreground="#8A94A0" FontSize="11" FontFamily="Consolas"
+                         Foreground="{StaticResource LabelBrush}" FontSize="11" FontFamily="Consolas"
                          Margin="0,0,12,0"/>
-              <TextBlock Text="{Binding Status}" Foreground="#8A94A0"
+              <TextBlock Text="{Binding Status}" Foreground="{StaticResource LabelBrush}"
                          FontSize="11" FontFamily="Consolas"/>
             </StackPanel>
 
-            <Border BorderBrush="#2A2A2A" BorderThickness="0,1,0,0" Margin="0,0,0,8"/>
+            <Border BorderBrush="{StaticResource DividerBrush}" BorderThickness="0,1,0,0" Margin="0,0,0,8"/>
 
             <!-- Live metric rows -->
             <Grid Margin="0,2">
@@ -677,7 +677,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
               </Grid.ColumnDefinitions>
-              <TextBlock Grid.Column="0" Text="CPU" Foreground="#8A94A0"
+              <TextBlock Grid.Column="0" Text="CPU" Foreground="{StaticResource LabelBrush}"
                          FontSize="12" FontFamily="Consolas"/>
               <TextBlock Grid.Column="1" Text="{Binding CpuPercent, StringFormat={}{0:0.0}%}"
                          Foreground="{Binding CpuPercent, Converter={StaticResource LoadToBrush}}"
@@ -698,20 +698,20 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
               </Grid.ColumnDefinitions>
-              <TextBlock Grid.Column="0" Text="GPU" Foreground="#8A94A0"
+              <TextBlock Grid.Column="0" Text="GPU" Foreground="{StaticResource LabelBrush}"
                          FontSize="12" FontFamily="Consolas"/>
               <TextBlock Grid.Column="1" Text="{Binding GpuPercent, Converter={StaticResource NullablePercent}}"
-                         Foreground="#DDDDDD" FontSize="12" FontFamily="Consolas" TextAlignment="Right"/>
+                         Foreground="{StaticResource TextPrimaryBrush}" FontSize="12" FontFamily="Consolas" TextAlignment="Right"/>
             </Grid>
             <Grid Margin="0,2">
               <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
               </Grid.ColumnDefinitions>
-              <TextBlock Grid.Column="0" Text="Memory" Foreground="#8A94A0"
+              <TextBlock Grid.Column="0" Text="Memory" Foreground="{StaticResource LabelBrush}"
                          FontSize="12" FontFamily="Consolas"/>
               <TextBlock Grid.Column="1" Text="{Binding WorkingSetMb, StringFormat={}{0:0} MB}"
-                         Foreground="#DDDDDD" FontSize="12" FontFamily="Consolas" TextAlignment="Right"/>
+                         Foreground="{StaticResource TextPrimaryBrush}" FontSize="12" FontFamily="Consolas" TextAlignment="Right"/>
             </Grid>
             <Grid Margin="0,1">
               <Grid.ColumnDefinitions>
@@ -728,20 +728,20 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
               </Grid.ColumnDefinitions>
-              <TextBlock Grid.Column="0" Text="Disk" Foreground="#8A94A0"
+              <TextBlock Grid.Column="0" Text="Disk" Foreground="{StaticResource LabelBrush}"
                          FontSize="12" FontFamily="Consolas"/>
               <TextBlock Grid.Column="1" Text="{Binding DiskBytesPerSec, Converter={StaticResource ByteRate}}"
-                         Foreground="#DDDDDD" FontSize="12" FontFamily="Consolas" TextAlignment="Right"/>
+                         Foreground="{StaticResource TextPrimaryBrush}" FontSize="12" FontFamily="Consolas" TextAlignment="Right"/>
             </Grid>
             <Grid Margin="0,2">
               <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
               </Grid.ColumnDefinitions>
-              <TextBlock Grid.Column="0" Text="Network" Foreground="#8A94A0"
+              <TextBlock Grid.Column="0" Text="Network" Foreground="{StaticResource LabelBrush}"
                          FontSize="12" FontFamily="Consolas"/>
               <TextBlock Grid.Column="1" Text="{Binding NetBytesPerSec, Converter={StaticResource ByteRate}}"
-                         Foreground="#DDDDDD" FontSize="12" FontFamily="Consolas" TextAlignment="Right"/>
+                         Foreground="{StaticResource TextPrimaryBrush}" FontSize="12" FontFamily="Consolas" TextAlignment="Right"/>
             </Grid>
           </StackPanel>
         </Grid>

@@ -14,31 +14,10 @@
   <UserControl.Resources>
     <local:LoadToBrushConverter x:Key="LoadToBrush"/>
 
-    <!-- Metric readout to the right of each graph: big value, unit on the next line, dim caption. -->
-    <Style x:Key="MetricValue" TargetType="TextBlock">
-      <Setter Property="Foreground" Value="#E6E6E6"/>
-      <Setter Property="FontSize" Value="24"/>
-      <Setter Property="FontFamily" Value="Consolas"/>
-      <Setter Property="LineHeight" Value="26"/>
-    </Style>
-    <Style x:Key="MetricUnit" TargetType="TextBlock">
-      <Setter Property="Foreground" Value="#C0C0C0"/>
-      <Setter Property="FontSize" Value="12"/>
-      <Setter Property="FontFamily" Value="Consolas"/>
-    </Style>
-    <Style x:Key="MetricCaption" TargetType="TextBlock">
-      <Setter Property="Foreground" Value="#8A94A0"/>
-      <Setter Property="FontSize" Value="11"/>
-      <Setter Property="FontFamily" Value="Consolas"/>
-    </Style>
-    <Style x:Key="HeaderSpec" TargetType="TextBlock">
-      <Setter Property="Foreground" Value="#8A94A0"/>
-      <Setter Property="FontSize" Value="11"/>
-      <Setter Property="FontFamily" Value="Consolas"/>
-      <Setter Property="VerticalAlignment" Value="Center"/>
-      <Setter Property="Margin" Value="0,0,16,0"/>
-    </Style>
-    <!-- Process/thread/handle totals in the footer: larger than the header specs. -->
+    <!-- Shared MetricValue / MetricUnit / MetricCaption / HeaderSpec come from Crystal.Resources
+         (Palette.xaml + TextStyles.xaml), merged app-wide in the Shell's App.xaml. -->
+
+    <!-- Process/thread/handle totals in the footer: larger than the header specs. Module-specific. -->
     <Style x:Key="FooterStat" TargetType="TextBlock">
       <Setter Property="Foreground" Value="#B0B0B0"/>
       <Setter Property="FontSize" Value="14"/>
@@ -56,15 +35,15 @@
       </Grid.RowDefinitions>
 
       <!-- ============ Header: title + inline specs (left), slot (right) ============ -->
-      <Border Grid.Row="0" BorderBrush="#2A2A2A" BorderThickness="0,0,0,1" Padding="0,0,0,4">
+      <Border Grid.Row="0" BorderBrush="{StaticResource DividerBrush}" BorderThickness="0,0,0,1" Padding="0,0,0,4">
         <Grid DataContext="{Binding SpecsViewModel}">
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
           </Grid.ColumnDefinitions>
           <StackPanel Grid.Column="0" Orientation="Horizontal">
-            <Border Width="3" Background="#3E9BE8" Margin="0,1,8,1"/>
-            <TextBlock Text="CPU" Foreground="#E6E6E6" FontSize="12" FontWeight="SemiBold"
+            <Border Width="3" Background="{StaticResource AccentBrush}" Margin="0,1,8,1"/>
+            <TextBlock Text="CPU" Foreground="{StaticResource ValueBrush}" FontSize="12" FontWeight="SemiBold"
                        VerticalAlignment="Center" Margin="0,0,16,0"/>
             <TextBlock Text="{Binding Brand}" Style="{StaticResource HeaderSpec}"
                        TextTrimming="CharacterEllipsis"/>
@@ -76,7 +55,7 @@
             <TextBlock Text="{Binding BaseSpeedMHz, StringFormat=Base Speed: {0:N0} MHz}" Style="{StaticResource HeaderSpec}"/>
           </StackPanel>
           <TextBlock Grid.Column="1" Text="{Binding Socket, StringFormat=Slot# {0}}"
-                     Foreground="#8A94A0" FontSize="11" FontFamily="Consolas" VerticalAlignment="Center"/>
+                     Foreground="{StaticResource LabelBrush}" FontSize="11" FontFamily="Consolas" VerticalAlignment="Center"/>
         </Grid>
       </Border>
 
@@ -173,7 +152,7 @@
                     <ColumnDefinition Width="52"/>
                     <ColumnDefinition Width="*"/>
                   </Grid.ColumnDefinitions>
-                  <TextBlock Grid.Column="0" Text="{Binding Label}" Foreground="#8A94A0"
+                  <TextBlock Grid.Column="0" Text="{Binding Label}" Foreground="{StaticResource LabelBrush}"
                              FontSize="11" FontFamily="Consolas" VerticalAlignment="Center"/>
                   <TextBlock Grid.Column="1" Text="{Binding Load, StringFormat={}{0:0.00}%}"
                              Foreground="{Binding Load, Converter={StaticResource LoadToBrush}}"
@@ -181,7 +160,7 @@
                              TextAlignment="Right" Margin="0,0,8,0" VerticalAlignment="Center"/>
                   <ProgressBar Grid.Column="2" Minimum="0" Maximum="100" Value="{Binding Load}"
                                Height="9" VerticalAlignment="Center"
-                               Background="#1A1A1A" BorderBrush="#3A3A3A"
+                               Background="#1A1A1A" BorderBrush="{StaticResource BorderBrush}"
                                Foreground="{Binding Load, Converter={StaticResource LoadToBrush}}"/>
                 </Grid>
               </DataTemplate>

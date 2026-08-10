@@ -11,8 +11,8 @@ namespace Crystal.Controls.RangeBars;
 /// representing <see cref="Value"/> on the <see cref="MinValue"/>..<see cref="MaxValue"/> scale.
 /// The filled portion uses <see cref="FillBrush"/>, the remainder <see cref="TrackBrush"/>.
 /// <para>
-/// This is the low-level drawing primitive (analogous to <c>MeterGauge</c> and
-/// <c>PerformanceGraph</c>); the labeled title/unit/value chrome lives in
+/// This is the low-level drawing primitive (analogous to <c>PerformanceGraph</c>);
+/// the labeled title/unit/value chrome lives in
 /// <see cref="Controls.RangeBarView"/>.
 /// </para>
 /// </summary>

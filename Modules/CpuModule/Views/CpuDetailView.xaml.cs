@@ -1,13 +1,12 @@
 using System.Windows;
 using System.Windows.Controls;
 using CpuModule.ViewModels.Interfaces;
-using Crystal.Controls.MeterGauges.Themes;
 using Crystal.Controls.PerformanceGraphs.Kinds;
 using Crystal.Controls.PerformanceGraphs.Themes;
 
 namespace CpuModule.Views;
 
-/// <summary>Full-scale CPU view: static specs, five live gauges + history graphs, and
+/// <summary>Full-scale CPU view: static specs, five live value readouts + history graphs, and
 /// the instruction-set grid. Reached by selecting the CPU summary tile on the dashboard.</summary>
 public partial class CpuDetailView : UserControl {
   public CpuDetailView() {
@@ -24,9 +23,9 @@ public partial class CpuDetailView : UserControl {
     if (PowerView.Graph is not { } power) return;
     if (TemperatureView.Graph is not { } temperature) return;
 
-    // Accent each plot to match the reference image, and mirror the accent onto its gauge.
-    // Themes are built for the segmented-bar kind so the fill is a flat solid, not the
-    // line-style vertical gradient (which repeats per segment and looks broken).
+    // Accent each plot to match the reference image. Themes are built for the segmented-bar kind
+    // so the fill is a flat solid, not the line-style vertical gradient (which repeats per segment
+    // and looks broken).
     utilization.ApplyTheme(GraphThemes.Rose(GraphKind.SegmentedBar));
     voltage.ApplyTheme(GraphThemes.Emerald(GraphKind.SegmentedBar));
     clock.ApplyTheme(GraphThemes.Amber(GraphKind.SegmentedBar));

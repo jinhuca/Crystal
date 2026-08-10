@@ -19,6 +19,7 @@
     <ProjectReference Include="..\..\Providers\Crystal.Provider.CpuId\Crystal.Provider.CpuId.csproj" />
     <ProjectReference Include="..\..\Providers\Crystal.Provider.Mmi\Crystal.Provider.Mmi.csproj" />
     <ProjectReference Include="..\..\Providers\Crystal.Provider.Smbios\Crystal.Provider.Smbios.csproj" />
+    <ProjectReference Include="..\..\UI\Crystal.Resources\Crystal.Resources.csproj" />
     <ProjectReference Include="..\..\UI\Crystal.Controls\Crystal.Controls.csproj" />
     <ProjectReference Include="..\..\Infrastructures\Crystal.Infrastructure.Constants\Crystal.Infrastructure.Constants.csproj" />
   </ItemGroup>

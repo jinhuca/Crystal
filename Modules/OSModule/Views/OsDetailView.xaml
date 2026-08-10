@@ -7,29 +7,25 @@
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
              d:DesignHeight="820" d:DesignWidth="1100"
-             Background="#101317" Foreground="White"
+             Background="{StaticResource PanelBackgroundBrush}" Foreground="White"
              FontFamily="Segoe UI">
   <UserControl.Resources>
-    <!-- Task Manager-style stat cell: dim caption on top, large light value below. -->
-    <Style x:Key="StatCaption" TargetType="TextBlock">
-      <Setter Property="Foreground" Value="#8A94A0"/>
-      <Setter Property="FontSize" Value="12"/>
-      <Setter Property="Margin" Value="0,0,0,1"/>
-    </Style>
+    <!-- StatCaption removed: byte-identical to the shared StatCaption in Crystal.Resources. -->
+    <!-- Task Manager-style stat cell: large light value below the shared caption. -->
     <Style x:Key="StatValue" TargetType="TextBlock">
-      <Setter Property="Foreground" Value="#E6E6E6"/>
+      <Setter Property="Foreground" Value="{StaticResource ValueBrush}"/>
       <Setter Property="FontSize" Value="22"/>
       <Setter Property="FontWeight" Value="Light"/>
       <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
     </Style>
     <!-- Compact label:value row used in the identity grid. -->
     <Style x:Key="SpecCaption" TargetType="TextBlock">
-      <Setter Property="Foreground" Value="#8A94A0"/>
+      <Setter Property="Foreground" Value="{StaticResource LabelBrush}"/>
       <Setter Property="FontSize" Value="13"/>
       <Setter Property="Margin" Value="0,4"/>
     </Style>
     <Style x:Key="SpecValue" TargetType="TextBlock">
-      <Setter Property="Foreground" Value="#C8D0D8"/>
+      <Setter Property="Foreground" Value="{StaticResource SpecValueBrush}"/>
       <Setter Property="FontSize" Value="13"/>
       <Setter Property="FontFamily" Value="Consolas"/>
       <Setter Property="Margin" Value="24,4,0,4"/>
@@ -55,9 +51,9 @@
               VerticalAlignment="Center" Margin="0,0,20,0"
               Background="#1E2A38" Foreground="White" BorderThickness="0"
               Command="{Binding ShowDashboardCommand}"/>
-      <TextBlock Grid.Column="1" Text="Operating System" Foreground="#3E9BE8" FontSize="30"
+      <TextBlock Grid.Column="1" Text="Operating System" Foreground="{StaticResource AccentBrush}" FontSize="30"
                  FontWeight="SemiBold" VerticalAlignment="Center"/>
-      <TextBlock Grid.Column="2" Text="{Binding OsName}" Foreground="#C8D0D8"
+      <TextBlock Grid.Column="2" Text="{Binding OsName}" Foreground="{StaticResource SpecValueBrush}"
                  FontSize="18" HorizontalAlignment="Right" VerticalAlignment="Bottom"
                  Margin="0,0,0,4"/>
     </Grid>

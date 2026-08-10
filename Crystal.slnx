@@ -19,7 +19,6 @@
     <Project Path="Modules/NetworkModule/NetworkModule.csproj" />
     <Project Path="Modules/ProcessModule/ProcessModule.csproj" />
     <Project Path="Modules/OSModule/OSModule.csproj" />
-    <Project Path="Modules/ResourceModule/ResourceModule.csproj" />
   </Folder>
   <Folder Name="/Providers/">
     <Project Path="Providers/Crystal.Provider.CpuId/Crystal.Provider.CpuId.csproj" />
@@ -57,11 +56,13 @@
     <Project Path="TryIt/TryIt01_PInvoke/TryIt01_PInvoke.csproj" Id="f4f46e8b-a092-464c-a99d-c8374c69fe1b" />
   </Folder>
   <Folder Name="/UI/">
+    <Project Path="UI/Crystal.Resources/Crystal.Resources.csproj" />
     <Project Path="UI/Crystal.Controls/Crystal.Controls.csproj" />
     <Project Path="UI/Crystal.WpfConverters/Crystal.WpfConverters.csproj" />
   </Folder>
   <Folder Name="/UnitTests/">
     <Project Path="UnitTests/Crystal.Controls.Tests/Crystal.Controls.Tests.csproj" />
+    <Project Path="UnitTests/Crystal.Resources.Tests/Crystal.Resources.Tests.csproj" />
     <Project Path="UnitTests/Crystal.Provider.Mmi.Tests/Crystal.Provider.Mmi.Tests.csproj" />
     <Project Path="UnitTests/Crystal.Provider.Smbios.Tests/Crystal.Provider.Smbios.Tests.csproj" />
     <Project Path="UnitTests/Crystal.Provider.Etw.Tests/Crystal.Provider.Etw.Tests.csproj">

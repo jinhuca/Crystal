@@ -6,7 +6,6 @@
         xmlns:local="clr-namespace:Crystal.Controls.Demo"
 				xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs;assembly=Crystal.Controls"
 				xmlns:controls="clr-namespace:Crystal.Controls.PerformanceGraphs.Controls;assembly=Crystal.Controls"
-				xmlns:gaugeControls="clr-namespace:Crystal.Controls.MeterGauges.Controls;assembly=Crystal.Controls"
 				xmlns:barControls="clr-namespace:Crystal.Controls.RangeBars.Controls;assembly=Crystal.Controls"
         mc:Ignorable="d"
         Title="MainWindow" Height="750" Width="1180" Background="Black">
@@ -31,13 +30,6 @@
 			<RadioButton x:Name="SegmentedBarModeRadio" GroupName="GraphKind" Content="Segmented Bar" Foreground="White"
 						 Checked="GraphKindRadio_Changed"/>
 		</StackPanel>
-
-		<!-- Voltage meter gauge -->
-		<gaugeControls:MeterGaugeView x:Name="VoltageGaugeView" Grid.Row="1" Grid.RowSpan="2" Grid.Column="1"
-									  Margin="16,0,0,0"
-									  Title="Voltage" Unit="V"
-									  MinValue="0" MaxValue="3"
-									  ValueFormat="{}{0:0.00}"/>
 
 		<!-- % Utilization -->
 		<controls:PerformanceGraphView x:Name="UtilizationView" Grid.Row="1" Grid.Column="0" Height="260"

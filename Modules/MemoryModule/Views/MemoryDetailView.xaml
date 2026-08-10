@@ -8,28 +8,24 @@
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
              d:DesignHeight="820" d:DesignWidth="1100"
-             Background="#101317" Foreground="White"
+             Background="{StaticResource PanelBackgroundBrush}" Foreground="White"
              FontFamily="Segoe UI">
   <UserControl.Resources>
-    <!-- Task Manager-style stat cell: dim caption on top, large light value below. -->
-    <Style x:Key="StatCaption" TargetType="TextBlock">
-      <Setter Property="Foreground" Value="#8A94A0"/>
-      <Setter Property="FontSize" Value="12"/>
-      <Setter Property="Margin" Value="0,0,0,1"/>
-    </Style>
+    <!-- StatCaption now provided app-wide via Crystal.Resources (TextStyles.xaml). -->
+    <!-- StatValue kept local: divergent FontSize/FontWeight from the shared MetricValue. -->
     <Style x:Key="StatValue" TargetType="TextBlock">
-      <Setter Property="Foreground" Value="#E6E6E6"/>
+      <Setter Property="Foreground" Value="{StaticResource ValueBrush}"/>
       <Setter Property="FontSize" Value="22"/>
       <Setter Property="FontWeight" Value="Light"/>
     </Style>
     <!-- Compact label:value row used in the right-hand spec column. -->
     <Style x:Key="SpecCaption" TargetType="TextBlock">
-      <Setter Property="Foreground" Value="#8A94A0"/>
+      <Setter Property="Foreground" Value="{StaticResource LabelBrush}"/>
       <Setter Property="FontSize" Value="13"/>
       <Setter Property="Margin" Value="0,3"/>
     </Style>
     <Style x:Key="SpecValue" TargetType="TextBlock">
-      <Setter Property="Foreground" Value="#C8D0D8"/>
+      <Setter Property="Foreground" Value="{StaticResource SpecValueBrush}"/>
       <Setter Property="FontSize" Value="13"/>
       <Setter Property="Margin" Value="24,3,0,3"/>
     </Style>
@@ -57,17 +53,17 @@
               VerticalAlignment="Center" Margin="0,0,20,0"
               Background="#1E2A38" Foreground="White" BorderThickness="0"
               Command="{Binding ShowDashboardCommand}"/>
-      <TextBlock Grid.Column="1" Text="Memory" Foreground="#3E9BE8" FontSize="30"
+      <TextBlock Grid.Column="1" Text="Memory" Foreground="{StaticResource AccentBrush}" FontSize="30"
                  FontWeight="SemiBold" VerticalAlignment="Center"/>
-      <TextBlock Grid.Column="2" Text="{Binding HeaderSpecLabel}" Foreground="#C8D0D8"
+      <TextBlock Grid.Column="2" Text="{Binding HeaderSpecLabel}" Foreground="{StaticResource SpecValueBrush}"
                  FontSize="18" HorizontalAlignment="Right" VerticalAlignment="Bottom"
                  Margin="0,0,0,4"/>
     </Grid>
 
     <!-- ============ Memory usage graph ============ -->
     <Grid Grid.Row="1" Margin="0,0,0,2">
-      <TextBlock Text="Memory usage" Foreground="#C8D0D8" FontSize="13" HorizontalAlignment="Left"/>
-      <TextBlock Text="{Binding UsageLabel}" Foreground="#8A94A0" FontSize="13" HorizontalAlignment="Right"/>
+      <TextBlock Text="Memory usage" Foreground="{StaticResource SpecValueBrush}" FontSize="13" HorizontalAlignment="Left"/>
+      <TextBlock Text="{Binding UsageLabel}" Foreground="{StaticResource LabelBrush}" FontSize="13" HorizontalAlignment="Right"/>
     </Grid>
     <graphs:PerformanceGraphView x:Name="UsageView" Grid.Row="2" Margin="0,0,0,14"
                                  MinValue="0" MaxValue="{Binding TotalCapacityGB, TargetNullValue=64}"
@@ -75,7 +71,7 @@
                                  MaxTime="60" MaxTimeFormat="{}{0} seconds" MinTime="0"/>
 
     <!-- ============ Memory composition ============ -->
-    <TextBlock Grid.Row="3" Text="Memory composition" Foreground="#C8D0D8" FontSize="13"
+    <TextBlock Grid.Row="3" Text="Memory composition" Foreground="{StaticResource SpecValueBrush}" FontSize="13"
                Margin="0,0,0,4"/>
     <!-- In-use fraction as a flat horizontal fill; ProgressBar drives width from 0-1 with no converter. -->
     <ProgressBar Grid.Row="4" Height="52" Minimum="0" Maximum="1"
@@ -151,15 +147,15 @@
     <ItemsControl Grid.Row="6" ItemsSource="{Binding Modules}">
       <ItemsControl.ItemTemplate>
         <DataTemplate>
-          <Border Margin="0,0,0,8" Padding="14,10" Background="#161B22" CornerRadius="6">
+          <Border Margin="0,0,0,8" Padding="14,10" Background="{StaticResource SurfaceBackgroundBrush}" CornerRadius="6">
             <StackPanel Orientation="Horizontal">
-              <TextBlock Text="{Binding SlotLabel}" Foreground="#3E9BE8" FontSize="14"
+              <TextBlock Text="{Binding SlotLabel}" Foreground="{StaticResource AccentBrush}" FontSize="14"
                          FontWeight="SemiBold" Width="150" VerticalAlignment="Center"/>
               <TextBlock Text="{Binding CapacityLabel}" FontSize="14" Width="90" VerticalAlignment="Center"/>
-              <TextBlock Text="{Binding SpeedLabel}" Foreground="#C8C8C8" Width="110" VerticalAlignment="Center"/>
-              <TextBlock Text="{Binding FormFactor}" Foreground="#C8C8C8" Width="170" VerticalAlignment="Center"/>
-              <TextBlock Text="{Binding Manufacturer}" Foreground="#C8C8C8" Width="140" VerticalAlignment="Center"/>
-              <TextBlock Text="{Binding PartNumber}" Foreground="#8A94A0" VerticalAlignment="Center"/>
+              <TextBlock Text="{Binding SpeedLabel}" Foreground="{StaticResource TextMutedBrush}" Width="110" VerticalAlignment="Center"/>
+              <TextBlock Text="{Binding FormFactor}" Foreground="{StaticResource TextMutedBrush}" Width="170" VerticalAlignment="Center"/>
+              <TextBlock Text="{Binding Manufacturer}" Foreground="{StaticResource TextMutedBrush}" Width="140" VerticalAlignment="Center"/>
+              <TextBlock Text="{Binding PartNumber}" Foreground="{StaticResource LabelBrush}" VerticalAlignment="Center"/>
             </StackPanel>
           </Border>
         </DataTemplate>
