@@ -43,15 +43,24 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
   private readonly IProcessController _controller;
   private string? _actionStatus;
 
-  // clock, iconProvider and controller are optional so Unity's default registration works (optional
-  // ctor params aren't injected); tests pass a fixed clock for a deterministic export timestamp,
-  // skip icons, and inject a fake controller.
+  // Records the tracked process's per-poll readings to a CSV. Defaults to the real file-backed
+  // recorder; tests inject a fake to assert on the writes without touching disk.
+  private readonly IProcessRecorder _recorder;
+  // PID being recorded, captured when recording starts so it keeps following that process even if
+  // the selection moves to another row. Null when not recording.
+  private uint? _recordingPid;
+  private bool _isRecording;
+
+  // clock, iconProvider, controller and recorder are optional so Unity's default registration works
+  // (optional ctor params aren't injected); tests pass a fixed clock for a deterministic timestamp,
+  // skip icons, and inject fakes.
   public ProcessListViewModel(IProcessModel model, SystemStatsMonitor systemStats,
                               ProcessIconProvider? iconProvider = null, Func<DateTimeOffset>? clock = null,
-                              IProcessController? controller = null) {
+                              IProcessController? controller = null, IProcessRecorder? recorder = null) {
     _clock = clock ?? (() => DateTimeOffset.Now);
     _iconProvider = iconProvider;
     _controller = controller ?? new ProcessController();
+    _recorder = recorder ?? new ProcessRecorder();
     MetricsStatusError = model.MetricsStatusError;
 
     RowsView = new ListCollectionView(Rows);
@@ -105,13 +114,36 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
   public ProcessRowViewModel? SelectedRow {
     get => _selectedRow;
     set {
-      if (SetProperty(ref _selectedRow, value)) RaisePropertyChanged(nameof(CanEndSelectedTask));
+      if (SetProperty(ref _selectedRow, value)) {
+        RaisePropertyChanged(nameof(CanEndSelectedTask));
+        RaisePropertyChanged(nameof(CanStartRecording));
+      }
     }
   }
 
   /// <summary>True when a row is selected and so eligible to be terminated. Bound to the End task
   /// button's enabled state.</summary>
   public bool CanEndSelectedTask => _selectedRow is not null;
+
+  /// <summary>True when the Record button should be enabled: either a recording is running (so it can
+  /// be stopped) or a row is selected to start recording. Bound to the Record button's enabled
+  /// state.</summary>
+  public bool CanStartRecording => _isRecording || _selectedRow is not null;
+
+  /// <summary>True while a recording is in progress. Drives the Record/Stop button label and its
+  /// active-state styling.</summary>
+  public bool IsRecording {
+    get => _isRecording;
+    private set {
+      if (SetProperty(ref _isRecording, value)) {
+        RaisePropertyChanged(nameof(RecordButtonLabel));
+        RaisePropertyChanged(nameof(CanStartRecording));
+      }
+    }
+  }
+
+  /// <summary>Label for the toggle button: "Record" when idle, "Stop rec" while recording.</summary>
+  public string RecordButtonLabel => _isRecording ? "Stop rec" : "Record";
 
   /// <summary>Last End task / Run new task outcome message (a failure reason), or null when the last
   /// action succeeded or none has run. Bound to a transient status line in the header.</summary>
@@ -138,6 +170,55 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
   public void StartTask(string command, bool runAsAdmin = false) {
     var result = _controller.StartTask(command, runAsAdmin);
     ActionStatus = result.Succeeded ? null : result.Message;
+  }
+
+  /// <summary>
+  /// Begins recording the selected process's per-poll readings to <paramref name="filePath"/>. The
+  /// recording follows the PID selected now, even if the selection later moves. No-op when nothing is
+  /// selected or a recording is already running. On failure to open the file the reason is surfaced
+  /// through <see cref="ActionStatus"/>.
+  /// </summary>
+  public void StartRecording(string filePath) {
+    if (_isRecording || _selectedRow is not { } row) return;
+
+    var result = _recorder.Start(filePath, MetricsStatusError);
+    if (!result.Succeeded) {
+      ActionStatus = result.Message;
+      return;
+    }
+
+    _recordingPid = row.ProcessId;
+    IsRecording = true;
+    ActionStatus = $"Recording {row.Name} (PID {row.ProcessId}) → {System.IO.Path.GetFileName(filePath)}";
+  }
+
+  /// <summary>Stops the current recording and reports where it was saved and how many samples it
+  /// captured. No-op when not recording.</summary>
+  public void StopRecording() {
+    if (!_isRecording) return;
+
+    int samples = _recorder.SampleCount;
+    string? file = _recorder.FilePath is { } p ? System.IO.Path.GetFileName(p) : null;
+    _recorder.Stop();
+    _recordingPid = null;
+    IsRecording = false;
+    ActionStatus = file is null
+        ? $"Recording stopped ({samples} sample(s))"
+        : $"Recording saved to {file} ({samples} sample(s))";
+  }
+
+  // The recorded process exited: close the file and report it, distinct from a user-initiated stop so
+  // the user understands why recording ended on its own.
+  private void StopRecordingOnExit() {
+    int samples = _recorder.SampleCount;
+    uint pid = _recordingPid ?? 0;
+    string? file = _recorder.FilePath is { } p ? System.IO.Path.GetFileName(p) : null;
+    _recorder.Stop();
+    _recordingPid = null;
+    IsRecording = false;
+    ActionStatus = file is null
+        ? $"Recording ended: PID {pid} exited ({samples} sample(s))"
+        : $"Recording ended: PID {pid} exited — saved to {file} ({samples} sample(s))";
   }
 
   /// <summary>Opens Explorer at the given process image, file selected. On failure (unknown path,
@@ -256,7 +337,15 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
         _rowsByPid[s.ProcessId] = created;
         Rows.Add(created);
       }
+
+      // Append this poll's reading for the process being recorded, from the same sample stream the
+      // rows update from — no extra sensor work.
+      if (_isRecording && s.ProcessId == _recordingPid) _recorder.WriteSample(s, _clock());
     }
+
+    // The recorded process exited (its PID is absent this poll): end the recording cleanly rather
+    // than leave it running against a gone process.
+    if (_isRecording && _recordingPid is { } pid && !live.Contains(pid)) StopRecordingOnExit();
 
     // Drop rows for processes that are gone. Clear the selection if it was one of them.
     for (int i = Rows.Count - 1; i >= 0; i--) {
@@ -422,5 +511,7 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
   public void Dispose() {
     _subscription.Dispose();
     _statsSubscription.Dispose();
+    // Flush and close any in-progress recording so the file isn't left open if the view is torn down.
+    _recorder.Stop();
   }
 }

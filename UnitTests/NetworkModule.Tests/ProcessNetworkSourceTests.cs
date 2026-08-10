@@ -25,6 +25,8 @@ public class ProcessNetworkSourceTests {
     public IReadOnlyDictionary<uint, ProcessEtwMetrics> SnapshotRates() =>
         _snapshots.Count > 0 ? _snapshots.Dequeue() : new Dictionary<uint, ProcessEtwMetrics>();
 
+    public void Pause() { }
+    public void Resume() { }
     public void Dispose() { }
   }
 

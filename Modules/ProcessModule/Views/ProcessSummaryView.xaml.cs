@@ -109,6 +109,33 @@ public partial class ProcessSummaryView : UserControl {
     vm.StartTask(dialog.Command, dialog.RunAsAdmin);
   }
 
+  // Toggles recording of the selected process's per-poll readings to a CSV. Starting prompts for a
+  // save location (the same UX as the Save button); the file write itself lives in the recorder on
+  // the VM. Stopping is a plain VM call. Cancelling the save dialog leaves recording off.
+  private void OnToggleRecord(object sender, RoutedEventArgs e) {
+    if (DataContext is not ProcessListViewModel vm) return;
+
+    if (vm.IsRecording) {
+      vm.StopRecording();
+      return;
+    }
+
+    if (vm.SelectedRow is not { } row) return;
+    var dialog = new Microsoft.Win32.SaveFileDialog {
+      Title = "Record process to file",
+      Filter = "CSV (*.csv)|*.csv|Text (*.txt)|*.txt",
+      DefaultExt = ".csv",
+      FileName = $"record-{SafeName(row.Name)}-{row.ProcessId}-{System.DateTime.Now:yyyy-MM-dd-HHmmss}.csv",
+    };
+    if (dialog.ShowDialog() != true) return;
+
+    vm.StartRecording(dialog.FileName);
+  }
+
+  // Strip characters Windows won't allow in a filename so the suggested default name is always valid.
+  private static string SafeName(string name) =>
+      string.Concat(name.Split(System.IO.Path.GetInvalidFileNameChars()));
+
   // The row the context menu was opened on. The menu is shared across rows, so its DataContext is
   // the row VM WPF placed on it when the row was right-clicked.
   private static ProcessRowViewModel? MenuRow(object sender) =>

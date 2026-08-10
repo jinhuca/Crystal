@@ -1,5 +1,6 @@
 using System.Threading;
 using System.Windows;
+using Crystal.Provider.Etw;
 using Crystal.Shell.Navigation;
 using Crystal.Shell.Views;
 using Crystal.Service.Sensors;
@@ -118,5 +119,25 @@ public partial class App : PrismApplication {
 
     // Reopen whatever detail windows were open when the app last exited.
     detailWindows.RestoreSession();
+
+    GateEtwCaptureOnVisibility();
+  }
+
+  // Suspend the kernel ETW capture (per-process GPU/Disk/Network) while the window is minimized —
+  // its columns aren't visible then, and the continuous per-event accumulation is a notable chunk of
+  // idle CPU. The kernel session stays up (avoiding a fragile stop/restart that needs elevation); we
+  // just stop feeding its accumulators. Resumed the moment the window is restored.
+  private void GateEtwCaptureOnVisibility() {
+    if (MainWindow is not { } window) return;
+    // ProcessModule registers this; resolve rather than construct so we share the one live session.
+    var etw = Container.Resolve<IProcessEtwSource>();
+
+    void Apply() {
+      if (window.WindowState == WindowState.Minimized) etw.Pause();
+      else etw.Resume();
+    }
+
+    window.StateChanged += (_, _) => Apply();
+    Apply();
   }
 }

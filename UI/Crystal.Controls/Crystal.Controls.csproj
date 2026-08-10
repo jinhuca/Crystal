@@ -8,4 +8,10 @@
     <RootNamespace>Crystal.Controls</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <!-- Expose internal visibility-gate members (RenderSuspended/HasPendingRender/ApplyVisibility)
+         to the test project so the off-screen render suspension can be tested deterministically. -->
+    <InternalsVisibleTo Include="Crystal.Controls.Tests" />
+  </ItemGroup>
+
 </Project>

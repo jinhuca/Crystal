@@ -97,6 +97,14 @@ public class PerformanceGraph : FrameworkElement {
   private readonly CircularBuffer<double> _values;
   private readonly int _historyLength;
 
+  // Rendering is suspended while the control is off-screen — a collapsed tile, a minimized window,
+  // or a closed detail window all flip IsVisible to false. Samples still land in the buffer so no
+  // data gap forms, but InvalidateVisual (which queues a render pass every poll for something nobody
+  // is looking at) is skipped. A single deferred invalidation is coalesced and flushed the moment the
+  // control becomes visible again, so the plot is correct as soon as it reappears.
+  private bool _renderSuspended;
+  private bool _pendingRender;
+
   /// <summary>Creates a graph with the default 60-sample history and a 60-column grid.</summary>
   public PerformanceGraph() : this(DefaultHistoryLength, DefaultGridColumns) { }
 
@@ -118,6 +126,40 @@ public class PerformanceGraph : FrameworkElement {
 
     SnapsToDevicePixels = true;
     UseLayoutRounding = true;
+
+    // Suspend rendering whenever the control leaves the screen and flush any deferred render when it
+    // returns. IsVisible already folds in every ancestor's visibility and the window's, so this one
+    // hook covers collapsed tiles, minimized windows, and closed detail windows alike.
+    IsVisibleChanged += (_, e) => ApplyVisibility((bool)e.NewValue);
+    ApplyVisibility(IsVisible);
+  }
+
+  /// <summary>True while rendering is suspended because the control is off-screen.</summary>
+  internal bool RenderSuspended => _renderSuspended;
+
+  /// <summary>True when a sample arrived while suspended, so a repaint is owed on the next show.</summary>
+  internal bool HasPendingRender => _pendingRender;
+
+  // Core of the visibility gate, split out from the IsVisibleChanged hook so it can be driven
+  // deterministically in tests (IsVisible only flips true under a live, shown window).
+  internal void ApplyVisibility(bool visible) {
+    _renderSuspended = !visible;
+    // Became visible with samples added while hidden — repaint once to show the current buffer.
+    if (visible && _pendingRender) {
+      _pendingRender = false;
+      InvalidateVisual();
+    }
+  }
+
+  // Queue a repaint, unless the control is off-screen — then just remember one is owed so it can be
+  // flushed on the next IsVisible transition. Keeps the ring buffer and the screen in sync without
+  // spending a render pass on an invisible control every poll.
+  private void RequestRender() {
+    if (_renderSuspended) {
+      _pendingRender = true;
+      return;
+    }
+    InvalidateVisual();
   }
 
   /// <summary>Number of samples retained/plotted — independent of <see cref="GridColumns"/>.</summary>
@@ -242,7 +284,7 @@ public class PerformanceGraph : FrameworkElement {
       return;
     }
     _values.Add(value);
-    InvalidateVisual();
+    RequestRender();
   }
 
   /// <summary>Discards all buffered samples.</summary>
@@ -252,7 +294,7 @@ public class PerformanceGraph : FrameworkElement {
       return;
     }
     _values.Clear();
-    InvalidateVisual();
+    RequestRender();
   }
 
   private static void OnLineBrushChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {

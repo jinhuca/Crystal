@@ -36,6 +36,11 @@ public sealed class ProcessEtwReader : IProcessEtwSource {
   private readonly Stopwatch _clock = Stopwatch.StartNew();
   private double _lastSnapshotMs;
   private volatile bool _running;
+  // When true, event handlers return immediately: the kernel session stays up but stops feeding the
+  // accumulators, so a minimized/hidden window costs almost nothing. Read on the pump thread (per
+  // event) and on the GPU-event thread; written from the UI thread — volatile suffices since it only
+  // gates work, and a snapshot clears the accumulators under the lock anyway.
+  private volatile bool _paused;
   private string? _startError;
   private bool _disposed;
 
@@ -137,23 +142,48 @@ public sealed class ProcessEtwReader : IProcessEtwSource {
     kernel.UdpIpRecv += e => Add(a => a.NetBytes += e.size, (uint)e.ProcessID);
   }
 
+  // How a DxgKrnl event maps onto DMA-packet timing, decided once per distinct event name.
+  internal enum DmaKind { Ignore, Start, Stop }
+
+  // dynamic.All fires for every DxgKrnl event — the highest-frequency stream we subscribe to. The
+  // old handler ran up to four case-insensitive IndexOf scans over the event name on every single
+  // event; classifying each distinct name once and caching the verdict turns the steady-state cost
+  // into a dictionary lookup. All DynamicTraceEventParser callbacks run serially on the one pump
+  // thread, so this cache needs no synchronization.
+  private readonly Dictionary<string, DmaKind> _dmaKindByName = new(StringComparer.Ordinal);
+
+  internal static DmaKind ClassifyDma(string name) {
+    if (name.IndexOf("DmaPacket", StringComparison.OrdinalIgnoreCase) < 0) return DmaKind.Ignore;
+    if (name.IndexOf("Start", StringComparison.OrdinalIgnoreCase) >= 0) return DmaKind.Start;
+    if (name.IndexOf("Stop", StringComparison.OrdinalIgnoreCase) >= 0
+        || name.IndexOf("Info", StringComparison.OrdinalIgnoreCase) >= 0) return DmaKind.Stop;
+    return DmaKind.Ignore;
+  }
+
   // DxgKrnl DMA packets bracket GPU execution: a Start carries a context+packet id, the matching
   // Stop marks completion. We attribute the elapsed wall time between the pair to the emitting
   // process. This is an approximation of engine-busy time, not exact hardware occupancy, but it
   // tracks Task Manager's "GPU %" closely enough for a per-process ranking.
   private void WireGpuEvents(DynamicTraceEventParser dynamic) {
     dynamic.All += e => {
+      if (_paused) return;
+
+      // e.EventName allocates/formats the name; look up the cached verdict by it and only fall back
+      // to the (one-time) string scan when we've not seen this event name before.
       var name = e.EventName;
-      if (name.IndexOf("DmaPacket", StringComparison.OrdinalIgnoreCase) < 0) return;
+      if (!_dmaKindByName.TryGetValue(name, out var kind)) {
+        kind = ClassifyDma(name);
+        _dmaKindByName[name] = kind;
+      }
+      if (kind == DmaKind.Ignore) return;
 
       // Key each in-flight packet by the context+packet id fields the DxgKrnl payload exposes.
       ulong key = PacketKey(e);
       double nowMs = e.TimeStampRelativeMSec;
 
-      if (name.IndexOf("Start", StringComparison.OrdinalIgnoreCase) >= 0) {
+      if (kind == DmaKind.Start) {
         lock (_gate) _dmaStartMs[key] = nowMs;
-      } else if (name.IndexOf("Stop", StringComparison.OrdinalIgnoreCase) >= 0
-                 || name.IndexOf("Info", StringComparison.OrdinalIgnoreCase) >= 0) {
+      } else {
         lock (_gate) {
           if (_dmaStartMs.Remove(key, out var startMs) && nowMs >= startMs) {
             GetLocked((uint)e.ProcessID).GpuBusyMs += nowMs - startMs;
@@ -181,7 +211,7 @@ public sealed class ProcessEtwReader : IProcessEtwSource {
   }
 
   private void Add(Action<Accumulator> mutate, uint pid) {
-    if (pid == 0) return;
+    if (_paused || pid == 0) return;
     lock (_gate) mutate(GetLocked(pid));
   }
 
@@ -193,8 +223,31 @@ public sealed class ProcessEtwReader : IProcessEtwSource {
     return a;
   }
 
+  public void Pause() {
+    if (!_running) return;
+    _paused = true;
+    // Drop whatever accumulated up to the pause so it isn't reported after resume. Handlers already
+    // early-out on _paused, but one could be mid-flight, so clear under the lock.
+    lock (_gate) {
+      _acc.Clear();
+      _dmaStartMs.Clear();
+    }
+  }
+
+  public void Resume() {
+    if (!_running || !_paused) return;
+    // Start a fresh window: without resetting the snapshot clock, the first post-resume snapshot
+    // would divide by the whole paused gap and read as a near-zero rate for real activity.
+    lock (_gate) {
+      _acc.Clear();
+      _dmaStartMs.Clear();
+      _lastSnapshotMs = _clock.Elapsed.TotalMilliseconds;
+    }
+    _paused = false;
+  }
+
   public IReadOnlyDictionary<uint, ProcessEtwMetrics> SnapshotRates() {
-    if (!_running) return EmptySnapshot;
+    if (!_running || _paused) return EmptySnapshot;
 
     lock (_gate) {
       double nowMs = _clock.Elapsed.TotalMilliseconds;

@@ -13,4 +13,9 @@
     <PackageReference Include="System.Reactive" Version="7.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- Expose the pure DMA-event classifier (ClassifyDma/DmaKind) for direct unit testing. -->
+    <InternalsVisibleTo Include="Crystal.Provider.Etw.Tests" />
+  </ItemGroup>
+
 </Project>

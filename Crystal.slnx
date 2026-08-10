@@ -64,6 +64,11 @@
     <Project Path="UnitTests/Crystal.Controls.Tests/Crystal.Controls.Tests.csproj" />
     <Project Path="UnitTests/Crystal.Provider.Mmi.Tests/Crystal.Provider.Mmi.Tests.csproj" />
     <Project Path="UnitTests/Crystal.Provider.Smbios.Tests/Crystal.Provider.Smbios.Tests.csproj" />
+    <Project Path="UnitTests/Crystal.Provider.Etw.Tests/Crystal.Provider.Etw.Tests.csproj">
+      <Platform Solution="*|Any CPU" Project="x64" />
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
     <Project Path="UnitTests/Crystal.Service.Sensors.Tests/Crystal.Service.Sensors.Tests.csproj">
       <Platform Solution="*|Any CPU" Project="x64" />
       <Platform Solution="*|x64" Project="x64" />

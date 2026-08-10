@@ -216,6 +216,18 @@
         </Setter>
       </Style>
 
+      <!-- Record toggle: neutral like the other toolbar buttons when idle, but while recording it
+           takes a steady accent fill so the active state is unmistakable next to Run/End. -->
+      <Style x:Key="RecordButtonStyle" TargetType="Button" BasedOn="{StaticResource ToolbarButtonStyle}">
+        <Style.Triggers>
+          <DataTrigger Binding="{Binding IsRecording}" Value="True">
+            <Setter Property="Background" Value="#1C3A52"/>
+            <Setter Property="BorderBrush" Value="#3E9BE8"/>
+            <Setter Property="Foreground" Value="#8FD0FF"/>
+          </DataTrigger>
+        </Style.Triggers>
+      </Style>
+
       <Style x:Key="RowMenuSeparatorStyle" TargetType="Separator">
         <Setter Property="Margin" Value="0,3"/>
         <Setter Property="Template">
@@ -427,6 +439,11 @@
           <Button Content="Run new task" Margin="16,0,0,0" Style="{StaticResource ToolbarButtonStyle}"
                   ToolTip="Launch a new process (optionally as administrator)"
                   Click="OnRunNewTask"/>
+          <!-- Toggle: records the selected process's per-poll readings to a CSV; enabled once a row
+               is selected, then stays enabled (as "Stop rec") until stopped or the process exits. -->
+          <Button Content="{Binding RecordButtonLabel}" Margin="6,0,0,0" Style="{StaticResource RecordButtonStyle}"
+                  ToolTip="Record the selected process's CPU/memory/GPU/disk/network to a CSV file"
+                  IsEnabled="{Binding CanStartRecording}" Click="OnToggleRecord"/>
           <!-- Destructive, so it reads red and is disabled until a row is selected. -->
           <Button Content="End task" Margin="6,0,0,0" Style="{StaticResource DangerButtonStyle}"
                   ToolTip="Terminate the selected process"
@@ -476,7 +493,7 @@
         </ListView.GroupStyle>
         <ListView.View>
           <GridView ColumnHeaderContainerStyle="{StaticResource HeaderStyle}">
-            <GridViewColumn Header="Name" Width="260" local:GridViewSort.SortProperty="Name">
+            <GridViewColumn Header="Name" Width="170" local:GridViewSort.SortProperty="Name">
               <GridViewColumn.CellTemplate>
                 <DataTemplate>
                   <StackPanel Orientation="Horizontal" Margin="8,2">
@@ -494,7 +511,7 @@
                 </DataTemplate>
               </GridViewColumn.CellTemplate>
             </GridViewColumn>
-            <GridViewColumn Header="PID" Width="130" local:GridViewSort.SortProperty="ProcessId">
+            <GridViewColumn Header="PID" Width="70" local:GridViewSort.SortProperty="ProcessId">
               <GridViewColumn.CellTemplate>
                 <DataTemplate>
                   <TextBlock Text="{Binding ProcessId}" Foreground="#8A94A0"
@@ -503,7 +520,7 @@
                 </DataTemplate>
               </GridViewColumn.CellTemplate>
             </GridViewColumn>
-            <GridViewColumn Header="Status" Width="90" local:GridViewSort.SortProperty="Status">
+            <GridViewColumn Header="Status" Width="80" local:GridViewSort.SortProperty="Status">
               <GridViewColumn.CellTemplate>
                 <DataTemplate>
                   <TextBlock Text="{Binding Status}" Foreground="#C8C8C8"
@@ -512,7 +529,7 @@
                 </DataTemplate>
               </GridViewColumn.CellTemplate>
             </GridViewColumn>
-            <GridViewColumn Header="CPU" Width="90" local:GridViewSort.SortProperty="CpuPercent">
+            <GridViewColumn Header="CPU" Width="60" local:GridViewSort.SortProperty="CpuPercent">
               <GridViewColumn.CellTemplate>
                 <DataTemplate>
                   <TextBlock Text="{Binding CpuPercent, StringFormat={}{0:0.0}%}"
@@ -522,7 +539,7 @@
                 </DataTemplate>
               </GridViewColumn.CellTemplate>
             </GridViewColumn>
-            <GridViewColumn Header="CPU pk" Width="80" local:GridViewSort.SortProperty="PeakCpuPercent">
+            <GridViewColumn Header="CPU pk" Width="60" local:GridViewSort.SortProperty="PeakCpuPercent">
               <GridViewColumn.CellTemplate>
                 <DataTemplate>
                   <TextBlock Text="{Binding PeakCpuPercent, StringFormat={}{0:0.0}%}"
@@ -546,7 +563,7 @@
                 </DataTemplate>
               </GridViewColumn.CellTemplate>
             </GridViewColumn>
-            <GridViewColumn Header="GPU" Width="80" local:GridViewSort.SortProperty="GpuPercent">
+            <GridViewColumn Header="GPU" Width="60" local:GridViewSort.SortProperty="GpuPercent">
               <GridViewColumn.CellTemplate>
                 <DataTemplate>
                   <TextBlock Text="{Binding GpuPercent, Converter={StaticResource NullablePercent}}"
@@ -555,7 +572,7 @@
                 </DataTemplate>
               </GridViewColumn.CellTemplate>
             </GridViewColumn>
-            <GridViewColumn Header="Memory" Width="100" local:GridViewSort.SortProperty="WorkingSetMb">
+            <GridViewColumn Header="Memory" Width="80" local:GridViewSort.SortProperty="WorkingSetMb">
               <GridViewColumn.CellTemplate>
                 <DataTemplate>
                   <TextBlock Text="{Binding WorkingSetMb, StringFormat={}{0:0} MB}"
@@ -564,7 +581,7 @@
                 </DataTemplate>
               </GridViewColumn.CellTemplate>
             </GridViewColumn>
-            <GridViewColumn Header="Mem pk" Width="90" local:GridViewSort.SortProperty="PeakWorkingSetMb">
+            <GridViewColumn Header="Mem pk" Width="80" local:GridViewSort.SortProperty="PeakWorkingSetMb">
               <GridViewColumn.CellTemplate>
                 <DataTemplate>
                   <TextBlock Text="{Binding PeakWorkingSetMb, StringFormat={}{0:0} MB}"
@@ -586,7 +603,7 @@
                 </DataTemplate>
               </GridViewColumn.CellTemplate>
             </GridViewColumn>
-            <GridViewColumn Header="Disk" Width="100" local:GridViewSort.SortProperty="DiskBytesPerSec">
+            <GridViewColumn Header="Disk" Width="90" local:GridViewSort.SortProperty="DiskBytesPerSec">
               <GridViewColumn.CellTemplate>
                 <DataTemplate>
                   <TextBlock Text="{Binding DiskBytesPerSec, Converter={StaticResource ByteRate}}"
@@ -595,7 +612,7 @@
                 </DataTemplate>
               </GridViewColumn.CellTemplate>
             </GridViewColumn>
-            <GridViewColumn Header="Network" Width="100" local:GridViewSort.SortProperty="NetBytesPerSec">
+            <GridViewColumn Header="Network" Width="90" local:GridViewSort.SortProperty="NetBytesPerSec">
               <GridViewColumn.CellTemplate>
                 <DataTemplate>
                   <TextBlock Text="{Binding NetBytesPerSec, Converter={StaticResource ByteRate}}"
@@ -621,7 +638,7 @@
             </Grid>
             <ControlTemplate.Triggers>
               <Trigger Property="IsMouseOver" Value="True">
-                <Setter TargetName="Rule" Property="Background" Value="#3E9BE8"/>
+                <Setter TargetName="Rule" Property="Background" Value="#553E9BE8"/>
                 <Setter TargetName="Rule" Property="Width" Value="2"/>
               </Trigger>
             </ControlTemplate.Triggers>

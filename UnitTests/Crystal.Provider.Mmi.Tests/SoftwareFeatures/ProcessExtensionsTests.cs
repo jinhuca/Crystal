@@ -176,6 +176,39 @@ public class ProcessExtensionsTests
         Assert.Empty(results);
     }
 
+    [Fact]
+    public async Task Process_query_bypasses_the_class_cache()
+    {
+        // Win32_Process is volatile: the per-class cache would freeze the first snapshot, so
+        // per-process CPU% (a cross-poll delta) would read a constant zero. The extension must
+        // request a live re-query every poll.
+        var provider = new FakeWmiProvider("Win32_Process", new[] { ChromeRow() });
+
+        await provider.ToSafeProcessMetricsAsync(CancellationToken.None);
+
+        Assert.True(provider.LastBypassCache);
+    }
+
+    [Fact]
+    public async Task Process_query_projects_only_consumed_columns()
+    {
+        // The poll runs every second over hundreds of processes, so it selects only the columns
+        // ProcessMonitor reads instead of SELECT * — cutting WMI marshaling and allocation.
+        var provider = new FakeWmiProvider("Win32_Process", new[] { ChromeRow() });
+
+        await provider.ToSafeProcessMetricsAsync(CancellationToken.None);
+
+        Assert.NotNull(provider.LastProjection);
+        Assert.Contains("ProcessId", provider.LastProjection!);
+        Assert.Contains("Name", provider.LastProjection!);
+        Assert.Contains("KernelModeTime", provider.LastProjection!);
+        Assert.Contains("UserModeTime", provider.LastProjection!);
+        Assert.Contains("SessionId", provider.LastProjection!);
+        Assert.Contains("WorkingSetSize", provider.LastProjection!);
+        Assert.Contains("Status", provider.LastProjection!);
+        Assert.Contains("ExecutablePath", provider.LastProjection!);
+    }
+
     // ── WorkingSetInMB ─────────────────────────────────────────────────────
 
     [Fact]

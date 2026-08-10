@@ -49,12 +49,17 @@ public class ProcessModule(IRegionManager regionManager) : IModule {
     // singleton is fine.
     containerRegistry.RegisterSingleton<IProcessController, ProcessController>();
 
+    // Records the selected process's per-poll readings to a CSV. Holds a file handle only while a
+    // recording is active; one recording at a time, so a singleton (one live file) is correct.
+    containerRegistry.RegisterSingleton<IProcessRecorder, ProcessRecorder>();
+
     // One VM instance per view; the tile is the only consumer today. Built via a factory because
     // its optional Func<DateTimeOffset>? clock param isn't injected by Unity (it defaults to the
     // system clock for the live export timestamp).
     containerRegistry.Register<ProcessListViewModel>(
         cp => new ProcessListViewModel(cp.Resolve<IProcessModel>(), cp.Resolve<SystemStatsMonitor>(),
-            cp.Resolve<ProcessIconProvider>(), controller: cp.Resolve<IProcessController>()));
+            cp.Resolve<ProcessIconProvider>(), controller: cp.Resolve<IProcessController>(),
+            recorder: cp.Resolve<IProcessRecorder>()));
 
     ViewModelLocationProvider.Register<ProcessSummaryView>(
         () => ContainerLocator.Container.Resolve<ProcessListViewModel>());

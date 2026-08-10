@@ -27,4 +27,19 @@ public interface IProcessEtwSource : IDisposable {
   /// accumulators. Call on a steady cadence (the process poll cadence). Empty if not running.
   /// </summary>
   IReadOnlyDictionary<uint, ProcessEtwMetrics> SnapshotRates();
+
+  /// <summary>
+  /// Suspends per-event accumulation without tearing down the kernel session. Call when the window
+  /// is minimized/hidden — nobody is watching the per-process GPU/Disk/Network columns, so skipping
+  /// the (otherwise continuous) per-event parsing and bookkeeping saves idle CPU. Idempotent; a
+  /// no-op when the session never started. Snapshots return empty while paused.
+  /// </summary>
+  void Pause();
+
+  /// <summary>
+  /// Resumes accumulation after <see cref="Pause"/>, starting a fresh rate window (the paused
+  /// interval is discarded rather than reported as one long spike). Idempotent; a no-op when the
+  /// session never started.
+  /// </summary>
+  void Resume();
 }

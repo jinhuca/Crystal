@@ -28,7 +28,8 @@ internal sealed class FakeSmbiosProcessorProvider(IReadOnlyList<SmbiosProcessorI
 internal sealed class FakeWmiHardwareProvider(IReadOnlyList<FrozenDictionary<string, WmiValue>> instances)
     : IWmiHardwareProvider {
   public Task<IReadOnlyList<FrozenDictionary<string, WmiValue>>> GetMultiMetricsForClassAsync(
-      string wmiClassName, CancellationToken cancellationToken)
+      string wmiClassName, CancellationToken cancellationToken, bool bypassCache = false,
+      IReadOnlyList<string>? projection = null)
     => Task.FromResult(instances);
 
   public Task<IReadOnlyList<FrozenDictionary<string, WmiValue>>> GetMultiMetricsForClassAsync(

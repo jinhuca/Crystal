@@ -90,4 +90,71 @@ public class PerformanceGraphTests {
     Assert.Same(Brushes.Red, graph.LineBrush);
     Assert.Same(originalBackground, graph.GraphBackground);
   });
+
+  // ── Off-screen render suspension ───────────────────────────────────────
+  // A never-shown control starts life not connected to a visible tree, so IsVisible is false and
+  // rendering begins suspended — exactly the state these tests assert against.
+
+  [Fact]
+  public void NewGraph_StartsRenderSuspended_WhileOffScreen() => StaRunner.Run(() => {
+    var graph = new PerformanceGraph();
+
+    Assert.True(graph.RenderSuspended);
+    Assert.False(graph.HasPendingRender);
+  });
+
+  [Fact]
+  public void AddValue_WhileSuspended_DefersRenderInsteadOfDropping() => StaRunner.Run(() => {
+    var graph = new PerformanceGraph();
+
+    graph.AddValue(42);
+
+    // The sample is still buffered (no data gap), but the repaint is only owed, not issued.
+    Assert.True(graph.HasPendingRender);
+  });
+
+  [Fact]
+  public void BecomingVisible_FlushesTheDeferredRender() => StaRunner.Run(() => {
+    var graph = new PerformanceGraph();
+    graph.AddValue(42);
+    Assert.True(graph.HasPendingRender);
+
+    graph.ApplyVisibility(true);
+
+    // The owed repaint is consumed on the transition to visible.
+    Assert.False(graph.RenderSuspended);
+    Assert.False(graph.HasPendingRender);
+  });
+
+  [Fact]
+  public void BecomingVisible_WithNoBufferedSamples_HasNothingToFlush() => StaRunner.Run(() => {
+    var graph = new PerformanceGraph();
+
+    graph.ApplyVisibility(true);
+
+    Assert.False(graph.RenderSuspended);
+    Assert.False(graph.HasPendingRender);
+  });
+
+  [Fact]
+  public void AddValue_WhileVisible_DoesNotAccumulatePendingRender() => StaRunner.Run(() => {
+    var graph = new PerformanceGraph();
+    graph.ApplyVisibility(true);
+
+    graph.AddValue(42);
+
+    // Visible: the repaint goes out immediately, so nothing is left owed.
+    Assert.False(graph.HasPendingRender);
+  });
+
+  [Fact]
+  public void GoingBackOffScreen_ReSuspendsRendering() => StaRunner.Run(() => {
+    var graph = new PerformanceGraph();
+    graph.ApplyVisibility(true);
+    Assert.False(graph.RenderSuspended);
+
+    graph.ApplyVisibility(false);
+
+    Assert.True(graph.RenderSuspended);
+  });
 }

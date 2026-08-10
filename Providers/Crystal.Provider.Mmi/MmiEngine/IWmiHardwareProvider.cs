@@ -14,10 +14,24 @@ public interface IWmiHardwareProvider {
   /// </summary>
   /// <param name="wmiClassName">The WMI/CIM class name to query, e.g. <c>Win32_Battery</c>.</param>
   /// <param name="cancellationToken">Token used to cancel the streaming query.</param>
+  /// <param name="bypassCache">
+  /// When <c>true</c>, skips the per-class result cache and re-queries live. Pass this for volatile
+  /// runtime classes such as <c>Win32_Process</c> whose values change every poll; the default
+  /// (<c>false</c>) memoizes the first result, which is correct only for static inventory classes.
+  /// </param>
+  /// <param name="projection">
+  /// Optional list of property names to request instead of <c>*</c>. Selecting only the columns a
+  /// caller consumes cuts WMI marshaling and per-instance allocation — significant for a class polled
+  /// every second like <c>Win32_Process</c>. Only honored on the uncached path (<paramref name="bypassCache"/>
+  /// <c>true</c>); the cache is keyed by class name alone, so a projected result must never be shared.
+  /// Property names must be trusted identifiers (they are concatenated into the WQL SELECT list).
+  /// </param>
   /// <returns>The materialized instances, one property bag per instance.</returns>
   Task<IReadOnlyList<FrozenDictionary<string, WmiValue>>> GetMultiMetricsForClassAsync(
       string wmiClassName,
-      CancellationToken cancellationToken);
+      CancellationToken cancellationToken,
+      bool bypassCache = false,
+      IReadOnlyList<string>? projection = null);
 
   /// <summary>
   /// Enumerates all instances of the specified WMI class in an explicit namespace.

@@ -79,16 +79,24 @@ public class PerformanceGraphRenderTests {
     return new PixelRenderer(graph, 240, 120).TopMostRowWithColor(Plot);
   }
 
-  private static PerformanceGraph NewGraph(GraphKind kind) => new() {
-    Kind = kind,
-    MinValue = 0,
-    MaxValue = 100,
-    // Neutral background/grid/border so the only Plot-colored pixels come from the data layer.
-    GraphBackground = Brushes.Black,
-    GridBrush = Brushes.Black,
-    BorderBrush = Brushes.Black,
-    FillBrush = Brushes.Transparent,
-    LineBrush = new SolidColorBrush(Plot),
-    LineThickness = 2
-  };
+  private static PerformanceGraph NewGraph(GraphKind kind) {
+    var graph = new PerformanceGraph {
+      Kind = kind,
+      MinValue = 0,
+      MaxValue = 100,
+      // Neutral background/grid/border so the only Plot-colored pixels come from the data layer.
+      GraphBackground = Brushes.Black,
+      GridBrush = Brushes.Black,
+      BorderBrush = Brushes.Black,
+      FillBrush = Brushes.Transparent,
+      LineBrush = new SolidColorBrush(Plot),
+      LineThickness = 2
+    };
+    // A control never attached to a shown window has IsVisible == false, so rendering starts
+    // suspended and AddValue/ClearValues would only defer their repaint. These tests exercise the
+    // visible-graph render path (the state in which a graph is actually on screen), so mark it
+    // visible up front — otherwise RenderTargetBitmap reuses stale cached drawing after a clear.
+    graph.ApplyVisibility(true);
+    return graph;
+  }
 }

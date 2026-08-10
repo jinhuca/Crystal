@@ -7,6 +7,56 @@
         ResizeMode="NoResize" ShowInTaskbar="False"
         Background="#0D0D0D" Foreground="#DDDDDD"
         FontFamily="Segoe UI" WindowStyle="ToolWindow">
+  <Window.Resources>
+    <!-- Flat dialog button matching the process toolbar's ToolbarButtonStyle palette (neutral dark
+         fill, grey border, #3E9BE8 accent on press). The ControlTemplate also strips WPF's stock
+         light-blue default-button chrome, so an IsDefault button no longer visually clashes with
+         its neighbour. -->
+    <Style x:Key="DialogButtonStyle" TargetType="Button">
+      <Setter Property="Foreground" Value="#C8C8C8"/>
+      <Setter Property="Background" Value="#1C1C1C"/>
+      <Setter Property="BorderBrush" Value="#3A3A3A"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="SnapsToDevicePixels" Value="True"/>
+      <Setter Property="Cursor" Value="Hand"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="Button">
+            <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    SnapsToDevicePixels="True">
+              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
+                                RecognizesAccessKey="True"/>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="Bd" Property="Background" Value="#2A2A2A"/>
+                <Setter TargetName="Bd" Property="BorderBrush" Value="#4A4A4A"/>
+                <Setter Property="Foreground" Value="#E6E6E6"/>
+              </Trigger>
+              <Trigger Property="IsPressed" Value="True">
+                <Setter TargetName="Bd" Property="Background" Value="#3E9BE8"/>
+                <Setter TargetName="Bd" Property="BorderBrush" Value="#3E9BE8"/>
+                <Setter Property="Foreground" Value="#0A0A0A"/>
+              </Trigger>
+              <Trigger Property="IsEnabled" Value="False">
+                <Setter TargetName="Bd" Property="Background" Value="#161616"/>
+                <Setter TargetName="Bd" Property="BorderBrush" Value="#2A2A2A"/>
+                <Setter Property="Foreground" Value="#5A6470"/>
+                <Setter Property="Cursor" Value="Arrow"/>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <!-- Default action (Run): same flat body, but an accent border at rest marks it as the default. -->
+    <Style x:Key="DialogDefaultButtonStyle" TargetType="Button" BasedOn="{StaticResource DialogButtonStyle}">
+      <Setter Property="BorderBrush" Value="#3E9BE8"/>
+    </Style>
+  </Window.Resources>
   <Grid Margin="16">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
@@ -32,11 +82,11 @@
     <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right"
                 Margin="0,16,0,0">
       <Button Content="Run" Width="80" Height="26" Margin="0,0,8,0"
-              Foreground="#DDDDDD" Background="#1C3A52" BorderBrush="#3E9BE8"
-              FontSize="12" IsDefault="True" Click="OnRun"/>
+              FontSize="12" IsDefault="True" Click="OnRun"
+              Style="{StaticResource DialogDefaultButtonStyle}"/>
       <Button Content="Cancel" Width="80" Height="26"
-              Foreground="#C8C8C8" Background="#1C1C1C" BorderBrush="#3A3A3A"
-              FontSize="12" IsCancel="True"/>
+              FontSize="12" IsCancel="True"
+              Style="{StaticResource DialogButtonStyle}"/>
     </StackPanel>
   </Grid>
 </Window>

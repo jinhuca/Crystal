@@ -43,10 +43,19 @@ internal sealed class FakeWmiProvider : IWmiHardwareProvider
         return this;
     }
 
+    /// <summary>The <c>bypassCache</c> flag passed on the most recent class-name query, for assertions.</summary>
+    public bool LastBypassCache { get; private set; }
+
+    /// <summary>The <c>projection</c> passed on the most recent class-name query, for assertions.</summary>
+    public IReadOnlyList<string>? LastProjection { get; private set; }
+
     public Task<IReadOnlyList<FrozenDictionary<string, WmiValue>>> GetMultiMetricsForClassAsync(
-        string wmiClassName, CancellationToken cancellationToken)
+        string wmiClassName, CancellationToken cancellationToken, bool bypassCache = false,
+        IReadOnlyList<string>? projection = null)
     {
         cancellationToken.ThrowIfCancellationRequested();
+        LastBypassCache = bypassCache;
+        LastProjection = projection;
         if (_data.TryGetValue(wmiClassName, out var result))
             return Task.FromResult(result);
         return Task.FromResult<IReadOnlyList<FrozenDictionary<string, WmiValue>>>(
