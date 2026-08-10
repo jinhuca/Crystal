@@ -1,5 +1,5 @@
 using Crystal.Controls.PerformanceGraphs;
-using StorageModule.Models;
+using Crystal.Service.Storage;
 
 namespace StorageModule.ViewModels;
 

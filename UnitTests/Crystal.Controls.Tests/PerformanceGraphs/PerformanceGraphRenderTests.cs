@@ -90,7 +90,12 @@ public class PerformanceGraphRenderTests {
       BorderBrush = Brushes.Black,
       FillBrush = Brushes.Transparent,
       LineBrush = new SolidColorBrush(Plot),
-      LineThickness = 2
+      // Must be a value other than the LineThickness metadata default (2.0): assigning a DP its
+      // existing/default value is a no-op that never fires OnLineThicknessChanged, so the internal
+      // pen would keep the control's default width. A 3px line also guarantees at least one fully
+      // covered device row of the exact Plot color — a 1px line anti-aliases across two rows and
+      // blends below PixelRenderer's tolerance, drawing no matching pixels.
+      LineThickness = 3
     };
     // A control never attached to a shown window has IsVisible == false, so rendering starts
     // suspended and AddValue/ClearValues would only defer their repaint. These tests exercise the

@@ -1,4 +1,4 @@
-using StorageModule.Models;
+using Crystal.Service.Storage;
 using StorageModule.ViewModels;
 using Xunit;
 

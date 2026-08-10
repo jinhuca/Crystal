@@ -44,7 +44,7 @@ public sealed class TelemetrySensorSource : ISensorTelemetrySource {
 
   private static void Collect(IHardware hardware, List<SensorReading> readings) {
     foreach (var sensor in hardware.Sensors)
-      readings.Add(SensorReadingExtensions.ToReading(sensor, hardware.Name, hardware.HardwareType));
+      readings.Add(TelemetryReadingMapper.ToReading(sensor, hardware.Name, hardware.HardwareType));
 
     foreach (var sub in hardware.SubHardware) {
       sub.Update();

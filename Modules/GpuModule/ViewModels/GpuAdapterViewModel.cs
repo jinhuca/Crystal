@@ -1,5 +1,5 @@
 using Crystal.Controls.PerformanceGraphs;
-using GpuModule.Models;
+using Crystal.Service.Gpu;
 
 namespace GpuModule.ViewModels;
 

@@ -19,13 +19,14 @@ public partial class CpuSummaryView : UserControl {
     // Distinct accents per metric, matching the detail view. Line themes carry the vertical
     // glow-gradient fill that reads correctly under FilledLineRenderer.
     ClockBar.ApplyTheme(GraphThemes.Amber(GraphKind.Line));
+    VoltageBar.ApplyTheme(GraphThemes.Emerald(GraphKind.Line));
     PowerBar.ApplyTheme(GraphThemes.Emerald(GraphKind.Line));
     UtilizationBar.ApplyTheme(GraphThemes.Rose(GraphKind.Line));
     TemperatureBar.ApplyTheme(GraphThemes.Sky(GraphKind.Line));
 
     if (DataContext is ICpuViewModel vm)
       vm.SensorsViewModel.AttachGraphs(
-          utilization: UtilizationBar, clock: ClockBar,
+          utilization: UtilizationBar, voltage: VoltageBar, clock: ClockBar,
           power: PowerBar, temperature: TemperatureBar);
   }
 

@@ -1,5 +1,4 @@
 using Crystal.Infrastructure.DataStructures.Sensors;
-using Crystal.Provider.Telemetry.Hardware;
 using Xunit;
 
 namespace Crystal.Service.Sensors.Tests;

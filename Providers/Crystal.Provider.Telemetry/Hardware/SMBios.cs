@@ -1367,7 +1367,7 @@ public class BiosInformation : InformationBase {
   /// </summary>
   /// <param name="date">The bios date.</param>
   /// <returns><see cref="Nullable{DateTime}" />.</returns>
-  private static DateTime? GetDate(string date) {
+  internal static DateTime? GetDate(string date) {
     string[] parts = (date ?? string.Empty).Split('/');
 
     if (parts.Length == 3 &&

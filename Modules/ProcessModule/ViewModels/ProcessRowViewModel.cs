@@ -1,5 +1,5 @@
 using System.Windows.Media;
-using ProcessModule.Models;
+using Crystal.Service.Process;
 
 namespace ProcessModule.ViewModels;
 

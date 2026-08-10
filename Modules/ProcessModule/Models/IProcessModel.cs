@@ -1,3 +1,5 @@
+using Crystal.Service.Process;
+
 namespace ProcessModule.Models;
 
 /// <summary>Exposes the live per-poll process list as an observable stream.</summary>

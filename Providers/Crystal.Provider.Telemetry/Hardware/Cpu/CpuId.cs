@@ -305,14 +305,14 @@ public class CpuId {
     }
   }
 
-  private static void AppendRegister(StringBuilder b, uint value) {
+  internal static void AppendRegister(StringBuilder b, uint value) {
     b.Append((char)(value & 0xff));
     b.Append((char)((value >> 8) & 0xff));
     b.Append((char)((value >> 16) & 0xff));
     b.Append((char)((value >> 24) & 0xff));
   }
 
-  private static uint NextLog2(long x) {
+  internal static uint NextLog2(long x) {
     if (x <= 0)
       return 0;
 

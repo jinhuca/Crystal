@@ -1,3 +1,5 @@
+using Crystal.Service.Storage;
+
 namespace StorageModule.Models;
 
 /// <summary>Static storage inventory as a replayed stream (built once), plus a live

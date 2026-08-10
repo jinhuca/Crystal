@@ -2,6 +2,7 @@ using Crystal.Controls.Loading;
 using Crystal.Infrastructure.Constants;
 using Crystal.Infrastructure.Constants.Navigation;
 using Crystal.Provider.Mmi.MmiEngine;
+using Crystal.Service.Memory;
 using MemoryModule.Models;
 using MemoryModule.ViewModels;
 using MemoryModule.Views;
@@ -23,11 +24,12 @@ public class MemoryModule(IRegionManager regionManager) : IModule {
     // MemoryLoadSource owns an open LibreHardwareMonitor Computer; keep one for the app lifetime.
     containerRegistry.RegisterSingleton<MemoryLoadSource>();
 
-    // MemoryModel replays its one-shot spec build and owns the load-polling lifetime, so it must
+    // MemoryMonitor replays its one-shot spec build and owns the load-polling lifetime, so it must
     // be a singleton. Built via a factory: its ctor's optional TimeSpan?/IScheduler? params can't
     // be resolved by the container, and we want the default 1-second poll cadence.
-    containerRegistry.RegisterSingleton<IMemoryModel>(cp => new MemoryModel(
+    containerRegistry.RegisterSingleton<MemoryMonitor>(cp => new MemoryMonitor(
         cp.Resolve<MemoryInfoBuilder>(), cp.Resolve<MemoryLoadSource>()));
+    containerRegistry.RegisterSingleton<IMemoryModel, MemoryModel>();
 
     containerRegistry.Register<IMemoryViewModel, MemoryViewModel>();
 

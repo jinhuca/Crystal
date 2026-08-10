@@ -1,4 +1,4 @@
-﻿using Crystal.Provider.Telemetry.Hardware;
+﻿using Crystal.Infrastructure.DataStructures.Cpu.Definitions;
 using System;
 using System.Collections.Generic;
 using System.Text;

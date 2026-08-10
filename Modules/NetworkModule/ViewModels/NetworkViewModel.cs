@@ -3,7 +3,9 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Threading;
 using Crystal.Infrastructure.Constants.Navigation;
+using Crystal.Service.Network;
 using NetworkModule.Models;
 
 namespace NetworkModule.ViewModels;
@@ -11,6 +13,7 @@ namespace NetworkModule.ViewModels;
 public sealed class NetworkViewModel : BindableBase, INetworkViewModel, IDisposable {
   private readonly IDisposable _sensorsSubscription;
   private readonly IDisposable _topTalkersSubscription;
+  private readonly Dispatcher _dispatcher = Dispatcher.CurrentDispatcher;
   private readonly Dictionary<uint, ProcessNetworkRowViewModel> _talkersByPid = new();
   private string _downloadLabel = "—";
   private string _uploadLabel = "—";
@@ -230,10 +233,15 @@ public sealed class NetworkViewModel : BindableBase, INetworkViewModel, IDisposa
     }
   }
 
-  private static void OnUi(Action action) {
-    var dispatcher = Application.Current?.Dispatcher;
-    if (dispatcher is null || dispatcher.CheckAccess()) action();
-    else dispatcher.Invoke(action);
+  // Marshal onto the UI dispatcher captured at construction (this VM is built on the UI thread).
+  // TopTalkers is fed by the ETW background thread, and at app shutdown Application.Current is torn
+  // down to null; reading the dispatcher fresh each call would then fall through to running inline on
+  // the ETW thread and mutate the UI-affined collections, throwing. Capturing the dispatcher and
+  // dropping work once it is shutting down keeps late emissions off the UI collections.
+  private void OnUi(Action action) {
+    if (_dispatcher.HasShutdownStarted || _dispatcher.HasShutdownFinished) return;
+    if (_dispatcher.CheckAccess()) action();
+    else _dispatcher.BeginInvoke(action);
   }
 
   public void Dispose() {

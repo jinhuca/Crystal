@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Data;
+using Crystal.Service.Process;
 using ProcessModule.Models;
 
 namespace ProcessModule.ViewModels;

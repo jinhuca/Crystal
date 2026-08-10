@@ -3,6 +3,7 @@ using Crystal.Infrastructure.Constants;
 using Crystal.Infrastructure.Constants.Navigation;
 using Crystal.Provider.Etw;
 using Crystal.Provider.Telemetry.Hardware.Network;
+using Crystal.Service.Network;
 using NetworkModule.Models;
 using NetworkModule.ViewModels;
 using NetworkModule.Views;
@@ -31,11 +32,12 @@ public class NetworkModule(IRegionManager regionManager) : IModule {
     containerRegistry.RegisterSingleton<ProcessNetworkSource>(
         cp => new ProcessNetworkSource(cp.Resolve<EtwRateBroadcaster>()));
 
-    // NetworkModel owns the load-polling lifetime, so it must be a singleton. Built via a factory:
+    // NetworkMonitor owns the load-polling lifetime, so it must be a singleton. Built via a factory:
     // its ctor's optional TimeSpan?/IScheduler? params can't be resolved by the container, and we
     // want the default 1-second poll cadence.
-    containerRegistry.RegisterSingleton<INetworkModel>(
-        cp => new NetworkModel(cp.Resolve<NetworkLoadSource>(), cp.Resolve<ProcessNetworkSource>()));
+    containerRegistry.RegisterSingleton<NetworkMonitor>(
+        cp => new NetworkMonitor(cp.Resolve<NetworkLoadSource>(), cp.Resolve<ProcessNetworkSource>()));
+    containerRegistry.RegisterSingleton<INetworkModel, NetworkModel>();
 
     // Each view gets its own VM instance (Register, not singleton) so summary and detail never
     // share adapter graph buffers.

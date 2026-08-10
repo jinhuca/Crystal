@@ -1,6 +1,5 @@
 using Crystal.Infrastructure.DataStructures.Cpu.Interfaces.Cpus;
 using Crystal.Infrastructure.DataStructures.Sensors;
-using Crystal.Provider.Telemetry.Hardware;
 
 namespace Crystal.Infrastructure.DataStructures.Cpu.Implementations.Cpus;
 

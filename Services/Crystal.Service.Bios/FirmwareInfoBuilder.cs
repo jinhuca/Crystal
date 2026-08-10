@@ -46,14 +46,14 @@ public sealed class FirmwareInfoBuilder {
         BiosRevision: smbios?.Bios?.BiosRevision,
         EmbeddedControllerRevision: smbios?.Bios?.EcFirmwareRevision ?? EcRevision(wmi),
         Capabilities: Capabilities(smbios?.Bios),
-        System: smbios?.System,
-        Baseboard: smbios?.Baseboard,
-        Chassis: smbios?.Chassis,
-        HardwareSecurity: smbios?.HardwareSecurity,
+        System: MapSystem(smbios?.System),
+        Baseboard: MapBaseboard(smbios?.Baseboard),
+        Chassis: MapChassis(smbios?.Chassis),
+        HardwareSecurity: MapHardwareSecurity(smbios?.HardwareSecurity),
         SecureBoot: secureBoot,
         Tpm: MergeTpm(tpm, smbios?.Tpm),
-        Boot: smbios?.Boot,
-        FirmwareInventory: smbios?.FirmwareInventory ?? []);
+        Boot: MapBoot(smbios?.Boot),
+        FirmwareInventory: MapInventory(smbios?.FirmwareInventory));
   }
 
   private async Task<SecureBootInfo> ReadSecureBootAsync(CancellationToken ct) {
@@ -74,6 +74,37 @@ public sealed class FirmwareInfoBuilder {
       return null;
     }
   }
+
+  // The SMBIOS provider DTOs and their enums are re-projected into neutral service records so the
+  // BiosViewModel never imports Crystal.Provider.Smbios. The enums mirror the provider's byte values
+  // one-for-one (both follow DSP0134), so an ordinal cast is faithful.
+  private static FirmwareSystemInfo? MapSystem(SmbiosSystemInfo? s) =>
+      s is null ? null : new FirmwareSystemInfo(
+          s.Manufacturer, s.ProductName, s.Version, s.SerialNumber, s.Uuid, s.SkuNumber, s.Family);
+
+  private static FirmwareBaseboardInfo? MapBaseboard(SmbiosBaseboardInfo? b) =>
+      b is null ? null : new FirmwareBaseboardInfo(
+          b.Manufacturer, b.Product, b.Version, b.SerialNumber, b.AssetTag);
+
+  private static FirmwareChassisInfo? MapChassis(SmbiosChassisInfo? c) =>
+      c is null ? null : new FirmwareChassisInfo(
+          c.Manufacturer, (ChassisType)c.ChassisType, c.SerialNumber, c.AssetTag);
+
+  private static FirmwareHardwareSecurityInfo? MapHardwareSecurity(SmbiosHardwareSecurityInfo? h) =>
+      h is null ? null : new FirmwareHardwareSecurityInfo(
+          (HardwareSecurityStatus)h.PowerOnPassword,
+          (HardwareSecurityStatus)h.KeyboardPassword,
+          (HardwareSecurityStatus)h.AdministratorPassword,
+          (HardwareSecurityStatus)h.FrontPanelReset);
+
+  private static FirmwareBootInfo? MapBoot(SmbiosBootInfo? b) =>
+      b is null ? null : new FirmwareBootInfo((BootStatus?)b.Status, b.StatusRaw);
+
+  private static IReadOnlyList<FirmwareComponent> MapInventory(IReadOnlyList<SmbiosFirmwareComponent>? components) =>
+      components is null ? []
+          : components.Select(c => new FirmwareComponent(
+              c.ComponentName, c.Version, c.ReleaseDate, c.Manufacturer,
+              c.LowestSupportedVersion, c.ImageSizeBytes, (FirmwareComponentState)c.State)).ToList();
 
   private static FirmwareCapabilities? Capabilities(SmbiosBiosInfo? bios) =>
       bios is null ? null : new FirmwareCapabilities(

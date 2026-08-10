@@ -1,3 +1,5 @@
+using Crystal.Service.Network;
+
 namespace NetworkModule.Models;
 
 /// <summary>

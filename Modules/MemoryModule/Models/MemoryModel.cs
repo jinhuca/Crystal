@@ -1,36 +1,16 @@
-using System.Reactive.Concurrency;
-using System.Reactive.Linq;
-using System.Reactive.Subjects;
+using Crystal.Service.Memory;
 
 namespace MemoryModule.Models;
 
-/// <summary>Builds the memory inventory once and replays it to every subscriber, and exposes a
-/// live used-percentage <see cref="Load"/> stream re-sampled on a fixed cadence (ref-counted, so
-/// polling only runs while subscribed).</summary>
+/// <summary>Adapts <see cref="MemoryMonitor"/> into <see cref="IMemoryModel"/>; the monitor owns
+/// the polling lifetime and this type just forwards its two streams.</summary>
 public sealed class MemoryModel : IMemoryModel, IDisposable {
-  private readonly IConnectableObservable<MemorySnapshot> _specs;
-  private readonly IObservable<MemoryLoadReading> _load;
-  private readonly IDisposable _connection;
+  private readonly MemoryMonitor _monitor;
 
-  public MemoryModel(MemoryInfoBuilder builder, MemoryLoadSource loads,
-                     TimeSpan? pollInterval = null, IScheduler? scheduler = null) {
-    ArgumentNullException.ThrowIfNull(builder);
-    ArgumentNullException.ThrowIfNull(loads);
-    var interval = pollInterval ?? TimeSpan.FromSeconds(1);
-    scheduler ??= DefaultScheduler.Instance;
+  public MemoryModel(MemoryMonitor monitor) => _monitor = monitor;
 
-    _specs = Observable.FromAsync(builder.BuildAsync).Replay(1);
-    _connection = _specs.Connect();
+  public IObservable<MemorySnapshot> Specs => _monitor.Specs;
+  public IObservable<MemoryLoadReading> Load => _monitor.Load;
 
-    _load = Observable
-        .Interval(interval, scheduler)
-        .Select(_ => loads.Read())
-        .Publish()
-        .RefCount();
-  }
-
-  public IObservable<MemorySnapshot> Specs => _specs.AsObservable();
-  public IObservable<MemoryLoadReading> Load => _load;
-
-  public void Dispose() => _connection.Dispose();
+  public void Dispose() => _monitor.Dispose();
 }

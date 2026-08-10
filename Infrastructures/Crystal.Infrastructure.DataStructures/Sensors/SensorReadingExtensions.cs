@@ -1,9 +1,4 @@
-﻿using Crystal.Provider.Telemetry.Hardware;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Crystal.Infrastructure.DataStructures.Sensors;
+﻿namespace Crystal.Infrastructure.DataStructures.Sensors;
 
 public static class SensorReadingExtensions {
   public static string? UnitFor(SensorType sensorType) => sensorType switch {
@@ -26,16 +21,4 @@ public static class SensorReadingExtensions {
     SensorType.Humidity => "%",
     _ => null
   };
-
-  public static SensorReading ToReading(ISensor? sensor, string hardwareName, HardwareType hardwareType) =>
-    new SensorReading(
-      hardwareName,
-      hardwareType,
-      sensor?.Name ?? string.Empty,
-      sensor?.SensorType ?? SensorType.Load,
-      sensor?.Value,
-      sensor?.Min,
-      sensor?.Max,
-      sensor != null ? UnitFor(sensor.SensorType) : null
-    );
 }

@@ -1,4 +1,4 @@
-using Crystal.Provider.Telemetry.Hardware;
+using Crystal.Infrastructure.DataStructures.Sensors;
 
 namespace Crystal.Service.Sensors;
 

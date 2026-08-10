@@ -1,3 +1,5 @@
+using Crystal.Service.Process;
+
 namespace ProcessModule.Models;
 
 /// <summary>

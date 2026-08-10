@@ -1,6 +1,5 @@
 using System.Reactive.Linq;
 using Crystal.Infrastructure.DataStructures.Sensors;
-using Crystal.Provider.Telemetry.Hardware;
 using Microsoft.Reactive.Testing;
 using Xunit;
 

@@ -10,9 +10,6 @@ using Crystal.Controls.PerformanceGraphs.Kinds;
 using Crystal.Controls.PerformanceGraphs.Themes;
 using Crystal.Infrastructure.Constants.Navigation;
 using Crystal.Infrastructure.DataStructures.Sensors;
-using Crystal.Provider.Telemetry.Hardware;
-using Crystal.Provider.Smbios.HardwareFeatures.Firmware;
-using Crystal.Provider.Smbios.Types;
 using Crystal.Service.Bios;
 using Crystal.Service.Sensors;
 
@@ -588,8 +585,8 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
     return $"{spec}{state}".Trim();
   }
 
-  private static string FormatChassis(PhysicalChassisType? type) =>
-      type is null or PhysicalChassisType.Unknown ? Dash : SpaceCamelCase(type.Value.ToString());
+  private static string FormatChassis(Crystal.Service.Bios.ChassisType? type) =>
+      type is null or Crystal.Service.Bios.ChassisType.Unknown ? Dash : SpaceCamelCase(type.Value.ToString());
 
   private static string? FormatSecurity(HardwareSecurityStatus? status) => status switch {
     HardwareSecurityStatus.Enabled => "Enabled",
@@ -598,7 +595,7 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
     _ => null,
   };
 
-  private static string FormatBoot(SmbiosBootInfo? boot) {
+  private static string FormatBoot(FirmwareBootInfo? boot) {
     if (boot is null) return Dash;
     return boot.Status is { } status ? SpaceCamelCase(status.ToString()) : $"0x{boot.StatusRaw:X2}";
   }

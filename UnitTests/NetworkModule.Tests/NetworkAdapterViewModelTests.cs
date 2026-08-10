@@ -1,4 +1,4 @@
-using NetworkModule.Models;
+using Crystal.Service.Network;
 using NetworkModule.ViewModels;
 using Xunit;
 

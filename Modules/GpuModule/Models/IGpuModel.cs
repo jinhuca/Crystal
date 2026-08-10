@@ -1,3 +1,5 @@
+using Crystal.Service.Gpu;
+
 namespace GpuModule.Models;
 
 /// <summary>

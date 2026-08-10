@@ -1,5 +1,6 @@
 using System.Windows;
 using System.Windows.Controls;
+using Crystal.Controls.Loading;
 
 namespace Crystal.Shell.Views;
 
@@ -26,6 +27,12 @@ public partial class DashboardView : UserControl {
 
   public DashboardView() {
     InitializeComponent();
+    // Each tile is an async-warming LoadingHost that swaps its spinner for real content on a
+    // background thread; the star-sized rows/columns only settle to their true sizes once that
+    // content lands. Re-apply the default layout each time a tile settles (the event bubbles up
+    // from any LoadingHost) so the dashboard lands at its default proportions with no manual reset.
+    // ResetLayout is idempotent, so running it per-tile simply converges as the last tile arrives.
+    AddHandler(LoadingHost.SettledEvent, new RoutedEventHandler((_, _) => ResetLayout()));
   }
 
   /// <summary>Restores the resizable rows and the Row #3 tile columns to their default star

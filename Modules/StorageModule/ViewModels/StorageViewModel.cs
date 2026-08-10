@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Input;
 using Crystal.Controls.PerformanceGraphs;
 using Crystal.Infrastructure.Constants.Navigation;
+using Crystal.Service.Storage;
 using StorageModule.Models;
 
 namespace StorageModule.ViewModels;

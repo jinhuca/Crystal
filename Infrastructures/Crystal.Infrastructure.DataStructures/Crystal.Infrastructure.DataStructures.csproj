@@ -19,8 +19,4 @@
     <PackageReference Include="Prism.Core" Version="9.0.537" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Providers\Crystal.Provider.Telemetry\Crystal.Provider.Telemetry.csproj" />
-  </ItemGroup>
-
 </Project>

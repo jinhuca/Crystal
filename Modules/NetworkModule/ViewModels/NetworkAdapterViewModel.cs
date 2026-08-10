@@ -1,5 +1,5 @@
 using Crystal.Controls.PerformanceGraphs;
-using NetworkModule.Models;
+using Crystal.Service.Network;
 
 namespace NetworkModule.ViewModels;
 

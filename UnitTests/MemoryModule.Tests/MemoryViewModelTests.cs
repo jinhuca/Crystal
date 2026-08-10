@@ -1,4 +1,5 @@
 using System.Reactive.Subjects;
+using Crystal.Service.Memory;
 using MemoryModule.Models;
 using MemoryModule.ViewModels;
 using Prism.Events;

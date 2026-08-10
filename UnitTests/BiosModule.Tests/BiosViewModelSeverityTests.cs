@@ -5,7 +5,6 @@ using BiosModule.Models;
 using BiosModule.ViewModels;
 using Crystal.Controls.PerformanceGraphs;
 using Crystal.Infrastructure.DataStructures.Sensors;
-using Crystal.Provider.Telemetry.Hardware;
 using Crystal.Service.Bios;
 using Crystal.Service.Sensors;
 using Prism.Events;

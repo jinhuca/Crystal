@@ -3,9 +3,9 @@ using Crystal.Infrastructure.DataStructures.Cpu.Implementations.Cores;
 using Crystal.Infrastructure.DataStructures.Cpu.Implementations.Cpus;
 using Crystal.Infrastructure.DataStructures.Cpu.Interfaces;
 using Crystal.Infrastructure.DataStructures.Cpu.Interfaces.Cpus;
-using Crystal.Infrastructure.DataStructures.Sensors;
 using Crystal.Provider.Telemetry.Hardware;
 using Crystal.Provider.Telemetry.Hardware.Cpu;
+using SensorReading = Crystal.Infrastructure.DataStructures.Sensors.SensorReading;
 
 namespace Crystal.Service.Cpu;
 
@@ -75,7 +75,7 @@ public sealed class TelemetryCpuSensorSource : ICpuTelemetrySource {
       var specs = new CoreSpecs {
         CoreIndex = i,
         ApicId = (int)lead.ApicId,
-        Type = lead.CoreType,
+        Type = CpuTelemetryReadingMapper.ToAppCoreType(lead.CoreType),
         ThreadCount = topology[i].Length,
       };
 
@@ -107,7 +107,7 @@ public sealed class TelemetryCpuSensorSource : ICpuTelemetrySource {
                                           && s.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
       if (match is not null) break;
     }
-    return SensorReadingExtensions.ToReading(match, hardwareName, HardwareType.Cpu);
+    return CpuTelemetryReadingMapper.ToReading(match, hardwareName, HardwareType.Cpu);
   }
 
   // The current CPU clock: an AMD package-average clock if the part exposes one,
@@ -117,7 +117,7 @@ public sealed class TelemetryCpuSensorSource : ICpuTelemetrySource {
     var avg = sensors.FirstOrDefault(s => s.SensorType == SensorType.Clock
                                           && s.Name.Equals("Cores (Average)", StringComparison.OrdinalIgnoreCase));
     if (avg is not null)
-      return SensorReadingExtensions.ToReading(avg, hardwareName, HardwareType.Cpu);
+      return CpuTelemetryReadingMapper.ToReading(avg, hardwareName, HardwareType.Cpu);
 
     ISensor? best = null;
     foreach (var s in sensors) {
@@ -125,7 +125,7 @@ public sealed class TelemetryCpuSensorSource : ICpuTelemetrySource {
       if (s.Name.StartsWith("Bus", StringComparison.OrdinalIgnoreCase)) continue;
       if (best is null || (s.Value ?? 0) > (best.Value ?? 0)) best = s;
     }
-    return SensorReadingExtensions.ToReading(best, hardwareName, HardwareType.Cpu);
+    return CpuTelemetryReadingMapper.ToReading(best, hardwareName, HardwareType.Cpu);
   }
 
   private static SensorReading MaxByPrefix(ISensor[] sensors, string hardwareName, SensorType type, string namePrefix) {
@@ -138,7 +138,7 @@ public sealed class TelemetryCpuSensorSource : ICpuTelemetrySource {
       if (s.Name.Length > namePrefix.Length && char.IsDigit(s.Name[namePrefix.Length])) continue;
       if (best is null || (s.Value ?? 0) > (best.Value ?? 0)) best = s;
     }
-    return SensorReadingExtensions.ToReading(best, hardwareName, HardwareType.Cpu);
+    return CpuTelemetryReadingMapper.ToReading(best, hardwareName, HardwareType.Cpu);
   }
 
   public void Dispose() {

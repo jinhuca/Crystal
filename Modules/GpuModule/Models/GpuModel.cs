@@ -1,3 +1,5 @@
+using Crystal.Service.Gpu;
+
 namespace GpuModule.Models;
 
 /// <summary>Adapts <see cref="GpuMonitor"/> into <see cref="IGpuModel"/>; the monitor owns the

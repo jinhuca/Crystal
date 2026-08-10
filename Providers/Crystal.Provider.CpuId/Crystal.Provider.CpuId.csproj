@@ -13,4 +13,10 @@
     <ProjectReference Include="..\..\Infrastructures\Crystal.Infrastructure.DataStructures\Crystal.Infrastructure.DataStructures.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>Crystal.Provider.CpuId.Tests</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
 </Project>

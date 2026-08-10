@@ -1,4 +1,4 @@
-using MemoryModule.Models;
+using Crystal.Service.Memory;
 
 namespace MemoryModule.ViewModels;
 

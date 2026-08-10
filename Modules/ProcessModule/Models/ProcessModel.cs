@@ -1,3 +1,5 @@
+using Crystal.Service.Process;
+
 namespace ProcessModule.Models;
 
 /// <summary>Adapts <see cref="ProcessMonitor"/> into <see cref="IProcessModel"/>; the monitor

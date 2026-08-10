@@ -173,7 +173,7 @@ internal static class UsbApi {
     return SendCommand(stream, 3, cmd, 0, out data);
   }
 
-  private static float Linear11ToFloat32(ushort val) {
+  internal static float Linear11ToFloat32(ushort val) {
     int exp = (short)val >> 11;
     int mant = (short)(val & 0x7ff) << 5 >> 5;
     return mant * (float)Math.Pow(2, exp);

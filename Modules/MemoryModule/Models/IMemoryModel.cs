@@ -1,3 +1,5 @@
+using Crystal.Service.Memory;
+
 namespace MemoryModule.Models;
 
 /// <summary>Static memory inventory as a replayed stream (built once), plus a live

@@ -17,6 +17,7 @@
     <ProjectReference Include="..\..\Providers\Crystal.Provider.CpuId\Crystal.Provider.CpuId.csproj" />
     <ProjectReference Include="..\..\Providers\Crystal.Provider.Mmi\Crystal.Provider.Mmi.csproj" />
     <ProjectReference Include="..\..\Providers\Crystal.Provider.Smbios\Crystal.Provider.Smbios.csproj" />
+    <ProjectReference Include="..\..\Providers\Crystal.Provider.Telemetry\Crystal.Provider.Telemetry.csproj" />
   </ItemGroup>
 
 </Project>

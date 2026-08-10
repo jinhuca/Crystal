@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Reactive.Subjects;
+using Crystal.Service.Network;
 using NetworkModule.Models;
 using NetworkModule.ViewModels;
 using Prism.Events;

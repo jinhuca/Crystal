@@ -38,6 +38,19 @@ public sealed class LoadingHost : ContentControl {
       DependencyProperty.Register(nameof(State), typeof(LoadingState), typeof(LoadingHost),
           new FrameworkPropertyMetadata(LoadingState.Loading));
 
+  /// <summary>Bubbling event raised once the tile reaches a terminal state (Ready or Failed),
+  /// i.e. its spinner has been replaced by real content or a failure marker. The dashboard listens
+  /// for this to re-apply its default layout after the async-loaded tiles have settled.</summary>
+  public static readonly RoutedEvent SettledEvent =
+      EventManager.RegisterRoutedEvent(nameof(Settled), RoutingStrategy.Bubble,
+          typeof(RoutedEventHandler), typeof(LoadingHost));
+
+  /// <summary>Raised once the tile finishes warming (successfully or not). See <see cref="SettledEvent"/>.</summary>
+  public event RoutedEventHandler Settled {
+    add => AddHandler(SettledEvent, value);
+    remove => RemoveHandler(SettledEvent, value);
+  }
+
   /// <summary>Component name shown next to the spinner (e.g. "CPU", "Storage").</summary>
   public string Label {
     get => (string)GetValue(LabelProperty);
@@ -66,19 +79,28 @@ public sealed class LoadingHost : ContentControl {
         warm();
       }
       catch {
-        Dispatcher.BeginInvoke(() => State = LoadingState.Failed);
+        Dispatcher.BeginInvoke(() => Settle(LoadingState.Failed));
         return;
       }
 
       Dispatcher.BeginInvoke(() => {
         try {
           Content = createContent();
-          State = LoadingState.Ready;
+          Settle(LoadingState.Ready);
         }
         catch {
-          State = LoadingState.Failed;
+          Settle(LoadingState.Failed);
         }
       });
     });
+  }
+
+  // Move to a terminal state and notify listeners the tile has settled. Deferred to Loaded (Input
+  // priority) rather than raised inline so it fires after the swapped-in content has run a layout
+  // pass — the dashboard's reset then acts on tiles at their real size, not mid-transition.
+  private void Settle(LoadingState state) {
+    State = state;
+    Dispatcher.BeginInvoke(new Action(() => RaiseEvent(new RoutedEventArgs(SettledEvent, this))),
+        System.Windows.Threading.DispatcherPriority.Loaded);
   }
 }

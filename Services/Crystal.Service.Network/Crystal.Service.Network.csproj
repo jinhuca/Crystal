@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Crystal.Service.Network</RootNamespace>
+    <AssemblyName>Crystal.Service.Network</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Reactive" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Providers\Crystal.Provider.Telemetry\Crystal.Provider.Telemetry.csproj" />
+    <ProjectReference Include="..\..\Providers\Crystal.Provider.Etw\Crystal.Provider.Etw.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,4 +1,4 @@
-using GpuModule.Models;
+using Crystal.Service.Gpu;
 using GpuModule.ViewModels;
 using Xunit;
 

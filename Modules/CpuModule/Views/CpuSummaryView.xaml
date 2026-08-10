@@ -64,14 +64,15 @@
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="*"/>
           <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="1.5*"/>
           <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <!-- Left group: Clock (top) + Power (bottom) -->
-        <Grid Grid.Column="0" Margin="0,0,16,0" VerticalAlignment="Top">
+        <!-- Column 0: Clock (top) + Voltage (bottom) -->
+        <Grid Grid.Column="0" Margin="0,0,10,0" VerticalAlignment="Top">
           <Grid.RowDefinitions>
-            <RowDefinition Height="86"/>
-            <RowDefinition Height="86"/>
+            <RowDefinition Height="66"/>
+            <RowDefinition Height="66"/>
           </Grid.RowDefinitions>
 
           <Grid Grid.Row="0" Margin="0,0,0,6">
@@ -92,36 +93,23 @@
               <ColumnDefinition Width="*"/>
               <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <graphs:PerformanceGraph x:Name="PowerBar" Grid.Column="0" Kind="Line" MinHeight="40" MinValue="0" MaxValue="100"/>
+            <graphs:PerformanceGraph x:Name="VoltageBar" Grid.Column="0" Kind="Line" MinHeight="40" MinValue="0" MaxValue="2"/>
             <StackPanel Grid.Column="1" Margin="10,0,0,0" Width="96" VerticalAlignment="Center">
-              <TextBlock Text="{Binding Power, StringFormat={}{0:0.00}}" Style="{StaticResource MetricValue}"/>
-              <TextBlock Text="Watts" Style="{StaticResource MetricUnit}"/>
-              <TextBlock Text="Power" Style="{StaticResource MetricCaption}"/>
+              <TextBlock Text="{Binding Voltage, StringFormat={}{0:0.00}}" Style="{StaticResource MetricValue}"/>
+              <TextBlock Text="V" Style="{StaticResource MetricUnit}"/>
+              <TextBlock Text="Voltage" Style="{StaticResource MetricCaption}"/>
             </StackPanel>
           </Grid>
         </Grid>
 
-        <!-- Center group: Utilization (top) + Temperature (bottom) -->
-        <Grid Grid.Column="1" Margin="0,0,16,0" VerticalAlignment="Top">
+        <!-- Column 1: Temperature (top) + Power (bottom) -->
+        <Grid Grid.Column="1" Margin="0,0,10,0" VerticalAlignment="Top">
           <Grid.RowDefinitions>
-            <RowDefinition Height="86"/>
-            <RowDefinition Height="86"/>
+            <RowDefinition Height="66"/>
+            <RowDefinition Height="66"/>
           </Grid.RowDefinitions>
 
           <Grid Grid.Row="0" Margin="0,0,0,6">
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="*"/>
-              <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <graphs:PerformanceGraph x:Name="UtilizationBar" Grid.Column="0" Kind="Line" MinHeight="40" MinValue="0" MaxValue="100"/>
-            <StackPanel Grid.Column="1" Margin="10,0,0,0" Width="96" VerticalAlignment="Center">
-              <TextBlock Text="{Binding Load, StringFormat={}{0:0.00}}" Style="{StaticResource MetricValue}"/>
-              <TextBlock Text="%" Style="{StaticResource MetricUnit}"/>
-              <TextBlock Text="Utilization" Style="{StaticResource MetricCaption}"/>
-            </StackPanel>
-          </Grid>
-
-          <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="*"/>
               <ColumnDefinition Width="Auto"/>
@@ -133,11 +121,38 @@
               <TextBlock Text="Temperature" Style="{StaticResource MetricCaption}"/>
             </StackPanel>
           </Grid>
+
+          <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <graphs:PerformanceGraph x:Name="PowerBar" Grid.Column="0" Kind="Line" MinHeight="40" MinValue="0" MaxValue="100"/>
+            <StackPanel Grid.Column="1" Margin="10,0,0,0" Width="96" VerticalAlignment="Center">
+              <TextBlock Text="{Binding Power, StringFormat={}{0:0.00}}" Style="{StaticResource MetricValue}"/>
+              <TextBlock Text="Watts" Style="{StaticResource MetricUnit}"/>
+              <TextBlock Text="Power" Style="{StaticResource MetricCaption}"/>
+            </StackPanel>
+          </Grid>
         </Grid>
 
-        <!-- Right group: per-core load, filling top-to-bottom then wrapping into the next column,
+        <!-- Column 2: Utilization — one large graph spanning both rows -->
+        <Grid Grid.Column="2" Margin="0,0,16,0" VerticalAlignment="Top" Height="138">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+          <graphs:PerformanceGraph x:Name="UtilizationBar" Grid.Column="0" Kind="Line" MinHeight="40" MinValue="0" MaxValue="100"/>
+          <StackPanel Grid.Column="1" Margin="10,0,0,0" Width="96" VerticalAlignment="Center">
+            <TextBlock Text="{Binding Load, StringFormat={}{0:0.00}}" Style="{StaticResource MetricValue}" FontSize="34"/>
+            <TextBlock Text="%" Style="{StaticResource MetricUnit}"/>
+            <TextBlock Text="Utilization" Style="{StaticResource MetricCaption}"/>
+          </StackPanel>
+        </Grid>
+
+        <!-- Column 3: per-core load, filling top-to-bottom then wrapping into the next column,
              with the CPU fan readout pinned to the bottom (level with the Temperature graph). -->
-        <DockPanel Grid.Column="2" LastChildFill="False">
+        <DockPanel Grid.Column="3" LastChildFill="False">
           <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding CoreLoads}">
             <ItemsControl.ItemsPanel>
               <ItemsPanelTemplate>

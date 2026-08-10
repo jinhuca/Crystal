@@ -1,3 +1,4 @@
+using Crystal.Service.Process;
 using ProcessModule.Models;
 
 namespace ProcessModule.Tests;

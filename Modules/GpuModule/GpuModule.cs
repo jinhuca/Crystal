@@ -2,6 +2,7 @@ using Crystal.Controls.Loading;
 using Crystal.Infrastructure.Constants;
 using Crystal.Infrastructure.Constants.Navigation;
 using Crystal.Provider.Mmi.MmiEngine;
+using Crystal.Service.Gpu;
 using GpuModule.Models;
 using GpuModule.ViewModels;
 using GpuModule.Views;

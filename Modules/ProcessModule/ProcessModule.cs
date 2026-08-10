@@ -2,6 +2,7 @@ using Crystal.Controls.Loading;
 using Crystal.Infrastructure.Constants;
 using Crystal.Provider.Etw;
 using Crystal.Provider.Mmi.MmiEngine;
+using Crystal.Service.Process;
 using ProcessModule.Models;
 using ProcessModule.ViewModels;
 using ProcessModule.Views;

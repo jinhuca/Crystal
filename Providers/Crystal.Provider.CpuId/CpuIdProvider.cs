@@ -155,7 +155,7 @@ public sealed class CpuIdProvider : ICpuIdProvider {
     public int Type;
   }
 
-  private static (uint family, uint model, uint stepping) DecodeFms(int eax) {
+  internal static (uint family, uint model, uint stepping) DecodeFms(int eax) {
     uint v = (uint)eax;
     uint stepping = v & 0xF;
     uint baseModel = (v >> 4) & 0xF;
@@ -168,7 +168,7 @@ public sealed class CpuIdProvider : ICpuIdProvider {
     return (family, model, stepping);
   }
 
-  private static string DecodeVendor(int ebx, int edx, int ecx) {
+  internal static string DecodeVendor(int ebx, int edx, int ecx) {
     Span<byte> buf = stackalloc byte[12];
     BitConverter.TryWriteBytes(buf[..4], ebx);
     BitConverter.TryWriteBytes(buf.Slice(4, 4), edx);
@@ -191,7 +191,7 @@ public sealed class CpuIdProvider : ICpuIdProvider {
     return Encoding.ASCII.GetString(buf[..len]).Trim();
   }
 
-  private static CpuInstructionInfo DecodeInstructionSet(
+  internal static CpuInstructionInfo DecodeInstructionSet(
       uint f1Ecx, uint f1Edx, uint f7Ebx, uint f7Ecx, uint eEcx, uint eEdx) {
     static bool Bit(uint value, int bit) => (value & (1u << bit)) != 0;
     return new CpuInstructionInfo {

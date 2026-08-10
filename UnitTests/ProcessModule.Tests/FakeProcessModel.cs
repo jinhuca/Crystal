@@ -1,4 +1,5 @@
 using System.Reactive.Subjects;
+using Crystal.Service.Process;
 using ProcessModule.Models;
 
 namespace ProcessModule.Tests;
