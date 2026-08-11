@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using BiosModule.Models;
 using Crystal.Controls.PerformanceGraphs;
+using Crystal.Controls.Threading;
 using Crystal.Controls.PerformanceGraphs.Kinds;
 using Crystal.Controls.PerformanceGraphs.Themes;
 using Crystal.Infrastructure.Constants.Navigation;
@@ -20,6 +20,7 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
   private readonly IDisposable _firmwareSubscription;
   private readonly IDisposable _telemetrySubscription;
   private readonly IDisposable _boardReadingsSubscription;
+  private readonly UiThreadMarshaller _ui = new();
 
   private string _manufacturer = Dash;
   private string _version = Dash;
@@ -615,11 +616,7 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
 
   private static string Text(string? value) => string.IsNullOrWhiteSpace(value) ? Dash : value!;
 
-  private static void OnUi(Action action) {
-    var dispatcher = Application.Current?.Dispatcher;
-    if (dispatcher is null || dispatcher.CheckAccess()) action();
-    else dispatcher.Invoke(action);
-  }
+  private void OnUi(Action action) => _ui.Post(action);
 
   public void Dispose() {
     _firmwareSubscription.Dispose();

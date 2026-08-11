@@ -415,11 +415,12 @@
           </Border>
         </StackPanel>
 
-        <!-- Name / PID filters, moved up from the column headers -->
-        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+        <!-- Name / PID filters, moved up from the column headers. Left margin keeps a gap from the
+             left panel's trailing badge (e.g. the hog count) when the window narrows. -->
+        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="16,0,0,0">
           <TextBlock Text="Name" Foreground="{StaticResource LabelBrush}" FontSize="11" FontFamily="Consolas"
                      VerticalAlignment="Center" Margin="0,0,6,0"/>
-          <TextBox Style="{StaticResource HeaderSearchBoxStyle}" Width="160" Height="18"
+          <TextBox Style="{StaticResource HeaderSearchBoxStyle}" Width="110" Height="18"
                    ToolTip="Filter by process name"
                    Text="{Binding NameFilter, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
           <TextBlock Text="PID" Foreground="{StaticResource LabelBrush}" FontSize="11" FontFamily="Consolas"
@@ -453,11 +454,11 @@
     </Border>
 
     <!-- Master (list) on the left, detail panel on the right, split by a draggable separator. -->
-    <Grid Grid.Row="1">
+    <Grid Grid.Row="1" x:Name="MasterDetailGrid">
       <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="*" MinWidth="400"/>
+        <ColumnDefinition x:Name="MasterColumn" Width="*" MinWidth="400"/>
         <ColumnDefinition Width="Auto"/>
-        <ColumnDefinition Width="360" MinWidth="240"/>
+        <ColumnDefinition x:Name="DetailColumn" Width="360" MinWidth="240"/>
       </Grid.ColumnDefinitions>
 
       <ListView Grid.Column="0" ItemsSource="{Binding RowsView}"
@@ -492,8 +493,8 @@
           </GroupStyle>
         </ListView.GroupStyle>
         <ListView.View>
-          <GridView ColumnHeaderContainerStyle="{StaticResource HeaderStyle}">
-            <GridViewColumn Header="Name" Width="260" local:GridViewSort.SortProperty="Name">
+          <GridView x:Name="ProcessGridView" ColumnHeaderContainerStyle="{StaticResource HeaderStyle}">
+            <GridViewColumn Header="Name" Width="160" local:GridViewSort.SortProperty="Name">
               <GridViewColumn.CellTemplate>
                 <DataTemplate>
                   <StackPanel Orientation="Horizontal" Margin="8,2">
@@ -511,7 +512,7 @@
                 </DataTemplate>
               </GridViewColumn.CellTemplate>
             </GridViewColumn>
-            <GridViewColumn Header="PID" Width="130" local:GridViewSort.SortProperty="ProcessId">
+            <GridViewColumn Header="PID" Width="80" local:GridViewSort.SortProperty="ProcessId">
               <GridViewColumn.CellTemplate>
                 <DataTemplate>
                   <TextBlock Text="{Binding ProcessId}" Foreground="{StaticResource LabelBrush}"
@@ -529,7 +530,7 @@
                 </DataTemplate>
               </GridViewColumn.CellTemplate>
             </GridViewColumn>
-            <GridViewColumn Header="CPU" Width="90" local:GridViewSort.SortProperty="CpuPercent">
+            <GridViewColumn Header="CPU" Width="70" local:GridViewSort.SortProperty="CpuPercent">
               <GridViewColumn.CellTemplate>
                 <DataTemplate>
                   <TextBlock Text="{Binding CpuPercent, StringFormat={}{0:0.0}%}"
@@ -539,7 +540,7 @@
                 </DataTemplate>
               </GridViewColumn.CellTemplate>
             </GridViewColumn>
-            <GridViewColumn Header="CPU pk" Width="80" local:GridViewSort.SortProperty="PeakCpuPercent">
+            <GridViewColumn Header="CPU pk" Width="70" local:GridViewSort.SortProperty="PeakCpuPercent">
               <GridViewColumn.CellTemplate>
                 <DataTemplate>
                   <TextBlock Text="{Binding PeakCpuPercent, StringFormat={}{0:0.0}%}"
@@ -563,7 +564,7 @@
                 </DataTemplate>
               </GridViewColumn.CellTemplate>
             </GridViewColumn>
-            <GridViewColumn Header="GPU" Width="80" local:GridViewSort.SortProperty="GpuPercent">
+            <GridViewColumn Header="GPU" Width="70" local:GridViewSort.SortProperty="GpuPercent">
               <GridViewColumn.CellTemplate>
                 <DataTemplate>
                   <TextBlock Text="{Binding GpuPercent, Converter={StaticResource NullablePercent}}"
@@ -572,7 +573,7 @@
                 </DataTemplate>
               </GridViewColumn.CellTemplate>
             </GridViewColumn>
-            <GridViewColumn Header="Memory" Width="100" local:GridViewSort.SortProperty="WorkingSetMb">
+            <GridViewColumn Header="Memory" Width="80" local:GridViewSort.SortProperty="WorkingSetMb">
               <GridViewColumn.CellTemplate>
                 <DataTemplate>
                   <TextBlock Text="{Binding WorkingSetMb, StringFormat={}{0:0} MB}"
@@ -581,7 +582,7 @@
                 </DataTemplate>
               </GridViewColumn.CellTemplate>
             </GridViewColumn>
-            <GridViewColumn Header="Mem pk" Width="90" local:GridViewSort.SortProperty="PeakWorkingSetMb">
+            <GridViewColumn Header="Mem pk" Width="80" local:GridViewSort.SortProperty="PeakWorkingSetMb">
               <GridViewColumn.CellTemplate>
                 <DataTemplate>
                   <TextBlock Text="{Binding PeakWorkingSetMb, StringFormat={}{0:0} MB}"
@@ -603,7 +604,7 @@
                 </DataTemplate>
               </GridViewColumn.CellTemplate>
             </GridViewColumn>
-            <GridViewColumn Header="Disk" Width="100" local:GridViewSort.SortProperty="DiskBytesPerSec">
+            <GridViewColumn Header="Disk" Width="85" local:GridViewSort.SortProperty="DiskBytesPerSec">
               <GridViewColumn.CellTemplate>
                 <DataTemplate>
                   <TextBlock Text="{Binding DiskBytesPerSec, Converter={StaticResource ByteRate}}"
@@ -612,7 +613,7 @@
                 </DataTemplate>
               </GridViewColumn.CellTemplate>
             </GridViewColumn>
-            <GridViewColumn Header="Network" Width="100" local:GridViewSort.SortProperty="NetBytesPerSec">
+            <GridViewColumn Header="Network" Width="85" local:GridViewSort.SortProperty="NetBytesPerSec">
               <GridViewColumn.CellTemplate>
                 <DataTemplate>
                   <TextBlock Text="{Binding NetBytesPerSec, Converter={StaticResource ByteRate}}"

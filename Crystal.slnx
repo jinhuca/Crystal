@@ -40,7 +40,6 @@
     <Project Path="Services/Crystal.Service.Network/Crystal.Service.Network.csproj" />
     <Project Path="Services/Crystal.Service.Storage/Crystal.Service.Storage.csproj" />
     <Project Path="Services/Crystal.Service.Process/Crystal.Service.Process.csproj" />
-    <Project Path="Services/Crystal.Service.Pnp/Crystal.Services.Pnp.csproj" />
     <Project Path="Services/Crystal.Service.Sensors/Crystal.Service.Sensors.csproj" />
   </Folder>
   <Folder Name="/Shell/">
@@ -142,6 +141,36 @@
       <Platform Solution="*|x86" Project="x86" />
     </Project>
     <Project Path="UnitTests/GpuModule.Tests/GpuModule.Tests.csproj">
+      <Platform Solution="*|Any CPU" Project="x64" />
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
+    <Project Path="UnitTests/CpuModule.Tests/CpuModule.Tests.csproj">
+      <Platform Solution="*|Any CPU" Project="x64" />
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
+    <Project Path="UnitTests/Crystal.Service.Storage.Tests/Crystal.Service.Storage.Tests.csproj">
+      <Platform Solution="*|Any CPU" Project="x64" />
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
+    <Project Path="UnitTests/Crystal.Service.Memory.Tests/Crystal.Service.Memory.Tests.csproj">
+      <Platform Solution="*|Any CPU" Project="x64" />
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
+    <Project Path="UnitTests/Crystal.Service.Process.Tests/Crystal.Service.Process.Tests.csproj">
+      <Platform Solution="*|Any CPU" Project="x64" />
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
+    <Project Path="UnitTests/Crystal.Service.Gpu.Tests/Crystal.Service.Gpu.Tests.csproj">
+      <Platform Solution="*|Any CPU" Project="x64" />
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
+    <Project Path="UnitTests/Crystal.Service.Network.Tests/Crystal.Service.Network.Tests.csproj">
       <Platform Solution="*|Any CPU" Project="x64" />
       <Platform Solution="*|x64" Project="x64" />
       <Platform Solution="*|x86" Project="x86" />

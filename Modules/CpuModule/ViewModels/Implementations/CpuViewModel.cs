@@ -1,7 +1,7 @@
-using System.Windows;
 using System.Windows.Input;
 using CpuModule.Models;
 using CpuModule.ViewModels.Interfaces;
+using Crystal.Controls.Threading;
 using Crystal.Infrastructure.Constants.Navigation;
 
 
@@ -11,6 +11,7 @@ public sealed class CpuViewModel : BindableBase, ICpuViewModel, IDisposable {
   private readonly IDisposable _specsSubscription;
   private readonly IDisposable _sensorsSubscription;
   private readonly IDisposable _fanSubscription;
+  private readonly UiThreadMarshaller _ui = new();
 
   public CpuViewModel(ICpuModel model, CpuFanMonitor cpuFan, ICpuSpecsViewModel specs,
                       ICpuSensorViewModel sensors, IEventAggregator events) {
@@ -35,11 +36,7 @@ public sealed class CpuViewModel : BindableBase, ICpuViewModel, IDisposable {
   public ICommand ShowDetailCommand { get; }
   public ICommand ShowDashboardCommand { get; }
 
-  private static void OnUi(Action action) {
-    var dispatcher = Application.Current?.Dispatcher;
-    if (dispatcher is null || dispatcher.CheckAccess()) action();
-    else dispatcher.Invoke(action);
-  }
+  private void OnUi(Action action) => _ui.Post(action);
 
   public void Dispose() {
     _specsSubscription.Dispose();

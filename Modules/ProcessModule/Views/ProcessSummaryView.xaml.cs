@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -10,7 +11,54 @@ namespace ProcessModule.Views;
 /// Background / Windows processes, with clickable sortable columns and a detail panel showing live
 /// metrics for the selected process, styled to match the dashboard tiles.</summary>
 public partial class ProcessSummaryView : UserControl {
-  public ProcessSummaryView() => InitializeComponent();
+  // Smallest a column may be dragged to; WPF's header gripper writes GridViewColumn.Width directly
+  // and ignores the header's MinWidth, so the floor is enforced by coercing Width below.
+  private const double MinColumnWidth = 44;
+
+  // Default layout captured right after XAML load (before the user can resize anything), so "Reset
+  // view" can restore it without hard-coding the design widths in a second place.
+  private readonly double[] _defaultColumnWidths;
+  private readonly GridLength _defaultMasterWidth;
+  private readonly GridLength _defaultDetailWidth;
+
+  // Guards the Width-coercion re-entrancy: setting Width from inside the change handler would fire the
+  // handler again.
+  private bool _coercingWidth;
+
+  public ProcessSummaryView() {
+    InitializeComponent();
+
+    _defaultColumnWidths = [.. ProcessGridView.Columns.Select(c => c.Width)];
+    _defaultMasterWidth = MasterColumn.Width;
+    _defaultDetailWidth = DetailColumn.Width;
+
+    // Watch each column's Width so a gripper drag below the floor is snapped back up. The header's
+    // own MinWidth doesn't clamp the drag, so we coerce the property itself.
+    var widthProperty = DependencyPropertyDescriptor.FromProperty(
+        GridViewColumn.WidthProperty, typeof(GridViewColumn));
+    foreach (var column in ProcessGridView.Columns)
+      widthProperty.AddValueChanged(column, OnColumnWidthChanged);
+  }
+
+  private void OnColumnWidthChanged(object? sender, EventArgs e) {
+    if (_coercingWidth || sender is not GridViewColumn column) return;
+    if (double.IsNaN(column.Width) || column.Width >= MinColumnWidth) return;
+    _coercingWidth = true;
+    column.Width = MinColumnWidth;
+    _coercingWidth = false;
+  }
+
+  /// <summary>Restores the grid column widths and the list/detail split to their XAML defaults,
+  /// undoing any header-drag or splitter-drag the user has done. Layout-only; touches no process
+  /// state. Invoked from the Shell's title-bar Reset-layout button (which also resets the
+  /// dashboard), so the whole layout resets from one place.</summary>
+  public void ResetLayout() {
+    var columns = ProcessGridView.Columns;
+    for (int i = 0; i < columns.Count && i < _defaultColumnWidths.Length; i++)
+      columns[i].Width = _defaultColumnWidths[i];
+    MasterColumn.Width = _defaultMasterWidth;
+    DetailColumn.Width = _defaultDetailWidth;
+  }
 
   // The column currently showing a sort-direction arrow and its undecorated header text, so the
   // glyph can be stripped before the next click (the sort key lives in the attached property, not

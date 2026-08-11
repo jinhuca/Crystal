@@ -12,7 +12,7 @@ public sealed class StorageMonitor : IDisposable {
   private readonly IObservable<StorageLoadReading> _load;
   private readonly IDisposable _connection;
 
-  public StorageMonitor(StorageInfoBuilder builder, StorageLoadSource loads,
+  public StorageMonitor(StorageInfoBuilder builder, IStorageLoadSource loads,
                         TimeSpan? pollInterval = null, IScheduler? scheduler = null) {
     ArgumentNullException.ThrowIfNull(builder);
     ArgumentNullException.ThrowIfNull(loads);

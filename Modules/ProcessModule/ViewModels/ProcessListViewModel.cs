@@ -1,7 +1,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Windows;
 using System.Windows.Data;
+using Crystal.Controls.Threading;
 using Crystal.Service.Process;
 using ProcessModule.Models;
 
@@ -18,6 +18,7 @@ namespace ProcessModule.ViewModels;
 public sealed class ProcessListViewModel : BindableBase, IDisposable {
   private readonly IDisposable _subscription;
   private readonly IDisposable _statsSubscription;
+  private readonly UiThreadMarshaller _ui = new();
   private readonly Dictionary<uint, ProcessRowViewModel> _rowsByPid = new();
   private int _processCount;
   private int _threadCount;
@@ -503,11 +504,7 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
     HandleCount = stats.Handles;
   }
 
-  private static void OnUi(Action action) {
-    var dispatcher = Application.Current?.Dispatcher;
-    if (dispatcher is null || dispatcher.CheckAccess()) action();
-    else dispatcher.Invoke(action);
-  }
+  private void OnUi(Action action) => _ui.Post(action);
 
   public void Dispose() {
     _subscription.Dispose();

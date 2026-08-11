@@ -8,7 +8,7 @@ namespace Crystal.Service.Memory;
 /// of installed RAM in use) plus "Memory Used" / "Memory Available" <see cref="SensorType.Data"/>
 /// sensors reported in GB.
 /// </summary>
-public sealed class MemoryLoadSource : IDisposable {
+public sealed class MemoryLoadSource : IMemoryLoadSource, IDisposable {
   private const string LoadSensorName = "Memory";
   private const string UsedSensorName = "Memory Used";
   private const string AvailableSensorName = "Memory Available";

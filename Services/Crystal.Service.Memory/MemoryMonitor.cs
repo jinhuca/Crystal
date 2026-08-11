@@ -15,7 +15,7 @@ public sealed class MemoryMonitor : IDisposable {
   private readonly IObservable<MemoryLoadReading> _load;
   private readonly IDisposable _specsConnection;
 
-  public MemoryMonitor(MemoryInfoBuilder builder, MemoryLoadSource loads,
+  public MemoryMonitor(MemoryInfoBuilder builder, IMemoryLoadSource loads,
                        TimeSpan? pollInterval = null, IScheduler? scheduler = null) {
     ArgumentNullException.ThrowIfNull(builder);
     ArgumentNullException.ThrowIfNull(loads);

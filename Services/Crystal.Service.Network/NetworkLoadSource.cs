@@ -12,7 +12,7 @@ namespace Crystal.Service.Network;
 /// and capture the OS-reported link speed. For Wi-Fi adapters we additionally merge in radio state
 /// (SSID, signal, band, channel, PHY type) from <see cref="IWlanSource"/>.
 /// </summary>
-public sealed class NetworkLoadSource : IDisposable {
+public sealed class NetworkLoadSource : INetworkLoadSource, IDisposable {
   private const string UtilizationSensorName = "Network Utilization";
   private const string UploadSpeedSensorName = "Upload Speed";
   private const string DownloadSpeedSensorName = "Download Speed";
@@ -49,9 +49,12 @@ public sealed class NetworkLoadSource : IDisposable {
       wifiByName.TryGetValue(nic.Name, out var wifi);
       readings.Add(new NetworkInterfaceReading(
           Name: nic.Name,
-          UtilizationPercent: Clamp(FindLoad(nic, UtilizationSensorName)),
-          UploadBytesPerSecond: Sanitize(FindThroughput(nic, UploadSpeedSensorName)),
-          DownloadBytesPerSecond: Sanitize(FindThroughput(nic, DownloadSpeedSensorName)),
+          UtilizationPercent: NetworkSensorSelector.Clamp(
+              NetworkSensorSelector.FindValue(nic.Sensors, SensorType.Load, UtilizationSensorName)),
+          UploadBytesPerSecond: NetworkSensorSelector.Sanitize(
+              NetworkSensorSelector.FindValue(nic.Sensors, SensorType.Throughput, UploadSpeedSensorName)),
+          DownloadBytesPerSecond: NetworkSensorSelector.Sanitize(
+              NetworkSensorSelector.FindValue(nic.Sensors, SensorType.Throughput, DownloadSpeedSensorName)),
           WifiSsid: wifi?.Ssid,
           WifiSignalPercent: wifi?.SignalQualityPercent,
           WifiRssiDbm: wifi?.RssiDbm,
@@ -62,8 +65,10 @@ public sealed class NetworkLoadSource : IDisposable {
           WifiTxRateKbps: wifi?.TxRateKbps,
           WifiBssid: wifi?.Bssid,
           WifiSecurity: wifi?.Security,
-          DataUploadedGb: Sanitize(FindData(nic, DataUploadedSensorName)),
-          DataDownloadedGb: Sanitize(FindData(nic, DataDownloadedSensorName)),
+          DataUploadedGb: NetworkSensorSelector.Sanitize(
+              NetworkSensorSelector.FindValue(nic.Sensors, SensorType.Data, DataUploadedSensorName)),
+          DataDownloadedGb: NetworkSensorSelector.Sanitize(
+              NetworkSensorSelector.FindValue(nic.Sensors, SensorType.Data, DataDownloadedSensorName)),
           LinkSpeedBitsPerSecond: linkSpeed));
     }
     return new NetworkSnapshot(readings, ComputeWifiStatus(wlan));
@@ -77,16 +82,7 @@ public sealed class NetworkLoadSource : IDisposable {
     if (wlan.Count == 0)
       return HasWirelessAdapter() ? WifiStatus.Disabled : WifiStatus.None;
 
-    var best = WifiStatus.Disabled;
-    foreach (var reading in wlan) {
-      var status = reading.State switch {
-        WlanInterfaceState.Connected => WifiStatus.Connected,
-        WlanInterfaceState.Disconnected => WifiStatus.Disconnected,
-        _ => WifiStatus.Disabled,
-      };
-      if (status > best) best = status;
-    }
-    return best;
+    return NetworkSensorSelector.ReduceWifiStatus([.. wlan.Select(w => w.State)]);
   }
 
   private static bool HasWirelessAdapter() {
@@ -129,33 +125,6 @@ public sealed class NetworkLoadSource : IDisposable {
     }
     return speeds;
   }
-
-  private static double FindLoad(IHardware nic, string name) {
-    var sensor = Array.Find(nic.Sensors,
-        s => s.SensorType == SensorType.Load
-             && string.Equals(s.Name, name, StringComparison.OrdinalIgnoreCase));
-    return sensor?.Value ?? 0;
-  }
-
-  private static double FindThroughput(IHardware nic, string name) {
-    var sensor = Array.Find(nic.Sensors,
-        s => s.SensorType == SensorType.Throughput
-             && string.Equals(s.Name, name, StringComparison.OrdinalIgnoreCase));
-    return sensor?.Value ?? 0;
-  }
-
-  private static double FindData(IHardware nic, string name) {
-    var sensor = Array.Find(nic.Sensors,
-        s => s.SensorType == SensorType.Data
-             && string.Equals(s.Name, name, StringComparison.OrdinalIgnoreCase));
-    return sensor?.Value ?? 0;
-  }
-
-  private static double Clamp(double value) =>
-      double.IsFinite(value) ? Math.Min(Math.Max(value, 0), 100) : 0;
-
-  private static double Sanitize(double value) =>
-      double.IsFinite(value) && value >= 0 ? value : 0;
 
   public void Dispose() {
     if (_disposed) return;

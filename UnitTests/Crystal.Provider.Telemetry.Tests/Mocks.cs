@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Crystal.Provider.Telemetry.Hardware;
+using HardwareBase = Crystal.Provider.Telemetry.Hardware.Hardware;
 
 namespace Crystal.Provider.Telemetry.Tests;
 
@@ -70,6 +71,18 @@ internal sealed class MockHardware : IHardware {
     foreach (ISensor sensor in Sensors)
       sensor.Accept(visitor);
   }
+}
+
+/// <summary>
+/// Concrete <see cref="Hardware"/> subclass for exercising <see cref="Sensor"/>/<see cref="CompositeSensor"/>,
+/// which require a real <see cref="Hardware"/> (they subscribe to its <c>Closing</c> event). Only the two
+/// abstract members are implemented; <see cref="Close"/> raises Closing so save-on-close paths can run.
+/// </summary>
+internal sealed class TestHardware : HardwareBase {
+  public TestHardware(ISettings settings) : base("TestHardware", new Identifier("test", "hardware"), settings) { }
+
+  public override HardwareType HardwareType => HardwareType.Motherboard;
+  public override void Update() { }
 }
 
 /// <summary>Minimal <see cref="IComputer"/> stand-in that records whether it was traversed.</summary>

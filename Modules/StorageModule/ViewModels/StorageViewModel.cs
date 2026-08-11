@@ -1,7 +1,7 @@
 using System.Collections.ObjectModel;
-using System.Windows;
 using System.Windows.Input;
 using Crystal.Controls.PerformanceGraphs;
+using Crystal.Controls.Threading;
 using Crystal.Infrastructure.Constants.Navigation;
 using Crystal.Service.Storage;
 using StorageModule.Models;
@@ -19,6 +19,7 @@ public sealed class StorageViewModel : BindableBase, IStorageViewModel, IDisposa
   private readonly Queue<double> _transferSamples = new(TransferWindow + 1);
   private readonly IDisposable _specsSubscription;
   private readonly IDisposable _loadSubscription;
+  private readonly UiThreadMarshaller _ui = new();
   private string _totalCapacityLabel = "—";
   private string _driveCountLabel = "—";
   private double _load;
@@ -98,11 +99,7 @@ public sealed class StorageViewModel : BindableBase, IStorageViewModel, IDisposa
     return step * magnitude;
   }
 
-  private static void OnUi(Action action) {
-    var dispatcher = Application.Current?.Dispatcher;
-    if (dispatcher is null || dispatcher.CheckAccess()) action();
-    else dispatcher.Invoke(action);
-  }
+  private void OnUi(Action action) => _ui.Post(action);
 
   public void Dispose() {
     _specsSubscription.Dispose();

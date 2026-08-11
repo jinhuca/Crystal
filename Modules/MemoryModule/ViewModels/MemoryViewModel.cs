@@ -1,7 +1,7 @@
 using System.Collections.ObjectModel;
-using System.Windows;
 using System.Windows.Input;
 using Crystal.Controls.PerformanceGraphs;
+using Crystal.Controls.Threading;
 using Crystal.Infrastructure.Constants.Navigation;
 using Crystal.Service.Memory;
 using MemoryModule.Models;
@@ -11,6 +11,7 @@ namespace MemoryModule.ViewModels;
 public sealed class MemoryViewModel : BindableBase, IMemoryViewModel, IDisposable {
   private readonly IDisposable _specsSubscription;
   private readonly IDisposable _loadSubscription;
+  private readonly UiThreadMarshaller _ui = new();
   private string _totalCapacityLabel = "—";
   private string _slotsLabel = "—";
   private string _maxSpeedLabel = "—";
@@ -131,11 +132,7 @@ public sealed class MemoryViewModel : BindableBase, IMemoryViewModel, IDisposabl
 
   private static string Gb(double? value) => value is { } v ? $"{v:0.#} GB" : "—";
 
-  private static void OnUi(Action action) {
-    var dispatcher = Application.Current?.Dispatcher;
-    if (dispatcher is null || dispatcher.CheckAccess()) action();
-    else dispatcher.Invoke(action);
-  }
+  private void OnUi(Action action) => _ui.Post(action);
 
   public void Dispose() {
     _specsSubscription.Dispose();

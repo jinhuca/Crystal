@@ -25,7 +25,8 @@ public class NetworkModule(IRegionManager regionManager) : IModule {
     containerRegistry.RegisterSingleton<IWlanSource, WlanSource>();
 
     // NetworkLoadSource owns an open LibreHardwareMonitor Computer; keep one for the app lifetime.
-    containerRegistry.RegisterSingleton<NetworkLoadSource>();
+    // Registered behind INetworkLoadSource so NetworkMonitor can be unit-tested against a fake.
+    containerRegistry.RegisterSingleton<INetworkLoadSource, NetworkLoadSource>();
 
     // Per-process network top-talkers, driven by the shared ETW broadcaster ProcessModule registers
     // (a singleton in the shared container). Built via a factory for its optional name-resolver param.
@@ -36,7 +37,7 @@ public class NetworkModule(IRegionManager regionManager) : IModule {
     // its ctor's optional TimeSpan?/IScheduler? params can't be resolved by the container, and we
     // want the default 1-second poll cadence.
     containerRegistry.RegisterSingleton<NetworkMonitor>(
-        cp => new NetworkMonitor(cp.Resolve<NetworkLoadSource>(), cp.Resolve<ProcessNetworkSource>()));
+        cp => new NetworkMonitor(cp.Resolve<INetworkLoadSource>(), cp.Resolve<ProcessNetworkSource>()));
     containerRegistry.RegisterSingleton<INetworkModel, NetworkModel>();
 
     // Each view gets its own VM instance (Register, not singleton) so summary and detail never

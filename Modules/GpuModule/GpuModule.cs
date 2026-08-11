@@ -21,7 +21,8 @@ public class GpuModule(IRegionManager regionManager) : IModule {
     containerRegistry.Register<IWmiHardwareProvider, WmiHardwareProvider>();
 
     // GpuLoadSource owns an open LibreHardwareMonitor Computer; keep one for the app lifetime.
-    containerRegistry.RegisterSingleton<GpuLoadSource>();
+    // Registered behind IGpuLoadSource so GpuInfoBuilder can be unit-tested against a fake.
+    containerRegistry.RegisterSingleton<IGpuLoadSource, GpuLoadSource>();
 
     // GpuMonitor owns the polling lifetime and its Specs replay cache, so it must be a singleton.
     // Built via a factory: its ctor's optional TimeSpan?/IScheduler? params can't be resolved by

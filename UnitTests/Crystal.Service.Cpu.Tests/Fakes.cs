@@ -4,8 +4,34 @@ using Crystal.Infrastructure.DataStructures.Cpu.Interfaces.Cpus;
 using Crystal.Provider.CpuId;
 using Crystal.Provider.Mmi.MmiEngine;
 using Crystal.Provider.Smbios.HardwareFeatures.Processor;
+using Crystal.Provider.Telemetry.Hardware;
 
 namespace Crystal.Service.Cpu.Tests;
+
+// Minimal ISensor stand-in for exercising CpuTelemetryReadingMapper. Only Name/SensorType/Value/
+// Min/Max are meaningful; the rest satisfy the interface. Mirrors the other test projects' StubSensor.
+internal sealed class StubSensor : ISensor {
+  public string Name { get; set; } = string.Empty;
+  public SensorType SensorType { get; set; }
+  public float? Value { get; set; }
+  public float? Min { get; set; }
+  public float? Max { get; set; }
+
+  public IControl Control => null!;
+  public IHardware Hardware => null!;
+  public Identifier Identifier => new("stub", "sensor");
+  public int Index => 0;
+  public bool IsDefaultHidden => false;
+  public IReadOnlyList<IParameter> Parameters => Array.Empty<IParameter>();
+  public IEnumerable<SensorValue> Values => Array.Empty<SensorValue>();
+  public TimeSpan ValuesTimeWindow { get; set; }
+
+  public void ResetMin() { }
+  public void ResetMax() { }
+  public void ClearValues() { }
+  public void Accept(IVisitor visitor) { }
+  public void Traverse(IVisitor visitor) { }
+}
 
 internal sealed class FakeCpuIdProvider(CpuIdRawData data) : ICpuIdProvider {
   public int QueryCount { get; private set; }

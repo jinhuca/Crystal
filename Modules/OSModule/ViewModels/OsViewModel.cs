@@ -1,5 +1,5 @@
-using System.Windows;
 using System.Windows.Input;
+using Crystal.Controls.Threading;
 using Crystal.Infrastructure.Constants.Navigation;
 using OSModule.Models;
 
@@ -9,6 +9,7 @@ public sealed class OsViewModel : BindableBase, IOsViewModel, IDisposable {
   private const string Dash = "—";
   private readonly IDisposable _infoSubscription;
   private readonly IDisposable _liveSubscription;
+  private readonly UiThreadMarshaller _ui = new();
 
   private string _osName = Dash;
   private string _buildLabel = Dash;
@@ -97,11 +98,7 @@ public sealed class OsViewModel : BindableBase, IOsViewModel, IDisposable {
 
   private static string Text(string? value) => string.IsNullOrWhiteSpace(value) ? Dash : value!;
 
-  private static void OnUi(Action action) {
-    var dispatcher = Application.Current?.Dispatcher;
-    if (dispatcher is null || dispatcher.CheckAccess()) action();
-    else dispatcher.Invoke(action);
-  }
+  private void OnUi(Action action) => _ui.Post(action);
 
   public void Dispose() {
     _infoSubscription.Dispose();

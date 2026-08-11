@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Code-coverage settings for the solution.
+
+  Crystal.Provider.Telemetry is a fork of LibreHardwareMonitor: the bulk of it (~138 of 170 files)
+  is per-vendor hardware-driver code, ring-0 MSR access, P/Invoke interop and PawnIO kernel plumbing.
+  None of that can run without the physical hardware and Administrator elevation, so it is
+  unreachable from unit tests by design and would otherwise drag the reported coverage toward zero.
+
+  We exclude those driver namespaces from coverage measurement so the metric reflects the code we
+  actually own and test (the pure logic at the Telemetry root — Sensor, CompositeSensor, Identifier,
+  SMBIOS parsing, enums — plus every Service/Module). The driver code is excluded from the numerator
+  AND the denominator; it is not "untested code we're hiding", it is code no unit test can execute.
+
+  Applies to both collectors:
+    - "Code Coverage"       : Visual Studio / dotnet-coverage built-in collector
+    - "XPlat code coverage" : coverlet.collector (used by `dotnet test` with `collect`)
+-->
+<RunSettings>
+  <DataCollectionRunSettings>
+    <DataCollectors>
+
+      <!-- Visual Studio / dotnet built-in collector. Excludes by fully-qualified function name. -->
+      <DataCollector friendlyName="Code Coverage" uri="datacollector://Microsoft/CodeCoverage/2.0"
+                     assemblyQualifiedName="Microsoft.VisualStudio.Coverage.DynamicCoverageDataCollector, Microsoft.VisualStudio.TraceCollector, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+        <Configuration>
+          <CodeCoverage>
+            <!-- Exclude the vendored hardware-driver source by file path. Folder-based Source
+                 filtering is the reliable way to drop whole subtrees from the built-in collector.
+                 Backslashes are the path separator on Windows; patterns are case-insensitive regex. -->
+            <Sources>
+              <Exclude>
+                <Source>.*\\Crystal\.Provider\.Telemetry\\Hardware\\Cpu\\.*</Source>
+                <Source>.*\\Crystal\.Provider\.Telemetry\\Hardware\\Gpu\\.*</Source>
+                <Source>.*\\Crystal\.Provider\.Telemetry\\Hardware\\Storage\\.*</Source>
+                <Source>.*\\Crystal\.Provider\.Telemetry\\Hardware\\Memory\\.*</Source>
+                <Source>.*\\Crystal\.Provider\.Telemetry\\Hardware\\Motherboard\\.*</Source>
+                <Source>.*\\Crystal\.Provider\.Telemetry\\Hardware\\Psu\\.*</Source>
+                <Source>.*\\Crystal\.Provider\.Telemetry\\Hardware\\Battery\\.*</Source>
+                <Source>.*\\Crystal\.Provider\.Telemetry\\Hardware\\Network\\.*</Source>
+                <Source>.*\\Crystal\.Provider\.Telemetry\\Hardware\\Controller\\.*</Source>
+                <Source>.*\\Crystal\.Provider\.Telemetry\\Hardware\\PowerMonitor\\.*</Source>
+                <Source>.*\\Crystal\.Provider\.Telemetry\\Interop\\.*</Source>
+                <Source>.*\\Crystal\.Provider\.Telemetry\\PawnIo\\.*</Source>
+                <Source>.*\\Crystal\.Provider\.Telemetry\\Software\\.*</Source>
+                <Source>.*\\Crystal\.Provider\.Telemetry\\RAMSPDToolkitDriver\.cs</Source>
+
+                <!-- Hardware-bound files at the Hardware\ root (device orchestration, ring-0 opcodes,
+                     thread affinity, global mutexes and vendor SMU / display interop). These sit
+                     alongside the pure logic we DO test (Sensor, CompositeSensor, Identifier,
+                     Parameter, SMBios, Control, Hardware), so they are excluded by exact file name. -->
+                <Source>.*\\Crystal\.Provider\.Telemetry\\Hardware\\Computer\.cs</Source>
+                <Source>.*\\Crystal\.Provider\.Telemetry\\Hardware\\D3DDisplayDevice\.cs</Source>
+                <Source>.*\\Crystal\.Provider\.Telemetry\\Hardware\\FirmwareTable\.cs</Source>
+                <Source>.*\\Crystal\.Provider\.Telemetry\\Hardware\\Mutexes\.cs</Source>
+                <Source>.*\\Crystal\.Provider\.Telemetry\\Hardware\\OpCode\.cs</Source>
+                <Source>.*\\Crystal\.Provider\.Telemetry\\Hardware\\RyzenSMU\.cs</Source>
+                <Source>.*\\Crystal\.Provider\.Telemetry\\Hardware\\ThreadAffinity\.cs</Source>
+
+                <!-- CsWin32 source-generated P/Invoke interop (emitted under Build\Obj as *.g.cs). -->
+                <Source>.*\\Microsoft\.Windows\.CsWin32\\.*</Source>
+              </Exclude>
+            </Sources>
+          </CodeCoverage>
+        </Configuration>
+      </DataCollector>
+
+      <!-- coverlet. Excludes by [assembly]namespace filter (wildcards). -->
+      <DataCollector friendlyName="XPlat code coverage">
+        <Configuration>
+          <Exclude>[Crystal.Provider.Telemetry]Crystal.Provider.Telemetry.Hardware.Cpu.*,[Crystal.Provider.Telemetry]Crystal.Provider.Telemetry.Hardware.Gpu.*,[Crystal.Provider.Telemetry]Crystal.Provider.Telemetry.Hardware.Storage.*,[Crystal.Provider.Telemetry]Crystal.Provider.Telemetry.Hardware.Memory.*,[Crystal.Provider.Telemetry]Crystal.Provider.Telemetry.Hardware.Motherboard.*,[Crystal.Provider.Telemetry]Crystal.Provider.Telemetry.Hardware.Psu.*,[Crystal.Provider.Telemetry]Crystal.Provider.Telemetry.Hardware.Battery.*,[Crystal.Provider.Telemetry]Crystal.Provider.Telemetry.Hardware.Network.*,[Crystal.Provider.Telemetry]Crystal.Provider.Telemetry.Hardware.Controller.*,[Crystal.Provider.Telemetry]Crystal.Provider.Telemetry.Hardware.PowerMonitor.*,[Crystal.Provider.Telemetry]Crystal.Provider.Telemetry.Interop.*,[Crystal.Provider.Telemetry]Crystal.Provider.Telemetry.PawnIo.*,[Crystal.Provider.Telemetry]Crystal.Provider.Telemetry.Software.*,[Crystal.Provider.Telemetry]Crystal.Provider.Telemetry.Hardware.Computer,[Crystal.Provider.Telemetry]Crystal.Provider.Telemetry.Hardware.D3DDisplayDevice*,[Crystal.Provider.Telemetry]Crystal.Provider.Telemetry.Hardware.FirmwareTable*,[Crystal.Provider.Telemetry]Crystal.Provider.Telemetry.Hardware.Mutexes,[Crystal.Provider.Telemetry]Crystal.Provider.Telemetry.Hardware.OpCode*,[Crystal.Provider.Telemetry]Crystal.Provider.Telemetry.Hardware.RyzenSMU*,[Crystal.Provider.Telemetry]Crystal.Provider.Telemetry.Hardware.ThreadAffinity*,[Crystal.Provider.Telemetry]Windows.Win32.*</Exclude>
+        </Configuration>
+      </DataCollector>
+
+    </DataCollectors>
+  </DataCollectionRunSettings>
+</RunSettings>

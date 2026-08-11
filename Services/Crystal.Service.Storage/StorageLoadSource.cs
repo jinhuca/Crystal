@@ -11,11 +11,10 @@ namespace Crystal.Service.Storage;
 /// number — mirroring Task Manager's per-disk Disk view. Average response time comes best-effort
 /// from the "PhysicalDisk\Avg. Disk sec/Transfer" performance counter.
 /// </summary>
-public sealed class StorageLoadSource : IDisposable {
+public sealed class StorageLoadSource : IStorageLoadSource, IDisposable {
   private const string ActivitySensorName = "Total Activity";
   private const string ReadRateSensorName = "Read Rate";
   private const string WriteRateSensorName = "Write Rate";
-  private const double BytesPerMB = 1024.0 * 1024.0;
 
   private readonly Computer _computer;
   // Per physical-disk-index average-response-time counters, created on first sight and reused.
@@ -34,28 +33,20 @@ public sealed class StorageLoadSource : IDisposable {
     foreach (var drive in _computer.Hardware.Where(h => h.HardwareType == HardwareType.Storage)) {
       drive.Update();
 
-      if (DiskIndexOf(drive) is not { } index) continue;
+      if (StorageSensorSelector.DiskIndexOf(drive.Identifier) is not { } index) continue;
 
-      var activity = FindSensor(drive, SensorType.Load, ActivitySensorName)?.Value ?? 0;
-      var read = FindSensor(drive, SensorType.Throughput, ReadRateSensorName)?.Value ?? 0;
-      var write = FindSensor(drive, SensorType.Throughput, WriteRateSensorName)?.Value ?? 0;
+      var activity = StorageSensorSelector.FindSensor(drive.Sensors, SensorType.Load, ActivitySensorName)?.Value ?? 0;
+      var read = StorageSensorSelector.FindSensor(drive.Sensors, SensorType.Throughput, ReadRateSensorName)?.Value ?? 0;
+      var write = StorageSensorSelector.FindSensor(drive.Sensors, SensorType.Throughput, WriteRateSensorName)?.Value ?? 0;
 
       disks.Add(new StorageDiskLoad(
           DriveIndex: index,
           ActivityPercent: activity,
-          ReadRateMBps: read / BytesPerMB,
-          WriteRateMBps: write / BytesPerMB,
+          ReadRateMBps: StorageSensorSelector.BytesToMBps(read),
+          WriteRateMBps: StorageSensorSelector.BytesToMBps(write),
           ResponseMs: ReadResponseMs(index)));
     }
     return new StorageLoadReading(disks);
-  }
-
-  // The telemetry Identifier ends with the physical-disk number (StorageDeviceNumber), e.g.
-  // "/nvme/0" -> 0. That's the same value as Win32_DiskDrive.Index, so it joins the two sources.
-  private static int? DiskIndexOf(IHardware drive) {
-    var token = drive.Identifier.ToString().Split('/', StringSplitOptions.RemoveEmptyEntries)
-        .LastOrDefault();
-    return int.TryParse(token, out var index) ? index : null;
   }
 
   // Windows names PhysicalDisk instances by leading physical-disk index ("0 C:"), so match on the
@@ -89,10 +80,6 @@ public sealed class StorageLoadSource : IDisposable {
       return null;
     }
   }
-
-  private static ISensor? FindSensor(IHardware drive, SensorType type, string name) =>
-      Array.Find(drive.Sensors,
-          s => s.SensorType == type && string.Equals(s.Name, name, StringComparison.OrdinalIgnoreCase));
 
   public void Dispose() {
     if (_disposed) return;

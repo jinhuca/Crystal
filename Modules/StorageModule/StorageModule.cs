@@ -23,13 +23,14 @@ public class StorageModule(IRegionManager regionManager) : IModule {
     containerRegistry.Register<StorageInfoBuilder>();
 
     // StorageLoadSource owns an open LibreHardwareMonitor Computer; keep one for the app lifetime.
-    containerRegistry.RegisterSingleton<StorageLoadSource>();
+    // Registered behind IStorageLoadSource so StorageMonitor can be unit-tested against a fake.
+    containerRegistry.RegisterSingleton<IStorageLoadSource, StorageLoadSource>();
 
     // StorageMonitor replays its one-shot spec build and owns the load-polling lifetime, so it must
     // be a singleton. Built via a factory: its ctor's optional TimeSpan?/IScheduler? params can't
     // be resolved by the container, and we want the default 1-second poll cadence.
     containerRegistry.RegisterSingleton<StorageMonitor>(cp => new StorageMonitor(
-        cp.Resolve<StorageInfoBuilder>(), cp.Resolve<StorageLoadSource>()));
+        cp.Resolve<StorageInfoBuilder>(), cp.Resolve<IStorageLoadSource>()));
     containerRegistry.RegisterSingleton<IStorageModel, StorageModel>();
 
     containerRegistry.Register<IStorageViewModel, StorageViewModel>();

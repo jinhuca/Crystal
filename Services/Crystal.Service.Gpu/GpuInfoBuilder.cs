@@ -11,14 +11,14 @@ namespace Crystal.Service.Gpu;
 /// </summary>
 public sealed class GpuInfoBuilder {
   private readonly IWmiHardwareProvider _wmi;
-  private readonly GpuLoadSource _loads;
+  private readonly IGpuLoadSource _loads;
 
   // Markers that identify CPU-integrated graphics by product/chip name. Anything else is
   // treated as a discrete card. This is a display heuristic, not a hardware guarantee.
   private static readonly string[] IntegratedMarkers =
       ["UHD Graphics", "HD Graphics", "Iris", "Radeon(TM) Graphics", "Radeon Graphics", "Vega", "AMD Radeon(TM)"];
 
-  public GpuInfoBuilder(IWmiHardwareProvider wmi, GpuLoadSource loads) {
+  public GpuInfoBuilder(IWmiHardwareProvider wmi, IGpuLoadSource loads) {
     _wmi = wmi;
     _loads = loads;
   }

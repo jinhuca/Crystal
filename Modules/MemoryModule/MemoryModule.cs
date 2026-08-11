@@ -22,13 +22,14 @@ public class MemoryModule(IRegionManager regionManager) : IModule {
     containerRegistry.Register<MemoryInfoBuilder>();
 
     // MemoryLoadSource owns an open LibreHardwareMonitor Computer; keep one for the app lifetime.
-    containerRegistry.RegisterSingleton<MemoryLoadSource>();
+    // Registered behind IMemoryLoadSource so MemoryMonitor can be unit-tested against a fake.
+    containerRegistry.RegisterSingleton<IMemoryLoadSource, MemoryLoadSource>();
 
     // MemoryMonitor replays its one-shot spec build and owns the load-polling lifetime, so it must
     // be a singleton. Built via a factory: its ctor's optional TimeSpan?/IScheduler? params can't
     // be resolved by the container, and we want the default 1-second poll cadence.
     containerRegistry.RegisterSingleton<MemoryMonitor>(cp => new MemoryMonitor(
-        cp.Resolve<MemoryInfoBuilder>(), cp.Resolve<MemoryLoadSource>()));
+        cp.Resolve<MemoryInfoBuilder>(), cp.Resolve<IMemoryLoadSource>()));
     containerRegistry.RegisterSingleton<IMemoryModel, MemoryModel>();
 
     containerRegistry.Register<IMemoryViewModel, MemoryViewModel>();

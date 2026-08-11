@@ -1,6 +1,6 @@
 using System.Collections.ObjectModel;
-using System.Windows;
 using System.Windows.Input;
+using Crystal.Controls.Threading;
 using Crystal.Infrastructure.Constants.Navigation;
 using Crystal.Service.Gpu;
 using GpuModule.Models;
@@ -10,6 +10,7 @@ namespace GpuModule.ViewModels;
 public sealed class GpuViewModel : BindableBase, IGpuViewModel, IDisposable {
   private readonly IDisposable _specsSubscription;
   private readonly IDisposable _sensorsSubscription;
+  private readonly UiThreadMarshaller _ui = new();
 
   public GpuViewModel(IGpuModel model, IEventAggregator events) {
     ShowDetailCommand = new DelegateCommand(
@@ -46,11 +47,7 @@ public sealed class GpuViewModel : BindableBase, IGpuViewModel, IDisposable {
     }
   }
 
-  private static void OnUi(Action action) {
-    var dispatcher = Application.Current?.Dispatcher;
-    if (dispatcher is null || dispatcher.CheckAccess()) action();
-    else dispatcher.Invoke(action);
-  }
+  private void OnUi(Action action) => _ui.Post(action);
 
   public void Dispose() {
     _specsSubscription.Dispose();

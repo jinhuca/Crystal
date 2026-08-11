@@ -52,10 +52,13 @@ public partial class Shell : Window {
 
   private void OnCloseClick(object sender, RoutedEventArgs e) => Close();
 
-  // Reset the dashboard's resizable rows to their default proportions. The dashboard is injected
-  // into the content region by Prism, so we locate it in the visual tree rather than hold a ref.
-  private void OnResetLayoutClick(object sender, RoutedEventArgs e) =>
-      FindDescendant<DashboardView>(MainContent)?.ResetLayout();
+  // Reset the dashboard's resizable rows to their default proportions, and the Processes tile's
+  // column widths / master-detail split along with it. Both views are injected into the content
+  // region by Prism, so we locate them in the visual tree rather than hold refs.
+  private void OnResetLayoutClick(object sender, RoutedEventArgs e) {
+    FindDescendant<DashboardView>(MainContent)?.ResetLayout();
+    FindDescendant<ProcessModule.Views.ProcessSummaryView>(MainContent)?.ResetLayout();
+  }
 
   private static T? FindDescendant<T>(DependencyObject root) where T : DependencyObject {
     if (root is T match) return match;
