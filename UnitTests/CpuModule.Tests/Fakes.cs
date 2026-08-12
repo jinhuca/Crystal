@@ -25,22 +25,60 @@ internal static class Fakes {
       float? load = null, float? voltage = null, float? speedMHz = null,
       float? power = null, float? temperature = null,
       IReadOnlyList<float?>? coreLoads = null,
-      int socketIndex = 0) {
+      int socketIndex = 0,
+      float? socVoltage = null, float? effectiveSpeedMHz = null, float? busSpeedMHz = null,
+      float? powerLimitLongW = null, float? powerLimitShortW = null,
+      float? tdcAmps = null, float? edcAmps = null,
+      float? c2Pct = null, float? c3Pct = null, float? c6Pct = null, float? c7Pct = null,
+      float? distanceToTjMax = null,
+      float? thermalThrottling = null, float? powerLimitThrottling = null, float? prochot = null,
+      IReadOnlyList<ICoreInfo>? cores = null) {
     var sensors = new CpuSensors {
       TotalLoad = Reading(load),
       Voltage = Reading(voltage),
+      SocVoltage = Reading(socVoltage),
       CpuSpeed = Reading(speedMHz),
+      CpuEffectiveSpeed = Reading(effectiveSpeedMHz),
+      BusSpeed = Reading(busSpeedMHz),
       PackagePower = Reading(power),
+      PowerLimitLong = Reading(powerLimitLongW),
+      PowerLimitShort = Reading(powerLimitShortW),
+      Tdc = Reading(tdcAmps),
+      Edc = Reading(edcAmps),
+      PackageC2Residency = Reading(c2Pct),
+      PackageC3Residency = Reading(c3Pct),
+      PackageC6Residency = Reading(c6Pct),
+      PackageC7Residency = Reading(c7Pct),
       PackageTemperature = Reading(temperature),
+      MinDistanceToTjMax = Reading(distanceToTjMax),
+      ThermalThrottling = Reading(thermalThrottling),
+      PowerLimitThrottling = Reading(powerLimitThrottling),
+      Prochot = Reading(prochot),
     };
 
-    var cores = (coreLoads ?? [])
+    var coreInfos = cores ?? (coreLoads ?? [])
         .Select(l => (ICoreInfo)new CoreInfo(new CoreSpecs(), new CoreSensors { Load = Reading(l) }))
         .ToList();
 
-    var socket = new CpuInfo(socketIndex, $"CPU{socketIndex}", specs ?? new CpuSpecs(), sensors, cores);
+    var socket = new CpuInfo(socketIndex, $"CPU{socketIndex}", specs ?? new CpuSpecs(), sensors, coreInfos);
     return new SystemCpuInfo([socket]);
   }
+
+  // A single physical core with the full spread of per-core readings, for exercising the detail
+  // mappings (clock/effective/multiplier/temp/distance/power) and per-thread load rows.
+  public static ICoreInfo Core(
+      float? load = null, float? speedMHz = null, float? effectiveSpeedMHz = null,
+      float? multiplier = null, float? distanceToTjMax = null, float? power = null,
+      IReadOnlyList<float?>? threadLoads = null) =>
+    new CoreInfo(new CoreSpecs(), new CoreSensors {
+      Load = Reading(load),
+      Speed = Reading(speedMHz),
+      EffectiveSpeed = Reading(effectiveSpeedMHz),
+      Multiplier = Reading(multiplier),
+      DistanceToTjMax = Reading(distanceToTjMax),
+      Power = Reading(power),
+      ThreadLoads = (threadLoads ?? []).Select(Reading).ToList(),
+    });
 
   // A system with no sockets at all — the view models must no-op on this.
   public static SystemCpuInfo Empty() => new([]);

@@ -1,5 +1,6 @@
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using CpuModule.ViewModels.Interfaces;
 using Crystal.Controls.PerformanceGraphs.Kinds;
 using Crystal.Controls.PerformanceGraphs.Themes;
@@ -23,11 +24,12 @@ public partial class CpuSummaryView : UserControl {
     PowerBar.ApplyTheme(GraphThemes.Emerald(GraphKind.Line));
     UtilizationBar.ApplyTheme(GraphThemes.Rose(GraphKind.Line));
     TemperatureBar.ApplyTheme(GraphThemes.Sky(GraphKind.Line));
+    FanBar.ApplyTheme(GraphThemes.FromAccent(Color.FromRgb(0x9B, 0x5A, 0xE8), GraphKind.Line));
 
     if (DataContext is ICpuViewModel vm)
       vm.SensorsViewModel.AttachGraphs(
           utilization: UtilizationBar, voltage: VoltageBar, clock: ClockBar,
-          power: PowerBar, temperature: TemperatureBar);
+          power: PowerBar, temperature: TemperatureBar, fan: FanBar);
   }
 
   private void OnTileClick(object sender, MouseButtonEventArgs e) {
