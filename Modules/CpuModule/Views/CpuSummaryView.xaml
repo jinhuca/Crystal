@@ -11,333 +11,345 @@
              d:DesignHeight="240" d:DesignWidth="1000"
              Background="Transparent" Foreground="White"
              FontFamily="Segoe UI">
-  <UserControl.Resources>
-    <local:LoadToBrushConverter x:Key="LoadToBrush"/>
+	<UserControl.Resources>
+		<local:LoadToBrushConverter x:Key="LoadToBrush"/>
 
-    <!-- Shared MetricValue / MetricUnit / MetricCaption / HeaderSpec come from Crystal.Resources
+		<!-- Shared MetricValue / MetricUnit / MetricCaption / HeaderSpec come from Crystal.Resources
          (Palette.xaml + TextStyles.xaml), merged app-wide in the Shell's App.xaml. -->
-  </UserControl.Resources>
+	</UserControl.Resources>
 
-  <Border Background="Transparent" MouseLeftButtonDown="OnTileClick">
-    <Grid Margin="10">
-      <Grid.RowDefinitions>
-        <RowDefinition Height="Auto"/>
-        <RowDefinition Height="*"/>
-      </Grid.RowDefinitions>
+	<Border Background="Transparent" MouseLeftButtonDown="OnTileClick">
+		<Grid Margin="5">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
 
-      <!-- ============ Header: title + inline specs (left), slot (right) ============ -->
-      <Border Grid.Row="0" BorderBrush="{StaticResource DividerBrush}" BorderThickness="0,0,0,1" Padding="0,0,0,4">
-        <Grid DataContext="{Binding SpecsViewModel}">
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
-          </Grid.ColumnDefinitions>
-          <StackPanel Grid.Column="0" Orientation="Horizontal">
-            <Border Width="3" Background="{StaticResource AccentBrush}" Margin="0,1,8,1"/>
-            <TextBlock Text="CPU" Foreground="{StaticResource ValueBrush}" FontSize="12" FontWeight="SemiBold"
+			<!-- ============ Header: title + inline specs (left), slot (right) ============ -->
+			<Border Grid.Row="0" BorderBrush="{StaticResource DividerBrush}" BorderThickness="0,0,0,1" Padding="0,0,0,4">
+				<Grid DataContext="{Binding SpecsViewModel}">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="Auto"/>
+					</Grid.ColumnDefinitions>
+					<StackPanel Grid.Column="0" Orientation="Horizontal">
+						<Border Width="3" Background="{StaticResource AccentBrush}" Margin="0,1,8,1"/>
+						<TextBlock Text="CPU" Foreground="{StaticResource ValueBrush}" FontSize="12" FontWeight="SemiBold"
                        VerticalAlignment="Center" Margin="0,0,16,0"/>
-            <TextBlock Text="{Binding Brand}" Style="{StaticResource HeaderSpec}"
+						<TextBlock Text="{Binding Brand}" Style="{StaticResource HeaderSpec}"
                        TextTrimming="CharacterEllipsis"/>
-            <TextBlock Text="{Binding PhysicalCores, StringFormat=Physical Cores: {0}}" Style="{StaticResource HeaderSpec}"/>
-            <TextBlock Text="{Binding LogicalCores, StringFormat=Logical Cores: {0}}" Style="{StaticResource HeaderSpec}"/>
-            <TextBlock Text="{Binding L1CacheKb, StringFormat=L1: {0:N0} KB}" Style="{StaticResource HeaderSpec}"/>
-            <TextBlock Text="{Binding L2CacheKb, StringFormat=L2: {0:N0} KB}" Style="{StaticResource HeaderSpec}"/>
-            <TextBlock Text="{Binding L3CacheKb, StringFormat=L3: {0:N0} KB}" Style="{StaticResource HeaderSpec}"/>
-            <TextBlock Text="{Binding BaseSpeedMHz, StringFormat=Base Speed: {0:N0} MHz}" Style="{StaticResource HeaderSpec}"/>
-          </StackPanel>
-          <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-            <!-- Throttle badge: shown only while the package is throttling. IsThrottling/ThrottleStatus
+						<TextBlock Text="{Binding PhysicalCores, StringFormat=Physical Cores: {0}}" Style="{StaticResource HeaderSpec}"/>
+						<TextBlock Text="{Binding LogicalCores, StringFormat=Logical Cores: {0}}" Style="{StaticResource HeaderSpec}"/>
+						<TextBlock Text="{Binding L1CacheKb, StringFormat=L1: {0:N0} KB}" Style="{StaticResource HeaderSpec}"/>
+						<TextBlock Text="{Binding L2CacheKb, StringFormat=L2: {0:N0} KB}" Style="{StaticResource HeaderSpec}"/>
+						<TextBlock Text="{Binding L3CacheKb, StringFormat=L3: {0:N0} KB}" Style="{StaticResource HeaderSpec}"/>
+						<TextBlock Text="{Binding BaseSpeedMHz, StringFormat=Base Speed: {0:N0} MHz}" Style="{StaticResource HeaderSpec}"/>
+					</StackPanel>
+					<StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+						<!-- Throttle badge: shown only while the package is throttling. IsThrottling/ThrottleStatus
                  live on SensorsViewModel, so bind up to the root tile DataContext. -->
-            <Border Margin="0,0,12,0" Padding="8,2" CornerRadius="3"
+						<Border Margin="0,0,12,0" Padding="8,2" CornerRadius="3"
                     Background="#5A1A1A" BorderBrush="#E04A3A" BorderThickness="1">
-              <Border.Style>
-                <Style TargetType="Border">
-                  <Setter Property="Visibility" Value="Collapsed"/>
-                  <Style.Triggers>
-                    <DataTrigger Binding="{Binding DataContext.SensorsViewModel.IsThrottling, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
-                      <Setter Property="Visibility" Value="Visible"/>
-                    </DataTrigger>
-                  </Style.Triggers>
-                </Style>
-              </Border.Style>
-              <TextBlock Text="{Binding DataContext.SensorsViewModel.ThrottleStatus, RelativeSource={RelativeSource AncestorType=UserControl}}"
+							<Border.Style>
+								<Style TargetType="Border">
+									<Setter Property="Visibility" Value="Collapsed"/>
+									<Style.Triggers>
+										<DataTrigger Binding="{Binding DataContext.SensorsViewModel.IsThrottling, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
+											<Setter Property="Visibility" Value="Visible"/>
+										</DataTrigger>
+									</Style.Triggers>
+								</Style>
+							</Border.Style>
+							<TextBlock Text="{Binding DataContext.SensorsViewModel.ThrottleStatus, RelativeSource={RelativeSource AncestorType=UserControl}}"
                          Foreground="#FFD2C8" FontSize="11" FontWeight="SemiBold" FontFamily="Consolas" VerticalAlignment="Center"/>
-            </Border>
-            <TextBlock Text="{Binding Socket, StringFormat=Slot# {0}}"
+						</Border>
+						<TextBlock Text="{Binding Socket, StringFormat=Slot# {0}}"
                        Foreground="{StaticResource LabelBrush}" FontSize="11" FontFamily="Consolas" VerticalAlignment="Center"/>
-          </StackPanel>
-        </Grid>
-      </Border>
+					</StackPanel>
+				</Grid>
+			</Border>
 
-      <!-- ============ Bars + per-core list ============ -->
-      <Grid Grid.Row="1" DataContext="{Binding SensorsViewModel}" Margin="0,6,0,0">
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="*"/>
-          <ColumnDefinition Width="*"/>
-          <ColumnDefinition Width="*"/>
-          <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
+			<!-- ============ Bars + per-core list ============ -->
+			<Grid Grid.Row="1" DataContext="{Binding SensorsViewModel}" Margin="0,5,0,5">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="Auto"/>
+				</Grid.ColumnDefinitions>
 
-        <!-- Column 0: Clock (top) + Voltage (bottom) -->
-        <Grid Grid.Column="0" Margin="0,0,10,0" VerticalAlignment="Top">
-          <Grid.RowDefinitions>
-            <RowDefinition Height="84"/>
-            <RowDefinition Height="84"/>
-          </Grid.RowDefinitions>
+				<!-- Column 0: Clock (top) + Voltage (bottom) -->
+				<Grid Grid.Column="0" Margin="0,0,10,0" VerticalAlignment="Top">
+					<Grid.RowDefinitions>
+						<RowDefinition/>
+						<RowDefinition/>
+					</Grid.RowDefinitions>
 
-          <Grid Grid.Row="0" Margin="0,0,0,6">
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="*"/>
-              <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <graphs:PerformanceGraph x:Name="ClockBar" Grid.Column="0" Kind="Line" MinHeight="60" MinValue="0" MaxValue="6"/>
-            <StackPanel Grid.Column="1" Margin="10,0,0,0" Width="96" VerticalAlignment="Center">
-              <TextBlock Text="{Binding SpeedGhz, StringFormat={}{0:0.00}}" Style="{StaticResource MetricValue}" FontSize="28" LineHeight="30"/>
-              <TextBlock Text="GHz" Style="{StaticResource MetricUnit}"/>
-              <TextBlock Text="Clock" Style="{StaticResource MetricCaption}"/>
-              <TextBlock Text="{Binding EffectiveSpeedGhz, StringFormat=eff {0:0.00} GHz}" Style="{StaticResource MetricCaption}"/>
-              <TextBlock Text="{Binding BusSpeedMHz, StringFormat=BCLK {0:0.0} MHz}" Style="{StaticResource MetricCaption}"/>
-            </StackPanel>
-          </Grid>
+					<Grid Grid.Row="0" Margin="0,0,0,6">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="Auto"/>
+						</Grid.ColumnDefinitions>
+						<graphs:PerformanceGraph x:Name="ClockBar" Grid.Column="0" Kind="Line" MinHeight="60" MinValue="0" MaxValue="6"/>
+						<StackPanel Grid.Column="1" Style="{StaticResource SummaryStackPanelStyle}">
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="{Binding SpeedGhz, StringFormat={}{0:0.00}}" Style="{StaticResource MetricValue}"/>
+								<TextBlock Text="GHz" Style="{StaticResource MetricUnit}"/>
+							</StackPanel>
+							<TextBlock Text="Clock" Style="{StaticResource MetricCaption}"/>
+							<TextBlock Text="{Binding EffectiveSpeedGhz, StringFormat=eff {0:0.00} GHz}" Style="{StaticResource MetricCaption}"/>
+							<TextBlock Text="{Binding BusSpeedMHz, StringFormat=BCLK {0:0.0} MHz}" Style="{StaticResource MetricCaption}"/>
+						</StackPanel>
+					</Grid>
 
-          <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="*"/>
-              <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <graphs:PerformanceGraph x:Name="VoltageBar" Grid.Column="0" Kind="Line" MinHeight="60" MinValue="0" MaxValue="2"/>
-            <StackPanel Grid.Column="1" Margin="10,0,0,0" Width="96" VerticalAlignment="Center">
-              <TextBlock Text="{Binding Voltage, StringFormat={}{0:0.00}}" Style="{StaticResource MetricValue}" FontSize="28" LineHeight="30"/>
-              <TextBlock Text="V" Style="{StaticResource MetricUnit}"/>
-              <TextBlock Text="Voltage" Style="{StaticResource MetricCaption}"/>
-              <TextBlock Text="{Binding SocVoltage, StringFormat=SoC {0:0.00} V}" Style="{StaticResource MetricCaption}"/>
-            </StackPanel>
-          </Grid>
-        </Grid>
+					<Grid Grid.Row="1">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="Auto"/>
+						</Grid.ColumnDefinitions>
+						<graphs:PerformanceGraph x:Name="VoltageBar" Grid.Column="0" Kind="Line" MinHeight="60" MinValue="0" MaxValue="2"/>
+						<StackPanel Grid.Column="1" Style="{StaticResource SummaryStackPanelStyle}">
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="{Binding Voltage, StringFormat={}{0:0.00}}" Style="{StaticResource MetricValue}" FontSize="22"/>
+								<TextBlock Text="Volt" Style="{StaticResource MetricUnit}"/>
+							</StackPanel>
+							<TextBlock Text="Voltage" Style="{StaticResource MetricCaption}"/>
+							<TextBlock Text="{Binding SocVoltage, StringFormat=SoC {0:0.00} V}" Style="{StaticResource MetricCaption}"/>
+						</StackPanel>
+					</Grid>
+				</Grid>
 
-        <!-- Column 1: Temperature (top) + Power (bottom) -->
-        <Grid Grid.Column="1" Margin="0,0,10,0" VerticalAlignment="Top">
-          <Grid.RowDefinitions>
-            <RowDefinition Height="84"/>
-            <RowDefinition Height="84"/>
-          </Grid.RowDefinitions>
+				<!-- Column 1: Temperature (top) + Power (bottom) -->
+				<Grid Grid.Column="1" Margin="0,0,10,0" VerticalAlignment="Top">
+					<Grid.RowDefinitions>
+						<RowDefinition/>
+						<RowDefinition/>
+					</Grid.RowDefinitions>
 
-          <Grid Grid.Row="0" Margin="0,0,0,6">
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="*"/>
-              <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <graphs:PerformanceGraph x:Name="TemperatureBar" Grid.Column="0" Kind="Line" MinHeight="60" MinValue="0" MaxValue="120"/>
-            <StackPanel Grid.Column="1" Margin="10,0,0,0" Width="96" VerticalAlignment="Center">
-              <TextBlock Text="{Binding Temperature, StringFormat={}{0:0.00}}" Style="{StaticResource MetricValue}" FontSize="28" LineHeight="30"/>
-              <TextBlock Text="°C" Style="{StaticResource MetricUnit}"/>
-              <TextBlock Text="Temperature" Style="{StaticResource MetricCaption}"/>
-              <!-- Intel-only thermal headroom; hidden when not exposed (reads 0 on AMD). -->
-              <TextBlock Text="{Binding DistanceToTjMax, StringFormat=TjMax +{0:0}°C}">
-                <TextBlock.Style>
-                  <Style TargetType="TextBlock" BasedOn="{StaticResource MetricCaption}">
-                    <Style.Triggers>
-                      <DataTrigger Binding="{Binding DistanceToTjMax}" Value="0">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                      </DataTrigger>
-                    </Style.Triggers>
-                  </Style>
-                </TextBlock.Style>
-              </TextBlock>
-            </StackPanel>
-          </Grid>
+					<Grid Grid.Row="0" Margin="0,0,0,6">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="Auto"/>
+						</Grid.ColumnDefinitions>
+						<graphs:PerformanceGraph x:Name="TemperatureBar" Grid.Column="0" Kind="Line" MinHeight="60" MinValue="0" MaxValue="120"/>
+						<StackPanel Grid.Column="1" Style="{StaticResource SummaryStackPanelStyle}">
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="{Binding Temperature, StringFormat={}{0:0.00}}" Style="{StaticResource MetricValue}"/>
+								<TextBlock Text="°C" Style="{StaticResource MetricUnit}"/>
+							</StackPanel>
+							<TextBlock Text="Temperature" Style="{StaticResource MetricCaption}"/>
+							<!-- Intel-only thermal headroom; hidden when not exposed (reads 0 on AMD). -->
+							<TextBlock Text="{Binding DistanceToTjMax, StringFormat=TjMax +{0:0}°C}">
+								<TextBlock.Style>
+									<Style TargetType="TextBlock" BasedOn="{StaticResource MetricCaption}">
+										<Style.Triggers>
+											<DataTrigger Binding="{Binding DistanceToTjMax}" Value="0">
+												<Setter Property="Visibility" Value="Collapsed"/>
+											</DataTrigger>
+										</Style.Triggers>
+									</Style>
+								</TextBlock.Style>
+							</TextBlock>
+						</StackPanel>
+					</Grid>
 
-          <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="*"/>
-              <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <graphs:PerformanceGraph x:Name="PowerBar" Grid.Column="0" Kind="Line" MinHeight="60" MinValue="0" MaxValue="100"/>
-            <StackPanel Grid.Column="1" Margin="10,0,0,0" Width="96" VerticalAlignment="Center">
-              <TextBlock Text="{Binding Power, StringFormat={}{0:0.00}}" Style="{StaticResource MetricValue}" FontSize="28" LineHeight="30"/>
-              <TextBlock Text="Watts" Style="{StaticResource MetricUnit}"/>
-              <TextBlock Text="Power" Style="{StaticResource MetricCaption}"/>
-              <!-- Intel RAPL power limits; hidden when not exposed (read 0 on AMD). -->
-              <TextBlock Text="{Binding PowerLimitLongW, StringFormat=PL1 {0:0} W}">
-                <TextBlock.Style>
-                  <Style TargetType="TextBlock" BasedOn="{StaticResource MetricCaption}">
-                    <Style.Triggers>
-                      <DataTrigger Binding="{Binding PowerLimitLongW}" Value="0">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                      </DataTrigger>
-                    </Style.Triggers>
-                  </Style>
-                </TextBlock.Style>
-              </TextBlock>
-              <TextBlock Text="{Binding PowerLimitShortW, StringFormat=PL2 {0:0} W}">
-                <TextBlock.Style>
-                  <Style TargetType="TextBlock" BasedOn="{StaticResource MetricCaption}">
-                    <Style.Triggers>
-                      <DataTrigger Binding="{Binding PowerLimitShortW}" Value="0">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                      </DataTrigger>
-                    </Style.Triggers>
-                  </Style>
-                </TextBlock.Style>
-              </TextBlock>
-              <!-- AMD SMU package current; hidden when not exposed (read 0 on Intel). -->
-              <TextBlock Text="{Binding TdcAmps, StringFormat=TDC {0:0} A}">
-                <TextBlock.Style>
-                  <Style TargetType="TextBlock" BasedOn="{StaticResource MetricCaption}">
-                    <Style.Triggers>
-                      <DataTrigger Binding="{Binding TdcAmps}" Value="0">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                      </DataTrigger>
-                    </Style.Triggers>
-                  </Style>
-                </TextBlock.Style>
-              </TextBlock>
-              <TextBlock Text="{Binding EdcAmps, StringFormat=EDC {0:0} A}">
-                <TextBlock.Style>
-                  <Style TargetType="TextBlock" BasedOn="{StaticResource MetricCaption}">
-                    <Style.Triggers>
-                      <DataTrigger Binding="{Binding EdcAmps}" Value="0">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                      </DataTrigger>
-                    </Style.Triggers>
-                  </Style>
-                </TextBlock.Style>
-              </TextBlock>
-            </StackPanel>
-          </Grid>
-        </Grid>
+					<Grid Grid.Row="1">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="Auto"/>
+						</Grid.ColumnDefinitions>
+						<graphs:PerformanceGraph x:Name="PowerBar" Grid.Column="0" Kind="Line" MinHeight="60" MinValue="0" MaxValue="100"/>
+						<StackPanel Grid.Column="1" Style="{StaticResource SummaryStackPanelStyle}">
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="{Binding Power, StringFormat={}{0:0.00}}" Style="{StaticResource MetricValue}"/>
+								<TextBlock Text="Watts" Style="{StaticResource MetricUnit}"/>
+							</StackPanel>
+							<TextBlock Text="Power" Style="{StaticResource MetricCaption}"/>
+							<!-- Intel RAPL power limits; hidden when not exposed (read 0 on AMD). -->
+							<TextBlock Text="{Binding PowerLimitLongW, StringFormat=PL1 {0:0} W}">
+								<TextBlock.Style>
+									<Style TargetType="TextBlock" BasedOn="{StaticResource MetricCaption}">
+										<Style.Triggers>
+											<DataTrigger Binding="{Binding PowerLimitLongW}" Value="0">
+												<Setter Property="Visibility" Value="Collapsed"/>
+											</DataTrigger>
+										</Style.Triggers>
+									</Style>
+								</TextBlock.Style>
+							</TextBlock>
+							<TextBlock Text="{Binding PowerLimitShortW, StringFormat=PL2 {0:0} W}">
+								<TextBlock.Style>
+									<Style TargetType="TextBlock" BasedOn="{StaticResource MetricCaption}">
+										<Style.Triggers>
+											<DataTrigger Binding="{Binding PowerLimitShortW}" Value="0">
+												<Setter Property="Visibility" Value="Collapsed"/>
+											</DataTrigger>
+										</Style.Triggers>
+									</Style>
+								</TextBlock.Style>
+							</TextBlock>
+							<!-- AMD SMU package current; hidden when not exposed (read 0 on Intel). -->
+							<TextBlock Text="{Binding TdcAmps, StringFormat=TDC {0:0} A}">
+								<TextBlock.Style>
+									<Style TargetType="TextBlock" BasedOn="{StaticResource MetricCaption}">
+										<Style.Triggers>
+											<DataTrigger Binding="{Binding TdcAmps}" Value="0">
+												<Setter Property="Visibility" Value="Collapsed"/>
+											</DataTrigger>
+										</Style.Triggers>
+									</Style>
+								</TextBlock.Style>
+							</TextBlock>
+							<TextBlock Text="{Binding EdcAmps, StringFormat=EDC {0:0} A}">
+								<TextBlock.Style>
+									<Style TargetType="TextBlock" BasedOn="{StaticResource MetricCaption}">
+										<Style.Triggers>
+											<DataTrigger Binding="{Binding EdcAmps}" Value="0">
+												<Setter Property="Visibility" Value="Collapsed"/>
+											</DataTrigger>
+										</Style.Triggers>
+									</Style>
+								</TextBlock.Style>
+							</TextBlock>
+						</StackPanel>
+					</Grid>
+				</Grid>
 
-        <!-- Column 2: Utilization (top) + CPU Fan (bottom) -->
-        <Grid Grid.Column="2" Margin="0,0,10,0" VerticalAlignment="Top">
-          <Grid.RowDefinitions>
-            <RowDefinition Height="84"/>
-            <RowDefinition Height="84"/>
-          </Grid.RowDefinitions>
+				<!-- Column 2: Utilization (top) + CPU Fan (bottom) -->
+				<Grid Grid.Column="2" Margin="0,0,10,0" VerticalAlignment="Top">
+					<Grid.RowDefinitions>
+						<RowDefinition/>
+						<RowDefinition/>
+					</Grid.RowDefinitions>
 
-          <Grid Grid.Row="0" Margin="0,0,0,6">
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="*"/>
-              <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <graphs:PerformanceGraph x:Name="UtilizationBar" Grid.Column="0" Kind="Line" MinHeight="60" MinValue="0" MaxValue="100"/>
-            <StackPanel Grid.Column="1" Margin="10,0,0,0" Width="96" VerticalAlignment="Center">
-              <TextBlock Text="{Binding Load, StringFormat={}{0:0.00}}" Style="{StaticResource MetricValue}" FontSize="28" LineHeight="30"/>
-              <TextBlock Text="%" Style="{StaticResource MetricUnit}"/>
-              <TextBlock Text="Utilization" Style="{StaticResource MetricCaption}"/>
-              <!-- Package idle (C-state) residency; Intel MSR-sourced, hidden per state when not exposed. -->
-              <TextBlock Text="{Binding PackageC2Pct, StringFormat=C2 {0:0}%}">
-                <TextBlock.Style>
-                  <Style TargetType="TextBlock" BasedOn="{StaticResource MetricCaption}">
-                    <Style.Triggers>
-                      <DataTrigger Binding="{Binding PackageC2Pct}" Value="0">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                      </DataTrigger>
-                    </Style.Triggers>
-                  </Style>
-                </TextBlock.Style>
-              </TextBlock>
-              <TextBlock Text="{Binding PackageC3Pct, StringFormat=C3 {0:0}%}">
-                <TextBlock.Style>
-                  <Style TargetType="TextBlock" BasedOn="{StaticResource MetricCaption}">
-                    <Style.Triggers>
-                      <DataTrigger Binding="{Binding PackageC3Pct}" Value="0">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                      </DataTrigger>
-                    </Style.Triggers>
-                  </Style>
-                </TextBlock.Style>
-              </TextBlock>
-              <TextBlock Text="{Binding PackageC6Pct, StringFormat=C6 {0:0}%}">
-                <TextBlock.Style>
-                  <Style TargetType="TextBlock" BasedOn="{StaticResource MetricCaption}">
-                    <Style.Triggers>
-                      <DataTrigger Binding="{Binding PackageC6Pct}" Value="0">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                      </DataTrigger>
-                    </Style.Triggers>
-                  </Style>
-                </TextBlock.Style>
-              </TextBlock>
-              <TextBlock Text="{Binding PackageC7Pct, StringFormat=C7 {0:0}%}">
-                <TextBlock.Style>
-                  <Style TargetType="TextBlock" BasedOn="{StaticResource MetricCaption}">
-                    <Style.Triggers>
-                      <DataTrigger Binding="{Binding PackageC7Pct}" Value="0">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                      </DataTrigger>
-                    </Style.Triggers>
-                  </Style>
-                </TextBlock.Style>
-              </TextBlock>
-            </StackPanel>
-          </Grid>
+					<Grid Grid.Row="0" Margin="0,0,0,6">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="Auto"/>
+						</Grid.ColumnDefinitions>
+						<graphs:PerformanceGraph x:Name="UtilizationBar" Grid.Column="0" Kind="Line" MinHeight="60" MinValue="0" MaxValue="100"/>
+						<StackPanel Grid.Column="1" Style="{StaticResource SummaryStackPanelStyle}">
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="{Binding Load, StringFormat={}{0:0.00}}" Style="{StaticResource MetricValue}"/>
+								<TextBlock Text="%" Style="{StaticResource MetricUnit}"/>
+							</StackPanel>
+							<TextBlock Text="Utilization" Style="{StaticResource MetricCaption}"/>
+							<!-- Package idle (C-state) residency; Intel MSR-sourced, hidden per state when not exposed. -->
+							<TextBlock Text="{Binding PackageC2Pct, StringFormat=C2 {0:0}%}">
+								<TextBlock.Style>
+									<Style TargetType="TextBlock" BasedOn="{StaticResource MetricCaption}">
+										<Style.Triggers>
+											<DataTrigger Binding="{Binding PackageC2Pct}" Value="0">
+												<Setter Property="Visibility" Value="Collapsed"/>
+											</DataTrigger>
+										</Style.Triggers>
+									</Style>
+								</TextBlock.Style>
+							</TextBlock>
+							<TextBlock Text="{Binding PackageC3Pct, StringFormat=C3 {0:0}%}">
+								<TextBlock.Style>
+									<Style TargetType="TextBlock" BasedOn="{StaticResource MetricCaption}">
+										<Style.Triggers>
+											<DataTrigger Binding="{Binding PackageC3Pct}" Value="0">
+												<Setter Property="Visibility" Value="Collapsed"/>
+											</DataTrigger>
+										</Style.Triggers>
+									</Style>
+								</TextBlock.Style>
+							</TextBlock>
+							<TextBlock Text="{Binding PackageC6Pct, StringFormat=C6 {0:0}%}">
+								<TextBlock.Style>
+									<Style TargetType="TextBlock" BasedOn="{StaticResource MetricCaption}">
+										<Style.Triggers>
+											<DataTrigger Binding="{Binding PackageC6Pct}" Value="0">
+												<Setter Property="Visibility" Value="Collapsed"/>
+											</DataTrigger>
+										</Style.Triggers>
+									</Style>
+								</TextBlock.Style>
+							</TextBlock>
+							<TextBlock Text="{Binding PackageC7Pct, StringFormat=C7 {0:0}%}">
+								<TextBlock.Style>
+									<Style TargetType="TextBlock" BasedOn="{StaticResource MetricCaption}">
+										<Style.Triggers>
+											<DataTrigger Binding="{Binding PackageC7Pct}" Value="0">
+												<Setter Property="Visibility" Value="Collapsed"/>
+											</DataTrigger>
+										</Style.Triggers>
+									</Style>
+								</TextBlock.Style>
+							</TextBlock>
+						</StackPanel>
+					</Grid>
 
-          <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="*"/>
-              <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <graphs:PerformanceGraph x:Name="FanBar" Grid.Column="0" Kind="Line" MinHeight="60" MinValue="0" MaxValue="4000"/>
-            <StackPanel Grid.Column="1" Margin="10,0,0,0" Width="96" VerticalAlignment="Center">
-              <TextBlock Text="{Binding FanRpm, StringFormat={}{0:N0}}" Style="{StaticResource MetricValue}" FontSize="28" LineHeight="30"/>
-              <TextBlock Text="RPM" Style="{StaticResource MetricUnit}"/>
-              <TextBlock Text="CPU Fan" Style="{StaticResource MetricCaption}"/>
-            </StackPanel>
-          </Grid>
-        </Grid>
+					<Grid Grid.Row="1">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="Auto"/>
+						</Grid.ColumnDefinitions>
+						<graphs:PerformanceGraph x:Name="FanBar" Grid.Column="0" Kind="Line" MinHeight="60" MinValue="0" MaxValue="4000"/>
+						<StackPanel Grid.Column="1" Margin="10,0,0,0" Width="96" VerticalAlignment="Top">
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="{Binding FanRpm, StringFormat={}{0:N0}}" Style="{StaticResource MetricValue}"/>
+								<TextBlock Text="RPM" Style="{StaticResource MetricUnit}"/>
+							</StackPanel>
+							<TextBlock Text="CPU Fan" Style="{StaticResource MetricCaption}"/>
+						</StackPanel>
+					</Grid>
+				</Grid>
 
-        <!-- Column 3: per-core strip — a load bar (heat-coloured) stacked over a clock bar
+				<!-- Column 3: per-core strip — a load bar (heat-coloured) stacked over a clock bar
              (accent, fixed 0-6 GHz scale) so the per-core boost spread reads at a glance.
              Fills top-to-bottom then wraps. -->
-        <DockPanel Grid.Column="3" LastChildFill="False">
-          <!-- Legend: which bar is which. -->
-          <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="30,0,0,4">
-            <Border Width="10" Height="6" Background="{StaticResource AccentBrush}" VerticalAlignment="Center"/>
-            <TextBlock Text="clock" Foreground="{StaticResource LabelBrush}" FontSize="10"
+				<DockPanel Grid.Column="3" LastChildFill="False">
+					<!-- Legend: which bar is which. -->
+					<StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="30,0,0,4">
+						<Border Width="10" Height="6" Background="{StaticResource AccentBrush}" VerticalAlignment="Center"/>
+						<TextBlock Text="clock" Foreground="{StaticResource LabelBrush}" FontSize="10"
                        FontFamily="Consolas" VerticalAlignment="Center" Margin="4,0,12,0"/>
-            <Border Width="10" Height="6" Background="{StaticResource ValueBrush}" VerticalAlignment="Center"/>
-            <TextBlock Text="load" Foreground="{StaticResource LabelBrush}" FontSize="10"
+						<Border Width="10" Height="6" Background="{StaticResource ValueBrush}" VerticalAlignment="Center"/>
+						<TextBlock Text="load" Foreground="{StaticResource LabelBrush}" FontSize="10"
                        FontFamily="Consolas" VerticalAlignment="Center" Margin="4,0,0,0"/>
-          </StackPanel>
+					</StackPanel>
 
-          <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding CoreLoads}">
-            <ItemsControl.ItemsPanel>
-              <ItemsPanelTemplate>
-                <WrapPanel Orientation="Vertical" MaxHeight="150" ItemHeight="30" ItemWidth="200"/>
-              </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-              <DataTemplate>
-                <Grid Margin="0,1,12,1">
-                  <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="30"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="72"/>
-                  </Grid.ColumnDefinitions>
-                  <TextBlock Grid.Column="0" Text="{Binding Label}" Foreground="{StaticResource LabelBrush}"
+					<ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding CoreLoads}">
+						<ItemsControl.ItemsPanel>
+							<ItemsPanelTemplate>
+								<WrapPanel Orientation="Vertical" MaxHeight="150" ItemHeight="30" ItemWidth="200"/>
+							</ItemsPanelTemplate>
+						</ItemsControl.ItemsPanel>
+						<ItemsControl.ItemTemplate>
+							<DataTemplate>
+								<Grid Margin="0,1,12,1">
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="30"/>
+										<ColumnDefinition Width="*"/>
+										<ColumnDefinition Width="72"/>
+									</Grid.ColumnDefinitions>
+									<TextBlock Grid.Column="0" Text="{Binding Label}" Foreground="{StaticResource LabelBrush}"
                              FontSize="11" FontFamily="Consolas" VerticalAlignment="Center"/>
-                  <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="0,0,8,0">
-                    <ProgressBar Minimum="0" Maximum="100" Value="{Binding Load}" Height="6"
+									<StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="0,0,8,0">
+										<ProgressBar Minimum="0" Maximum="100" Value="{Binding Load}" Height="6"
                                  Background="#1A1A1A" BorderBrush="{StaticResource BorderBrush}"
                                  Foreground="{Binding Load, Converter={StaticResource LoadToBrush}}"/>
-                    <ProgressBar Minimum="0" Maximum="6" Value="{Binding SpeedGhz}" Height="6" Margin="0,3,0,0"
+										<ProgressBar Minimum="0" Maximum="6" Value="{Binding SpeedGhz}" Height="6" Margin="0,3,0,0"
                                  Background="#1A1A1A" BorderBrush="{StaticResource BorderBrush}"
                                  Foreground="{StaticResource AccentBrush}"/>
-                  </StackPanel>
-                  <StackPanel Grid.Column="2" VerticalAlignment="Center">
-                    <TextBlock Text="{Binding Load, StringFormat={}{0:0}%}"
+									</StackPanel>
+									<StackPanel Grid.Column="2" VerticalAlignment="Center">
+										<TextBlock Text="{Binding Load, StringFormat={}{0:0}%}"
                                Foreground="{Binding Load, Converter={StaticResource LoadToBrush}}"
                                FontSize="10" FontFamily="Consolas" TextAlignment="Right"/>
-                    <TextBlock Text="{Binding SpeedGhz, StringFormat={}{0:0.00} GHz}"
+										<TextBlock Text="{Binding SpeedGhz, StringFormat={}{0:0.00} GHz}"
                                Foreground="{StaticResource ValueBrush}"
                                FontSize="10" FontFamily="Consolas" TextAlignment="Right"/>
-                  </StackPanel>
-                </Grid>
-              </DataTemplate>
-            </ItemsControl.ItemTemplate>
-          </ItemsControl>
-        </DockPanel>
-      </Grid>
-    </Grid>
-  </Border>
+									</StackPanel>
+								</Grid>
+							</DataTemplate>
+						</ItemsControl.ItemTemplate>
+					</ItemsControl>
+				</DockPanel>
+			</Grid>
+		</Grid>
+	</Border>
 </UserControl>

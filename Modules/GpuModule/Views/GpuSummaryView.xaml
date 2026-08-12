@@ -14,7 +14,7 @@
 
 
   <Border Background="Transparent" MouseLeftButtonDown="OnTileClick">
-    <Grid Margin="10">
+    <Grid Margin="5">
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>
         <RowDefinition Height="*"/>
@@ -69,8 +69,8 @@
                 <!-- Left: Utilization (top) + Temperature (bottom) stacked graphs. -->
                 <Grid Grid.Column="0" VerticalAlignment="Top" Margin="0,0,16,0">
                   <Grid.RowDefinitions>
-                    <RowDefinition Height="66"/>
-                    <RowDefinition Height="66"/>
+                    <RowDefinition/>
+                    <RowDefinition/>
                   </Grid.RowDefinitions>
 
                   <Grid Grid.Row="0" Margin="0,0,0,6">
@@ -107,8 +107,8 @@
                 <!-- Right: Clock (top) + Power (bottom) stacked graphs. -->
                 <Grid Grid.Column="1" VerticalAlignment="Top">
                   <Grid.RowDefinitions>
-                    <RowDefinition Height="66"/>
-                    <RowDefinition Height="66"/>
+                    <RowDefinition/>
+                    <RowDefinition/>
                   </Grid.RowDefinitions>
 
                   <Grid Grid.Row="0" Margin="0,0,0,6">
