@@ -315,7 +315,7 @@
 					<ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding CoreLoads}">
 						<ItemsControl.ItemsPanel>
 							<ItemsPanelTemplate>
-								<WrapPanel Orientation="Vertical" MaxHeight="150" ItemHeight="30" ItemWidth="200"/>
+								<WrapPanel Orientation="Vertical" ItemHeight="30" ItemWidth="200"/>
 							</ItemsPanelTemplate>
 						</ItemsControl.ItemsPanel>
 						<ItemsControl.ItemTemplate>
