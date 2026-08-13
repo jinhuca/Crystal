@@ -28,6 +28,20 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!-- Ship the fan-config folder next to the app so users can discover where to drop NBFC
+         configs. The embedded controller scans <app>/Configs/Fan at runtime (AppContext.BaseDirectory);
+         the help file makes an otherwise-empty, undocumented folder self-explanatory. -->
+    <Content Include="Configs\Fan\HOW-TO-ADD-FAN-CONFIGS.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <!-- Ship our own hand-authored fan templates. Third-party NBFC configs are GPL and stay
+         user-supplied drop-ins (see the help file), so they are deliberately not included here. -->
+    <Content Include="Configs\Fan\Lenovo ThinkPad P1.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Prism.Core" Version="9.0.537" />
     <PackageReference Include="Prism.Unity" Version="9.0.537" />
     <PackageReference Include="Prism.Wpf" Version="9.0.537" />

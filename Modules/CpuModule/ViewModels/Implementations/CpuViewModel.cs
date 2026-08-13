@@ -11,6 +11,7 @@ public sealed class CpuViewModel : BindableBase, ICpuViewModel, IDisposable {
   private readonly IDisposable _specsSubscription;
   private readonly IDisposable _sensorsSubscription;
   private readonly IDisposable _fanSubscription;
+  private readonly IDisposable _fanPercentSubscription;
   private readonly UiThreadMarshaller _ui = new();
 
   public CpuViewModel(ICpuModel model, CpuFanMonitor cpuFan, ICpuSpecsViewModel specs,
@@ -29,6 +30,7 @@ public sealed class CpuViewModel : BindableBase, ICpuViewModel, IDisposable {
     _specsSubscription = model.Specs.Subscribe(info => OnUi(() => SpecsViewModel.Update(info)));
     _sensorsSubscription = model.Sensors.Subscribe(info => OnUi(() => SensorsViewModel.Update(info)));
     _fanSubscription = cpuFan.Rpm.Subscribe(rpm => OnUi(() => SensorsViewModel.UpdateFan(rpm)));
+    _fanPercentSubscription = cpuFan.Percent.Subscribe(pct => OnUi(() => SensorsViewModel.UpdateFanPercent(pct)));
   }
 
   public ICpuSpecsViewModel SpecsViewModel { get; }
@@ -42,5 +44,6 @@ public sealed class CpuViewModel : BindableBase, ICpuViewModel, IDisposable {
     _specsSubscription.Dispose();
     _sensorsSubscription.Dispose();
     _fanSubscription.Dispose();
+    _fanPercentSubscription.Dispose();
   }
 }

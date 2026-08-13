@@ -59,7 +59,7 @@ public class Motherboard : IHardware {
     }
 
 
-    EmbeddedController embeddedController = EmbeddedController.Create(Model, settings);
+    EmbeddedController embeddedController = EmbeddedController.Create(Model, smBios.System?.ProductName, smBios.System?.Version, settings);
 
     List<IHardware> subHardwareList = new List<IHardware>();
 

@@ -30,6 +30,8 @@ public sealed class CpuSensorsViewModel : BindableBase, ICpuSensorViewModel {
   private string _throttleStatus = string.Empty;
   private int _fanRpm;
   private bool _hasCpuFan;
+  private double _fanPercent;
+  private bool _hasCpuFanPercent;
   private bool _msrSensorsAvailable;
 
   private PerformanceGraph? _utilizationGraph;
@@ -58,9 +60,34 @@ public sealed class CpuSensorsViewModel : BindableBase, ICpuSensorViewModel {
   public double DistanceToTjMax { get => _distanceToTjMax; private set => SetProperty(ref _distanceToTjMax, value); }
   public bool IsThrottling { get => _isThrottling; private set => SetProperty(ref _isThrottling, value); }
   public string ThrottleStatus { get => _throttleStatus; private set => SetProperty(ref _throttleStatus, value); }
-  public int FanRpm { get => _fanRpm; private set => SetProperty(ref _fanRpm, value); }
-  public bool HasCpuFan { get => _hasCpuFan; private set => SetProperty(ref _hasCpuFan, value); }
+  public int FanRpm { get => _fanRpm; private set { if (SetProperty(ref _fanRpm, value)) RaiseFanReadoutChanged(); } }
+  public bool HasCpuFan { get => _hasCpuFan; private set { if (SetProperty(ref _hasCpuFan, value)) RaiseFanReadoutChanged(); } }
+  public double FanPercent { get => _fanPercent; private set { if (SetProperty(ref _fanPercent, value)) RaiseFanReadoutChanged(); } }
+  public bool HasCpuFanPercent { get => _hasCpuFanPercent; private set { if (SetProperty(ref _hasCpuFanPercent, value)) RaiseFanReadoutChanged(); } }
   public bool MsrSensorsAvailable { get => _msrSensorsAvailable; private set => SetProperty(ref _msrSensorsAvailable, value); }
+
+  // Default to the RPM readout (showing 0 before any reading); only fall back to the percentage
+  // readout when a percentage arrived and no tachometer did (laptops behind the embedded controller).
+  private bool ShowPercent => HasCpuFanPercent && !HasCpuFan;
+
+  /// <summary>The fan readout value: RPM by default, or the fan-speed percentage on tachometer-less laptops.</summary>
+  public double FanReadoutValue => ShowPercent ? FanPercent : FanRpm;
+
+  /// <summary>The fan readout, preformatted: whole RPM (e.g. "1,200") or whole percent (e.g. "45").</summary>
+  public string FanReadoutText => ShowPercent ? FanPercent.ToString("0") : FanRpm.ToString("N0");
+
+  /// <summary>The fan readout unit: "RPM" by default, "%" on tachometer-less laptops.</summary>
+  public string FanReadoutUnit => ShowPercent ? "%" : "RPM";
+
+  /// <summary>The fan history graph's upper bound: 100 for a percentage, otherwise 4000 RPM.</summary>
+  public double FanGraphMax => ShowPercent ? 100 : 4000;
+
+  private void RaiseFanReadoutChanged() {
+    RaisePropertyChanged(nameof(FanReadoutValue));
+    RaisePropertyChanged(nameof(FanReadoutText));
+    RaisePropertyChanged(nameof(FanReadoutUnit));
+    RaisePropertyChanged(nameof(FanGraphMax));
+  }
 
   public ObservableCollection<CoreLoadViewModel> CoreLoads { get; } = [];
 
@@ -128,6 +155,16 @@ public sealed class CpuSensorsViewModel : BindableBase, ICpuSensorViewModel {
     HasCpuFan = true;
     FanRpm = (int)value;
     _fanGraph?.AddValue(FanRpm);
+  }
+
+  // Fan-speed percentage fallback for laptops with no tachometer. Latches HasCpuFanPercent like the
+  // RPM path so the readout survives a momentary null. Only feeds the graph when RPM is absent —
+  // when a tachometer exists the graph plots RPM and the percentage is not shown.
+  public void UpdateFanPercent(float? percent) {
+    if (percent is not { } value) return;
+    HasCpuFanPercent = true;
+    FanPercent = value;
+    if (!HasCpuFan) _fanGraph?.AddValue(FanPercent);
   }
 
   // Core count is fixed for a given CPU, so the rows are created once (labelled C00, C01, …)

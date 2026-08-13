@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using Crystal.Provider.Telemetry.Hardware.Motherboard.Lpc.EC.Nbfc;
 
 namespace Crystal.Provider.Telemetry.Hardware.Motherboard.Lpc.EC;
 
@@ -535,27 +536,63 @@ public abstract class EmbeddedController : Hardware {
   /// <summary>Gets the hardware type, which is always <see cref="HardwareType.EmbeddedController"/>.</summary>
   public override HardwareType HardwareType => HardwareType.EmbeddedController;
 
-  internal static EmbeddedController Create(Model model, ISettings settings) {
+  internal static EmbeddedController Create(Model model, string systemProductName, string systemVersion, ISettings settings) {
     var boards = _boards.Where(b => b.Models.Contains(model)).ToList();
-    switch (boards.Count) {
-      case 0:
-        return null;
-      case > 1:
-        throw new MultipleBoardRecordsFoundException(model.ToString());
+    if (boards.Count > 1)
+      throw new MultipleBoardRecordsFoundException(model.ToString());
+
+    if (boards.Count == 1) {
+      BoardInfo board = boards[0];
+
+      if (board.Family == BoardFamily.CrOS) {
+        return ChromeOSEmbeddedController.Create(settings);
+      }
+
+      IEnumerable<EmbeddedControllerSource> sources = board.Sensors.Select(ecs => _knownSensors[board.Family][ecs]);
+
+      return Environment.OSVersion.Platform switch {
+        PlatformID.Win32NT => new WindowsEmbeddedController(sources, settings),
+        _ => null
+      };
     }
 
-    BoardInfo board = boards[0];
+    // No curated board record for this model. Fall back to a NoteBook FanControl (NBFC) config
+    // matched by system product name: this covers many HP/Lenovo laptops whose fan sits behind the
+    // ACPI embedded controller (no SuperIO), reported as a fan-speed percentage rather than RPM.
+    return CreateFromNbfc(systemProductName, systemVersion, settings);
+  }
 
-    if (board.Family == BoardFamily.CrOS) {
-      return ChromeOSEmbeddedController.Create(settings);
+  private static readonly object _nbfcStoreLock = new();
+  private static NbfcConfigStore _nbfcStore;
+
+  private static EmbeddedController CreateFromNbfc(string systemProductName, string systemVersion, ISettings settings) {
+    if (Environment.OSVersion.Platform != PlatformID.Win32NT)
+      return null;
+
+    // Try both SMBIOS strings: most vendors put the friendly model in the product name, but Lenovo
+    // reports a machine-type code there ("20MD...") and carries the friendly "ThinkPad P1" in the
+    // version field — which is what NBFC configs key off. Product name is preferred when both match.
+    string[] candidates = { systemProductName, systemVersion };
+    if (candidates.All(string.IsNullOrWhiteSpace))
+      return null;
+
+    NbfcConfigStore store = GetNbfcStore();
+    return store.TryGetForModel(candidates, out NbfcFanConfig config)
+        ? NbfcEmbeddedController.Create(config, settings)
+        : null;
+  }
+
+  // The NBFC config directory is scanned once and cached. Configs are not bundled (they are GPL);
+  // users drop NBFC .xml configs into <app>/Configs/Fan.
+  private static NbfcConfigStore GetNbfcStore() {
+    if (_nbfcStore != null)
+      return _nbfcStore;
+
+    lock (_nbfcStoreLock) {
+      _nbfcStore ??= NbfcConfigStore.FromDirectory(System.IO.Path.Combine(AppContext.BaseDirectory, "Configs", "Fan"));
     }
 
-    IEnumerable<EmbeddedControllerSource> sources = board.Sensors.Select(ecs => _knownSensors[board.Family][ecs]);
-
-    return Environment.OSVersion.Platform switch {
-      PlatformID.Win32NT => new WindowsEmbeddedController(sources, settings),
-      _ => null
-    };
+    return _nbfcStore;
   }
 
   /// <summary>
@@ -580,7 +617,15 @@ public abstract class EmbeddedController : Hardware {
 
       readRegister += _sources[si].Size;
 
-      _sensors[si].Value = val != _sources[si].Blank ? (val * _sources[si].Factor) + _sources[si].Offset : null;
+      if (val == _sources[si].Blank) {
+        _sensors[si].Value = null;
+        continue;
+      }
+
+      float scaled = (val * _sources[si].Factor) + _sources[si].Offset;
+      if (_sources[si].ClampMin is { } lo && scaled < lo) scaled = lo;
+      if (_sources[si].ClampMax is { } hi && scaled > hi) scaled = hi;
+      _sensors[si].Value = scaled;
     }
   }
 

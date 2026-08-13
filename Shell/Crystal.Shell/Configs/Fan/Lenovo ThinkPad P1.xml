@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!--
+  Lenovo ThinkPad P1 Gen 2 (and the near-identical X1 Extreme Gen 2).
+
+  Built on the well-documented ThinkPad embedded-controller fan register: fan RPM
+  is a 16-bit little-endian word at EC offset 0x84 (= 132 decimal), the same
+  register thinkfan / ibm-acpi read. On these machines that word holds TRUE RPM,
+  so this config sets <ReadValueIsRpm>true</ReadValueIsRpm> (a Crystal extension
+  to the NBFC schema): Crystal surfaces the reading as an actual RPM fan sensor
+  rather than mapping it to a 0-100% duty. Crystal only READS the EC - it never
+  writes - so a wrong register cannot harm the machine; it would just show a
+  wrong number.
+
+  Matching: Crystal matches <NotebookModel> against both the SMBIOS product name
+  and version. On Lenovo the product name is the machine-type code (e.g.
+  "20QTS07E00"); the friendly "ThinkPad P1 Gen 2" lives in the version field,
+  which is what this config keys off. Verify your machine's strings with:
+      wmic csproduct get name,version
+
+  Because <ReadValueIsRpm> is set, the MinSpeedValue/MaxSpeedValue below are
+  unused on the read side (they matter only for NBFC write control, which Crystal
+  does not do) and are left as sane placeholders.
+-->
+<FanControlConfigV2 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <NotebookModel>ThinkPad P1 Gen 2</NotebookModel>
+  <Author>Crystal template</Author>
+  <EcPollInterval>1000</EcPollInterval>
+  <ReadWriteWords>true</ReadWriteWords>
+  <ReadValueIsRpm>true</ReadValueIsRpm>
+  <FanConfigurations>
+    <FanConfiguration>
+      <ReadRegister>132</ReadRegister>            <!-- 0x84: ThinkPad fan RPM word (LE) -->
+      <MinSpeedValue>0</MinSpeedValue>
+      <MaxSpeedValue>5500</MaxSpeedValue>
+      <IndependentReadMinMaxValues>false</IndependentReadMinMaxValues>
+      <MinSpeedValueRead>0</MinSpeedValueRead>
+      <MaxSpeedValueRead>0</MaxSpeedValueRead>
+      <FanDisplayName>CPU Fan</FanDisplayName>
+    </FanConfiguration>
+  </FanConfigurations>
+</FanControlConfigV2>

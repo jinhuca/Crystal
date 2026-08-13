@@ -1,0 +1,58 @@
+Crystal - CPU / laptop fan configs
+==================================
+
+If your CPU fan reads 0 RPM and never changes, your machine most likely has no
+fan tachometer that Crystal can read directly. This is normal on many laptops
+(commonly HP and Lenovo): the fan sits behind the ACPI embedded controller,
+which reports a fan-speed *percentage* rather than RPM.
+
+Crystal can read that percentage using a NoteBook FanControl (NBFC) config for
+your exact laptop model. Drop the matching config file into THIS folder:
+
+    <app>/Configs/Fan/
+
+What to add
+-----------
+Any number of NBFC "FanControlConfigV2" XML files. The file name does not
+matter (Crystal scans every *.xml here, including sub-folders). A config looks
+like this (trimmed):
+
+    <?xml version="1.0"?>
+    <FanControlConfigV2>
+      <NotebookModel>HP ProBook 450 G5</NotebookModel>
+      <ReadWriteWords>false</ReadWriteWords>
+      <FanConfigurations>
+        <FanConfiguration>
+          <ReadRegister>45</ReadRegister>
+          <MinSpeedValue>150</MinSpeedValue>   <!-- raw value = 0%   -->
+          <MaxSpeedValue>27</MaxSpeedValue>     <!-- raw value = 100% -->
+          <FanDisplayName>CPU</FanDisplayName>
+        </FanConfiguration>
+      </FanConfigurations>
+    </FanControlConfigV2>
+
+Where to get configs
+--------------------
+The NoteBook FanControl project ships a config per laptop model. Browse its
+config collection and download the one matching your machine:
+
+    https://github.com/hirschmann/nbfc      (see the "Configs" folder)
+
+How Crystal picks the right one
+-------------------------------
+Crystal matches a config to your machine by comparing the config's
+<NotebookModel> to your system's SMBIOS product name (case- and
+whitespace-insensitive). To find your model name, run in a terminal:
+
+    wmic csproduct get name
+
+or open "System Information" (msinfo32) and read "System Model". Pick the
+config whose <NotebookModel> equals that string.
+
+Notes
+-----
+- Crystal only READS the fan; it never writes fan-control registers, so these
+  configs cannot change your fan speed or damage hardware.
+- Reading the embedded controller requires running Crystal as Administrator.
+- After adding a config, restart Crystal. The CPU fan readout will switch from
+  RPM to a percentage once a value is read.

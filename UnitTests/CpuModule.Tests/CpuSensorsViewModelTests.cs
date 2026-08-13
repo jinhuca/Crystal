@@ -267,4 +267,82 @@ public class CpuSensorsViewModelTests {
     Assert.Same(firstThread, vm.CoreLoads[0].Threads[0]);
     Assert.Equal(55, vm.CoreLoads[0].Threads[0].Load);
   }
+
+  [Fact]
+  public void FanReadout_defaults_to_rpm_at_zero_before_any_reading() {
+    var vm = new CpuSensorsViewModel();
+
+    Assert.Equal("RPM", vm.FanReadoutUnit);
+    Assert.Equal("0", vm.FanReadoutText);
+    Assert.Equal(0, vm.FanReadoutValue);
+    Assert.Equal(4000, vm.FanGraphMax);
+  }
+
+  [Fact]
+  public void FanReadout_shows_rpm_once_a_tachometer_reading_arrives() {
+    var vm = new CpuSensorsViewModel();
+
+    vm.UpdateFan(900f);
+
+    Assert.Equal("RPM", vm.FanReadoutUnit);
+    Assert.Equal("900", vm.FanReadoutText);
+    Assert.Equal(900, vm.FanReadoutValue);
+    Assert.Equal(4000, vm.FanGraphMax);
+  }
+
+  [Fact]
+  public void FanReadout_shows_percent_when_only_a_percentage_reading_arrives() {
+    var vm = new CpuSensorsViewModel();
+
+    vm.UpdateFanPercent(45f);
+
+    Assert.Equal("%", vm.FanReadoutUnit);
+    Assert.Equal("45", vm.FanReadoutText);
+    Assert.Equal(45, vm.FanReadoutValue);
+    Assert.Equal(100, vm.FanGraphMax);
+  }
+
+  [Fact]
+  public void FanReadout_prefers_rpm_when_both_readings_are_present() {
+    var vm = new CpuSensorsViewModel();
+
+    vm.UpdateFanPercent(45f);
+    vm.UpdateFan(900f);
+
+    Assert.Equal("RPM", vm.FanReadoutUnit);
+    Assert.Equal("900", vm.FanReadoutText);
+    Assert.Equal(900, vm.FanReadoutValue);
+    Assert.Equal(4000, vm.FanGraphMax);
+  }
+
+  [Fact]
+  public void UpdateFanPercent_latches_presence() {
+    var vm = new CpuSensorsViewModel();
+
+    vm.UpdateFanPercent(37f);
+
+    Assert.True(vm.HasCpuFanPercent);
+    Assert.Equal(37, vm.FanPercent);
+  }
+
+  [Fact]
+  public void UpdateFanPercent_with_null_before_any_reading_leaves_percent_absent() {
+    var vm = new CpuSensorsViewModel();
+
+    vm.UpdateFanPercent(null);
+
+    Assert.False(vm.HasCpuFanPercent);
+    Assert.Equal(0, vm.FanPercent);
+  }
+
+  [Fact]
+  public void UpdateFanPercent_keeps_last_known_state_on_a_later_null_poll() {
+    var vm = new CpuSensorsViewModel();
+
+    vm.UpdateFanPercent(52f);
+    vm.UpdateFanPercent(null);   // a single poll momentarily reports no fan control
+
+    Assert.True(vm.HasCpuFanPercent);
+    Assert.Equal(52, vm.FanPercent);
+  }
 }

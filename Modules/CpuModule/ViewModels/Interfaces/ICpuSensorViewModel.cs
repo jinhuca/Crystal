@@ -74,8 +74,15 @@ public interface ICpuSensorViewModel {
   /// <summary>CPU fan speed in RPM, sourced from the motherboard SuperIO fan headers by name.</summary>
   int FanRpm { get; }
 
-  /// <summary>True once a CPU fan reading has been seen; drives whether the fan readout shows.</summary>
+  /// <summary>True once a CPU fan tachometer reading has been seen; drives whether the RPM readout shows.</summary>
   bool HasCpuFan { get; }
+
+  /// <summary>CPU fan speed as a percentage (PWM duty), used for laptops whose fan sits behind the
+  /// embedded controller and reports no tachometer. Sourced via an NBFC config; see the embedded-controller path.</summary>
+  double FanPercent { get; }
+
+  /// <summary>True once a CPU fan percentage reading has been seen; the RPM readout takes precedence when both exist.</summary>
+  bool HasCpuFanPercent { get; }
 
   /// <summary>
   /// True once any MSR-backed reading (voltage, power, temperature, clock) has produced a
@@ -100,6 +107,9 @@ public interface ICpuSensorViewModel {
   /// <summary>Reads the socket's live sensors and pushes samples into the attached graphs.</summary>
   void Update(ISystemCpuInfo info);
 
-  /// <summary>Updates the CPU fan readout. Null means no CPU fan was detected this poll.</summary>
+  /// <summary>Updates the CPU fan RPM readout. Null means no CPU fan tachometer was detected this poll.</summary>
   void UpdateFan(float? rpm);
+
+  /// <summary>Updates the CPU fan percentage readout. Null means no fan control was detected this poll.</summary>
+  void UpdateFanPercent(float? percent);
 }

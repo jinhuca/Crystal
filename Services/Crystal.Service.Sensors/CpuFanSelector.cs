@@ -40,10 +40,41 @@ public static class CpuFanSelector {
     return named ?? fastestSpinning;
   }
 
+  /// <summary>
+  /// Returns the CPU fan speed as a percentage (PWM duty) in <paramref name="snapshot"/>, or null
+  /// when no fan control is reported.
+  /// <para>
+  /// Laptops (typically HP/Lenovo) expose no fan tachometer; their fan sits behind the ACPI
+  /// embedded controller and reports only a duty percentage (see the NBFC-backed embedded-controller
+  /// path), surfaced as a <see cref="SensorType.Control"/> reading. This is the fallback readout when
+  /// <see cref="SelectRpm"/> finds no RPM. Prefers a CPU-named control; otherwise the highest-duty
+  /// control (the active fan over an idle secondary header).
+  /// </para>
+  /// </summary>
+  public static float? SelectPercent(SensorSnapshot snapshot) {
+    if (snapshot is null) return null;
+
+    float? named = null;
+    float? highest = null;
+    foreach (var reading in FanControlReadings(snapshot)) {
+      if (reading.Value is not { } pct) continue;
+      if (IsCpuFan(reading.SensorName)) {
+        if (named is null || pct > named) named = pct;
+      }
+      if (highest is null || pct > highest) highest = pct;
+    }
+    return named ?? highest;
+  }
+
   private static IEnumerable<SensorReading> FanReadings(SensorSnapshot snapshot) =>
       snapshot[SensorCategory.Motherboard]
           .Concat(snapshot[SensorCategory.Cooler])
           .Where(r => r.SensorType == SensorType.Fan);
+
+  private static IEnumerable<SensorReading> FanControlReadings(SensorSnapshot snapshot) =>
+      snapshot[SensorCategory.Motherboard]
+          .Concat(snapshot[SensorCategory.Cooler])
+          .Where(r => r.SensorType == SensorType.Control);
 
   // The SuperIO chip tables label the CPU header "CPU Fan" / "CPU Fan #n"; a chassis/system fan
   // never contains "CPU". A plain substring match is enough to separate the two.

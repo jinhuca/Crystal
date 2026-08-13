@@ -204,6 +204,9 @@ public class CpuPipelineIntegrationTests {
   private static SensorReading Fan(string name, float rpm) =>
       new(name, HardwareType.Motherboard, string.Empty, SensorType.Fan, rpm, null, null, null);
 
+  private static SensorReading Control(string name, float percent) =>
+      new(name, HardwareType.EmbeddedController, string.Empty, SensorType.Control, percent, null, null, null);
+
   [Fact]
   public void Cpu_fan_rpm_flows_from_the_sensor_monitor_through_the_fan_monitor_into_the_vm() {
     var source = new FakeSensorSource(() => [Fan("CPU Fan", 1200), Fan("Chassis Fan", 800)]);
@@ -218,5 +221,25 @@ public class CpuPipelineIntegrationTests {
     // CpuFanSelector picks "CPU Fan" over "Chassis Fan"; the VM latches HasCpuFan and truncates RPM.
     Assert.True(sensorsVm.HasCpuFan);
     Assert.Equal(1200, sensorsVm.FanRpm);
+  }
+
+  [Fact]
+  public void Cpu_fan_percent_flows_through_the_fan_monitor_into_the_vm_when_only_a_control_exists() {
+    // Laptop case: no RPM tachometer, only an embedded-controller fan-duty Control reading.
+    var source = new FakeSensorSource(() => [Control("CPU Fan", 45f)]);
+    var scheduler = new TestScheduler();
+    using var sensorMonitor = new SensorMonitor(source, Interval, scheduler);
+    var fanMonitor = new CpuFanMonitor(sensorMonitor);
+    var sensorsVm = new CpuSensorsViewModel();
+    using var rpmSub = fanMonitor.Rpm.Subscribe(sensorsVm.UpdateFan);
+    using var pctSub = fanMonitor.Percent.Subscribe(sensorsVm.UpdateFanPercent);
+
+    scheduler.AdvanceBy(Interval.Ticks);
+
+    // No tachometer, so the readout falls back to the duty percentage.
+    Assert.False(sensorsVm.HasCpuFan);
+    Assert.True(sensorsVm.HasCpuFanPercent);
+    Assert.Equal(45, sensorsVm.FanPercent);
+    Assert.Equal("%", sensorsVm.FanReadoutUnit);
   }
 }

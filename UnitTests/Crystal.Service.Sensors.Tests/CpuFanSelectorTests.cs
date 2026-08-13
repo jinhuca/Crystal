@@ -7,6 +7,9 @@ public class CpuFanSelectorTests {
   private static SensorReading Fan(HardwareType hardware, string name, float? rpm) =>
       FakeSensorTelemetrySource.Reading(hardware, name, SensorType.Fan, rpm);
 
+  private static SensorReading Control(HardwareType hardware, string name, float? percent) =>
+      FakeSensorTelemetrySource.Reading(hardware, name, SensorType.Control, percent);
+
   [Fact]
   public void Picks_the_cpu_fan_over_chassis_fans() {
     var snapshot = new SensorSnapshot([
@@ -99,5 +102,55 @@ public class CpuFanSelectorTests {
     ]);
 
     Assert.Null(CpuFanSelector.SelectRpm(snapshot));
+  }
+
+  // ---- SelectPercent: the laptop fallback that reads fan duty from Control sensors (NBFC/EC) ----
+
+  [Fact]
+  public void Percent_picks_the_cpu_named_control_over_other_controls() {
+    // Laptop EC exposes fan duty as a Control reading; the CPU-named one wins over a system control.
+    var snapshot = new SensorSnapshot([
+        Control(HardwareType.EmbeddedController, "System Fan", 80f),
+        Control(HardwareType.EmbeddedController, "CPU Fan", 45f),
+    ]);
+
+    Assert.Equal(45f, CpuFanSelector.SelectPercent(snapshot));
+  }
+
+  [Fact]
+  public void Percent_matches_cooler_hosted_controls() {
+    var snapshot = new SensorSnapshot([
+        Control(HardwareType.Cooler, "CPU Fan", 37f),
+    ]);
+
+    Assert.Equal(37f, CpuFanSelector.SelectPercent(snapshot));
+  }
+
+  [Fact]
+  public void Percent_falls_back_to_the_highest_control_when_none_is_named_cpu() {
+    var snapshot = new SensorSnapshot([
+        Control(HardwareType.EmbeddedController, "Fan #1", 30f),
+        Control(HardwareType.EmbeddedController, "Fan #2", 62f),
+    ]);
+
+    Assert.Equal(62f, CpuFanSelector.SelectPercent(snapshot));
+  }
+
+  [Fact]
+  public void Percent_returns_null_when_no_control_readings_are_present() {
+    var snapshot = new SensorSnapshot([
+        Fan(HardwareType.SuperIO, "CPU Fan", 1200f),   // an RPM fan is not a duty control
+    ]);
+
+    Assert.Null(CpuFanSelector.SelectPercent(snapshot));
+  }
+
+  [Fact]
+  public void Percent_ignores_controls_reporting_no_value() {
+    var snapshot = new SensorSnapshot([
+        Control(HardwareType.EmbeddedController, "CPU Fan", null),
+    ]);
+
+    Assert.Null(CpuFanSelector.SelectPercent(snapshot));
   }
 }

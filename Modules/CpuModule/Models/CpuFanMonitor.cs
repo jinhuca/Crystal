@@ -15,12 +15,18 @@ namespace CpuModule.Models;
 /// </summary>
 public sealed class CpuFanMonitor {
   private readonly IObservable<float?> _rpm;
+  private readonly IObservable<float?> _percent;
 
   public CpuFanMonitor(SensorMonitor monitor) {
     ArgumentNullException.ThrowIfNull(monitor);
     _rpm = monitor.Snapshots.Select(CpuFanSelector.SelectRpm);
+    _percent = monitor.Snapshots.Select(CpuFanSelector.SelectPercent);
   }
 
-  /// <summary>CPU fan RPM on each poll; null when no CPU fan is detected.</summary>
+  /// <summary>CPU fan RPM on each poll; null when no CPU fan tachometer is detected.</summary>
   public IObservable<float?> Rpm => _rpm;
+
+  /// <summary>CPU fan speed as a percentage on each poll; null when no fan control is detected.
+  /// The fallback readout for laptops that expose fan duty (via the embedded controller) but no RPM.</summary>
+  public IObservable<float?> Percent => _percent;
 }
