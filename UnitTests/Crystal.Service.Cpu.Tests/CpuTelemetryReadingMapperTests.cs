@@ -61,10 +61,27 @@ public class CpuTelemetryReadingMapperTests {
   [InlineData(ProviderSensorType.Clock, AppSensorType.Clock)]
   [InlineData(ProviderSensorType.Load, AppSensorType.Load)]
   [InlineData(ProviderSensorType.Power, AppSensorType.Power)]
+  // TDC/EDC (Current), package C-state residency (Level) and throttle flags (Factor) rely on this
+  // same ordinal cast, so guard their alignment too.
+  [InlineData(ProviderSensorType.Current, AppSensorType.Current)]
+  [InlineData(ProviderSensorType.Level, AppSensorType.Level)]
+  [InlineData(ProviderSensorType.Factor, AppSensorType.Factor)]
   public void ToReading_MapsProviderSensorTypeOntoMatchingAppType(ProviderSensorType provider, AppSensorType expected) {
     var reading = CpuTelemetryReadingMapper.ToReading(
         new StubSensor { SensorType = provider }, "CPU0", ProviderHardwareType.Cpu);
     Assert.Equal(expected, reading.SensorType);
+  }
+
+  [Theory]
+  // The units the new CPU sensors surface: current in amps, C-state residency as a percentage,
+  // and the dimensionless throttle factor.
+  [InlineData(ProviderSensorType.Current, "A")]
+  [InlineData(ProviderSensorType.Level, "%")]
+  [InlineData(ProviderSensorType.Factor, "")]
+  public void ToReading_ResolvesUnitForNewCpuSensorTypes(ProviderSensorType provider, string expectedUnit) {
+    var reading = CpuTelemetryReadingMapper.ToReading(
+        new StubSensor { SensorType = provider, Value = 1f }, "CPU0", ProviderHardwareType.Cpu);
+    Assert.Equal(expectedUnit, reading.Unit);
   }
 
   [Theory]

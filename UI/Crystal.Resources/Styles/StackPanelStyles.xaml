@@ -10,4 +10,9 @@
     <Setter Property="VerticalAlignment" Value="Top"/>
     <Setter Property="Margin" Value="0,0,0,0"/>
   </Style>
+	<Style TargetType="StackPanel" x:Key="SummaryStackPanelStyle">
+		<Setter Property="Margin" Value="10,0,0,0"/>
+		<Setter Property="Width" Value="96"/>
+		<Setter Property="VerticalAlignment" Value="Top"/>
+	</Style>
 </ResourceDictionary>

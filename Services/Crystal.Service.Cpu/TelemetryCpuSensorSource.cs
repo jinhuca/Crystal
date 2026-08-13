@@ -44,7 +44,11 @@ public sealed class TelemetryCpuSensorSource : ICpuTelemetrySource {
       // is the current core clock. Prefer an AMD package-average clock when present,
       // otherwise take the fastest per-core clock (the boosting core).
       CpuSpeed = ReadCoreClock(sensors, cpu.Name),
+      CpuEffectiveSpeed = ReadEffectiveClock(sensors, cpu.Name),
+      // BCLK: the reference clock ReadCoreClock deliberately skips as the operating frequency.
+      BusSpeed = Read(sensors, cpu.Name, SensorType.Clock, "Bus Speed"),
       Voltage = Read(sensors, cpu.Name, SensorType.Voltage, "CPU Core", "Core (SVI2 TFN)"),
+      SocVoltage = Read(sensors, cpu.Name, SensorType.Voltage, "SoC (SVI2 TFN)"),
       PackagePower = Read(sensors, cpu.Name, SensorType.Power, "CPU Package", "Package"),
       CoresPower = Read(sensors, cpu.Name, SensorType.Power, "CPU Cores"),
       MemoryPower = Read(sensors, cpu.Name, SensorType.Power, "CPU Memory"),
@@ -52,6 +56,22 @@ public sealed class TelemetryCpuSensorSource : ICpuTelemetrySource {
       PackageTemperature = Read(sensors, cpu.Name, SensorType.Temperature, "CPU Package"),
       CoreMaxTemperature = Read(sensors, cpu.Name, SensorType.Temperature, "Core Max", "CCDs Max (Tdie)"),
       CoreAvgTemperature = Read(sensors, cpu.Name, SensorType.Temperature, "Core Average", "CCDs Average (Tdie)"),
+      MinDistanceToTjMax = ReadMinDistanceToTjMax(sensors, cpu.Name),
+      // Package throttle-reason flags (Intel): 0/1 Factor sensors, empty when unavailable.
+      ThermalThrottling = Read(sensors, cpu.Name, SensorType.Factor, "Thermal Throttling"),
+      PowerLimitThrottling = Read(sensors, cpu.Name, SensorType.Factor, "Power Limit Throttling"),
+      Prochot = Read(sensors, cpu.Name, SensorType.Factor, "PROCHOT"),
+      // Configured RAPL power limits (Intel): watts, empty when unavailable.
+      PowerLimitLong = Read(sensors, cpu.Name, SensorType.Power, "Power Limit (Long)"),
+      PowerLimitShort = Read(sensors, cpu.Name, SensorType.Power, "Power Limit (Short)"),
+      // Package current (AMD SMU): TDC/EDC in A, empty on parts that don't expose them.
+      Tdc = Read(sensors, cpu.Name, SensorType.Current, "TDC"),
+      Edc = Read(sensors, cpu.Name, SensorType.Current, "EDC"),
+      // Package C-state residency (%): Intel MSR counters; empty on parts/states not exposed.
+      PackageC2Residency = Read(sensors, cpu.Name, SensorType.Level, "CPU Package C2"),
+      PackageC3Residency = Read(sensors, cpu.Name, SensorType.Level, "CPU Package C3"),
+      PackageC6Residency = Read(sensors, cpu.Name, SensorType.Level, "CPU Package C6"),
+      PackageC7Residency = Read(sensors, cpu.Name, SensorType.Level, "CPU Package C7"),
       TotalLoad = Read(sensors, cpu.Name, SensorType.Load, "CPU Total"),
       CoreMaxLoad = Read(sensors, cpu.Name, SensorType.Load, "CPU Core Max"),
     };
@@ -83,8 +103,18 @@ public sealed class TelemetryCpuSensorSource : ICpuTelemetrySource {
         Name = coreName,
         // SMT cores expose per-thread loads ("... Thread #1/#2"); take the busiest.
         Load = MaxByPrefix(sensors, cpu.Name, SensorType.Load, coreName),
+        ThreadLoads = ReadThreadLoads(sensors, cpu.Name, coreName, topology[i].Length),
         Speed = Read(sensors, cpu.Name, SensorType.Clock, coreName),
+        // Effective clock and multiplier are AMD-only and use the vendor's
+        // "Core #<n>" naming (n is 0-based), unlike the generic "CPU Core #n".
+        EffectiveSpeed = Read(sensors, cpu.Name, SensorType.Clock,
+            $"{coreName} (Effective)", $"Core #{i} (Effective)", $"Core #{i + 1} (Effective)"),
+        Multiplier = Read(sensors, cpu.Name, SensorType.Factor, coreName, $"Core #{i}", $"Core #{i + 1}"),
         Temperature = Read(sensors, cpu.Name, SensorType.Temperature, coreName),
+        // Intel exposes per-core thermal headroom as "<core> Distance to TjMax".
+        DistanceToTjMax = Read(sensors, cpu.Name, SensorType.Temperature, $"{coreName} Distance to TjMax"),
+        // Per-core power is AMD-only, from the SMU, named "Core #<n> (SMU)" (n is 0-based).
+        Power = Read(sensors, cpu.Name, SensorType.Power, $"Core #{i} (SMU)", $"Core #{i + 1} (SMU)"),
         Voltage = Read(sensors, cpu.Name, SensorType.Voltage, coreName),
       };
 
@@ -126,6 +156,50 @@ public sealed class TelemetryCpuSensorSource : ICpuTelemetrySource {
       if (best is null || (s.Value ?? 0) > (best.Value ?? 0)) best = s;
     }
     return CpuTelemetryReadingMapper.ToReading(best, hardwareName, HardwareType.Cpu);
+  }
+
+  // The effective (C-state-weighted) core clock: an AMD package-average when
+  // present, else the fastest per-core "(Effective)" clock. Distinct from the
+  // requested clock in ReadCoreClock; empty on parts that don't expose it.
+  private static SensorReading ReadEffectiveClock(ISensor[] sensors, string hardwareName) {
+    var avg = sensors.FirstOrDefault(s => s.SensorType == SensorType.Clock
+                                          && s.Name.Equals("Cores (Average Effective)", StringComparison.OrdinalIgnoreCase));
+    if (avg is not null)
+      return CpuTelemetryReadingMapper.ToReading(avg, hardwareName, HardwareType.Cpu);
+
+    ISensor? best = null;
+    foreach (var s in sensors) {
+      if (s.SensorType != SensorType.Clock) continue;
+      if (!s.Name.EndsWith("(Effective)", StringComparison.OrdinalIgnoreCase)) continue;
+      if (best is null || (s.Value ?? 0) > (best.Value ?? 0)) best = s;
+    }
+    return CpuTelemetryReadingMapper.ToReading(best, hardwareName, HardwareType.Cpu);
+  }
+
+  // The hottest core's thermal headroom: the smallest per-core "Distance to TjMax"
+  // reading. Intel-only; empty on parts that don't expose it.
+  private static SensorReading ReadMinDistanceToTjMax(ISensor[] sensors, string hardwareName) {
+    ISensor? best = null;
+    foreach (var s in sensors) {
+      if (s.SensorType != SensorType.Temperature) continue;
+      if (!s.Name.EndsWith("Distance to TjMax", StringComparison.OrdinalIgnoreCase)) continue;
+      if (s.Value is null) continue;
+      if (best is null || s.Value < best.Value) best = s;
+    }
+    return CpuTelemetryReadingMapper.ToReading(best, hardwareName, HardwareType.Cpu);
+  }
+
+  // Per-thread loads for one physical core. SMT threads are named
+  // "<core> Thread #<t>" (1-based); a single-threaded core has no suffix, so its
+  // lone entry is the core load sensor itself.
+  private static IReadOnlyList<SensorReading> ReadThreadLoads(ISensor[] sensors, string hardwareName, string coreName, int threadCount) {
+    if (threadCount <= 1)
+      return [Read(sensors, hardwareName, SensorType.Load, coreName)];
+
+    var loads = new SensorReading[threadCount];
+    for (int t = 0; t < threadCount; t++)
+      loads[t] = Read(sensors, hardwareName, SensorType.Load, $"{coreName} Thread #{t + 1}");
+    return loads;
   }
 
   private static SensorReading MaxByPrefix(ISensor[] sensors, string hardwareName, SensorType type, string namePrefix) {

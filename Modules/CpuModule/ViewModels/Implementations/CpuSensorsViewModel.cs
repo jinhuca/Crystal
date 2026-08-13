@@ -4,15 +4,30 @@ using CpuModule.ViewModels;
 using CpuModule.ViewModels.Interfaces;
 using Crystal.Controls.PerformanceGraphs;
 using Crystal.Infrastructure.DataStructures.Cpu.Interfaces;
+using Crystal.Infrastructure.DataStructures.Sensors;
 
 namespace CpuModule.ViewModels.Implementations;
 
 public sealed class CpuSensorsViewModel : BindableBase, ICpuSensorViewModel {
   private double _load;
   private double _voltage;
+  private double _socVoltage;
   private double _speedGhz;
+  private double _effectiveSpeedGhz;
+  private double _busSpeedMHz;
   private double _power;
+  private double _powerLimitLongW;
+  private double _powerLimitShortW;
+  private double _tdcAmps;
+  private double _edcAmps;
+  private double _packageC2Pct;
+  private double _packageC3Pct;
+  private double _packageC6Pct;
+  private double _packageC7Pct;
   private double _temperature;
+  private double _distanceToTjMax;
+  private bool _isThrottling;
+  private string _throttleStatus = string.Empty;
   private int _fanRpm;
   private bool _hasCpuFan;
   private bool _msrSensorsAvailable;
@@ -22,12 +37,27 @@ public sealed class CpuSensorsViewModel : BindableBase, ICpuSensorViewModel {
   private PerformanceGraph? _clockGraph;
   private PerformanceGraph? _powerGraph;
   private PerformanceGraph? _temperatureGraph;
+  private PerformanceGraph? _fanGraph;
 
   public double Load { get => _load; private set => SetProperty(ref _load, value); }
   public double Voltage { get => _voltage; private set => SetProperty(ref _voltage, value); }
+  public double SocVoltage { get => _socVoltage; private set => SetProperty(ref _socVoltage, value); }
   public double SpeedGhz { get => _speedGhz; private set => SetProperty(ref _speedGhz, value); }
+  public double EffectiveSpeedGhz { get => _effectiveSpeedGhz; private set => SetProperty(ref _effectiveSpeedGhz, value); }
+  public double BusSpeedMHz { get => _busSpeedMHz; private set => SetProperty(ref _busSpeedMHz, value); }
   public double Power { get => _power; private set => SetProperty(ref _power, value); }
+  public double PowerLimitLongW { get => _powerLimitLongW; private set => SetProperty(ref _powerLimitLongW, value); }
+  public double PowerLimitShortW { get => _powerLimitShortW; private set => SetProperty(ref _powerLimitShortW, value); }
+  public double TdcAmps { get => _tdcAmps; private set => SetProperty(ref _tdcAmps, value); }
+  public double EdcAmps { get => _edcAmps; private set => SetProperty(ref _edcAmps, value); }
+  public double PackageC2Pct { get => _packageC2Pct; private set => SetProperty(ref _packageC2Pct, value); }
+  public double PackageC3Pct { get => _packageC3Pct; private set => SetProperty(ref _packageC3Pct, value); }
+  public double PackageC6Pct { get => _packageC6Pct; private set => SetProperty(ref _packageC6Pct, value); }
+  public double PackageC7Pct { get => _packageC7Pct; private set => SetProperty(ref _packageC7Pct, value); }
   public double Temperature { get => _temperature; private set => SetProperty(ref _temperature, value); }
+  public double DistanceToTjMax { get => _distanceToTjMax; private set => SetProperty(ref _distanceToTjMax, value); }
+  public bool IsThrottling { get => _isThrottling; private set => SetProperty(ref _isThrottling, value); }
+  public string ThrottleStatus { get => _throttleStatus; private set => SetProperty(ref _throttleStatus, value); }
   public int FanRpm { get => _fanRpm; private set => SetProperty(ref _fanRpm, value); }
   public bool HasCpuFan { get => _hasCpuFan; private set => SetProperty(ref _hasCpuFan, value); }
   public bool MsrSensorsAvailable { get => _msrSensorsAvailable; private set => SetProperty(ref _msrSensorsAvailable, value); }
@@ -36,12 +66,13 @@ public sealed class CpuSensorsViewModel : BindableBase, ICpuSensorViewModel {
 
   public void AttachGraphs(PerformanceGraph? utilization = null, PerformanceGraph? voltage = null,
                            PerformanceGraph? clock = null, PerformanceGraph? power = null,
-                           PerformanceGraph? temperature = null) {
+                           PerformanceGraph? temperature = null, PerformanceGraph? fan = null) {
     _utilizationGraph = utilization;
     _voltageGraph = voltage;
     _clockGraph = clock;
     _powerGraph = power;
     _temperatureGraph = temperature;
+    _fanGraph = fan;
   }
 
   public void Update(ISystemCpuInfo info) {
@@ -52,10 +83,23 @@ public sealed class CpuSensorsViewModel : BindableBase, ICpuSensorViewModel {
 
     Load = sensors.TotalLoad.Value ?? 0;
     Voltage = sensors.Voltage.Value ?? 0;
+    SocVoltage = sensors.SocVoltage.Value ?? 0;
     // CpuSpeed reads in MHz; the Speed gauge/graph are scaled in GHz.
     SpeedGhz = (sensors.CpuSpeed.Value ?? 0) / 1000.0;
+    EffectiveSpeedGhz = (sensors.CpuEffectiveSpeed.Value ?? 0) / 1000.0;
+    BusSpeedMHz = sensors.BusSpeed.Value ?? 0;
     Power = sensors.PackagePower.Value ?? 0;
+    PowerLimitLongW = sensors.PowerLimitLong.Value ?? 0;
+    PowerLimitShortW = sensors.PowerLimitShort.Value ?? 0;
+    TdcAmps = sensors.Tdc.Value ?? 0;
+    EdcAmps = sensors.Edc.Value ?? 0;
+    PackageC2Pct = sensors.PackageC2Residency.Value ?? 0;
+    PackageC3Pct = sensors.PackageC3Residency.Value ?? 0;
+    PackageC6Pct = sensors.PackageC6Residency.Value ?? 0;
+    PackageC7Pct = sensors.PackageC7Residency.Value ?? 0;
     Temperature = sensors.PackageTemperature.Value ?? 0;
+    DistanceToTjMax = sensors.MinDistanceToTjMax.Value ?? 0;
+    UpdateThrottleStatus(sensors);
 
     // Latch once any MSR-backed reading arrives: these are empty without the ring-0
     // driver, so a single non-null value proves it is present and lets the view drop
@@ -83,6 +127,7 @@ public sealed class CpuSensorsViewModel : BindableBase, ICpuSensorViewModel {
     if (rpm is not { } value) return;
     HasCpuFan = true;
     FanRpm = (int)value;
+    _fanGraph?.AddValue(FanRpm);
   }
 
   // Core count is fixed for a given CPU, so the rows are created once (labelled C00, C01, …)
@@ -90,9 +135,57 @@ public sealed class CpuSensorsViewModel : BindableBase, ICpuSensorViewModel {
   // every 1-second emission, which would reset selection and churn the visual tree.
   private void UpdateCoreLoads(IReadOnlyList<ICoreInfo> cores) {
     for (int i = 0; i < cores.Count; i++) {
-      double load = cores[i].Sensors.Load.Value ?? 0;
-      if (i < CoreLoads.Count) CoreLoads[i].Load = load;
-      else CoreLoads.Add(new CoreLoadViewModel($"C{i:00}") { Load = load });
+      var s = cores[i].Sensors;
+      var row = i < CoreLoads.Count ? CoreLoads[i] : AddCoreRow(i);
+      row.Load = s.Load.Value ?? 0;
+      // Per-core clocks read in MHz; the table shows GHz to match the aggregate gauges.
+      row.SpeedGhz = (s.Speed.Value ?? 0) / 1000.0;
+      row.EffectiveSpeedGhz = (s.EffectiveSpeed.Value ?? 0) / 1000.0;
+      row.Multiplier = s.Multiplier.Value ?? 0;
+      row.DistanceToTjMax = s.DistanceToTjMax.Value ?? 0;
+      row.Power = s.Power.Value ?? 0;
+      UpdateThreadLoads(row, s.ThreadLoads);
     }
+  }
+
+  // Package throttle status. Prefers the provider's decoded flags; when the thermal flag
+  // is unavailable (no MSR / non-Intel), falls back to a thermal-headroom check — but only
+  // when the distance-to-TjMax sensor actually reports a value, so an unexposed 0 can't
+  // masquerade as "at TjMax".
+  private void UpdateThrottleStatus(Crystal.Infrastructure.DataStructures.Cpu.Interfaces.Cpus.ICpuSensors sensors) {
+    bool thermal = sensors.ThermalThrottling.Value is { } t
+        ? t >= 0.5
+        : sensors.MinDistanceToTjMax.Value is { } d && d <= 0;
+    bool powerLimit = sensors.PowerLimitThrottling.Value is { } p && p >= 0.5;
+    bool prochot = sensors.Prochot.Value is { } pr && pr >= 0.5;
+
+    var reasons = new List<string>(3);
+    if (thermal) reasons.Add("Thermal");
+    if (powerLimit) reasons.Add("Power Limit");
+    if (prochot) reasons.Add("PROCHOT");
+
+    IsThrottling = reasons.Count > 0;
+    ThrottleStatus = IsThrottling ? "THROTTLING: " + string.Join(", ", reasons) : string.Empty;
+  }
+
+  // Per-thread bars are created once (thread count is fixed per core) and their Load
+  // is updated in place, matching the core-row lifetime.
+  private static void UpdateThreadLoads(CoreLoadViewModel row, IReadOnlyList<SensorReading> threads) {
+    for (int t = 0; t < threads.Count; t++) {
+      var thread = t < row.Threads.Count ? row.Threads[t] : AddThreadRow(row);
+      thread.Load = threads[t].Value ?? 0;
+    }
+  }
+
+  private static ThreadLoadViewModel AddThreadRow(CoreLoadViewModel row) {
+    var thread = new ThreadLoadViewModel();
+    row.Threads.Add(thread);
+    return thread;
+  }
+
+  private CoreLoadViewModel AddCoreRow(int index) {
+    var row = new CoreLoadViewModel($"C{index:00}");
+    CoreLoads.Add(row);
+    return row;
   }
 }

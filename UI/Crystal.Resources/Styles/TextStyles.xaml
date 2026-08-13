@@ -13,7 +13,7 @@
   <!-- Metric readout beside a graph: big value, unit line, dim caption. -->
   <Style x:Key="MetricValue" TargetType="TextBlock">
     <Setter Property="Foreground" Value="{StaticResource ValueBrush}"/>
-    <Setter Property="FontSize" Value="24"/>
+    <Setter Property="FontSize" Value="22"/>
     <Setter Property="FontFamily" Value="Consolas"/>
     <Setter Property="LineHeight" Value="26"/>
   </Style>
@@ -21,7 +21,9 @@
     <Setter Property="Foreground" Value="{StaticResource UnitBrush}"/>
     <Setter Property="FontSize" Value="12"/>
     <Setter Property="FontFamily" Value="Consolas"/>
-  </Style>
+		<Setter Property="VerticalAlignment" Value="Bottom"/>
+		<Setter Property="Margin" Value="8,0,0,0"/>
+	</Style>
   <Style x:Key="MetricCaption" TargetType="TextBlock">
     <Setter Property="Foreground" Value="{StaticResource LabelBrush}"/>
     <Setter Property="FontSize" Value="11"/>

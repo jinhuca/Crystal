@@ -16,6 +16,12 @@ internal sealed class IntelCpu : GenericCpu {
   private readonly Sensor _coreVoltage;
   private readonly Sensor[] _distToTjMaxTemperatures;
 
+  // Package-level throttle-reason flags decoded from IA32_PACKAGE_THERM_STATUS.
+  // Modelled as 0/1 Factor sensors (1 = active) so they cross the ISensor boundary.
+  private readonly Sensor _thermalThrottling;
+  private readonly Sensor _powerLimitThrottling;
+  private readonly Sensor _prochot;
+
   private readonly string[] _coreNames;
 
   private readonly uint[] _energyStatusMsrs = { MSR_PKG_ENERGY_STATUS, MSR_PP0_ENERGY_STATUS, MSR_PP1_ENERGY_STATUS, MSR_DRAM_ENERGY_STATUS, MSR_PLATFORM_ENERGY_STATUS };
@@ -25,6 +31,18 @@ internal sealed class IntelCpu : GenericCpu {
   private readonly MicroArchitecture _microArchitecture;
   private readonly Sensor _packageTemperature;
   private readonly Sensor[] _powerSensors;
+  // Configured package power limits (RAPL): PL1 (long/sustained) and PL2 (short/burst), in watts.
+  private readonly Sensor _powerLimitLong;
+  private readonly Sensor _powerLimitShort;
+  private readonly float _powerUnitsMultiplier;
+
+  // Package C-state residency: monotonic counters ticking at the invariant TSC
+  // rate. Residency % is the per-poll counter delta over the elapsed TSC ticks.
+  private readonly uint[] _cStateResidencyMsrs = { MSR_PKG_C2_RESIDENCY, MSR_PKG_C3_RESIDENCY, MSR_PKG_C6_RESIDENCY, MSR_PKG_C7_RESIDENCY };
+  private readonly Sensor[] _cStateResidency;
+  private readonly ulong[] _lastCStateCount;
+  private readonly DateTime[] _lastCStateTime;
+
   private readonly double _timeStampCounterMultiplier;
 
   private readonly IntelMsr _pawnModule;
@@ -396,6 +414,14 @@ internal sealed class IntelCpu : GenericCpu {
 
       ActivateSensor(_packageTemperature);
       coreSensorId++;
+
+      // Throttle-reason flags share IA32_PACKAGE_THERM_STATUS with the package sensor.
+      _thermalThrottling = new Sensor("Thermal Throttling", 0, SensorType.Factor, this, settings);
+      _powerLimitThrottling = new Sensor("Power Limit Throttling", 1, SensorType.Factor, this, settings);
+      _prochot = new Sensor("PROCHOT", 2, SensorType.Factor, this, settings);
+      ActivateSensor(_thermalThrottling);
+      ActivateSensor(_powerLimitThrottling);
+      ActivateSensor(_prochot);
     }
 
     // dist to tjmax sensor
@@ -453,6 +479,8 @@ internal sealed class IntelCpu : GenericCpu {
           MicroArchitecture.Silvermont or MicroArchitecture.Airmont => 1.0e-6f * (1 << (int)((eax >> 8) & 0x1F)),
           _ => 1.0f / (1 << (int)((eax >> 8) & 0x1F))
         };
+        // Power units live in bits 3:0 (watts = 1 / 2^n); used to scale the PL1/PL2 limits.
+        _powerUnitsMultiplier = 1.0f / (1 << (int)(eax & 0xF));
       }
 
       if (EnergyUnitsMultiplier != 0) {
@@ -476,6 +504,34 @@ internal sealed class IntelCpu : GenericCpu {
 
           ActivateSensor(_powerSensors[i]);
         }
+
+        // Configured RAPL package power limits (PL1/PL2), read live from MSR_PKG_POWER_LIMIT.
+        if (_powerUnitsMultiplier != 0) {
+          _powerLimitLong = new Sensor("Power Limit (Long)", _energyStatusMsrs.Length, SensorType.Power, this, settings);
+          _powerLimitShort = new Sensor("Power Limit (Short)", _energyStatusMsrs.Length + 1, SensorType.Power, this, settings);
+          ActivateSensor(_powerLimitLong);
+          ActivateSensor(_powerLimitShort);
+        }
+      }
+    }
+
+    // Package C-state residency (Nehalem+). Which package C-states a part exposes
+    // varies, so probe each MSR and keep only the ones that respond. TSC frequency
+    // must be known to convert counter ticks into a time fraction.
+    if (HasTimeStampCounter && _microArchitecture != MicroArchitecture.Unknown && TimeStampCounterFrequency > 0) {
+      _cStateResidency = new Sensor[_cStateResidencyMsrs.Length];
+      _lastCStateCount = new ulong[_cStateResidencyMsrs.Length];
+      _lastCStateTime = new DateTime[_cStateResidencyMsrs.Length];
+      string[] cStateLabels = ["CPU Package C2", "CPU Package C3", "CPU Package C6", "CPU Package C7"];
+
+      for (int i = 0; i < _cStateResidencyMsrs.Length; i++) {
+        if (!_pawnModule.ReadMsr(_cStateResidencyMsrs[i], out eax, out uint cHigh))
+          continue;
+
+        _lastCStateTime[i] = DateTime.UtcNow;
+        _lastCStateCount[i] = ((ulong)cHigh << 32) | eax;
+        _cStateResidency[i] = new Sensor(cStateLabels[i], i, SensorType.Level, this, settings);
+        ActivateSensor(_cStateResidency[i]);
       }
     }
 
@@ -575,9 +631,21 @@ internal sealed class IntelCpu : GenericCpu {
         float tjMax = _packageTemperature.Parameters[0].Value;
         float tSlope = _packageTemperature.Parameters[1].Value;
         _packageTemperature.Value = tjMax - (tSlope * deltaT);
+
+        // Throttle reasons: bit 0 thermal, bit 2 PROCHOT/FORCEPR, bit 10 power limitation.
+        if (_thermalThrottling != null) {
+          _thermalThrottling.Value = (eax & (1u << 0)) != 0 ? 1f : 0f;
+          _prochot.Value = (eax & (1u << 2)) != 0 ? 1f : 0f;
+          _powerLimitThrottling.Value = (eax & (1u << 10)) != 0 ? 1f : 0f;
+        }
       }
       else {
         _packageTemperature.Value = null;
+        if (_thermalThrottling != null) {
+          _thermalThrottling.Value = null;
+          _prochot.Value = null;
+          _powerLimitThrottling.Value = null;
+        }
       }
     }
 
@@ -652,6 +720,38 @@ internal sealed class IntelCpu : GenericCpu {
         sensor.Value = EnergyUnitsMultiplier * unchecked(energyConsumed - _lastEnergyConsumed[sensor.Index]) / deltaTime;
         _lastEnergyTime[sensor.Index] = time;
         _lastEnergyConsumed[sensor.Index] = energyConsumed;
+      }
+    }
+
+    // PL1 is bits 14:0 of the low dword; PL2 is bits 14:0 of the high dword (MSR bits 46:32).
+    if (_powerLimitLong != null && _pawnModule.ReadMsr(MSR_PKG_POWER_LIMIT, out eax, out uint plHigh)) {
+      _powerLimitLong.Value = (eax & 0x7FFF) * _powerUnitsMultiplier;
+      _powerLimitShort.Value = (plHigh & 0x7FFF) * _powerUnitsMultiplier;
+    }
+
+    if (_cStateResidency != null) {
+      for (int i = 0; i < _cStateResidency.Length; i++) {
+        Sensor sensor = _cStateResidency[i];
+        if (sensor == null)
+          continue;
+
+        if (!_pawnModule.ReadMsr(_cStateResidencyMsrs[i], out eax, out uint cHigh))
+          continue;
+
+        DateTime time = DateTime.UtcNow;
+        ulong count = ((ulong)cHigh << 32) | eax;
+        double deltaTime = (time - _lastCStateTime[i]).TotalSeconds;
+        if (deltaTime < 0.01)
+          continue;
+
+        // Counters advance at the invariant TSC rate (MHz), so elapsed TSC ticks
+        // over the interval bound the maximum the counter could have moved.
+        ulong deltaCount = unchecked(count - _lastCStateCount[i]);
+        double tscTicks = TimeStampCounterFrequency * 1e6 * deltaTime;
+        double residency = tscTicks > 0 ? deltaCount / tscTicks * 100.0 : 0;
+        sensor.Value = (float)Math.Clamp(residency, 0, 100);
+        _lastCStateTime[i] = time;
+        _lastCStateCount[i] = count;
       }
     }
 
@@ -737,5 +837,11 @@ internal sealed class IntelCpu : GenericCpu {
   private const uint MSR_PLATFORM_ENERGY_STATUS = 0x64D;
 
   private const uint MSR_RAPL_POWER_UNIT = 0x606;
+  private const uint MSR_PKG_POWER_LIMIT = 0x610;
+
+  private const uint MSR_PKG_C3_RESIDENCY = 0x3F8;
+  private const uint MSR_PKG_C6_RESIDENCY = 0x3F9;
+  private const uint MSR_PKG_C7_RESIDENCY = 0x3FA;
+  private const uint MSR_PKG_C2_RESIDENCY = 0x60D;
   // ReSharper restore InconsistentNaming
 }

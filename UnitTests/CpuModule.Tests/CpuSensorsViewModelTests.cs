@@ -129,4 +129,142 @@ public class CpuSensorsViewModelTests {
     Assert.True(vm.HasCpuFan);
     Assert.Equal(900, vm.FanRpm);
   }
+
+  [Fact]
+  public void Update_copies_intel_power_and_clock_extras() {
+    var vm = new CpuSensorsViewModel();
+
+    vm.Update(Fakes.System(
+        effectiveSpeedMHz: 3600, busSpeedMHz: 100.5f,
+        powerLimitLongW: 65, powerLimitShortW: 90, distanceToTjMax: 22));
+
+    Assert.Equal(3.6, vm.EffectiveSpeedGhz, precision: 3);
+    Assert.Equal(100.5, vm.BusSpeedMHz, precision: 3);
+    Assert.Equal(65, vm.PowerLimitLongW);
+    Assert.Equal(90, vm.PowerLimitShortW);
+    Assert.Equal(22, vm.DistanceToTjMax);
+  }
+
+  [Fact]
+  public void Update_copies_amd_current_and_soc_voltage() {
+    var vm = new CpuSensorsViewModel();
+
+    vm.Update(Fakes.System(socVoltage: 1.1f, tdcAmps: 95, edcAmps: 140));
+
+    Assert.Equal(1.1, vm.SocVoltage, precision: 3);
+    Assert.Equal(95, vm.TdcAmps);
+    Assert.Equal(140, vm.EdcAmps);
+  }
+
+  [Fact]
+  public void Update_copies_package_cstate_residency() {
+    var vm = new CpuSensorsViewModel();
+
+    vm.Update(Fakes.System(c2Pct: 5, c3Pct: 10, c6Pct: 60, c7Pct: 25));
+
+    Assert.Equal(5, vm.PackageC2Pct);
+    Assert.Equal(10, vm.PackageC3Pct);
+    Assert.Equal(60, vm.PackageC6Pct);
+    Assert.Equal(25, vm.PackageC7Pct);
+  }
+
+  [Fact]
+  public void Update_leaves_unexposed_extras_at_zero() {
+    var vm = new CpuSensorsViewModel();
+
+    vm.Update(Fakes.System(load: 10));
+
+    Assert.Equal(0, vm.EffectiveSpeedGhz);
+    Assert.Equal(0, vm.BusSpeedMHz);
+    Assert.Equal(0, vm.PowerLimitLongW);
+    Assert.Equal(0, vm.TdcAmps);
+    Assert.Equal(0, vm.PackageC6Pct);
+    Assert.Equal(0, vm.DistanceToTjMax);
+  }
+
+  [Fact]
+  public void ThrottleStatus_is_empty_when_no_flags_are_set() {
+    var vm = new CpuSensorsViewModel();
+
+    vm.Update(Fakes.System(temperature: 55, distanceToTjMax: 40));
+
+    Assert.False(vm.IsThrottling);
+    Assert.Equal(string.Empty, vm.ThrottleStatus);
+  }
+
+  [Fact]
+  public void ThrottleStatus_reports_each_active_flag() {
+    var vm = new CpuSensorsViewModel();
+
+    vm.Update(Fakes.System(thermalThrottling: 1, powerLimitThrottling: 1, prochot: 1));
+
+    Assert.True(vm.IsThrottling);
+    Assert.Equal("THROTTLING: Thermal, Power Limit, PROCHOT", vm.ThrottleStatus);
+  }
+
+  [Fact]
+  public void ThrottleStatus_falls_back_to_thermal_headroom_when_flag_absent() {
+    var vm = new CpuSensorsViewModel();
+
+    // No provider throttle flags, but the hottest core has reached TjMax.
+    vm.Update(Fakes.System(distanceToTjMax: 0));
+
+    Assert.True(vm.IsThrottling);
+    Assert.Equal("THROTTLING: Thermal", vm.ThrottleStatus);
+  }
+
+  [Fact]
+  public void ThrottleStatus_ignores_unexposed_tjmax_headroom() {
+    var vm = new CpuSensorsViewModel();
+
+    // Neither the throttle flag nor the distance-to-TjMax sensor is exposed: an
+    // unexposed 0 must not masquerade as "at TjMax".
+    vm.Update(Fakes.System(load: 10));
+
+    Assert.False(vm.IsThrottling);
+    Assert.Equal(string.Empty, vm.ThrottleStatus);
+  }
+
+  [Fact]
+  public void Update_maps_per_core_detail_readings() {
+    var vm = new CpuSensorsViewModel();
+
+    vm.Update(Fakes.System(cores: [
+        Fakes.Core(load: 40, speedMHz: 4200, effectiveSpeedMHz: 3800,
+                   multiplier: 42, distanceToTjMax: 18, power: 12),
+    ]));
+
+    var core = vm.CoreLoads[0];
+    Assert.Equal(40, core.Load);
+    Assert.Equal(4.2, core.SpeedGhz, precision: 3);
+    Assert.Equal(3.8, core.EffectiveSpeedGhz, precision: 3);
+    Assert.Equal(42, core.Multiplier);
+    Assert.Equal(18, core.DistanceToTjMax);
+    Assert.Equal(12, core.Power);
+  }
+
+  [Fact]
+  public void Update_creates_one_thread_row_per_thread_load() {
+    var vm = new CpuSensorsViewModel();
+
+    vm.Update(Fakes.System(cores: [Fakes.Core(load: 50, threadLoads: [30f, 70f])]));
+
+    var core = vm.CoreLoads[0];
+    Assert.Equal(2, core.Threads.Count);
+    Assert.Equal(30, core.Threads[0].Load);
+    Assert.Equal(70, core.Threads[1].Load);
+  }
+
+  [Fact]
+  public void Update_refreshes_thread_loads_in_place() {
+    var vm = new CpuSensorsViewModel();
+
+    vm.Update(Fakes.System(cores: [Fakes.Core(threadLoads: [10f, 20f])]));
+    var firstThread = vm.CoreLoads[0].Threads[0];
+    vm.Update(Fakes.System(cores: [Fakes.Core(threadLoads: [55f, 60f])]));
+
+    Assert.Equal(2, vm.CoreLoads[0].Threads.Count);
+    Assert.Same(firstThread, vm.CoreLoads[0].Threads[0]);
+    Assert.Equal(55, vm.CoreLoads[0].Threads[0].Load);
+  }
 }
