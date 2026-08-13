@@ -15,10 +15,10 @@
       <Setter Property="BorderBrush" Value="#3A3A3A"/>
       <Setter Property="BorderThickness" Value="1"/>
       <Setter Property="CornerRadius" Value="8"/>
-      <!-- Uniform 3px on all sides so the gutter between tiles is identical horizontally and
-           vertically: every neighbour gap becomes tile(3) + splitter track(3) + tile(3) = 9px,
+      <!-- Uniform 1px on all sides so the gutter between tiles is identical horizontally and
+           vertically: every neighbour gap becomes tile(1) + splitter track(1) + tile(1) = 3px,
            whether the tiles are split by a RowSplitter or a ColumnSplitter. -->
-      <Setter Property="Margin" Value="3"/>
+      <Setter Property="Margin" Value="1"/>
       <Setter Property="Background" Value="#FF151515"/>
     </Style>
 
@@ -26,7 +26,7 @@
          is comfortable but reads as a hairline, brightening to the accent on hover. Matches the
          master/detail splitter styling in the Processes view. -->
     <Style x:Key="RowSplitter" TargetType="GridSplitter">
-      <Setter Property="Height" Value="3"/>
+      <Setter Property="Height" Value="2"/>
       <Setter Property="HorizontalAlignment" Value="Stretch"/>
       <Setter Property="VerticalAlignment" Value="Center"/>
       <Setter Property="Background" Value="Transparent"/>
@@ -44,7 +44,7 @@
             </Grid>
             <ControlTemplate.Triggers>
               <Trigger Property="IsMouseOver" Value="True">
-                <Setter TargetName="Rule" Property="Background" Value="#3E9BE8"/>
+                <Setter TargetName="Rule" Property="Background" Value="#553E9BE8"/>
                 <Setter TargetName="Rule" Property="Height" Value="2"/>
               </Trigger>
             </ControlTemplate.Triggers>
@@ -57,7 +57,7 @@
          twin of RowSplitter, so the user can widen one tile at the expense of its neighbour. A thin
          rule centered in a wider hit area, brightening to the accent on hover. -->
     <Style x:Key="ColumnSplitter" TargetType="GridSplitter">
-      <Setter Property="Width" Value="3"/>
+      <Setter Property="Width" Value="2"/>
       <Setter Property="HorizontalAlignment" Value="Center"/>
       <Setter Property="VerticalAlignment" Value="Stretch"/>
       <Setter Property="Background" Value="Transparent"/>
@@ -73,7 +73,7 @@
             </Grid>
             <ControlTemplate.Triggers>
               <Trigger Property="IsMouseOver" Value="True">
-                <Setter TargetName="Rule" Property="Background" Value="#3E9BE8"/>
+                <Setter TargetName="Rule" Property="Background" Value="#553E9BE8"/>
                 <Setter TargetName="Rule" Property="Width" Value="2"/>
               </Trigger>
             </ControlTemplate.Triggers>

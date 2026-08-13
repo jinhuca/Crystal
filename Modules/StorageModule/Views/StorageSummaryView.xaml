@@ -25,7 +25,7 @@
       <!-- Dense header bar: accent tick + title + inline roll-up (total · drive count), thin
            divider rule below. The per-disk inventory lives in the detail view. -->
       <Border Grid.Row="0" BorderBrush="{StaticResource DividerBrush}" BorderThickness="0,0,0,1"
-              Padding="0,0,0,4" Margin="0,0,0,6">
+              Padding="0,0,0,4" Margin="0,0,0,2">
         <StackPanel Orientation="Horizontal">
           <Border Width="3" Background="{StaticResource AccentBrush}" Margin="0,1,8,1"/>
           <TextBlock Text="STORAGE" Foreground="{StaticResource ValueBrush}" FontSize="12" FontWeight="SemiBold"
@@ -54,9 +54,11 @@
                                    Loaded="OnLoadGraphLoaded"
                                    Kind="Line"
                                    MinValue="0" MaxValue="100"/>
-          <StackPanel Grid.Column="1" Margin="10,0,0,0" Width="96" VerticalAlignment="Center">
-            <TextBlock Text="{Binding Load, StringFormat={}{0:0.00}}" Style="{StaticResource MetricValue}"/>
-            <TextBlock Text="%" Style="{StaticResource MetricUnit}"/>
+          <StackPanel Grid.Column="1" Style="{StaticResource SummaryStackPanelStyle}">
+            <StackPanel Orientation="Horizontal">
+              <TextBlock Text="{Binding Load, StringFormat={}{0:0.00}}" Style="{StaticResource MetricValue}"/>
+              <TextBlock Text="%" Style="{StaticResource MetricUnit}"/>
+            </StackPanel>
             <TextBlock Text="Active time" Style="{StaticResource MetricCaption}"/>
           </StackPanel>
         </Grid>
@@ -71,9 +73,11 @@
                                    Kind="Line"
                                    MinValue="0"
                                    MaxValue="{Binding TransferMaxMBps}"/>
-          <StackPanel Grid.Column="1" Margin="10,0,0,0" Width="96" VerticalAlignment="Center">
-            <TextBlock Text="{Binding TransferRateMBps, StringFormat={}{0:0.0}}" Style="{StaticResource MetricValue}"/>
-            <TextBlock Text="MB/s" Style="{StaticResource MetricUnit}"/>
+          <StackPanel Grid.Column="1" Style="{StaticResource SummaryStackPanelStyle}">
+            <StackPanel Orientation="Horizontal">
+              <TextBlock Text="{Binding TransferRateMBps, StringFormat={}{0:0.0}}" Style="{StaticResource MetricValue}"/>
+              <TextBlock Text="MB/s" Style="{StaticResource MetricUnit}"/>
+            </StackPanel>
             <TextBlock Text="Transfer" Style="{StaticResource MetricCaption}"/>
           </StackPanel>
         </Grid>

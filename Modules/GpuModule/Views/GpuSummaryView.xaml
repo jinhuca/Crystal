@@ -23,7 +23,7 @@
       <!-- Dense header bar: accent tick + title. Per-adapter identity rides directly above each
            adapter's graph block below, so the label sits with the graphs it owns. -->
       <Border Grid.Row="0" BorderBrush="{StaticResource DividerBrush}" BorderThickness="0,0,0,1"
-              Padding="0,0,0,4" Margin="0,0,0,6">
+              Padding="0,0,0,4" Margin="0,0,0,2">
         <StackPanel Orientation="Horizontal">
           <Border Width="3" Background="{StaticResource AccentBrush}" Margin="0,1,8,1"/>
           <TextBlock Text="GPU" Foreground="{StaticResource ValueBrush}" FontSize="12" FontWeight="SemiBold"
@@ -59,89 +59,94 @@
                              VerticalAlignment="Center" Margin="8,0,0,0" TextTrimming="CharacterEllipsis"/>
                 </StackPanel>
 
-              <!-- Two graph columns spanning the adapter's full width. -->
-              <Grid Grid.Row="1" VerticalAlignment="Top">
-                <Grid.ColumnDefinitions>
-                  <ColumnDefinition Width="*"/>
-                  <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+                <!-- Two graph columns spanning the adapter's full width. -->
+                <Grid Grid.Row="1" VerticalAlignment="Top">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                  </Grid.ColumnDefinitions>
 
-                <!-- Left: Utilization (top) + Temperature (bottom) stacked graphs. -->
-                <Grid Grid.Column="0" VerticalAlignment="Top" Margin="0,0,16,0">
-                  <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                  </Grid.RowDefinitions>
+                  <!-- Left: Utilization (top) + Temperature (bottom) stacked graphs. -->
+                  <Grid Grid.Column="0" VerticalAlignment="Top" Margin="0,0,16,0">
+                    <Grid.RowDefinitions>
+                      <RowDefinition/>
+                      <RowDefinition/>
+                    </Grid.RowDefinitions>
 
-                  <Grid Grid.Row="0" Margin="0,0,0,6">
-                    <Grid.ColumnDefinitions>
-                      <ColumnDefinition Width="*"/>
-                      <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <graphs:PerformanceGraph Grid.Column="0"
+                    <Grid Grid.Row="0" Margin="0,0,0,6">
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                      </Grid.ColumnDefinitions>
+                      <graphs:PerformanceGraph Grid.Column="0"
                                              Loaded="OnLoadGraphLoaded"
                                              MinHeight="40" MinValue="0" MaxValue="100"/>
-                    <StackPanel Grid.Column="1" Margin="10,0,0,0" Width="96" VerticalAlignment="Center">
-                      <TextBlock Text="{Binding Load, StringFormat={}{0:0.00}}" Style="{StaticResource MetricValue}"/>
-                      <TextBlock Text="%" Style="{StaticResource MetricUnit}"/>
-                      <TextBlock Text="Utilization" Style="{StaticResource MetricCaption}"/>
-                    </StackPanel>
-                  </Grid>
+                      <StackPanel Grid.Column="1" Style="{StaticResource SummaryStackPanelStyle}">
+                        <StackPanel Orientation="Horizontal">
+                          <TextBlock Text="{Binding Load, StringFormat={}{0:0.00}}" Style="{StaticResource MetricValue}"/>
+                          <TextBlock Text="%" Style="{StaticResource MetricUnit}"/>
+                        </StackPanel>
+                        <TextBlock Text="Utilization" Style="{StaticResource MetricCaption}"/>
+                      </StackPanel>
+                    </Grid>
 
-                  <Grid Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                      <ColumnDefinition Width="*"/>
-                      <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <graphs:PerformanceGraph Grid.Column="0"
+                    <Grid Grid.Row="1">
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                      </Grid.ColumnDefinitions>
+                      <graphs:PerformanceGraph Grid.Column="0"
                                              Loaded="OnTemperatureGraphLoaded"
                                              MinHeight="40" MinValue="0" MaxValue="120"/>
-                    <StackPanel Grid.Column="1" Margin="10,0,0,0" Width="96" VerticalAlignment="Center">
-                      <TextBlock Text="{Binding TemperatureC, StringFormat={}{0:0.00}, TargetNullValue=0.00}" Style="{StaticResource MetricValue}"/>
-                      <TextBlock Text="°C" Style="{StaticResource MetricUnit}"/>
-                      <TextBlock Text="Temperature" Style="{StaticResource MetricCaption}"/>
-                    </StackPanel>
-                  </Grid>
-                </Grid>
-
-                <!-- Right: Clock (top) + Power (bottom) stacked graphs. -->
-                <Grid Grid.Column="1" VerticalAlignment="Top">
-                  <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                  </Grid.RowDefinitions>
-
-                  <Grid Grid.Row="0" Margin="0,0,0,6">
-                    <Grid.ColumnDefinitions>
-                      <ColumnDefinition Width="*"/>
-                      <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <graphs:PerformanceGraph Grid.Column="0"
-                                             Loaded="OnClockGraphLoaded"
-                                             MinHeight="40" MinValue="0" MaxValue="3000"/>
-                    <StackPanel Grid.Column="1" Margin="10,0,0,0" Width="96" VerticalAlignment="Center">
-                      <TextBlock Text="{Binding ClockMhz, StringFormat={}{0:0}, TargetNullValue=—}" Style="{StaticResource MetricValue}"/>
-                      <TextBlock Text="MHz" Style="{StaticResource MetricUnit}"/>
-                      <TextBlock Text="Clock" Style="{StaticResource MetricCaption}"/>
-                    </StackPanel>
+                      <StackPanel Grid.Column="1" Style="{StaticResource SummaryStackPanelStyle}">
+                        <StackPanel Orientation="Horizontal">
+                          <TextBlock Text="{Binding TemperatureC, StringFormat={}{0:0.00}, TargetNullValue=0.00}" Style="{StaticResource MetricValue}"/>
+                          <TextBlock Text="°C" Style="{StaticResource MetricUnit}"/>
+                        </StackPanel>
+                        <TextBlock Text="Temperature" Style="{StaticResource MetricCaption}"/>
+                      </StackPanel>
+                    </Grid>
                   </Grid>
 
-                  <Grid Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                      <ColumnDefinition Width="*"/>
-                      <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <graphs:PerformanceGraph Grid.Column="0"
+                  <!-- Right: Clock (top) + Power (bottom) stacked graphs. -->
+                  <Grid Grid.Column="1" VerticalAlignment="Top">
+                    <Grid.RowDefinitions>
+                      <RowDefinition/>
+                      <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" Margin="0,0,0,6">
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                      </Grid.ColumnDefinitions>
+                      <graphs:PerformanceGraph Grid.Column="0" Loaded="OnClockGraphLoaded" MinHeight="40" MinValue="0" MaxValue="3000"/>
+                      <StackPanel Grid.Column="1" Style="{StaticResource SummaryStackPanelStyle}">
+                        <StackPanel Orientation="Horizontal">
+                          <TextBlock Text="{Binding ClockMhz, StringFormat={}{0:0}, TargetNullValue=—}" Style="{StaticResource MetricValue}"/>
+                          <TextBlock Text="MHz" Style="{StaticResource MetricUnit}"/>
+                        </StackPanel>
+                        <TextBlock Text="Clock" Style="{StaticResource MetricCaption}"/>
+                      </StackPanel>
+                    </Grid>
+
+                    <Grid Grid.Row="1">
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                      </Grid.ColumnDefinitions>
+                      <graphs:PerformanceGraph Grid.Column="0"
                                              Loaded="OnPowerGraphLoaded"
                                              MinHeight="40" MinValue="0" MaxValue="450"/>
-                    <StackPanel Grid.Column="1" Margin="10,0,0,0" Width="96" VerticalAlignment="Center">
-                      <TextBlock Text="{Binding PowerW, StringFormat={}{0:0.0}, TargetNullValue=—}" Style="{StaticResource MetricValue}"/>
-                      <TextBlock Text="Watts" Style="{StaticResource MetricUnit}"/>
-                      <TextBlock Text="Power" Style="{StaticResource MetricCaption}"/>
-                    </StackPanel>
+                      <StackPanel Grid.Column="1" Style="{StaticResource SummaryStackPanelStyle}">
+                        <StackPanel Orientation="Horizontal">
+                          <TextBlock Text="{Binding PowerW, StringFormat={}{0:0.0}, TargetNullValue=—}" Style="{StaticResource MetricValue}"/>
+                          <TextBlock Text="Watts" Style="{StaticResource MetricUnit}"/>
+                        </StackPanel>
+                        <TextBlock Text="Power" Style="{StaticResource MetricCaption}"/>
+                      </StackPanel>
+                    </Grid>
                   </Grid>
                 </Grid>
-              </Grid>
               </Grid>
             </Border>
           </DataTemplate>

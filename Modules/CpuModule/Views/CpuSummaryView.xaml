@@ -48,7 +48,7 @@
           <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
             <!-- Throttle badge: shown only while the package is throttling. IsThrottling/ThrottleStatus
                  live on SensorsViewModel, so bind up to the root tile DataContext. -->
-            <Border Margin="0,0,12,0" Padding="8,2" CornerRadius="3"
+            <Border Margin="0,0,12,0" Padding="8,0" CornerRadius="3"
                     Background="#5A1A1A" BorderBrush="#E04A3A" BorderThickness="1">
               <Border.Style>
                 <Style TargetType="Border">
