@@ -43,7 +43,7 @@ public sealed class GpuViewModel : BindableBase, IGpuViewModel, IDisposable {
       var reading = snapshot.Loads.FirstOrDefault(l =>
           string.Equals(l.AdapterName, adapter.Name, StringComparison.OrdinalIgnoreCase));
       if (reading is not null)
-        adapter.UpdateLoad(reading.CoreLoadPercent, reading.TemperatureC, reading.ClockMhz, reading.PowerW);
+        adapter.UpdateLoad(reading);
     }
   }
 

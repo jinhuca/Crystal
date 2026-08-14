@@ -37,6 +37,10 @@ internal static class Sensors {
   public static StubSensor Clock(string name, float? value) => Of(SensorType.Clock, name, value);
   public static StubSensor Power(string name, float? value) => Of(SensorType.Power, name, value);
   public static StubSensor Temp(string name, float? value) => Of(SensorType.Temperature, name, value);
+  public static StubSensor Fan(string name, float? value) => Of(SensorType.Fan, name, value);
+  public static StubSensor Voltage(string name, float? value) => Of(SensorType.Voltage, name, value);
+  public static StubSensor SmallData(string name, float? value) => Of(SensorType.SmallData, name, value);
+  public static StubSensor Throughput(string name, float? value) => Of(SensorType.Throughput, name, value);
 }
 
 // GpuInfoBuilder reads adapters via the ToSafeVideoControllerMetricsAsync extension, which calls

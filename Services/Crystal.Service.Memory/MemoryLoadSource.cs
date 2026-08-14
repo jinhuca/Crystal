@@ -14,6 +14,7 @@ public sealed class MemoryLoadSource : IMemoryLoadSource, IDisposable {
   private const string AvailableSensorName = "Memory Available";
 
   private readonly Computer _computer;
+  private readonly MemoryCompositionReader _composition = new();
   private bool _disposed;
 
   public MemoryLoadSource() {
@@ -26,20 +27,25 @@ public sealed class MemoryLoadSource : IMemoryLoadSource, IDisposable {
   /// hardware reserved) from <see cref="KernelMemoryInfo"/>. GB fields are null when unavailable.</summary>
   public MemoryLoadReading Read() {
     var kernel = KernelMemoryInfo.Read();
+    var composition = _composition.Read();
 
     var memory = _computer.Hardware.FirstOrDefault(h => h.HardwareType == HardwareType.Memory);
     if (memory is null)
       return new MemoryLoadReading(0, null, null,
-          kernel.CommittedGB, kernel.CommitLimitGB, kernel.CachedGB,
-          kernel.PagedPoolGB, kernel.NonPagedPoolGB, kernel.HardwareReservedGB);
+          kernel.CommittedGB, kernel.CommitLimitGB, kernel.CommitPeakGB, kernel.CachedGB,
+          kernel.PagedPoolGB, kernel.NonPagedPoolGB, kernel.HardwareReservedGB,
+          kernel.PhysicalTotalGB, composition.ModifiedGB, composition.StandbyGB, composition.FreeGB,
+          kernel.PageFileUsedGB, kernel.PageFileTotalGB, kernel.PageFilePeakGB);
 
     memory.Update();
     var load = FindSensor(memory, SensorType.Load, LoadSensorName);
     var used = FindSensor(memory, SensorType.Data, UsedSensorName);
     var available = FindSensor(memory, SensorType.Data, AvailableSensorName);
     return new MemoryLoadReading(load?.Value ?? 0, used?.Value, available?.Value,
-        kernel.CommittedGB, kernel.CommitLimitGB, kernel.CachedGB,
-        kernel.PagedPoolGB, kernel.NonPagedPoolGB, kernel.HardwareReservedGB);
+        kernel.CommittedGB, kernel.CommitLimitGB, kernel.CommitPeakGB, kernel.CachedGB,
+        kernel.PagedPoolGB, kernel.NonPagedPoolGB, kernel.HardwareReservedGB,
+        kernel.PhysicalTotalGB, composition.ModifiedGB, composition.StandbyGB, composition.FreeGB,
+        kernel.PageFileUsedGB, kernel.PageFileTotalGB);
   }
 
   private static ISensor? FindSensor(IHardware memory, SensorType type, string name) =>
@@ -49,6 +55,7 @@ public sealed class MemoryLoadSource : IMemoryLoadSource, IDisposable {
   public void Dispose() {
     if (_disposed) return;
     _disposed = true;
+    _composition.Dispose();
     _computer.Close();
   }
 }

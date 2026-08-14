@@ -21,8 +21,8 @@
         <ColumnDefinition Width="Auto"/>
         <ColumnDefinition Width="*"/>
       </Grid.ColumnDefinitions>
-      <Button Grid.Column="0" Content="&#x2190; Back" Padding="14,6"
-              Background="#1E2A38" Foreground="White" BorderThickness="0"
+      <Button Grid.Column="0" Content="&#x2190; Back"
+              Style="{StaticResource DetailBackButtonStyle}"
               Command="{Binding ShowDashboardCommand}"/>
       <TextBlock Grid.Column="1" Text="BIOS" Foreground="{StaticResource AccentBrush}" FontSize="28"
                  FontWeight="SemiBold" VerticalAlignment="Center" Margin="16,0,0,0"/>
@@ -168,8 +168,13 @@
           </Grid>
 
           <!-- ── Firmware inventory (SMBIOS Type 45) ─────────────────── -->
-          <TextBlock Text="Firmware inventory" Style="{StaticResource SectionHeader}"
-                     Visibility="{Binding HasFirmwareInventory, Converter={StaticResource BoolToVisibility}}"/>
+          <StackPanel Orientation="Horizontal"
+                      Visibility="{Binding HasFirmwareInventory, Converter={StaticResource BoolToVisibility}}">
+            <TextBlock Text="Firmware inventory" Style="{StaticResource SectionHeader}"/>
+            <!-- Count badge, matching the board-sensor / health-event headers. -->
+            <TextBlock Text="{Binding FirmwareComponentCount}" VerticalAlignment="Center"
+                       Margin="10,10,0,0" FontSize="11" Foreground="{StaticResource BiosDimBrush}"/>
+          </StackPanel>
           <ListView ItemsSource="{Binding FirmwareInventory}" Margin="0,4,0,0"
                     Background="{StaticResource PanelBackgroundBrush}" BorderBrush="{StaticResource DividerBrush}" BorderThickness="1"
                     Foreground="#D6D6D6" FontFamily="Consolas"
@@ -179,6 +184,7 @@
                 <GridViewColumn Header="Component" Width="320" DisplayMemberBinding="{Binding Name}"/>
                 <GridViewColumn Header="Version" Width="200" DisplayMemberBinding="{Binding Version}"/>
                 <GridViewColumn Header="Date" Width="140" DisplayMemberBinding="{Binding ReleaseDate}"/>
+                <GridViewColumn Header="Size" Width="100" DisplayMemberBinding="{Binding ImageSize}"/>
                 <GridViewColumn Header="State" Width="120" DisplayMemberBinding="{Binding State}"/>
               </GridView>
             </ListView.View>

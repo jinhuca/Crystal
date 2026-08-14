@@ -47,9 +47,9 @@
         <ColumnDefinition Width="Auto"/>
         <ColumnDefinition Width="*"/>
       </Grid.ColumnDefinitions>
-      <Button Grid.Column="0" Content="&#x2190; Back" Padding="14,6"
+      <Button Grid.Column="0" Content="&#x2190; Back"
               VerticalAlignment="Center" Margin="0,0,20,0"
-              Background="#1E2A38" Foreground="White" BorderThickness="0"
+              Style="{StaticResource DetailBackButtonStyle}"
               Command="{Binding ShowDashboardCommand}"/>
       <TextBlock Grid.Column="1" Text="Operating System" Foreground="{StaticResource AccentBrush}" FontSize="30"
                  FontWeight="SemiBold" VerticalAlignment="Center"/>

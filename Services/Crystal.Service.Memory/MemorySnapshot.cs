@@ -32,7 +32,15 @@ public sealed record MemoryLoadReading(
     double? AvailableGB,
     double? CommittedGB = null,
     double? CommitLimitGB = null,
+    double? CommitPeakGB = null,
     double? CachedGB = null,
     double? PagedPoolGB = null,
     double? NonPagedPoolGB = null,
-    double? HardwareReservedGB = null);
+    double? HardwareReservedGB = null,
+    double? PhysicalTotalGB = null,
+    double? ModifiedGB = null,
+    double? StandbyGB = null,
+    double? FreeGB = null,
+    double? PageFileUsedGB = null,
+    double? PageFileTotalGB = null,
+    double? PageFilePeakGB = null);

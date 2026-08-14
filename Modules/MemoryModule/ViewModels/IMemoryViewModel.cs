@@ -23,6 +23,7 @@ public interface IMemoryViewModel {
   string InUseLabel { get; }
   string AvailableLabel { get; }
   string CommittedLabel { get; }
+  string CommitPeakLabel { get; }
   string CachedLabel { get; }
   string PagedPoolLabel { get; }
   string NonPagedPoolLabel { get; }
@@ -31,13 +32,28 @@ public interface IMemoryViewModel {
   string FormFactorLabel { get; }
   string HardwareReservedLabel { get; }
 
+  // --- Memory composition bar: four proportional segments plus an empty-track remainder ---
   /// <summary>"In use" fraction (0-1) of the composition bar.</summary>
   double CompositionInUseFraction { get; }
+  double CompositionModifiedFraction { get; }
+  double CompositionStandbyFraction { get; }
+  double CompositionFreeFraction { get; }
+  double CompositionRemainderFraction { get; }
+  string CompositionInUseLabel { get; }
+  string CompositionModifiedLabel { get; }
+  string CompositionStandbyLabel { get; }
+  string CompositionFreeLabel { get; }
   /// <summary>Total installed GB the composition bar spans (for the tooltip/scale).</summary>
   double? CompositionTotalGB { get; }
 
+  /// <summary>Commit limit in GB (installed RAM + page file) — the commit graph's max scale.</summary>
+  double? CommitLimitGB { get; }
+
   /// <summary>Hands the detail view's "Memory usage" history graph to the VM so it can push samples.</summary>
   void AttachUsageGraph(PerformanceGraph graph);
+
+  /// <summary>Hands the detail view's "Commit charge" history graph to the VM so it can push samples.</summary>
+  void AttachCommitGraph(PerformanceGraph graph);
 
   /// <summary>Hands the summary tile's utilization-history graph to the VM so it can push samples.</summary>
   void AttachGraph(PerformanceGraph graph);

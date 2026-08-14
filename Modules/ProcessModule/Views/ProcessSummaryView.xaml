@@ -667,6 +667,8 @@
                          Foreground="{StaticResource LabelBrush}" FontSize="11" FontFamily="Consolas"
                          Margin="0,0,12,0"/>
               <TextBlock Text="{Binding Status}" Foreground="{StaticResource LabelBrush}"
+                         FontSize="11" FontFamily="Consolas" Margin="0,0,12,0"/>
+              <TextBlock Text="{Binding CategoryName}" Foreground="{StaticResource TextMutedBrush}"
                          FontSize="11" FontFamily="Consolas"/>
             </StackPanel>
 
@@ -744,6 +746,13 @@
               <TextBlock Grid.Column="1" Text="{Binding NetBytesPerSec, Converter={StaticResource ByteRate}}"
                          Foreground="{StaticResource TextPrimaryBrush}" FontSize="12" FontFamily="Consolas" TextAlignment="Right"/>
             </Grid>
+
+            <!-- Image path: the full on-disk location, wrapped. "Path unavailable" when WMI can't read it. -->
+            <Border BorderBrush="{StaticResource DividerBrush}" BorderThickness="0,1,0,0" Margin="0,10,0,8"/>
+            <TextBlock Text="Image path" Foreground="{StaticResource LabelBrush}"
+                       FontSize="11" FontFamily="Consolas" Margin="0,0,0,2"/>
+            <TextBlock Text="{Binding ExecutablePathLabel}" Foreground="{StaticResource TextMutedBrush}"
+                       FontSize="11" FontFamily="Consolas" TextWrapping="Wrap"/>
           </StackPanel>
         </Grid>
       </Border>

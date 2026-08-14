@@ -33,7 +33,18 @@ public sealed class GpuLoadSource : IGpuLoadSource, IDisposable {
           GpuSensorSelector.SelectCoreLoad(gpu.Sensors),
           temp,
           GpuSensorSelector.SelectCoreClock(gpu.Sensors),
-          GpuSensorSelector.SelectPackagePower(gpu.Sensors)));
+          GpuSensorSelector.SelectPackagePower(gpu.Sensors),
+          GpuSensorSelector.SelectMemoryUsedGB(gpu.Sensors),
+          GpuSensorSelector.SelectMemoryTotalGB(gpu.Sensors),
+          GpuSensorSelector.SelectMemoryClock(gpu.Sensors),
+          GpuSensorSelector.SelectFanRpm(gpu.Sensors),
+          GpuSensorSelector.SelectCoreVoltage(gpu.Sensors),
+          GpuSensorSelector.SelectHotSpotTemperature(gpu.Sensors),
+          GpuSensorSelector.SelectMemoryTemperature(gpu.Sensors),
+          GpuSensorSelector.SelectEngineLoads(gpu.Sensors),
+          GpuSensorSelector.SelectPcieRxMBps(gpu.Sensors),
+          GpuSensorSelector.SelectPcieTxMBps(gpu.Sensors),
+          GpuSensorSelector.SelectPowerRails(gpu.Sensors)));
     }
     return readings;
   }

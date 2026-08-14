@@ -13,8 +13,19 @@ namespace Crystal.Service.Storage;
 /// </summary>
 public sealed class StorageLoadSource : IStorageLoadSource, IDisposable {
   private const string ActivitySensorName = "Total Activity";
+  private const string ReadActivitySensorName = "Read Activity";
+  private const string WriteActivitySensorName = "Write Activity";
   private const string ReadRateSensorName = "Read Rate";
   private const string WriteRateSensorName = "Write Rate";
+  private const string TemperatureSensorName = "Temperature";
+  private const string HealthSensorName = "Life";
+  private const string UsedSpaceSensorName = "Used Space";
+  private const string FreeSpaceSensorName = "Free Space";
+  private const string TotalSpaceSensorName = "Total Space";
+  private const string DataReadSensorName = "Data Read";
+  private const string DataWrittenSensorName = "Data Written";
+  private const string PowerOnHoursSensorName = "Power On Hours";
+  private const string PowerOnCountSensorName = "Power On Count";
 
   private readonly Computer _computer;
   // Per physical-disk-index average-response-time counters, created on first sight and reused.
@@ -36,15 +47,37 @@ public sealed class StorageLoadSource : IStorageLoadSource, IDisposable {
       if (StorageSensorSelector.DiskIndexOf(drive.Identifier) is not { } index) continue;
 
       var activity = StorageSensorSelector.FindSensor(drive.Sensors, SensorType.Load, ActivitySensorName)?.Value ?? 0;
+      var readActivity = StorageSensorSelector.FindSensor(drive.Sensors, SensorType.Load, ReadActivitySensorName)?.Value ?? 0;
+      var writeActivity = StorageSensorSelector.FindSensor(drive.Sensors, SensorType.Load, WriteActivitySensorName)?.Value ?? 0;
       var read = StorageSensorSelector.FindSensor(drive.Sensors, SensorType.Throughput, ReadRateSensorName)?.Value ?? 0;
       var write = StorageSensorSelector.FindSensor(drive.Sensors, SensorType.Throughput, WriteRateSensorName)?.Value ?? 0;
+      var temperature = StorageSensorSelector.FindSensor(drive.Sensors, SensorType.Temperature, TemperatureSensorName)?.Value;
+      var health = StorageSensorSelector.FindSensor(drive.Sensors, SensorType.Level, HealthSensorName)?.Value;
+      var usedSpace = StorageSensorSelector.FindSensor(drive.Sensors, SensorType.Load, UsedSpaceSensorName)?.Value;
+      var freeSpace = StorageSensorSelector.FindSensor(drive.Sensors, SensorType.Data, FreeSpaceSensorName)?.Value;
+      var totalSpace = StorageSensorSelector.FindSensor(drive.Sensors, SensorType.Data, TotalSpaceSensorName)?.Value;
+      var dataRead = StorageSensorSelector.FindSensor(drive.Sensors, SensorType.Data, DataReadSensorName)?.Value;
+      var dataWritten = StorageSensorSelector.FindSensor(drive.Sensors, SensorType.Data, DataWrittenSensorName)?.Value;
+      var powerOnHours = StorageSensorSelector.FindSensor(drive.Sensors, SensorType.Factor, PowerOnHoursSensorName)?.Value;
+      var powerOnCount = StorageSensorSelector.FindSensor(drive.Sensors, SensorType.Factor, PowerOnCountSensorName)?.Value;
 
       disks.Add(new StorageDiskLoad(
           DriveIndex: index,
           ActivityPercent: activity,
           ReadRateMBps: StorageSensorSelector.BytesToMBps(read),
           WriteRateMBps: StorageSensorSelector.BytesToMBps(write),
-          ResponseMs: ReadResponseMs(index)));
+          ResponseMs: ReadResponseMs(index),
+          TemperatureC: temperature,
+          HealthPercent: health,
+          UsedSpacePercent: usedSpace,
+          FreeSpaceGB: freeSpace,
+          TotalSpaceGB: totalSpace,
+          DataReadGB: dataRead,
+          DataWrittenGB: dataWritten,
+          PowerOnHours: powerOnHours,
+          PowerOnCount: powerOnCount,
+          ReadActivityPercent: readActivity,
+          WriteActivityPercent: writeActivity));
     }
     return new StorageLoadReading(disks);
   }

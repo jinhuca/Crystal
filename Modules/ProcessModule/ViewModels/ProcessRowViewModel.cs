@@ -29,7 +29,13 @@ public sealed class ProcessRowViewModel : BindableBase {
   /// <summary>Full path to the process image on disk, or null for processes WMI can't read the path
   /// of. Drives icon resolution and is refreshed each poll (it can arrive late for a process that
   /// was briefly unreadable at creation).</summary>
-  public string? ExecutablePath { get => _executablePath; set => SetProperty(ref _executablePath, value); }
+  public string? ExecutablePath {
+    get => _executablePath;
+    set { if (SetProperty(ref _executablePath, value)) RaisePropertyChanged(nameof(ExecutablePathLabel)); }
+  }
+
+  /// <summary>The image path for the detail panel, or a placeholder when WMI couldn't read it.</summary>
+  public string ExecutablePathLabel => string.IsNullOrEmpty(_executablePath) ? "Path unavailable" : _executablePath;
 
   /// <summary>The process's shell icon (Task Manager-style), or null when unresolved — the view
   /// shows a generic placeholder then. Frozen, so it binds safely from any thread.</summary>

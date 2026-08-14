@@ -11,7 +11,17 @@ public interface IStorageViewModel {
   string DriveCountLabel { get; }
   double Load { get; }
   double TransferRateMBps { get; }
+  double ReadRateMBps { get; }
+  double WriteRateMBps { get; }
   double TransferMaxMBps { get; }
+  string PeakTransferLabel { get; }
+  bool HasCapacityData { get; }
+  double UsedSpaceFraction { get; }
+  double FreeSpaceFraction { get; }
+  string CapacityUsageLabel { get; }
+  string UsedSpacePercentLabel { get; }
+  bool ShowBusiestDrive { get; }
+  string BusiestDriveLabel { get; }
   ObservableCollection<StorageDriveViewModel> Drives { get; }
 
   /// <summary>The disk whose graphs and stats the detail view currently shows.</summary>

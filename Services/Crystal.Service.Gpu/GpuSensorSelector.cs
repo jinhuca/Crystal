@@ -37,6 +37,106 @@ internal static class GpuSensorSelector {
     return clock?.Value is { } v && v > 0 ? v : null;
   }
 
+  // VRAM used, in GB. Discrete cards expose "GPU Memory Used" (SmallData, MB); the Intel iGPU has no
+  // dedicated VRAM pool, so fall back to the D3D dedicated + shared usage it does report. The
+  // SmallData sensors are in MB, so divide by 1024 for GB.
+  public static double? SelectMemoryUsedGB(ISensor[] sensors) {
+    if (FindSmallData(sensors, "GPU Memory Used") is { } used) return used / 1024.0;
+
+    double? d3d = null;
+    if (FindSmallData(sensors, "D3D Dedicated Memory Used") is { } dedicated) d3d = (d3d ?? 0) + dedicated;
+    if (FindSmallData(sensors, "D3D Shared Memory Used") is { } shared) d3d = (d3d ?? 0) + shared;
+    return d3d is { } v ? v / 1024.0 : null;
+  }
+
+  // VRAM total, in GB. "GPU Memory Total" on discrete cards; the iGPU reports only a shared-memory
+  // limit ("D3D Shared Memory Total"). MB → GB.
+  public static double? SelectMemoryTotalGB(ISensor[] sensors) {
+    var total = FindSmallData(sensors, "GPU Memory Total") ?? FindSmallData(sensors, "D3D Shared Memory Total");
+    return total is { } v ? v / 1024.0 : null;
+  }
+
+  // The memory (VRAM) clock, in MHz. As with the core clock, a non-positive reading is treated as
+  // absent so the view renders "—" rather than a misleading 0.
+  public static double? SelectMemoryClock(ISensor[] sensors) {
+    var clock = Array.Find(sensors,
+        s => s.SensorType == SensorType.Clock
+             && string.Equals(s.Name, "GPU Memory", StringComparison.OrdinalIgnoreCase));
+    return clock?.Value is { } v && v > 0 ? v : null;
+  }
+
+  // Fan speed, in RPM. A card can report several fans (NVIDIA exposes one per cooler); take the
+  // highest so the readout reflects the fan actually spinning. Zero is a valid reading (fan stopped).
+  public static double? SelectFanRpm(ISensor[] sensors) {
+    double? max = null;
+    foreach (var s in sensors)
+      if (s.SensorType == SensorType.Fan && s.Value is { } v && (max is null || v > max)) max = v;
+    return max;
+  }
+
+  // Core voltage, in volts. Named "GPU Core" on AMD/Intel and "GPU Core Voltage" on NVIDIA.
+  public static double? SelectCoreVoltage(ISensor[] sensors) {
+    var voltage = Array.Find(sensors,
+        s => s.SensorType == SensorType.Voltage
+             && (string.Equals(s.Name, "GPU Core", StringComparison.OrdinalIgnoreCase)
+                 || string.Equals(s.Name, "GPU Core Voltage", StringComparison.OrdinalIgnoreCase)));
+    return voltage?.Value;
+  }
+
+  // Per-engine utilization breakdown. The engines are the D3D queue nodes every adapter exposes
+  // ("D3D 3D", "D3D Video Decode", "D3D Copy", …) plus the Intel discrete class's own
+  // "GPU Render/Compute" and "GPU Media" aggregates. Other Load sensors are deliberately excluded:
+  // "GPU Core" is the aggregate shown separately, "GPU Memory*" is memory not compute, and NVIDIA
+  // publishes power rails ("GPU Power"/"GPU Board Power") as Load-typed sensors that are watts, not
+  // percentages. An adapter can expose several nodes of the same engine type (e.g. two "3D" queues),
+  // so consolidate by display name taking the max — the busiest queue of that type — which also
+  // keeps the value within 0-100. The display name drops the "D3D "/"GPU " prefix. Ordered by name
+  // for a stable readout that doesn't reshuffle every poll.
+  public static IReadOnlyList<GpuEngineLoad> SelectEngineLoads(ISensor[] sensors) {
+    var byName = new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase);
+    foreach (var s in sensors) {
+      if (s.SensorType != SensorType.Load || s.Value is not { } v) continue;
+      if (!IsEngineLoad(s.Name)) continue;
+      var name = EngineDisplayName(s.Name);
+      if (!byName.TryGetValue(name, out var existing) || v > existing) byName[name] = v;
+    }
+    return byName
+        .OrderBy(kv => kv.Key, StringComparer.OrdinalIgnoreCase)
+        .Select(kv => new GpuEngineLoad(kv.Key, kv.Value))
+        .ToArray();
+  }
+
+  private static bool IsEngineLoad(string name) =>
+      name.StartsWith("D3D ", StringComparison.OrdinalIgnoreCase)
+      || string.Equals(name, "GPU Render/Compute", StringComparison.OrdinalIgnoreCase)
+      || string.Equals(name, "GPU Media", StringComparison.OrdinalIgnoreCase);
+
+  private static string EngineDisplayName(string name) {
+    if (name.StartsWith("D3D ", StringComparison.OrdinalIgnoreCase)) return name["D3D ".Length..];
+    if (name.StartsWith("GPU ", StringComparison.OrdinalIgnoreCase)) return name["GPU ".Length..];
+    return name;
+  }
+
+  // PCIe bus throughput in MB/s. NVIDIA (via NVML) exposes "GPU PCIe Rx"/"GPU PCIe Tx" as
+  // Throughput sensors in bytes/second; other vendors don't publish it. Convert B/s → MB/s (decimal,
+  // matching how throughput is conventionally reported) so the view can render a plain number.
+  public static double? SelectPcieRxMBps(ISensor[] sensors) => SelectThroughputMBps(sensors, "GPU PCIe Rx");
+  public static double? SelectPcieTxMBps(ISensor[] sensors) => SelectThroughputMBps(sensors, "GPU PCIe Tx");
+
+  private static double? SelectThroughputMBps(ISensor[] sensors, string name) {
+    var sensor = Array.Find(sensors,
+        s => s.SensorType == SensorType.Throughput
+             && string.Equals(s.Name, name, StringComparison.OrdinalIgnoreCase));
+    return sensor?.Value is { } v ? v / 1_000_000.0 : null;
+  }
+
+  private static double? FindSmallData(ISensor[] sensors, string name) {
+    var sensor = Array.Find(sensors,
+        s => s.SensorType == SensorType.SmallData
+             && string.Equals(s.Name, name, StringComparison.OrdinalIgnoreCase));
+    return sensor?.Value;
+  }
+
   // Whole-board power draw, in watts. Named "GPU Package" on NVIDIA/AMD and Intel discrete, and
   // "GPU Power" on the Intel integrated class; fall back to "GPU Total" (Intel discrete's board-total
   // rail) so a value shows even when the package rail is absent.
@@ -50,6 +150,26 @@ internal static class GpuSensorSelector {
     return null;
   }
 
+  // The aggregate rails surfaced separately as the single package-power figure; excluded from the
+  // per-rail breakdown so it isn't listed twice.
+  private static readonly string[] AggregatePowerRails = ["GPU Package", "GPU Power", "GPU Total"];
+
+  // Per-rail power breakdown beyond the aggregate package figure: AMD's "GPU Core"/"GPU PPT"/"GPU SoC"
+  // and NVIDIA's "12VHPWR Connector" + per-pin rails. Excludes the aggregate rails shown as the
+  // headline power number. The "GPU " prefix is dropped for display; ordered by name for a stable
+  // readout.
+  public static IReadOnlyList<GpuPowerRail> SelectPowerRails(ISensor[] sensors) {
+    var rails = new List<GpuPowerRail>();
+    foreach (var s in sensors) {
+      if (s.SensorType != SensorType.Power || s.Value is not { } v) continue;
+      if (Array.Exists(AggregatePowerRails, n => string.Equals(n, s.Name, StringComparison.OrdinalIgnoreCase))) continue;
+      var name = s.Name.StartsWith("GPU ", StringComparison.OrdinalIgnoreCase) ? s.Name["GPU ".Length..] : s.Name;
+      rails.Add(new GpuPowerRail(name, v));
+    }
+    rails.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.OrdinalIgnoreCase));
+    return rails;
+  }
+
   // Prefer the "GPU Core" Temperature sensor (NVIDIA/AMD, and Intel when IGCL telemetry is
   // available). The Intel iGPU only creates that sensor when telemetry succeeds, so fall back to any
   // other temperature sensor the adapter exposes so the graph isn't left blank.
@@ -61,6 +181,27 @@ internal static class GpuSensorSelector {
 
     foreach (var s in sensors)
       if (s.SensorType == SensorType.Temperature && s.Value is { } v) return v;
+    return null;
+  }
+
+  // Hot-spot (junction) temperature — the hottest on-die sensor, typically running above the core
+  // reading and the first to trigger thermal throttling. Named "GPU Hot Spot" on NVIDIA and AMD.
+  public static double? SelectHotSpotTemperature(ISensor[] sensors) {
+    var hotSpot = Array.Find(sensors,
+        s => s.SensorType == SensorType.Temperature
+             && string.Equals(s.Name, "GPU Hot Spot", StringComparison.OrdinalIgnoreCase));
+    return hotSpot?.Value;
+  }
+
+  // VRAM temperature — the memory-junction sensor on cards that expose it. Named "GPU Memory
+  // Junction" on NVIDIA and "GPU Memory" on AMD and Intel discrete.
+  public static double? SelectMemoryTemperature(ISensor[] sensors) {
+    foreach (var name in new[] { "GPU Memory Junction", "GPU Memory" }) {
+      var memory = Array.Find(sensors,
+          s => s.SensorType == SensorType.Temperature
+               && string.Equals(s.Name, name, StringComparison.OrdinalIgnoreCase));
+      if (memory?.Value is { } v) return v;
+    }
     return null;
   }
 

@@ -157,6 +157,45 @@ public class CpuSensorsViewModelTests {
   }
 
   [Fact]
+  public void Clock_readout_appends_effective_clock_when_exposed() {
+    var vm = new CpuSensorsViewModel();
+
+    vm.Update(Fakes.System(speedMHz: 4200, effectiveSpeedMHz: 3100));
+
+    Assert.Equal("4.20 GHz · eff 3.10 GHz", vm.ClockReadoutLabel);
+  }
+
+  [Fact]
+  public void Clock_readout_omits_effective_clock_when_absent() {
+    var vm = new CpuSensorsViewModel();
+
+    vm.Update(Fakes.System(speedMHz: 4200));
+
+    Assert.Equal("4.20 GHz", vm.ClockReadoutLabel);
+  }
+
+  [Fact]
+  public void Amd_current_label_lists_soc_voltage_and_package_current() {
+    var vm = new CpuSensorsViewModel();
+
+    vm.Update(Fakes.System(socVoltage: 1.1f, tdcAmps: 95, edcAmps: 140));
+
+    Assert.True(vm.HasAmdCurrentSensors);
+    Assert.Equal("SoC 1.100 V · TDC 95 A · EDC 140 A", vm.AmdCurrentLabel);
+  }
+
+  [Fact]
+  public void Amd_current_label_is_a_dash_and_hidden_on_intel() {
+    var vm = new CpuSensorsViewModel();
+
+    // Intel parts leave the AMD SMU sensors at 0.
+    vm.Update(Fakes.System(load: 10));
+
+    Assert.False(vm.HasAmdCurrentSensors);
+    Assert.Equal("—", vm.AmdCurrentLabel);
+  }
+
+  [Fact]
   public void Update_copies_package_cstate_residency() {
     var vm = new CpuSensorsViewModel();
 
@@ -166,6 +205,27 @@ public class CpuSensorsViewModelTests {
     Assert.Equal(10, vm.PackageC3Pct);
     Assert.Equal(60, vm.PackageC6Pct);
     Assert.Equal(25, vm.PackageC7Pct);
+  }
+
+  [Fact]
+  public void Package_cstate_label_lists_only_the_states_the_platform_reports() {
+    var vm = new CpuSensorsViewModel();
+
+    // Intel typically exposes C3/C6/C7 but not C2; the label omits the unreported state.
+    vm.Update(Fakes.System(c3Pct: 8, c6Pct: 60, c7Pct: 25));
+
+    Assert.True(vm.HasCStateResidency);
+    Assert.Equal("C3 8% · C6 60% · C7 25%", vm.PackageCStateLabel);
+  }
+
+  [Fact]
+  public void Package_cstate_label_is_a_dash_and_hidden_without_residency() {
+    var vm = new CpuSensorsViewModel();
+
+    vm.Update(Fakes.System(load: 10));
+
+    Assert.False(vm.HasCStateResidency);
+    Assert.Equal("—", vm.PackageCStateLabel);
   }
 
   [Fact]
@@ -266,6 +326,42 @@ public class CpuSensorsViewModelTests {
     Assert.Equal(2, vm.CoreLoads[0].Threads.Count);
     Assert.Same(firstThread, vm.CoreLoads[0].Threads[0]);
     Assert.Equal(55, vm.CoreLoads[0].Threads[0].Load);
+  }
+
+  [Fact]
+  public void PowerReadoutLabel_appends_limits_when_exposed() {
+    var vm = new CpuSensorsViewModel();
+
+    vm.Update(Fakes.System(power: 65, powerLimitLongW: 65, powerLimitShortW: 90));
+
+    Assert.Equal("65 W · limit 65/90 W", vm.PowerReadoutLabel);
+  }
+
+  [Fact]
+  public void PowerReadoutLabel_shows_power_alone_when_no_limits_exposed() {
+    var vm = new CpuSensorsViewModel();
+
+    vm.Update(Fakes.System(power: 65));
+
+    Assert.Equal("65 W", vm.PowerReadoutLabel);
+  }
+
+  [Fact]
+  public void TemperatureLabel_appends_tjmax_headroom_when_exposed() {
+    var vm = new CpuSensorsViewModel();
+
+    vm.Update(Fakes.System(temperature: 58, distanceToTjMax: 22));
+
+    Assert.Equal("58 °C · 22° to TjMax", vm.TemperatureLabel);
+  }
+
+  [Fact]
+  public void TemperatureLabel_shows_temp_alone_when_headroom_unexposed() {
+    var vm = new CpuSensorsViewModel();
+
+    vm.Update(Fakes.System(temperature: 58));
+
+    Assert.Equal("58 °C", vm.TemperatureLabel);
   }
 
   [Fact]

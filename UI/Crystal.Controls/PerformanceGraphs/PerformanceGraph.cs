@@ -4,6 +4,7 @@ using Crystal.Controls.PerformanceGraphs.Renders;
 using Crystal.Controls.PerformanceGraphs.Styles;
 using Crystal.Controls.PerformanceGraphs.Themes;
 using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
 
@@ -93,9 +94,35 @@ public class PerformanceGraph : FrameworkElement {
   private readonly MarkerRenderer _markerRender = new();
   private readonly GraphStyle _graphStyle = new();
 
-  // Right-aligned sample buffer: index 0 is oldest, [Count-1] is the most recent value.
+  // Right-aligned sample buffer for the primary series (index 0): index 0 is oldest, [Count-1] is
+  // the most recent value. The primary series' line/fill live in _graphStyle and are driven by the
+  // LineBrush/FillBrush/LineThickness dependency properties, so every existing single-series graph
+  // is unaffected.
   private readonly CircularBuffer<double> _values;
   private readonly int _historyLength;
+
+  // Additional overlay series (index 1..N), each with its own buffer, line pen and optional fill.
+  // Only meaningful for GraphKind.Line — bars/segmented bars draw the primary series alone. Populated
+  // via AddSeries and fed via AddValue(series, value); empty for every graph that never opts in.
+  private readonly List<Series> _extraSeries = new();
+
+  // Buffer + per-series pens for an overlay series. A missing FillBrush draws the series as a plain
+  // line (the usual choice for an overlaid read/write pair, where two filled areas would occlude).
+  // Each series owns its own renderer: FilledLineRenderer reuses its StreamGeometry across frames,
+  // which is only safe when a single geometry isn't drawn twice within one render pass — so per-series
+  // renderers (not one shared instance looped) keep the overlays from stomping each other's geometry.
+  private sealed class Series {
+    public readonly CircularBuffer<double> Values;
+    public readonly FilledLineRenderer Renderer = new();
+    public Pen LinePen;
+    public Brush? FillBrush;
+
+    public Series(int capacity, Pen linePen, Brush? fillBrush) {
+      Values = new CircularBuffer<double>(capacity);
+      LinePen = linePen;
+      FillBrush = fillBrush;
+    }
+  }
 
   // Rendering is suspended while the control is off-screen — a collapsed tile, a minimized window,
   // or a closed detail window all flip IsVisible to false. Samples still land in the buffer so no
@@ -275,27 +302,54 @@ public class PerformanceGraph : FrameworkElement {
     if (theme.FillBrush != null) FillBrush = theme.FillBrush;
   }
 
-  /// <summary>Appends a new sample, dropping the oldest once <see cref="Capacity"/> is exceeded. O(1).</summary>
-  public void AddValue(double value) {
+  /// <summary>Number of series plotted: the primary (index 0) plus any added via <see cref="AddSeries"/>.</summary>
+  internal int SeriesCount => 1 + _extraSeries.Count;
+
+  /// <summary>
+  /// Registers an additional line series overlaid on the primary one, returning the index used to
+  /// feed it via <see cref="AddValue(int, double)"/>. The primary series is index 0; the first
+  /// added series is index 1, and so on. Overlay series are drawn only for <see cref="GraphKind.Line"/>.
+  /// Pass a <paramref name="fillBrush"/> only when a filled area is wanted — for an overlaid pair
+  /// (e.g. read/write) leave it null so the second series is a plain line and doesn't occlude the first.
+  /// Call on the UI thread (e.g. from the graph's Loaded handler).
+  /// </summary>
+  public int AddSeries(Brush lineBrush, Brush? fillBrush = null, double thickness = 2) {
+    _extraSeries.Add(new Series(_historyLength, Helpers.CreateFrozenPen(lineBrush, thickness), fillBrush));
+    RequestRender();
+    return _extraSeries.Count; // index 0 is the primary, so the first overlay is 1
+  }
+
+  /// <summary>Appends a new sample to the primary series (index 0). O(1).</summary>
+  public void AddValue(double value) => AddValue(0, value);
+
+  /// <summary>
+  /// Appends a new sample to the given series, dropping the oldest once <see cref="Capacity"/> is
+  /// exceeded. Series 0 is the primary; 1..N are overlays returned by <see cref="AddSeries"/>. O(1).
+  /// </summary>
+  public void AddValue(int series, double value) {
     // Sensor streams push from a background thread; InvalidateVisual (and the
     // buffer) require this element's dispatcher, so hop onto it if we're not already there.
     if (!CheckAccess()) {
-      Dispatcher.BeginInvoke(() => AddValue(value));
+      Dispatcher.BeginInvoke(() => AddValue(series, value));
       return;
     }
-    _values.Add(value);
+    BufferFor(series).Add(value);
     RequestRender();
   }
 
-  /// <summary>Discards all buffered samples.</summary>
+  /// <summary>Discards all buffered samples across every series.</summary>
   public void ClearValues() {
     if (!CheckAccess()) {
       Dispatcher.BeginInvoke(ClearValues);
       return;
     }
     _values.Clear();
+    foreach (var s in _extraSeries) s.Values.Clear();
     RequestRender();
   }
+
+  private CircularBuffer<double> BufferFor(int series) =>
+      series == 0 ? _values : _extraSeries[series - 1].Values;
 
   private static void OnLineBrushChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
     var graph = (PerformanceGraph)d;
@@ -362,7 +416,14 @@ public class PerformanceGraph : FrameworkElement {
         _segmentedBarRender.Draw(dc, bounds, _graphStyle, _values, _historyLength, MinValue, MaxValue, Rows, Flip);
         break;
       default:
-        _filledLineRender.Draw(dc, bounds, _graphStyle, _values, _historyLength, MinValue, MaxValue);
+        // Primary series first (so its fill sits underneath), then each overlay on top. Each series
+        // draws through its own renderer so the reused-across-frames StreamGeometry of one isn't
+        // re-Opened by another within this same pass (which would render both with the last geometry).
+        _filledLineRender.Draw(dc, bounds, _values, _historyLength, MinValue, MaxValue,
+            _graphStyle.LinePen, _graphStyle.FillBrush);
+        foreach (var s in _extraSeries)
+          s.Renderer.Draw(dc, bounds, s.Values, _historyLength, MinValue, MaxValue,
+              s.LinePen, s.FillBrush);
         break;
     }
 

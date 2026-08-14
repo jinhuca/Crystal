@@ -56,23 +56,119 @@ public class GpuAdapterViewModelTests {
     var vm = new GpuAdapterViewModel();
 
     // No graph attached: pushing samples must set the scalar values and not throw.
-    vm.UpdateLoad(loadPercent: 31.5, temperatureC: 62, clockMhz: 1800, powerW: 120);
+    vm.UpdateLoad(new GpuLoadReading("GPU", 31.5, TemperatureC: 62, ClockMhz: 1800, PowerW: 120,
+        MemoryUsedGB: 3, MemoryTotalGB: 8, MemoryClockMhz: 9000, FanRpm: 1400, CoreVoltageV: 0.85,
+        PcieRxMBps: 12.5, PcieTxMBps: 3.2));
 
     Assert.Equal(31.5, vm.Load);
     Assert.Equal(62, vm.TemperatureC);
     Assert.Equal(1800, vm.ClockMhz);
     Assert.Equal(120, vm.PowerW);
+    Assert.Equal(3, vm.MemoryUsedGB);
+    Assert.Equal(8, vm.MemoryTotalGB);
+    Assert.Equal(37.5, vm.MemoryUsedPercent);
+    Assert.Equal(9000, vm.MemoryClockMhz);
+    Assert.Equal(1400, vm.FanRpm);
+    Assert.Equal(0.85, vm.CoreVoltageV);
+    Assert.Equal(12.5, vm.PcieRxMBps);
+    Assert.Equal(3.2, vm.PcieTxMBps);
   }
 
   [Fact]
   public void Update_load_keeps_null_optional_readings() {
     var vm = new GpuAdapterViewModel();
 
-    vm.UpdateLoad(loadPercent: 10, temperatureC: null, clockMhz: null, powerW: null);
+    vm.UpdateLoad(new GpuLoadReading("GPU", 10, TemperatureC: null, ClockMhz: null, PowerW: null));
 
     Assert.Equal(10, vm.Load);
     Assert.Null(vm.TemperatureC);
     Assert.Null(vm.ClockMhz);
     Assert.Null(vm.PowerW);
+    Assert.Null(vm.MemoryUsedGB);
+    Assert.Null(vm.MemoryUsedPercent);
+    Assert.Null(vm.FanRpm);
+    Assert.Null(vm.CoreVoltageV);
+  }
+
+  [Fact]
+  public void Update_load_reconciles_engine_rows_in_place() {
+    var vm = new GpuAdapterViewModel();
+
+    vm.UpdateLoad(new GpuLoadReading("GPU", 60,
+        TemperatureC: null, ClockMhz: null, PowerW: null,
+        EngineLoads: [new GpuEngineLoad("3D", 60), new GpuEngineLoad("Copy", 5)]));
+
+    Assert.True(vm.HasEngineLoads);
+    var threeD = Assert.Single(vm.EngineLoads, e => e.Name == "3D");
+
+    // Second poll updates the same row instance (matched by name) rather than replacing it.
+    vm.UpdateLoad(new GpuLoadReading("GPU", 80,
+        TemperatureC: null, ClockMhz: null, PowerW: null,
+        EngineLoads: [new GpuEngineLoad("3D", 80), new GpuEngineLoad("Copy", 5)]));
+
+    Assert.Same(threeD, Assert.Single(vm.EngineLoads, e => e.Name == "3D"));
+    Assert.Equal(80, threeD.LoadPercent);
+    Assert.Equal(2, vm.EngineLoads.Count);
+  }
+
+  [Fact]
+  public void Update_load_without_engine_loads_leaves_collection_empty() {
+    var vm = new GpuAdapterViewModel();
+
+    vm.UpdateLoad(new GpuLoadReading("GPU", 10, TemperatureC: null, ClockMhz: null, PowerW: null));
+
+    Assert.False(vm.HasEngineLoads);
+    Assert.Empty(vm.EngineLoads);
+    Assert.False(vm.HasPowerRails);
+    Assert.Empty(vm.PowerRails);
+  }
+
+  [Fact]
+  public void Clock_and_power_scale_start_at_their_floors() {
+    var vm = new GpuAdapterViewModel();
+
+    Assert.Equal(500, vm.ClockScaleMax);
+    Assert.Equal(50, vm.PowerScaleMax);
+  }
+
+  [Fact]
+  public void Clock_and_power_scale_ratchet_to_a_nice_value_above_the_peak() {
+    var vm = new GpuAdapterViewModel();
+
+    vm.UpdateLoad(new GpuLoadReading("GPU", 50, TemperatureC: 60, ClockMhz: 2600, PowerW: 320));
+
+    // 2600 → nice 5000; 320 → nice 500.
+    Assert.Equal(5000, vm.ClockScaleMax);
+    Assert.Equal(500, vm.PowerScaleMax);
+  }
+
+  [Fact]
+  public void Clock_and_power_scale_hold_their_floor_for_small_readings() {
+    var vm = new GpuAdapterViewModel();
+
+    vm.UpdateLoad(new GpuLoadReading("GPU", 5, TemperatureC: 40, ClockMhz: 300, PowerW: 12));
+
+    Assert.Equal(500, vm.ClockScaleMax);
+    Assert.Equal(50, vm.PowerScaleMax);
+  }
+
+  [Fact]
+  public void Update_load_reconciles_power_rails_in_place() {
+    var vm = new GpuAdapterViewModel();
+
+    vm.UpdateLoad(new GpuLoadReading("GPU", 60,
+        TemperatureC: null, ClockMhz: null, PowerW: 200,
+        PowerRails: [new GpuPowerRail("PPT", 210), new GpuPowerRail("SoC", 15)]));
+
+    Assert.True(vm.HasPowerRails);
+    var ppt = Assert.Single(vm.PowerRails, r => r.Name == "PPT");
+
+    vm.UpdateLoad(new GpuLoadReading("GPU", 60,
+        TemperatureC: null, ClockMhz: null, PowerW: 200,
+        PowerRails: [new GpuPowerRail("PPT", 240), new GpuPowerRail("SoC", 15)]));
+
+    Assert.Same(ppt, Assert.Single(vm.PowerRails, r => r.Name == "PPT"));
+    Assert.Equal(240, ppt.PowerW);
+    Assert.Equal(2, vm.PowerRails.Count);
   }
 }

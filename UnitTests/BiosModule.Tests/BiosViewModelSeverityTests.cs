@@ -745,6 +745,62 @@ public class BiosViewModelSeverityTests {
     Assert.Equal(2, vm.HealthEvents.Count);
   }
 
+  private static FirmwareSnapshot FirmwareWith(params FirmwareComponent[] inventory) =>
+      new(Manufacturer: null, Version: null, ReleaseDate: null, SerialNumber: null,
+          SmbiosSpecVersion: null, PrimaryBios: null, Status: null, RomSizeBytes: null,
+          IsUefi: null, BiosRevision: null, EmbeddedControllerRevision: null, Capabilities: null,
+          System: null, Baseboard: null, Chassis: null, HardwareSecurity: null,
+          SecureBoot: SecureBootInfo.Unknown, Tpm: TpmInfo.Absent, Boot: null,
+          FirmwareInventory: inventory);
+
+  private static FirmwareComponent Component(string name, ulong imageSizeBytes) =>
+      new(ComponentName: name, Version: "1.0", ReleaseDate: null, Manufacturer: null,
+          LowestSupportedVersion: null, ImageSizeBytes: imageSizeBytes,
+          State: FirmwareComponentState.Enabled);
+
+  [Fact]
+  public void Firmware_component_image_size_scales_to_kb_and_mb() {
+    var vm = CreateVm(out var model);
+
+    model.FirmwareSubject.OnNext(FirmwareWith(
+        Component("Small", 4096),          // 4 KB
+        Component("Large", 8 * 1024 * 1024))); // 8 MB
+
+    Assert.Equal("4 KB", vm.FirmwareInventory[0].ImageSize);
+    Assert.Equal("8 MB", vm.FirmwareInventory[1].ImageSize);
+  }
+
+  [Fact]
+  public void Firmware_component_without_a_reported_size_shows_a_dash() {
+    var vm = CreateVm(out var model);
+
+    model.FirmwareSubject.OnNext(FirmwareWith(Component("Unsized", 0)));
+
+    Assert.Equal("—", vm.FirmwareInventory[0].ImageSize);
+  }
+
+  [Fact]
+  public void Firmware_component_count_pluralizes_and_singularizes() {
+    var vm = CreateVm(out var model);
+
+    model.FirmwareSubject.OnNext(FirmwareWith(Component("Only", 4096)));
+    Assert.True(vm.HasFirmwareInventory);
+    Assert.Equal("1 component", vm.FirmwareComponentCount);
+
+    model.FirmwareSubject.OnNext(FirmwareWith(Component("A", 4096), Component("B", 4096)));
+    Assert.Equal("2 components", vm.FirmwareComponentCount);
+  }
+
+  [Fact]
+  public void Firmware_component_count_is_a_dash_when_the_inventory_is_empty() {
+    var vm = CreateVm(out var model);
+
+    model.FirmwareSubject.OnNext(FirmwareWith());
+
+    Assert.False(vm.HasFirmwareInventory);
+    Assert.Equal("—", vm.FirmwareComponentCount);
+  }
+
   [Fact]
   public void Unpopulated_fan_header_reading_zero_is_never_flagged() {
     var vm = CreateVm(out var model);

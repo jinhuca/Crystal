@@ -2,7 +2,10 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Documents;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shell;
 using Crystal.Infrastructure.Constants.Navigation;
 
 namespace Crystal.Shell.Navigation;
@@ -94,8 +97,8 @@ public sealed class DetailWindowService {
       Height = saved is { HasBounds: true } ? saved.Height : DefaultHeight,
       Topmost = saved?.Topmost ?? false,
       Owner = Application.Current?.MainWindow,
-      Content = BuildChrome(detailViewName, content, saved?.Topmost ?? false),
     };
+    window.Content = BuildChrome(detailViewName, content, saved?.Topmost ?? false, window);
 
     PlaceWindow(window, saved);
 
@@ -115,32 +118,119 @@ public sealed class DetailWindowService {
     window.Show();
   }
 
-  // Wraps the detail view in a slim toolbar (native title bar has no room for custom buttons)
-  // carrying the always-on-top pin. The pin persists immediately so the preference survives
-  // even if the window is never moved or resized.
-  private object BuildChrome(string detailViewName, FrameworkElement content, bool pinned) {
+  // Detail title bar: slightly slimmer than the dashboard's 43px so a detail window reads as a
+  // sibling of the dashboard, not a clone.
+  private const double TitleBarHeight = 36;
+
+  // Segoe MDL2 Assets caption glyphs, matching the dashboard's caption buttons.
+  private const string MinimizeGlyph = "";
+  private const string MaximizeGlyph = "";
+  private const string RestoreGlyph = "";
+  private const string CloseGlyph = "";
+
+  private static readonly SolidColorBrush AccentBrush = new(Color.FromRgb(0x3E, 0x9B, 0xE8));
+  private static readonly SolidColorBrush BrandBrush = new(Color.FromRgb(0x8A, 0x94, 0xA0));
+
+  // Gives the detail window the dashboard's custom chrome instead of the native OS title bar: a
+  // WindowChrome strips the OS frame, an accent border matches the dashboard, and we draw our own
+  // title bar carrying the brand, the always-on-top pin, and minimize/maximize/close caption
+  // buttons. The pin persists immediately so the preference survives even if the window is never
+  // moved or resized.
+  private object BuildChrome(string detailViewName, FrameworkElement content, bool pinned, Window window) {
+    WindowChrome.SetWindowChrome(window, new WindowChrome {
+      CaptionHeight = TitleBarHeight,
+      GlassFrameThickness = new Thickness(0),
+      CornerRadius = new CornerRadius(0),
+      ResizeBorderThickness = new Thickness(6),
+      UseAeroCaptionButtons = false,
+    });
+    window.BorderBrush = AccentBrush;
+    window.BorderThickness = new Thickness(1);
+
+    var app = Application.Current;
+
     var pin = new ToggleButton {
       Content = "\U0001F4CC Pin",
       IsChecked = pinned,
-      Padding = new Thickness(10, 3, 10, 3),
-      Margin = new Thickness(0, 0, 6, 0),
-      Foreground = Brushes.White,
-      Background = new SolidColorBrush(Color.FromRgb(0x1E, 0x1E, 0x1E)),
-      BorderBrush = new SolidColorBrush(Color.FromRgb(0x3A, 0x3A, 0x3A)),
+      Margin = new Thickness(0, 6, 6, 6),
+      VerticalAlignment = VerticalAlignment.Center,
+      Style = app?.TryFindResource("DetailToolbarToggleStyle") as Style,
       ToolTip = "Keep this window above other windows",
     };
+    WindowChrome.SetIsHitTestVisibleInChrome(pin, true);
     pin.Checked += (_, _) => SetTopmost(detailViewName, true);
     pin.Unchecked += (_, _) => SetTopmost(detailViewName, false);
 
-    var bar = new StackPanel {
-      Orientation = Orientation.Horizontal,
-      FlowDirection = FlowDirection.RightToLeft,
-      Background = new SolidColorBrush(Color.FromRgb(0x0A, 0x0A, 0x0A)),
-      Children = { pin },
-    };
-    DockPanel.SetDock(bar, Dock.Top);
+    var captionStyle = app?.TryFindResource("DetailCaptionButtonStyle") as Style;
+    var closeStyle = app?.TryFindResource("DetailCloseButtonStyle") as Style;
 
-    return new DockPanel { LastChildFill = true, Children = { bar, content } };
+    var minimize = new Button { Content = MinimizeGlyph, Style = captionStyle, ToolTip = "Minimize" };
+    minimize.Click += (_, _) => window.WindowState = WindowState.Minimized;
+
+    var maximize = new Button {
+      Content = window.WindowState == WindowState.Maximized ? RestoreGlyph : MaximizeGlyph,
+      Style = captionStyle, ToolTip = "Maximize",
+    };
+    maximize.Click += (_, _) => window.WindowState =
+        window.WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
+    window.StateChanged += (_, _) =>
+        maximize.Content = window.WindowState == WindowState.Maximized ? RestoreGlyph : MaximizeGlyph;
+
+    var close = new Button { Content = CloseGlyph, Style = closeStyle, ToolTip = "Close" };
+    close.Click += (_, _) => window.Close();
+
+    var right = new StackPanel {
+      Orientation = Orientation.Horizontal,
+      HorizontalAlignment = HorizontalAlignment.Right,
+      VerticalAlignment = VerticalAlignment.Stretch,
+      Children = { pin, minimize, maximize, close },
+    };
+
+    // Brand: logo + "Crystal — <Subsystem>", with the subsystem accented so the detail window is
+    // instantly distinguishable from the dashboard's plain muted title — the intentional
+    // "slight difference".
+    var brand = new StackPanel {
+      Orientation = Orientation.Horizontal,
+      HorizontalAlignment = HorizontalAlignment.Left,
+      VerticalAlignment = VerticalAlignment.Center,
+      Margin = new Thickness(10, 0, 0, 0),
+    };
+    if (TryLoadLogo() is { } logo)
+      brand.Children.Add(new Image {
+        Source = logo, Width = 18, Height = 18, Margin = new Thickness(0, 0, 8, 0),
+        VerticalAlignment = VerticalAlignment.Center,
+      });
+    var title = new TextBlock {
+      VerticalAlignment = VerticalAlignment.Center,
+      FontFamily = new FontFamily("Segoe UI"),
+      FontSize = 14,
+    };
+    title.Inlines.Add(new Run("Crystal ") { Foreground = BrandBrush });
+    title.Inlines.Add(new Run("— " + TitleFor(detailViewName)) { Foreground = AccentBrush });
+    brand.Children.Add(title);
+
+    var titleBar = new Grid { Height = TitleBarHeight, Background = Brushes.Black };
+    titleBar.Children.Add(brand);
+    titleBar.Children.Add(right);
+    Grid.SetRow(titleBar, 0);
+    Grid.SetRow(content, 1);
+
+    var root = new Grid();
+    root.RowDefinitions.Add(new RowDefinition { Height = new GridLength(TitleBarHeight) });
+    root.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+    root.Children.Add(titleBar);
+    root.Children.Add(content);
+    return root;
+  }
+
+  // Best-effort load of the app icon for the title bar; a missing/failed resource just drops the
+  // logo rather than taking the window down.
+  private static ImageSource? TryLoadLogo() {
+    try {
+      return new BitmapImage(new System.Uri("pack://application:,,,/Crystal.ico"));
+    } catch {
+      return null;
+    }
   }
 
   private void SetTopmost(string detailViewName, bool topmost) {

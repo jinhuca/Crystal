@@ -1,5 +1,4 @@
 ﻿using Crystal.Controls.PerformanceGraphs.Buffers;
-using Crystal.Controls.PerformanceGraphs.Styles;
 using System.Windows;
 using System.Windows.Media;
 
@@ -15,11 +14,12 @@ internal sealed class FilledLineRenderer {
   public void Draw(
       DrawingContext dc,
       Rect bounds,
-      GraphStyle style,
       CircularBuffer<double> values,
       int capacity,
       double minValue,
-      double maxValue) {
+      double maxValue,
+      Pen? linePen,
+      Brush? fillBrush) {
     int count = values.Count;
     if (count < 2) return;
     if (bounds.Width <= 0 || bounds.Height <= 0) return;
@@ -70,7 +70,7 @@ internal sealed class FilledLineRenderer {
       lineCtx.LineTo(capEnd, isStroked: true, isSmoothJoin: true);
     }
 
-    if (style.FillBrush != null) {
+    if (fillBrush != null) {
       // Clip to the area under the line, then fill a rectangle spanning the WHOLE plot
       // area — not just DrawGeometry(fillBrush, null, _fillGeometry) directly. The reason:
       // a gradient brush's default RelativeToBoundingBox mapping scales to the bounding box
@@ -83,11 +83,11 @@ internal sealed class FilledLineRenderer {
       // visible — then clipping restricts the actually-painted pixels to the same area as
       // before. One shape, one gradient reference, no seams between pieces.
       dc.PushClip(_fillGeometry);
-      dc.DrawRectangle(style.FillBrush, null, bounds);
+      dc.DrawRectangle(fillBrush, null, bounds);
       dc.Pop();
     }
-    if (style.LinePen != null) {
-      dc.DrawGeometry(null, style.LinePen, _lineGeometry);
+    if (linePen != null) {
+      dc.DrawGeometry(null, linePen, _lineGeometry);
     }
   }
 

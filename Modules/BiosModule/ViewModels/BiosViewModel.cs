@@ -292,7 +292,8 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
     FirmwareInventory.Clear();
     foreach (var c in s.FirmwareInventory) {
       FirmwareInventory.Add(new FirmwareComponentViewModel(
-          Text(c.ComponentName), Text(c.Version), Text(c.ReleaseDate), c.State.ToString()));
+          Text(c.ComponentName), Text(c.Version), Text(c.ReleaseDate), c.State.ToString(),
+          FormatImageSize(c.ImageSizeBytes)));
     }
     HasFirmwareInventory = FirmwareInventory.Count > 0;
     FirmwareComponentCount = FirmwareInventory.Count > 0
@@ -568,6 +569,14 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
       value is { } v ? $"{v:0.###} {unit}".Trim() : Dash;
 
   private static string FormatRomSize(long bytes) {
+    double mb = bytes / (1024d * 1024d);
+    return mb >= 1 ? $"{mb:0.#} MB" : $"{bytes / 1024d:0.#} KB";
+  }
+
+  // A firmware component's image size (SMBIOS Type 45), scaled to KB/MB. 0 means the component
+  // didn't report a size, shown as a dash rather than "0 KB".
+  private static string FormatImageSize(ulong bytes) {
+    if (bytes == 0) return Dash;
     double mb = bytes / (1024d * 1024d);
     return mb >= 1 ? $"{mb:0.#} MB" : $"{bytes / 1024d:0.#} KB";
   }

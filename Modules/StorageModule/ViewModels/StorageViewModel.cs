@@ -24,7 +24,13 @@ public sealed class StorageViewModel : BindableBase, IStorageViewModel, IDisposa
   private string _driveCountLabel = "—";
   private double _load;
   private double _transferRateMBps;
+  private double _readRateMBps;
+  private double _writeRateMBps;
   private double _transferMaxMBps = TransferFloorMBps;
+  private double _peakTransferMBps;
+  private double? _freeSpaceGB;
+  private double? _totalSpaceGB;
+  private int? _busiestDriveIndex;
   private StorageDriveViewModel? _selectedDisk;
   private PerformanceGraph? _loadGraph;
   private PerformanceGraph? _transferGraph;
@@ -43,7 +49,33 @@ public sealed class StorageViewModel : BindableBase, IStorageViewModel, IDisposa
   public string DriveCountLabel { get => _driveCountLabel; private set => SetProperty(ref _driveCountLabel, value); }
   public double Load { get => _load; private set => SetProperty(ref _load, value); }
   public double TransferRateMBps { get => _transferRateMBps; private set => SetProperty(ref _transferRateMBps, value); }
+  public double ReadRateMBps { get => _readRateMBps; private set => SetProperty(ref _readRateMBps, value); }
+  public double WriteRateMBps { get => _writeRateMBps; private set => SetProperty(ref _writeRateMBps, value); }
   public double TransferMaxMBps { get => _transferMaxMBps; private set => SetProperty(ref _transferMaxMBps, value); }
+
+  // Highest combined system-wide transfer rate seen this session; GB/s once it crosses 1000 MB/s.
+  public string PeakTransferLabel =>
+      _peakTransferMBps >= 1000 ? $"{_peakTransferMBps / 1000:0.0} GB/s" : $"{_peakTransferMBps:0.0} MB/s";
+
+  // Filesystem capacity roll-up across every disk with mounted volumes: used vs free of the summed
+  // total. Fractions sum to 1 so the two star columns split the bar exactly. All null (bar hidden)
+  // when no disk reports space — e.g. a set of unformatted drives.
+  private double? UsedSpaceGB =>
+      _totalSpaceGB is { } total && _freeSpaceGB is { } free ? Math.Max(0, total - free) : null;
+
+  public bool HasCapacityData => _totalSpaceGB is { } total and > 0;
+  public double UsedSpaceFraction =>
+      _totalSpaceGB is { } total and > 0 && _freeSpaceGB is { } free
+          ? Math.Clamp((total - free) / total, 0, 1) : 0;
+  public double FreeSpaceFraction => Math.Max(0, 1 - UsedSpaceFraction);
+  public string CapacityUsageLabel =>
+      UsedSpaceGB is { } used && _totalSpaceGB is { } total ? $"{used:0.#} / {total:0.#} GB" : "—";
+  public string UsedSpacePercentLabel => HasCapacityData ? $"{UsedSpaceFraction * 100:0}%" : "—";
+
+  // Which physical disk is driving the aggregate active-time figure right now. Only meaningful — and
+  // only shown — when there's more than one disk to disambiguate.
+  public bool ShowBusiestDrive => Drives.Count > 1;
+  public string BusiestDriveLabel => _busiestDriveIndex is { } i ? $"Disk {i} busiest" : "—";
 
   /// <summary>Every physical disk — the detail view's selector list.</summary>
   public ObservableCollection<StorageDriveViewModel> Drives { get; } = [];
@@ -65,29 +97,62 @@ public sealed class StorageViewModel : BindableBase, IStorageViewModel, IDisposa
     foreach (var drive in snapshot.Drives)
       Drives.Add(new StorageDriveViewModel(drive));
     SelectedDisk ??= Drives.FirstOrDefault();
+    RaisePropertyChanged(nameof(ShowBusiestDrive));
   }
 
   private void ApplyLoad(StorageLoadReading reading) {
     // Route each disk's sample to its matching per-disk VM (joined by physical-disk index).
-    double maxActivity = 0;
-    double totalTransfer = 0;
+    double maxActivity = -1;
+    int? busiestIndex = null;
+    double totalRead = 0;
+    double totalWrite = 0;
+    double aggFree = 0;
+    double aggTotal = 0;
+    var anySpace = false;
     foreach (var disk in reading.Disks) {
       var vm = Drives.FirstOrDefault(d => d.DriveIndex == disk.DriveIndex);
       vm?.Update(disk);
 
-      if (disk.ActivityPercent > maxActivity) maxActivity = disk.ActivityPercent;
-      totalTransfer += disk.ReadRateMBps + disk.WriteRateMBps;
+      if (disk.ActivityPercent > maxActivity) {
+        maxActivity = disk.ActivityPercent;
+        busiestIndex = disk.DriveIndex;
+      }
+      totalRead += disk.ReadRateMBps;
+      totalWrite += disk.WriteRateMBps;
+
+      if (disk.TotalSpaceGB is { } total and > 0) {
+        aggTotal += total;
+        aggFree += disk.FreeSpaceGB ?? 0;
+        anySpace = true;
+      }
     }
+    double totalTransfer = totalRead + totalWrite;
+    double busiestActivity = Math.Max(0, maxActivity); // -1 only when there were no disks at all.
 
-    // The dashboard tile stays aggregate: busiest disk's activity + system-wide transfer rate.
-    Load = maxActivity;
-    _loadGraph?.AddValue(maxActivity);
+    // The dashboard tile stays aggregate: busiest disk's activity + system-wide transfer rate,
+    // split into read vs write so the tile matches HWiNFO's separate R/W figures.
+    Load = busiestActivity;
+    _loadGraph?.AddValue(busiestActivity);
+    _busiestDriveIndex = busiestIndex;
+    RaisePropertyChanged(nameof(BusiestDriveLabel));
 
+    ReadRateMBps = totalRead;
+    WriteRateMBps = totalWrite;
     TransferRateMBps = totalTransfer;
     _transferGraph?.AddValue(totalTransfer);
     _transferSamples.Enqueue(totalTransfer);
     while (_transferSamples.Count > TransferWindow) _transferSamples.Dequeue();
     TransferMaxMBps = NiceCeiling(Math.Max(TransferFloorMBps, _transferSamples.Max()));
+    _peakTransferMBps = Math.Max(_peakTransferMBps, totalTransfer);
+    RaisePropertyChanged(nameof(PeakTransferLabel));
+
+    _totalSpaceGB = anySpace ? aggTotal : null;
+    _freeSpaceGB = anySpace ? aggFree : null;
+    RaisePropertyChanged(nameof(HasCapacityData));
+    RaisePropertyChanged(nameof(UsedSpaceFraction));
+    RaisePropertyChanged(nameof(FreeSpaceFraction));
+    RaisePropertyChanged(nameof(CapacityUsageLabel));
+    RaisePropertyChanged(nameof(UsedSpacePercentLabel));
   }
 
   // Round a peak up to a readable axis top: 1/2/5 × a power of ten (100, 200, 500, 1000, …), so the

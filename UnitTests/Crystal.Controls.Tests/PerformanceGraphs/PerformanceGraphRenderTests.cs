@@ -13,6 +13,30 @@ namespace Crystal.Controls.Tests.PerformanceGraphs;
 /// </summary>
 public class PerformanceGraphRenderTests {
   private static readonly Color Plot = Color.FromRgb(0xFF, 0x20, 0x20);
+  // A second vivid color, distinct from Plot and the neutral background layers, for overlay series.
+  private static readonly Color Overlay = Color.FromRgb(0x20, 0xFF, 0x20);
+
+  [Fact]
+  public void OverlaySeries_PaintsAlongsideThePrimary() => StaRunner.Run(() => {
+    var graph = NewGraph(GraphKind.Line);
+    int write = graph.AddSeries(new SolidColorBrush(Overlay), fillBrush: null, thickness: 3);
+    // Feed the two series to clearly different heights so each owns its own rows.
+    for (int i = 0; i < 10; i++) { graph.AddValue(30); graph.AddValue(write, 80); }
+
+    var px = new PixelRenderer(graph, 240, 120);
+    Assert.True(px.CountColor(Plot) > 0, "primary series should still paint");
+    Assert.True(px.CountColor(Overlay) > 0, "overlay series should paint too");
+  });
+
+  [Fact]
+  public void OverlaySeries_IsLineOnly_NotDrawnForBars() => StaRunner.Run(() => {
+    var graph = NewGraph(GraphKind.Bar);
+    int extra = graph.AddSeries(new SolidColorBrush(Overlay), fillBrush: null, thickness: 3);
+    for (int i = 0; i < 10; i++) { graph.AddValue(30); graph.AddValue(extra, 80); }
+
+    // Bars draw the primary series alone; the overlay must not appear.
+    Assert.Equal(0, new PixelRenderer(graph, 240, 120).CountColor(Overlay));
+  });
 
   [Theory]
   [InlineData(GraphKind.Line)]

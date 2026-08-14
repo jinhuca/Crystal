@@ -151,6 +151,38 @@ public class ProcessRowViewModelTests {
   }
 
   [Fact]
+  public void Executable_path_label_shows_the_path_when_known() {
+    var row = new ProcessRowViewModel(100, "alpha");
+
+    row.Update(new ProcessSample(100, "alpha", 5, 100, ProcessCategory.BackgroundProcess,
+        ExecutablePath: @"C:\Windows\System32\alpha.exe"));
+
+    Assert.Equal(@"C:\Windows\System32\alpha.exe", row.ExecutablePathLabel);
+  }
+
+  [Fact]
+  public void Executable_path_label_is_placeholder_when_path_unknown() {
+    var row = new ProcessRowViewModel(100, "alpha");
+
+    // WMI couldn't read the image path (protected/system process): sample carries no path.
+    row.Update(Sample(cpu: 5, mem: 100));
+
+    Assert.Equal("Path unavailable", row.ExecutablePathLabel);
+  }
+
+  [Fact]
+  public void Setting_the_executable_path_notifies_its_label() {
+    var row = new ProcessRowViewModel(100, "alpha");
+
+    var changed = new List<string?>();
+    row.PropertyChanged += (_, e) => changed.Add(e.PropertyName);
+
+    row.ExecutablePath = @"C:\app\alpha.exe";
+
+    Assert.Contains(nameof(ProcessRowViewModel.ExecutablePathLabel), changed);
+  }
+
+  [Fact]
   public void A_dip_does_not_notify_the_peak_properties() {
     var row = new ProcessRowViewModel(100, "alpha");
     row.Update(Sample(cpu: 50, mem: 400));

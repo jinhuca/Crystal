@@ -42,8 +42,8 @@
       </Grid.ColumnDefinitions>
 
       <Button Grid.Column="0" Content="&#x2190; Back" Command="{Binding ShowDashboardCommand}"
-              VerticalAlignment="Top" Margin="0,0,20,0" Padding="10,4"
-              Background="#1E1E1E" Foreground="{StaticResource TextPrimaryBrush}" BorderBrush="{StaticResource BorderBrush}"/>
+              VerticalAlignment="Top" Margin="0,0,20,0"
+              Style="{StaticResource DetailBackButtonStyle}"/>
 
       <Grid Grid.Column="1" DataContext="{Binding SpecsViewModel}">
         <Grid.ColumnDefinitions>
@@ -187,6 +187,98 @@
                      Text="MSR driver not available — per-core clocks require the PawnIO driver and Administrator privileges."/>
         </StackPanel>
       </Border>
+
+      <!-- Throttle banner: the sensors VM decodes thermal / power-limit / PROCHOT throttling; surface
+           it prominently only while active. -->
+      <Border HorizontalAlignment="Left" Margin="0,0,0,8"
+              Background="#3A1F1F" BorderBrush="#C0553A" BorderThickness="1"
+              CornerRadius="4" Padding="12,6">
+        <Border.Style>
+          <Style TargetType="Border">
+            <Setter Property="Visibility" Value="Collapsed"/>
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding IsThrottling}" Value="True">
+                <Setter Property="Visibility" Value="Visible"/>
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </Border.Style>
+        <StackPanel Orientation="Horizontal">
+          <TextBlock Text="&#x26A0;" Foreground="{StaticResource WarningBrush}" FontSize="14"
+                     VerticalAlignment="Center" Margin="0,0,8,0"/>
+          <TextBlock Text="{Binding ThrottleStatus}" Foreground="#E7B7A8" FontSize="12"
+                     FontWeight="SemiBold" VerticalAlignment="Center"/>
+        </StackPanel>
+      </Border>
+
+      <!-- Package sensor readout strip: live aggregates that were computed but never surfaced.
+           Shown only when the MSR-backed sensors are present (they read 0 otherwise). -->
+      <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+        <StackPanel.Style>
+          <Style TargetType="StackPanel">
+            <Setter Property="Visibility" Value="Collapsed"/>
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding MsrSensorsAvailable}" Value="True">
+                <Setter Property="Visibility" Value="Visible"/>
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </StackPanel.Style>
+        <StackPanel Orientation="Horizontal" Margin="0,0,20,0">
+          <TextBlock Text="Load:" Style="{StaticResource SpecLabel}" VerticalAlignment="Center"/>
+          <TextBlock Text="{Binding Load, StringFormat={}{0:0}%}" Style="{StaticResource SpecValue}" VerticalAlignment="Center"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="0,0,20,0">
+          <TextBlock Text="Clock:" Style="{StaticResource SpecLabel}" VerticalAlignment="Center"/>
+          <TextBlock Text="{Binding ClockReadoutLabel}" Style="{StaticResource SpecValue}" VerticalAlignment="Center"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="0,0,20,0">
+          <TextBlock Text="Voltage:" Style="{StaticResource SpecLabel}" VerticalAlignment="Center"/>
+          <TextBlock Text="{Binding Voltage, StringFormat={}{0:0.000} V}" Style="{StaticResource SpecValue}" VerticalAlignment="Center"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="0,0,20,0">
+          <TextBlock Text="Temp:" Style="{StaticResource SpecLabel}" VerticalAlignment="Center"/>
+          <TextBlock Text="{Binding TemperatureLabel}" Style="{StaticResource SpecValue}" VerticalAlignment="Center"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+          <TextBlock Text="Package power:" Style="{StaticResource SpecLabel}" VerticalAlignment="Center"/>
+          <TextBlock Text="{Binding PowerReadoutLabel}" Style="{StaticResource SpecValue}" VerticalAlignment="Center"/>
+        </StackPanel>
+      </StackPanel>
+
+      <!-- AMD SoC voltage and package current (TDC/EDC). Shown only on AMD parts;
+           Intel leaves these sensors at 0. -->
+      <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+        <StackPanel.Style>
+          <Style TargetType="StackPanel">
+            <Setter Property="Visibility" Value="Collapsed"/>
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding HasAmdCurrentSensors}" Value="True">
+                <Setter Property="Visibility" Value="Visible"/>
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </StackPanel.Style>
+        <TextBlock Text="SoC / current:" Style="{StaticResource SpecLabel}" VerticalAlignment="Center"/>
+        <TextBlock Text="{Binding AmdCurrentLabel}" Style="{StaticResource SpecValue}" VerticalAlignment="Center"/>
+      </StackPanel>
+
+      <!-- Package C-state residency: how much time the package spent in each deep-idle state.
+           Shown only when the platform reports residency (unexposed counters read 0). -->
+      <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+        <StackPanel.Style>
+          <Style TargetType="StackPanel">
+            <Setter Property="Visibility" Value="Collapsed"/>
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding HasCStateResidency}" Value="True">
+                <Setter Property="Visibility" Value="Visible"/>
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </StackPanel.Style>
+        <TextBlock Text="Package C-states:" Style="{StaticResource SpecLabel}" VerticalAlignment="Center"/>
+        <TextBlock Text="{Binding PackageCStateLabel}" Style="{StaticResource SpecValue}" VerticalAlignment="Center"/>
+      </StackPanel>
 
       <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
         <TextBlock Text="CPU Fan:" Style="{StaticResource SpecLabel}" VerticalAlignment="Center"/>

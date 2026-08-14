@@ -112,8 +112,8 @@
         <ColumnDefinition Width="Auto"/>
         <ColumnDefinition Width="*"/>
       </Grid.ColumnDefinitions>
-      <Button Grid.Column="0" Content="&#x2190; Back" Padding="14,6"
-              Background="#1E2A38" Foreground="White" BorderThickness="0"
+      <Button Grid.Column="0" Content="&#x2190; Back"
+              Style="{StaticResource DetailBackButtonStyle}"
               Command="{Binding ShowDashboardCommand}"/>
       <TextBlock Grid.Column="1" Text="Network" Foreground="{StaticResource AccentBrush}" FontSize="28"
                  FontWeight="SemiBold" VerticalAlignment="Center" Margin="16,0,0,0"/>

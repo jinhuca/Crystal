@@ -82,6 +82,51 @@ public sealed class CpuSensorsViewModel : BindableBase, ICpuSensorViewModel {
   /// <summary>The fan history graph's upper bound: 100 for a percentage, otherwise 4000 RPM.</summary>
   public double FanGraphMax => ShowPercent ? 100 : 4000;
 
+  /// <summary>Package clock with the effective clock (nominal minus halted cycles) appended when exposed.</summary>
+  public string ClockReadoutLabel => EffectiveSpeedGhz > 0
+      ? $"{SpeedGhz:0.00} GHz · eff {EffectiveSpeedGhz:0.00} GHz"
+      : $"{SpeedGhz:0.00} GHz";
+
+  /// <summary>Package power with its sustained/short-term limits (PL1/PL2) appended when exposed.</summary>
+  public string PowerReadoutLabel => PowerLimitLongW > 0
+      ? $"{Power:0.#} W · limit {PowerLimitLongW:0}/{PowerLimitShortW:0} W"
+      : $"{Power:0.#} W";
+
+  /// <summary>Package temperature with the hottest core's thermal headroom appended when exposed.</summary>
+  public string TemperatureLabel => DistanceToTjMax > 0
+      ? $"{Temperature:0} °C · {DistanceToTjMax:0}° to TjMax"
+      : $"{Temperature:0} °C";
+
+  /// <summary>True once any AMD SMU current/voltage sensor reports (Intel parts leave these at 0).</summary>
+  public bool HasAmdCurrentSensors => SocVoltage > 0 || TdcAmps > 0 || EdcAmps > 0;
+
+  /// <summary>AMD SoC voltage and package current (TDC/EDC), listing only the sensors that report.</summary>
+  public string AmdCurrentLabel {
+    get {
+      var parts = new List<string>(3);
+      if (SocVoltage > 0) parts.Add($"SoC {SocVoltage:0.000} V");
+      if (TdcAmps > 0) parts.Add($"TDC {TdcAmps:0} A");
+      if (EdcAmps > 0) parts.Add($"EDC {EdcAmps:0} A");
+      return parts.Count > 0 ? string.Join(" · ", parts) : "—";
+    }
+  }
+
+  /// <summary>True once any package C-state residency counter reports time spent idle.</summary>
+  public bool HasCStateResidency =>
+      PackageC2Pct > 0 || PackageC3Pct > 0 || PackageC6Pct > 0 || PackageC7Pct > 0;
+
+  /// <summary>Package deep-idle residency, listing only the C-states the platform actually reports.</summary>
+  public string PackageCStateLabel {
+    get {
+      var parts = new List<string>(4);
+      if (PackageC2Pct > 0) parts.Add($"C2 {PackageC2Pct:0}%");
+      if (PackageC3Pct > 0) parts.Add($"C3 {PackageC3Pct:0}%");
+      if (PackageC6Pct > 0) parts.Add($"C6 {PackageC6Pct:0}%");
+      if (PackageC7Pct > 0) parts.Add($"C7 {PackageC7Pct:0}%");
+      return parts.Count > 0 ? string.Join(" · ", parts) : "—";
+    }
+  }
+
   private void RaiseFanReadoutChanged() {
     RaisePropertyChanged(nameof(FanReadoutValue));
     RaisePropertyChanged(nameof(FanReadoutText));
@@ -146,6 +191,22 @@ public sealed class CpuSensorsViewModel : BindableBase, ICpuSensorViewModel {
     _clockGraph?.AddValue(SpeedGhz);
     _powerGraph?.AddValue(Power);
     _temperatureGraph?.AddValue(Temperature);
+
+    // Advance the fan history on this same poll tick, unconditionally, so it stays sample-aligned
+    // with utilization from the very first tick. Fan RPM/percent arrives on a separate monitor
+    // (SensorMonitor) at an independent phase; feeding the graph off that stream drifted it out of
+    // sync, and gating it on a fan being latched started it a tick late (a fixed ~1s lag). We sample
+    // the latest latched fan value here — 0 until the first reading, matching the "0 RPM" readout.
+    _fanGraph?.AddValue(FanReadoutValue);
+
+    // Composite readouts derive from several sensors above; refresh them once per poll.
+    RaisePropertyChanged(nameof(ClockReadoutLabel));
+    RaisePropertyChanged(nameof(PowerReadoutLabel));
+    RaisePropertyChanged(nameof(TemperatureLabel));
+    RaisePropertyChanged(nameof(HasCStateResidency));
+    RaisePropertyChanged(nameof(PackageCStateLabel));
+    RaisePropertyChanged(nameof(HasAmdCurrentSensors));
+    RaisePropertyChanged(nameof(AmdCurrentLabel));
   }
 
   // Latch HasCpuFan once a fan is seen: a machine with a CPU fan header keeps the readout even if
@@ -154,17 +215,15 @@ public sealed class CpuSensorsViewModel : BindableBase, ICpuSensorViewModel {
     if (rpm is not { } value) return;
     HasCpuFan = true;
     FanRpm = (int)value;
-    _fanGraph?.AddValue(FanRpm);
   }
 
   // Fan-speed percentage fallback for laptops with no tachometer. Latches HasCpuFanPercent like the
-  // RPM path so the readout survives a momentary null. Only feeds the graph when RPM is absent —
-  // when a tachometer exists the graph plots RPM and the percentage is not shown.
+  // RPM path so the readout survives a momentary null. The graph itself is fed on the CPU poll tick
+  // in Update() (via FanReadoutValue) to keep it sample-aligned with the other series.
   public void UpdateFanPercent(float? percent) {
     if (percent is not { } value) return;
     HasCpuFanPercent = true;
     FanPercent = value;
-    if (!HasCpuFan) _fanGraph?.AddValue(FanPercent);
   }
 
   // Core count is fixed for a given CPU, so the rows are created once (labelled C00, C01, …)

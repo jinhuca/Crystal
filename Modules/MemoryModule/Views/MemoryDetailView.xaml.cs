@@ -18,8 +18,14 @@ public partial class MemoryDetailView : UserControl {
   private void OnLoaded(object sender, RoutedEventArgs e) {
     // The wrapped PerformanceGraph is produced by the view's control template, so it isn't
     // available until after the template is applied (i.e. at Loaded, not ctor).
-    if (UsageView.Graph is not { } usage) return;
-    usage.ApplyTheme(GraphThemes.Sky(GraphKind.Line));
-    if (DataContext is IMemoryViewModel vm) vm.AttachUsageGraph(usage);
+    if (DataContext is not IMemoryViewModel vm) return;
+    if (UsageView.Graph is { } usage) {
+      usage.ApplyTheme(GraphThemes.Sky(GraphKind.Line));
+      vm.AttachUsageGraph(usage);
+    }
+    if (CommitView.Graph is { } commit) {
+      commit.ApplyTheme(GraphThemes.Amber(GraphKind.Line));
+      vm.AttachCommitGraph(commit);
+    }
   }
 }

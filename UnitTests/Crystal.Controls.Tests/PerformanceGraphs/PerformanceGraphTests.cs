@@ -54,6 +54,46 @@ public class PerformanceGraphTests {
     graph.ClearValues();
   });
 
+  // ── Multi-series ───────────────────────────────────────────────────────
+
+  [Fact]
+  public void NewGraph_HasOneSeries() => StaRunner.Run(() => {
+    Assert.Equal(1, new PerformanceGraph().SeriesCount);
+  });
+
+  [Fact]
+  public void AddSeries_ReturnsIncrementingIndices_AndBumpsCount() => StaRunner.Run(() => {
+    var graph = new PerformanceGraph();
+
+    // Index 0 is the primary, so the first overlay is 1.
+    Assert.Equal(1, graph.AddSeries(Brushes.Red));
+    Assert.Equal(2, graph.AddSeries(Brushes.Green));
+    Assert.Equal(3, graph.SeriesCount);
+  });
+
+  [Fact]
+  public void AddValue_ToOverlaySeries_DoesNotThrow() => StaRunner.Run(() => {
+    var graph = new PerformanceGraph();
+    int write = graph.AddSeries(Brushes.Green);
+
+    graph.AddValue(10);          // primary
+    graph.AddValue(write, 20);   // overlay
+  });
+
+  [Fact]
+  public void ClearValues_ClearsEverySeries() => StaRunner.Run(() => {
+    var green = Color.FromRgb(0x20, 0xFF, 0x20);
+    var graph = new PerformanceGraph { GridBrush = Brushes.Black, LineThickness = 3 };
+    int write = graph.AddSeries(new SolidColorBrush(green), thickness: 3);
+    graph.ApplyVisibility(true);
+    for (int i = 0; i < 10; i++) { graph.AddValue(30); graph.AddValue(write, 80); }
+    Assert.True(new PixelRenderer(graph, 240, 120).CountColor(green) > 0, "overlay should paint before clear");
+
+    graph.ClearValues();
+
+    Assert.Equal(0, new PixelRenderer(graph, 240, 120).CountColor(green));
+  });
+
   [Fact]
   public void ApplyTheme_UpdatesVisualProperties() => StaRunner.Run(() => {
     var graph = new PerformanceGraph();
