@@ -8,11 +8,8 @@
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
              d:DesignHeight="720" d:DesignWidth="1100"
-             Background="{StaticResource PanelBackgroundBrush}" Foreground="White"
-             FontFamily="Segoe UI">
-  <UserControl.Resources>
-    <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
-  </UserControl.Resources>
+             Background="{StaticResource PanelBackgroundBrush}" Foreground="{StaticResource TextBrush}"
+             FontFamily="{StaticResource UiFontFamily}">
   <Grid Margin="24">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
@@ -28,7 +25,7 @@
       <Button Grid.Column="0" Content="&#x2190; Back"
               Style="{StaticResource DetailBackButtonStyle}"
               Command="{Binding ShowDashboardCommand}"/>
-      <TextBlock Grid.Column="1" Text="GPU" Foreground="{StaticResource AccentBrush}" FontSize="28"
+      <TextBlock Grid.Column="1" Text="GPU" Foreground="{StaticResource AccentBrush}" FontSize="{StaticResource TitleFontSize}"
                  FontWeight="SemiBold" VerticalAlignment="Center" Margin="16,0,0,0"/>
     </Grid>
 
@@ -55,8 +52,8 @@
               </Grid.RowDefinitions>
 
               <TextBlock Grid.Row="0" Text="{Binding KindLabel}" Foreground="{StaticResource AccentBrush}"
-                         FontSize="18" FontWeight="SemiBold"/>
-              <TextBlock Grid.Row="1" Text="{Binding Name}" Foreground="White"
+                         FontSize="{StaticResource SectionFontSize}" FontWeight="SemiBold"/>
+              <TextBlock Grid.Row="1" Text="{Binding Name}" Foreground="{StaticResource TextBrush}"
                          FontSize="15" TextWrapping="Wrap" Margin="0,4,0,12"/>
 
               <!-- Static specs -->
@@ -75,23 +72,23 @@
                   <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Video RAM" Foreground="{StaticResource LabelBrush}" Margin="0,2,16,2"/>
-                <TextBlock Grid.Row="0" Grid.Column="1" Foreground="White" Margin="0,2">
+                <TextBlock Grid.Row="0" Grid.Column="1" Foreground="{StaticResource TextBrush}" Margin="0,2">
                   <TextBlock.Text>
                     <Binding Path="VideoRamGB" StringFormat="{}{0:0.#} GB" TargetNullValue="—"/>
                   </TextBlock.Text>
                 </TextBlock>
                 <TextBlock Grid.Row="1" Grid.Column="0" Text="Video Processor" Foreground="{StaticResource LabelBrush}" Margin="0,2,16,2"/>
-                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding VideoProcessor, TargetNullValue=—}" Foreground="White" Margin="0,2" TextWrapping="Wrap"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding VideoProcessor, TargetNullValue=—}" Foreground="{StaticResource TextBrush}" Margin="0,2" TextWrapping="Wrap"/>
                 <TextBlock Grid.Row="2" Grid.Column="0" Text="Display Mode" Foreground="{StaticResource LabelBrush}" Margin="0,2,16,2"/>
-                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding DisplayMode}" Foreground="White" Margin="0,2" TextWrapping="Wrap"/>
+                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding DisplayMode}" Foreground="{StaticResource TextBrush}" Margin="0,2" TextWrapping="Wrap"/>
                 <TextBlock Grid.Row="3" Grid.Column="0" Text="Physical Location" Foreground="{StaticResource LabelBrush}" Margin="0,2,16,2"/>
-                <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding PhysicalLocation, TargetNullValue=—}" Foreground="White" Margin="0,2" TextWrapping="Wrap"/>
+                <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding PhysicalLocation, TargetNullValue=—}" Foreground="{StaticResource TextBrush}" Margin="0,2" TextWrapping="Wrap"/>
                 <TextBlock Grid.Row="4" Grid.Column="0" Text="Driver Version" Foreground="{StaticResource LabelBrush}" Margin="0,2,16,2"/>
-                <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding DriverVersion, TargetNullValue=—}" Foreground="White" Margin="0,2"/>
+                <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding DriverVersion, TargetNullValue=—}" Foreground="{StaticResource TextBrush}" Margin="0,2"/>
                 <TextBlock Grid.Row="5" Grid.Column="0" Text="Driver Date" Foreground="{StaticResource LabelBrush}" Margin="0,2,16,2"/>
-                <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding DriverDate, StringFormat={}{0:yyyy-MM-dd}, TargetNullValue=—}" Foreground="White" Margin="0,2"/>
+                <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding DriverDate, StringFormat={}{0:yyyy-MM-dd}, TargetNullValue=—}" Foreground="{StaticResource TextBrush}" Margin="0,2"/>
                 <TextBlock Grid.Row="6" Grid.Column="0" Text="Refresh Rate" Foreground="{StaticResource LabelBrush}" Margin="0,2,16,2"/>
-                <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding RefreshRateHz, StringFormat={}{0} Hz, TargetNullValue=—}" Foreground="White" Margin="0,2"/>
+                <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding RefreshRateHz, StringFormat={}{0} Hz, TargetNullValue=—}" Foreground="{StaticResource TextBrush}" Margin="0,2"/>
               </Grid>
 
               <!-- Live sensor readouts (dense HWiNFO-style): VRAM, memory clock, fan, core voltage.
@@ -114,7 +111,7 @@
 
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Memory Used" Foreground="{StaticResource LabelBrush}" Margin="0,2,16,2"/>
                 <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Margin="0,2">
-                  <TextBlock Foreground="White">
+                  <TextBlock Foreground="{StaticResource TextBrush}">
                     <TextBlock.Text>
                       <MultiBinding StringFormat="{}{0:0.0} / {1:0.0} GB">
                         <Binding Path="MemoryUsedGB" TargetNullValue="—"/>
@@ -127,31 +124,31 @@
                 </StackPanel>
 
                 <TextBlock Grid.Row="1" Grid.Column="0" Text="Memory Clock" Foreground="{StaticResource LabelBrush}" Margin="0,2,16,2"/>
-                <TextBlock Grid.Row="1" Grid.Column="1" Foreground="White" Margin="0,2"
+                <TextBlock Grid.Row="1" Grid.Column="1" Foreground="{StaticResource TextBrush}" Margin="0,2"
                            Text="{Binding MemoryClockMhz, StringFormat={}{0:0} MHz, TargetNullValue=—}"/>
 
                 <TextBlock Grid.Row="2" Grid.Column="0" Text="Fan Speed" Foreground="{StaticResource LabelBrush}" Margin="0,2,16,2"/>
-                <TextBlock Grid.Row="2" Grid.Column="1" Foreground="White" Margin="0,2"
+                <TextBlock Grid.Row="2" Grid.Column="1" Foreground="{StaticResource TextBrush}" Margin="0,2"
                            Text="{Binding FanRpm, StringFormat={}{0:0} RPM, TargetNullValue=—}"/>
 
                 <TextBlock Grid.Row="3" Grid.Column="0" Text="Core Voltage" Foreground="{StaticResource LabelBrush}" Margin="0,2,16,2"/>
-                <TextBlock Grid.Row="3" Grid.Column="1" Foreground="White" Margin="0,2"
+                <TextBlock Grid.Row="3" Grid.Column="1" Foreground="{StaticResource TextBrush}" Margin="0,2"
                            Text="{Binding CoreVoltageV, StringFormat={}{0:0.000} V, TargetNullValue=—}"/>
 
                 <TextBlock Grid.Row="4" Grid.Column="0" Text="Hot Spot" Foreground="{StaticResource LabelBrush}" Margin="0,2,16,2"/>
-                <TextBlock Grid.Row="4" Grid.Column="1" Foreground="White" Margin="0,2"
+                <TextBlock Grid.Row="4" Grid.Column="1" Foreground="{StaticResource TextBrush}" Margin="0,2"
                            Text="{Binding HotSpotTemperatureC, StringFormat={}{0:0.0} °C, TargetNullValue=—}"/>
 
                 <TextBlock Grid.Row="5" Grid.Column="0" Text="Memory Temp" Foreground="{StaticResource LabelBrush}" Margin="0,2,16,2"/>
-                <TextBlock Grid.Row="5" Grid.Column="1" Foreground="White" Margin="0,2"
+                <TextBlock Grid.Row="5" Grid.Column="1" Foreground="{StaticResource TextBrush}" Margin="0,2"
                            Text="{Binding MemoryTemperatureC, StringFormat={}{0:0.0} °C, TargetNullValue=—}"/>
 
                 <TextBlock Grid.Row="6" Grid.Column="0" Text="PCIe Rx" Foreground="{StaticResource LabelBrush}" Margin="0,2,16,2"/>
-                <TextBlock Grid.Row="6" Grid.Column="1" Foreground="White" Margin="0,2"
+                <TextBlock Grid.Row="6" Grid.Column="1" Foreground="{StaticResource TextBrush}" Margin="0,2"
                            Text="{Binding PcieRxMBps, StringFormat={}{0:0.0} MB/s, TargetNullValue=—}"/>
 
                 <TextBlock Grid.Row="7" Grid.Column="0" Text="PCIe Tx" Foreground="{StaticResource LabelBrush}" Margin="0,2,16,2"/>
-                <TextBlock Grid.Row="7" Grid.Column="1" Foreground="White" Margin="0,2"
+                <TextBlock Grid.Row="7" Grid.Column="1" Foreground="{StaticResource TextBrush}" Margin="0,2"
                            Text="{Binding PcieTxMBps, StringFormat={}{0:0.0} MB/s, TargetNullValue=—}"/>
               </Grid>
 
@@ -168,8 +165,8 @@
                           <ColumnDefinition Width="140"/>
                           <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="{Binding Name}" Foreground="White"/>
-                        <TextBlock Grid.Column="1" Foreground="White"
+                        <TextBlock Grid.Column="0" Text="{Binding Name}" Foreground="{StaticResource TextBrush}"/>
+                        <TextBlock Grid.Column="1" Foreground="{StaticResource TextBrush}"
                                    Text="{Binding LoadPercent, StringFormat={}{0:0}%}"/>
                       </Grid>
                     </DataTemplate>
@@ -190,8 +187,8 @@
                           <ColumnDefinition Width="140"/>
                           <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="{Binding Name}" Foreground="White"/>
-                        <TextBlock Grid.Column="1" Foreground="White"
+                        <TextBlock Grid.Column="0" Text="{Binding Name}" Foreground="{StaticResource TextBrush}"/>
+                        <TextBlock Grid.Column="1" Foreground="{StaticResource TextBrush}"
                                    Text="{Binding PowerW, StringFormat={}{0:0.0} W}"/>
                       </Grid>
                     </DataTemplate>

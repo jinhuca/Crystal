@@ -1,13 +1,15 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <ResourceDictionary.MergedDictionaries>
-    <ResourceDictionary Source="/Crystal.Resources;component/Styles/Brushes.xaml"/>
     <ResourceDictionary Source="/Crystal.Resources;component/Styles/Palette.xaml"/>
+    <ResourceDictionary Source="/Crystal.Resources;component/Styles/Fonts.xaml"/>
+    <ResourceDictionary Source="/Crystal.Resources;component/Styles/FontSizes.xaml"/>
     <ResourceDictionary Source="/Crystal.Resources;component/Styles/TextStyles.xaml"/>
     <ResourceDictionary Source="/Crystal.Resources;component/Styles/ButtonStyles.xaml"/>
-    <ResourceDictionary Source="/Crystal.Resources;component/Styles/BorderStyles.xaml"/>
-    <ResourceDictionary Source="/Crystal.Resources;component/Styles/TextBlockStyles.xaml"/>
     <ResourceDictionary Source="/Crystal.Resources;component/Styles/StackPanelStyles.xaml"/>
-    <ResourceDictionary Source="/Crystal.Resources;component/Styles/ViewBoxStyles.xaml"/>
   </ResourceDictionary.MergedDictionaries>
+
+  <!-- App-global converters. Merged into Application.Resources via App.xaml, so a StaticResource
+       lookup from any view resolves here — no per-view redeclaration needed. -->
+  <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
 </ResourceDictionary>

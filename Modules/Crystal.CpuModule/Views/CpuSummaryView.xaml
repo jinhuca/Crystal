@@ -9,8 +9,8 @@
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
              d:DesignHeight="240" d:DesignWidth="1000"
-             Background="Transparent" Foreground="White"
-             FontFamily="Segoe UI">
+             Background="Transparent" Foreground="{StaticResource TextBrush}"
+             FontFamily="{StaticResource UiFontFamily}">
   <UserControl.Resources>
     <local:LoadToBrushConverter x:Key="LoadToBrush"/>
 
@@ -34,7 +34,7 @@
           </Grid.ColumnDefinitions>
           <StackPanel Grid.Column="0" Orientation="Horizontal">
             <Border Width="3" Background="{StaticResource AccentBrush}" Margin="0,1,8,1"/>
-            <TextBlock Text="CPU" Foreground="{StaticResource ValueBrush}" FontSize="12" FontWeight="SemiBold"
+            <TextBlock Text="CPU" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource BodyFontSize}" FontWeight="SemiBold"
                        VerticalAlignment="Center" Margin="0,0,16,0"/>
             <TextBlock Text="{Binding Brand}" Style="{StaticResource HeaderSpec}"
                        TextTrimming="CharacterEllipsis"/>
@@ -61,10 +61,10 @@
                 </Style>
               </Border.Style>
               <TextBlock Text="{Binding DataContext.SensorsViewModel.ThrottleStatus, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                         Foreground="#FFD2C8" FontSize="11" FontWeight="SemiBold" FontFamily="Consolas" VerticalAlignment="Center"/>
+                         Foreground="#FFD2C8" FontSize="{StaticResource CaptionFontSize}" FontWeight="SemiBold" FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Center"/>
             </Border>
             <TextBlock Text="{Binding Socket, StringFormat=Slot# {0}}"
-                       Foreground="{StaticResource LabelBrush}" FontSize="11" FontFamily="Consolas" VerticalAlignment="Center"/>
+                       Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Center"/>
           </StackPanel>
         </Grid>
       </Border>
@@ -110,7 +110,7 @@
             <graphs:PerformanceGraph x:Name="VoltageBar" Grid.Column="0" Kind="Line" MinHeight="60" MinValue="0" MaxValue="2"/>
             <StackPanel Grid.Column="1" Style="{StaticResource SummaryStackPanelStyle}">
               <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{Binding Voltage, StringFormat={}{0:0.00}}" Style="{StaticResource MetricValue}" FontSize="22"/>
+                <TextBlock Text="{Binding Voltage, StringFormat={}{0:0.00}}" Style="{StaticResource MetricValue}" FontSize="{StaticResource ValueFontSize}"/>
                 <TextBlock Text="Volt" Style="{StaticResource MetricUnit}"/>
               </StackPanel>
               <TextBlock Text="Voltage" Style="{StaticResource MetricCaption}"/>
@@ -305,11 +305,11 @@
           <!-- Legend: which bar is which. -->
           <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="30,0,0,4">
             <Border Width="10" Height="6" Background="{StaticResource AccentBrush}" VerticalAlignment="Center"/>
-            <TextBlock Text="clock" Foreground="{StaticResource LabelBrush}" FontSize="10"
-                       FontFamily="Consolas" VerticalAlignment="Center" Margin="4,0,12,0"/>
+            <TextBlock Text="clock" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource MicroFontSize}"
+                       FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Center" Margin="4,0,12,0"/>
             <Border Width="10" Height="6" Background="{StaticResource ValueBrush}" VerticalAlignment="Center"/>
-            <TextBlock Text="load" Foreground="{StaticResource LabelBrush}" FontSize="10"
-                       FontFamily="Consolas" VerticalAlignment="Center" Margin="4,0,0,0"/>
+            <TextBlock Text="load" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource MicroFontSize}"
+                       FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Center" Margin="4,0,0,0"/>
           </StackPanel>
 
           <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding CoreLoads}">
@@ -327,7 +327,7 @@
                     <ColumnDefinition Width="72"/>
                   </Grid.ColumnDefinitions>
                   <TextBlock Grid.Column="0" Text="{Binding Label}" Foreground="{StaticResource LabelBrush}"
-                             FontSize="11" FontFamily="Consolas" VerticalAlignment="Center"/>
+                             FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Center"/>
                   <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="0,0,8,0">
                     <ProgressBar Minimum="0" Maximum="100" Value="{Binding Load}" Height="6"
                                  Background="#1A1A1A" BorderBrush="{StaticResource BorderBrush}"
@@ -339,10 +339,10 @@
                   <StackPanel Grid.Column="2" VerticalAlignment="Center">
                     <TextBlock Text="{Binding Load, StringFormat={}{0:0}%}"
                                Foreground="{Binding Load, Converter={StaticResource LoadToBrush}}"
-                               FontSize="10" FontFamily="Consolas" TextAlignment="Right"/>
+                               FontSize="{StaticResource MicroFontSize}" FontFamily="{StaticResource MonoFontFamily}" TextAlignment="Right"/>
                     <TextBlock Text="{Binding SpeedGhz, StringFormat={}{0:0.00} GHz}"
                                Foreground="{StaticResource ValueBrush}"
-                               FontSize="10" FontFamily="Consolas" TextAlignment="Right"/>
+                               FontSize="{StaticResource MicroFontSize}" FontFamily="{StaticResource MonoFontFamily}" TextAlignment="Right"/>
                   </StackPanel>
                 </Grid>
               </DataTemplate>

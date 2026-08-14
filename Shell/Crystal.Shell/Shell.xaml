@@ -11,7 +11,7 @@
         Title="Crystal" Height="1040" Width="1720"
         Icon="Crystal.ico"
         Background="Black"
-        BorderBrush="#3E9BE8" BorderThickness="1">
+        BorderBrush="{StaticResource AccentBrush}" BorderThickness="1">
     <!-- Strip the OS-drawn frame and its native caption buttons (GlassFrameThickness=0,
          UseAeroCaptionButtons=False) so the window's own 1dip BorderBrush is the only visible
          edge and we draw our own min/max/close buttons in the title bar below. -->
@@ -29,11 +29,11 @@
              of the WindowChrome drag region. -->
         <Style x:Key="CaptionButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="#DDDDDD"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Width" Value="61"/>
             <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
-            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontSize" Value="{StaticResource SectionFontSize}"/>
             <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -45,7 +45,7 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Bd" Property="Background" Value="#2A2A2A"/>
+                                <Setter TargetName="Bd" Property="Background" Value="{StaticResource DividerBrush}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -56,7 +56,7 @@
         <Style x:Key="CloseButtonStyle" TargetType="Button" BasedOn="{StaticResource CaptionButtonStyle}">
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -79,11 +79,11 @@
                        Margin="0,0,8,0" VerticalAlignment="Center"
                        RenderOptions.BitmapScalingMode="HighQuality"
                        WindowChrome.IsHitTestVisibleInChrome="False"/>
-                <TextBlock Text="Crystal" Foreground="#8A94A0" FontFamily="Segoe UI" FontSize="16"
+                <TextBlock Text="Crystal" Foreground="{StaticResource LabelBrush}" FontFamily="{StaticResource UiFontFamily}" FontSize="16"
                            VerticalAlignment="Center"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBlock x:Name="DateTimeText" Foreground="#C8D0D8" FontFamily="Segoe UI" FontSize="16"
+                <TextBlock x:Name="DateTimeText" Foreground="{StaticResource SpecValueBrush}" FontFamily="{StaticResource UiFontFamily}" FontSize="16"
                            VerticalAlignment="Center"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">

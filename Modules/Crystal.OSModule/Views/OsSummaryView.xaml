@@ -7,17 +7,17 @@
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
              d:DesignHeight="240" d:DesignWidth="380"
-             Background="Transparent" Foreground="White"
-             FontFamily="Segoe UI">
+             Background="Transparent" Foreground="{StaticResource TextBrush}"
+             FontFamily="{StaticResource UiFontFamily}">
   <UserControl.Resources>
     <Style x:Key="FieldLabel" TargetType="TextBlock">
       <Setter Property="Foreground" Value="{StaticResource LabelBrush}"/>
-      <Setter Property="FontSize" Value="11"/>
+      <Setter Property="FontSize" Value="{StaticResource CaptionFontSize}"/>
     </Style>
     <Style x:Key="FieldValue" TargetType="TextBlock">
       <Setter Property="Foreground" Value="{StaticResource ValueBrush}"/>
-      <Setter Property="FontSize" Value="13"/>
-      <Setter Property="FontFamily" Value="Consolas"/>
+      <Setter Property="FontSize" Value="{StaticResource SpecFontSize}"/>
+      <Setter Property="FontFamily" Value="{StaticResource MonoFontFamily}"/>
       <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
       <Setter Property="Margin" Value="0,0,16,0"/>
     </Style>
@@ -38,9 +38,9 @@
               Padding="0,0,0,4" Margin="0,0,0,8">
         <StackPanel Orientation="Horizontal">
           <Border Width="3" Background="{StaticResource AccentBrush}" Margin="0,1,8,1"/>
-          <TextBlock Text="OPERATING SYSTEM" Foreground="{StaticResource ValueBrush}" FontSize="12" FontWeight="SemiBold"
+          <TextBlock Text="OPERATING SYSTEM" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource BodyFontSize}" FontWeight="SemiBold"
                      VerticalAlignment="Center" Margin="0,0,16,0"/>
-          <TextBlock Text="{Binding OsName}" Foreground="{StaticResource ValueBrush}" FontSize="11" FontFamily="Consolas"
+          <TextBlock Text="{Binding OsName}" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}"
                      VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
         </StackPanel>
       </Border>
@@ -73,7 +73,7 @@
           <StackPanel Orientation="Horizontal">
             <Border Width="6" Height="6" CornerRadius="3" Background="{StaticResource OkBrush}"
                     VerticalAlignment="Center" Margin="0,0,6,0"/>
-            <TextBlock Text="UPTIME" Foreground="{StaticResource LabelBrush}" FontSize="10" FontWeight="SemiBold"
+            <TextBlock Text="UPTIME" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource MicroFontSize}" FontWeight="SemiBold"
                        VerticalAlignment="Center"/>
           </StackPanel>
         </Border>
@@ -81,7 +81,7 @@
         <!-- Live uptime, prominent across the width. -->
         <StackPanel Style="{StaticResource FieldCell}">
           <TextBlock Text="Uptime" Style="{StaticResource FieldLabel}"/>
-          <TextBlock Text="{Binding UptimeLabel}" Style="{StaticResource FieldValue}" FontSize="18"/>
+          <TextBlock Text="{Binding UptimeLabel}" Style="{StaticResource FieldValue}" FontSize="{StaticResource SectionFontSize}"/>
         </StackPanel>
 
         <!-- Fixed timestamps: last boot + install date. -->

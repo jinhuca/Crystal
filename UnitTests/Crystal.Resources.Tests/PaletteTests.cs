@@ -15,10 +15,13 @@ public class PaletteTests {
     ("LabelBrush", "#8A94A0"),
     ("ValueBrush", "#E6E6E6"),
     ("UnitBrush", "#C0C0C0"),
+    ("TextBrush", "#FFFFFF"),
     ("TextPrimaryBrush", "#DDDDDD"),
     ("TextMutedBrush", "#C8C8C8"),
     ("SpecValueBrush", "#C8D0D8"),
     ("AccentBrush", "#3E9BE8"),
+    ("AccentSelectionBrush", "#17324B"),
+    ("AccentHoverBrush", "#1C2530"),
     ("OkBrush", "#3BD15A"),
     ("WarningBrush", "#E8A33E"),
     ("DangerBrush", "#C43C3C"),
@@ -26,6 +29,10 @@ public class PaletteTests {
     ("SurfaceBackgroundBrush", "#161B22"),
     ("DividerBrush", "#2A2A2A"),
     ("BorderBrush", "#3A3A3A"),
+    ("UsageBarUsedBrush", "#2E7DD1"),
+    ("UsageBarFreeBrush", "#3A5068"),
+    ("UsageBarTrackBrush", "#12233A"),
+    ("UsageBarBorderBrush", "#2E4A6A"),
   };
 
   public static TheoryData<string, string> ExpectedData {

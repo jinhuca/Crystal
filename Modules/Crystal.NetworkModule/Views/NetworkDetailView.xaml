@@ -9,11 +9,9 @@
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
              d:DesignHeight="720" d:DesignWidth="1100"
-             Background="{StaticResource PanelBackgroundBrush}" Foreground="White"
-             FontFamily="Segoe UI">
+             Background="{StaticResource PanelBackgroundBrush}" Foreground="{StaticResource TextBrush}"
+             FontFamily="{StaticResource UiFontFamily}">
   <UserControl.Resources>
-    <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
-
     <!-- Dense, sharp-edged column header matching the HWiNFO tile styling (mirrors the Process tile). -->
     <Style x:Key="TalkerHeaderStyle" TargetType="GridViewColumnHeader">
       <Setter Property="HorizontalContentAlignment" Value="Left"/>
@@ -24,7 +22,7 @@
       <Setter Property="Foreground" Value="{StaticResource LabelBrush}"/>
       <Setter Property="BorderBrush" Value="{StaticResource DividerBrush}"/>
       <Setter Property="BorderThickness" Value="0,0,1,1"/>
-      <Setter Property="FontSize" Value="11"/>
+      <Setter Property="FontSize" Value="{StaticResource CaptionFontSize}"/>
       <Setter Property="FontWeight" Value="SemiBold"/>
       <Setter Property="Template">
         <Setter.Value>
@@ -115,7 +113,7 @@
       <Button Grid.Column="0" Content="&#x2190; Back"
               Style="{StaticResource DetailBackButtonStyle}"
               Command="{Binding ShowDashboardCommand}"/>
-      <TextBlock Grid.Column="1" Text="Network" Foreground="{StaticResource AccentBrush}" FontSize="28"
+      <TextBlock Grid.Column="1" Text="Network" Foreground="{StaticResource AccentBrush}" FontSize="{StaticResource TitleFontSize}"
                  FontWeight="SemiBold" VerticalAlignment="Center" Margin="16,0,0,0"/>
     </Grid>
 
@@ -147,31 +145,31 @@
                 <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,6,0,8">
                   <StackPanel Orientation="Horizontal" Margin="0,0,24,0">
                     <TextBlock Text="&#x25BC; " Foreground="{StaticResource OkBrush}"/>
-                    <TextBlock Text="{Binding DownloadLabel}" Foreground="White" FontFamily="Consolas"/>
+                    <TextBlock Text="{Binding DownloadLabel}" Foreground="{StaticResource TextBrush}" FontFamily="{StaticResource MonoFontFamily}"/>
                   </StackPanel>
                   <StackPanel Orientation="Horizontal">
                     <TextBlock Text="&#x25B2; " Foreground="#E89B2A"/>
-                    <TextBlock Text="{Binding UploadLabel}" Foreground="White" FontFamily="Consolas"/>
+                    <TextBlock Text="{Binding UploadLabel}" Foreground="{StaticResource TextBrush}" FontFamily="{StaticResource MonoFontFamily}"/>
                   </StackPanel>
                 </StackPanel>
 
                 <!-- Dense spec strip: utilization, link speed, and cumulative session totals -->
                 <WrapPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,12">
                   <StackPanel Orientation="Horizontal" Margin="0,0,20,0">
-                    <TextBlock Text="Util " Foreground="{StaticResource LabelBrush}" FontFamily="Consolas"/>
-                    <TextBlock Text="{Binding UtilizationLabel}" Foreground="White" FontFamily="Consolas"/>
+                    <TextBlock Text="Util " Foreground="{StaticResource LabelBrush}" FontFamily="{StaticResource MonoFontFamily}"/>
+                    <TextBlock Text="{Binding UtilizationLabel}" Foreground="{StaticResource TextBrush}" FontFamily="{StaticResource MonoFontFamily}"/>
                   </StackPanel>
                   <StackPanel Orientation="Horizontal" Margin="0,0,20,0">
-                    <TextBlock Text="Link " Foreground="{StaticResource LabelBrush}" FontFamily="Consolas"/>
-                    <TextBlock Text="{Binding LinkSpeedLabel}" Foreground="White" FontFamily="Consolas"/>
+                    <TextBlock Text="Link " Foreground="{StaticResource LabelBrush}" FontFamily="{StaticResource MonoFontFamily}"/>
+                    <TextBlock Text="{Binding LinkSpeedLabel}" Foreground="{StaticResource TextBrush}" FontFamily="{StaticResource MonoFontFamily}"/>
                   </StackPanel>
                   <StackPanel Orientation="Horizontal" Margin="0,0,20,0">
-                    <TextBlock Text="&#x25BC; total " Foreground="{StaticResource LabelBrush}" FontFamily="Consolas"/>
-                    <TextBlock Text="{Binding DataDownloadedLabel}" Foreground="White" FontFamily="Consolas"/>
+                    <TextBlock Text="&#x25BC; total " Foreground="{StaticResource LabelBrush}" FontFamily="{StaticResource MonoFontFamily}"/>
+                    <TextBlock Text="{Binding DataDownloadedLabel}" Foreground="{StaticResource TextBrush}" FontFamily="{StaticResource MonoFontFamily}"/>
                   </StackPanel>
                   <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="&#x25B2; total " Foreground="{StaticResource LabelBrush}" FontFamily="Consolas"/>
-                    <TextBlock Text="{Binding DataUploadedLabel}" Foreground="White" FontFamily="Consolas"/>
+                    <TextBlock Text="&#x25B2; total " Foreground="{StaticResource LabelBrush}" FontFamily="{StaticResource MonoFontFamily}"/>
+                    <TextBlock Text="{Binding DataUploadedLabel}" Foreground="{StaticResource TextBrush}" FontFamily="{StaticResource MonoFontFamily}"/>
                   </StackPanel>
                 </WrapPanel>
 
@@ -194,20 +192,20 @@
 
                     <TextBlock Grid.Row="0" Grid.Column="0" Text="SSID" Foreground="{StaticResource LabelBrush}" Margin="0,0,12,2"/>
                     <TextBlock Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding WifiSsid}"
-                               Foreground="White" FontFamily="Consolas" TextTrimming="CharacterEllipsis"/>
+                               Foreground="{StaticResource TextBrush}" FontFamily="{StaticResource MonoFontFamily}" TextTrimming="CharacterEllipsis"/>
 
                     <TextBlock Grid.Row="1" Grid.Column="0" Text="Signal" Foreground="{StaticResource LabelBrush}" Margin="0,0,12,2"/>
                     <StackPanel Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Orientation="Horizontal">
                       <TextBlock Text="{Binding WifiSignalBars}" Foreground="{StaticResource OkBrush}"
-                                 FontFamily="Consolas" Margin="0,0,8,0"/>
-                      <TextBlock Text="{Binding WifiSignal}" Foreground="White" FontFamily="Consolas"/>
+                                 FontFamily="{StaticResource MonoFontFamily}" Margin="0,0,8,0"/>
+                      <TextBlock Text="{Binding WifiSignal}" Foreground="{StaticResource TextBrush}" FontFamily="{StaticResource MonoFontFamily}"/>
                     </StackPanel>
 
                     <TextBlock Grid.Row="2" Grid.Column="0" Text="Radio" Foreground="{StaticResource LabelBrush}" Margin="0,0,12,0"/>
                     <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding WifiPhyType}"
-                               Foreground="White" FontFamily="Consolas"/>
-                    <TextBlock Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Foreground="White"
-                               FontFamily="Consolas" Margin="0,0,0,0">
+                               Foreground="{StaticResource TextBrush}" FontFamily="{StaticResource MonoFontFamily}"/>
+                    <TextBlock Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Foreground="{StaticResource TextBrush}"
+                               FontFamily="{StaticResource MonoFontFamily}" Margin="0,0,0,0">
                       <Run Text="{Binding WifiBand, Mode=OneWay}"/>
                       <Run Text="{Binding WifiChannel, Mode=OneWay, StringFormat=(ch {0})}" Foreground="{StaticResource LabelBrush}"/>
                     </TextBlock>
@@ -262,7 +260,7 @@
 
         <!-- Status line when the per-process backend isn't running (typically not elevated) -->
         <TextBlock Grid.Row="1" Text="{Binding TopTalkersStatusLabel}" Foreground="{StaticResource LabelBrush}"
-                   FontFamily="Consolas" TextWrapping="Wrap"
+                   FontFamily="{StaticResource MonoFontFamily}" TextWrapping="Wrap"
                    Visibility="{Binding HasTopTalkersStatus, Converter={StaticResource BoolToVisibility}}"/>
 
         <ListView Grid.Row="2" ItemsSource="{Binding TopTalkersView}" MaxHeight="240"
@@ -274,16 +272,16 @@
               <GridViewColumn Header="Process" Width="300" local:GridViewSort.SortProperty="Name">
                 <GridViewColumn.CellTemplate>
                   <DataTemplate>
-                    <TextBlock Text="{Binding Name}" Foreground="{StaticResource ValueBrush}" FontFamily="Consolas"
-                               FontSize="12" Margin="8,2" TextTrimming="CharacterEllipsis"/>
+                    <TextBlock Text="{Binding Name}" Foreground="{StaticResource ValueBrush}" FontFamily="{StaticResource MonoFontFamily}"
+                               FontSize="{StaticResource BodyFontSize}" Margin="8,2" TextTrimming="CharacterEllipsis"/>
                   </DataTemplate>
                 </GridViewColumn.CellTemplate>
               </GridViewColumn>
               <GridViewColumn Header="PID" Width="90" local:GridViewSort.SortProperty="ProcessId">
                 <GridViewColumn.CellTemplate>
                   <DataTemplate>
-                    <TextBlock Text="{Binding ProcessId}" Foreground="{StaticResource LabelBrush}" FontFamily="Consolas"
-                               FontSize="12" Margin="8,2" TextAlignment="Right"/>
+                    <TextBlock Text="{Binding ProcessId}" Foreground="{StaticResource LabelBrush}" FontFamily="{StaticResource MonoFontFamily}"
+                               FontSize="{StaticResource BodyFontSize}" Margin="8,2" TextAlignment="Right"/>
                   </DataTemplate>
                 </GridViewColumn.CellTemplate>
               </GridViewColumn>
@@ -291,8 +289,8 @@
                               local:GridViewSort.SortProperty="RateBytesPerSecond">
                 <GridViewColumn.CellTemplate>
                   <DataTemplate>
-                    <TextBlock Text="{Binding RateLabel}" Foreground="{StaticResource OkBrush}" FontFamily="Consolas"
-                               FontSize="12" Margin="8,2" TextAlignment="Right"/>
+                    <TextBlock Text="{Binding RateLabel}" Foreground="{StaticResource OkBrush}" FontFamily="{StaticResource MonoFontFamily}"
+                               FontSize="{StaticResource BodyFontSize}" Margin="8,2" TextAlignment="Right"/>
                   </DataTemplate>
                 </GridViewColumn.CellTemplate>
               </GridViewColumn>

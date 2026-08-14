@@ -7,12 +7,12 @@
              xmlns:const="clr-namespace:Crystal.Infrastructure.Constants;assembly=Crystal.Infrastructure.Constants"
              mc:Ignorable="d"
              d:DesignHeight="860" d:DesignWidth="1600"
-             Background="Black" Foreground="White"
-             FontFamily="Segoe UI">
+             Background="Black" Foreground="{StaticResource TextBrush}"
+             FontFamily="{StaticResource UiFontFamily}">
   <UserControl.Resources>
     <!-- HWiNFO-style panel: sharp edges, thin border, tight gutters, dense packing. -->
     <Style x:Key="Tile" TargetType="Border">
-      <Setter Property="BorderBrush" Value="#3A3A3A"/>
+      <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
       <Setter Property="BorderThickness" Value="1"/>
       <Setter Property="CornerRadius" Value="8"/>
       <!-- Uniform 1px on all sides so the gutter between tiles is identical horizontally and

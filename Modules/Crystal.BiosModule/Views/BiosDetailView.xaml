@@ -8,8 +8,8 @@
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
              d:DesignHeight="720" d:DesignWidth="1100"
-             Background="{StaticResource PanelBackgroundBrush}" Foreground="White"
-             FontFamily="Segoe UI">
+             Background="{StaticResource PanelBackgroundBrush}" Foreground="{StaticResource TextBrush}"
+             FontFamily="{StaticResource UiFontFamily}">
   <Grid Margin="24">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
@@ -24,7 +24,7 @@
       <Button Grid.Column="0" Content="&#x2190; Back"
               Style="{StaticResource DetailBackButtonStyle}"
               Command="{Binding ShowDashboardCommand}"/>
-      <TextBlock Grid.Column="1" Text="BIOS" Foreground="{StaticResource AccentBrush}" FontSize="28"
+      <TextBlock Grid.Column="1" Text="BIOS" Foreground="{StaticResource AccentBrush}" FontSize="{StaticResource TitleFontSize}"
                  FontWeight="SemiBold" VerticalAlignment="Center" Margin="16,0,0,0"/>
     </Grid>
 
@@ -35,17 +35,17 @@
             <ResourceDictionary Source="/Crystal.BiosModule;component/Views/BiosResources.xaml"/>
           </ResourceDictionary.MergedDictionaries>
           <Style x:Key="SectionHeader" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="{StaticResource BiosAccentBrush}"/>
-            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="{StaticResource AccentBrush}"/>
+            <Setter Property="FontSize" Value="{StaticResource SpecFontSize}"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Margin" Value="0,14,0,4"/>
           </Style>
           <Style x:Key="FieldLabel" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="{StaticResource BiosLabelBrush}"/>
+            <Setter Property="Foreground" Value="{StaticResource LabelBrush}"/>
             <Setter Property="Margin" Value="0,4"/>
           </Style>
           <Style x:Key="FieldValue" TargetType="TextBlock">
-            <Setter Property="FontFamily" Value="Consolas"/>
+            <Setter Property="FontFamily" Value="{StaticResource MonoFontFamily}"/>
             <Setter Property="Margin" Value="0,4"/>
             <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
           </Style>
@@ -173,11 +173,11 @@
             <TextBlock Text="Firmware inventory" Style="{StaticResource SectionHeader}"/>
             <!-- Count badge, matching the board-sensor / health-event headers. -->
             <TextBlock Text="{Binding FirmwareComponentCount}" VerticalAlignment="Center"
-                       Margin="10,10,0,0" FontSize="11" Foreground="{StaticResource BiosDimBrush}"/>
+                       Margin="10,10,0,0" FontSize="{StaticResource CaptionFontSize}" Foreground="{StaticResource BiosDimBrush}"/>
           </StackPanel>
           <ListView ItemsSource="{Binding FirmwareInventory}" Margin="0,4,0,0"
                     Background="{StaticResource PanelBackgroundBrush}" BorderBrush="{StaticResource DividerBrush}" BorderThickness="1"
-                    Foreground="#D6D6D6" FontFamily="Consolas"
+                    Foreground="#D6D6D6" FontFamily="{StaticResource MonoFontFamily}"
                     Visibility="{Binding HasFirmwareInventory, Converter={StaticResource BoolToVisibility}}">
             <ListView.View>
               <GridView>
@@ -195,13 +195,13 @@
             <TextBlock Text="Board sensors (live)" Style="{StaticResource SectionHeader}"/>
             <!-- Resets the session health log and trend-graph buffers for a fresh observation
                  window. Shown only when there's history to clear. -->
-            <Button Content="Clear history" Padding="8,2" Margin="12,10,0,0" FontSize="11"
+            <Button Content="Clear history" Padding="8,2" Margin="12,10,0,0" FontSize="{StaticResource CaptionFontSize}"
                     Background="#1E2A38" Foreground="#9DB2C8" BorderThickness="0"
                     Click="OnClearHistory"
                     Visibility="{Binding HasBoardSensors, Converter={StaticResource BoolToVisibility}}"/>
             <!-- Whole-board health rollup, matching the summary tile. Hidden while healthy so it
                  only draws the eye when a rail or the CMOS cell is out of tolerance. -->
-            <TextBlock VerticalAlignment="Center" Margin="10,10,0,0" FontSize="11" FontWeight="SemiBold"
+            <TextBlock VerticalAlignment="Center" Margin="10,10,0,0" FontSize="{StaticResource CaptionFontSize}" FontWeight="SemiBold"
                        ToolTip="{Binding BoardHealthDetail}"
                        Foreground="{Binding BoardHealth, Converter={StaticResource SeverityToBrush}}">
               <TextBlock.Style>
@@ -229,7 +229,7 @@
                "9 V", not lexically below it. -->
           <ListView x:Name="BoardSensorList" ItemsSource="{Binding BoardSensors}" Margin="0,4,0,0"
                     Background="{StaticResource PanelBackgroundBrush}" BorderBrush="{StaticResource DividerBrush}" BorderThickness="1"
-                    Foreground="#D6D6D6" FontFamily="Consolas"
+                    Foreground="#D6D6D6" FontFamily="{StaticResource MonoFontFamily}"
                     GridViewColumnHeader.Click="OnBoardSensorHeaderClick"
                     Visibility="{Binding HasBoardSensors, Converter={StaticResource BoolToVisibility}}">
             <ListView.View>
@@ -272,10 +272,10 @@
               <TextBlock Text="Health events (this session)" Style="{StaticResource SectionHeader}"/>
               <!-- Compact count of logged episodes, e.g. "3 events · 1 ongoing"; empty when none. -->
               <TextBlock Text="{Binding HealthEventsSummary}" VerticalAlignment="Center"
-                         Margin="10,10,0,0" FontSize="11" Foreground="{StaticResource BiosDimBrush}"/>
+                         Margin="10,10,0,0" FontSize="{StaticResource CaptionFontSize}" Foreground="{StaticResource BiosDimBrush}"/>
               <!-- "+N older dropped" once the retention cap evicts the oldest events; collapses until then. -->
               <TextBlock Text="{Binding HealthEventsCapNote}" VerticalAlignment="Center"
-                         Margin="8,10,0,0" FontSize="11" FontStyle="Italic"
+                         Margin="8,10,0,0" FontSize="{StaticResource CaptionFontSize}" FontStyle="Italic"
                          Foreground="{StaticResource BiosDimBrush}">
                 <TextBlock.Style>
                   <Style TargetType="TextBlock">
@@ -289,24 +289,24 @@
                 </TextBlock.Style>
               </TextBlock>
               <!-- Copies the log as tab-separated text so a fault trail can be pasted into a bug report. -->
-              <Button Content="Copy" Padding="8,2" Margin="12,10,0,0" FontSize="11"
+              <Button Content="Copy" Padding="8,2" Margin="12,10,0,0" FontSize="{StaticResource CaptionFontSize}"
                       Background="#1E2A38" Foreground="#9DB2C8" BorderThickness="0"
                       IsEnabled="{Binding HasHealthEvents}"
                       Click="OnCopyHealthEvents"/>
               <!-- Writes the same tab-separated log to a file the user picks, for archiving/attaching. -->
-              <Button Content="Save…" Padding="8,2" Margin="6,10,0,0" FontSize="11"
+              <Button Content="Save…" Padding="8,2" Margin="6,10,0,0" FontSize="{StaticResource CaptionFontSize}"
                       Background="#1E2A38" Foreground="#9DB2C8" BorderThickness="0"
                       IsEnabled="{Binding HasHealthEvents}"
                       Click="OnSaveHealthEvents"/>
               <!-- Narrows the table to critical episodes only; the count/peak still reflect the full
                    log, so this is a view filter, not a data change. -->
               <CheckBox Content="Critical only" VerticalAlignment="Center" Margin="12,10,0,0"
-                        FontSize="11" Foreground="{StaticResource BiosDimBrush}"
+                        FontSize="{StaticResource CaptionFontSize}" Foreground="{StaticResource BiosDimBrush}"
                         IsChecked="{Binding ShowCriticalOnly, Mode=TwoWay}"/>
               <!-- "N hidden" when the filter is suppressing rows, so the narrowed table doesn't read
                    as empty. Collapses when nothing is hidden. -->
               <TextBlock Text="{Binding HealthEventsFilterHint}" VerticalAlignment="Center"
-                         Margin="6,10,0,0" FontSize="11" FontStyle="Italic"
+                         Margin="6,10,0,0" FontSize="{StaticResource CaptionFontSize}" FontStyle="Italic"
                          Foreground="{StaticResource BiosDimBrush}">
                 <TextBlock.Style>
                   <Style TargetType="TextBlock">
@@ -326,7 +326,7 @@
                  than lexical. -->
             <ListView x:Name="HealthEventList" ItemsSource="{Binding HealthEvents}" Margin="0,4,0,0"
                       Background="{StaticResource PanelBackgroundBrush}" BorderBrush="{StaticResource DividerBrush}" BorderThickness="1"
-                      Foreground="#D6D6D6" FontFamily="Consolas"
+                      Foreground="#D6D6D6" FontFamily="{StaticResource MonoFontFamily}"
                       GridViewColumnHeader.Click="OnHealthEventHeaderClick">
               <!-- Hovering a row shows its full detail (full-date start/end, peak, duration) that the
                    abbreviated columns leave out. -->

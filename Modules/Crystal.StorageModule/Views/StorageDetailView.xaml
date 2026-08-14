@@ -9,26 +9,11 @@
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
              d:DesignHeight="760" d:DesignWidth="1100"
-             Background="{StaticResource PanelBackgroundBrush}" Foreground="White"
-             FontFamily="Segoe UI">
+             Background="{StaticResource PanelBackgroundBrush}" Foreground="{StaticResource TextBrush}"
+             FontFamily="{StaticResource UiFontFamily}">
   <UserControl.Resources>
     <conv:FractionToStarConverter x:Key="FractionToStar"/>
-    <!-- StatCaption moved to Crystal.Resources (TextStyles.xaml); resolved app-wide as a shared style. -->
-    <Style x:Key="StatValue" TargetType="TextBlock">
-      <Setter Property="Foreground" Value="{StaticResource ValueBrush}"/>
-      <Setter Property="FontSize" Value="22"/>
-      <Setter Property="FontWeight" Value="Light"/>
-    </Style>
-    <Style x:Key="SpecCaption" TargetType="TextBlock">
-      <Setter Property="Foreground" Value="{StaticResource LabelBrush}"/>
-      <Setter Property="FontSize" Value="13"/>
-      <Setter Property="Margin" Value="0,3"/>
-    </Style>
-    <Style x:Key="SpecValue" TargetType="TextBlock">
-      <Setter Property="Foreground" Value="{StaticResource SpecValueBrush}"/>
-      <Setter Property="FontSize" Value="13"/>
-      <Setter Property="Margin" Value="24,3,0,3"/>
-    </Style>
+    <!-- StatCaption/StatValue/SpecCaption/SpecValue provided app-wide via Crystal.Resources (TextStyles.xaml). -->
   </UserControl.Resources>
 
   <Grid Margin="24">
@@ -46,7 +31,7 @@
       <Button Grid.Column="0" Content="&#x2190; Back"
               Style="{StaticResource DetailBackButtonStyle}"
               Command="{Binding ShowDashboardCommand}"/>
-      <TextBlock Grid.Column="1" Text="Storage" Foreground="{StaticResource AccentBrush}" FontSize="28"
+      <TextBlock Grid.Column="1" Text="Storage" Foreground="{StaticResource AccentBrush}" FontSize="{StaticResource TitleFontSize}"
                  FontWeight="SemiBold" VerticalAlignment="Center" Margin="16,0,0,0"/>
     </Grid>
 
@@ -96,13 +81,13 @@
         <ListBox.ItemTemplate>
           <DataTemplate>
             <StackPanel>
-              <TextBlock Text="{Binding HeaderLabel}" Foreground="{StaticResource ValueBrush}" FontSize="14" FontWeight="SemiBold"/>
-              <TextBlock Text="{Binding Model}" Foreground="{StaticResource LabelBrush}" FontSize="11"
+              <TextBlock Text="{Binding HeaderLabel}" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource SubHeadingFontSize}" FontWeight="SemiBold"/>
+              <TextBlock Text="{Binding Model}" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource CaptionFontSize}"
                          TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
               <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
-                <TextBlock Text="{Binding ActivityLabel}" Foreground="{StaticResource AccentBrush}" FontSize="12" FontFamily="Consolas"/>
-                <TextBlock Text="{Binding CapacityLabel}" Foreground="{StaticResource LabelBrush}" FontSize="12"
-                           FontFamily="Consolas" Margin="12,0,0,0"/>
+                <TextBlock Text="{Binding ActivityLabel}" Foreground="{StaticResource AccentBrush}" FontSize="{StaticResource BodyFontSize}" FontFamily="{StaticResource MonoFontFamily}"/>
+                <TextBlock Text="{Binding CapacityLabel}" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource BodyFontSize}"
+                           FontFamily="{StaticResource MonoFontFamily}" Margin="12,0,0,0"/>
               </StackPanel>
             </StackPanel>
           </DataTemplate>
@@ -128,14 +113,14 @@
               <Grid Grid.Row="0" Margin="0,0,0,10">
                 <TextBlock Text="{Binding HeaderLabel}" Foreground="{StaticResource ValueBrush}" FontSize="20"
                            FontWeight="Light" HorizontalAlignment="Left"/>
-                <TextBlock Text="{Binding Model}" Foreground="{StaticResource LabelBrush}" FontSize="13"
+                <TextBlock Text="{Binding Model}" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource SpecFontSize}"
                            HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
               </Grid>
 
               <!-- Active time -->
               <Grid Grid.Row="1" Margin="0,0,0,2">
-                <TextBlock Text="Active time" Foreground="{StaticResource SpecValueBrush}" FontSize="13" HorizontalAlignment="Left"/>
-                <TextBlock Text="{Binding ActivityLabel}" Foreground="{StaticResource LabelBrush}" FontSize="13" HorizontalAlignment="Right"/>
+                <TextBlock Text="Active time" Foreground="{StaticResource SpecValueBrush}" FontSize="{StaticResource SpecFontSize}" HorizontalAlignment="Left"/>
+                <TextBlock Text="{Binding ActivityLabel}" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource SpecFontSize}" HorizontalAlignment="Right"/>
               </Grid>
               <graphs:PerformanceGraph Grid.Row="2" Margin="0,0,0,12"
                                        Loaded="OnActivityGraphLoaded"
@@ -144,15 +129,15 @@
               <!-- Disk transfer rate -->
               <Grid Grid.Row="3" Margin="0,0,0,2">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                  <TextBlock Text="Disk transfer rate" Foreground="{StaticResource SpecValueBrush}" FontSize="13" VerticalAlignment="Center"/>
-                  <Rectangle Width="11" Height="11" Fill="#3E9BE8" VerticalAlignment="Center" Margin="16,0,6,0"/>
-                  <TextBlock Text="Read" Foreground="{StaticResource LabelBrush}" FontSize="12" VerticalAlignment="Center"/>
-                  <TextBlock Text="{Binding ReadSpeedLabel}" Foreground="{StaticResource SpecValueBrush}" FontSize="12" Margin="6,0,0,0" VerticalAlignment="Center"/>
+                  <TextBlock Text="Disk transfer rate" Foreground="{StaticResource SpecValueBrush}" FontSize="{StaticResource SpecFontSize}" VerticalAlignment="Center"/>
+                  <Rectangle Width="11" Height="11" Fill="{StaticResource AccentBrush}" VerticalAlignment="Center" Margin="16,0,6,0"/>
+                  <TextBlock Text="Read" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource BodyFontSize}" VerticalAlignment="Center"/>
+                  <TextBlock Text="{Binding ReadSpeedLabel}" Foreground="{StaticResource SpecValueBrush}" FontSize="{StaticResource BodyFontSize}" Margin="6,0,0,0" VerticalAlignment="Center"/>
                   <Rectangle Width="11" Height="11" Fill="#E89B2A" VerticalAlignment="Center" Margin="16,0,6,0"/>
-                  <TextBlock Text="Write" Foreground="{StaticResource LabelBrush}" FontSize="12" VerticalAlignment="Center"/>
-                  <TextBlock Text="{Binding WriteSpeedLabel}" Foreground="{StaticResource SpecValueBrush}" FontSize="12" Margin="6,0,0,0" VerticalAlignment="Center"/>
+                  <TextBlock Text="Write" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource BodyFontSize}" VerticalAlignment="Center"/>
+                  <TextBlock Text="{Binding WriteSpeedLabel}" Foreground="{StaticResource SpecValueBrush}" FontSize="{StaticResource BodyFontSize}" Margin="6,0,0,0" VerticalAlignment="Center"/>
                 </StackPanel>
-                <TextBlock Foreground="{StaticResource LabelBrush}" FontSize="13" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <TextBlock Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource SpecFontSize}" HorizontalAlignment="Right" VerticalAlignment="Center">
                   <Run Text="Peak"/><Run Text=" "/><Run Text="{Binding PeakTransferLabel, Mode=OneWay}"/>
                 </TextBlock>
               </Grid>
@@ -164,31 +149,31 @@
               <!-- Capacity: used vs free of the disk's mounted volumes -->
               <StackPanel Grid.Row="5" Margin="0,0,0,16">
                 <Grid Margin="0,0,0,2">
-                  <TextBlock Text="Capacity" Foreground="{StaticResource SpecValueBrush}" FontSize="13" HorizontalAlignment="Left"/>
-                  <TextBlock Text="{Binding CapacityUsageLabel}" Foreground="{StaticResource LabelBrush}" FontSize="13" HorizontalAlignment="Right"/>
+                  <TextBlock Text="Capacity" Foreground="{StaticResource SpecValueBrush}" FontSize="{StaticResource SpecFontSize}" HorizontalAlignment="Left"/>
+                  <TextBlock Text="{Binding CapacityUsageLabel}" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource SpecFontSize}" HorizontalAlignment="Right"/>
                 </Grid>
-                <Border BorderBrush="#2E4A6A" BorderThickness="1" Background="#12233A" Height="28">
+                <Border BorderBrush="{StaticResource UsageBarBorderBrush}" BorderThickness="1" Background="{StaticResource UsageBarTrackBrush}" Height="28">
                   <Grid>
                     <Grid.ColumnDefinitions>
                       <ColumnDefinition Width="{Binding UsedSpaceFraction, Converter={StaticResource FractionToStar}}"/>
                       <ColumnDefinition Width="{Binding FreeSpaceFraction, Converter={StaticResource FractionToStar}}"/>
                     </Grid.ColumnDefinitions>
-                    <Rectangle Grid.Column="0" Fill="#2E7DD1" ToolTip="{Binding UsedSpaceLabel}"/>
-                    <Rectangle Grid.Column="1" Fill="#3A5068" ToolTip="{Binding FreeSpaceLabel}"/>
-                    <TextBlock Grid.ColumnSpan="2" Text="{Binding UsedSpacePercentLabel}" Foreground="White"
-                               FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Rectangle Grid.Column="0" Fill="{StaticResource UsageBarUsedBrush}" ToolTip="{Binding UsedSpaceLabel}"/>
+                    <Rectangle Grid.Column="1" Fill="{StaticResource UsageBarFreeBrush}" ToolTip="{Binding FreeSpaceLabel}"/>
+                    <TextBlock Grid.ColumnSpan="2" Text="{Binding UsedSpacePercentLabel}" Foreground="{StaticResource TextBrush}"
+                               FontSize="{StaticResource BodyFontSize}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                   </Grid>
                 </Border>
                 <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
                   <StackPanel Orientation="Horizontal" Margin="0,0,20,0">
-                    <Rectangle Width="11" Height="11" Fill="#2E7DD1" VerticalAlignment="Center" Margin="0,0,6,0"/>
-                    <TextBlock Text="Used" Foreground="{StaticResource LabelBrush}" FontSize="12" VerticalAlignment="Center"/>
-                    <TextBlock Text="{Binding UsedSpaceLabel}" Foreground="{StaticResource SpecValueBrush}" FontSize="12" Margin="6,0,0,0" VerticalAlignment="Center"/>
+                    <Rectangle Width="11" Height="11" Fill="{StaticResource UsageBarUsedBrush}" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                    <TextBlock Text="Used" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource BodyFontSize}" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding UsedSpaceLabel}" Foreground="{StaticResource SpecValueBrush}" FontSize="{StaticResource BodyFontSize}" Margin="6,0,0,0" VerticalAlignment="Center"/>
                   </StackPanel>
                   <StackPanel Orientation="Horizontal">
-                    <Rectangle Width="11" Height="11" Fill="#3A5068" VerticalAlignment="Center" Margin="0,0,6,0"/>
-                    <TextBlock Text="Free" Foreground="{StaticResource LabelBrush}" FontSize="12" VerticalAlignment="Center"/>
-                    <TextBlock Text="{Binding FreeSpaceLabel}" Foreground="{StaticResource SpecValueBrush}" FontSize="12" Margin="6,0,0,0" VerticalAlignment="Center"/>
+                    <Rectangle Width="11" Height="11" Fill="{StaticResource UsageBarFreeBrush}" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                    <TextBlock Text="Free" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource BodyFontSize}" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding FreeSpaceLabel}" Foreground="{StaticResource SpecValueBrush}" FontSize="{StaticResource BodyFontSize}" Margin="6,0,0,0" VerticalAlignment="Center"/>
                   </StackPanel>
                 </StackPanel>
               </StackPanel>
@@ -273,7 +258,7 @@
 
               <!-- Endurance (SMART): lifetime host writes/reads and power-on history -->
               <StackPanel Grid.Row="7" Margin="0,18,0,0">
-                <TextBlock Text="Endurance (SMART)" Foreground="{StaticResource SpecValueBrush}" FontSize="13" Margin="0,0,0,8"/>
+                <TextBlock Text="Endurance (SMART)" Foreground="{StaticResource SpecValueBrush}" FontSize="{StaticResource SpecFontSize}" Margin="0,0,0,8"/>
                 <Grid>
                   <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>

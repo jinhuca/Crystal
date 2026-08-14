@@ -8,20 +8,20 @@
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
              d:DesignHeight="240" d:DesignWidth="1100"
-             Background="Transparent" Foreground="White"
-             FontFamily="Segoe UI">
+             Background="Transparent" Foreground="{StaticResource TextBrush}"
+             FontFamily="{StaticResource UiFontFamily}">
   <UserControl.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Crystal.BiosModule;component/Views/BiosResources.xaml"/>
       </ResourceDictionary.MergedDictionaries>
       <Style x:Key="FieldLabel" TargetType="TextBlock">
-        <Setter Property="Foreground" Value="{StaticResource BiosLabelBrush}"/>
-        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="Foreground" Value="{StaticResource LabelBrush}"/>
+        <Setter Property="FontSize" Value="{StaticResource CaptionFontSize}"/>
       </Style>
       <Style x:Key="FieldValue" TargetType="TextBlock">
-        <Setter Property="FontSize" Value="13"/>
-        <Setter Property="FontFamily" Value="Consolas"/>
+        <Setter Property="FontSize" Value="{StaticResource SpecFontSize}"/>
+        <Setter Property="FontFamily" Value="{StaticResource MonoFontFamily}"/>
         <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
         <Setter Property="Margin" Value="0,0,16,0"/>
       </Style>
@@ -33,8 +33,8 @@
            up a line and break horizontal alignment with the neighbouring rails' graphs. -->
       <Style x:Key="RangeHint" TargetType="TextBlock">
         <Setter Property="Foreground" Value="{StaticResource BiosDimBrush}"/>
-        <Setter Property="FontSize" Value="10"/>
-        <Setter Property="FontFamily" Value="Consolas"/>
+        <Setter Property="FontSize" Value="{StaticResource MicroFontSize}"/>
+        <Setter Property="FontFamily" Value="{StaticResource MonoFontFamily}"/>
         <Setter Property="Margin" Value="0,-1,16,0"/>
         <Style.Triggers>
           <Trigger Property="Text" Value="">
@@ -58,11 +58,11 @@
       </Grid.RowDefinitions>
 
       <!-- Dense header bar: accent tick + title, thin divider rule below -->
-      <Border Grid.Row="0" BorderBrush="{StaticResource BiosRuleBrush}" BorderThickness="0,0,0,1"
+      <Border Grid.Row="0" BorderBrush="{StaticResource DividerBrush}" BorderThickness="0,0,0,1"
               Padding="0,0,0,4" Margin="0,0,0,8">
         <StackPanel Orientation="Horizontal">
-          <Border Width="3" Background="{StaticResource BiosAccentBrush}" Margin="0,1,8,1"/>
-          <TextBlock Text="BIOS" Foreground="{StaticResource BiosValueBrush}" FontSize="12" FontWeight="SemiBold"
+          <Border Width="3" Background="{StaticResource AccentBrush}" Margin="0,1,8,1"/>
+          <TextBlock Text="BIOS" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource BodyFontSize}" FontWeight="SemiBold"
                      VerticalAlignment="Center"/>
         </StackPanel>
       </Border>
@@ -99,7 +99,7 @@
         <!-- Board section rule + header. The dot and label track live state: green "LIVE BOARD" only
              when readings are actually arriving, otherwise a dim "BOARD" so the pulse never implies
              live data the machine can't produce (common on laptops with no Super I/O sensors). -->
-        <Border BorderBrush="{StaticResource BiosRuleBrush}" BorderThickness="0,1,0,0" Margin="0,2,0,8" Padding="0,8,0,0">
+        <Border BorderBrush="{StaticResource DividerBrush}" BorderThickness="0,1,0,0" Margin="0,2,0,8" Padding="0,8,0,0">
           <!-- Tooltip names the offending rails; only shown when something is out of tolerance. -->
           <StackPanel Orientation="Horizontal" Background="Transparent"
                       ToolTip="{Binding BoardHealthDetail}">
@@ -133,7 +133,7 @@
                 </Style>
               </Border.Style>
             </Border>
-            <TextBlock Foreground="{StaticResource BiosDimBrush}" FontSize="10" FontWeight="SemiBold"
+            <TextBlock Foreground="{StaticResource BiosDimBrush}" FontSize="{StaticResource MicroFontSize}" FontWeight="SemiBold"
                        VerticalAlignment="Center">
               <TextBlock.Style>
                 <Style TargetType="TextBlock">
@@ -150,7 +150,7 @@
             </TextBlock>
             <!-- Severity-count badge, e.g. "1 critical · 2 warnings"; tinted by worst severity and
                  hidden while the board is healthy so it only draws the eye when something's wrong. -->
-            <TextBlock FontSize="10" FontWeight="SemiBold" VerticalAlignment="Center" Margin="8,0,0,0"
+            <TextBlock FontSize="{StaticResource MicroFontSize}" FontWeight="SemiBold" VerticalAlignment="Center" Margin="8,0,0,0"
                        Text="{Binding BoardHealthSummary}"
                        Foreground="{Binding BoardHealth, Converter={StaticResource SeverityToBrush}}">
               <TextBlock.Style>
@@ -167,7 +167,7 @@
             <!-- Session worst-peak badge, e.g. "peak +12V 10.4 V", tinted by that episode's severity.
                  Persists after a transient fault recovers (unlike the live count above, which clears),
                  so the tile still records the session's worst moment. Hidden until something's logged. -->
-            <TextBlock FontSize="10" VerticalAlignment="Center" Margin="10,0,0,0"
+            <TextBlock FontSize="{StaticResource MicroFontSize}" VerticalAlignment="Center" Margin="10,0,0,0"
                        Foreground="{Binding SessionPeakSeverity, Converter={StaticResource SeverityToBrush}}">
               <Run Text="peak" Foreground="{StaticResource BiosDimBrush}"/>
               <Run Text="{Binding SessionPeak, Mode=OneWay}"/>
@@ -186,7 +186,7 @@
         </Border>
 
         <!-- Driver/availability note shown in place of the readings when the board can't be read -->
-        <TextBlock Text="{Binding BoardSensorStatus}" Foreground="{StaticResource BiosLabelBrush}" FontSize="11"
+        <TextBlock Text="{Binding BoardSensorStatus}" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource CaptionFontSize}"
                    TextWrapping="Wrap" Margin="0,0,0,8"
                    Visibility="{Binding HasBoardSensorStatus, Converter={StaticResource BoolToVisibility}}"/>
 

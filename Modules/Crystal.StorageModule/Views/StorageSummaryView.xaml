@@ -10,13 +10,12 @@
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
              d:DesignHeight="240" d:DesignWidth="380"
-             Background="Transparent" Foreground="White"
-             FontFamily="Segoe UI">
+             Background="Transparent" Foreground="{StaticResource TextBrush}"
+             FontFamily="{StaticResource UiFontFamily}">
   <UserControl.Resources>
     <!-- MetricValue, MetricUnit, MetricCaption, HeaderSpec moved to Crystal.Resources
          (TextStyles.xaml); resolved app-wide as shared styles. -->
     <conv:FractionToStarConverter x:Key="FractionToStar"/>
-    <sysctl:BooleanToVisibilityConverter x:Key="BoolToVis"/>
   </UserControl.Resources>
 
   <Border Background="Transparent" MouseLeftButtonDown="OnTileClick">
@@ -33,7 +32,7 @@
               Padding="0,0,0,4" Margin="0,0,0,2">
         <StackPanel Orientation="Horizontal">
           <Border Width="3" Background="{StaticResource AccentBrush}" Margin="0,1,8,1"/>
-          <TextBlock Text="STORAGE" Foreground="{StaticResource ValueBrush}" FontSize="12" FontWeight="SemiBold"
+          <TextBlock Text="STORAGE" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource BodyFontSize}" FontWeight="SemiBold"
                      VerticalAlignment="Center" Margin="0,0,16,0"/>
           <TextBlock Style="{StaticResource HeaderSpec}">
             <Run Text="{Binding TotalCapacityLabel, Mode=OneWay}" Foreground="{StaticResource ValueBrush}"/><Run Text=" total"/>
@@ -45,25 +44,25 @@
       <!-- Filesystem capacity roll-up: used vs free summed across all disks with mounted volumes.
            Hidden when no disk reports space. -->
       <Grid Grid.Row="1" Margin="0,0,0,6"
-            Visibility="{Binding HasCapacityData, Converter={StaticResource BoolToVis}}">
+            Visibility="{Binding HasCapacityData, Converter={StaticResource BoolToVisibility}}">
         <Grid.RowDefinitions>
           <RowDefinition Height="Auto"/>
           <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" Margin="0,0,0,3">
           <TextBlock Text="{Binding UsedSpacePercentLabel}" Foreground="{StaticResource ValueBrush}"
-                     FontSize="11" HorizontalAlignment="Left"/>
+                     FontSize="{StaticResource CaptionFontSize}" HorizontalAlignment="Left"/>
           <TextBlock Text="{Binding CapacityUsageLabel}" Foreground="{StaticResource LabelBrush}"
-                     FontSize="11" HorizontalAlignment="Right"/>
+                     FontSize="{StaticResource CaptionFontSize}" HorizontalAlignment="Right"/>
         </Grid>
-        <Border Grid.Row="1" BorderBrush="#2E4A6A" BorderThickness="1" Background="#12233A" Height="10">
+        <Border Grid.Row="1" BorderBrush="{StaticResource UsageBarBorderBrush}" BorderThickness="1" Background="{StaticResource UsageBarTrackBrush}" Height="10">
           <Grid>
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="{Binding UsedSpaceFraction, Converter={StaticResource FractionToStar}}"/>
               <ColumnDefinition Width="{Binding FreeSpaceFraction, Converter={StaticResource FractionToStar}}"/>
             </Grid.ColumnDefinitions>
-            <Rectangle Grid.Column="0" Fill="#2E7DD1"/>
-            <Rectangle Grid.Column="1" Fill="#3A5068"/>
+            <Rectangle Grid.Column="0" Fill="{StaticResource UsageBarUsedBrush}"/>
+            <Rectangle Grid.Column="1" Fill="{StaticResource UsageBarFreeBrush}"/>
           </Grid>
         </Border>
       </Grid>
@@ -93,7 +92,7 @@
             <TextBlock Text="Active time" Style="{StaticResource MetricCaption}"/>
             <TextBlock Text="{Binding BusiestDriveLabel}" Style="{StaticResource MetricCaption}"
                        Foreground="{StaticResource SpecValueBrush}"
-                       Visibility="{Binding ShowBusiestDrive, Converter={StaticResource BoolToVis}}"/>
+                       Visibility="{Binding ShowBusiestDrive, Converter={StaticResource BoolToVisibility}}"/>
           </StackPanel>
         </Grid>
 
@@ -113,7 +112,7 @@
               <TextBlock Text="MB/s" Style="{StaticResource MetricUnit}"/>
             </StackPanel>
             <TextBlock Text="Transfer" Style="{StaticResource MetricCaption}"/>
-            <TextBlock Style="{StaticResource MetricCaption}" FontFamily="Consolas">
+            <TextBlock Style="{StaticResource MetricCaption}" FontFamily="{StaticResource MonoFontFamily}">
               <Run Text="&#x2193;" Foreground="{StaticResource AccentBrush}"/><Run Text=" "/><Run Text="{Binding ReadRateMBps, StringFormat={}{0:0.0}, Mode=OneWay}" Foreground="{StaticResource SpecValueBrush}"/><Run Text="   "/><Run Text="&#x2191;" Foreground="{StaticResource AccentBrush}"/><Run Text=" "/><Run Text="{Binding WriteRateMBps, StringFormat={}{0:0.0}, Mode=OneWay}" Foreground="{StaticResource SpecValueBrush}"/>
             </TextBlock>
             <TextBlock Style="{StaticResource MetricCaption}">

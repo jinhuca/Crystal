@@ -7,11 +7,8 @@
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
              d:DesignHeight="240" d:DesignWidth="380"
-             Background="Transparent" Foreground="White"
-             FontFamily="Segoe UI">
-  <UserControl.Resources>
-    <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
-  </UserControl.Resources>
+             Background="Transparent" Foreground="{StaticResource TextBrush}"
+             FontFamily="{StaticResource UiFontFamily}">
   <Border Background="Transparent" MouseLeftButtonDown="OnTileClick">
     <Grid Margin="10">
       <Grid.ColumnDefinitions>
@@ -28,9 +25,9 @@
               Padding="0,0,0,4" Margin="0,0,0,6">
         <StackPanel Orientation="Horizontal">
           <Border Width="3" Background="{StaticResource AccentBrush}" Margin="0,1,8,1"/>
-          <TextBlock Text="NETWORK" Foreground="{StaticResource ValueBrush}" FontSize="12" FontWeight="SemiBold"
+          <TextBlock Text="NETWORK" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource BodyFontSize}" FontWeight="SemiBold"
                      VerticalAlignment="Center" Margin="0,0,16,0"/>
-          <TextBlock Foreground="{StaticResource LabelBrush}" FontSize="11" FontFamily="Consolas" VerticalAlignment="Center">
+          <TextBlock Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Center">
             <Run Text="{Binding Adapters.Count, Mode=OneWay}" Foreground="{StaticResource ValueBrush}"/><Run Text=" active interface(s)"/>
           </TextBlock>
         </StackPanel>
@@ -38,40 +35,40 @@
 
       <!-- Live throughput: download over upload -->
       <StackPanel Grid.Row="1" Grid.Column="0" VerticalAlignment="Top">
-        <TextBlock Text="download" Foreground="{StaticResource LabelBrush}" FontSize="12" FontFamily="Consolas"
+        <TextBlock Text="download" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource BodyFontSize}" FontFamily="{StaticResource MonoFontFamily}"
                    Margin="0,0,0,2"/>
         <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
           <TextBlock Text="&#x25BC;" Foreground="{StaticResource OkBrush}" FontSize="16"
                      VerticalAlignment="Center" Margin="0,0,8,0"/>
-          <TextBlock Text="{Binding DownloadLabel}" Foreground="{StaticResource ValueBrush}" FontSize="18"
-                     FontFamily="Consolas" VerticalAlignment="Center"/>
+          <TextBlock Text="{Binding DownloadLabel}" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource SectionFontSize}"
+                     FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Center"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
           <TextBlock Text="&#x25B2;" Foreground="#E89B2A" FontSize="16"
                      VerticalAlignment="Center" Margin="0,0,8,0"/>
-          <TextBlock Text="{Binding UploadLabel}" Foreground="{StaticResource ValueBrush}" FontSize="18"
-                     FontFamily="Consolas" VerticalAlignment="Center"/>
+          <TextBlock Text="{Binding UploadLabel}" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource SectionFontSize}"
+                     FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Center"/>
         </StackPanel>
-        <TextBlock Text="upload" Foreground="{StaticResource LabelBrush}" FontSize="12" FontFamily="Consolas"/>
+        <TextBlock Text="upload" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource BodyFontSize}" FontFamily="{StaticResource MonoFontFamily}"/>
 
         <!-- Wi-Fi block (only when a wireless adapter is connected): SSID + signal, then the
              negotiated link rate, security suite, and BSSID as dim spec rows. -->
         <StackPanel Margin="0,10,0,0"
                     Visibility="{Binding HasWifi, Converter={StaticResource BoolToVisibility}}">
           <StackPanel Orientation="Horizontal">
-            <TextBlock Text="&#x1F4F6;" Foreground="{StaticResource AccentBrush}" FontSize="14"
+            <TextBlock Text="&#x1F4F6;" Foreground="{StaticResource AccentBrush}" FontSize="{StaticResource SubHeadingFontSize}"
                        VerticalAlignment="Center" Margin="0,0,8,0"/>
-            <TextBlock Text="{Binding WifiLabel}" Foreground="{StaticResource ValueBrush}" FontSize="13"
-                       FontFamily="Consolas" VerticalAlignment="Center"
+            <TextBlock Text="{Binding WifiLabel}" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource SpecFontSize}"
+                       FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Center"
                        TextTrimming="CharacterEllipsis"/>
           </StackPanel>
           <TextBlock Text="{Binding WifiLinkRate, StringFormat=Link: {0}}" Foreground="{StaticResource LabelBrush}"
-                     FontSize="11" FontFamily="Consolas" Margin="22,3,0,0"/>
+                     FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}" Margin="22,3,0,0"/>
           <TextBlock Text="{Binding WifiSecurity, StringFormat=Security: {0}}" Foreground="{StaticResource LabelBrush}"
-                     FontSize="11" FontFamily="Consolas" Margin="22,1,0,0"
+                     FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}" Margin="22,1,0,0"
                      TextTrimming="CharacterEllipsis"/>
           <TextBlock Text="{Binding WifiBssid, StringFormat=BSSID: {0}}" Foreground="{StaticResource LabelBrush}"
-                     FontSize="11" FontFamily="Consolas" Margin="22,1,0,0"
+                     FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}" Margin="22,1,0,0"
                      TextTrimming="CharacterEllipsis"/>
         </StackPanel>
 
@@ -79,10 +76,10 @@
              entirely on machines with no wireless adapter. -->
         <StackPanel Orientation="Horizontal" Margin="0,10,0,0"
                     Visibility="{Binding HasWifiStatus, Converter={StaticResource BoolToVisibility}}">
-          <TextBlock Text="&#x1F4F6;" Foreground="#5A6470" FontSize="14"
+          <TextBlock Text="&#x1F4F6;" Foreground="#5A6470" FontSize="{StaticResource SubHeadingFontSize}"
                      VerticalAlignment="Center" Margin="0,0,8,0"/>
-          <TextBlock Text="{Binding WifiStatusLabel}" Foreground="{StaticResource LabelBrush}" FontSize="13"
-                     FontFamily="Consolas" VerticalAlignment="Center"/>
+          <TextBlock Text="{Binding WifiStatusLabel}" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource SpecFontSize}"
+                     FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Center"/>
         </StackPanel>
       </StackPanel>
 
@@ -90,10 +87,10 @@
            Backed by the shared ETW session; blank with a muted note when it isn't running. -->
       <StackPanel Grid.Row="1" Grid.Column="1" Margin="20,0,0,0"
                   Width="200" VerticalAlignment="Top">
-        <TextBlock Text="top talkers" Foreground="{StaticResource LabelBrush}" FontSize="11" FontFamily="Consolas"
+        <TextBlock Text="top talkers" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}"
                    Margin="0,0,0,4"/>
-        <TextBlock Text="{Binding TopTalkersStatusLabel}" Foreground="#5A6470" FontSize="10"
-                   FontFamily="Consolas" TextWrapping="Wrap"
+        <TextBlock Text="{Binding TopTalkersStatusLabel}" Foreground="#5A6470" FontSize="{StaticResource MicroFontSize}"
+                   FontFamily="{StaticResource MonoFontFamily}" TextWrapping="Wrap"
                    Visibility="{Binding HasTopTalkersStatus, Converter={StaticResource BoolToVisibility}}"/>
         <ItemsControl ItemsSource="{Binding SummaryTopTalkers}">
           <ItemsControl.ItemTemplate>
@@ -103,10 +100,10 @@
                   <ColumnDefinition Width="*"/>
                   <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Text="{Binding Name}" Foreground="{StaticResource ValueBrush}" FontSize="11"
-                           FontFamily="Consolas" TextTrimming="CharacterEllipsis" Margin="0,0,10,0"/>
-                <TextBlock Grid.Column="1" Text="{Binding RateLabel}" Foreground="{StaticResource OkBrush}" FontSize="11"
-                           FontFamily="Consolas" TextAlignment="Right"/>
+                <TextBlock Grid.Column="0" Text="{Binding Name}" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource CaptionFontSize}"
+                           FontFamily="{StaticResource MonoFontFamily}" TextTrimming="CharacterEllipsis" Margin="0,0,10,0"/>
+                <TextBlock Grid.Column="1" Text="{Binding RateLabel}" Foreground="{StaticResource OkBrush}" FontSize="{StaticResource CaptionFontSize}"
+                           FontFamily="{StaticResource MonoFontFamily}" TextAlignment="Right"/>
               </Grid>
             </DataTemplate>
           </ItemsControl.ItemTemplate>

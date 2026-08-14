@@ -6,56 +6,22 @@
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize" ShowInTaskbar="False"
         Background="#0D0D0D" Foreground="{StaticResource TextPrimaryBrush}"
-        FontFamily="Segoe UI" WindowStyle="ToolWindow">
+        FontFamily="{StaticResource UiFontFamily}" WindowStyle="ToolWindow">
   <Window.Resources>
-    <!-- Flat dialog button matching the process toolbar's ToolbarButtonStyle palette (neutral dark
-         fill, grey border, #3E9BE8 accent on press). The ControlTemplate also strips WPF's stock
-         light-blue default-button chrome, so an IsDefault button no longer visually clashes with
-         its neighbour. -->
-    <Style x:Key="DialogButtonStyle" TargetType="Button">
-      <Setter Property="Foreground" Value="{StaticResource TextMutedBrush}"/>
-      <Setter Property="Background" Value="#1C1C1C"/>
-      <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
-      <Setter Property="BorderThickness" Value="1"/>
-      <Setter Property="SnapsToDevicePixels" Value="True"/>
-      <Setter Property="Cursor" Value="Hand"/>
-      <Setter Property="Template">
-        <Setter.Value>
-          <ControlTemplate TargetType="Button">
-            <Border x:Name="Bd" Background="{TemplateBinding Background}"
-                    BorderBrush="{TemplateBinding BorderBrush}"
-                    BorderThickness="{TemplateBinding BorderThickness}"
-                    SnapsToDevicePixels="True">
-              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
-                                RecognizesAccessKey="True"/>
-            </Border>
-            <ControlTemplate.Triggers>
-              <Trigger Property="IsMouseOver" Value="True">
-                <Setter TargetName="Bd" Property="Background" Value="{StaticResource DividerBrush}"/>
-                <Setter TargetName="Bd" Property="BorderBrush" Value="#4A4A4A"/>
-                <Setter Property="Foreground" Value="{StaticResource ValueBrush}"/>
-              </Trigger>
-              <Trigger Property="IsPressed" Value="True">
-                <Setter TargetName="Bd" Property="Background" Value="{StaticResource AccentBrush}"/>
-                <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
-                <Setter Property="Foreground" Value="#0A0A0A"/>
-              </Trigger>
-              <Trigger Property="IsEnabled" Value="False">
-                <Setter TargetName="Bd" Property="Background" Value="#161616"/>
-                <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource DividerBrush}"/>
-                <Setter Property="Foreground" Value="#5A6470"/>
-                <Setter Property="Cursor" Value="Arrow"/>
-              </Trigger>
-            </ControlTemplate.Triggers>
-          </ControlTemplate>
-        </Setter.Value>
-      </Setter>
-    </Style>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Crystal.ProcessModule;component/Views/ProcessResources.xaml"/>
+      </ResourceDictionary.MergedDictionaries>
 
-    <!-- Default action (Run): same flat body, but an accent border at rest marks it as the default. -->
-    <Style x:Key="DialogDefaultButtonStyle" TargetType="Button" BasedOn="{StaticResource DialogButtonStyle}">
-      <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
-    </Style>
+      <!-- Dialog buttons reuse the shared flat dark button (ProcessResources.xaml) verbatim, so the
+           dialog and the process toolbar stay visually identical from one definition. -->
+      <Style x:Key="DialogButtonStyle" TargetType="Button" BasedOn="{StaticResource FlatDarkButtonStyle}"/>
+
+      <!-- Default action (Run): same flat body, but an accent border at rest marks it as the default. -->
+      <Style x:Key="DialogDefaultButtonStyle" TargetType="Button" BasedOn="{StaticResource DialogButtonStyle}">
+        <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+      </Style>
+    </ResourceDictionary>
   </Window.Resources>
   <Grid Margin="16">
     <Grid.RowDefinitions>
@@ -65,27 +31,27 @@
       <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
 
-    <TextBlock Grid.Row="0" Foreground="#B0B0B0" FontSize="12"
+    <TextBlock Grid.Row="0" Foreground="#B0B0B0" FontSize="{StaticResource BodyFontSize}"
                TextWrapping="Wrap" Margin="0,0,0,10"
                Text="Type the name of a program, folder, document, or the path to a resource, and Crystal will open it for you."/>
 
     <TextBox x:Name="CommandBox" Grid.Row="1"
              Background="#0A0A0A" Foreground="{StaticResource TextPrimaryBrush}" CaretBrush="{StaticResource TextPrimaryBrush}"
              BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Padding="6,4"
-             FontFamily="Consolas" FontSize="12"
+             FontFamily="{StaticResource MonoFontFamily}" FontSize="{StaticResource BodyFontSize}"
              KeyDown="OnCommandKeyDown"/>
 
     <CheckBox x:Name="AdminCheck" Grid.Row="2" Margin="0,12,0,0"
-              Foreground="#B0B0B0" FontSize="12"
+              Foreground="#B0B0B0" FontSize="{StaticResource BodyFontSize}"
               Content="Run with administrator privileges"/>
 
     <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right"
                 Margin="0,16,0,0">
       <Button Content="Run" Width="80" Height="26" Margin="0,0,8,0"
-              FontSize="12" IsDefault="True" Click="OnRun"
+              FontSize="{StaticResource BodyFontSize}" IsDefault="True" Click="OnRun"
               Style="{StaticResource DialogDefaultButtonStyle}"/>
       <Button Content="Cancel" Width="80" Height="26"
-              FontSize="12" IsCancel="True"
+              FontSize="{StaticResource BodyFontSize}" IsCancel="True"
               Style="{StaticResource DialogButtonStyle}"/>
     </StackPanel>
   </Grid>

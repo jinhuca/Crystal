@@ -8,8 +8,8 @@
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
              d:DesignHeight="240" d:DesignWidth="380"
-             Background="Transparent" Foreground="White"
-             FontFamily="Segoe UI">
+             Background="Transparent" Foreground="{StaticResource TextBrush}"
+             FontFamily="{StaticResource UiFontFamily}">
   <UserControl.Resources>
     <!-- MetricValue, MetricUnit, MetricCaption, HeaderSpec now provided app-wide via Crystal.Resources (TextStyles.xaml). -->
   </UserControl.Resources>
@@ -27,7 +27,7 @@
               Padding="0,0,0,4" Margin="0,0,0,2">
         <StackPanel Orientation="Horizontal">
           <Border Width="3" Background="{StaticResource AccentBrush}" Margin="0,1,8,1"/>
-          <TextBlock Text="MEMORY" Foreground="{StaticResource ValueBrush}" FontSize="12" FontWeight="SemiBold"
+          <TextBlock Text="MEMORY" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource BodyFontSize}" FontWeight="SemiBold"
                      VerticalAlignment="Center" Margin="0,0,16,0"/>
           <TextBlock Style="{StaticResource HeaderSpec}">
             <Run Text="{Binding TotalCapacityLabel, Mode=OneWay}" Foreground="{StaticResource ValueBrush}"/><Run Text=" total"/>

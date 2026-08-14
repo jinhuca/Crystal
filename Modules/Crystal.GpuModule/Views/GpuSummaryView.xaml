@@ -8,8 +8,8 @@
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
              d:DesignHeight="240" d:DesignWidth="760"
-             Background="Transparent" Foreground="White"
-             FontFamily="Segoe UI">
+             Background="Transparent" Foreground="{StaticResource TextBrush}"
+             FontFamily="{StaticResource UiFontFamily}">
   <!-- MetricValue/MetricUnit/MetricCaption now shared via Crystal.Resources -->
 
 
@@ -26,7 +26,7 @@
               Padding="0,0,0,4" Margin="0,0,0,2">
         <StackPanel Orientation="Horizontal">
           <Border Width="3" Background="{StaticResource AccentBrush}" Margin="0,1,8,1"/>
-          <TextBlock Text="GPU" Foreground="{StaticResource ValueBrush}" FontSize="12" FontWeight="SemiBold"
+          <TextBlock Text="GPU" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource BodyFontSize}" FontWeight="SemiBold"
                      VerticalAlignment="Center"/>
         </StackPanel>
       </Border>
@@ -53,9 +53,9 @@
 
                 <!-- Identity strip: kind (accent) + name (dim), directly above this adapter's graphs. -->
                 <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,6">
-                  <TextBlock Text="{Binding KindLabel}" Foreground="{StaticResource AccentBrush}" FontSize="11"
+                  <TextBlock Text="{Binding KindLabel}" Foreground="{StaticResource AccentBrush}" FontSize="{StaticResource CaptionFontSize}"
                              FontWeight="SemiBold" VerticalAlignment="Center"/>
-                  <TextBlock Text="{Binding Name}" Foreground="{StaticResource LabelBrush}" FontSize="11" FontFamily="Consolas"
+                  <TextBlock Text="{Binding Name}" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}"
                              VerticalAlignment="Center" Margin="8,0,0,0" TextTrimming="CharacterEllipsis"/>
                 </StackPanel>
 

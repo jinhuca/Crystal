@@ -1,0 +1,7 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <!-- Font families shared by every view. Two roles: the UI face for chrome/labels,
+       and the monospace face for numeric readouts (values align in columns). -->
+  <FontFamily x:Key="UiFontFamily">Segoe UI</FontFamily>
+  <FontFamily x:Key="MonoFontFamily">Consolas</FontFamily>
+</ResourceDictionary>

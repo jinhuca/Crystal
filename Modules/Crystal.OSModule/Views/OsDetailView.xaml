@@ -7,27 +7,20 @@
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
              d:DesignHeight="820" d:DesignWidth="1100"
-             Background="{StaticResource PanelBackgroundBrush}" Foreground="White"
-             FontFamily="Segoe UI">
+             Background="{StaticResource PanelBackgroundBrush}" Foreground="{StaticResource TextBrush}"
+             FontFamily="{StaticResource UiFontFamily}">
   <UserControl.Resources>
-    <!-- StatCaption removed: byte-identical to the shared StatCaption in Crystal.Resources. -->
-    <!-- Task Manager-style stat cell: large light value below the shared caption. -->
-    <Style x:Key="StatValue" TargetType="TextBlock">
-      <Setter Property="Foreground" Value="{StaticResource ValueBrush}"/>
-      <Setter Property="FontSize" Value="22"/>
-      <Setter Property="FontWeight" Value="Light"/>
+    <!-- Shared StatCaption/StatValue/SpecCaption/SpecValue come from Crystal.Resources; OS derives
+         from them and overrides only its divergent setters (ellipsis trimming, mono spec values,
+         tighter row margins). -->
+    <Style x:Key="StatValue" TargetType="TextBlock" BasedOn="{StaticResource StatValue}">
       <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
     </Style>
-    <!-- Compact label:value row used in the identity grid. -->
-    <Style x:Key="SpecCaption" TargetType="TextBlock">
-      <Setter Property="Foreground" Value="{StaticResource LabelBrush}"/>
-      <Setter Property="FontSize" Value="13"/>
+    <Style x:Key="SpecCaption" TargetType="TextBlock" BasedOn="{StaticResource SpecCaption}">
       <Setter Property="Margin" Value="0,4"/>
     </Style>
-    <Style x:Key="SpecValue" TargetType="TextBlock">
-      <Setter Property="Foreground" Value="{StaticResource SpecValueBrush}"/>
-      <Setter Property="FontSize" Value="13"/>
-      <Setter Property="FontFamily" Value="Consolas"/>
+    <Style x:Key="SpecValue" TargetType="TextBlock" BasedOn="{StaticResource SpecValue}">
+      <Setter Property="FontFamily" Value="{StaticResource MonoFontFamily}"/>
       <Setter Property="Margin" Value="24,4,0,4"/>
       <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
     </Style>
@@ -51,10 +44,10 @@
               VerticalAlignment="Center" Margin="0,0,20,0"
               Style="{StaticResource DetailBackButtonStyle}"
               Command="{Binding ShowDashboardCommand}"/>
-      <TextBlock Grid.Column="1" Text="Operating System" Foreground="{StaticResource AccentBrush}" FontSize="30"
+      <TextBlock Grid.Column="1" Text="Operating System" Foreground="{StaticResource AccentBrush}" FontSize="{StaticResource HeroFontSize}"
                  FontWeight="SemiBold" VerticalAlignment="Center"/>
       <TextBlock Grid.Column="2" Text="{Binding OsName}" Foreground="{StaticResource SpecValueBrush}"
-                 FontSize="18" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                 FontSize="{StaticResource SectionFontSize}" HorizontalAlignment="Right" VerticalAlignment="Bottom"
                  Margin="0,0,0,4"/>
     </Grid>
 
