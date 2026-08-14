@@ -1,9 +1,9 @@
+using Crystal.Controls.Threading;
+using Crystal.ProcessModule.Models;
+using Crystal.Service.Process;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Data;
-using Crystal.Controls.Threading;
-using Crystal.Service.Process;
-using Crystal.ProcessModule.Models;
 
 namespace Crystal.ProcessModule.ViewModels;
 

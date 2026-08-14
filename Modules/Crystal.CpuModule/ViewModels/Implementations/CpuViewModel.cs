@@ -1,8 +1,8 @@
-using System.Windows.Input;
+using Crystal.Controls.Threading;
 using Crystal.CpuModule.Models;
 using Crystal.CpuModule.ViewModels.Interfaces;
-using Crystal.Controls.Threading;
 using Crystal.Infrastructure.Constants.Navigation;
+using System.Windows.Input;
 
 
 namespace Crystal.CpuModule.ViewModels.Implementations;

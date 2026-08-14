@@ -1,7 +1,7 @@
-using Crystal.Service.Process;
-using Microsoft.Reactive.Testing;
 using Crystal.ProcessModule.Models;
 using Crystal.ProcessModule.ViewModels;
+using Crystal.Service.Process;
+using Microsoft.Reactive.Testing;
 using Xunit;
 
 namespace Crystal.ProcessModule.Tests;

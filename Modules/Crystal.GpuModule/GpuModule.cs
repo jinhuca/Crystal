@@ -1,11 +1,11 @@
 using Crystal.Controls.Loading;
+using Crystal.GpuModule.Models;
+using Crystal.GpuModule.ViewModels;
+using Crystal.GpuModule.Views;
 using Crystal.Infrastructure.Constants;
 using Crystal.Infrastructure.Constants.Navigation;
 using Crystal.Provider.Mmi.MmiEngine;
 using Crystal.Service.Gpu;
-using Crystal.GpuModule.Models;
-using Crystal.GpuModule.ViewModels;
-using Crystal.GpuModule.Views;
 
 namespace Crystal.GpuModule;
 

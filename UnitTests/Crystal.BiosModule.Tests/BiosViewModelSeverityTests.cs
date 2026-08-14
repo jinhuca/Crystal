@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Reactive.Subjects;
 using Crystal.BiosModule.Models;
 using Crystal.BiosModule.ViewModels;
 using Crystal.Controls.PerformanceGraphs;
@@ -8,6 +5,9 @@ using Crystal.Infrastructure.DataStructures.Sensors;
 using Crystal.Service.Bios;
 using Crystal.Service.Sensors;
 using Prism.Events;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reactive.Subjects;
 using Xunit;
 
 namespace Crystal.BiosModule.Tests;

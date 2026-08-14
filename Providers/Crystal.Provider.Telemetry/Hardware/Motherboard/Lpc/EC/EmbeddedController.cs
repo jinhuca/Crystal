@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Crystal.Provider.Telemetry.Hardware.Motherboard.Lpc.EC.Nbfc;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using Crystal.Provider.Telemetry.Hardware.Motherboard.Lpc.EC.Nbfc;
 
 namespace Crystal.Provider.Telemetry.Hardware.Motherboard.Lpc.EC;
 

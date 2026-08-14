@@ -1,8 +1,8 @@
 using Xunit;
-using ProviderHardwareType = Crystal.Provider.Telemetry.Hardware.HardwareType;
-using ProviderSensorType = Crystal.Provider.Telemetry.Hardware.SensorType;
 using AppHardwareType = Crystal.Infrastructure.DataStructures.Sensors.HardwareType;
 using AppSensorType = Crystal.Infrastructure.DataStructures.Sensors.SensorType;
+using ProviderHardwareType = Crystal.Provider.Telemetry.Hardware.HardwareType;
+using ProviderSensorType = Crystal.Provider.Telemetry.Hardware.SensorType;
 
 namespace Crystal.Service.Sensors.Tests;
 

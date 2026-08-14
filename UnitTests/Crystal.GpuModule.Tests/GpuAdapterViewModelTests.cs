@@ -1,5 +1,5 @@
-using Crystal.Service.Gpu;
 using Crystal.GpuModule.ViewModels;
+using Crystal.Service.Gpu;
 using Xunit;
 
 namespace Crystal.GpuModule.Tests;

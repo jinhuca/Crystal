@@ -1,5 +1,3 @@
-using System.Collections.Frozen;
-using System.Reactive.Linq;
 using Crystal.CpuModule.Models;
 using Crystal.CpuModule.ViewModels.Implementations;
 using Crystal.Infrastructure.DataStructures.Cpu.Implementations;
@@ -15,6 +13,8 @@ using Crystal.Provider.Smbios.HardwareFeatures.Processor;
 using Crystal.Service.Cpu;
 using Crystal.Service.Sensors;
 using Microsoft.Reactive.Testing;
+using System.Collections.Frozen;
+using System.Reactive.Linq;
 using Xunit;
 
 namespace Crystal.CpuModule.Tests;

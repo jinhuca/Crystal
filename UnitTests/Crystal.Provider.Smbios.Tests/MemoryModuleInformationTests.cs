@@ -1,6 +1,6 @@
-using Xunit;
 using Crystal.Provider.Smbios.Structures;
 using Crystal.Provider.Smbios.Types;
+using Xunit;
 using static Crystal.Provider.Smbios.Tests.TestHelpers;
 
 namespace Crystal.Provider.Smbios.Tests;

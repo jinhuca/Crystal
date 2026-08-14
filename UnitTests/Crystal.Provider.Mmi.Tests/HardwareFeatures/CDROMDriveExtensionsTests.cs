@@ -1,5 +1,5 @@
-using Crystal.Provider.Mmi.MmiEngine;
 using Crystal.Provider.Mmi.HardwareFeatures.CdRomDrive;
+using Crystal.Provider.Mmi.MmiEngine;
 using Crystal.Provider.Mmi.Tests.Helpers;
 using Xunit;
 

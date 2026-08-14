@@ -1,6 +1,6 @@
-using System.Reactive.Subjects;
-using Crystal.Service.Process;
 using Crystal.ProcessModule.Models;
+using Crystal.Service.Process;
+using System.Reactive.Subjects;
 
 namespace Crystal.ProcessModule.Tests;
 

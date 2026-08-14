@@ -1,8 +1,8 @@
-using System.Windows;
-using System.Windows.Controls;
 using Crystal.Controls.PerformanceGraphs.Kinds;
 using Crystal.Controls.PerformanceGraphs.Themes;
 using Crystal.MemoryModule.ViewModels;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace Crystal.MemoryModule.Views;
 

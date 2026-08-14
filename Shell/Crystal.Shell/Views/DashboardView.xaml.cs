@@ -1,6 +1,6 @@
+using Crystal.Controls.Loading;
 using System.Windows;
 using System.Windows.Controls;
-using Crystal.Controls.Loading;
 
 namespace Crystal.Shell.Views;
 

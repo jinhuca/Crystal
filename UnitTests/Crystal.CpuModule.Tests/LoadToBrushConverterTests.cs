@@ -1,6 +1,6 @@
+using Crystal.CpuModule.Views;
 using System.Globalization;
 using System.Windows.Media;
-using Crystal.CpuModule.Views;
 using Xunit;
 
 namespace Crystal.CpuModule.Tests;

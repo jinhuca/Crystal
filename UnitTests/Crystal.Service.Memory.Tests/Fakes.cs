@@ -1,5 +1,5 @@
-using System.Collections.Frozen;
 using Crystal.Provider.Mmi.MmiEngine;
+using System.Collections.Frozen;
 
 namespace Crystal.Service.Memory.Tests;
 

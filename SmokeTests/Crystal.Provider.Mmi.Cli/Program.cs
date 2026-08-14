@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using Crystal.Provider.Mmi.HardwareFeatures.AssociatedProcessorMemory;
+﻿using Crystal.Provider.Mmi.HardwareFeatures.AssociatedProcessorMemory;
 using Crystal.Provider.Mmi.HardwareFeatures.BaseBoard;
 using Crystal.Provider.Mmi.HardwareFeatures.Battery;
 using Crystal.Provider.Mmi.HardwareFeatures.Bios;
@@ -76,6 +75,7 @@ using Crystal.Provider.Mmi.SoftwareFeatures.Thread;
 using Crystal.Provider.Mmi.SoftwareFeatures.TimeZone;
 using Crystal.Provider.Mmi.SoftwareFeatures.UserAccount;
 using Crystal.Provider.Mmi.SoftwareFeatures.UserDesktop;
+using System.Reflection;
 
 namespace Crystal.Provider.Mmi.Cli;
 

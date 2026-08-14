@@ -1,6 +1,6 @@
-using System.Windows.Media;
 using Crystal.Controls.PerformanceGraphs;
 using Crystal.Service.Storage;
+using System.Windows.Media;
 
 namespace Crystal.StorageModule.ViewModels;
 

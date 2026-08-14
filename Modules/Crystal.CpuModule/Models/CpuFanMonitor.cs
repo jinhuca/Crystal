@@ -1,5 +1,5 @@
-using System.Reactive.Linq;
 using Crystal.Service.Sensors;
+using System.Reactive.Linq;
 
 namespace Crystal.CpuModule.Models;
 

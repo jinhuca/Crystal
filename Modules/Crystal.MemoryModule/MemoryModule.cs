@@ -1,11 +1,11 @@
 using Crystal.Controls.Loading;
 using Crystal.Infrastructure.Constants;
 using Crystal.Infrastructure.Constants.Navigation;
-using Crystal.Provider.Mmi.MmiEngine;
-using Crystal.Service.Memory;
 using Crystal.MemoryModule.Models;
 using Crystal.MemoryModule.ViewModels;
 using Crystal.MemoryModule.Views;
+using Crystal.Provider.Mmi.MmiEngine;
+using Crystal.Service.Memory;
 
 namespace Crystal.MemoryModule;
 

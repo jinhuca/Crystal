@@ -1,6 +1,6 @@
-using Microsoft.Win32;
 using Crystal.Provider.Mmi.HardwareFeatures.VideoController;
 using Crystal.Provider.Mmi.MmiEngine;
+using Microsoft.Win32;
 
 namespace Crystal.Service.Gpu;
 

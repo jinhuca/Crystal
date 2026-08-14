@@ -1,9 +1,9 @@
-using System.ComponentModel;
-using System.Reactive.Subjects;
-using Crystal.Service.Network;
 using Crystal.NetworkModule.Models;
 using Crystal.NetworkModule.ViewModels;
+using Crystal.Service.Network;
 using Prism.Events;
+using System.ComponentModel;
+using System.Reactive.Subjects;
 using Xunit;
 
 namespace Crystal.NetworkModule.Tests;

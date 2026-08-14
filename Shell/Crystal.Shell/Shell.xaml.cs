@@ -1,10 +1,10 @@
+using Crystal.Shell.Navigation;
+using Crystal.Shell.Views;
 using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Threading;
-using Crystal.Shell.Navigation;
-using Crystal.Shell.Views;
 
 namespace Crystal.Shell;
 /// <summary>

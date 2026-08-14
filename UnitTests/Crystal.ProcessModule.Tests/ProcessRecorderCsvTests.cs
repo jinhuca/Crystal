@@ -1,6 +1,6 @@
-using System.IO;
-using Crystal.Service.Process;
 using Crystal.ProcessModule.Models;
+using Crystal.Service.Process;
+using System.IO;
 using Xunit;
 
 namespace Crystal.ProcessModule.Tests;

@@ -1,9 +1,9 @@
+using Crystal.ProcessModule.ViewModels;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using Crystal.ProcessModule.ViewModels;
 
 namespace Crystal.ProcessModule.Views;
 

@@ -1,5 +1,5 @@
-using System.Collections.Frozen;
 using Microsoft.Management.Infrastructure;
+using System.Collections.Frozen;
 
 namespace Crystal.Provider.Mmi.MmiEngine;
 

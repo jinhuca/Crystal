@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Crystal.Provider.Smbios.Structures;
+using Crystal.Provider.Smbios.Types;
+using System;
 using System.Collections.Generic;
 using Xunit;
-using Crystal.Provider.Smbios.Types;
-using Crystal.Provider.Smbios.Structures;
 
 namespace Crystal.Provider.Smbios.Tests;
 

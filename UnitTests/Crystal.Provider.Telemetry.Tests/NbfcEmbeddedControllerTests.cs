@@ -1,7 +1,7 @@
-using System.Collections.Generic;
 using Crystal.Provider.Telemetry.Hardware;
 using Crystal.Provider.Telemetry.Hardware.Motherboard.Lpc.EC;
 using Crystal.Provider.Telemetry.Hardware.Motherboard.Lpc.EC.Nbfc;
+using System.Collections.Generic;
 using Xunit;
 
 namespace Crystal.Provider.Telemetry.Tests;

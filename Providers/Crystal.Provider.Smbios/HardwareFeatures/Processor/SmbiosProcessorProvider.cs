@@ -1,10 +1,10 @@
+using Crystal.Infrastructure.DataStructures.Cpu.Definitions;
+using Crystal.Provider.Smbios.Structures;
+using Crystal.Provider.Smbios.Types;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Crystal.Infrastructure.DataStructures.Cpu.Definitions;
-using Crystal.Provider.Smbios.Structures;
-using Crystal.Provider.Smbios.Types;
 
 namespace Crystal.Provider.Smbios.HardwareFeatures.Processor;
 

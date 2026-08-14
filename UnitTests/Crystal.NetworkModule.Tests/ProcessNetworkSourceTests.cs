@@ -1,7 +1,7 @@
-using System.Reactive.Linq;
 using Crystal.Provider.Etw;
 using Crystal.Service.Network;
 using Microsoft.Reactive.Testing;
+using System.Reactive.Linq;
 using Xunit;
 
 namespace Crystal.NetworkModule.Tests;

@@ -1,8 +1,8 @@
-using System.Collections.ObjectModel;
+using Crystal.Controls.PerformanceGraphs;
 using Crystal.CpuModule.Models;
 using Crystal.CpuModule.ViewModels;
-using Crystal.Controls.PerformanceGraphs;
 using Crystal.Infrastructure.DataStructures.Cpu.Interfaces;
+using System.Collections.ObjectModel;
 
 namespace Crystal.CpuModule.ViewModels.Interfaces;
 

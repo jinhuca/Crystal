@@ -1,6 +1,6 @@
+using Crystal.NetworkModule.ViewModels;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Crystal.NetworkModule.ViewModels;
 
 namespace Crystal.NetworkModule.Views;
 

@@ -1,6 +1,6 @@
-using System.Collections.ObjectModel;
 using Crystal.Controls.PerformanceGraphs;
 using Crystal.Service.Gpu;
+using System.Collections.ObjectModel;
 
 namespace Crystal.GpuModule.ViewModels;
 

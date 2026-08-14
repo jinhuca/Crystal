@@ -1,6 +1,6 @@
-using System.Reactive.Linq;
-using Microsoft.Reactive.Testing;
 using Crystal.OSModule.Models;
+using Microsoft.Reactive.Testing;
+using System.Reactive.Linq;
 using Xunit;
 
 namespace Crystal.OSModule.Tests;

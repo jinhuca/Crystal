@@ -1,5 +1,5 @@
-using System;
 using Crystal.BiosModule.ViewModels;
+using System;
 using Xunit;
 
 namespace Crystal.BiosModule.Tests;

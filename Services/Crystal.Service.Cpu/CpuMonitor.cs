@@ -1,7 +1,7 @@
+using Crystal.Infrastructure.DataStructures.Cpu.Interfaces;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using Crystal.Infrastructure.DataStructures.Cpu.Interfaces;
 
 namespace Crystal.Service.Cpu;
 

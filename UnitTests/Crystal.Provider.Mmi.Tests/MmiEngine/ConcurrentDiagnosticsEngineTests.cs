@@ -1,9 +1,9 @@
-using System.Collections.Frozen;
 using Crystal.Provider.Mmi.HardwareFeatures.Bios;
 using Crystal.Provider.Mmi.HardwareFeatures.DiskDrive;
 using Crystal.Provider.Mmi.HardwareFeatures.Processor;
 using Crystal.Provider.Mmi.MmiEngine;
 using Crystal.Provider.Mmi.Tests.Helpers;
+using System.Collections.Frozen;
 using Xunit;
 
 namespace Crystal.Provider.Mmi.Tests.MmiEngine;

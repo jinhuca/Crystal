@@ -1,6 +1,6 @@
-using System.Reactive.Linq;
 using Crystal.Provider.Mmi.HardwareFeatures.FirmwareSecurity;
 using Crystal.Provider.Mmi.MmiEngine;
+using System.Reactive.Linq;
 using Xunit;
 
 namespace Crystal.Service.Bios.Tests;

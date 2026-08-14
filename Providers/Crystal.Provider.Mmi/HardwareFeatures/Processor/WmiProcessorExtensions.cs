@@ -1,6 +1,6 @@
-﻿using System.Collections.Frozen;
-using Crystal.Provider.Mmi.MmiEngine;
+﻿using Crystal.Provider.Mmi.MmiEngine;
 using Crystal.Provider.Mmi.Wmi;
+using System.Collections.Frozen;
 
 namespace Crystal.Provider.Mmi.HardwareFeatures.Processor;
 

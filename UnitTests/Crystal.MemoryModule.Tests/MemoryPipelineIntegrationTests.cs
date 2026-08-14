@@ -1,10 +1,10 @@
-using System.Collections.Frozen;
-using Crystal.Provider.Mmi.MmiEngine;
-using Crystal.Service.Memory;
 using Crystal.MemoryModule.Models;
 using Crystal.MemoryModule.ViewModels;
+using Crystal.Provider.Mmi.MmiEngine;
+using Crystal.Service.Memory;
 using Microsoft.Reactive.Testing;
 using Prism.Events;
+using System.Collections.Frozen;
 using Xunit;
 
 namespace Crystal.MemoryModule.Tests;

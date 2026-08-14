@@ -1,9 +1,9 @@
-using System.Reactive.Concurrency;
-using System.Reactive.Disposables;
-using System.Reactive.Linq;
 using Crystal.Provider.Etw;
 using Crystal.Provider.Mmi.MmiEngine;
 using Crystal.Provider.Mmi.SoftwareFeatures.Process;
+using System.Reactive.Concurrency;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
 
 namespace Crystal.Service.Process;
 

@@ -1,8 +1,8 @@
+using Crystal.Controls.Loading;
 using Crystal.CpuModule.Models;
 using Crystal.CpuModule.ViewModels.Implementations;
 using Crystal.CpuModule.ViewModels.Interfaces;
 using Crystal.CpuModule.Views;
-using Crystal.Controls.Loading;
 using Crystal.Infrastructure.Constants;
 using Crystal.Infrastructure.Constants.Navigation;
 using Crystal.Provider.CpuId;

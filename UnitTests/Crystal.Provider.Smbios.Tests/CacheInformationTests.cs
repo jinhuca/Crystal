@@ -1,8 +1,8 @@
-using System.Linq;
-using static Crystal.Provider.Smbios.Tests.TestHelpers;
-using Xunit;
-using Crystal.Provider.Smbios.Types;
 using Crystal.Provider.Smbios.Structures;
+using Crystal.Provider.Smbios.Types;
+using System.Linq;
+using Xunit;
+using static Crystal.Provider.Smbios.Tests.TestHelpers;
 
 namespace Crystal.Provider.Smbios.Tests;
 

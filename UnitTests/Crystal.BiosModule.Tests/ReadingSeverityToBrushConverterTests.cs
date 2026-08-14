@@ -1,8 +1,8 @@
+using Crystal.BiosModule.ViewModels;
+using Crystal.BiosModule.Views;
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
-using Crystal.BiosModule.ViewModels;
-using Crystal.BiosModule.Views;
 using Xunit;
 
 namespace Crystal.BiosModule.Tests;

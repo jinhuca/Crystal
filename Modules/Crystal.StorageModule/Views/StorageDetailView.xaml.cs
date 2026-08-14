@@ -1,8 +1,8 @@
-using System.Windows;
-using System.Windows.Controls;
 using Crystal.Controls.PerformanceGraphs;
 using Crystal.Controls.PerformanceGraphs.Kinds;
 using Crystal.Controls.PerformanceGraphs.Themes;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace Crystal.StorageModule.Views;
 

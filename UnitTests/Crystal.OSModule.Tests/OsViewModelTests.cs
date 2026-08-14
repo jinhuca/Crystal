@@ -1,7 +1,7 @@
-using System.Reactive.Subjects;
 using Crystal.OSModule.Models;
 using Crystal.OSModule.ViewModels;
 using Prism.Events;
+using System.Reactive.Subjects;
 using Xunit;
 
 namespace Crystal.OSModule.Tests;

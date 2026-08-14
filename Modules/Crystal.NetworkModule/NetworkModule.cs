@@ -1,12 +1,12 @@
 using Crystal.Controls.Loading;
 using Crystal.Infrastructure.Constants;
 using Crystal.Infrastructure.Constants.Navigation;
-using Crystal.Provider.Etw;
-using Crystal.Provider.Telemetry.Hardware.Network;
-using Crystal.Service.Network;
 using Crystal.NetworkModule.Models;
 using Crystal.NetworkModule.ViewModels;
 using Crystal.NetworkModule.Views;
+using Crystal.Provider.Etw;
+using Crystal.Provider.Telemetry.Hardware.Network;
+using Crystal.Service.Network;
 
 namespace Crystal.NetworkModule;
 

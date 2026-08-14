@@ -1,11 +1,11 @@
+using Crystal.Controls.Threading;
+using Crystal.Infrastructure.Constants.Navigation;
+using Crystal.NetworkModule.Models;
+using Crystal.Service.Network;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Data;
 using System.Windows.Input;
-using Crystal.Controls.Threading;
-using Crystal.Infrastructure.Constants.Navigation;
-using Crystal.Service.Network;
-using Crystal.NetworkModule.Models;
 
 namespace Crystal.NetworkModule.ViewModels;
 

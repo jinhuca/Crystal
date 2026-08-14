@@ -1,7 +1,7 @@
+using Crystal.Provider.Telemetry.Hardware;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Crystal.Provider.Telemetry.Hardware;
 using Xunit;
 
 namespace Crystal.Provider.Telemetry.Tests;

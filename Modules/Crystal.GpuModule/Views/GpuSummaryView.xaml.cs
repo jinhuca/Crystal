@@ -1,9 +1,9 @@
-using System.Windows.Controls;
-using System.Windows.Input;
 using Crystal.Controls.PerformanceGraphs;
 using Crystal.Controls.PerformanceGraphs.Kinds;
 using Crystal.Controls.PerformanceGraphs.Themes;
 using Crystal.GpuModule.ViewModels;
+using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace Crystal.GpuModule.Views;
 

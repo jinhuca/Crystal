@@ -1,5 +1,5 @@
-using System.Diagnostics;
 using Crystal.Provider.Telemetry.Hardware;
+using System.Diagnostics;
 
 namespace Crystal.Service.Storage;
 

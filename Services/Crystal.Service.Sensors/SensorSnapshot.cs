@@ -1,7 +1,7 @@
+using Crystal.Infrastructure.DataStructures.Sensors;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Crystal.Infrastructure.DataStructures.Sensors;
 
 namespace Crystal.Service.Sensors;
 

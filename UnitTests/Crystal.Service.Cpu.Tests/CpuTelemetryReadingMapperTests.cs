@@ -1,10 +1,10 @@
 using Xunit;
-using ProviderCoreType = Crystal.Provider.Telemetry.Hardware.CoreType;
-using ProviderHardwareType = Crystal.Provider.Telemetry.Hardware.HardwareType;
-using ProviderSensorType = Crystal.Provider.Telemetry.Hardware.SensorType;
 using AppCoreType = Crystal.Infrastructure.DataStructures.Cpu.Definitions.CoreType;
 using AppHardwareType = Crystal.Infrastructure.DataStructures.Sensors.HardwareType;
 using AppSensorType = Crystal.Infrastructure.DataStructures.Sensors.SensorType;
+using ProviderCoreType = Crystal.Provider.Telemetry.Hardware.CoreType;
+using ProviderHardwareType = Crystal.Provider.Telemetry.Hardware.HardwareType;
+using ProviderSensorType = Crystal.Provider.Telemetry.Hardware.SensorType;
 
 namespace Crystal.Service.Cpu.Tests;
 

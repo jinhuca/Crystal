@@ -1,10 +1,10 @@
-using System.Collections.Frozen;
-using Crystal.Provider.Mmi.MmiEngine;
-using Crystal.Service.Gpu;
 using Crystal.GpuModule.Models;
 using Crystal.GpuModule.ViewModels;
+using Crystal.Provider.Mmi.MmiEngine;
+using Crystal.Service.Gpu;
 using Microsoft.Reactive.Testing;
 using Prism.Events;
+using System.Collections.Frozen;
 using Xunit;
 
 namespace Crystal.GpuModule.Tests;

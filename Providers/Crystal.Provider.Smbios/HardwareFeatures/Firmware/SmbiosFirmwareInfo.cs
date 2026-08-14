@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using Crystal.Provider.Smbios.Types;
+using System.Collections.Generic;
 
 namespace Crystal.Provider.Smbios.HardwareFeatures.Firmware;
 

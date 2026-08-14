@@ -1,6 +1,6 @@
-using System.Net.NetworkInformation;
 using Crystal.Provider.Telemetry.Hardware;
 using Crystal.Provider.Telemetry.Hardware.Network;
+using System.Net.NetworkInformation;
 
 namespace Crystal.Service.Network;
 

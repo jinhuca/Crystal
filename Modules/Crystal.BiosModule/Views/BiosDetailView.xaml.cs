@@ -1,11 +1,11 @@
-using System.ComponentModel;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
 using Crystal.BiosModule.ViewModels;
 using Crystal.Controls.PerformanceGraphs;
 using Crystal.Controls.PerformanceGraphs.Kinds;
 using Crystal.Controls.PerformanceGraphs.Themes;
+using System.ComponentModel;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace Crystal.BiosModule.Views;
 

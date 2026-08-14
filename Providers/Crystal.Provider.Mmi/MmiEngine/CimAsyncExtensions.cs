@@ -1,5 +1,5 @@
-﻿using System.Runtime.CompilerServices;
-using Microsoft.Management.Infrastructure.Generic;
+﻿using Microsoft.Management.Infrastructure.Generic;
+using System.Runtime.CompilerServices;
 
 namespace Crystal.Provider.Mmi.MmiEngine;
 

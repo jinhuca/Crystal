@@ -1,8 +1,8 @@
-using System.Reactive.Subjects;
 using Crystal.Service.Storage;
-using Prism.Events;
 using Crystal.StorageModule.Models;
 using Crystal.StorageModule.ViewModels;
+using Prism.Events;
+using System.Reactive.Subjects;
 using Xunit;
 
 namespace Crystal.StorageModule.Tests;

@@ -1,7 +1,7 @@
-using System.Collections.Frozen;
 using Crystal.Provider.Etw;
 using Crystal.Provider.Mmi.MmiEngine;
 using Microsoft.Reactive.Testing;
+using System.Collections.Frozen;
 using Xunit;
 
 namespace Crystal.Service.Process.Tests;

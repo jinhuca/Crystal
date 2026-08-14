@@ -1,8 +1,8 @@
+using Crystal.NetworkModule.Models;
+using Crystal.NetworkModule.ViewModels;
 using Crystal.Provider.Etw;
 using Crystal.Service.Network;
 using Microsoft.Reactive.Testing;
-using Crystal.NetworkModule.Models;
-using Crystal.NetworkModule.ViewModels;
 using Prism.Events;
 using Xunit;
 

@@ -1,5 +1,5 @@
-using Crystal.Service.Network;
 using Crystal.NetworkModule.ViewModels;
+using Crystal.Service.Network;
 using Xunit;
 
 namespace Crystal.NetworkModule.Tests;

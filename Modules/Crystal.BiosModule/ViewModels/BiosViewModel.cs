@@ -1,17 +1,17 @@
+using Crystal.BiosModule.Models;
+using Crystal.Controls.PerformanceGraphs;
+using Crystal.Controls.PerformanceGraphs.Kinds;
+using Crystal.Controls.PerformanceGraphs.Themes;
+using Crystal.Controls.Threading;
+using Crystal.Infrastructure.Constants.Navigation;
+using Crystal.Infrastructure.DataStructures.Sensors;
+using Crystal.Service.Bios;
+using Crystal.Service.Sensors;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using System.Windows.Media;
-using Crystal.BiosModule.Models;
-using Crystal.Controls.PerformanceGraphs;
-using Crystal.Controls.Threading;
-using Crystal.Controls.PerformanceGraphs.Kinds;
-using Crystal.Controls.PerformanceGraphs.Themes;
-using Crystal.Infrastructure.Constants.Navigation;
-using Crystal.Infrastructure.DataStructures.Sensors;
-using Crystal.Service.Bios;
-using Crystal.Service.Sensors;
 
 namespace Crystal.BiosModule.ViewModels;
 

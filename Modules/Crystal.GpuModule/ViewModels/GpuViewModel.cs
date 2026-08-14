@@ -1,9 +1,9 @@
-using System.Collections.ObjectModel;
-using System.Windows.Input;
 using Crystal.Controls.Threading;
+using Crystal.GpuModule.Models;
 using Crystal.Infrastructure.Constants.Navigation;
 using Crystal.Service.Gpu;
-using Crystal.GpuModule.Models;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace Crystal.GpuModule.ViewModels;
 

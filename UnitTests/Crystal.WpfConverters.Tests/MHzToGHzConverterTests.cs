@@ -1,5 +1,5 @@
-using System.Globalization;
 using Crystal.WpfConverters;
+using System.Globalization;
 using Xunit;
 
 namespace Crystal.WpfConverters.Tests;

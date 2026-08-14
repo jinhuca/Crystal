@@ -1,7 +1,7 @@
+using Crystal.Infrastructure.DataStructures.Cpu.Definitions;
 using System.Runtime.InteropServices;
 using System.Runtime.Intrinsics.X86;
 using System.Text;
-using Crystal.Infrastructure.DataStructures.Cpu.Definitions;
 
 namespace Crystal.Provider.CpuId;
 

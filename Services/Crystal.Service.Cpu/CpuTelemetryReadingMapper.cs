@@ -1,7 +1,7 @@
 using Crystal.Provider.Telemetry.Hardware;
-using AppSensorType = Crystal.Infrastructure.DataStructures.Sensors.SensorType;
-using AppHardwareType = Crystal.Infrastructure.DataStructures.Sensors.HardwareType;
 using AppCoreType = Crystal.Infrastructure.DataStructures.Cpu.Definitions.CoreType;
+using AppHardwareType = Crystal.Infrastructure.DataStructures.Sensors.HardwareType;
+using AppSensorType = Crystal.Infrastructure.DataStructures.Sensors.SensorType;
 using SensorReading = Crystal.Infrastructure.DataStructures.Sensors.SensorReading;
 using SensorReadingExtensions = Crystal.Infrastructure.DataStructures.Sensors.SensorReadingExtensions;
 

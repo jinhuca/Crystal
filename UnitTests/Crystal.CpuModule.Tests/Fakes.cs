@@ -1,4 +1,3 @@
-using System.Collections.Frozen;
 using Crystal.Infrastructure.DataStructures.Cpu.Definitions;
 using Crystal.Infrastructure.DataStructures.Cpu.Implementations;
 using Crystal.Infrastructure.DataStructures.Cpu.Implementations.Cores;
@@ -8,6 +7,7 @@ using Crystal.Infrastructure.DataStructures.Sensors;
 using Crystal.Provider.CpuId;
 using Crystal.Provider.Mmi.MmiEngine;
 using Crystal.Provider.Smbios.HardwareFeatures.Processor;
+using System.Collections.Frozen;
 
 namespace Crystal.CpuModule.Tests;
 

@@ -1,6 +1,6 @@
-using System.Reactive.Linq;
 using Crystal.Infrastructure.DataStructures.Sensors;
 using Microsoft.Reactive.Testing;
+using System.Reactive.Linq;
 using Xunit;
 
 namespace Crystal.Service.Sensors.Tests;

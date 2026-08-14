@@ -1,8 +1,8 @@
-using System.Diagnostics;
-using System.Security.Principal;
 using Microsoft.Diagnostics.Tracing;
 using Microsoft.Diagnostics.Tracing.Parsers;
 using Microsoft.Diagnostics.Tracing.Session;
+using System.Diagnostics;
+using System.Security.Principal;
 
 namespace Crystal.Provider.Etw;
 

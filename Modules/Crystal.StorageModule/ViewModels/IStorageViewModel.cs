@@ -1,6 +1,6 @@
+using Crystal.Controls.PerformanceGraphs;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using Crystal.Controls.PerformanceGraphs;
 
 namespace Crystal.StorageModule.ViewModels;
 

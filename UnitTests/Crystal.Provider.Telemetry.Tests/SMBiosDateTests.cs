@@ -1,5 +1,5 @@
-using System;
 using Crystal.Provider.Telemetry.Hardware;
+using System;
 using Xunit;
 
 namespace Crystal.Provider.Telemetry.Tests;

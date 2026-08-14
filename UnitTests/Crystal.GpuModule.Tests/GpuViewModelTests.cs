@@ -1,8 +1,8 @@
-using System.Reactive.Subjects;
-using Crystal.Service.Gpu;
 using Crystal.GpuModule.Models;
 using Crystal.GpuModule.ViewModels;
+using Crystal.Service.Gpu;
 using Prism.Events;
+using System.Reactive.Subjects;
 using Xunit;
 
 namespace Crystal.GpuModule.Tests;

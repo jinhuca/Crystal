@@ -1,5 +1,5 @@
-using System.Globalization;
 using Crystal.Infrastructure.Converters;
+using System.Globalization;
 using Xunit;
 
 namespace Crystal.Infrastructure.Converters.Tests;

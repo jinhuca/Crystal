@@ -1,7 +1,7 @@
-using System.Collections.ObjectModel;
 using Crystal.CpuModule.ViewModels.Interfaces;
 using Crystal.Infrastructure.DataStructures.Cpu.Definitions;
 using Crystal.Infrastructure.DataStructures.Cpu.Interfaces;
+using System.Collections.ObjectModel;
 
 namespace Crystal.CpuModule.ViewModels.Implementations;
 

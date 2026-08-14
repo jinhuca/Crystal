@@ -1,7 +1,7 @@
-using System.Reactive.Linq;
 using Crystal.Provider.CpuId;
 using Crystal.Provider.Smbios.HardwareFeatures.Processor;
 using Microsoft.Reactive.Testing;
+using System.Reactive.Linq;
 using Xunit;
 
 namespace Crystal.Service.Cpu.Tests;

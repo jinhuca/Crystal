@@ -1,10 +1,10 @@
-using System.Collections.Frozen;
 using Crystal.Infrastructure.DataStructures.Cpu.Interfaces;
 using Crystal.Infrastructure.DataStructures.Cpu.Interfaces.Cpus;
 using Crystal.Provider.CpuId;
 using Crystal.Provider.Mmi.MmiEngine;
 using Crystal.Provider.Smbios.HardwareFeatures.Processor;
 using Crystal.Provider.Telemetry.Hardware;
+using System.Collections.Frozen;
 
 namespace Crystal.Service.Cpu.Tests;
 

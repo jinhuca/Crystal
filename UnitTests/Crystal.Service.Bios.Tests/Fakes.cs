@@ -1,7 +1,7 @@
-using System.Collections.Frozen;
 using Crystal.Provider.Mmi.HardwareFeatures.FirmwareSecurity;
 using Crystal.Provider.Mmi.MmiEngine;
 using Crystal.Provider.Smbios.HardwareFeatures.Firmware;
+using System.Collections.Frozen;
 
 namespace Crystal.Service.Bios.Tests;
 

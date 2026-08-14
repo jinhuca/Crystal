@@ -1,7 +1,7 @@
+using Crystal.BiosModule.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Crystal.BiosModule.ViewModels;
 using Xunit;
 
 namespace Crystal.BiosModule.Tests;

@@ -1,7 +1,7 @@
-using System.Windows.Input;
 using Crystal.Controls.Threading;
 using Crystal.Infrastructure.Constants.Navigation;
 using Crystal.OSModule.Models;
+using System.Windows.Input;
 
 namespace Crystal.OSModule.ViewModels;
 

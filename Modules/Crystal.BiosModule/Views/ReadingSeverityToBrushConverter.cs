@@ -1,8 +1,8 @@
+using Crystal.BiosModule.ViewModels;
 using System;
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
-using Crystal.BiosModule.ViewModels;
 
 namespace Crystal.BiosModule.Views;
 

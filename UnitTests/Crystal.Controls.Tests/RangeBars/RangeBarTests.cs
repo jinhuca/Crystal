@@ -1,6 +1,6 @@
-using System.Windows.Media;
 using Crystal.Controls.RangeBars;
 using Crystal.Controls.RangeBars.Themes;
+using System.Windows.Media;
 using Xunit;
 
 namespace Crystal.Controls.Tests.RangeBars;

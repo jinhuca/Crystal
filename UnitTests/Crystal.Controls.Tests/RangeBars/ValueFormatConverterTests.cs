@@ -1,5 +1,5 @@
-using System.Globalization;
 using Crystal.Controls.RangeBars.Controls;
+using System.Globalization;
 using Xunit;
 
 namespace Crystal.Controls.Tests.RangeBars;

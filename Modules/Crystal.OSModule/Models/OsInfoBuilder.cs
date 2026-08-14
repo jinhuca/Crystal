@@ -1,6 +1,6 @@
+using Microsoft.Win32;
 using System.Globalization;
 using System.Runtime.InteropServices;
-using Microsoft.Win32;
 
 namespace Crystal.OSModule.Models;
 

@@ -1,7 +1,7 @@
-using System.Collections.Frozen;
 using Crystal.Provider.Mmi.HardwareFeatures.DiskPartition;
 using Crystal.Provider.Mmi.MmiEngine;
 using Crystal.Provider.Mmi.Tests.Helpers;
+using System.Collections.Frozen;
 using Xunit;
 
 namespace Crystal.Provider.Mmi.Tests.HardwareFeatures;

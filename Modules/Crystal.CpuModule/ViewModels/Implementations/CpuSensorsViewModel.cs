@@ -1,10 +1,10 @@
-using System.Collections.ObjectModel;
+using Crystal.Controls.PerformanceGraphs;
 using Crystal.CpuModule.Models;
 using Crystal.CpuModule.ViewModels;
 using Crystal.CpuModule.ViewModels.Interfaces;
-using Crystal.Controls.PerformanceGraphs;
 using Crystal.Infrastructure.DataStructures.Cpu.Interfaces;
 using Crystal.Infrastructure.DataStructures.Sensors;
+using System.Collections.ObjectModel;
 
 namespace Crystal.CpuModule.ViewModels.Implementations;
 

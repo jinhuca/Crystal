@@ -1,6 +1,6 @@
-using System.Windows.Media;
 using Crystal.Controls.PerformanceGraphs;
 using Crystal.Controls.PerformanceGraphs.Kinds;
+using System.Windows.Media;
 using Xunit;
 
 namespace Crystal.Controls.Tests.PerformanceGraphs;

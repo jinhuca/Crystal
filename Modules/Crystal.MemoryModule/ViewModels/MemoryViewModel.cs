@@ -1,10 +1,10 @@
-using System.Collections.ObjectModel;
-using System.Windows.Input;
 using Crystal.Controls.PerformanceGraphs;
 using Crystal.Controls.Threading;
 using Crystal.Infrastructure.Constants.Navigation;
-using Crystal.Service.Memory;
 using Crystal.MemoryModule.Models;
+using Crystal.Service.Memory;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace Crystal.MemoryModule.ViewModels;
 

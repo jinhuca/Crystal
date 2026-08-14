@@ -1,6 +1,6 @@
+using Crystal.Provider.Etw;
 using System.Diagnostics;
 using System.Reactive.Linq;
-using Crystal.Provider.Etw;
 
 namespace Crystal.Service.Network;
 
