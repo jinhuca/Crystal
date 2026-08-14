@@ -93,14 +93,14 @@ public partial class App : PrismApplication {
   }
 
   protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog) {
-    moduleCatalog.AddModule<CpuModule.CpuModule>();
-    moduleCatalog.AddModule<GpuModule.GpuModule>();
-    moduleCatalog.AddModule<MemoryModule.MemoryModule>();
-    moduleCatalog.AddModule<StorageModule.StorageModule>();
-    moduleCatalog.AddModule<BiosModule.BiosModule>();
-    moduleCatalog.AddModule<NetworkModule.NetworkModule>();
-    moduleCatalog.AddModule<ProcessModule.ProcessModule>();
-    moduleCatalog.AddModule<OSModule.OSModule>();
+    moduleCatalog.AddModule<Crystal.CpuModule.CpuModule>();
+    moduleCatalog.AddModule<Crystal.GpuModule.GpuModule>();
+    moduleCatalog.AddModule<Crystal.MemoryModule.MemoryModule>();
+    moduleCatalog.AddModule<Crystal.StorageModule.StorageModule>();
+    moduleCatalog.AddModule<Crystal.BiosModule.BiosModule>();
+    moduleCatalog.AddModule<Crystal.NetworkModule.NetworkModule>();
+    moduleCatalog.AddModule<Crystal.ProcessModule.ProcessModule>();
+    moduleCatalog.AddModule<Crystal.OSModule.OSModule>();
   }
 
   protected override void OnInitialized() {

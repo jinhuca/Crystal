@@ -28,13 +28,13 @@ public sealed class DetailWindowService {
   // than threading a registration API through Constants.
   private static readonly IReadOnlyDictionary<string, System.Type> ViewTypes =
       new Dictionary<string, System.Type> {
-        [DetailViewNames.Cpu] = typeof(CpuModule.Views.CpuDetailView),
-        [DetailViewNames.Gpu] = typeof(GpuModule.Views.GpuDetailView),
-        [DetailViewNames.Memory] = typeof(MemoryModule.Views.MemoryDetailView),
-        [DetailViewNames.Storage] = typeof(StorageModule.Views.StorageDetailView),
-        [DetailViewNames.Bios] = typeof(BiosModule.Views.BiosDetailView),
-        [DetailViewNames.Network] = typeof(NetworkModule.Views.NetworkDetailView),
-        [DetailViewNames.Os] = typeof(OSModule.Views.OsDetailView),
+        [DetailViewNames.Cpu] = typeof(Crystal.CpuModule.Views.CpuDetailView),
+        [DetailViewNames.Gpu] = typeof(Crystal.GpuModule.Views.GpuDetailView),
+        [DetailViewNames.Memory] = typeof(Crystal.MemoryModule.Views.MemoryDetailView),
+        [DetailViewNames.Storage] = typeof(Crystal.StorageModule.Views.StorageDetailView),
+        [DetailViewNames.Bios] = typeof(Crystal.BiosModule.Views.BiosDetailView),
+        [DetailViewNames.Network] = typeof(Crystal.NetworkModule.Views.NetworkDetailView),
+        [DetailViewNames.Os] = typeof(Crystal.OSModule.Views.OsDetailView),
       };
 
   private const double DefaultWidth = 1280;

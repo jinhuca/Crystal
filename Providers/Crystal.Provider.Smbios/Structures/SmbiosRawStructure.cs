@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CrystalMonitorLib.Smbios.Structures;
+namespace Crystal.Provider.Smbios.Structures;
 
 /// <summary>
 /// Represents a single raw SMBIOS structure together with its decoded string table.

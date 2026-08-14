@@ -1,4 +1,4 @@
-namespace CrystalMonitorLib.Smbios.Structures;
+namespace Crystal.Provider.Smbios.Structures;
 
 /// <summary>
 /// Common interface for Memory Error Information (Type 18 / Type 33) entries.

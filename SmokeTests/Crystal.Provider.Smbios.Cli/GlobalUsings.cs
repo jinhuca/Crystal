@@ -1,1 +1,1 @@
-global using CrystalMonitorLib.Smbios.Structures;
+global using Crystal.Provider.Smbios.Structures;

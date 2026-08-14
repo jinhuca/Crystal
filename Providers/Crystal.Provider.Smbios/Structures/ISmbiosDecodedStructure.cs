@@ -1,4 +1,4 @@
-namespace CrystalMonitorLib.Smbios.Structures;
+namespace Crystal.Provider.Smbios.Structures;
 
 /// <summary>
 /// Common metadata shared by every decoded SMBIOS structure (T000, T001, T004, …):

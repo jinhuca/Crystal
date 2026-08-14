@@ -49,14 +49,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Modules\CpuModule\CpuModule.csproj" />
-    <ProjectReference Include="..\..\Modules\GpuModule\GpuModule.csproj" />
-    <ProjectReference Include="..\..\Modules\MemoryModule\MemoryModule.csproj" />
-    <ProjectReference Include="..\..\Modules\StorageModule\StorageModule.csproj" />
-    <ProjectReference Include="..\..\Modules\BiosModule\BiosModule.csproj" />
-    <ProjectReference Include="..\..\Modules\NetworkModule\NetworkModule.csproj" />
-    <ProjectReference Include="..\..\Modules\ProcessModule\ProcessModule.csproj" />
-    <ProjectReference Include="..\..\Modules\OSModule\OSModule.csproj" />
+    <ProjectReference Include="..\..\Modules\Crystal.CpuModule\Crystal.CpuModule.csproj" />
+    <ProjectReference Include="..\..\Modules\Crystal.GpuModule\Crystal.GpuModule.csproj" />
+    <ProjectReference Include="..\..\Modules\Crystal.MemoryModule\Crystal.MemoryModule.csproj" />
+    <ProjectReference Include="..\..\Modules\Crystal.StorageModule\Crystal.StorageModule.csproj" />
+    <ProjectReference Include="..\..\Modules\Crystal.BiosModule\Crystal.BiosModule.csproj" />
+    <ProjectReference Include="..\..\Modules\Crystal.NetworkModule\Crystal.NetworkModule.csproj" />
+    <ProjectReference Include="..\..\Modules\Crystal.ProcessModule\Crystal.ProcessModule.csproj" />
+    <ProjectReference Include="..\..\Modules\Crystal.OSModule\Crystal.OSModule.csproj" />
     <ProjectReference Include="..\..\UI\Crystal.Resources\Crystal.Resources.csproj" />
     <ProjectReference Include="..\..\Infrastructures\Crystal.Infrastructure.Constants\Crystal.Infrastructure.Constants.csproj" />
     <ProjectReference Include="..\..\Services\Crystal.Service.Sensors\Crystal.Service.Sensors.csproj" />

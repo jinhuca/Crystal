@@ -11,14 +11,14 @@
     <Project Path="Infrastructures/Crystal.Infrastructure.DataStructures/Crystal.Infrastructure.DataStructures.csproj" />
   </Folder>
   <Folder Name="/Modules/">
-    <Project Path="Modules/BiosModule/BiosModule.csproj" Id="c1b31da1-27c9-4607-a2fc-582db4f16c78" />
-    <Project Path="Modules/CpuModule/CpuModule.csproj" Id="938f4d05-b902-4a27-bc70-f673f23a15a4" />
-    <Project Path="Modules/GpuModule/GpuModule.csproj" />
-    <Project Path="Modules/MemoryModule/MemoryModule.csproj" />
-    <Project Path="Modules/StorageModule/StorageModule.csproj" />
-    <Project Path="Modules/NetworkModule/NetworkModule.csproj" />
-    <Project Path="Modules/ProcessModule/ProcessModule.csproj" />
-    <Project Path="Modules/OSModule/OSModule.csproj" />
+    <Project Path="Modules/Crystal.BiosModule/Crystal.BiosModule.csproj" Id="c1b31da1-27c9-4607-a2fc-582db4f16c78" />
+    <Project Path="Modules/Crystal.CpuModule/Crystal.CpuModule.csproj" Id="938f4d05-b902-4a27-bc70-f673f23a15a4" />
+    <Project Path="Modules/Crystal.GpuModule/Crystal.GpuModule.csproj" />
+    <Project Path="Modules/Crystal.MemoryModule/Crystal.MemoryModule.csproj" />
+    <Project Path="Modules/Crystal.StorageModule/Crystal.StorageModule.csproj" />
+    <Project Path="Modules/Crystal.NetworkModule/Crystal.NetworkModule.csproj" />
+    <Project Path="Modules/Crystal.ProcessModule/Crystal.ProcessModule.csproj" />
+    <Project Path="Modules/Crystal.OSModule/Crystal.OSModule.csproj" />
   </Folder>
   <Folder Name="/Providers/">
     <Project Path="Providers/Crystal.Provider.CpuId/Crystal.Provider.CpuId.csproj" />
@@ -110,42 +110,42 @@
       <Platform Solution="*|x64" Project="x64" />
       <Platform Solution="*|x86" Project="x86" />
     </Project>
-    <Project Path="UnitTests/NetworkModule.Tests/NetworkModule.Tests.csproj">
+    <Project Path="UnitTests/Crystal.NetworkModule.Tests/Crystal.NetworkModule.Tests.csproj">
       <Platform Solution="*|Any CPU" Project="x64" />
       <Platform Solution="*|x64" Project="x64" />
       <Platform Solution="*|x86" Project="x86" />
     </Project>
-    <Project Path="UnitTests/BiosModule.Tests/BiosModule.Tests.csproj">
+    <Project Path="UnitTests/Crystal.BiosModule.Tests/Crystal.BiosModule.Tests.csproj">
       <Platform Solution="*|Any CPU" Project="x64" />
       <Platform Solution="*|x64" Project="x64" />
       <Platform Solution="*|x86" Project="x86" />
     </Project>
-    <Project Path="UnitTests/ProcessModule.Tests/ProcessModule.Tests.csproj">
+    <Project Path="UnitTests/Crystal.ProcessModule.Tests/Crystal.ProcessModule.Tests.csproj">
       <Platform Solution="*|Any CPU" Project="x64" />
       <Platform Solution="*|x64" Project="x64" />
       <Platform Solution="*|x86" Project="x86" />
     </Project>
-    <Project Path="UnitTests/MemoryModule.Tests/MemoryModule.Tests.csproj">
+    <Project Path="UnitTests/Crystal.MemoryModule.Tests/Crystal.MemoryModule.Tests.csproj">
       <Platform Solution="*|Any CPU" Project="x64" />
       <Platform Solution="*|x64" Project="x64" />
       <Platform Solution="*|x86" Project="x86" />
     </Project>
-    <Project Path="UnitTests/StorageModule.Tests/StorageModule.Tests.csproj">
+    <Project Path="UnitTests/Crystal.StorageModule.Tests/Crystal.StorageModule.Tests.csproj">
       <Platform Solution="*|Any CPU" Project="x64" />
       <Platform Solution="*|x64" Project="x64" />
       <Platform Solution="*|x86" Project="x86" />
     </Project>
-    <Project Path="UnitTests/OSModule.Tests/OSModule.Tests.csproj">
+    <Project Path="UnitTests/Crystal.OSModule.Tests/Crystal.OSModule.Tests.csproj">
       <Platform Solution="*|Any CPU" Project="x64" />
       <Platform Solution="*|x64" Project="x64" />
       <Platform Solution="*|x86" Project="x86" />
     </Project>
-    <Project Path="UnitTests/GpuModule.Tests/GpuModule.Tests.csproj">
+    <Project Path="UnitTests/Crystal.GpuModule.Tests/Crystal.GpuModule.Tests.csproj">
       <Platform Solution="*|Any CPU" Project="x64" />
       <Platform Solution="*|x64" Project="x64" />
       <Platform Solution="*|x86" Project="x86" />
     </Project>
-    <Project Path="UnitTests/CpuModule.Tests/CpuModule.Tests.csproj">
+    <Project Path="UnitTests/Crystal.CpuModule.Tests/Crystal.CpuModule.Tests.csproj">
       <Platform Solution="*|Any CPU" Project="x64" />
       <Platform Solution="*|x64" Project="x64" />
       <Platform Solution="*|x86" Project="x86" />

@@ -1,0 +1,15 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:views="clr-namespace:Crystal.BiosModule.Views">
+  <!-- Shared across the BIOS summary tile and detail view so the two read as one system:
+       the converters and the palette live here once. Field styles stay per-view (the tile is
+       denser than the detail view) but pull their colors from these brushes. -->
+  <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+  <views:ReadingSeverityToBrushConverter x:Key="SeverityToBrush"/>
+
+  <SolidColorBrush x:Key="BiosAccentBrush" Color="#3E9BE8"/>
+  <SolidColorBrush x:Key="BiosLabelBrush" Color="#8A94A0"/>
+  <SolidColorBrush x:Key="BiosValueBrush" Color="#E6E6E6"/>
+  <SolidColorBrush x:Key="BiosDimBrush" Color="#5A6470"/>
+  <SolidColorBrush x:Key="BiosRuleBrush" Color="#2A2A2A"/>
+</ResourceDictionary>

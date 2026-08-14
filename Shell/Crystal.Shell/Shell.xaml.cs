@@ -57,7 +57,7 @@ public partial class Shell : Window {
   // region by Prism, so we locate them in the visual tree rather than hold refs.
   private void OnResetLayoutClick(object sender, RoutedEventArgs e) {
     FindDescendant<DashboardView>(MainContent)?.ResetLayout();
-    FindDescendant<ProcessModule.Views.ProcessSummaryView>(MainContent)?.ResetLayout();
+    FindDescendant<Crystal.ProcessModule.Views.ProcessSummaryView>(MainContent)?.ResetLayout();
   }
 
   private static T? FindDescendant<T>(DependencyObject root) where T : DependencyObject {

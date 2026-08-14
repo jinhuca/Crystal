@@ -1,6 +1,6 @@
 using Crystal.Provider.Smbios.Types;
 
-namespace CrystalMonitorLib.Smbios.Structures;
+namespace Crystal.Provider.Smbios.Structures;
 
 /// <summary>
 /// Discriminated wrapper for a memory error information entry.

@@ -1,4 +1,4 @@
-namespace CrystalMonitorLib.Smbios.Structures;
+namespace Crystal.Provider.Smbios.Structures;
 
 // DMTF DSP0134 §7 — Structure type codes
 public enum SmbiosStructureType : byte
