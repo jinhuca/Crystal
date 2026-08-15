@@ -1,6 +1,7 @@
 <Window x:Class="Crystal.Shell.Shell"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:prism="http://prismlibrary.com/"
@@ -8,98 +9,107 @@
         xmlns:const="clr-namespace:Crystal.Infrastructure.Constants;assembly=Crystal.Infrastructure.Constants"
         xmlns:local="clr-namespace:Crystal.Shell"
         mc:Ignorable="d"
-        Title="Crystal" Height="1040" Width="1720"
         Icon="Crystal.ico"
-        Background="Black"
+        Background="Transparent"
         BorderBrush="{StaticResource AccentBrush}" BorderThickness="1">
-    <!-- Strip the OS-drawn frame and its native caption buttons (GlassFrameThickness=0,
+  <!-- Strip the OS-drawn frame and its native caption buttons (GlassFrameThickness=0,
          UseAeroCaptionButtons=False) so the window's own 1dip BorderBrush is the only visible
          edge and we draw our own min/max/close buttons in the title bar below. -->
-    <shell:WindowChrome.WindowChrome>
-        <shell:WindowChrome CaptionHeight="43"
-                            GlassFrameThickness="0"
-                            CornerRadius="0"
-                            ResizeBorderThickness="6"
-                            UseAeroCaptionButtons="False"/>
-    </shell:WindowChrome.WindowChrome>
-
-    <Window.Resources>
-        <!-- Caption buttons: transparent so the title bar's window background shows through,
+  <Window.Resources>
+    <sys:Double x:Key="CaptionButtonFontSize">16</sys:Double>
+    <!-- Caption buttons: transparent so the title bar's window background shows through,
              with a hover fill. IsHitTestVisibleInChrome lets clicks land on the button instead
              of the WindowChrome drag region. -->
-        <Style x:Key="CaptionButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Width" Value="61"/>
-            <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
-            <Setter Property="FontSize" Value="{StaticResource SectionFontSize}"/>
-            <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border x:Name="Bd" Background="{TemplateBinding Background}"
-                                SnapsToDevicePixels="True">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                              VerticalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Bd" Property="Background" Value="{StaticResource DividerBrush}"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <!-- Close button gets the standard red hover instead of the neutral gray. -->
-        <Style x:Key="CloseButtonStyle" TargetType="Button" BasedOn="{StaticResource CaptionButtonStyle}">
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-    </Window.Resources>
+    <Style x:Key="CaptionButtonStyle" TargetType="Button">
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+      <Setter Property="BorderThickness" Value="0"/>
+      <Setter Property="Width" Value="50"/>
+      <Setter Property="Height" Value="30"/>
+      <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+      <Setter Property="FontSize" Value="{StaticResource CaptionButtonFontSize}"/>
+      <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="Button">
+            <Border x:Name="Bd" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="Bd" Property="Background" Value="{StaticResource DividerBrush}"/>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+    <!-- Close button gets the standard red hover instead of the neutral gray. -->
+    <Style x:Key="CloseButtonStyle" TargetType="Button" BasedOn="{StaticResource CaptionButtonStyle}">
+      <Style.Triggers>
+        <Trigger Property="IsMouseOver" Value="True">
+          <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
+        </Trigger>
+      </Style.Triggers>
+    </Style>
+    <!-- Chrome Properties -->
+    <sys:Double x:Key="ChromeHeight">40</sys:Double>
+    <Thickness x:Key="ChromeGlassFrameThickness">0</Thickness>
+    <CornerRadius x:Key="ChromeCornerRadius">0</CornerRadius>
+    <Thickness x:Key="ChromeResizeBorderThickness">6</Thickness>
+    <sys:Boolean x:Key="ChromeUseAeroCaptionButtons">False</sys:Boolean>
+    <GridLength x:Key="ChromeGridHeight">30</GridLength>
+    <GridLength x:Key="ShellContentHeight">*</GridLength>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="43"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <Style TargetType="StackPanel" x:Key="CaptionStackPanelStyle">
+      <Setter Property="Orientation" Value="Horizontal"/>
+      <Setter Property="HorizontalAlignment" Value="Left"/>
+      <Setter Property="VerticalAlignment" Value="Center"/>
+      <Setter Property="Margin" Value="10,0,0,0"/>
+    </Style>
+  </Window.Resources>
 
-        <!-- Title bar: shares the window's black content background; the left region is the drag
-             surface, the right region holds the custom caption buttons. -->
-        <Grid Grid.Row="0" Background="{Binding Background, RelativeSource={RelativeSource AncestorType=Window}}">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center"
-                        Margin="10,0,0,0">
-                <!-- App logo in the top-left corner; excluded from the WindowChrome drag region so
-                     it renders as a static brand mark rather than a hit target. -->
-                <Image Source="Crystal.ico" Width="20" Height="20"
-                       Margin="0,0,8,0" VerticalAlignment="Center"
-                       RenderOptions.BitmapScalingMode="HighQuality"
-                       WindowChrome.IsHitTestVisibleInChrome="False"/>
-                <TextBlock Text="Crystal" Foreground="{StaticResource LabelBrush}" FontFamily="{StaticResource UiFontFamily}" FontSize="16"
-                           VerticalAlignment="Center"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBlock x:Name="DateTimeText" Foreground="{StaticResource SpecValueBrush}" FontFamily="{StaticResource UiFontFamily}" FontSize="16"
-                           VerticalAlignment="Center"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button x:Name="ResetLayoutButton" Style="{StaticResource CaptionButtonStyle}"
-                        Click="OnResetLayoutClick" Content="&#xE72C;"
-                        ToolTip="Reset dashboard layout"/>
-                <Button x:Name="MinimizeButton" Style="{StaticResource CaptionButtonStyle}"
-                        Click="OnMinimizeClick" Content="&#xE921;"/>
-                <Button x:Name="MaximizeButton" Style="{StaticResource CaptionButtonStyle}"
-                        Click="OnMaximizeRestoreClick" Content="&#xE922;"/>
-                <Button x:Name="CloseButton" Style="{StaticResource CloseButtonStyle}"
-                        Click="OnCloseClick" Content="&#xE8BB;"/>
-            </StackPanel>
-        </Grid>
+  <shell:WindowChrome.WindowChrome>
+    <shell:WindowChrome CaptionHeight="{StaticResource ChromeHeight}" 
+                        GlassFrameThickness="{StaticResource ChromeGlassFrameThickness}"
+                        CornerRadius="{StaticResource ChromeCornerRadius}"
+                        ResizeBorderThickness="{StaticResource ChromeResizeBorderThickness}"
+                        UseAeroCaptionButtons="{StaticResource ChromeUseAeroCaptionButtons}"/>
+  </shell:WindowChrome.WindowChrome>
+  
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="{StaticResource ChromeGridHeight}"/>
+      <RowDefinition Height="{StaticResource ShellContentHeight}"/>
+    </Grid.RowDefinitions>
 
-        <ContentControl x:Name="MainContent" Grid.Row="1"
-                        prism:RegionManager.RegionName="{x:Static const:RegionNames.MainContentRegionName}"/>
+    <!-- Title bar: shares the window's black content background; the left region is the drag surface, 
+         the right region holds the custom caption buttons. -->
+    <Grid Grid.Row="0" Background="{Binding Background, RelativeSource={RelativeSource AncestorType=Window}}">
+      <StackPanel Style="{StaticResource CaptionStackPanelStyle}">
+        <!-- App logo in the top-left corner; excluded from the WindowChrome drag region so it renders 
+             as a static brand mark rather than a hit target. -->
+        <Image Source="Crystal.ico" Width="20" Height="20" Margin="0,0,8,0" VerticalAlignment="Center"
+               RenderOptions.BitmapScalingMode="HighQuality" WindowChrome.IsHitTestVisibleInChrome="False"/>
+        <TextBlock Text="Crystal" Foreground="{StaticResource LabelBrush}" FontFamily="{StaticResource UiFontFamily}" 
+                   FontSize="16" VerticalAlignment="Center"/>
+      </StackPanel>
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <TextBlock x:Name="DateTimeText" Foreground="{StaticResource SpecValueBrush}" 
+                   FontFamily="{StaticResource UiFontFamily}" FontSize="16" VerticalAlignment="Center"/>
+      </StackPanel>
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+        <Button x:Name="ResetLayoutButton" Style="{StaticResource CaptionButtonStyle}"
+                Click="OnResetLayoutClick" Content="&#xE72C;" ToolTip="Reset dashboard layout"/>
+        <Button x:Name="MinimizeButton" Style="{StaticResource CaptionButtonStyle}"
+                Click="OnMinimizeClick" Content="&#xE921;"/>
+        <Button x:Name="MaximizeButton" Style="{StaticResource CaptionButtonStyle}"
+                Click="OnMaximizeRestoreClick" Content="&#xE922;"/>
+        <Button x:Name="CloseButton" Style="{StaticResource CloseButtonStyle}"
+                Click="OnCloseClick" Content="&#xE8BB;"/>
+      </StackPanel>
     </Grid>
+    <ContentControl x:Name="MainContent" Grid.Row="1" 
+                    prism:RegionManager.RegionName="{x:Static const:RegionNames.MainContentRegionName}"/>
+  </Grid>
 </Window>

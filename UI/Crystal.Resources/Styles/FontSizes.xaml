@@ -8,6 +8,7 @@
   <sys:Double x:Key="BodyFontSize">12</sys:Double>
   <sys:Double x:Key="SpecFontSize">13</sys:Double>
   <sys:Double x:Key="SubHeadingFontSize">14</sys:Double>
+  
   <sys:Double x:Key="SectionFontSize">18</sys:Double>
   <sys:Double x:Key="ValueFontSize">22</sys:Double>
   <sys:Double x:Key="TitleFontSize">28</sys:Double>

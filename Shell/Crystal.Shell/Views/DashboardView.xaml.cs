@@ -35,9 +35,10 @@ public partial class DashboardView : UserControl {
     AddHandler(LoadingHost.SettledEvent, new RoutedEventHandler((_, _) => ResetLayout()));
   }
 
-  /// <summary>Restores the resizable rows and the Row #3 tile columns to their default star
-  /// proportions, undoing any splitter drags. The MinHeight/MinWidth floors defined in XAML are
-  /// unaffected.</summary>
+  /// <summary>
+  /// Restores the resizable rows and the Row #3 tile columns to their default star proportions, 
+  /// undoing any splitter drags. The MinHeight/MinWidth floors defined in XAML are unaffected.
+  /// </summary>
   public void ResetLayout() {
     CpuRow.Height = CpuDefault;
     GpuRow.Height = GpuDefault;

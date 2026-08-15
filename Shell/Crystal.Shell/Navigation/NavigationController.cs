@@ -14,7 +14,9 @@ public sealed class NavigationController {
 
   public NavigationController(IRegionManager regionManager) => _regionManager = regionManager;
 
-  /// <summary>Shows the dashboard in the shell's content region. Called once at startup.</summary>
+  /// <summary>
+  /// Shows the dashboard in the shell's content region. Called once at startup.
+  /// </summary>
   public void NavigateToDashboard() =>
-      _regionManager.RequestNavigate(RegionNames.MainContentRegionName, nameof(DashboardView));
+    _regionManager.RequestNavigate(RegionNames.MainContentRegionName, nameof(DashboardView));
 }

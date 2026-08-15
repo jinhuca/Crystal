@@ -39,16 +39,13 @@ public partial class Shell : Window {
     UpdateClock();
   }
 
-  private void UpdateClock() =>
-      DateTimeText.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+  private void UpdateClock() => DateTimeText.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
-  private void OnMinimizeClick(object sender, RoutedEventArgs e) =>
-      WindowState = WindowState.Minimized;
+  private void OnMinimizeClick(object sender, RoutedEventArgs e) => WindowState = WindowState.Minimized;
 
-  private void OnMaximizeRestoreClick(object sender, RoutedEventArgs e) =>
-      WindowState = WindowState == WindowState.Maximized
-          ? WindowState.Normal
-          : WindowState.Maximized;
+  private void OnMaximizeRestoreClick(object sender, RoutedEventArgs e) => WindowState = WindowState == WindowState.Maximized
+    ? WindowState.Normal
+    : WindowState.Maximized;
 
   private void OnCloseClick(object sender, RoutedEventArgs e) => Close();
 

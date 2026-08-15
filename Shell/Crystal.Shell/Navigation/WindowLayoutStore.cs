@@ -5,7 +5,9 @@ using System.Text.Json;
 
 namespace Crystal.Shell.Navigation;
 
-/// <summary>Persisted placement of one detail window, keyed by its detail-view name.</summary>
+/// <summary>
+/// Persisted placement of one detail window, keyed by its detail-view name.
+/// </summary>
 public sealed class WindowLayout {
   public double Left { get; set; }
   public double Top { get; set; }
@@ -53,7 +55,9 @@ public sealed class WindowLayoutStore {
 
   public WindowLayout? Get(string key) => _layouts.TryGetValue(key, out var l) ? l : null;
 
-  /// <summary>Detail-view names whose window was open when last persisted — the session-restore set.</summary>
+  /// <summary>
+  /// Detail-view names whose window was open when last persisted — the session-restore set.
+  /// </summary>
   public IReadOnlyList<string> OpenKeys() {
     var keys = new List<string>();
     foreach (var (key, layout) in _layouts)
