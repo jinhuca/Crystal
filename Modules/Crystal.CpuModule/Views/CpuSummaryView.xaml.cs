@@ -19,17 +19,17 @@ public partial class CpuSummaryView : UserControl {
   private void OnLoaded(object sender, System.Windows.RoutedEventArgs e) {
     // Distinct accents per metric, matching the detail view. Line themes carry the vertical
     // glow-gradient fill that reads correctly under FilledLineRenderer.
-    ClockBar.ApplyTheme(GraphThemes.Amber(GraphKind.Line));
-    VoltageBar.ApplyTheme(GraphThemes.Emerald(GraphKind.Line));
-    PowerBar.ApplyTheme(GraphThemes.Emerald(GraphKind.Line));
-    UtilizationBar.ApplyTheme(GraphThemes.Rose(GraphKind.Line));
-    TemperatureBar.ApplyTheme(GraphThemes.Sky(GraphKind.Line));
-    FanBar.ApplyTheme(GraphThemes.FromAccent(Color.FromRgb(0x9B, 0x5A, 0xE8), GraphKind.Line));
+    CpuClockGraph.ApplyTheme(GraphThemes.Amber(GraphKind.Line));
+    CpuVoltageGraph.ApplyTheme(GraphThemes.Emerald(GraphKind.Line));
+    CpuPowerGraph.ApplyTheme(GraphThemes.Emerald(GraphKind.Line));
+    CpuUtilizationGraph.ApplyTheme(GraphThemes.Rose(GraphKind.Line));
+    CpuTemperatureGraph.ApplyTheme(GraphThemes.Sky(GraphKind.Line));
+    CpuFanGraph.ApplyTheme(GraphThemes.Purple(GraphKind.Line));
 
     if (DataContext is ICpuViewModel vm)
       vm.SensorsViewModel.AttachGraphs(
-          utilization: UtilizationBar, voltage: VoltageBar, clock: ClockBar,
-          power: PowerBar, temperature: TemperatureBar, fan: FanBar);
+          utilization: CpuUtilizationGraph, voltage: CpuVoltageGraph, clock: CpuClockGraph,
+          power: CpuPowerGraph, temperature: CpuTemperatureGraph, fan: CpuFanGraph);
   }
 
   private void OnTileClick(object sender, MouseButtonEventArgs e) {

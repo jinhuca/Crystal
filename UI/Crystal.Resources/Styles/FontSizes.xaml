@@ -10,7 +10,10 @@
   <sys:Double x:Key="SubHeadingFontSize">14</sys:Double>
   
   <sys:Double x:Key="SectionFontSize">18</sys:Double>
-  <sys:Double x:Key="ValueFontSize">22</sys:Double>
+
+  <sys:Double x:Key="BigValueFontSize">18</sys:Double>
+  <sys:Double x:Key="BigValueLineHeight">18</sys:Double>
+  
   <sys:Double x:Key="TitleFontSize">28</sys:Double>
   <sys:Double x:Key="HeroFontSize">30</sys:Double>
 </ResourceDictionary>

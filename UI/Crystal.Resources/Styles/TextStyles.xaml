@@ -8,14 +8,15 @@
        are unreachable without this merge and would resolve to UnsetValue at layout time. -->
   <ResourceDictionary.MergedDictionaries>
     <ResourceDictionary Source="/Crystal.Resources;component/Styles/Palette.xaml"/>
+    <ResourceDictionary Source="/Crystal.Resources;component/Styles/FontSizes.xaml"/>
   </ResourceDictionary.MergedDictionaries>
 
   <!-- Metric readout beside a graph: big value, unit line, dim caption. -->
   <Style x:Key="MetricValue" TargetType="TextBlock">
     <Setter Property="Foreground" Value="{StaticResource ValueBrush}"/>
-    <Setter Property="FontSize" Value="22"/>
+    <Setter Property="FontSize" Value="{StaticResource BigValueFontSize}"/>
     <Setter Property="FontFamily" Value="Consolas"/>
-    <Setter Property="LineHeight" Value="22"/>
+    <Setter Property="LineHeight" Value="{StaticResource BigValueLineHeight}"/>
   </Style>
   <Style x:Key="MetricUnit" TargetType="TextBlock">
     <Setter Property="Foreground" Value="{StaticResource UnitBrush}"/>

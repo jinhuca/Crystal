@@ -4,23 +4,38 @@ using System.Windows.Media;
 
 namespace Crystal.Controls.PerformanceGraphs.Themes;
 
-/// <summary>Built-in <see cref="GraphTheme"/> presets for <see cref="PerformanceGraph"/>.</summary>
+/// <summary>
+/// Built-in <see cref="GraphTheme"/> presets for <see cref="PerformanceGraph"/>.
+/// </summary>
 public static class GraphThemes {
   private static readonly Brush DefaultBackground = Freeze(Brushes.Black);
   private static readonly Brush DefaultGrid = Freeze(new SolidColorBrush(Color.FromRgb(0x30, 0x30, 0x30)));
   private static readonly Brush DefaultBorder = Freeze(new SolidColorBrush(Color.FromRgb(0x3E, 0x7B, 0xC4)));
 
-  /// <summary>Rose/magenta accent — matches a typical "% Utilization" graph.</summary>
+  /// <summary>
+  /// Rose/magenta accent — matches a typical "% Utilization" graph.
+  /// </summary>
   public static GraphTheme Rose(GraphKind kind = GraphKind.Line) => FromAccent(Color.FromRgb(0xE8, 0x2A, 0x7A), kind);
 
-  /// <summary>Emerald/green accent — matches a typical "Voltage" or "healthy" graph.</summary>
+  /// <summary>
+  /// Emerald/green accent — matches a typical "Voltage" or "healthy" graph.
+  /// </summary>
   public static GraphTheme Emerald(GraphKind kind = GraphKind.Line) => FromAccent(Color.FromRgb(0x3B, 0xD1, 0x5A), kind);
 
-  /// <summary>Amber accent — a common "warning" color.</summary>
+  /// <summary>
+  /// Amber accent — a common "warning" color.
+  /// </summary>
   public static GraphTheme Amber(GraphKind kind = GraphKind.Line) => FromAccent(Color.FromRgb(0xE8, 0x9B, 0x2A), kind);
 
-  /// <summary>Sky-blue accent.</summary>
+  /// <summary>
+  /// Sky-blue accent.
+  /// </summary>
   public static GraphTheme Sky(GraphKind kind = GraphKind.Line) => FromAccent(Color.FromRgb(0x3E, 0x9B, 0xE8), kind);
+
+  /// <summary>
+  /// Purple accent.
+  /// </summary>
+  public static GraphTheme Purple(GraphKind kind = GraphKind.Line) => FromAccent(Color.FromRgb(0x9B, 0x5A, 0xE8), kind);
 
   /// <summary>
   /// Builds a theme from a single accent color: the line and fill both derive from it, over a

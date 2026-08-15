@@ -13,7 +13,7 @@ internal sealed class SegmentedBarRenderer {
   // Fraction of each grid row's height a fully-lit segment occupies; the remainder is split
   // evenly as a gap above and below it, giving the classic stacked "LED meter" look. Segments
   // are one per grid row so their gaps line up with the horizontal grid lines.
-  private const double SegmentHeightRatio = 0.8;
+  private const double SegmentHeightRatio = 0.6;
 
   // Created once, reused every frame by re-opening it — same reasoning as
   // FilledLineRenderer/BarRenderer. A single sample can contribute up to `rows` separate
