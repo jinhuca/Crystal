@@ -41,6 +41,10 @@
     <GradientStop Color="#C0E89B2A" Offset="0"/>
     <GradientStop Color="#50E89B2A" Offset="1"/>
   </LinearGradientBrush>
+  <LinearGradientBrush x:Key="GraphPurpleFill" StartPoint="0,0" EndPoint="0,1">
+    <GradientStop Color="#C09B5AE8" Offset="0"/>
+    <GradientStop Color="#509B5AE8" Offset="1"/>
+  </LinearGradientBrush>
 
   <!-- Chrome (grid lines, axis border, opaque plot background) -->
   <SolidColorBrush x:Key="GraphGridBrush" Color="#FF303030"/>

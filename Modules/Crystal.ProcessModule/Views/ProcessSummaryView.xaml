@@ -233,6 +233,10 @@
            matters: IsMouseOver comes first so the selection fill (below) wins on a hovered
            selected row, and the MultiTrigger gives a slightly brighter blue for selected+hover. -->
       <Style x:Key="RowStyle" TargetType="ListViewItem">
+        <!-- Bind selection to the row VM so it tracks the data item, not the recycled container. See
+             ProcessRowViewModel.IsSelected: the list live-sorts every poll and virtualizes with
+             Recycling, which corrupts the list's SelectedItem on a re-sort. -->
+        <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
         <Setter Property="Padding" Value="0"/>
@@ -424,7 +428,6 @@
       </Grid.ColumnDefinitions>
 
       <ListView Grid.Column="0" ItemsSource="{Binding RowsView}"
-                SelectedItem="{Binding SelectedRow, Mode=TwoWay}"
                 SelectionMode="Single"
                 GridViewColumnHeader.Click="OnColumnHeaderClick"
                 Style="{StaticResource ProcessListViewStyle}"

@@ -17,6 +17,7 @@ public sealed class ProcessRowViewModel : BindableBase {
   private double? _netBytesPerSec;
   private string? _executablePath;
   private ImageSource? _iconSource;
+  private bool _isSelected;
 
   public ProcessRowViewModel(uint processId, string name) {
     ProcessId = processId;
@@ -25,6 +26,13 @@ public sealed class ProcessRowViewModel : BindableBase {
 
   public uint ProcessId { get; }
   public string Name { get; }
+
+  /// <summary>Whether this row is the selected one. Bound two-way to the ListViewItem's IsSelected in
+  /// the container style so selection travels with the data item — with UI virtualization in
+  /// Recycling mode, binding the list's SelectedItem alone lets a live re-sort reassign selection to
+  /// whatever item lands in a recycled container. The list live-sorts every poll, so that jump was
+  /// visible constantly.</summary>
+  public bool IsSelected { get => _isSelected; set => SetProperty(ref _isSelected, value); }
 
   /// <summary>Full path to the process image on disk, or null for processes WMI can't read the path
   /// of. Drives icon resolution and is refreshed each poll (it can arrive late for a process that

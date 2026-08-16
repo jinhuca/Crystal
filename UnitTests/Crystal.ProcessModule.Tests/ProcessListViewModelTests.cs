@@ -124,12 +124,12 @@ public class ProcessListViewModelTests {
   }
 
   [Fact]
-  public void Cpu_descending_is_the_default_sort() {
+  public void Name_ascending_is_the_default_sort() {
     StaRunner.Run(() => {
       var vm = CreateVm(out _);
 
-      Assert.Equal(nameof(ProcessRowViewModel.CpuPercent), vm.SortProperty);
-      Assert.Equal(System.ComponentModel.ListSortDirection.Descending, vm.SortDirection);
+      Assert.Equal(nameof(ProcessRowViewModel.Name), vm.SortProperty);
+      Assert.Equal(System.ComponentModel.ListSortDirection.Ascending, vm.SortDirection);
     });
   }
 
@@ -138,9 +138,9 @@ public class ProcessListViewModelTests {
     StaRunner.Run(() => {
       var vm = CreateVm(out _);
 
-      vm.SortBy(nameof(ProcessRowViewModel.Name));
+      vm.SortBy(nameof(ProcessRowViewModel.CpuPercent));
 
-      Assert.Equal(nameof(ProcessRowViewModel.Name), vm.SortProperty);
+      Assert.Equal(nameof(ProcessRowViewModel.CpuPercent), vm.SortProperty);
       Assert.Equal(System.ComponentModel.ListSortDirection.Ascending, vm.SortDirection);
     });
   }
@@ -149,12 +149,12 @@ public class ProcessListViewModelTests {
   public void Clicking_the_active_column_flips_the_direction() {
     StaRunner.Run(() => {
       var vm = CreateVm(out _);
-      vm.SortBy(nameof(ProcessRowViewModel.Name));    // now Name ascending
+      vm.SortBy(nameof(ProcessRowViewModel.CpuPercent));    // now CPU ascending
 
-      vm.SortBy(nameof(ProcessRowViewModel.Name));    // repeat → descending
+      vm.SortBy(nameof(ProcessRowViewModel.CpuPercent));    // repeat → descending
       Assert.Equal(System.ComponentModel.ListSortDirection.Descending, vm.SortDirection);
 
-      vm.SortBy(nameof(ProcessRowViewModel.Name));    // repeat again → ascending
+      vm.SortBy(nameof(ProcessRowViewModel.CpuPercent));    // repeat again → ascending
       Assert.Equal(System.ComponentModel.ListSortDirection.Ascending, vm.SortDirection);
     });
   }
@@ -340,7 +340,7 @@ public class ProcessListViewModelTests {
       Assert.Equal($"# Exported {now.LocalDateTime:yyyy-MM-dd HH:mm:ss}", lines[0]);
       Assert.Equal("# 2 process(es)", lines[1]);
       Assert.Equal("# 2 background", lines[2]);   // both default to BackgroundProcess
-      Assert.Equal("# Sorted by category, then CPU descending", lines[3]);
+      Assert.Equal("# Sorted by category, then Name ascending", lines[3]);
       Assert.Equal("Group\tName\tPID\tStatus\tCPU%\tCPU pk%\tGPU%\tMemory MB\tMem pk MB\tDisk B/s\tNet B/s", lines[4]);
     });
   }
@@ -386,7 +386,7 @@ public class ProcessListViewModelTests {
 
       Assert.Equal("# 1 process(es)", lines[1]);
       Assert.Equal("# 1 background", lines[2]);   // category breakdown of the shown row
-      Assert.Equal("# Sorted by category, then CPU descending", lines[3]);
+      Assert.Equal("# Sorted by category, then Name ascending", lines[3]);
       Assert.Equal("# Filtered view: only rows matching the active name/PID filter", lines[4]);
       Assert.Contains("chrome", text);
       Assert.DoesNotContain("edge", text);
@@ -399,7 +399,7 @@ public class ProcessListViewModelTests {
       var vm = CreateVm(out var model, () => new DateTimeOffset(2026, 8, 8, 14, 30, 0, TimeSpan.Zero));
       model.Samples.OnNext([Sample(1, "chrome")]);
 
-      Assert.Contains("# Sorted by category, then CPU descending", vm.RowsAsText());
+      Assert.Contains("# Sorted by category, then Name ascending", vm.RowsAsText());
     });
   }
 
@@ -409,9 +409,9 @@ public class ProcessListViewModelTests {
       var vm = CreateVm(out var model, () => new DateTimeOffset(2026, 8, 8, 14, 30, 0, TimeSpan.Zero));
       model.Samples.OnNext([Sample(1, "chrome")]);
 
-      vm.SortBy(nameof(ProcessRowViewModel.Name));   // new column → ascending
+      vm.SortBy(nameof(ProcessRowViewModel.CpuPercent));   // new column → ascending
 
-      Assert.Contains("# Sorted by category, then Name ascending", vm.RowsAsText());
+      Assert.Contains("# Sorted by category, then CPU ascending", vm.RowsAsText());
     });
   }
 
@@ -557,7 +557,7 @@ public class ProcessListViewModelTests {
 
       Assert.Equal("# 1 process(es)", lines[1]);
       Assert.Equal("# 1 background", lines[2]);   // category breakdown
-      Assert.Equal("# Sorted by category, then CPU descending", lines[3]);
+      Assert.Equal("# Sorted by category, then Name ascending", lines[3]);
       Assert.StartsWith("# Peaks were reset this session", lines[4]);   // after count + breakdown + sort, before any filter note
     });
   }

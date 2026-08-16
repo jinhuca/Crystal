@@ -72,7 +72,6 @@ public sealed class GraphAppearanceService {
       graph.Kind = GraphKind.Line;
       graph.LineBrush = flat;
       graph.LineThickness = 1.0;
-      // Purple has no glow-gradient fill defined; fall back to the flat brush so it still fills.
       graph.FillBrush = AccentFill(accent) ?? flat;
     } else {
       graph.Kind = GraphKind.SegmentedBar;
@@ -105,12 +104,13 @@ public sealed class GraphAppearanceService {
     });
   }
 
-  // Vertical glow-gradient fill for line kinds. Purple has none defined, so this returns null there.
+  // Vertical glow-gradient fill for line kinds.
   private static Brush? AccentFill(GraphAccent accent) => Res(accent switch {
     GraphAccent.Rose => "GraphRoseFill",
     GraphAccent.Emerald => "GraphEmeraldFill",
     GraphAccent.Sky => "GraphSkyFill",
     GraphAccent.Amber => "GraphAmberFill",
+    GraphAccent.Purple => "GraphPurpleFill",
     GraphAccent.Grey => "GraphGreyFill",
     _ => "",
   });

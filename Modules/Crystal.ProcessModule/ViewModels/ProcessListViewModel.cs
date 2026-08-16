@@ -12,7 +12,7 @@ namespace Crystal.ProcessModule.ViewModels;
 /// into a stable, PID-keyed row collection (add new, update existing in place, drop exited). Rows
 /// are surfaced through <see cref="RowsView"/>, a grouped/sorted collection view: grouped into
 /// Apps / Background Processes / Windows Processes, and sorted by whichever column the user clicked
-/// (ascending, toggling to descending on a repeat click; CPU descending by default). The selected
+/// (ascending, toggling to descending on a repeat click; Name ascending by default). The selected
 /// row drives the detail panel; its live metrics keep updating in place while selected.
 /// </summary>
 public sealed class ProcessListViewModel : BindableBase, IDisposable {
@@ -30,8 +30,8 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
   private bool _hasSelectedDefault;
 
   private ProcessRowViewModel? _selectedRow;
-  private string _sortProperty = nameof(ProcessRowViewModel.CpuPercent);
-  private ListSortDirection _sortDirection = ListSortDirection.Descending;
+  private string _sortProperty = nameof(ProcessRowViewModel.Name);
+  private ListSortDirection _sortDirection = ListSortDirection.Ascending;
   private string _nameFilter = string.Empty;
   private string _pidFilter = string.Empty;
   private bool _peaksResetThisSession;
@@ -116,10 +116,25 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
   public ProcessRowViewModel? SelectedRow {
     get => _selectedRow;
     set {
+      var previous = _selectedRow;
       if (SetProperty(ref _selectedRow, value)) {
+        // Keep the per-row IsSelected flags (bound to each ListViewItem.IsSelected) in sync so
+        // exactly one row is flagged. This clears a virtualized-out previous selection too, which
+        // the ListView can't do on its own once that container has been recycled.
+        if (previous is not null) previous.IsSelected = false;
+        if (value is not null) value.IsSelected = true;
         RaisePropertyChanged(nameof(CanEndSelectedTask));
         RaisePropertyChanged(nameof(CanStartRecording));
       }
+    }
+  }
+
+  // A row's IsSelected turned on (user clicked it, or WPF selected it on right-press): make it the
+  // selection. The SelectedRow setter clears the previously-selected row's flag.
+  private void OnRowPropertyChanged(object? sender, PropertyChangedEventArgs e) {
+    if (e.PropertyName == nameof(ProcessRowViewModel.IsSelected)
+        && sender is ProcessRowViewModel row && row.IsSelected) {
+      SelectedRow = row;
     }
   }
 
@@ -336,6 +351,7 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
       } else {
         var created = new ProcessRowViewModel(s.ProcessId, s.Name);
         created.Update(s);
+        created.PropertyChanged += OnRowPropertyChanged;
         _rowsByPid[s.ProcessId] = created;
         Rows.Add(created);
       }
@@ -353,6 +369,7 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
     for (int i = Rows.Count - 1; i >= 0; i--) {
       if (!live.Contains(Rows[i].ProcessId)) {
         if (ReferenceEquals(SelectedRow, Rows[i])) SelectedRow = null;
+        Rows[i].PropertyChanged -= OnRowPropertyChanged;
         _rowsByPid.Remove(Rows[i].ProcessId);
         Rows.RemoveAt(i);
       }
