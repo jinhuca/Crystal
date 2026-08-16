@@ -13,6 +13,7 @@ public sealed class CoreLoadViewModel : BindableBase {
   private double _multiplier;
   private double _distanceToTjMax;
   private double _power;
+  private double _temperature;
 
   public CoreLoadViewModel(string label) => Label = label;
 
@@ -21,6 +22,9 @@ public sealed class CoreLoadViewModel : BindableBase {
   public double SpeedGhz { get => _speedGhz; set => SetProperty(ref _speedGhz, value); }
   public double EffectiveSpeedGhz { get => _effectiveSpeedGhz; set => SetProperty(ref _effectiveSpeedGhz, value); }
   public double Multiplier { get => _multiplier; set => SetProperty(ref _multiplier, value); }
+
+  /// <summary>This core's temperature in °C.</summary>
+  public double Temperature { get => _temperature; set => SetProperty(ref _temperature, value); }
 
   /// <summary>This core's headroom to TjMax in °C. Intel-only; zero elsewhere.</summary>
   public double DistanceToTjMax { get => _distanceToTjMax; set => SetProperty(ref _distanceToTjMax, value); }

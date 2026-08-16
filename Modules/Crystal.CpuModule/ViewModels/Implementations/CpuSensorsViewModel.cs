@@ -240,6 +240,7 @@ public sealed class CpuSensorsViewModel : BindableBase, ICpuSensorViewModel {
       row.Multiplier = s.Multiplier.Value ?? 0;
       row.DistanceToTjMax = s.DistanceToTjMax.Value ?? 0;
       row.Power = s.Power.Value ?? 0;
+      row.Temperature = s.Temperature.Value ?? 0;
       UpdateThreadLoads(row, s.ThreadLoads);
     }
   }
