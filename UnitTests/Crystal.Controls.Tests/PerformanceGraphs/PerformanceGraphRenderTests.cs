@@ -112,7 +112,10 @@ public class PerformanceGraphRenderTests {
       GraphBackground = Brushes.Black,
       GridBrush = Brushes.Black,
       BorderBrush = Brushes.Black,
-      FillBrush = Brushes.Transparent,
+      // Paint the data layer Plot for every kind: Line draws its stroke from LineBrush, while the
+      // discrete Bar/SegmentedBar renderers draw their solid block from FillBrush, so both brushes
+      // must be Plot for pixel-counting to isolate the data layer regardless of GraphKind.
+      FillBrush = new SolidColorBrush(Plot),
       LineBrush = new SolidColorBrush(Plot),
       // Must be a value other than the LineThickness metadata default (2.0): assigning a DP its
       // existing/default value is a no-op that never fires OnLineThicknessChanged, so the internal

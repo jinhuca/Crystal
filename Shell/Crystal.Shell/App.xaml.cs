@@ -81,6 +81,14 @@ public partial class App : PrismApplication {
     // window service.
     containerRegistry.RegisterSingleton<WindowLayoutStore>();
 
+    // Persists the dashboard graph-appearance selection (category + per-graph kind/accent) across
+    // sessions; shared by the graph-settings popup and the dashboard graphs.
+    containerRegistry.RegisterSingleton<Settings.GraphSettingsStore>();
+
+    // Applies the persisted selection to live dashboard graphs (on registration and on Save). Resolved
+    // eagerly in OnInitialized so it subscribes before any tile's graphs are realized.
+    containerRegistry.RegisterSingleton<Settings.GraphAppearanceService>();
+
     // Long-lived: subscribes to weakly-referenced navigation events (ShowDetail/ShowDashboard),
     // so it must not be collected. Resolved eagerly in OnInitialized.
     containerRegistry.RegisterSingleton<DetailWindowService>();
@@ -105,6 +113,10 @@ public partial class App : PrismApplication {
 
   protected override void OnInitialized() {
     base.OnInitialized();
+
+    // Start listening for graph registrations before the dashboard's tiles (and their graphs) are
+    // realized, so each graph picks up the saved appearance the moment it is tagged.
+    Container.Resolve<Settings.GraphAppearanceService>();
 
     // Navigate to the dashboard immediately: each tile is a self-warming LoadingHost (see the
     // modules' OnInitialized) that shows a spinner and warms its own heavy singleton on a

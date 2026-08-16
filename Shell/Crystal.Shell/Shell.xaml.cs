@@ -23,10 +23,12 @@ public partial class Shell : Window {
   private const string LayoutKey = "MainWindow";
 
   private readonly WindowLayoutStore _layouts;
+  private readonly Settings.GraphSettingsStore _graphSettings;
   private readonly DispatcherTimer _clock;
 
-  public Shell(WindowLayoutStore layouts) {
+  public Shell(WindowLayoutStore layouts, Settings.GraphSettingsStore graphSettings) {
     _layouts = layouts;
+    _graphSettings = graphSettings;
     InitializeComponent();
     RestorePlacement();
     StateChanged += (_, _) => UpdateMaximizeButton();
@@ -48,6 +50,10 @@ public partial class Shell : Window {
     : WindowState.Maximized;
 
   private void OnCloseClick(object sender, RoutedEventArgs e) => Close();
+
+  private void OnGraphSettingsClick(object sender, RoutedEventArgs e) {
+    new Views.GraphSettingsWindow(_graphSettings) { Owner = this }.ShowDialog();
+  }
 
   // Reset the dashboard's resizable rows to their default proportions, and the Processes tile's
   // column widths / master-detail split along with it. Both views are injected into the content

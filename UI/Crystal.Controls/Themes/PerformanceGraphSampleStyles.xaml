@@ -19,6 +19,32 @@
     <ResourceDictionary Source="/Crystal.Resources;component/Styles/GraphPalette.xaml"/>
   </ResourceDictionary.MergedDictionaries>
 
+  <!-- =====================================================================================
+       Selectable graph categories (surfaced by the dashboard's graph-settings popup).
+       These are intentionally partial base styles: they set only the chrome (border / grid /
+       background) that defines each category. Kind (SegmentedBar / FilledLine) and accent
+       colour are layered on per graph by the settings feature, so they are left unset here.
+
+       (1) No Frills  - no border, no grid, no background: just the plotted data.
+       (2) Full Graph - opaque plot background, grid lines and an axis border.
+       ===================================================================================== -->
+  <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="NoFrillsGraphStyle">
+    <Setter Property="GraphBackground" Value="Transparent"/>
+    <Setter Property="GridBrush" Value="Transparent"/>
+    <Setter Property="GridThickness" Value="0"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="MinHeight" Value="{StaticResource SummaryGraphMinHeight}"/>
+  </Style>
+
+  <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="FullGraphStyle">
+    <Setter Property="GraphBackground" Value="{StaticResource GraphPlotBackgroundBrush}"/>
+    <Setter Property="GridBrush" Value="{StaticResource GraphGridBrush}"/>
+    <Setter Property="GridThickness" Value="0.6"/>
+    <Setter Property="BorderBrush" Value="{StaticResource GraphAxisBorderBrush}"/>
+    <Setter Property="BorderThickness" Value="0.8"/>
+    <Setter Property="MinHeight" Value="{StaticResource SummaryGraphMinHeight}"/>
+  </Style>
+
   <!-- NoFrill Styles - No Border, No Grid, No Background -->
   <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="NoFillStyle">
     <Setter Property="GraphBackground" Value="Transparent"/>
