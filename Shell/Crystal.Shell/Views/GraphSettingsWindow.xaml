@@ -79,7 +79,7 @@
       <Setter Property="Template">
         <Setter.Value>
           <ControlTemplate TargetType="RadioButton">
-            <Grid Width="26" Height="20">
+            <Grid Width="24" Height="24">
               <Ellipse x:Name="Ring" Stroke="{StaticResource TextBrush}" StrokeThickness="2"
                        Visibility="Hidden"/>
               <Ellipse Margin="3" Fill="{Binding Swatch}"/>
