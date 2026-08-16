@@ -96,6 +96,7 @@ public interface IBiosViewModel {
   void AttachRailGraphs(PerformanceGraph rail3V3, PerformanceGraph rail5V, PerformanceGraph rail12V);
   void AttachFanGraph(PerformanceGraph fan);
   void AttachBoardTempGraph(PerformanceGraph boardTemp);
+  void AttachCmosGraph(PerformanceGraph cmos);
 
   ICommand ShowDetailCommand { get; }
   ICommand ShowDashboardCommand { get; }

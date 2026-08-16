@@ -1,3 +1,4 @@
+using Crystal.Controls.PerformanceGraphs;
 using Crystal.Controls.Threading;
 using Crystal.Infrastructure.Constants.Navigation;
 using Crystal.NetworkModule.Models;
@@ -16,6 +17,9 @@ public sealed class NetworkViewModel : BindableBase, INetworkViewModel, IDisposa
   private readonly Dictionary<uint, ProcessNetworkRowViewModel> _talkersByPid = new();
   private string _downloadLabel = "—";
   private string _uploadLabel = "—";
+  private PerformanceGraph? _downloadGraph;
+  private PerformanceGraph? _uploadGraph;
+  private double _throughputMax = ThroughputFloorBytesPerSecond;
   private bool _hasWifi;
   private string _wifiLabel = "—";
   private string _wifiLinkRate = "—";
@@ -29,7 +33,13 @@ public sealed class NetworkViewModel : BindableBase, INetworkViewModel, IDisposa
   private ListSortDirection _topTalkersSortDirection = ListSortDirection.Descending;
 
   // How many talkers the compact summary tile shows (the detail view shows all of them).
-  private const int SummaryTopCount = 5;
+  private const int SummaryTopCount = 3;
+
+  // Shared throughput-sparkline scaling: track the busiest sample (download or upload) over a short
+  // window so both graphs share a Y-axis; the floor keeps an idle link from magnifying noise.
+  private const double ThroughputFloorBytesPerSecond = 128 * 1024;
+  private const int ThroughputWindow = 60;
+  private readonly Queue<double> _throughputSamples = new();
 
   public NetworkViewModel(INetworkModel model, IEventAggregator events) {
     ShowDetailCommand = new DelegateCommand(
@@ -62,6 +72,7 @@ public sealed class NetworkViewModel : BindableBase, INetworkViewModel, IDisposa
   public string TopTalkersStatusLabel { get => _topTalkersStatusLabel; private set => SetProperty(ref _topTalkersStatusLabel, value); }
   public string DownloadLabel { get => _downloadLabel; private set => SetProperty(ref _downloadLabel, value); }
   public string UploadLabel { get => _uploadLabel; private set => SetProperty(ref _uploadLabel, value); }
+  public double ThroughputMaxBytesPerSecond { get => _throughputMax; private set => SetProperty(ref _throughputMax, value); }
   public bool HasWifi { get => _hasWifi; private set => SetProperty(ref _hasWifi, value); }
   public string WifiLabel { get => _wifiLabel; private set => SetProperty(ref _wifiLabel, value); }
   public string WifiLinkRate { get => _wifiLinkRate; private set => SetProperty(ref _wifiLinkRate, value); }
@@ -71,6 +82,9 @@ public sealed class NetworkViewModel : BindableBase, INetworkViewModel, IDisposa
   public string WifiStatusLabel { get => _wifiStatusLabel; private set => SetProperty(ref _wifiStatusLabel, value); }
   public ICommand ShowDetailCommand { get; }
   public ICommand ShowDashboardCommand { get; }
+
+  public void AttachDownloadGraph(PerformanceGraph graph) => _downloadGraph = graph;
+  public void AttachUploadGraph(PerformanceGraph graph) => _uploadGraph = graph;
 
   private void Apply(NetworkSnapshot snapshot) {
     // Reconcile the adapter list against the current interfaces (they can come and go as NICs
@@ -89,6 +103,12 @@ public sealed class NetworkViewModel : BindableBase, INetworkViewModel, IDisposa
 
     DownloadLabel = FormatSpeed(totalDownload);
     UploadLabel = FormatSpeed(totalUpload);
+
+    _downloadGraph?.AddValue(totalDownload);
+    _uploadGraph?.AddValue(totalUpload);
+    _throughputSamples.Enqueue(Math.Max(totalDownload, totalUpload));
+    while (_throughputSamples.Count > ThroughputWindow) _throughputSamples.Dequeue();
+    ThroughputMaxBytesPerSecond = NiceCeiling(Math.Max(ThroughputFloorBytesPerSecond, _throughputSamples.Max()));
 
     ApplyWifiSummary(snapshot.Interfaces, snapshot.WifiStatus);
   }
@@ -212,6 +232,15 @@ public sealed class NetworkViewModel : BindableBase, INetworkViewModel, IDisposa
     if (rx is null && tx is null) return "—";
     if (rx == tx) return $"{rx} Mbps";
     return $"{rx ?? "—"} / {tx ?? "—"} Mbps";
+  }
+
+  // Round a peak up to a readable axis top: 1/2/5 × a power of ten, so the shared throughput scale
+  // grows and subsides in round steps as the busiest sample in the window changes.
+  private static double NiceCeiling(double value) {
+    double magnitude = Math.Pow(10, Math.Floor(Math.Log10(value)));
+    double normalized = value / magnitude;
+    double step = normalized <= 1 ? 1 : normalized <= 2 ? 2 : normalized <= 5 ? 5 : 10;
+    return step * magnitude;
   }
 
   private static string FormatSpeed(double bytesPerSecond) {

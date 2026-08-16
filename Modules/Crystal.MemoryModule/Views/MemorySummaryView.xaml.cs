@@ -1,6 +1,4 @@
 using Crystal.Controls.PerformanceGraphs;
-using Crystal.Controls.PerformanceGraphs.Kinds;
-using Crystal.Controls.PerformanceGraphs.Themes;
 using Crystal.MemoryModule.ViewModels;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -15,18 +13,16 @@ public partial class MemorySummaryView : UserControl {
     InitializeComponent();
   }
 
+  // Appearance (kind/accent/category/history) is owned by the graph-settings feature, keyed by
+  // GraphIdentity.Id in XAML; the handlers only wire each graph's sample buffer to the view model.
   private void OnLoadGraphLoaded(object sender, System.Windows.RoutedEventArgs e) {
     if (sender is not PerformanceGraph graph) return;
-    graph.ApplyTheme(GraphThemes.Rose(GraphKind.Line));
     if (DataContext is IMemoryViewModel vm)
       vm.AttachGraph(graph);
   }
 
   private void OnUsedGraphLoaded(object sender, System.Windows.RoutedEventArgs e) {
     if (sender is not PerformanceGraph graph) return;
-    // Sky matches the detail view's "Memory usage" graph so the shared used-GB metric reads the
-    // same accent across both views.
-    graph.ApplyTheme(GraphThemes.Sky(GraphKind.Line));
     if (DataContext is IMemoryViewModel vm)
       vm.AttachUsedGraph(graph);
   }

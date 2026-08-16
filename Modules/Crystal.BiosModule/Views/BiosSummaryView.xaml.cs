@@ -1,7 +1,4 @@
 using Crystal.BiosModule.ViewModels;
-using Crystal.Controls.PerformanceGraphs;
-using Crystal.Controls.PerformanceGraphs.Kinds;
-using Crystal.Controls.PerformanceGraphs.Themes;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -15,14 +12,27 @@ public partial class BiosSummaryView : UserControl {
     InitializeComponent();
   }
 
-  // Each rail sparkline themes itself on load; the VM attach is idempotent so whichever graph
-  // loads first wires all three. (A root-element Loaded handler collides with the BiosModule
-  // namespace/class name in WPF's generated code, so it's done per-graph like StorageModule.)
+  // Appearance (kind/accent/category/history) is owned by the graph-settings feature, keyed by
+  // GraphIdentity.Id in XAML; the handlers only wire each graph's sample buffer to the view model.
+  // The VM attach is idempotent so whichever graph loads first wires all three rails.
   private void OnGraphLoaded(object sender, RoutedEventArgs e) {
-    if (sender is PerformanceGraph graph)
-      graph.ApplyTheme(GraphThemes.Sky(GraphKind.Line));
     if (DataContext is IBiosViewModel vm)
       vm.AttachRailGraphs(Rail3V3Spark, Rail5VSpark, Rail12VSpark);
+  }
+
+  private void OnBoardTempSparkLoaded(object sender, RoutedEventArgs e) {
+    if (DataContext is IBiosViewModel vm)
+      vm.AttachBoardTempGraph(BoardTempSpark);
+  }
+
+  private void OnFanSparkLoaded(object sender, RoutedEventArgs e) {
+    if (DataContext is IBiosViewModel vm)
+      vm.AttachFanGraph(ChassisFanSpark);
+  }
+
+  private void OnCmosSparkLoaded(object sender, RoutedEventArgs e) {
+    if (DataContext is IBiosViewModel vm)
+      vm.AttachCmosGraph(CmosSpark);
   }
 
   private void OnTileClick(object sender, MouseButtonEventArgs e) {

@@ -242,7 +242,7 @@ public class NetworkViewModelTests {
   }
 
   [Fact]
-  public void Summary_top_talkers_are_capped_at_five_in_rank_order() {
+  public void Summary_top_talkers_are_capped_at_three_in_rank_order() {
     var vm = CreateVm(out var model);
 
     model.TopTalkersSubject.OnNext(new ProcessNetworkSnapshot([
@@ -255,8 +255,8 @@ public class NetworkViewModelTests {
         new ProcessNetworkReading(70, "g", 2_000_000),
     ], IsRunning: true, StatusError: null));
 
-    Assert.Equal(5, vm.SummaryTopTalkers.Count);
-    Assert.Equal(new[] { 10u, 20u, 30u, 40u, 50u },
+    Assert.Equal(3, vm.SummaryTopTalkers.Count);
+    Assert.Equal(new[] { 10u, 20u, 30u },
         vm.SummaryTopTalkers.Select(r => r.ProcessId).ToArray());
     // Shares the same row instances as the full ranking.
     Assert.Same(vm.TopTalkers.Single(r => r.ProcessId == 10u), vm.SummaryTopTalkers[0]);

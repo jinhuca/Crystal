@@ -155,7 +155,7 @@ public sealed class GraphSettingsViewModel : BindableBase {
     var rows = new List<GraphRowViewModel>();
     foreach (var descriptor in GraphCatalog.Graphs) {
       settings.Graphs.TryGetValue(descriptor.Id, out var setting);
-      rows.Add(new GraphRowViewModel(descriptor, setting ?? new GraphSetting()));
+      rows.Add(new GraphRowViewModel(descriptor, setting ?? GraphCatalog.DefaultFor(descriptor.Id)));
     }
     Graphs = new ReadOnlyCollection<GraphRowViewModel>(rows);
 

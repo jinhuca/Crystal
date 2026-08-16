@@ -63,34 +63,27 @@
         <StackPanel Orientation="Horizontal">
           <Border Width="3" Background="{StaticResource AccentBrush}" Margin="0,1,8,1"/>
           <TextBlock Text="BIOS" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource BodyFontSize}" FontWeight="SemiBold"
-                     VerticalAlignment="Center"/>
+                     VerticalAlignment="Center" Margin="0,0,16,0"/>
+          <TextBlock Text="{Binding Manufacturer}" Style="{StaticResource HeaderSpec}"
+                     TextTrimming="CharacterEllipsis"/>
+          <TextBlock Text="{Binding Version, StringFormat=Version {0}}" Style="{StaticResource HeaderSpec}"/>
         </StackPanel>
       </Border>
 
       <!-- Essential static identity (top) + live board telemetry (bottom). -->
       <StackPanel Grid.Row="1" VerticalAlignment="Top">
-        <!-- Static firmware identity: manufacturer/version + security posture -->
+        <!-- Firmware interface + security posture (manufacturer/version now ride in the header). -->
         <Grid>
           <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
           </Grid.ColumnDefinitions>
 
           <StackPanel Grid.Column="0" Style="{StaticResource FieldCell}">
-            <TextBlock Text="Manufacturer" Style="{StaticResource FieldLabel}"/>
-            <TextBlock Text="{Binding Manufacturer}" Style="{StaticResource FieldValue}"/>
-          </StackPanel>
-          <StackPanel Grid.Column="1" Style="{StaticResource FieldCell}">
-            <TextBlock Text="Version" Style="{StaticResource FieldLabel}"/>
-            <TextBlock Text="{Binding Version}" Style="{StaticResource FieldValue}"/>
-          </StackPanel>
-          <StackPanel Grid.Column="2" Style="{StaticResource FieldCell}">
             <TextBlock Text="Interface" Style="{StaticResource FieldLabel}"/>
             <TextBlock Text="{Binding FirmwareInterface}" Style="{StaticResource FieldValue}"/>
           </StackPanel>
-          <StackPanel Grid.Column="3" Style="{StaticResource FieldCell}">
+          <StackPanel Grid.Column="1" Style="{StaticResource FieldCell}">
             <TextBlock Text="Secure Boot" Style="{StaticResource FieldLabel}"/>
             <TextBlock Text="{Binding SecureBoot}" Style="{StaticResource FieldValue}"/>
           </StackPanel>
@@ -224,19 +217,31 @@
             <RowDefinition Height="Auto"/>
           </Grid.RowDefinitions>
 
-          <!-- Row 0: CMOS battery / board temp / chassis fan -->
+          <!-- Row 0: chassis fan / board temp / CMOS battery -->
           <StackPanel Grid.Row="0" Grid.Column="0" Style="{StaticResource FieldCell}">
-            <TextBlock Text="CMOS battery" Style="{StaticResource FieldLabel}"/>
-            <TextBlock Text="{Binding CmosVoltage}" Style="{StaticResource FieldValue}"
-                       Foreground="{Binding CmosSeverity, Converter={StaticResource SeverityToBrush}}"/>
+            <TextBlock Text="Chassis fan" Style="{StaticResource FieldLabel}"/>
+            <TextBlock Text="{Binding ChassisFanRpm}" Style="{StaticResource FieldValue}"
+                       Foreground="{Binding ChassisFanSeverity, Converter={StaticResource SeverityToBrush}}"/>
+            <graphs:PerformanceGraph x:Name="ChassisFanSpark" Style="{StaticResource RailSpark}"
+                                     graphs:GraphIdentity.Id="Bios.ChassisFan"
+                                     Loaded="OnFanSparkLoaded" MinValue="0" MaxValue="2500"
+                                     Visibility="{Binding HasChassisFan, Converter={StaticResource BoolToVisibility}}"/>
           </StackPanel>
           <StackPanel Grid.Row="0" Grid.Column="1" Style="{StaticResource FieldCell}">
             <TextBlock Text="Board temp" Style="{StaticResource FieldLabel}"/>
-            <TextBlock Text="{Binding BoardTemperature}" Style="{StaticResource FieldValue}"/>
+            <TextBlock Text="{Binding BoardTemperature}" Style="{StaticResource FieldValue}"
+                       Foreground="{Binding BoardTemperatureSeverity, Converter={StaticResource SeverityToBrush}}"/>
+            <graphs:PerformanceGraph x:Name="BoardTempSpark" Style="{StaticResource RailSpark}"
+                                     graphs:GraphIdentity.Id="Bios.BoardTemp"
+                                     Loaded="OnBoardTempSparkLoaded" MinValue="20" MaxValue="90"/>
           </StackPanel>
           <StackPanel Grid.Row="0" Grid.Column="2" Style="{StaticResource FieldCell}">
-            <TextBlock Text="Chassis fan" Style="{StaticResource FieldLabel}"/>
-            <TextBlock Text="{Binding ChassisFanRpm}" Style="{StaticResource FieldValue}"/>
+            <TextBlock Text="CMOS battery" Style="{StaticResource FieldLabel}"/>
+            <TextBlock Text="{Binding CmosVoltage}" Style="{StaticResource FieldValue}"
+                       Foreground="{Binding CmosSeverity, Converter={StaticResource SeverityToBrush}}"/>
+            <graphs:PerformanceGraph x:Name="CmosSpark" Style="{StaticResource RailSpark}"
+                                     graphs:GraphIdentity.Id="Bios.CmosBattery"
+                                     Loaded="OnCmosSparkLoaded" MinValue="2.3" MaxValue="3.4"/>
           </StackPanel>
 
           <!-- Row 1: voltage rails, each with a dim min–max stability sub-line and a compact
@@ -248,6 +253,7 @@
                        Foreground="{Binding Rail3V3Severity, Converter={StaticResource SeverityToBrush}}"/>
             <TextBlock Text="{Binding Rail3V3Range}" Style="{StaticResource RangeHint}"/>
             <graphs:PerformanceGraph x:Name="Rail3V3Spark" Style="{StaticResource RailSpark}"
+                                     graphs:GraphIdentity.Id="Bios.Rail3V3"
                                      Loaded="OnGraphLoaded" MinValue="2.97" MaxValue="3.63"/>
           </StackPanel>
           <StackPanel Grid.Row="1" Grid.Column="1">
@@ -256,6 +262,7 @@
                        Foreground="{Binding Rail5VSeverity, Converter={StaticResource SeverityToBrush}}"/>
             <TextBlock Text="{Binding Rail5VRange}" Style="{StaticResource RangeHint}"/>
             <graphs:PerformanceGraph x:Name="Rail5VSpark" Style="{StaticResource RailSpark}"
+                                     graphs:GraphIdentity.Id="Bios.Rail5V"
                                      Loaded="OnGraphLoaded" MinValue="4.5" MaxValue="5.5"/>
           </StackPanel>
           <StackPanel Grid.Row="1" Grid.Column="2">
@@ -264,6 +271,7 @@
                        Foreground="{Binding Rail12VSeverity, Converter={StaticResource SeverityToBrush}}"/>
             <TextBlock Text="{Binding Rail12VRange}" Style="{StaticResource RangeHint}"/>
             <graphs:PerformanceGraph x:Name="Rail12VSpark" Style="{StaticResource RailSpark}"
+                                     graphs:GraphIdentity.Id="Bios.Rail12V"
                                      Loaded="OnGraphLoaded" MinValue="10.8" MaxValue="13.2"/>
           </StackPanel>
         </Grid>

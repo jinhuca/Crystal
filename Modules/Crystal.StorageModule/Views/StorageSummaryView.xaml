@@ -81,8 +81,8 @@
             <ColumnDefinition Width="Auto"/>
           </Grid.ColumnDefinitions>
           <graphs:PerformanceGraph Grid.Column="0"
+                                   graphs:GraphIdentity.Id="Storage.Activity"
                                    Loaded="OnLoadGraphLoaded"
-                                   Kind="Line"
                                    MinValue="0" MaxValue="100"/>
           <StackPanel Grid.Column="1" Style="{StaticResource SummaryStackPanelStyle}">
             <StackPanel Orientation="Horizontal">
@@ -102,8 +102,8 @@
             <ColumnDefinition Width="Auto"/>
           </Grid.ColumnDefinitions>
           <graphs:PerformanceGraph Grid.Column="0"
+                                   graphs:GraphIdentity.Id="Storage.Transfer"
                                    Loaded="OnTransferGraphLoaded"
-                                   Kind="Line"
                                    MinValue="0"
                                    MaxValue="{Binding TransferMaxMBps}"/>
           <StackPanel Grid.Column="1" Style="{StaticResource SummaryStackPanelStyle}">

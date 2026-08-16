@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:prism="http://prismlibrary.com/"
+             xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs;assembly=Crystal.Controls"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
              d:DesignHeight="240" d:DesignWidth="380"
@@ -37,12 +38,16 @@
       <StackPanel Grid.Row="1" Grid.Column="0" VerticalAlignment="Top">
         <TextBlock Text="download" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource BodyFontSize}" FontFamily="{StaticResource MonoFontFamily}"
                    Margin="0,0,0,2"/>
-        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
           <TextBlock Text="&#x25BC;" Foreground="{StaticResource OkBrush}" FontSize="16"
                      VerticalAlignment="Center" Margin="0,0,8,0"/>
           <TextBlock Text="{Binding DownloadLabel}" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource SectionFontSize}"
                      FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Center"/>
         </StackPanel>
+        <graphs:PerformanceGraph graphs:GraphIdentity.Id="Network.Download"
+                                 Loaded="OnDownloadGraphLoaded"
+                                 Height="22" Margin="0,0,0,10"
+                                 MinValue="0" MaxValue="{Binding ThroughputMaxBytesPerSecond}"/>
         <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
           <TextBlock Text="&#x25B2;" Foreground="#E89B2A" FontSize="16"
                      VerticalAlignment="Center" Margin="0,0,8,0"/>
@@ -50,10 +55,43 @@
                      FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Center"/>
         </StackPanel>
         <TextBlock Text="upload" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource BodyFontSize}" FontFamily="{StaticResource MonoFontFamily}"/>
+        <graphs:PerformanceGraph graphs:GraphIdentity.Id="Network.Upload"
+                                 Loaded="OnUploadGraphLoaded"
+                                 Height="22" Margin="0,4,0,0"
+                                 MinValue="0" MaxValue="{Binding ThroughputMaxBytesPerSecond}"/>
+      </StackPanel>
+
+      <!-- Top talkers: the busiest processes on the network right now (rate descending, capped).
+           Backed by the shared ETW session; blank with a muted note when it isn't running. -->
+      <StackPanel Grid.Row="1" Grid.Column="1" Margin="20,0,0,0"
+                  Width="200" VerticalAlignment="Top">
+        <TextBlock Text="top talkers" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}"
+                   Margin="0,0,0,4"/>
+        <TextBlock Text="{Binding TopTalkersStatusLabel}" Foreground="#5A6470" FontSize="{StaticResource MicroFontSize}"
+                   FontFamily="{StaticResource MonoFontFamily}" TextWrapping="Wrap"
+                   Visibility="{Binding HasTopTalkersStatus, Converter={StaticResource BoolToVisibility}}"/>
+        <!-- Reserve the full 3-row height so the Wi-Fi block below stays put as the (0–3 row)
+             talker list grows and shrinks each poll; otherwise it jumps every tick. -->
+        <ItemsControl ItemsSource="{Binding SummaryTopTalkers}" MinHeight="48" VerticalAlignment="Top">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <Grid Margin="0,1">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*"/>
+                  <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="{Binding Name}" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource CaptionFontSize}"
+                           FontFamily="{StaticResource MonoFontFamily}" TextTrimming="CharacterEllipsis" Margin="0,0,10,0"/>
+                <TextBlock Grid.Column="1" Text="{Binding RateLabel}" Foreground="{StaticResource OkBrush}" FontSize="{StaticResource CaptionFontSize}"
+                           FontFamily="{StaticResource MonoFontFamily}" TextAlignment="Right"/>
+              </Grid>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
 
         <!-- Wi-Fi block (only when a wireless adapter is connected): SSID + signal, then the
              negotiated link rate, security suite, and BSSID as dim spec rows. -->
-        <StackPanel Margin="0,10,0,0"
+        <StackPanel Margin="0,12,0,0"
                     Visibility="{Binding HasWifi, Converter={StaticResource BoolToVisibility}}">
           <StackPanel Orientation="Horizontal">
             <TextBlock Text="&#x1F4F6;" Foreground="{StaticResource AccentBrush}" FontSize="{StaticResource SubHeadingFontSize}"
@@ -74,40 +112,13 @@
 
         <!-- Present-but-not-connected radio: muted status in place of the connected block. Hidden
              entirely on machines with no wireless adapter. -->
-        <StackPanel Orientation="Horizontal" Margin="0,10,0,0"
+        <StackPanel Orientation="Horizontal" Margin="0,12,0,0"
                     Visibility="{Binding HasWifiStatus, Converter={StaticResource BoolToVisibility}}">
           <TextBlock Text="&#x1F4F6;" Foreground="#5A6470" FontSize="{StaticResource SubHeadingFontSize}"
                      VerticalAlignment="Center" Margin="0,0,8,0"/>
           <TextBlock Text="{Binding WifiStatusLabel}" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource SpecFontSize}"
                      FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Center"/>
         </StackPanel>
-      </StackPanel>
-
-      <!-- Top talkers: the busiest processes on the network right now (rate descending, capped).
-           Backed by the shared ETW session; blank with a muted note when it isn't running. -->
-      <StackPanel Grid.Row="1" Grid.Column="1" Margin="20,0,0,0"
-                  Width="200" VerticalAlignment="Top">
-        <TextBlock Text="top talkers" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}"
-                   Margin="0,0,0,4"/>
-        <TextBlock Text="{Binding TopTalkersStatusLabel}" Foreground="#5A6470" FontSize="{StaticResource MicroFontSize}"
-                   FontFamily="{StaticResource MonoFontFamily}" TextWrapping="Wrap"
-                   Visibility="{Binding HasTopTalkersStatus, Converter={StaticResource BoolToVisibility}}"/>
-        <ItemsControl ItemsSource="{Binding SummaryTopTalkers}">
-          <ItemsControl.ItemTemplate>
-            <DataTemplate>
-              <Grid Margin="0,1">
-                <Grid.ColumnDefinitions>
-                  <ColumnDefinition Width="*"/>
-                  <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Text="{Binding Name}" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource CaptionFontSize}"
-                           FontFamily="{StaticResource MonoFontFamily}" TextTrimming="CharacterEllipsis" Margin="0,0,10,0"/>
-                <TextBlock Grid.Column="1" Text="{Binding RateLabel}" Foreground="{StaticResource OkBrush}" FontSize="{StaticResource CaptionFontSize}"
-                           FontFamily="{StaticResource MonoFontFamily}" TextAlignment="Right"/>
-              </Grid>
-            </DataTemplate>
-          </ItemsControl.ItemTemplate>
-        </ItemsControl>
       </StackPanel>
     </Grid>
   </Border>

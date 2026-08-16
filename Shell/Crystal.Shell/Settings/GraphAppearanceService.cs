@@ -43,7 +43,9 @@ public sealed class GraphAppearanceService {
 
     var settings = _store.Current;
     settings.Graphs.TryGetValue(id, out var setting);
-    setting ??= new GraphSetting();
+    // No saved entry → the graph's built-in default look (kind/accent), so a graph newly brought
+    // under the settings system keeps its original appearance until the user changes it.
+    setting ??= GraphCatalog.DefaultFor(id);
 
     ApplyCategory(graph, settings.Category);
     ApplyKindAndAccent(graph, setting.Kind, setting.Accent);

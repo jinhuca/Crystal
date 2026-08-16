@@ -79,6 +79,8 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
   private bool _hasChassisFan;
   private PerformanceGraph? _boardTempGraph;
   private ReadingSeverity? _boardTempGraphSeverity;
+  private PerformanceGraph? _cmosGraph;
+  private ReadingSeverity? _cmosGraphSeverity;
   private ReadingSeverity _boardTemperatureSeverity;
   // Latest board temperature, cached from the telemetry tick so the board-readings tick can grade
   // fan stall against it (a stopped fan only matters once the board is warm). Both observables tick
@@ -233,6 +235,14 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
     _boardTempGraphSeverity = null;
   }
 
+  // The CMOS-battery-voltage trend, fed from the headline telemetry alongside the rails. Its
+  // Y-window sits just above the critical band so a fading coin cell reads as the line sinking
+  // toward the floor.
+  public void AttachCmosGraph(PerformanceGraph cmos) {
+    _cmosGraph = ResetMarkers(cmos);
+    _cmosGraphSeverity = null;
+  }
+
   // A freshly-attached graph starts with no session history, so clear any extreme markers so the
   // first samples set them rather than folding into a stale attach-time value.
   private static PerformanceGraph ResetMarkers(PerformanceGraph graph) {
@@ -320,6 +330,7 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
     if (t.Rail5V.Value is { } v5) Feed(_rail5VGraph, v5);
     if (t.Rail12V.Value is { } v12) Feed(_rail12VGraph, v12);
     if (t.BoardTemperature is { } bt) Feed(_boardTempGraph, bt);
+    if (t.CmosVoltage is { } cv) Feed(_cmosGraph, cv);
 
     CmosSeverity = BoardReadingSeverity.Cmos(t.CmosVoltage);
     Rail3V3Severity = BoardReadingSeverity.Rail(t.Rail3V3.Value, 3.3f);
@@ -335,6 +346,7 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
     _rail5VGraphSeverity = ThemeGraph(_rail5VGraph, Rail5VSeverity, _rail5VGraphSeverity);
     _rail12VGraphSeverity = ThemeGraph(_rail12VGraph, Rail12VSeverity, _rail12VGraphSeverity);
     _boardTempGraphSeverity = ThemeGraph(_boardTempGraph, BoardTemperatureSeverity, _boardTempGraphSeverity);
+    _cmosGraphSeverity = ThemeGraph(_cmosGraph, CmosSeverity, _cmosGraphSeverity);
   }
 
   // Re-themes a rail graph only when its severity band changes, returning the newly-applied
@@ -441,7 +453,7 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
   private void ClearHistory() {
     _healthLog.Clear();
     RefreshHealthEvents();
-    foreach (var g in new[] { _rail3V3Graph, _rail5VGraph, _rail12VGraph, _fanGraph, _boardTempGraph }) {
+    foreach (var g in new[] { _rail3V3Graph, _rail5VGraph, _rail12VGraph, _fanGraph, _boardTempGraph, _cmosGraph }) {
       if (g is null) continue;
       g.ClearValues();
       ResetMarkers(g);

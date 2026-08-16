@@ -1,3 +1,4 @@
+using Crystal.Controls.PerformanceGraphs;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Data;
@@ -46,6 +47,16 @@ public interface INetworkViewModel {
 
   /// <summary>Total upload throughput across all interfaces, shown on the summary tile.</summary>
   string UploadLabel { get; }
+
+  /// <summary>Shared upper bound (bytes/sec) for the summary download/upload sparklines, tracking the
+  /// recent busiest sample across both so the two graphs stay on a common, comparable scale.</summary>
+  double ThroughputMaxBytesPerSecond { get; }
+
+  /// <summary>Wire the summary tile's total-download sparkline so the VM feeds it live samples.</summary>
+  void AttachDownloadGraph(PerformanceGraph graph);
+
+  /// <summary>Wire the summary tile's total-upload sparkline so the VM feeds it live samples.</summary>
+  void AttachUploadGraph(PerformanceGraph graph);
 
   /// <summary>True when a Wi-Fi adapter is connected; drives the summary tile's Wi-Fi row.</summary>
   bool HasWifi { get; }
