@@ -37,6 +37,50 @@ public class PerformanceGraphTests {
   });
 
   [Fact]
+  public void HistoryLength_DefaultsTo60_AndMatchesCapacity() => StaRunner.Run(() => {
+    var graph = new PerformanceGraph();
+
+    Assert.Equal(60, graph.HistoryLength);
+    Assert.Equal(60, graph.Capacity);
+  });
+
+  [Fact]
+  public void HistoryLength_ConstructorArg_SyncsToProperty() => StaRunner.Run(() => {
+    var graph = new PerformanceGraph(120, 30);
+
+    Assert.Equal(120, graph.HistoryLength);
+  });
+
+  [Fact]
+  public void HistoryLength_Set_ResizesBuffer() => StaRunner.Run(() => {
+    var graph = new PerformanceGraph();
+
+    graph.HistoryLength = 120;
+    Assert.Equal(120, graph.Capacity);
+
+    graph.HistoryLength = 30;
+    Assert.Equal(30, graph.Capacity);
+  });
+
+  [Fact]
+  public void HistoryLength_ChangedAfterSamplesAdded_DoesNotThrow() => StaRunner.Run(() => {
+    var graph = new PerformanceGraph();
+    for (int i = 0; i < 80; i++) graph.AddValue(i);
+
+    graph.HistoryLength = 30; // shrink below the current sample count
+    graph.AddValue(99);
+
+    Assert.Equal(30, graph.Capacity);
+  });
+
+  [Fact]
+  public void HistoryLength_NonPositive_Throws() => StaRunner.Run(() => {
+    var graph = new PerformanceGraph();
+
+    Assert.Throws<ArgumentException>(() => graph.HistoryLength = 0);
+  });
+
+  [Fact]
   public void AddValue_DoesNotThrow_AndKindStaysConfigurable() => StaRunner.Run(() => {
     var graph = new PerformanceGraph { Kind = GraphKind.Bar };
 

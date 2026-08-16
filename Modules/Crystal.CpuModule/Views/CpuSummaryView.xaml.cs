@@ -19,11 +19,12 @@ public partial class CpuSummaryView : UserControl {
   private void OnLoaded(object sender, System.Windows.RoutedEventArgs e) {
     // Distinct accents per metric, matching the detail view. Line themes carry the vertical
     // glow-gradient fill that reads correctly under FilledLineRenderer.
-    CpuClockGraph.ApplyTheme(GraphThemes.Amber(GraphKind.Line));
+    // CpuClockGraph and CpuUtilizationGraph are styled in XAML (AmberLineGraphStyle /
+    // PurpleSegmentedBarGraphStyle) instead — a Style setter would be overridden by ApplyTheme's
+    // local values (including its GraphBackground), so they must not be re-themed here.
     CpuVoltageGraph.ApplyTheme(GraphThemes.Emerald(GraphKind.Line));
     CpuPowerGraph.ApplyTheme(GraphThemes.Emerald(GraphKind.Line));
-    CpuUtilizationGraph.ApplyTheme(GraphThemes.Rose(GraphKind.Line));
-    CpuTemperatureGraph.ApplyTheme(GraphThemes.Sky(GraphKind.Line));
+    //CpuTemperatureGraph.ApplyTheme(GraphThemes.Sky(GraphKind.Line));
     CpuFanGraph.ApplyTheme(GraphThemes.Purple(GraphKind.Line));
 
     if (DataContext is ICpuViewModel vm)

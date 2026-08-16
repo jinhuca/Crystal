@@ -5,7 +5,7 @@ namespace Crystal.Controls.PerformanceGraphs.Styles;
 internal sealed class GraphStyle {
   public GraphStyle() {
     BorderPen = Helpers.CreateFrozenPen(Brushes.Black, 0.8);
-    BorderThickness = 1;
+    BorderThickness = 0.8;
 
     GridPen = Helpers.CreateFrozenPen(Brushes.DarkBlue, 0.6);
     LinePen = Helpers.CreateFrozenPen(Brushes.Blue, 1);
@@ -28,5 +28,5 @@ internal sealed class GraphStyle {
 
   public Brush BackgroundBrush { get; set; }
 
-  public double BorderThickness { get; set; } = 1;
+  public double BorderThickness { get; set; } = 0.8;
 }

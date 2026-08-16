@@ -93,8 +93,7 @@
               <ColumnDefinition Width="*"/>
               <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <graphs:PerformanceGraph x:Name="CpuClockGraph" Grid.Column="0" Kind="Line" MinHeight="{StaticResource SummaryGraphMinHeight}" 
-                                     Margin="0,1,0,1" MinValue="0" MaxValue="6"/>
+            <graphs:PerformanceGraph x:Name="CpuClockGraph" Grid.Column="0" Style="{StaticResource SegBarClockGraphPurpleStyle030}"/>
             <StackPanel Grid.Column="1" Style="{StaticResource SummaryStackPanelStyle}">
               <StackPanel Orientation="Horizontal">
                 <TextBlock Text="{Binding SpeedGhz, StringFormat={}{0:0.00}}" Style="{StaticResource MetricValue}"/>
@@ -139,8 +138,7 @@
               <ColumnDefinition Width="*"/>
               <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <graphs:PerformanceGraph x:Name="CpuTemperatureGraph" Grid.Column="0" Kind="Line" MinHeight="{StaticResource SummaryGraphMinHeight}" 
-                                     Margin="0,1,0,1" MinValue="0" MaxValue="120"/>
+            <graphs:PerformanceGraph x:Name="CpuTemperatureGraph" Grid.Column="0" Style="{StaticResource LineTemperatureGraphRoseStyle030}"/>
             <StackPanel Grid.Column="1" Style="{StaticResource SummaryStackPanelStyle}">
               <StackPanel Orientation="Horizontal">
                 <TextBlock Text="{Binding Temperature, StringFormat={}{0:0.00}}" Style="{StaticResource MetricValue}"/>
@@ -239,9 +237,7 @@
               <ColumnDefinition Width="*"/>
               <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <graphs:PerformanceGraph x:Name="CpuUtilizationGraph" Grid.Column="0" Kind="Line" 
-                                     Margin="0,1,0,1" MinHeight="{StaticResource SummaryGraphMinHeight}"
-                                     MinValue="0" MaxValue="100"/>
+            <graphs:PerformanceGraph x:Name="CpuUtilizationGraph" Grid.Column="0" Style="{StaticResource SegBarLoadGraphGreyStyle030}"/>
             <StackPanel Grid.Column="1" Style="{StaticResource SummaryStackPanelStyle}">
               <StackPanel Orientation="Horizontal">
                 <TextBlock Text="{Binding Load, StringFormat={}{0:0.00}}" Style="{StaticResource MetricValue}"/>

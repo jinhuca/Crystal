@@ -1,0 +1,266 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs">
+
+  <!--
+    Named, opt-in PerformanceGraph styles. Apply one with, e.g.,
+      <graphs:PerformanceGraph Style="{StaticResource RoseLineGraphStyle}"/>
+    These are keyed styles (not a default template), so they are only reachable through ordinary
+    StaticResource lookup — this dictionary must be merged into Application.Resources to be found
+    (it is not auto-loaded by the theme system the way Themes/Generic.xaml is). Line kinds use a
+    vertical glow gradient fill; Bar/SegmentedBar kinds use a flat fill (a gradient would restart
+    per bar/segment).
+
+    Colors live in Crystal.Resources/Styles/GraphPalette.xaml. It is merged here (not just app-wide)
+    because a StaticResource inside this dictionary resolves against this dictionary's own merged
+    scope, not sibling dictionaries merged elsewhere in App.xaml.
+  -->
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary Source="/Crystal.Resources;component/Styles/GraphPalette.xaml"/>
+  </ResourceDictionary.MergedDictionaries>
+
+  <!-- NoFrill Styles - No Border, No Grid, No Background -->
+  <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="NoFillStyle">
+    <Setter Property="GraphBackground" Value="Transparent"/>
+    <Setter Property="GridBrush" Value="Transparent"/>
+    <Setter Property="GridThickness" Value="0"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="MinHeight" Value="{StaticResource SummaryGraphMinHeight}"/>
+  </Style>
+
+  <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="NoFillLineStyle"
+         BasedOn="{StaticResource NoFillStyle}">
+    <Setter Property="Kind" Value="Line"/>
+  </Style>
+
+  <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="NoFillBarStyle"
+         BasedOn="{StaticResource NoFillStyle}">
+    <Setter Property="Kind" Value="Bar"/>
+  </Style>
+
+  <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="NoFillSegStyle"
+         BasedOn="{StaticResource NoFillStyle}">
+    <Setter Property="Kind" Value="SegmentedBar"/>
+  </Style>
+
+  <!-- Load Graph Styles -->
+  <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="LoadGraph30BaseStyle"
+         BasedOn="{StaticResource NoFillStyle}">
+    <Setter Property="HistoryLength" Value="30"/>
+    <Setter Property="MinValue" Value="0"/>
+    <Setter Property="MaxValue" Value="100"/>
+  </Style>
+
+  <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="SegLoadGraph30Style"
+         BasedOn="{StaticResource LoadGraph30BaseStyle}">
+    <Setter Property="Kind" Value="SegmentedBar"/>
+  </Style>
+
+  <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="LineLoadGraph30Style"
+         BasedOn="{StaticResource LoadGraph30BaseStyle}">
+    <Setter Property="Kind" Value="Line"/>
+  </Style>
+
+  <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="SegBarLoadGraphGreyStyle030"
+         BasedOn="{StaticResource SegLoadGraph30Style}">
+    <Setter Property="LineBrush" Value="{StaticResource GraphGreyBrush}"/>
+    <Setter Property="FillBrush" Value="{StaticResource GraphGreyBrush}"/>
+  </Style>
+
+  <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="SegBarLoadGraphRoseStyle030"
+         BasedOn="{StaticResource SegLoadGraph30Style}">
+    <Setter Property="LineBrush" Value="{StaticResource GraphRoseBrush}"/>
+    <Setter Property="FillBrush" Value="{StaticResource GraphRoseBrush}"/>
+  </Style>
+
+  <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="SegBarLoadGraphEmeraldStyle030"
+         BasedOn="{StaticResource SegLoadGraph30Style}">
+    <Setter Property="LineBrush" Value="{StaticResource GraphEmeraldBrush}"/>
+    <Setter Property="FillBrush" Value="{StaticResource GraphEmeraldBrush}"/>
+  </Style>
+
+  <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="SegBarLoadGraphSkyStyle030"
+         BasedOn="{StaticResource SegLoadGraph30Style}">
+    <Setter Property="LineBrush" Value="{StaticResource GraphSkyBrush}"/>
+    <Setter Property="FillBrush" Value="{StaticResource GraphSkyBrush}"/>
+  </Style>
+
+  <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="SegBarLoadGraphAmberStyle030"
+         BasedOn="{StaticResource SegLoadGraph30Style}">
+    <Setter Property="LineBrush" Value="{StaticResource GraphAmberBrush}"/>
+    <Setter Property="FillBrush" Value="{StaticResource GraphAmberBrush}"/>
+  </Style>
+  
+  <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="LineLoadGraphGreyStyle030"
+         BasedOn="{StaticResource LineLoadGraph30Style}">
+    <Setter Property="LineBrush" Value="{StaticResource GraphGreyBrush}"/>
+    <Setter Property="FillBrush" Value="{StaticResource GraphGreyFill}"/>
+    <Setter Property="LineThickness" Value="1.0"/>
+  </Style>
+
+  <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="LineLoadGraphRoseStyle030"
+         BasedOn="{StaticResource LineLoadGraph30Style}">
+    <Setter Property="LineBrush" Value="{StaticResource GraphRoseBrush}"/>
+    <Setter Property="FillBrush" Value="{StaticResource GraphRoseFill}"/>
+    <Setter Property="LineThickness" Value="1.0"/>
+  </Style>
+
+  <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="LineLoadGraphEmeraldStyle030"
+         BasedOn="{StaticResource LineLoadGraph30Style}">
+    <Setter Property="LineBrush" Value="{StaticResource GraphEmeraldBrush}"/>
+    <Setter Property="FillBrush" Value="{StaticResource GraphEmeraldFill}"/>
+    <Setter Property="LineThickness" Value="1.0"/>
+  </Style>
+  
+  <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="LineLoadGraphSkyStyle030"
+         BasedOn="{StaticResource LineLoadGraph30Style}">
+    <Setter Property="LineBrush" Value="{StaticResource GraphSkyBrush}"/>
+    <Setter Property="FillBrush" Value="{StaticResource GraphSkyFill}"/>
+    <Setter Property="LineThickness" Value="1.0"/>
+  </Style>
+  
+  <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="LineLoadGraphAmberStyle030"
+         BasedOn="{StaticResource LineLoadGraph30Style}">
+    <Setter Property="LineBrush" Value="{StaticResource GraphAmberBrush}"/>
+    <Setter Property="FillBrush" Value="{StaticResource GraphAmberFill}"/>
+    <Setter Property="LineThickness" Value="1.0"/>
+  </Style>
+
+  <!-- Temperature Graph Styles -->
+  <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="TemperatureGraph30Style"
+         BasedOn="{StaticResource NoFillStyle}">
+    <Setter Property="HistoryLength" Value="30"/>
+    <Setter Property="MinValue" Value="30"/>
+    <Setter Property="MaxValue" Value="120"/>
+  </Style>
+  
+  <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="SegTemperatureGraph30Style"
+         BasedOn="{StaticResource TemperatureGraph30Style}">
+    <Setter Property="Kind" Value="SegmentedBar"/>
+  </Style>
+  
+  <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="LineTemperatureGraph30Style"
+         BasedOn="{StaticResource TemperatureGraph30Style}">
+    <Setter Property="Kind" Value="Line"/>
+  </Style>
+
+  <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="SegBarTemperatureGraphGreyStyle030"
+         BasedOn="{StaticResource SegTemperatureGraph30Style}">
+    <Setter Property="LineBrush" Value="{StaticResource GraphGreyBrush}"/>
+    <Setter Property="FillBrush" Value="{StaticResource GraphGreyBrush}"/>
+  </Style>
+
+  <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="SegBarTemperatureGraphRoseStyle030"
+         BasedOn="{StaticResource SegTemperatureGraph30Style}">
+    <Setter Property="LineBrush" Value="{StaticResource GraphRoseBrush}"/>
+    <Setter Property="FillBrush" Value="{StaticResource GraphRoseBrush}"/>
+  </Style>
+
+  <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="LineTemperatureGraphGreyStyle030"
+         BasedOn="{StaticResource LineTemperatureGraph30Style}">
+    <Setter Property="LineBrush" Value="{StaticResource GraphGreyBrush}"/>
+    <Setter Property="LineThickness" Value="1.0"/>
+    <Setter Property="FillBrush" Value="{StaticResource GraphGreyFill}"/>
+  </Style>
+
+  <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="LineTemperatureGraphRoseStyle030"
+         BasedOn="{StaticResource LineTemperatureGraph30Style}">
+    <Setter Property="LineBrush" Value="{StaticResource GraphRoseBrush}"/>
+    <Setter Property="LineThickness" Value="1.0"/>
+    <Setter Property="FillBrush" Value="{StaticResource GraphRoseFill}"/>
+  </Style>
+
+  <!-- Clock Graph Styles -->
+  <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="SegBarClockGraphGreyStyle030"
+         BasedOn="{StaticResource NoFillSegStyle}">
+    <Setter Property="HistoryLength" Value="30"/>
+    <Setter Property="MinValue" Value="0"/>
+    <Setter Property="MaxValue" Value="6"/>
+    <Setter Property="LineBrush" Value="{StaticResource GraphGreyBrush}"/>
+    <Setter Property="FillBrush" Value="{StaticResource GraphGreyBrush}"/>
+  </Style>
+
+  <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="SegBarClockGraphPurpleStyle030"
+         BasedOn="{StaticResource NoFillSegStyle}">
+    <Setter Property="HistoryLength" Value="30"/>
+    <Setter Property="MinValue" Value="0"/>
+    <Setter Property="MaxValue" Value="6"/>
+    <Setter Property="LineBrush" Value="{StaticResource GraphPurpleBrush}"/>
+    <Setter Property="FillBrush" Value="{StaticResource GraphPurpleBrush}"/>
+  </Style>  
+
+
+
+  <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="RoseLineGraphStyle">
+    <Setter Property="Kind" Value="Line"/>
+    <Setter Property="GraphBackground" Value="{StaticResource GraphPlotBackgroundBrush}"/>
+    <Setter Property="GridBrush" Value="{StaticResource GraphGridBrush}"/>
+    <Setter Property="GridThickness" Value="0.6"/>
+    <Setter Property="BorderBrush" Value="{StaticResource GraphAxisBorderBrush}"/>
+    <Setter Property="BorderThickness" Value="0.8"/>
+    <Setter Property="LineBrush" Value="{StaticResource GraphRoseBrush}"/>
+    <Setter Property="LineThickness" Value="1.5"/>
+    <Setter Property="FillBrush" Value="{StaticResource GraphRoseFill}"/>
+  </Style>
+
+  <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="EmeraldLineGraphStyle">
+    <Setter Property="Kind" Value="Line"/>
+    <Setter Property="GraphBackground" Value="{StaticResource GraphPlotBackgroundBrush}"/>
+    <Setter Property="GridBrush" Value="{StaticResource GraphGridBrush}"/>
+    <Setter Property="GridThickness" Value="0.6"/>
+    <Setter Property="BorderBrush" Value="{StaticResource GraphAxisBorderBrush}"/>
+    <Setter Property="BorderThickness" Value="0.8"/>
+    <Setter Property="LineBrush" Value="{StaticResource GraphEmeraldBrush}"/>
+    <Setter Property="LineThickness" Value="1.5"/>
+    <Setter Property="FillBrush" Value="{StaticResource GraphEmeraldFill}"/>
+  </Style>
+
+  <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="SkyLineGraphStyle">
+    <Setter Property="Kind" Value="Line"/>
+    <Setter Property="GraphBackground" Value="{StaticResource GraphPlotBackgroundBrush}"/>
+    <Setter Property="GridBrush" Value="{StaticResource GraphGridBrush}"/>
+    <Setter Property="GridThickness" Value="0.6"/>
+    <Setter Property="BorderBrush" Value="{StaticResource GraphAxisBorderBrush}"/>
+    <Setter Property="BorderThickness" Value="0.8"/>
+    <Setter Property="LineBrush" Value="{StaticResource GraphSkyBrush}"/>
+    <Setter Property="LineThickness" Value="1.5"/>
+    <Setter Property="FillBrush" Value="{StaticResource GraphSkyFill}"/>
+  </Style>
+
+  <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="AmberLineGraphStyle">
+    <Setter Property="Kind" Value="Line"/>
+    <Setter Property="GraphBackground" Value="{StaticResource GraphPlotBackgroundBrush}"/>
+    <Setter Property="GridBrush" Value="{StaticResource GraphGridBrush}"/>
+    <Setter Property="GridThickness" Value="0.6"/>
+    <Setter Property="BorderBrush" Value="{StaticResource GraphAxisBorderBrush}"/>
+    <Setter Property="BorderThickness" Value="0.8"/>
+    <Setter Property="LineBrush" Value="{StaticResource GraphAmberBrush}"/>
+    <Setter Property="LineThickness" Value="1.5"/>
+    <Setter Property="FillBrush" Value="{StaticResource GraphAmberFill}"/>
+  </Style>
+
+  <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="AmberBarGraphStyle">
+    <Setter Property="Kind" Value="Bar"/>
+    <Setter Property="GraphBackground" Value="{StaticResource GraphPlotBackgroundBrush}"/>
+    <Setter Property="GridBrush" Value="{StaticResource GraphGridBrush}"/>
+    <Setter Property="GridThickness" Value="0.6"/>
+    <Setter Property="BorderBrush" Value="{StaticResource GraphAxisBorderBrush}"/>
+    <Setter Property="BorderThickness" Value="0.8"/>
+    <Setter Property="LineBrush" Value="{StaticResource GraphAmberBrush}"/>
+    <Setter Property="LineThickness" Value="1"/>
+    <Setter Property="FillBrush" Value="{StaticResource GraphAmberBrush}"/>
+  </Style>
+
+  <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="PurpleSegmentedBarGraphStyle">
+    <Setter Property="HistoryLength" Value="30"/>
+    <Setter Property="Kind" Value="SegmentedBar"/>
+    <Setter Property="GraphBackground" Value="Transparent"/>
+    <Setter Property="GridBrush" Value="Transparent"/>
+    <Setter Property="GridThickness" Value="0"/>
+    <Setter Property="BorderBrush" Value="{StaticResource GraphAxisBorderBrush}"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="LineBrush" Value="{StaticResource GraphPurpleBrush}"/>
+    <Setter Property="LineThickness" Value="1"/>
+    <Setter Property="FillBrush" Value="{StaticResource GraphPurpleBrush}"/>
+  </Style>
+</ResourceDictionary>

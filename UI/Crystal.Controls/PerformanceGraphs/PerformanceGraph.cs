@@ -35,6 +35,14 @@ public class PerformanceGraph : FrameworkElement {
       DependencyProperty.Register(nameof(MaxValue), typeof(double), typeof(PerformanceGraph),
           new FrameworkPropertyMetadata(100.0, FrameworkPropertyMetadataOptions.AffectsRender));
 
+  /// <summary>Identifies the <see cref="HistoryLength"/> dependency property.</summary>
+  public static readonly DependencyProperty HistoryLengthProperty =
+      DependencyProperty.Register(nameof(HistoryLength), typeof(int), typeof(PerformanceGraph),
+          new FrameworkPropertyMetadata(DefaultHistoryLength, FrameworkPropertyMetadataOptions.AffectsRender, OnHistoryLengthChanged),
+          ValidateHistoryLength);
+
+  private static bool ValidateHistoryLength(object value) => value is int length && length > 0;
+
   /// <summary>Identifies the <see cref="LineBrush"/> dependency property.</summary>
   public static readonly DependencyProperty LineBrushProperty =
       DependencyProperty.Register(nameof(LineBrush), typeof(Brush), typeof(PerformanceGraph),
@@ -60,10 +68,20 @@ public class PerformanceGraph : FrameworkElement {
       DependencyProperty.Register(nameof(GridBrush), typeof(Brush), typeof(PerformanceGraph),
           new FrameworkPropertyMetadata(Brushes.DarkBlue, FrameworkPropertyMetadataOptions.AffectsRender, OnGridBrushChanged));
 
+  /// <summary>Identifies the <see cref="GridThickness"/> dependency property.</summary>
+  public static readonly DependencyProperty GridThicknessProperty =
+      DependencyProperty.Register(nameof(GridThickness), typeof(double), typeof(PerformanceGraph),
+          new FrameworkPropertyMetadata(0.6, FrameworkPropertyMetadataOptions.AffectsRender, OnGridThicknessChanged));
+
   /// <summary>Identifies the <see cref="BorderBrush"/> dependency property.</summary>
   public static readonly DependencyProperty BorderBrushProperty =
       DependencyProperty.Register(nameof(BorderBrush), typeof(Brush), typeof(PerformanceGraph),
           new FrameworkPropertyMetadata(Brushes.Black, FrameworkPropertyMetadataOptions.AffectsRender, OnBorderBrushChanged));
+
+  /// <summary>Identifies the <see cref="BorderThickness"/> dependency property.</summary>
+  public static readonly DependencyProperty BorderThicknessProperty =
+      DependencyProperty.Register(nameof(BorderThickness), typeof(double), typeof(PerformanceGraph),
+          new FrameworkPropertyMetadata(0.8, FrameworkPropertyMetadataOptions.AffectsRender, OnBorderThicknessChanged));
 
   /// <summary>Identifies the <see cref="MarkerBrush"/> dependency property.</summary>
   public static readonly DependencyProperty MarkerBrushProperty =
@@ -98,8 +116,10 @@ public class PerformanceGraph : FrameworkElement {
   // the most recent value. The primary series' line/fill live in _graphStyle and are driven by the
   // LineBrush/FillBrush/LineThickness dependency properties, so every existing single-series graph
   // is unaffected.
-  private readonly CircularBuffer<double> _values;
-  private readonly int _historyLength;
+  // Not readonly: the HistoryLength dependency property rebuilds this buffer (and _historyLength)
+  // when the plotted sample count changes.
+  private CircularBuffer<double> _values;
+  private int _historyLength;
 
   // Additional overlay series (index 1..N), each with its own buffer, line pen and optional fill.
   // Only meaningful for GraphKind.Line — bars/segmented bars draw the primary series alone. Populated
@@ -112,7 +132,8 @@ public class PerformanceGraph : FrameworkElement {
   // which is only safe when a single geometry isn't drawn twice within one render pass — so per-series
   // renderers (not one shared instance looped) keep the overlays from stomping each other's geometry.
   private sealed class Series {
-    public readonly CircularBuffer<double> Values;
+    // Not readonly: rebuilt by CopyMostRecent when HistoryLength changes.
+    public CircularBuffer<double> Values;
     public readonly FilledLineRenderer Renderer = new();
     public Pen LinePen;
     public Brush? FillBrush;
@@ -150,6 +171,12 @@ public class PerformanceGraph : FrameworkElement {
     _values = new CircularBuffer<double>(historyLength);
     _gridRender = new GridRenderer(Rows, gridColumns);
     GridColumns = gridColumns;
+
+    // Keep the HistoryLength DP in step with the constructor argument (the DP defaults to
+    // DefaultHistoryLength, so a non-default programmatic size would otherwise disagree with it).
+    // SetCurrentValue leaves a later Style/binding free to override; OnHistoryLengthChanged no-ops
+    // here because _values is already this size.
+    SetCurrentValue(HistoryLengthProperty, historyLength);
 
     SnapsToDevicePixels = true;
     UseLayoutRounding = true;
@@ -221,6 +248,18 @@ public class PerformanceGraph : FrameworkElement {
     set => SetValue(MaxValueProperty, value);
   }
 
+  /// <summary>
+  /// Number of samples retained and plotted across the width — the graph's x-axis span (at the
+  /// default 1-second poll cadence, the number of seconds shown, e.g. 30/60/120). Settable in XAML;
+  /// changing it rebuilds the sample buffer, keeping the most recent samples that still fit.
+  /// Must be positive. Independent of <see cref="GridColumns"/> (a purely cosmetic vertical-line
+  /// density that is fixed at construction).
+  /// </summary>
+  public int HistoryLength {
+    get => (int)GetValue(HistoryLengthProperty);
+    set => SetValue(HistoryLengthProperty, value);
+  }
+
   /// <summary>Stroke color/brush of the data line.</summary>
   public Brush LineBrush {
     get => (Brush)GetValue(LineBrushProperty);
@@ -251,10 +290,22 @@ public class PerformanceGraph : FrameworkElement {
     set => SetValue(GridBrushProperty, value);
   }
 
+  /// <summary>Stroke thickness of the grid lines.</summary>
+  public double GridThickness {
+    get => (double)GetValue(GridThicknessProperty);
+    set => SetValue(GridThicknessProperty, value);
+  }
+
   /// <summary>Brush used for the outer border.</summary>
   public Brush BorderBrush {
     get => (Brush)GetValue(BorderBrushProperty);
     set => SetValue(BorderBrushProperty, value);
+  }
+
+  /// <summary>Stroke thickness of the outer border. Zero draws no border.</summary>
+  public double BorderThickness {
+    get => (double)GetValue(BorderThicknessProperty);
+    set => SetValue(BorderThicknessProperty, value);
   }
 
   /// <summary>Brush for the horizontal session-extreme marker lines. Null (the default) draws no
@@ -364,6 +415,26 @@ public class PerformanceGraph : FrameworkElement {
   private static void OnFillBrushChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) =>
       ((PerformanceGraph)d)._graphStyle.FillBrush = (Brush)e.NewValue;
 
+  private static void OnHistoryLengthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+    var graph = (PerformanceGraph)d;
+    int newLength = (int)e.NewValue;
+    if (newLength == graph._historyLength) return; // e.g. the constructor's own sync set
+
+    graph._historyLength = newLength;
+    graph._values = CopyMostRecent(graph._values, newLength);
+    foreach (var s in graph._extraSeries)
+      s.Values = CopyMostRecent(s.Values, newLength);
+  }
+
+  // Rebuilds a buffer at a new capacity, carrying over the most recent samples that still fit
+  // (the newest min(Count, newCapacity) values): growing keeps everything, shrinking drops the oldest.
+  private static CircularBuffer<double> CopyMostRecent(CircularBuffer<double> source, int newCapacity) {
+    var next = new CircularBuffer<double>(newCapacity);
+    int start = source.Count > newCapacity ? source.Count - newCapacity : 0;
+    for (int i = start; i < source.Count; i++) next.Add(source[i]);
+    return next;
+  }
+
   private static void OnGraphBackgroundChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) =>
       ((PerformanceGraph)d)._graphStyle.BackgroundBrush = (Brush)e.NewValue;
 
@@ -372,9 +443,21 @@ public class PerformanceGraph : FrameworkElement {
     graph._graphStyle.GridPen = Helpers.CreateFrozenPen((Brush)e.NewValue, graph._graphStyle.GridPen.Thickness);
   }
 
+  private static void OnGridThicknessChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+    var graph = (PerformanceGraph)d;
+    graph._graphStyle.GridPen = Helpers.CreateFrozenPen(graph._graphStyle.GridPen.Brush, (double)e.NewValue);
+  }
+
   private static void OnBorderBrushChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
     var graph = (PerformanceGraph)d;
     graph._graphStyle.BorderPen = Helpers.CreateFrozenPen((Brush)e.NewValue, graph._graphStyle.BorderPen.Thickness);
+  }
+
+  private static void OnBorderThicknessChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+    var graph = (PerformanceGraph)d;
+    double thickness = (double)e.NewValue;
+    graph._graphStyle.BorderThickness = thickness;
+    graph._graphStyle.BorderPen = Helpers.CreateFrozenPen(graph._graphStyle.BorderPen.Brush, thickness);
   }
 
   private static void OnMarkerBrushChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {

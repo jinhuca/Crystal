@@ -21,6 +21,12 @@ internal sealed class SegmentedBarRenderer {
   // frame (samples x rows); with it, the whole frame is one geometry and one DrawGeometry call.
   private readonly StreamGeometry _segmentsGeometry = new();
 
+  // Segments are many separate rectangles, so fill and outline are drawn as one uniform solid: any
+  // gradient fill is flattened to a flat colour (a gradient would otherwise restart inside every
+  // segment) and the stroke shares that same brush, so a segment reads as one solid block rather
+  // than a two-tone fill + accent outline. Cached so a static fill isn't rebuilt per frame.
+  private readonly SolidFillCache _solidFill = new();
+
   public void Draw(
       DrawingContext dc,
       Rect bounds,
@@ -105,7 +111,8 @@ internal sealed class SegmentedBarRenderer {
       }
     }
 
-    dc.DrawGeometry(style.FillBrush, style.LinePen, _segmentsGeometry);
+    (Brush fill, Pen pen) = _solidFill.Resolve(style.FillBrush, style.LinePen.Thickness);
+    dc.DrawGeometry(fill, pen, _segmentsGeometry);
   }
 
   // Traces one closed, filled+strokeable rectangle figure directly into an already-open

@@ -2,6 +2,12 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <ResourceDictionary.MergedDictionaries>
     <ResourceDictionary Source="/Crystal.Controls;component/Themes/PerformanceGraphStyles.xaml"/>
+    <!-- Keyed, opt-in PerformanceGraph sample styles. Living in this assembly's Themes/Generic.xaml
+         means the XAML tooling (Go-To-Definition / IntelliSense) can discover them from any project
+         that references Crystal.Controls (the IDE auto-indexes an assembly's Themes/Generic.xaml and
+         the dictionaries it merges). Runtime StaticResource resolution comes from the Shell's App.xaml
+         merging this whole Generic.xaml into app scope — so this file is listed in exactly one place. -->
+    <ResourceDictionary Source="/Crystal.Controls;component/Themes/PerformanceGraphSampleStyles.xaml"/>
     <ResourceDictionary Source="/Crystal.Controls;component/Themes/RangeBarStyles.xaml"/>
     <ResourceDictionary Source="/Crystal.Controls;component/Themes/ScrollBarStyles.xaml"/>
     <ResourceDictionary Source="/Crystal.Controls;component/Themes/LoadingHostStyles.xaml"/>

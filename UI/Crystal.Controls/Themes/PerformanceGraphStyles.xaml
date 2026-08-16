@@ -64,6 +64,6 @@
   </Style>
 
   <Style TargetType="{x:Type controls:PerformanceGraphView}" x:Key="UtilizationGraphStyle">
-    
+
   </Style>
 </ResourceDictionary>

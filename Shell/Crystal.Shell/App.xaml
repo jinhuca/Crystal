@@ -7,7 +7,12 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Crystal.Resources;component/Themes/Generic.xaml"/>
-                <ResourceDictionary Source="/Crystal.Controls;component/Themes/ScrollBarStyles.xaml"/>
+                <!-- The whole Crystal.Controls theme dictionary (scrollbar, range-bar, loading-host,
+                     and the keyed PerformanceGraph sample styles) is pulled into app scope in one
+                     merge, so keyed styles resolve via StaticResource and the sample styles are
+                     declared in exactly one place (Themes/Generic.xaml) instead of being listed
+                     again here. -->
+                <ResourceDictionary Source="/Crystal.Controls;component/Themes/Generic.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
             <!-- Apply the flat dark scrollbar to every ScrollBar app-wide (all detail windows and
