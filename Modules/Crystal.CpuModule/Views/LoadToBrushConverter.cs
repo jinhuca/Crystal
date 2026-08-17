@@ -24,7 +24,7 @@ public sealed class LoadToBrushConverter : IValueConverter {
   }
 
   public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
-      throw new NotSupportedException();
+    throw new NotSupportedException();
 
   private static SolidColorBrush Freeze(byte r, byte g, byte b) {
     var brush = new SolidColorBrush(Color.FromRgb(r, g, b));

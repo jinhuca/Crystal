@@ -4,9 +4,12 @@ using System.Windows.Input;
 
 namespace Crystal.CpuModule.Views;
 
-/// <summary>Compact CPU tile on the dashboard: composes the header and the per-metric tiles
-/// (clock, voltage, temperature, power, utilization, fan) plus the per-core strip, each defined in
-/// Views/SummaryViews. Double-clicking opens the full CPU detail view.</summary>
+/// <summary>
+/// Compact CPU tile on the dashboard: composes the header and the per-metric tiles
+/// (clock, voltage, temperature, power, utilization, fan) plus the per-core strip, 
+/// each defined in Views/SummaryViews. 
+/// Double-clicking opens the full CPU detail view.
+/// </summary>
 public partial class CpuSummaryView : UserControl {
   public CpuSummaryView() => InitializeComponent();
 

@@ -10,10 +10,10 @@
              d:DesignHeight="240" d:DesignWidth="1000"
              Background="Transparent" Foreground="{StaticResource TextBrush}"
              FontFamily="{StaticResource UiFontFamily}">
-  <!-- Layout only: the header and each metric tile live in Views/SummaryViews. The body grid sets
-       DataContext to SensorsViewModel so every metric tile inherits it; the header inherits the
-       root ICpuViewModel (it needs both SpecsViewModel and SensorsViewModel). Each metric tile that
-       owns a history graph self-registers it with the view model on load. -->
+  <!-- Layout only: the header and each metric tile live in Views/SummaryViews. 
+       The body grid sets DataContext to SensorsViewModel so every metric tile inherits it; 
+       the header inherits the root ICpuViewModel (it needs both SpecsViewModel and SensorsViewModel). 
+       Each metric tile that owns a history graph self-registers it with the view model on load. -->
   <Border Background="Transparent" MouseLeftButtonDown="OnTileClick">
     <Grid Margin="5">
       <Grid.RowDefinitions>

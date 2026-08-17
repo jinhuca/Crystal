@@ -63,9 +63,9 @@ public class CpuModule(IRegionManager regionManager) : IModule {
     // resolved by its interface, so map both views to it explicitly. Each view gets its own VM
     // instance (Register, not singleton), so their live graphs never share sample buffers.
     ViewModelLocationProvider.Register<CpuSummaryView>(
-        () => ContainerLocator.Container.Resolve<ICpuViewModel>());
+      () => ContainerLocator.Container.Resolve<ICpuViewModel>());
     ViewModelLocationProvider.Register<CpuDetailView>(
-        () => ContainerLocator.Container.Resolve<ICpuViewModel>());
+      () => ContainerLocator.Container.Resolve<ICpuViewModel>());
   }
 
   public void OnInitialized(IContainerProvider containerProvider) {
