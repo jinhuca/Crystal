@@ -78,6 +78,48 @@ public class StorageViewModelTests {
   }
 
   [Fact]
+  public void Plugging_in_a_drive_keeps_surviving_rows_and_adds_the_new_one() {
+    var vm = CreateVm(out var model);
+    model.SpecsSubject.OnNext(Snapshot(Drive(0), Drive(1)));
+    var disk0 = vm.Drives.Single(d => d.DriveIndex == 0);
+    var disk1 = vm.Drives.Single(d => d.DriveIndex == 1);
+
+    // A drive is hot-plugged: the inventory re-emits with a third disk.
+    model.SpecsSubject.OnNext(Snapshot(Drive(0), Drive(1), Drive(2, "WD Black", 1000)));
+
+    Assert.Equal(3, vm.Drives.Count);
+    // Surviving disks keep their VM instance (so live state + graph history isn't lost).
+    Assert.Same(disk0, vm.Drives.Single(d => d.DriveIndex == 0));
+    Assert.Same(disk1, vm.Drives.Single(d => d.DriveIndex == 1));
+    Assert.Contains(vm.Drives, d => d.DriveIndex == 2);
+    Assert.Equal("3 drives", vm.DriveCountLabel);
+  }
+
+  [Fact]
+  public void Removing_a_drive_drops_its_row_and_keeps_the_rest() {
+    var vm = CreateVm(out var model);
+    model.SpecsSubject.OnNext(Snapshot(Drive(0), Drive(1)));
+    var disk0 = vm.Drives.Single(d => d.DriveIndex == 0);
+
+    model.SpecsSubject.OnNext(Snapshot(Drive(0))); // disk 1 unplugged
+
+    Assert.Same(disk0, Assert.Single(vm.Drives));
+    Assert.Equal("1 drive", vm.DriveCountLabel);
+  }
+
+  [Fact]
+  public void Removing_the_selected_drive_reselects_a_remaining_disk() {
+    var vm = CreateVm(out var model);
+    model.SpecsSubject.OnNext(Snapshot(Drive(0), Drive(1)));
+    vm.SelectedDisk = vm.Drives.Single(d => d.DriveIndex == 1);
+
+    model.SpecsSubject.OnNext(Snapshot(Drive(0))); // the selected disk is unplugged
+
+    Assert.Equal(0, vm.SelectedDisk!.DriveIndex);
+    Assert.Same(vm.Drives[0], vm.SelectedDisk);
+  }
+
+  [Fact]
   public void Load_routes_each_reading_to_the_matching_disk_by_index() {
     var vm = CreateVm(out var model);
     model.SpecsSubject.OnNext(Snapshot(Drive(0), Drive(1)));

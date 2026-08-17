@@ -1,0 +1,27 @@
+<UserControl x:Class="Crystal.MemoryModule.Views.SummaryViews.MemoryUsedView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs;assembly=Crystal.Controls"
+             mc:Ignorable="d"
+             d:DesignHeight="90" d:DesignWidth="380">
+  <!-- DataContext is the root IMemoryViewModel, inherited from the host tile. -->
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="Auto"/>
+    </Grid.ColumnDefinitions>
+    <graphs:PerformanceGraph x:Name="MemoryUsedGraph" Grid.Column="0"
+                             graphs:GraphIdentity.Id="Memory.Used"
+                             MinValue="0"
+                             MaxValue="{Binding TotalCapacityGB, TargetNullValue=64}"/>
+    <StackPanel Grid.Column="1" Style="{StaticResource SummaryStackPanelStyle}">
+      <StackPanel Orientation="Horizontal">
+        <TextBlock Text="{Binding UsedGB, StringFormat={}{0:0.0}, TargetNullValue=—}" Style="{StaticResource MetricValue}"/>
+        <TextBlock Text="GB" Style="{StaticResource MetricUnit}"/>
+      </StackPanel>
+      <TextBlock Text="Used" Style="{StaticResource MetricCaption}"/>
+    </StackPanel>
+  </Grid>
+</UserControl>

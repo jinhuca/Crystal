@@ -1,0 +1,23 @@
+<UserControl x:Class="Crystal.BiosModule.Views.SummaryViews.BiosHeaderView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignWidth="1100"
+             Background="Transparent" Foreground="{StaticResource TextBrush}"
+             FontFamily="{StaticResource UiFontFamily}">
+  <!-- Dense header bar: accent tick + title, thin divider rule below. Inherits the root
+       IBiosViewModel as DataContext from the host tile. -->
+  <Border BorderBrush="{StaticResource DividerBrush}" BorderThickness="0,0,0,1"
+          Padding="0,0,0,4" Margin="0,0,0,8">
+    <StackPanel Orientation="Horizontal">
+      <Border Width="3" Background="{StaticResource AccentBrush}" Margin="0,1,8,1"/>
+      <TextBlock Text="BIOS" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource BodyFontSize}" FontWeight="SemiBold"
+                 VerticalAlignment="Center" Margin="0,0,16,0"/>
+      <TextBlock Text="{Binding Manufacturer}" Style="{StaticResource HeaderSpec}"
+                 TextTrimming="CharacterEllipsis"/>
+      <TextBlock Text="{Binding Version, StringFormat=Version {0}}" Style="{StaticResource HeaderSpec}"/>
+    </StackPanel>
+  </Border>
+</UserControl>

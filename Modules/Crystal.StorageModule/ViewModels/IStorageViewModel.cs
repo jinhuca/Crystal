@@ -20,6 +20,12 @@ public interface IStorageViewModel {
   double FreeSpaceFraction { get; }
   string CapacityUsageLabel { get; }
   string UsedSpacePercentLabel { get; }
+  string FreeSpacePercentLabel { get; }
+  string TotalSpaceLabel { get; }
+  string FreeSpaceLabel { get; }
+  string AvailablePercentLabel { get; }
+  string DriveCountValue { get; }
+  string DriveNoun { get; }
   bool ShowBusiestDrive { get; }
   string BusiestDriveLabel { get; }
   ObservableCollection<StorageDriveViewModel> Drives { get; }
@@ -27,11 +33,12 @@ public interface IStorageViewModel {
   /// <summary>The disk whose graphs and stats the detail view currently shows.</summary>
   StorageDriveViewModel? SelectedDisk { get; set; }
 
-  /// <summary>Hands the summary tile's activity-history graph to the VM so it can push samples.</summary>
-  void AttachGraph(PerformanceGraph graph);
-
-  /// <summary>Hands the summary tile's transfer-rate history graph to the VM so it can push samples.</summary>
-  void AttachTransferGraph(PerformanceGraph graph);
+  /// <summary>
+  /// Registers a history graph to be fed on each update, keyed by its <c>GraphIdentity.Id</c>
+  /// (e.g. "Storage.Activity", "Storage.Transfer"). Each metric sub-view self-registers its own
+  /// graph on load, so the view model feeds only the graphs that were realized.
+  /// </summary>
+  void AttachGraph(string id, PerformanceGraph graph);
 
   ICommand ShowDetailCommand { get; }
   ICommand ShowDashboardCommand { get; }

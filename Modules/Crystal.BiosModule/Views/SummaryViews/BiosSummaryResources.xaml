@@ -1,0 +1,44 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs;assembly=Crystal.Controls">
+  <!-- Field/rail styles shared by the BIOS summary tile's sub-views (denser than the detail view,
+       so they stay summary-scoped rather than moving into BiosResources.xaml). Merges BiosResources
+       for the severity converter and dim brush the range hint depends on. -->
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary Source="/Crystal.BiosModule;component/Views/BiosResources.xaml"/>
+  </ResourceDictionary.MergedDictionaries>
+
+  <Style x:Key="FieldLabel" TargetType="TextBlock">
+    <Setter Property="Foreground" Value="{StaticResource LabelBrush}"/>
+    <Setter Property="FontSize" Value="{StaticResource CaptionFontSize}"/>
+  </Style>
+  <Style x:Key="FieldValue" TargetType="TextBlock">
+    <Setter Property="FontSize" Value="{StaticResource SpecFontSize}"/>
+    <Setter Property="FontFamily" Value="{StaticResource MonoFontFamily}"/>
+    <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+    <Setter Property="Margin" Value="0,0,16,0"/>
+  </Style>
+  <Style x:Key="FieldCell" TargetType="StackPanel">
+    <Setter Property="Margin" Value="0,0,0,10"/>
+  </Style>
+  <!-- Dim min–max sub-line under a rail. Hidden (not Collapsed) when a bound is missing so the
+       line's height is still reserved: otherwise a rail with no range would pull its sparkline
+       up a line and break horizontal alignment with the neighbouring rails' graphs. -->
+  <Style x:Key="RangeHint" TargetType="TextBlock">
+    <Setter Property="Foreground" Value="{StaticResource BiosDimBrush}"/>
+    <Setter Property="FontSize" Value="{StaticResource MicroFontSize}"/>
+    <Setter Property="FontFamily" Value="{StaticResource MonoFontFamily}"/>
+    <Setter Property="Margin" Value="0,-1,16,0"/>
+    <Style.Triggers>
+      <Trigger Property="Text" Value="">
+        <Setter Property="Visibility" Value="Hidden"/>
+      </Trigger>
+    </Style.Triggers>
+  </Style>
+  <!-- Compact per-rail sparkline: fixed height, no border, right-margin matches the rail
+       value/range columns. Its accent theme is applied per severity in code-behind. -->
+  <Style x:Key="RailSpark" TargetType="graphs:PerformanceGraph">
+    <Setter Property="Height" Value="16"/>
+    <Setter Property="Margin" Value="0,2,16,0"/>
+  </Style>
+</ResourceDictionary>

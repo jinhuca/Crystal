@@ -1,0 +1,36 @@
+<UserControl x:Class="Crystal.StorageModule.Views.SummaryViews.StorageTransferView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs;assembly=Crystal.Controls"
+             mc:Ignorable="d"
+             d:DesignHeight="90" d:DesignWidth="380"
+             Foreground="{StaticResource TextBrush}" FontFamily="{StaticResource UiFontFamily}">
+  <!-- DataContext is the root IStorageViewModel, inherited from the host tile. System-wide
+       transfer-rate history graph with read/write split and peak readout. Appearance is owned by
+       the graph-settings feature (keyed by GraphIdentity.Id); the view self-registers its graph. -->
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="Auto"/>
+    </Grid.ColumnDefinitions>
+    <graphs:PerformanceGraph x:Name="TransferGraph" Grid.Column="0"
+                             graphs:GraphIdentity.Id="Storage.Transfer"
+                             MinValue="0"
+                             MaxValue="{Binding TransferMaxMBps}"/>
+    <StackPanel Grid.Column="1" Style="{StaticResource SummaryStackPanelStyle}">
+      <StackPanel Orientation="Horizontal">
+        <TextBlock Text="{Binding TransferRateMBps, StringFormat={}{0:0.0}}" Style="{StaticResource MetricValue}"/>
+        <TextBlock Text="MB/s" Style="{StaticResource MetricUnit}"/>
+      </StackPanel>
+      <TextBlock Text="Transfer" Style="{StaticResource MetricCaption}"/>
+      <TextBlock Style="{StaticResource MetricCaption}" FontFamily="{StaticResource MonoFontFamily}">
+        <Run Text="&#x2193;" Foreground="{StaticResource AccentBrush}"/><Run Text=" "/><Run Text="{Binding ReadRateMBps, StringFormat={}{0:0.0}, Mode=OneWay}" Foreground="{StaticResource SpecValueBrush}"/><Run Text="   "/><Run Text="&#x2191;" Foreground="{StaticResource AccentBrush}"/><Run Text=" "/><Run Text="{Binding WriteRateMBps, StringFormat={}{0:0.0}, Mode=OneWay}" Foreground="{StaticResource SpecValueBrush}"/>
+      </TextBlock>
+      <TextBlock Style="{StaticResource MetricCaption}">
+        <Run Text="Peak"/><Run Text=" "/><Run Text="{Binding PeakTransferLabel, Mode=OneWay}" Foreground="{StaticResource SpecValueBrush}"/>
+      </TextBlock>
+    </StackPanel>
+  </Grid>
+</UserControl>

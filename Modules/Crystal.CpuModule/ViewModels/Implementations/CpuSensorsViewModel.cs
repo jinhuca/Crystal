@@ -34,12 +34,9 @@ public sealed class CpuSensorsViewModel : BindableBase, ICpuSensorViewModel {
   private bool _hasCpuFanPercent;
   private bool _msrSensorsAvailable;
 
-  private PerformanceGraph? _utilizationGraph;
-  private PerformanceGraph? _voltageGraph;
-  private PerformanceGraph? _clockGraph;
-  private PerformanceGraph? _powerGraph;
-  private PerformanceGraph? _temperatureGraph;
-  private PerformanceGraph? _fanGraph;
+  // History graphs are registered by their GraphIdentity.Id as each metric sub-view loads, then
+  // fed by that same id in Update(). A consumer that realizes only some tiles feeds only those.
+  private readonly Dictionary<string, PerformanceGraph> _graphs = [];
 
   public double Load { get => _load; private set => SetProperty(ref _load, value); }
   public double Voltage { get => _voltage; private set => SetProperty(ref _voltage, value); }
@@ -136,15 +133,10 @@ public sealed class CpuSensorsViewModel : BindableBase, ICpuSensorViewModel {
 
   public ObservableCollection<CoreLoadViewModel> CoreLoads { get; } = [];
 
-  public void AttachGraphs(PerformanceGraph? utilization = null, PerformanceGraph? voltage = null,
-                           PerformanceGraph? clock = null, PerformanceGraph? power = null,
-                           PerformanceGraph? temperature = null, PerformanceGraph? fan = null) {
-    _utilizationGraph = utilization;
-    _voltageGraph = voltage;
-    _clockGraph = clock;
-    _powerGraph = power;
-    _temperatureGraph = temperature;
-    _fanGraph = fan;
+  public void AttachGraph(string id, PerformanceGraph graph) => _graphs[id] = graph;
+
+  private void FeedGraph(string id, double value) {
+    if (_graphs.TryGetValue(id, out var graph)) graph.AddValue(value);
   }
 
   public void Update(ISystemCpuInfo info) {
@@ -186,18 +178,18 @@ public sealed class CpuSensorsViewModel : BindableBase, ICpuSensorViewModel {
 
     UpdateCoreLoads(socket.Cores);
 
-    _utilizationGraph?.AddValue(Load);
-    _voltageGraph?.AddValue(Voltage);
-    _clockGraph?.AddValue(SpeedGhz);
-    _powerGraph?.AddValue(Power);
-    _temperatureGraph?.AddValue(Temperature);
+    FeedGraph("Cpu.Utilization", Load);
+    FeedGraph("Cpu.Voltage", Voltage);
+    FeedGraph("Cpu.Clock", SpeedGhz);
+    FeedGraph("Cpu.Power", Power);
+    FeedGraph("Cpu.Temperature", Temperature);
 
     // Advance the fan history on this same poll tick, unconditionally, so it stays sample-aligned
     // with utilization from the very first tick. Fan RPM/percent arrives on a separate monitor
     // (SensorMonitor) at an independent phase; feeding the graph off that stream drifted it out of
     // sync, and gating it on a fan being latched started it a tick late (a fixed ~1s lag). We sample
     // the latest latched fan value here — 0 until the first reading, matching the "0 RPM" readout.
-    _fanGraph?.AddValue(FanReadoutValue);
+    FeedGraph("Cpu.Fan", FanReadoutValue);
 
     // Composite readouts derive from several sensors above; refresh them once per poll.
     RaisePropertyChanged(nameof(ClockReadoutLabel));

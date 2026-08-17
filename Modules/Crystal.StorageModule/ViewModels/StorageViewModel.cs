@@ -30,10 +30,13 @@ public sealed class StorageViewModel : BindableBase, IStorageViewModel, IDisposa
   private double _peakTransferMBps;
   private double? _freeSpaceGB;
   private double? _totalSpaceGB;
+  private int _driveCount;
   private int? _busiestDriveIndex;
   private StorageDriveViewModel? _selectedDisk;
-  private PerformanceGraph? _loadGraph;
-  private PerformanceGraph? _transferGraph;
+
+  // History graphs are registered by their GraphIdentity.Id as each metric sub-view loads, then
+  // fed by that same id in ApplyLoad. A consumer that realizes only some tiles feeds only those.
+  private readonly Dictionary<string, PerformanceGraph> _graphs = [];
 
   public StorageViewModel(IStorageModel model, IEventAggregator events) {
     ShowDetailCommand = new DelegateCommand(
@@ -71,6 +74,17 @@ public sealed class StorageViewModel : BindableBase, IStorageViewModel, IDisposa
   public string CapacityUsageLabel =>
       UsedSpaceGB is { } used && _totalSpaceGB is { } total ? $"{used:0.#} / {total:0.#} GB" : "—";
   public string UsedSpacePercentLabel => HasCapacityData ? $"{UsedSpaceFraction * 100:0}%" : "—";
+  public string FreeSpacePercentLabel => HasCapacityData ? $"{FreeSpaceFraction * 100:0}% free" : "—";
+
+  // Header roll-up: total, free, and available% all come from the same summed filesystem figures so
+  // they agree with each other (the WMI TotalCapacityLabel is physical disk size and can differ).
+  public string TotalSpaceLabel => _totalSpaceGB is { } gb ? $"{gb:0} GB" : "—";
+  public string FreeSpaceLabel => _freeSpaceGB is { } gb ? $"{gb:0} GB" : "—";
+  public string AvailablePercentLabel => HasCapacityData ? $"{FreeSpaceFraction * 100:0}%" : "—";
+
+  // Drive count split into value + noun so the header can style the number and the word separately.
+  public string DriveCountValue => _driveCount.ToString();
+  public string DriveNoun => _driveCount == 1 ? "drive" : "drives";
 
   // Which physical disk is driving the aggregate active-time figure right now. Only meaningful — and
   // only shown — when there's more than one disk to disambiguate.
@@ -86,17 +100,32 @@ public sealed class StorageViewModel : BindableBase, IStorageViewModel, IDisposa
   public ICommand ShowDetailCommand { get; }
   public ICommand ShowDashboardCommand { get; }
 
-  public void AttachGraph(PerformanceGraph graph) => _loadGraph = graph;
-  public void AttachTransferGraph(PerformanceGraph graph) => _transferGraph = graph;
+  public void AttachGraph(string id, PerformanceGraph graph) => _graphs[id] = graph;
+
+  private void FeedGraph(string id, double value) {
+    if (_graphs.TryGetValue(id, out var graph)) graph.AddValue(value);
+  }
 
   private void ApplySpecs(StorageSnapshot snapshot) {
     TotalCapacityLabel = snapshot.TotalCapacityGB is { } gb ? $"{gb:0.#} GB" : "—";
+    _driveCount = snapshot.DriveCount;
     DriveCountLabel = snapshot.DriveCount == 1 ? "1 drive" : $"{snapshot.DriveCount} drives";
+    RaisePropertyChanged(nameof(DriveCountValue));
+    RaisePropertyChanged(nameof(DriveNoun));
 
-    Drives.Clear();
+    // Merge rather than rebuild so drives that survive a hotplug keep their live state and graph
+    // history: drop rows whose disk is gone, add rows for newly attached disks, leave the rest.
+    // Joined by physical-disk index, the same key ApplyLoad routes readings by.
+    var incomingIndices = snapshot.Drives.Select(d => d.DriveIndex).ToHashSet();
+    for (int i = Drives.Count - 1; i >= 0; i--)
+      if (!incomingIndices.Contains(Drives[i].DriveIndex))
+        Drives.RemoveAt(i);
     foreach (var drive in snapshot.Drives)
-      Drives.Add(new StorageDriveViewModel(drive));
-    SelectedDisk ??= Drives.FirstOrDefault();
+      if (Drives.All(d => d.DriveIndex != drive.DriveIndex))
+        Drives.Add(new StorageDriveViewModel(drive));
+
+    if (SelectedDisk is null || !Drives.Contains(SelectedDisk))
+      SelectedDisk = Drives.FirstOrDefault();
     RaisePropertyChanged(nameof(ShowBusiestDrive));
   }
 
@@ -132,14 +161,14 @@ public sealed class StorageViewModel : BindableBase, IStorageViewModel, IDisposa
     // The dashboard tile stays aggregate: busiest disk's activity + system-wide transfer rate,
     // split into read vs write so the tile matches HWiNFO's separate R/W figures.
     Load = busiestActivity;
-    _loadGraph?.AddValue(busiestActivity);
+    FeedGraph("Storage.Activity", busiestActivity);
     _busiestDriveIndex = busiestIndex;
     RaisePropertyChanged(nameof(BusiestDriveLabel));
 
     ReadRateMBps = totalRead;
     WriteRateMBps = totalWrite;
     TransferRateMBps = totalTransfer;
-    _transferGraph?.AddValue(totalTransfer);
+    FeedGraph("Storage.Transfer", totalTransfer);
     _transferSamples.Enqueue(totalTransfer);
     while (_transferSamples.Count > TransferWindow) _transferSamples.Dequeue();
     TransferMaxMBps = NiceCeiling(Math.Max(TransferFloorMBps, _transferSamples.Max()));
@@ -153,6 +182,10 @@ public sealed class StorageViewModel : BindableBase, IStorageViewModel, IDisposa
     RaisePropertyChanged(nameof(FreeSpaceFraction));
     RaisePropertyChanged(nameof(CapacityUsageLabel));
     RaisePropertyChanged(nameof(UsedSpacePercentLabel));
+    RaisePropertyChanged(nameof(FreeSpacePercentLabel));
+    RaisePropertyChanged(nameof(TotalSpaceLabel));
+    RaisePropertyChanged(nameof(FreeSpaceLabel));
+    RaisePropertyChanged(nameof(AvailablePercentLabel));
   }
 
   // Round a peak up to a readable axis top: 1/2/5 × a power of ten (100, 200, 500, 1000, …), so the

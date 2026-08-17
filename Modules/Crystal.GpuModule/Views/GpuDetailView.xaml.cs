@@ -17,16 +17,16 @@ public partial class GpuDetailView : UserControl {
   }
 
   private void OnLoadGraphLoaded(object sender, System.Windows.RoutedEventArgs e) =>
-      Attach(sender, GraphThemes.Rose(GraphKind.SegmentedBar), (a, g) => a.AttachGraph(g));
+      Attach(sender, GraphThemes.Rose(GraphKind.SegmentedBar), (a, g) => a.AttachGraph("Gpu.Utilization", g));
 
   private void OnTemperatureGraphLoaded(object sender, System.Windows.RoutedEventArgs e) =>
-      Attach(sender, GraphThemes.Amber(GraphKind.Line), (a, g) => a.AttachTemperatureGraph(g));
+      Attach(sender, GraphThemes.Amber(GraphKind.Line), (a, g) => a.AttachGraph("Gpu.Temperature", g));
 
   private void OnClockGraphLoaded(object sender, System.Windows.RoutedEventArgs e) =>
-      Attach(sender, GraphThemes.Sky(GraphKind.Line), (a, g) => a.AttachClockGraph(g));
+      Attach(sender, GraphThemes.Sky(GraphKind.Line), (a, g) => a.AttachGraph("Gpu.Clock", g));
 
   private void OnPowerGraphLoaded(object sender, System.Windows.RoutedEventArgs e) =>
-      Attach(sender, GraphThemes.Emerald(GraphKind.SegmentedBar), (a, g) => a.AttachPowerGraph(g));
+      Attach(sender, GraphThemes.Emerald(GraphKind.SegmentedBar), (a, g) => a.AttachGraph("Gpu.Power", g));
 
   private static void Attach(object sender, GraphTheme theme, Action<GpuAdapterViewModel, PerformanceGraph> attach) {
     if (sender is not PerformanceGraphView view) return;

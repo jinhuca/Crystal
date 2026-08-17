@@ -52,11 +52,12 @@ public interface INetworkViewModel {
   /// recent busiest sample across both so the two graphs stay on a common, comparable scale.</summary>
   double ThroughputMaxBytesPerSecond { get; }
 
-  /// <summary>Wire the summary tile's total-download sparkline so the VM feeds it live samples.</summary>
-  void AttachDownloadGraph(PerformanceGraph graph);
-
-  /// <summary>Wire the summary tile's total-upload sparkline so the VM feeds it live samples.</summary>
-  void AttachUploadGraph(PerformanceGraph graph);
+  /// <summary>
+  /// Registers a history graph to be fed on each update, keyed by its <c>GraphIdentity.Id</c>
+  /// (e.g. "Network.Download" / "Network.Upload"). The throughput sub-view self-registers its
+  /// sparklines on load, so the view model feeds only the graphs a consumer chose to realize.
+  /// </summary>
+  void AttachGraph(string id, PerformanceGraph graph);
 
   /// <summary>True when a Wi-Fi adapter is connected; drives the summary tile's Wi-Fi row.</summary>
   bool HasWifi { get; }

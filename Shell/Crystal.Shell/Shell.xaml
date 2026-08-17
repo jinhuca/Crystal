@@ -13,13 +13,13 @@
         Background="Transparent"
         BorderBrush="{StaticResource AccentBrush}" BorderThickness="1">
   <!-- Strip the OS-drawn frame and its native caption buttons (GlassFrameThickness=0,
-         UseAeroCaptionButtons=False) so the window's own 1dip BorderBrush is the only visible
-         edge and we draw our own min/max/close buttons in the title bar below. -->
+       UseAeroCaptionButtons=False) so the window's own 1dip BorderBrush is the only visible
+       edge and we draw our own min/max/close buttons in the title bar below. -->
   <Window.Resources>
     <sys:Double x:Key="CaptionButtonFontSize">16</sys:Double>
     <!-- Caption buttons: transparent so the title bar's window background shows through,
-             with a hover fill. IsHitTestVisibleInChrome lets clicks land on the button instead
-             of the WindowChrome drag region. -->
+         with a hover fill. IsHitTestVisibleInChrome lets clicks land on the button instead
+         of the WindowChrome drag region. -->
     <Style x:Key="CaptionButtonStyle" TargetType="Button">
       <Setter Property="Background" Value="Transparent"/>
       <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>

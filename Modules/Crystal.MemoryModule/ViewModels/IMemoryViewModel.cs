@@ -55,11 +55,10 @@ public interface IMemoryViewModel {
   /// <summary>Hands the detail view's "Commit charge" history graph to the VM so it can push samples.</summary>
   void AttachCommitGraph(PerformanceGraph graph);
 
-  /// <summary>Hands the summary tile's utilization-history graph to the VM so it can push samples.</summary>
-  void AttachGraph(PerformanceGraph graph);
-
-  /// <summary>Hands the summary tile's used-GB history graph to the VM so it can push samples.</summary>
-  void AttachUsedGraph(PerformanceGraph graph);
+  /// <summary>Registers a summary-tile history graph to be fed on each load update, keyed by its
+  /// <c>GraphIdentity.Id</c> (e.g. "Memory.Utilization", "Memory.Used"). Each metric sub-view
+  /// self-registers its own graph on load.</summary>
+  void AttachGraph(string id, PerformanceGraph graph);
 
   ICommand ShowDetailCommand { get; }
   ICommand ShowDashboardCommand { get; }

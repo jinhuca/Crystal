@@ -1,0 +1,83 @@
+<UserControl x:Class="Crystal.CpuModule.Views.SummaryViews.CpuCoreStripView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="200" d:DesignWidth="220">
+  <!-- DataContext is the CPU SensorsViewModel, inherited from the host tile.
+       Per-core strip: a load bar (heat-coloured) stacked over a clock bar (accent, fixed 0-6 GHz
+       scale) so the per-core boost spread reads at a glance. Fills top-to-bottom then wraps. -->
+  <UserControl.Resources>
+    <!-- Per-core category colors, shared by legend swatch, bar and value so each metric reads as
+         one color: clock=light blue, load=light green, temperature=bright brown. -->
+    <SolidColorBrush x:Key="CoreClockBrush" Color="#6EB4F0"/>
+    <SolidColorBrush x:Key="CoreLoadBrush" Color="#6FCF6F"/>
+    <SolidColorBrush x:Key="CoreTempBrush" Color="#D2691E"/>
+  </UserControl.Resources>
+
+  <DockPanel LastChildFill="False">
+    <!-- Legend: which bar is which. -->
+    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="30,0,0,4">
+      <Border Width="10" Height="6" Background="{StaticResource CoreClockBrush}" VerticalAlignment="Center"/>
+      <TextBlock Text="clock" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource MicroFontSize}"
+                 FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Center" Margin="4,0,12,0"/>
+      <Border Width="10" Height="6" Background="{StaticResource CoreLoadBrush}" VerticalAlignment="Center"/>
+      <TextBlock Text="load" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource MicroFontSize}"
+                 FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Center" Margin="4,0,12,0"/>
+      <Border Width="10" Height="6" Background="{StaticResource CoreTempBrush}" VerticalAlignment="Center"/>
+      <TextBlock Text="temperature" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource MicroFontSize}"
+                 FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Center" Margin="4,0,0,0"/>
+    </StackPanel>
+
+    <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding CoreLoads}">
+      <ItemsControl.ItemsPanel>
+        <ItemsPanelTemplate>
+          <WrapPanel Orientation="Vertical" ItemHeight="36" ItemWidth="200"/>
+        </ItemsPanelTemplate>
+      </ItemsControl.ItemsPanel>
+      <ItemsControl.ItemTemplate>
+        <DataTemplate>
+          <Grid Margin="0,1,12,1" VerticalAlignment="Top">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="30"/>
+              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="72"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Core label spans all three metric rows, aligned to the top of the stack. -->
+            <TextBlock Grid.Column="0" Grid.RowSpan="3" Text="{Binding Label}" Foreground="{StaticResource LabelBrush}"
+                       FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Top"/>
+
+            <!-- Each metric occupies one row so its bar and value stay aligned. -->
+            <ProgressBar Grid.Row="0" Grid.Column="1" Minimum="0" Maximum="100" Value="{Binding Load}" Height="6" Margin="0,0,8,0"
+                         VerticalAlignment="Center" Background="#1A1A1A" BorderBrush="{StaticResource BorderBrush}"
+                         Foreground="{StaticResource CoreLoadBrush}"/>
+            <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Load, StringFormat={}{0:0}%}"
+                       Foreground="{StaticResource CoreLoadBrush}" VerticalAlignment="Center"
+                       FontSize="{StaticResource MicroFontSize}" FontFamily="{StaticResource MonoFontFamily}" TextAlignment="Right"/>
+
+            <ProgressBar Grid.Row="1" Grid.Column="1" Minimum="0" Maximum="6" Value="{Binding SpeedGhz}" Height="6" Margin="0,0,8,0"
+                         VerticalAlignment="Center" Background="#1A1A1A" BorderBrush="{StaticResource BorderBrush}"
+                         Foreground="{StaticResource CoreClockBrush}"/>
+            <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding SpeedGhz, StringFormat={}{0:0.00} GHz}"
+                       Foreground="{StaticResource CoreClockBrush}" VerticalAlignment="Center"
+                       FontSize="{StaticResource MicroFontSize}" FontFamily="{StaticResource MonoFontFamily}" TextAlignment="Right"/>
+
+            <ProgressBar Grid.Row="2" Grid.Column="1" Minimum="0" Maximum="100" Value="{Binding Temperature}" Height="6" Margin="0,0,8,0"
+                         VerticalAlignment="Center" Background="#1A1A1A" BorderBrush="{StaticResource BorderBrush}"
+                         Foreground="{StaticResource CoreTempBrush}"/>
+            <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding Temperature, StringFormat={}{0:0.00}℃}"
+                       Foreground="{StaticResource CoreTempBrush}" VerticalAlignment="Center"
+                       FontSize="{StaticResource MicroFontSize}" FontFamily="{StaticResource MonoFontFamily}" TextAlignment="Right"/>
+          </Grid>
+        </DataTemplate>
+      </ItemsControl.ItemTemplate>
+    </ItemsControl>
+  </DockPanel>
+</UserControl>

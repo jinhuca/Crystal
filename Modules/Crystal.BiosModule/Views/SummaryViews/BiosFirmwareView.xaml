@@ -1,0 +1,29 @@
+<UserControl x:Class="Crystal.BiosModule.Views.SummaryViews.BiosFirmwareView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignWidth="1100"
+             Background="Transparent" Foreground="{StaticResource TextBrush}"
+             FontFamily="{StaticResource UiFontFamily}">
+  <UserControl.Resources>
+    <ResourceDictionary Source="/Crystal.BiosModule;component/Views/SummaryViews/BiosSummaryResources.xaml"/>
+  </UserControl.Resources>
+  <!-- Firmware interface + security posture (manufacturer/version ride in the header). -->
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
+
+    <StackPanel Grid.Column="0" Style="{StaticResource FieldCell}">
+      <TextBlock Text="Interface" Style="{StaticResource FieldLabel}"/>
+      <TextBlock Text="{Binding FirmwareInterface}" Style="{StaticResource FieldValue}"/>
+    </StackPanel>
+    <StackPanel Grid.Column="1" Style="{StaticResource FieldCell}">
+      <TextBlock Text="Secure Boot" Style="{StaticResource FieldLabel}"/>
+      <TextBlock Text="{Binding SecureBoot}" Style="{StaticResource FieldValue}"/>
+    </StackPanel>
+  </Grid>
+</UserControl>

@@ -13,7 +13,9 @@ public sealed class StorageInfoBuilder {
   public StorageInfoBuilder(IWmiHardwareProvider wmi) => _wmi = wmi;
 
   public async Task<StorageSnapshot> BuildAsync(CancellationToken ct) {
-    var disks = await _wmi.ToSafeDiskDriveMetricsAsync(ct);
+    // Bypass the WMI cache: the monitor re-enumerates on a slow cadence for hotplug, and the cached
+    // (first-query) drive set would otherwise mask a drive being attached or removed.
+    var disks = await _wmi.ToSafeDiskDriveMetricsAsync(ct, bypassCache: true);
     var drives = disks
         .Where(d => !string.IsNullOrWhiteSpace(d.Model) || !string.IsNullOrWhiteSpace(d.Caption))
         .Select(ToDrive)

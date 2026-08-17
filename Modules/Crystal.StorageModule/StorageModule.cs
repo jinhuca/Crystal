@@ -26,9 +26,9 @@ public class StorageModule(IRegionManager regionManager) : IModule {
     // Registered behind IStorageLoadSource so StorageMonitor can be unit-tested against a fake.
     containerRegistry.RegisterSingleton<IStorageLoadSource, StorageLoadSource>();
 
-    // StorageMonitor replays its one-shot spec build and owns the load-polling lifetime, so it must
-    // be a singleton. Built via a factory: its ctor's optional TimeSpan?/IScheduler? params can't
-    // be resolved by the container, and we want the default 1-second poll cadence.
+    // StorageMonitor re-enumerates the inventory for hotplug and owns the load-polling lifetime, so
+    // it must be a singleton. Built via a factory: its ctor's optional TimeSpan?/IScheduler? params
+    // can't be resolved by the container, and we want the default poll/inventory cadences.
     containerRegistry.RegisterSingleton<StorageMonitor>(cp => new StorageMonitor(
         cp.Resolve<StorageInfoBuilder>(), cp.Resolve<IStorageLoadSource>()));
     containerRegistry.RegisterSingleton<IStorageModel, StorageModel>();

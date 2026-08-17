@@ -1,0 +1,35 @@
+<UserControl x:Class="Crystal.NetworkModule.Views.SummaryViews.NetworkThroughputView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs;assembly=Crystal.Controls"
+             mc:Ignorable="d"
+             d:DesignHeight="160" d:DesignWidth="160"
+             Foreground="{StaticResource TextBrush}" FontFamily="{StaticResource UiFontFamily}">
+  <!-- DataContext is the root INetworkViewModel, inherited from the host tile. Live throughput:
+       download over upload, each with a sparkline this view self-registers with the VM. -->
+  <StackPanel VerticalAlignment="Top">
+    <TextBlock Text="download" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource BodyFontSize}" FontFamily="{StaticResource MonoFontFamily}"
+               Margin="0,0,0,2"/>
+    <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
+      <TextBlock Text="&#x25BC;" Foreground="{StaticResource OkBrush}" FontSize="16"
+                 VerticalAlignment="Center" Margin="0,0,8,0"/>
+      <TextBlock Text="{Binding DownloadLabel}" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource SectionFontSize}"
+                 FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Center"/>
+    </StackPanel>
+    <graphs:PerformanceGraph x:Name="NetworkDownloadGraph" graphs:GraphIdentity.Id="Network.Download"
+                             Height="22" Margin="0,0,0,10"
+                             MinValue="0" MaxValue="{Binding ThroughputMaxBytesPerSecond}"/>
+    <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
+      <TextBlock Text="&#x25B2;" Foreground="#E89B2A" FontSize="16"
+                 VerticalAlignment="Center" Margin="0,0,8,0"/>
+      <TextBlock Text="{Binding UploadLabel}" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource SectionFontSize}"
+                 FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Center"/>
+    </StackPanel>
+    <TextBlock Text="upload" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource BodyFontSize}" FontFamily="{StaticResource MonoFontFamily}"/>
+    <graphs:PerformanceGraph x:Name="NetworkUploadGraph" graphs:GraphIdentity.Id="Network.Upload"
+                             Height="22" Margin="0,4,0,0"
+                             MinValue="0" MaxValue="{Binding ThroughputMaxBytesPerSecond}"/>
+  </StackPanel>
+</UserControl>

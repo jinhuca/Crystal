@@ -1,0 +1,110 @@
+<UserControl x:Class="Crystal.BiosModule.Views.SummaryViews.BiosBoardStatusView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignWidth="1100"
+             Background="Transparent" Foreground="{StaticResource TextBrush}"
+             FontFamily="{StaticResource UiFontFamily}">
+  <UserControl.Resources>
+    <ResourceDictionary Source="/Crystal.BiosModule;component/Views/SummaryViews/BiosSummaryResources.xaml"/>
+  </UserControl.Resources>
+  <!-- Board section rule + live-state header + the driver/availability note. Inherits the root
+       IBiosViewModel from the host tile. -->
+  <StackPanel>
+    <!-- Board section rule + header. The dot and label track live state: green "LIVE BOARD" only
+         when readings are actually arriving, otherwise a dim "BOARD" so the pulse never implies
+         live data the machine can't produce (common on laptops with no Super I/O sensors). -->
+    <Border BorderBrush="{StaticResource DividerBrush}" BorderThickness="0,1,0,0" Margin="0,2,0,8" Padding="0,8,0,0">
+      <!-- Tooltip names the offending rails; only shown when something is out of tolerance. -->
+      <StackPanel Orientation="Horizontal" Background="Transparent"
+                  ToolTip="{Binding BoardHealthDetail}">
+        <StackPanel.Style>
+          <Style TargetType="StackPanel">
+            <Setter Property="ToolTipService.IsEnabled" Value="True"/>
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding BoardHealthDetail}" Value="">
+                <Setter Property="ToolTipService.IsEnabled" Value="False"/>
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </StackPanel.Style>
+        <Border Width="6" Height="6" CornerRadius="3" VerticalAlignment="Center" Margin="0,0,6,0">
+          <Border.Style>
+            <Style TargetType="Border">
+              <!-- Dim until sensors arrive; then green healthy, amber/red as BoardHealth
+                   worsens. Ordered so the critical trigger wins when several match. -->
+              <Setter Property="Background" Value="#3A424C"/>
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding HasBoardSensors}" Value="True">
+                  <Setter Property="Background" Value="{StaticResource OkBrush}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding BoardHealth}" Value="Warning">
+                  <Setter Property="Background" Value="#E8B33E"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding BoardHealth}" Value="Critical">
+                  <Setter Property="Background" Value="#E85C5C"/>
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </Border.Style>
+        </Border>
+        <TextBlock Foreground="{StaticResource BiosDimBrush}" FontSize="{StaticResource MicroFontSize}" FontWeight="SemiBold"
+                   VerticalAlignment="Center">
+          <TextBlock.Style>
+            <Style TargetType="TextBlock">
+              <!-- Dim "BOARD" until sensors arrive, "LIVE BOARD" once they do. The severity
+                   count rides in the badge to the right rather than in this label. -->
+              <Setter Property="Text" Value="BOARD"/>
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding HasBoardSensors}" Value="True">
+                  <Setter Property="Text" Value="LIVE BOARD"/>
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </TextBlock.Style>
+        </TextBlock>
+        <!-- Severity-count badge, e.g. "1 critical · 2 warnings"; tinted by worst severity and
+             hidden while the board is healthy so it only draws the eye when something's wrong. -->
+        <TextBlock FontSize="{StaticResource MicroFontSize}" FontWeight="SemiBold" VerticalAlignment="Center" Margin="8,0,0,0"
+                   Text="{Binding BoardHealthSummary}"
+                   Foreground="{Binding BoardHealth, Converter={StaticResource SeverityToBrush}}">
+          <TextBlock.Style>
+            <Style TargetType="TextBlock">
+              <Setter Property="Visibility" Value="Visible"/>
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding BoardHealthSummary}" Value="">
+                  <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </TextBlock.Style>
+        </TextBlock>
+        <!-- Session worst-peak badge, e.g. "peak +12V 10.4 V", tinted by that episode's severity.
+             Persists after a transient fault recovers (unlike the live count above, which clears),
+             so the tile still records the session's worst moment. Hidden until something's logged. -->
+        <TextBlock FontSize="{StaticResource MicroFontSize}" VerticalAlignment="Center" Margin="10,0,0,0"
+                   Foreground="{Binding SessionPeakSeverity, Converter={StaticResource SeverityToBrush}}">
+          <Run Text="peak" Foreground="{StaticResource BiosDimBrush}"/>
+          <Run Text="{Binding SessionPeak, Mode=OneWay}"/>
+          <TextBlock.Style>
+            <Style TargetType="TextBlock">
+              <Setter Property="Visibility" Value="Visible"/>
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding SessionPeak}" Value="">
+                  <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </TextBlock.Style>
+        </TextBlock>
+      </StackPanel>
+    </Border>
+
+    <!-- Driver/availability note shown in place of the readings when the board can't be read -->
+    <TextBlock Text="{Binding BoardSensorStatus}" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource CaptionFontSize}"
+               TextWrapping="Wrap" Margin="0,0,0,8"
+               Visibility="{Binding HasBoardSensorStatus, Converter={StaticResource BoolToVisibility}}"/>
+  </StackPanel>
+</UserControl>

@@ -7,10 +7,13 @@ public static class WmiDiskExtensions {
 
   public static async Task<IReadOnlyList<DiskDriveMetrics>> ToSafeDiskDriveMetricsAsync(
     this IWmiHardwareProvider provider,
-    CancellationToken cancellationToken) {
+    CancellationToken cancellationToken,
+    bool bypassCache = false) {
     try {
-      // 1. Fetch multi-instance driver data blocks asynchronously
-      var instancesData = await provider.GetMultiMetricsForClassAsync(WmiClassName, cancellationToken);
+      // 1. Fetch multi-instance driver data blocks asynchronously. Callers that re-enumerate to
+      //    catch a hotplug (a USB drive attached/removed) must pass bypassCache: true, otherwise the
+      //    provider's per-class cache would keep returning the drive set seen at first query.
+      var instancesData = await provider.GetMultiMetricsForClassAsync(WmiClassName, cancellationToken, bypassCache);
       if (instancesData == null || instancesData.Count == 0) {
         return Array.Empty<DiskDriveMetrics>();
       }

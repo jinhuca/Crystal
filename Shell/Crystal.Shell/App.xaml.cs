@@ -8,10 +8,9 @@ using System.Windows;
 namespace Crystal.Shell;
 
 /// <summary>
-/// Interaction logic for App.xaml. A Prism (Unity) application: it creates the shell
-/// window, registers the swappable dashboard, and populates the module catalog. Each
-/// module injects its summary tile into the dashboard and registers a full-scale detail
-/// view for navigation.
+/// Interaction logic for App.xaml. A Prism (Unity) application: it creates the shell window, 
+/// registers the swappable dashboard, and populates the module catalog. Each module injects 
+/// its summary tile into the dashboard and registers a full-scale detail view for navigation.
 /// </summary>
 public partial class App : PrismApplication {
   // Machine-unique names. The app opens ring-0 MSR/driver sessions (PawnIO, the LHM fork), so a
@@ -43,8 +42,8 @@ public partial class App : PrismApplication {
     // a later launch signals. ThreadPool.RegisterWaitForSingleObject fires on a pool thread, so
     // marshal back onto the UI dispatcher before touching windows.
     _activateRegistration = ThreadPool.RegisterWaitForSingleObject(
-        _activateSignal, (_, _) => Dispatcher.BeginInvoke(ActivateMainWindow),
-        state: null, millisecondsTimeOutInterval: Timeout.Infinite, executeOnlyOnce: false);
+      _activateSignal, (_, _) => Dispatcher.BeginInvoke(ActivateMainWindow),
+      state: null, millisecondsTimeOutInterval: Timeout.Infinite, executeOnlyOnce: false);
 
     base.OnStartup(e);
   }

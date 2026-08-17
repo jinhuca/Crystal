@@ -67,10 +67,11 @@ public sealed class GpuAdapterViewModel : BindableBase {
   private double _clockPeak;
   private double _powerPeak;
 
-  private PerformanceGraph? _loadGraph;
-  private PerformanceGraph? _temperatureGraph;
-  private PerformanceGraph? _clockGraph;
-  private PerformanceGraph? _powerGraph;
+  // History graphs are registered by their GraphIdentity.Id as each metric sub-view loads (the
+  // detail view registers with the same ids explicitly), then fed by that same id in UpdateLoad.
+  // One graph per id per adapter; last registration for an id wins, matching the previous
+  // single-field behaviour when the summary and detail views attach to the same adapter VM.
+  private readonly Dictionary<string, PerformanceGraph> _graphs = [];
 
   public string Name { get => _name; private set => SetProperty(ref _name, value); }
   public string KindLabel { get => _kindLabel; private set => SetProperty(ref _kindLabel, value); }
@@ -114,10 +115,11 @@ public sealed class GpuAdapterViewModel : BindableBase {
 
   public bool HasPowerRails => PowerRails.Count > 0;
 
-  public void AttachGraph(PerformanceGraph graph) => _loadGraph = graph;
-  public void AttachTemperatureGraph(PerformanceGraph graph) => _temperatureGraph = graph;
-  public void AttachClockGraph(PerformanceGraph graph) => _clockGraph = graph;
-  public void AttachPowerGraph(PerformanceGraph graph) => _powerGraph = graph;
+  public void AttachGraph(string id, PerformanceGraph graph) => _graphs[id] = graph;
+
+  private void FeedGraph(string id, double value) {
+    if (_graphs.TryGetValue(id, out var graph)) graph.AddValue(value);
+  }
 
   /// <summary>Refreshes the static identity from the inventory row.</summary>
   public void UpdateSpecs(GpuAdapterInfo info) {
@@ -135,21 +137,21 @@ public sealed class GpuAdapterViewModel : BindableBase {
   /// <summary>Pushes fresh live readings into the values and history graphs.</summary>
   public void UpdateLoad(GpuLoadReading reading) {
     Load = reading.CoreLoadPercent;
-    _loadGraph?.AddValue(reading.CoreLoadPercent);
+    FeedGraph("Gpu.Utilization", reading.CoreLoadPercent);
 
     TemperatureC = reading.TemperatureC;
-    if (reading.TemperatureC is { } t) _temperatureGraph?.AddValue(t);
+    if (reading.TemperatureC is { } t) FeedGraph("Gpu.Temperature", t);
 
     ClockMhz = reading.ClockMhz;
     if (reading.ClockMhz is { } c) {
-      _clockGraph?.AddValue(c);
+      FeedGraph("Gpu.Clock", c);
       _clockPeak = Math.Max(c, _clockPeak * PeakDecay);
       ClockScaleMax = NiceScale(_clockPeak, MinClockScale);
     }
 
     PowerW = reading.PowerW;
     if (reading.PowerW is { } p) {
-      _powerGraph?.AddValue(p);
+      FeedGraph("Gpu.Power", p);
       _powerPeak = Math.Max(p, _powerPeak * PeakDecay);
       PowerScaleMax = NiceScale(_powerPeak, MinPowerScale);
     }

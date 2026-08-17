@@ -1,0 +1,42 @@
+<UserControl x:Class="Crystal.NetworkModule.Views.SummaryViews.NetworkWifiView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="80" d:DesignWidth="200"
+             Foreground="{StaticResource TextBrush}" FontFamily="{StaticResource UiFontFamily}">
+  <!-- DataContext is the root INetworkViewModel, inherited from the host tile. The connected block
+       and the muted status row are mutually exclusive (driven by HasWifi / HasWifiStatus). -->
+  <StackPanel>
+    <!-- Wi-Fi block (only when a wireless adapter is connected): SSID + signal, then the
+         negotiated link rate, security suite, and BSSID as dim spec rows. -->
+    <StackPanel Visibility="{Binding HasWifi, Converter={StaticResource BoolToVisibility}}">
+      <StackPanel Orientation="Horizontal">
+        <TextBlock Text="&#x1F4F6;" Foreground="{StaticResource AccentBrush}" FontSize="{StaticResource SubHeadingFontSize}"
+                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+        <TextBlock Text="{Binding WifiLabel}" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource SpecFontSize}"
+                   FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Center"
+                   TextTrimming="CharacterEllipsis"/>
+      </StackPanel>
+      <TextBlock Text="{Binding WifiLinkRate, StringFormat=Link: {0}}" Foreground="{StaticResource LabelBrush}"
+                 FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}" Margin="22,3,0,0"/>
+      <TextBlock Text="{Binding WifiSecurity, StringFormat=Security: {0}}" Foreground="{StaticResource LabelBrush}"
+                 FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}" Margin="22,1,0,0"
+                 TextTrimming="CharacterEllipsis"/>
+      <TextBlock Text="{Binding WifiBssid, StringFormat=BSSID: {0}}" Foreground="{StaticResource LabelBrush}"
+                 FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}" Margin="22,1,0,0"
+                 TextTrimming="CharacterEllipsis"/>
+    </StackPanel>
+
+    <!-- Present-but-not-connected radio: muted status in place of the connected block. Hidden
+         entirely on machines with no wireless adapter. -->
+    <StackPanel Orientation="Horizontal"
+                Visibility="{Binding HasWifiStatus, Converter={StaticResource BoolToVisibility}}">
+      <TextBlock Text="&#x1F4F6;" Foreground="#5A6470" FontSize="{StaticResource SubHeadingFontSize}"
+                 VerticalAlignment="Center" Margin="0,0,8,0"/>
+      <TextBlock Text="{Binding WifiStatusLabel}" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource SpecFontSize}"
+                 FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Center"/>
+    </StackPanel>
+  </StackPanel>
+</UserControl>

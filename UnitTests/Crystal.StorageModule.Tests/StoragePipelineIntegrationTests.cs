@@ -25,10 +25,12 @@ public class StoragePipelineIntegrationTests {
   // make successive polls return changing values. Records Read() calls for cold/cadence assertions.
   private sealed class ScriptedLoadSource(Func<StorageLoadReading> read) : IStorageLoadSource {
     public int ReadCount { get; private set; }
+    public int RefreshCount { get; private set; }
     public StorageLoadReading Read() {
       ReadCount++;
       return read();
     }
+    public void Refresh() => RefreshCount++;
   }
 
   // StorageInfoBuilder calls ToSafeDiskDriveMetricsAsync, which invokes

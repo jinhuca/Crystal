@@ -1,24 +1,22 @@
 <prism:PrismApplication x:Class="Crystal.Shell.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:prism="http://prismlibrary.com/"
-             xmlns:local="clr-namespace:Crystal.Shell">
-    <Application.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Crystal.Resources;component/Themes/Generic.xaml"/>
-                <!-- The whole Crystal.Controls theme dictionary (scrollbar, range-bar, loading-host,
-                     and the keyed PerformanceGraph sample styles) is pulled into app scope in one
-                     merge, so keyed styles resolve via StaticResource and the sample styles are
-                     declared in exactly one place (Themes/Generic.xaml) instead of being listed
-                     again here. -->
-                <ResourceDictionary Source="/Crystal.Controls;component/Themes/Generic.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-
-            <!-- Apply the flat dark scrollbar to every ScrollBar app-wide (all detail windows and
-                 tiles), so no view falls back to the light default Windows scrollbar. Views can
-                 still override locally; a local BasedOn on this same key is a no-op. -->
-            <Style TargetType="ScrollBar" BasedOn="{StaticResource CrystalScrollBarStyle}"/>
-        </ResourceDictionary>
-    </Application.Resources>
+                        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                        xmlns:prism="http://prismlibrary.com/"
+                        xmlns:local="clr-namespace:Crystal.Shell">
+  <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Crystal.Resources;component/Themes/Generic.xaml"/>
+        <!-- The whole Crystal.Controls theme dictionary (scrollbar, range-bar, loading-host,
+             and the keyed PerformanceGraph sample styles) is pulled into app scope in one
+             merge, so keyed styles resolve via StaticResource and the sample styles are
+             declared in exactly one place (Themes/Generic.xaml) instead of being listed again here. -->
+        <ResourceDictionary Source="/Crystal.Controls;component/Themes/Generic.xaml"/>
+      </ResourceDictionary.MergedDictionaries>
+      <!-- Apply the flat dark scrollbar to every ScrollBar app-wide (all detail windows and
+           tiles), so no view falls back to the light default Windows scrollbar. Views can
+           still override locally; a local BasedOn on this same key is a no-op. -->
+      <Style TargetType="ScrollBar" BasedOn="{StaticResource CrystalScrollBarStyle}"/>
+    </ResourceDictionary>
+  </Application.Resources>
 </prism:PrismApplication>

@@ -18,8 +18,10 @@ public sealed class MemoryViewModel : BindableBase, IMemoryViewModel, IDisposabl
   private double _load;
   private double? _usedGB;
   private double? _totalCapacityGB;
-  private PerformanceGraph? _loadGraph;
-  private PerformanceGraph? _usedGraph;
+  // Summary-tile history graphs, registered by their GraphIdentity.Id as each metric sub-view
+  // loads, then fed by that same id in ApplyLoad. The detail view's usage/commit graphs use a
+  // different wrapper control with no id and stay on their own attach methods below.
+  private readonly Dictionary<string, PerformanceGraph> _graphs = [];
   private PerformanceGraph? _usageGraph;
   private PerformanceGraph? _commitGraph;
 
@@ -106,10 +108,13 @@ public sealed class MemoryViewModel : BindableBase, IMemoryViewModel, IDisposabl
   public ICommand ShowDetailCommand { get; }
   public ICommand ShowDashboardCommand { get; }
 
-  public void AttachGraph(PerformanceGraph graph) => _loadGraph = graph;
-  public void AttachUsedGraph(PerformanceGraph graph) => _usedGraph = graph;
+  public void AttachGraph(string id, PerformanceGraph graph) => _graphs[id] = graph;
   public void AttachUsageGraph(PerformanceGraph graph) => _usageGraph = graph;
   public void AttachCommitGraph(PerformanceGraph graph) => _commitGraph = graph;
+
+  private void FeedGraph(string id, double value) {
+    if (_graphs.TryGetValue(id, out var graph)) graph.AddValue(value);
+  }
 
   private void ApplySpecs(MemorySnapshot snapshot) {
     TotalCapacityLabel = snapshot.TotalCapacityGB is { } gb ? $"{gb:0.#} GB" : "—";
@@ -136,11 +141,11 @@ public sealed class MemoryViewModel : BindableBase, IMemoryViewModel, IDisposabl
 
   private void ApplyLoad(MemoryLoadReading reading) {
     Load = reading.LoadPercent;
-    _loadGraph?.AddValue(reading.LoadPercent);
+    FeedGraph("Memory.Utilization", reading.LoadPercent);
 
     UsedGB = reading.UsedGB;
     if (reading.UsedGB is { } used) {
-      _usedGraph?.AddValue(used);
+      FeedGraph("Memory.Used", used);
       _usageGraph?.AddValue(used);
       UsageLabel = $"{used:0.#} GB";
       InUseLabel = $"{used:0.#} GB";

@@ -1,4 +1,6 @@
+using Crystal.Provider.Mmi.MmiEngine;
 using Microsoft.Reactive.Testing;
+using System.Collections.Frozen;
 using System.Reactive.Linq;
 using Xunit;
 
@@ -70,6 +72,54 @@ public class StorageMonitorTests {
 
     // Publish().RefCount() means both subscribers share one poll per interval, not one each.
     Assert.Equal(2, loads.ReadCount);
+  }
+
+  private const ulong GB = 1024UL * 1024 * 1024;
+  private static readonly FrozenDictionary<string, WmiValue> Samsung =
+      DiskRow.Drive(model: "Samsung SSD 990 PRO", sizeBytes: 500 * GB, index: 0);
+  private static readonly FrozenDictionary<string, WmiValue> WdBlue =
+      DiskRow.Drive(model: "WD Blue", sizeBytes: 2000 * GB, index: 1);
+
+  [Fact]
+  public async Task Plugging_in_a_drive_reemits_the_inventory_and_rescans_the_load_source() {
+    var wmi = new MutableWmiHardwareProvider([Samsung]);
+    var loads = new FakeStorageLoadSource();
+    using var monitor = new StorageMonitor(
+        new StorageInfoBuilder(wmi), loads, inventoryInterval: TimeSpan.FromMilliseconds(20));
+
+    var first = await monitor.Specs.FirstAsync();
+    Assert.Single(first.Drives);
+    Assert.Equal(0, loads.RefreshCount); // initial inventory doesn't count as a hotplug
+
+    // Subscribe before the change so Skip(1) skips only the replayed initial snapshot, then plug in.
+    var gate = new SemaphoreSlim(0);
+    StorageSnapshot? changed = null;
+    using var sub = monitor.Specs.Skip(1).Subscribe(s => { changed = s; gate.Release(); });
+    wmi.Set([Samsung, WdBlue]);
+
+    Assert.True(await gate.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken));
+    Assert.Equal(2, changed!.Drives.Count);
+    Assert.Equal(1, loads.RefreshCount); // the changed drive set re-scanned live hardware
+  }
+
+  [Fact]
+  public async Task Removing_a_drive_reemits_the_inventory_and_rescans_the_load_source() {
+    var wmi = new MutableWmiHardwareProvider([Samsung, WdBlue]);
+    var loads = new FakeStorageLoadSource();
+    using var monitor = new StorageMonitor(
+        new StorageInfoBuilder(wmi), loads, inventoryInterval: TimeSpan.FromMilliseconds(20));
+
+    var first = await monitor.Specs.FirstAsync();
+    Assert.Equal(2, first.Drives.Count);
+
+    var gate = new SemaphoreSlim(0);
+    StorageSnapshot? changed = null;
+    using var sub = monitor.Specs.Skip(1).Subscribe(s => { changed = s; gate.Release(); });
+    wmi.Set([Samsung]); // pull the second drive
+
+    Assert.True(await gate.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken));
+    Assert.Equal("Samsung SSD 990 PRO", Assert.Single(changed!.Drives).Model);
+    Assert.Equal(1, loads.RefreshCount);
   }
 
   [Fact]

@@ -1,0 +1,37 @@
+<UserControl x:Class="Crystal.StorageModule.Views.SummaryViews.StorageHeaderView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="24" d:DesignWidth="380"
+             Foreground="{StaticResource TextBrush}" FontFamily="{StaticResource UiFontFamily}">
+  <!-- DataContext is the root IStorageViewModel, inherited from the host tile.
+       Dense header bar: accent tick + title + inline roll-up (total, free, drives, available), thin
+       divider rule below. The per-disk inventory lives in the detail view. Uniform styling: each
+       metric's value is white (ValueBrush), its descriptor word dim (HeaderSpec's LabelBrush). Total,
+       free, and available are the summed filesystem figures so they agree; drive count is from WMI. -->
+  <Border BorderBrush="{StaticResource DividerBrush}" BorderThickness="0,0,0,1"
+          Padding="0,0,0,4" Margin="0,0,0,2">
+    <StackPanel Orientation="Horizontal">
+      <Border Width="3" Background="{StaticResource AccentBrush}" Margin="0,1,8,1"/>
+      <TextBlock Text="STORAGE" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource BodyFontSize}" FontWeight="SemiBold"
+                 VerticalAlignment="Center" Margin="0,0,16,0"/>
+      <TextBlock Style="{StaticResource HeaderSpec}"
+                 Visibility="{Binding HasCapacityData, Converter={StaticResource BoolToVisibility}}">
+        <Run Text="{Binding TotalSpaceLabel, Mode=OneWay}" Foreground="{StaticResource ValueBrush}"/><Run Text=" total"/>
+      </TextBlock>
+      <TextBlock Style="{StaticResource HeaderSpec}"
+                 Visibility="{Binding HasCapacityData, Converter={StaticResource BoolToVisibility}}">
+        <Run Text="{Binding FreeSpaceLabel, Mode=OneWay}" Foreground="{StaticResource ValueBrush}"/><Run Text=" free"/>
+      </TextBlock>
+      <TextBlock Style="{StaticResource HeaderSpec}">
+        <Run Text="{Binding DriveCountValue, Mode=OneWay}" Foreground="{StaticResource ValueBrush}"/><Run Text=" "/><Run Text="{Binding DriveNoun, Mode=OneWay}"/>
+      </TextBlock>
+      <TextBlock Style="{StaticResource HeaderSpec}"
+                 Visibility="{Binding HasCapacityData, Converter={StaticResource BoolToVisibility}}">
+        <Run Text="{Binding AvailablePercentLabel, Mode=OneWay}" Foreground="{StaticResource ValueBrush}"/><Run Text=" available"/>
+      </TextBlock>
+    </StackPanel>
+  </Border>
+</UserControl>

@@ -17,8 +17,9 @@ public sealed class NetworkViewModel : BindableBase, INetworkViewModel, IDisposa
   private readonly Dictionary<uint, ProcessNetworkRowViewModel> _talkersByPid = new();
   private string _downloadLabel = "—";
   private string _uploadLabel = "—";
-  private PerformanceGraph? _downloadGraph;
-  private PerformanceGraph? _uploadGraph;
+  // History graphs are registered by their GraphIdentity.Id as the throughput sub-view loads, then
+  // fed by that same id in Apply(). A consumer that realizes only some graphs feeds only those.
+  private readonly Dictionary<string, PerformanceGraph> _graphs = [];
   private double _throughputMax = ThroughputFloorBytesPerSecond;
   private bool _hasWifi;
   private string _wifiLabel = "—";
@@ -83,8 +84,11 @@ public sealed class NetworkViewModel : BindableBase, INetworkViewModel, IDisposa
   public ICommand ShowDetailCommand { get; }
   public ICommand ShowDashboardCommand { get; }
 
-  public void AttachDownloadGraph(PerformanceGraph graph) => _downloadGraph = graph;
-  public void AttachUploadGraph(PerformanceGraph graph) => _uploadGraph = graph;
+  public void AttachGraph(string id, PerformanceGraph graph) => _graphs[id] = graph;
+
+  private void FeedGraph(string id, double value) {
+    if (_graphs.TryGetValue(id, out var graph)) graph.AddValue(value);
+  }
 
   private void Apply(NetworkSnapshot snapshot) {
     // Reconcile the adapter list against the current interfaces (they can come and go as NICs
@@ -104,8 +108,8 @@ public sealed class NetworkViewModel : BindableBase, INetworkViewModel, IDisposa
     DownloadLabel = FormatSpeed(totalDownload);
     UploadLabel = FormatSpeed(totalUpload);
 
-    _downloadGraph?.AddValue(totalDownload);
-    _uploadGraph?.AddValue(totalUpload);
+    FeedGraph("Network.Download", totalDownload);
+    FeedGraph("Network.Upload", totalUpload);
     _throughputSamples.Enqueue(Math.Max(totalDownload, totalUpload));
     while (_throughputSamples.Count > ThroughputWindow) _throughputSamples.Dequeue();
     ThroughputMaxBytesPerSecond = NiceCeiling(Math.Max(ThroughputFloorBytesPerSecond, _throughputSamples.Max()));

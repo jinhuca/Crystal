@@ -30,6 +30,9 @@ public sealed class StorageLoadSource : IStorageLoadSource, IDisposable {
   private readonly Computer _computer;
   // Per physical-disk-index average-response-time counters, created on first sight and reused.
   private readonly Dictionary<int, PerformanceCounter?> _responseCounters = new();
+  // Serializes Read() against Refresh()/Dispose(): a Refresh tears the hardware group down and
+  // rebuilds it (Computer.Reset), which must not overlap a concurrent enumeration on the poll thread.
+  private readonly object _gate = new();
   private bool _disposed;
 
   public StorageLoadSource() {
@@ -40,6 +43,13 @@ public sealed class StorageLoadSource : IStorageLoadSource, IDisposable {
   /// <summary>Re-samples every physical disk and returns one <see cref="StorageDiskLoad"/> apiece:
   /// total-activity percentage, read/write rates (MB/s), and best-effort average response time.</summary>
   public StorageLoadReading Read() {
+    lock (_gate) {
+      if (_disposed) return new StorageLoadReading([]);
+      return ReadLocked();
+    }
+  }
+
+  private StorageLoadReading ReadLocked() {
     var disks = new List<StorageDiskLoad>();
     foreach (var drive in _computer.Hardware.Where(h => h.HardwareType == HardwareType.Storage)) {
       drive.Update();
@@ -114,10 +124,25 @@ public sealed class StorageLoadSource : IStorageLoadSource, IDisposable {
     }
   }
 
+  /// <summary>Rebuilds the hardware group so a newly attached disk starts reporting and a removed one
+  /// drops out; LibreHardwareMonitor only picks up physical-drive changes on a re-scan, not on
+  /// <c>Update()</c>. Response-time counters are dropped so a re-plugged disk at the same index gets
+  /// a fresh one instead of a stale handle.</summary>
+  public void Refresh() {
+    lock (_gate) {
+      if (_disposed) return;
+      _computer.Reset();
+      foreach (var counter in _responseCounters.Values) counter?.Dispose();
+      _responseCounters.Clear();
+    }
+  }
+
   public void Dispose() {
-    if (_disposed) return;
-    _disposed = true;
-    foreach (var counter in _responseCounters.Values) counter?.Dispose();
-    _computer.Close();
+    lock (_gate) {
+      if (_disposed) return;
+      _disposed = true;
+      foreach (var counter in _responseCounters.Values) counter?.Dispose();
+      _computer.Close();
+    }
   }
 }

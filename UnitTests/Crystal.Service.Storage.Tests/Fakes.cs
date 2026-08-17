@@ -55,15 +55,50 @@ internal sealed class FakeWmiHardwareProvider(IReadOnlyList<FrozenDictionary<str
     => throw new NotSupportedException();
 }
 
-// A canned load source: returns a fixed reading and records how many times Read() ran, so the
-// monitor test can assert one poll per interval and cold-until-subscribed behavior.
+// A canned load source: returns a fixed reading and records how many times Read()/Refresh() ran, so
+// the monitor test can assert one poll per interval, cold-until-subscribed, and hotplug re-scan.
 internal sealed class FakeStorageLoadSource(StorageLoadReading? reading = null) : IStorageLoadSource {
   private readonly StorageLoadReading _reading = reading ?? new StorageLoadReading([]);
   public int ReadCount { get; private set; }
+  public int RefreshCount { get; private set; }
   public StorageLoadReading Read() {
     ReadCount++;
     return _reading;
   }
+  public void Refresh() => RefreshCount++;
+}
+
+// A WMI provider whose returned instance set can be swapped between builds, so a test can simulate a
+// drive being plugged in or pulled out and watch the monitor re-enumerate. Models the real
+// provider's per-class cache: unless bypassCache is set, it returns the drive set captured on the
+// first query (so a re-enumeration that forgets bypassCache would keep seeing the stale set — the
+// exact hotplug bug).
+internal sealed class MutableWmiHardwareProvider(IReadOnlyList<FrozenDictionary<string, WmiValue>> instances)
+    : IWmiHardwareProvider {
+  private volatile IReadOnlyList<FrozenDictionary<string, WmiValue>> _instances = instances;
+  private IReadOnlyList<FrozenDictionary<string, WmiValue>>? _cached;
+
+  public void Set(IReadOnlyList<FrozenDictionary<string, WmiValue>> instances) => _instances = instances;
+
+  public Task<IReadOnlyList<FrozenDictionary<string, WmiValue>>> GetMultiMetricsForClassAsync(
+      string wmiClassName, CancellationToken cancellationToken, bool bypassCache = false,
+      IReadOnlyList<string>? projection = null) {
+    if (bypassCache) return Task.FromResult(_instances);
+    return Task.FromResult(_cached ??= _instances);
+  }
+
+  public Task<IReadOnlyList<FrozenDictionary<string, WmiValue>>> GetMultiMetricsForClassAsync(
+      string namespaceName, string wmiClassName, CancellationToken cancellationToken)
+    => Task.FromResult(_instances);
+
+  public Task<IReadOnlyList<FrozenDictionary<string, WmiValue>>> QueryAsync(
+      string namespaceName, string wqlQuery, CancellationToken cancellationToken)
+    => throw new NotSupportedException();
+
+  public Task<WmiMethodResult> InvokeStaticMethodAsync(
+      string namespaceName, string wmiClassName, string methodName,
+      IReadOnlyDictionary<string, WmiValue> inParameters, CancellationToken cancellationToken)
+    => throw new NotSupportedException();
 }
 
 // Fluent builder for a Win32_DiskDrive property bag; only sets the keys the test cares about so an

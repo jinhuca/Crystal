@@ -12,7 +12,7 @@ namespace Crystal.CpuModule.ViewModels.Interfaces;
 /// <para>
 /// The graphs are ring buffers owned by <see cref="PerformanceGraph"/>, so the view
 /// exposes those control instances directly and the view model pushes samples into them
-/// via <see cref="AttachGraphs"/> — a value-plus-a-graph pairing that a plain bound
+/// via <see cref="AttachGraph"/> — a value-plus-a-graph pairing that a plain bound
 /// property can't express.
 /// </para>
 /// </summary>
@@ -96,13 +96,11 @@ public interface ICpuSensorViewModel {
   ObservableCollection<CoreLoadViewModel> CoreLoads { get; }
 
   /// <summary>
-  /// Hands the view model the history graphs it should feed on each update. Every graph is
-  /// optional so a compact consumer (e.g. the dashboard summary tile) can attach only the
-  /// utilization plot while the full detail view attaches all five.
+  /// Registers a history graph to be fed on each update, keyed by its <c>GraphIdentity.Id</c>
+  /// (e.g. "Cpu.Utilization"). Each metric sub-view self-registers its own graph on load, so the
+  /// view model feeds only the graphs a given consumer chose to realize.
   /// </summary>
-  void AttachGraphs(PerformanceGraph? utilization = null, PerformanceGraph? voltage = null,
-                    PerformanceGraph? clock = null, PerformanceGraph? power = null,
-                    PerformanceGraph? temperature = null, PerformanceGraph? fan = null);
+  void AttachGraph(string id, PerformanceGraph graph);
 
   /// <summary>Reads the socket's live sensors and pushes samples into the attached graphs.</summary>
   void Update(ISystemCpuInfo info);
