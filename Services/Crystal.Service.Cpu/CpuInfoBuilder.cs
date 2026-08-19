@@ -9,16 +9,18 @@ using Crystal.Provider.Smbios.HardwareFeatures.Processor;
 namespace Crystal.Service.Cpu;
 
 public sealed class CpuInfoBuilder {
-  private readonly ICpuIdProvider _cpuId;              // managed CPUID snapshot
+  private readonly ICpuIdProvider _cpuId;               // managed CPUID snapshot
   private readonly ISmbiosProcessorProvider _smbios;    // Crystal.Provider.Smbios, Type 4 decoder
   private readonly IWmiHardwareProvider _wmi;           // Crystal.Provider.Mmi, Processor feature
-  private readonly ICpuSpecsResolver _resolver;
+  private readonly ICpuSpecsResolver _resolver;         // Crystal.Service.Cpu, resolves the specs from the three sources above
   private readonly ICpuTelemetrySource? _telemetry;     // optional live sensors (Crystal.Provider.Telemetry)
 
-  public CpuInfoBuilder(ICpuIdProvider cpuId, ISmbiosProcessorProvider smbios,
-                        IWmiHardwareProvider wmi, ICpuSpecsResolver resolver,
+  public CpuInfoBuilder(ICpuIdProvider cpuId,
+                        ISmbiosProcessorProvider smbios,
+                        IWmiHardwareProvider wmi,
+                        ICpuSpecsResolver resolver,
                         ICpuTelemetrySource? telemetry = null)
-      => (_cpuId, _smbios, _wmi, _resolver, _telemetry) = (cpuId, smbios, wmi, resolver, telemetry);
+    => (_cpuId, _smbios, _wmi, _resolver, _telemetry) = (cpuId, smbios, wmi, resolver, telemetry);
 
   public async Task<ISystemCpuInfo> BuildAsync(CancellationToken ct) {
     var cpuidRaw = _cpuId.Query();

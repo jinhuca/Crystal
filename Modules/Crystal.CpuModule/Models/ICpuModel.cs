@@ -8,6 +8,13 @@ namespace Crystal.CpuModule.Models;
 /// (re-sampled on a cadence). Both carry the neutral <see cref="ISystemCpuInfo"/> aggregate.
 /// </summary>
 public interface ICpuModel {
+  /// <summary>
+  /// Static CPU specs; emits once and replays to new subscribers.
+  /// </summary>
   IObservable<ISystemCpuInfo> Specs { get; }
+
+  /// <summary>
+  /// Live CPU/core sensors; emits a fresh snapshot on each poll.
+  /// </summary>
   IObservable<ISystemCpuInfo> Sensors { get; }
 }

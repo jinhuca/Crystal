@@ -7,5 +7,8 @@ namespace Crystal.CpuModule.Views;
 /// instruction-set grid. Reached by selecting the CPU summary tile on the dashboard.
 /// </summary>
 public partial class CpuDetailView : UserControl {
+  /// <summary>
+  /// Initializes a new instance of the <see cref="CpuDetailView"/> class.
+  /// </summary>
   public CpuDetailView() => InitializeComponent();
 }

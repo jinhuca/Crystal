@@ -35,18 +35,18 @@ public sealed class CpuMonitor : IDisposable {
     // subscriber (including late ones). Connect eagerly so the one-time cost
     // is paid up front rather than on first subscription.
     _specs = Observable
-        .FromAsync(builder.BuildAsync)
-        .Replay(1);
+      .FromAsync(builder.BuildAsync)
+      .Replay(1);
     _specsConnection = _specs.Connect();
 
     // Live sensors: rebuild on the poll cadence. Each BuildAsync calls the
     // telemetry source's Refresh(), so every emitted tree carries freshly
     // sampled sensor values. RefCount keeps the timer idle until subscribed.
     _sensors = Observable
-        .Interval(interval, scheduler)
-        .SelectMany(_ => Observable.FromAsync(builder.BuildAsync))
-        .Publish()
-        .RefCount();
+      .Interval(interval, scheduler)
+      .SelectMany(_ => Observable.FromAsync(builder.BuildAsync))
+      .Publish()
+      .RefCount();
   }
 
   /// <summary>Static CPU specs; emits once and replays to new subscribers.</summary>

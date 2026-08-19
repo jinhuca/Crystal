@@ -14,19 +14,34 @@ namespace Crystal.CpuModule.Models;
 /// </para>
 /// </summary>
 public sealed class CpuFanMonitor {
+  /// <summary>
+  /// CPU fan RPM on each poll; null when no CPU fan tachometer is detected.
+  /// </summary>
   private readonly IObservable<float?> _rpm;
+
+  /// <summary>
+  /// CPU fan speed as a percentage on each poll; null when no fan control is detected.
+  /// </summary>
   private readonly IObservable<float?> _percent;
 
+  /// <summary>
+  /// Initializes a new instance of the <see cref="CpuFanMonitor"/> class.
+  /// </summary>
+  /// <param name="monitor">The sensor monitor.</param>
   public CpuFanMonitor(SensorMonitor monitor) {
     ArgumentNullException.ThrowIfNull(monitor);
     _rpm = monitor.Snapshots.Select(CpuFanSelector.SelectRpm);
     _percent = monitor.Snapshots.Select(CpuFanSelector.SelectPercent);
   }
 
-  /// <summary>CPU fan RPM on each poll; null when no CPU fan tachometer is detected.</summary>
+  /// <summary>
+  /// CPU fan RPM on each poll; null when no CPU fan tachometer is detected.
+  /// </summary>
   public IObservable<float?> Rpm => _rpm;
 
-  /// <summary>CPU fan speed as a percentage on each poll; null when no fan control is detected.
-  /// The fallback readout for laptops that expose fan duty (via the embedded controller) but no RPM.</summary>
+  /// <summary>
+  /// CPU fan speed as a percentage on each poll; null when no fan control is detected.
+  /// The fallback readout for laptops that expose fan duty (via the embedded controller) but no RPM.
+  /// </summary>
   public IObservable<float?> Percent => _percent;
 }

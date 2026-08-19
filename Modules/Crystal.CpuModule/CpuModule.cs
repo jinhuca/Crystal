@@ -20,8 +20,15 @@ namespace Crystal.CpuModule;
 /// the full-scale <see cref="CpuDetailView"/> for navigation.
 /// </summary>
 public class CpuModule(IRegionManager regionManager) : IModule {
+  /// <summary>
+  /// The Prism region manager, used to inject the summary view into the dashboard's CPU tile region.
+  /// </summary>
   private readonly IRegionManager _regionManager = regionManager;
 
+  /// <summary>
+  /// Registers the CPU module's services, models, and view models with the Prism container.
+  /// </summary>
+  /// <param name="containerRegistry">The container registry.</param>
   public void RegisterTypes(IContainerRegistry containerRegistry) {
     // Hardware providers behind Crystal.Service.Cpu (see CpuInfoBuilder's ctor).
     containerRegistry.Register<ICpuIdProvider, CpuIdProvider>();
@@ -34,11 +41,11 @@ public class CpuModule(IRegionManager regionManager) : IModule {
     // and Unity won't inject an optional ctor parameter — leaving it null makes every sensor read
     // empty (0.00). Resolve it explicitly so live sensors are wired in.
     containerRegistry.Register<CpuInfoBuilder>(cp => new CpuInfoBuilder(
-        cp.Resolve<ICpuIdProvider>(),
-        cp.Resolve<ISmbiosProcessorProvider>(),
-        cp.Resolve<IWmiHardwareProvider>(),
-        cp.Resolve<ICpuSpecsResolver>(),
-        cp.Resolve<ICpuTelemetrySource>()));
+      cp.Resolve<ICpuIdProvider>(),
+      cp.Resolve<ISmbiosProcessorProvider>(),
+      cp.Resolve<IWmiHardwareProvider>(),
+      cp.Resolve<ICpuSpecsResolver>(),
+      cp.Resolve<ICpuTelemetrySource>()));
 
     // CpuMonitor owns the polling lifetime and its Specs replay cache, so it must be a singleton.
     // Built via a factory: its ctor's optional TimeSpan?/IScheduler? params can't be resolved by
@@ -68,6 +75,10 @@ public class CpuModule(IRegionManager regionManager) : IModule {
       () => ContainerLocator.Container.Resolve<ICpuViewModel>());
   }
 
+  /// <summary>
+  /// Injects a self-warming loading tile into the dashboard's CPU region: it shows a spinner
+  /// </summary>
+  /// <param name="containerProvider">The container provider.</param>
   public void OnInitialized(IContainerProvider containerProvider) {
     // Inject a self-warming loading tile into the dashboard's CPU region: it shows a spinner
     // immediately and warms the heavy model singleton (which opens a ring-0 session) on a
@@ -76,8 +87,8 @@ public class CpuModule(IRegionManager regionManager) : IModule {
     _regionManager.RegisterViewWithRegion(RegionNames.CpuRegionName, () => {
       var host = new LoadingHost { Label = "CPU" };
       host.Begin(
-          () => containerProvider.Resolve<ICpuModel>(),
-          () => new CpuSummaryView());
+        () => containerProvider.Resolve<ICpuModel>(),
+        () => new CpuSummaryView());
       return host;
     });
   }
