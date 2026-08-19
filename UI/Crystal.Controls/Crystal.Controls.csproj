@@ -9,6 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\..\AnimatedIndicatorDemo\AnimatedIndicatorDemo\LivenessIndicator.cs" Link="Comet\LivenessIndicator.cs" />
+    <Compile Include="..\..\..\AnimatedIndicatorDemo\AnimatedIndicatorDemo\LivenessIndicatorBase.cs" Link="Comet\LivenessIndicatorBase.cs" />
+    <Compile Include="..\..\..\AnimatedIndicatorDemo\AnimatedIndicatorDemo\LivenessIndicatorLite.cs" Link="Comet\LivenessIndicatorLite.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <!-- Expose internal visibility-gate members (RenderSuspended/HasPendingRender/ApplyVisibility)
          to the test project so the off-screen render suspension can be tested deterministically. -->
     <InternalsVisibleTo Include="Crystal.Controls.Tests" />
@@ -18,6 +24,10 @@
     <!-- Shared palette: control themes (scrollbar, loading host) pull their brushes from the
          solution-wide palette instead of inlining hex, so a color change is one edit. -->
     <ProjectReference Include="..\Crystal.Resources\Crystal.Resources.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Comet\" />
   </ItemGroup>
 
 </Project>

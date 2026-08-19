@@ -4,179 +4,216 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:prism="http://prismlibrary.com/"
+						 xmlns:ctrls="clr-namespace:Crystal.Controls.Comet;assembly=Crystal.Controls"
              xmlns:const="clr-namespace:Crystal.Infrastructure.Constants;assembly=Crystal.Infrastructure.Constants"
              mc:Ignorable="d"
              d:DesignHeight="860" d:DesignWidth="1600"
              Background="Black" Foreground="{StaticResource TextBrush}"
              FontFamily="{StaticResource UiFontFamily}">
-  <UserControl.Resources>
-    <!-- HWiNFO-style panel: sharp edges, thin border, tight gutters, dense packing. -->
-    <Style x:Key="Tile" TargetType="Border">
-      <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
-      <Setter Property="BorderThickness" Value="1"/>
-      <Setter Property="CornerRadius" Value="8"/>
-      <!-- Uniform 1px on all sides so the gutter between tiles is identical horizontally and
+	<UserControl.Resources>
+		<!-- HWiNFO-style panel: sharp edges, thin border, tight gutters, dense packing. -->
+		<Style x:Key="Tile" TargetType="Border">
+			<Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
+			<Setter Property="BorderThickness" Value="1"/>
+			<Setter Property="CornerRadius" Value="8"/>
+			<!-- Uniform 1px on all sides so the gutter between tiles is identical horizontally and
            vertically: every neighbour gap becomes tile(1) + splitter track(1) + tile(1) = 3px,
            whether the tiles are split by a RowSplitter or a ColumnSplitter. -->
-      <Setter Property="Margin" Value="1"/>
-      <Setter Property="Background" Value="#FF151515"/>
-    </Style>
+			<Setter Property="Margin" Value="3,1,3,1"/>
+			<Setter Property="Background" Value="#FF151515"/>
+		</Style>
 
-    <!-- Horizontal grab bar between rows: a thin rule centered in a taller hit area so the target
+		<!-- Horizontal grab bar between rows: a thin rule centered in a taller hit area so the target
          is comfortable but reads as a hairline, brightening to the accent on hover. Matches the
          master/detail splitter styling in the Processes view. -->
-    <Style x:Key="RowSplitter" TargetType="GridSplitter">
-      <Setter Property="Height" Value="2"/>
-      <Setter Property="HorizontalAlignment" Value="Stretch"/>
-      <Setter Property="VerticalAlignment" Value="Center"/>
-      <Setter Property="Background" Value="Transparent"/>
-      <Setter Property="ResizeBehavior" Value="PreviousAndNext"/>
-      <Setter Property="ResizeDirection" Value="Rows"/>
-      <Setter Property="ShowsPreview" Value="False"/>
-      <Setter Property="Cursor" Value="SizeNS"/>
-      <Setter Property="Grid.Column" Value="0"/>
-      <Setter Property="Grid.ColumnSpan" Value="12"/>
-      <Setter Property="Template">
-        <Setter.Value>
-          <ControlTemplate TargetType="GridSplitter">
-            <Grid Background="{TemplateBinding Background}">
-              <Border x:Name="Rule" Height="6" Background="Transparent" VerticalAlignment="Center"/>
-            </Grid>
-            <ControlTemplate.Triggers>
-              <Trigger Property="IsMouseOver" Value="True">
-                <Setter TargetName="Rule" Property="Background" Value="#553E9BE8"/>
-                <Setter TargetName="Rule" Property="Height" Value="2"/>
-              </Trigger>
-            </ControlTemplate.Triggers>
-          </ControlTemplate>
-        </Setter.Value>
-      </Setter>
-    </Style>
+		<Style x:Key="RowSplitter" TargetType="GridSplitter">
+			<Setter Property="Height" Value="2"/>
+			<Setter Property="HorizontalAlignment" Value="Stretch"/>
+			<Setter Property="VerticalAlignment" Value="Center"/>
+			<Setter Property="Background" Value="Transparent"/>
+			<Setter Property="ResizeBehavior" Value="PreviousAndNext"/>
+			<Setter Property="ResizeDirection" Value="Rows"/>
+			<Setter Property="ShowsPreview" Value="False"/>
+			<Setter Property="Cursor" Value="SizeNS"/>
+			<Setter Property="Grid.Column" Value="0"/>
+			<Setter Property="Grid.ColumnSpan" Value="12"/>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="GridSplitter">
+						<Grid Background="{TemplateBinding Background}">
+							<Border x:Name="Rule" Height="6" Background="Transparent" VerticalAlignment="Center"/>
+						</Grid>
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsMouseOver" Value="True">
+								<Setter TargetName="Rule" Property="Background" Value="#553E9BE8"/>
+								<Setter TargetName="Rule" Property="Height" Value="2"/>
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
 
-    <!-- Vertical grab bar between the row-3 tiles (Memory/Storage/Network/BIOS): the column-oriented
+		<!-- Vertical grab bar between the row-3 tiles (Memory/Storage/Network/BIOS): the column-oriented
          twin of RowSplitter, so the user can widen one tile at the expense of its neighbour. A thin
          rule centered in a wider hit area, brightening to the accent on hover. -->
-    <Style x:Key="ColumnSplitter" TargetType="GridSplitter">
-      <Setter Property="Width" Value="2"/>
-      <Setter Property="HorizontalAlignment" Value="Center"/>
-      <Setter Property="VerticalAlignment" Value="Stretch"/>
-      <Setter Property="Background" Value="Transparent"/>
-      <Setter Property="ResizeBehavior" Value="PreviousAndNext"/>
-      <Setter Property="ResizeDirection" Value="Columns"/>
-      <Setter Property="ShowsPreview" Value="False"/>
-      <Setter Property="Cursor" Value="SizeWE"/>
-      <Setter Property="Template">
-        <Setter.Value>
-          <ControlTemplate TargetType="GridSplitter">
-            <Grid Background="{TemplateBinding Background}">
-              <Border x:Name="Rule" Width="6" Background="Transparent" HorizontalAlignment="Center"/>
-            </Grid>
-            <ControlTemplate.Triggers>
-              <Trigger Property="IsMouseOver" Value="True">
-                <Setter TargetName="Rule" Property="Background" Value="#553E9BE8"/>
-                <Setter TargetName="Rule" Property="Width" Value="2"/>
-              </Trigger>
-            </ControlTemplate.Triggers>
-          </ControlTemplate>
-        </Setter.Value>
-      </Setter>
-    </Style>
-  </UserControl.Resources>
+		<Style x:Key="ColumnSplitter" TargetType="GridSplitter">
+			<Setter Property="Width" Value="2"/>
+			<Setter Property="HorizontalAlignment" Value="Center"/>
+			<Setter Property="VerticalAlignment" Value="Stretch"/>
+			<Setter Property="Background" Value="Transparent"/>
+			<Setter Property="ResizeBehavior" Value="PreviousAndNext"/>
+			<Setter Property="ResizeDirection" Value="Columns"/>
+			<Setter Property="ShowsPreview" Value="False"/>
+			<Setter Property="Cursor" Value="SizeWE"/>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="GridSplitter">
+						<Grid Background="{TemplateBinding Background}">
+							<Border x:Name="Rule" Width="6" Background="Transparent" HorizontalAlignment="Center"/>
+						</Grid>
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsMouseOver" Value="True">
+								<Setter TargetName="Rule" Property="Background" Value="#553E9BE8"/>
+								<Setter TargetName="Rule" Property="Width" Value="2"/>
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
 
-  <!-- Four content rows separated by draggable splitters. Every content row is star-sized with a
+		<Style x:Key="LiveIndicatorStyle" TargetType="{x:Type ctrls:LivenessIndicatorLite}">
+			<Setter Property="DashCount" Value="1"/>
+			<Setter Property="DashThickness" Value="1.2"/>
+			<Setter Property="DashLength" Value="14"/>
+			<Setter Property="TailLength" Value="36"/>
+			<Setter Property="PixelsPerSecond" Value="60"/>
+			<Setter Property="Glow" Value="False"/>
+			<Setter Property="ShowTrack" Value="True"/>
+			<Setter Property="Symmetric" Value="True"/>
+			<Setter Property="Color" Value="#FF4DD81F"/>
+		</Style>
+	</UserControl.Resources>
+
+	<!-- Four content rows separated by draggable splitters. Every content row is star-sized with a
        MinHeight, so the user can drag any boundary to enlarge one row (shrinking its neighbor) down
        to each row's floor. Row 5 (Memory/Storage/Network/BIOS) is a nested grid of four star columns
        with its own vertical splitters, so those tiles are independently resizable; the other rows
        span all twelve outer columns. The odd rows (1,3,5) are the horizontal splitters. -->
-  <Grid Margin="3">
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="*"/>
-      <ColumnDefinition Width="*"/>
-      <ColumnDefinition Width="*"/>
-      <ColumnDefinition Width="*"/>
-      <ColumnDefinition Width="*"/>
-      <ColumnDefinition Width="*"/>
-      <ColumnDefinition Width="*"/>
-      <ColumnDefinition Width="*"/>
-      <ColumnDefinition Width="*"/>
-      <ColumnDefinition Width="*"/>
-      <ColumnDefinition Width="*"/>
-      <ColumnDefinition Width="*"/>
-    </Grid.ColumnDefinitions>
-    <Grid.RowDefinitions>
+	<Grid Margin="3">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
 			<RowDefinition x:Name="CpuRow" Height="1*"/>
-      <RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
 			<RowDefinition x:Name="GpuRow" Height="1*"/>
-      <RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
 			<RowDefinition x:Name="ComponentsRow" Height="1*"/>
-      <RowDefinition Height="Auto"/>
-      <RowDefinition x:Name="ProcessesRow" Height="1.2*"/>
-    </Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition x:Name="ProcessesRow" Height="1.2*"/>
+		</Grid.RowDefinitions>
 
-    <!-- Row 1: CPU, full width -->
-    <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="12" Style="{StaticResource Tile}">
-      <ContentControl prism:RegionManager.RegionName="{x:Static const:RegionNames.CpuRegionName}"/>
-    </Border>
+		<!-- Row 1: CPU, full width -->
+		<Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="12" Style="{StaticResource Tile}" Margin="3,1">
+			<Grid>
+				<ContentControl prism:RegionManager.RegionName="{x:Static const:RegionNames.CpuRegionName}"/>
+				<ctrls:LivenessIndicatorLite Style="{StaticResource LiveIndicatorStyle}"/>
+			</Grid>
+		</Border>
 
-    <GridSplitter Grid.Row="1" Style="{StaticResource RowSplitter}"/>
+		<GridSplitter Grid.Row="1" Style="{StaticResource RowSplitter}"/>
 
-    <!-- Row 2: GPU, full width -->
-    <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="12" Style="{StaticResource Tile}">
-      <ContentControl prism:RegionManager.RegionName="{x:Static const:RegionNames.GpuSummaryRegionName}"/>
-    </Border>
+		<!-- Row 2: GPU, full width -->
+		<Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="12" Style="{StaticResource Tile}">
+			<Grid>
+				<ContentControl prism:RegionManager.RegionName="{x:Static const:RegionNames.GpuSummaryRegionName}"/>
+				<ctrls:LivenessIndicatorLite Style="{StaticResource LiveIndicatorStyle}"/>
+			</Grid>
+		</Border>
 
-    <GridSplitter Grid.Row="3" Style="{StaticResource RowSplitter}"/>
+		<GridSplitter Grid.Row="3" Style="{StaticResource RowSplitter}"/>
 
-    <!-- Row 3: Memory, Storage, Network, BIOS. Nested in its own grid of four star columns separated
+		<!-- Row 3: Memory, Storage, Network, BIOS. Nested in its own grid of four star columns separated
          by vertical splitters, so the user can widen one tile at its neighbour's expense (the outer
          grid stays full-width for the other rows). Each column has a MinWidth floor. -->
-    <Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="12">
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition x:Name="MemoryCol" Width="*" MinWidth="120"/>
-        <ColumnDefinition Width="Auto"/>
-        <ColumnDefinition x:Name="StorageCol" Width="*" MinWidth="120"/>
-        <ColumnDefinition Width="Auto"/>
-        <ColumnDefinition x:Name="NetworkCol" Width="*" MinWidth="120"/>
-        <ColumnDefinition Width="Auto"/>
-        <ColumnDefinition x:Name="BiosCol" Width="*" MinWidth="120"/>
-      </Grid.ColumnDefinitions>
+		<Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="12">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition x:Name="MemoryCol" Width="*" MinWidth="120"/>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition x:Name="StorageCol" Width="*" MinWidth="120"/>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition x:Name="NetworkCol" Width="*" MinWidth="120"/>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition x:Name="BiosCol" Width="*" MinWidth="120"/>
+			</Grid.ColumnDefinitions>
 
-      <Border Grid.Column="0" Style="{StaticResource Tile}">
-        <ContentControl prism:RegionManager.RegionName="{x:Static const:RegionNames.MemoryRegionName}"/>
-      </Border>
-      <GridSplitter Grid.Column="1" Style="{StaticResource ColumnSplitter}"/>
-      <Border Grid.Column="2" Style="{StaticResource Tile}">
-        <ContentControl prism:RegionManager.RegionName="{x:Static const:RegionNames.StorageRegionName}"/>
-      </Border>
-      <GridSplitter Grid.Column="3" Style="{StaticResource ColumnSplitter}"/>
-      <Border Grid.Column="4" Style="{StaticResource Tile}">
-        <ContentControl prism:RegionManager.RegionName="{x:Static const:RegionNames.NetworkSummaryRegionName}"/>
-      </Border>
-      <GridSplitter Grid.Column="5" Style="{StaticResource ColumnSplitter}"/>
-      <Border Grid.Column="6" Style="{StaticResource Tile}">
-        <ContentControl prism:RegionManager.RegionName="{x:Static const:RegionNames.BiosRegionName}"/>
-      </Border>
-    </Grid>
+			<Border Grid.Column="0" Style="{StaticResource Tile}" Margin="3,1">
+				<Grid>
+					<ContentControl prism:RegionManager.RegionName="{x:Static const:RegionNames.MemoryRegionName}"/>
+					<ctrls:LivenessIndicatorLite Style="{StaticResource LiveIndicatorStyle}"/>
+				</Grid>
+			</Border>
+			<GridSplitter Grid.Column="1" Style="{StaticResource ColumnSplitter}"/>
+			<Border Grid.Column="2" Style="{StaticResource Tile}" Margin="0,1,1,1">
+				<Grid>
+					<ContentControl prism:RegionManager.RegionName="{x:Static const:RegionNames.StorageRegionName}"/>
+					<ctrls:LivenessIndicatorLite Style="{StaticResource LiveIndicatorStyle}"/>
+				</Grid>
+			</Border>
+			<GridSplitter Grid.Column="3" Style="{StaticResource ColumnSplitter}"/>
+			<Border Grid.Column="4" Style="{StaticResource Tile}" Margin="1,1,1,1">
+				<Grid>
+					<ContentControl prism:RegionManager.RegionName="{x:Static const:RegionNames.NetworkSummaryRegionName}"/>
+					<ctrls:LivenessIndicatorLite Style="{StaticResource LiveIndicatorStyle}"/>
+				</Grid>
+			</Border>
+			<GridSplitter Grid.Column="5" Style="{StaticResource ColumnSplitter}"/>
+			<Border Grid.Column="6" Style="{StaticResource Tile}" Margin="1,1,3,1">
+				<Grid>
+					<ContentControl prism:RegionManager.RegionName="{x:Static const:RegionNames.BiosRegionName}"/>
+					<ctrls:LivenessIndicatorLite Style="{StaticResource LiveIndicatorStyle}"/>
+				</Grid>
+			</Border>
+		</Grid>
 
-    <GridSplitter Grid.Row="5" Style="{StaticResource RowSplitter}"/>
+		<GridSplitter Grid.Row="5" Style="{StaticResource RowSplitter}"/>
 
-    <!-- Row 4: Processes (left) + Operating System (right). Nested in its own grid of two star
+		<!-- Row 4: Processes (left) + Operating System (right). Nested in its own grid of two star
          columns separated by a vertical splitter, so the user can widen either tile at the other's
          expense. Defaults to 2:1 (Processes wider); each column has a MinWidth floor. -->
-    <Grid Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="12">
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition x:Name="ProcessesCol" Width="2*" MinWidth="200"/>
-        <ColumnDefinition Width="Auto"/>
-        <ColumnDefinition x:Name="OsCol" Width="1*" MinWidth="200"/>
-      </Grid.ColumnDefinitions>
+		<Grid Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="12">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition x:Name="ProcessesCol" Width="2*" MinWidth="200"/>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition x:Name="OsCol" Width="1*" MinWidth="200"/>
+			</Grid.ColumnDefinitions>
 
-      <Border Grid.Column="0" Style="{StaticResource Tile}">
-        <ContentControl prism:RegionManager.RegionName="{x:Static const:RegionNames.ProcessesRegionName}"/>
-      </Border>
-      <GridSplitter Grid.Column="1" Style="{StaticResource ColumnSplitter}"/>
-      <Border Grid.Column="2" Style="{StaticResource Tile}">
-        <ContentControl prism:RegionManager.RegionName="{x:Static const:RegionNames.OsRegionName}"/>
-      </Border>
-    </Grid>
-  </Grid>
+			<Border Grid.Column="0" Style="{StaticResource Tile}" Margin="3,1,1,5">
+				<Grid>
+					<ContentControl prism:RegionManager.RegionName="{x:Static const:RegionNames.ProcessesRegionName}"/>
+					<ctrls:LivenessIndicatorLite Style="{StaticResource LiveIndicatorStyle}"/>
+				</Grid>
+			</Border>
+			<GridSplitter Grid.Column="1" Style="{StaticResource ColumnSplitter}"/>
+			<Border Grid.Column="2" Style="{StaticResource Tile}" Margin="1,1,3,5">
+				<Grid>
+					<ContentControl prism:RegionManager.RegionName="{x:Static const:RegionNames.OsRegionName}"/>
+					<ctrls:LivenessIndicatorLite Style="{StaticResource LiveIndicatorStyle}"/>
+				</Grid>
+			</Border>
+		</Grid>
+	</Grid>
 </UserControl>
