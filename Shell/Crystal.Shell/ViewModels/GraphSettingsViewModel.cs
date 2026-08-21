@@ -1,6 +1,4 @@
 using Crystal.Shell.Settings;
-using Prism.Mvvm;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Media;
@@ -13,9 +11,21 @@ namespace Crystal.Shell.ViewModels;
 /// to the owning row, which clears the other swatches.
 /// </summary>
 public sealed class AccentOptionViewModel : BindableBase {
+  /// <summary>
+  /// The row that owns this accent option.
+  /// </summary>
   private readonly GraphRowViewModel _row;
+
+  /// <summary>
+  /// True if the swatch is selected; false if not. The row's accent drives the other swatches to
+  /// </summary>
   private bool _isSelected;
 
+  /// <summary>
+  /// Initializes a new instance of the <see cref="AccentOptionViewModel"/> class.
+  /// </summary>
+  /// <param name="row">The row that owns this accent option.</param>
+  /// <param name="accent">The accent represented by this option.</param>
   public AccentOptionViewModel(GraphRowViewModel row, GraphAccent accent) {
     _row = row;
     Accent = accent;
@@ -108,29 +118,47 @@ public sealed class GraphRowViewModel : BindableBase {
     }
   }
 
-  // Two-way bool facets of Kind for the kind radio buttons. Only the transition to true drives the
-  // change; the false echo (the other radio) is ignored so exclusivity stays data-driven.
+  /// <summary>
+  /// True if the graph kind is SegmentedBar; false if not. Setting to true changes the kind to SegmentedBar.
+  /// </summary>
   public bool IsSegmentedBar {
     get => Kind == GraphKindChoice.SegmentedBar;
     set { if (value) Kind = GraphKindChoice.SegmentedBar; }
   }
 
+  /// <summary>
+  /// True if the graph kind is FilledLine; false if not. Setting to true changes the kind to FilledLine.
+  /// </summary>
   public bool IsFilledLine {
     get => Kind == GraphKindChoice.FilledLine;
     set { if (value) Kind = GraphKindChoice.FilledLine; }
   }
 
+  /// <summary>
+  /// The number of historical data points to show in the graph. 
+  /// This is a user-editable integer, and changing it will update the graph's display accordingly.
+  /// </summary>
   public int HistoryLength {
     get => _historyLength;
     set => SetProperty(ref _historyLength, value);
   }
 
+  /// <summary>
+  /// The list of accent options available for this graph row. Each option represents a selectable accent color.
+  /// </summary>
   public IReadOnlyList<AccentOptionViewModel> AccentOptions { get; }
 
+  /// <summary>
+  /// Converts the current state of this view model into a <see cref="GraphSetting"/> object, which can be 
+  /// persisted or used for further processing.
+  /// </summary>
+  /// <returns>GraphSetting</returns>
   public GraphSetting ToSetting() => new() { Kind = Kind, Accent = Accent, HistoryLength = HistoryLength };
 }
 
-/// <summary>One component's block in the popup: a header (e.g. "CPU") and its graph rows.</summary>
+/// <summary>
+/// One component's block in the popup: a header (e.g. "CPU") and its graph rows.
+/// </summary>
 public sealed class GraphGroupViewModel {
   public GraphGroupViewModel(string component, IReadOnlyList<GraphRowViewModel> rows) {
     Component = component;
