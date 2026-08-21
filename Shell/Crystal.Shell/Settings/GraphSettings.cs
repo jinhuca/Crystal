@@ -39,13 +39,31 @@ public enum GraphAccent {
 /// The kind + accent chosen for a single dashboard graph, identified elsewhere by a stable graph id.
 /// </summary>
 public sealed class GraphSetting {
+  // Chrome (border / grid / background) for this graph. Per-graph as of the settings redesign; a
+  // file that predates this field keeps NoFrills because absent JSON leaves the initializer value.
+  public GraphCategory Category { get; set; } = GraphCategory.NoFrills;
   public GraphKindChoice Kind { get; set; } = GraphKindChoice.SegmentedBar;
   public GraphAccent Accent { get; set; } = GraphAccent.Grey;
+
+  // User-picked colour as "#RRGGBB", or null to use the predefined <see cref="Accent"/>. When set it
+  // overrides the accent everywhere the graph is coloured.
+  public string? CustomColor { get; set; }
 
   // X-axis span (number of samples plotted). Maps to PerformanceGraph.HistoryLength. Defaults to
   // 30, matching the existing sample styles; a settings file that predates this field keeps 30
   // because absent JSON properties leave the initializer value untouched.
   public int HistoryLength { get; set; } = 30;
+}
+
+/// <summary>
+/// The factory-reset appearance applied to every graph by the settings popup's reset action:
+/// a grey, No-Frills segmented bar with a 20-sample history.
+/// </summary>
+public static class GraphDefaults {
+  public const GraphCategory Category = GraphCategory.NoFrills;
+  public const GraphKindChoice Kind = GraphKindChoice.SegmentedBar;
+  public const GraphAccent Accent = GraphAccent.Grey;
+  public const int HistoryLength = 20;
 }
 
 /// <summary>

@@ -47,8 +47,8 @@ public sealed class GraphAppearanceService {
     // under the settings system keeps its original appearance until the user changes it.
     setting ??= GraphCatalog.DefaultFor(id);
 
-    ApplyCategory(graph, settings.Category);
-    ApplyKindAndAccent(graph, setting.Kind, setting.Accent);
+    ApplyCategory(graph, setting.Category);
+    ApplyKindAndAccent(graph, setting);
     if (setting.HistoryLength > 0) graph.HistoryLength = setting.HistoryLength;
   }
 
@@ -68,19 +68,31 @@ public sealed class GraphAppearanceService {
     }
   }
 
-  private static void ApplyKindAndAccent(PerformanceGraph graph, GraphKindChoice kind, GraphAccent accent) {
-    var flat = AccentBrush(accent);
-    if (kind == GraphKindChoice.FilledLine) {
+  private static void ApplyKindAndAccent(PerformanceGraph graph, GraphSetting setting) {
+    // A custom colour overrides the predefined accent everywhere the graph is coloured.
+    var custom = ParseColor(setting.CustomColor);
+    var flat = custom is Color c ? new SolidColorBrush(c) : AccentBrush(setting.Accent);
+    if (setting.Kind == GraphKindChoice.FilledLine) {
       graph.Kind = GraphKind.Line;
       graph.LineBrush = flat;
       graph.LineThickness = 1.0;
-      graph.FillBrush = AccentFill(accent) ?? flat;
+      graph.FillBrush = custom is Color cf ? CustomFill(cf) : (AccentFill(setting.Accent) ?? flat);
     } else {
       graph.Kind = GraphKind.SegmentedBar;
       graph.LineBrush = flat;
       graph.FillBrush = flat;
     }
   }
+
+  private static Color? ParseColor(string? hex) {
+    if (string.IsNullOrWhiteSpace(hex)) return null;
+    try { return (Color)ColorConverter.ConvertFromString(hex); }
+    catch { return null; }
+  }
+
+  // Vertical glow-gradient fill for a custom line colour, mirroring the predefined *Fill brushes.
+  private static Brush CustomFill(Color c) => new LinearGradientBrush(
+      Color.FromArgb(0x66, c.R, c.G, c.B), Color.FromArgb(0x00, c.R, c.G, c.B), 90);
 
   private static Brush? Res(string key) => Application.Current?.Resources[key] as Brush;
 

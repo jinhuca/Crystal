@@ -1,6 +1,7 @@
 using Crystal.Shell.Settings;
 using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace Crystal.Shell.ViewModels;
@@ -8,7 +9,7 @@ namespace Crystal.Shell.ViewModels;
 /// <summary>
 /// One selectable colour in a graph row: the accent it represents, the swatch brush to paint, and a
 /// two-way <see cref="IsSelected"/> the swatch radio binds to. Selecting one pushes the accent back
-/// to the owning row, which clears the other swatches.
+/// to the owning row, which clears the other swatches (and any custom colour).
 /// </summary>
 public sealed class AccentOptionViewModel : BindableBase {
   /// <summary>
@@ -45,8 +46,9 @@ public sealed class AccentOptionViewModel : BindableBase {
     }
   }
 
-  // Refresh the checked state from the row's current accent (called when the row's accent changes).
-  internal void SyncFromRow() => IsSelected = _row.Accent == Accent;
+  // Refresh the checked state from the row's current accent. A custom colour deselects every
+  // predefined swatch, so it wins over the accent match.
+  internal void SyncFromRow() => IsSelected = !_row.HasCustomColor && _row.Accent == Accent;
 
   // The six palette brushes are merged app-wide (GraphPalette.xaml); fall back to a hard-coded
   // colour so the swatch never renders empty if the resource is somehow missing.
@@ -73,21 +75,24 @@ public sealed class AccentOptionViewModel : BindableBase {
 }
 
 /// <summary>
-/// One graph's row in the popup: its label plus the current kind and accent selection. Kind is two
-/// radio buttons bound to <see cref="IsSegmentedBar"/>/<see cref="IsFilledLine"/>; accent is the six
-/// <see cref="AccentOptions"/> swatches.
+/// One graph's row in the popup: its label plus the current category, kind, history and colour
+/// selection. Each is overridable per row and defaults to the general (apply-to-all) choice.
 /// </summary>
 public sealed class GraphRowViewModel : BindableBase {
+  private GraphCategory _category;
   private GraphKindChoice _kind;
   private GraphAccent _accent;
+  private Color? _customColor;
   private int _historyLength;
 
   public GraphRowViewModel(GraphDescriptor descriptor, GraphSetting setting) {
     Id = descriptor.Id;
     Component = descriptor.Component;
     Metric = descriptor.Metric;
+    _category = setting.Category;
     _kind = setting.Kind;
     _accent = setting.Accent;
+    _customColor = ParseColor(setting.CustomColor);
     _historyLength = setting.HistoryLength;
 
     var options = new List<AccentOptionViewModel>();
@@ -101,6 +106,27 @@ public sealed class GraphRowViewModel : BindableBase {
   public string Component { get; }
   public string Metric { get; }
 
+  public GraphCategory Category {
+    get => _category;
+    set {
+      if (!SetProperty(ref _category, value)) return;
+      RaisePropertyChanged(nameof(IsNoFrills));
+      RaisePropertyChanged(nameof(IsFullGraph));
+    }
+  }
+
+  /// <summary>True if this graph uses the No-Frills chrome; setting it true selects that category.</summary>
+  public bool IsNoFrills {
+    get => Category == GraphCategory.NoFrills;
+    set { if (value) Category = GraphCategory.NoFrills; }
+  }
+
+  /// <summary>True if this graph uses the Full-Graph chrome; setting it true selects that category.</summary>
+  public bool IsFullGraph {
+    get => Category == GraphCategory.FullGraph;
+    set { if (value) Category = GraphCategory.FullGraph; }
+  }
+
   public GraphKindChoice Kind {
     get => _kind;
     set {
@@ -113,10 +139,37 @@ public sealed class GraphRowViewModel : BindableBase {
   public GraphAccent Accent {
     get => _accent;
     set {
-      if (!SetProperty(ref _accent, value)) return;
+      bool changed = SetProperty(ref _accent, value);
+      // Choosing a predefined accent always clears any custom colour.
+      if (_customColor is not null) {
+        _customColor = null;
+        RaisePropertyChanged(nameof(HasCustomColor));
+        RaisePropertyChanged(nameof(CustomSwatch));
+        changed = true;
+      }
+      if (changed) foreach (var option in AccentOptions) option.SyncFromRow();
+    }
+  }
+
+  /// <summary>
+  /// The user-picked colour, or null to use the predefined <see cref="Accent"/>. Setting a colour
+  /// deselects every predefined swatch; clearing it restores the accent selection.
+  /// </summary>
+  public Color? CustomColor {
+    get => _customColor;
+    set {
+      if (!SetProperty(ref _customColor, value)) return;
+      RaisePropertyChanged(nameof(HasCustomColor));
+      RaisePropertyChanged(nameof(CustomSwatch));
       foreach (var option in AccentOptions) option.SyncFromRow();
     }
   }
+
+  /// <summary>True when a custom colour is set (drives the selection ring on the custom swatch).</summary>
+  public bool HasCustomColor => _customColor is not null;
+
+  /// <summary>Brush painting the custom-colour swatch; transparent when no custom colour is set.</summary>
+  public Brush CustomSwatch => _customColor is Color c ? new SolidColorBrush(c) : Brushes.Transparent;
 
   /// <summary>
   /// True if the graph kind is SegmentedBar; false if not. Setting to true changes the kind to SegmentedBar.
@@ -135,7 +188,7 @@ public sealed class GraphRowViewModel : BindableBase {
   }
 
   /// <summary>
-  /// The number of historical data points to show in the graph. 
+  /// The number of historical data points to show in the graph.
   /// This is a user-editable integer, and changing it will update the graph's display accordingly.
   /// </summary>
   public int HistoryLength {
@@ -149,11 +202,26 @@ public sealed class GraphRowViewModel : BindableBase {
   public IReadOnlyList<AccentOptionViewModel> AccentOptions { get; }
 
   /// <summary>
-  /// Converts the current state of this view model into a <see cref="GraphSetting"/> object, which can be 
+  /// Converts the current state of this view model into a <see cref="GraphSetting"/> object, which can be
   /// persisted or used for further processing.
   /// </summary>
   /// <returns>GraphSetting</returns>
-  public GraphSetting ToSetting() => new() { Kind = Kind, Accent = Accent, HistoryLength = HistoryLength };
+  public GraphSetting ToSetting() => new() {
+    Category = Category,
+    Kind = Kind,
+    Accent = Accent,
+    CustomColor = ToHex(_customColor),
+    HistoryLength = HistoryLength,
+  };
+
+  private static Color? ParseColor(string? hex) {
+    if (string.IsNullOrWhiteSpace(hex)) return null;
+    try { return (Color)ColorConverter.ConvertFromString(hex); }
+    catch { return null; }
+  }
+
+  private static string? ToHex(Color? color) =>
+      color is Color c ? $"#{c.R:X2}{c.G:X2}{c.B:X2}" : null;
 }
 
 /// <summary>
@@ -170,22 +238,32 @@ public sealed class GraphGroupViewModel {
 }
 
 /// <summary>
-/// The popup's root view-model: the active category shared by every graph, and a row per configured
-/// graph (grouped by component for display). Built from the persisted <see cref="GraphSettings"/>
-/// and converted back on save.
+/// The popup's root view-model: the general (apply-to-all) category / kind / history choices, and a
+/// row per configured graph (grouped by component for display). Changing a general choice pushes it
+/// to every row; each row can then be overridden individually. Built from the persisted
+/// <see cref="GraphSettings"/> and converted back on save.
 /// </summary>
 public sealed class GraphSettingsViewModel : BindableBase {
   private GraphCategory _category;
+  private GraphKindChoice _kind;
+  private int _historyLength;
 
   public GraphSettingsViewModel(GraphSettings settings) {
-    _category = settings.Category;
-
     var rows = new List<GraphRowViewModel>();
     foreach (var descriptor in GraphCatalog.Graphs) {
       settings.Graphs.TryGetValue(descriptor.Id, out var setting);
       rows.Add(new GraphRowViewModel(descriptor, setting ?? GraphCatalog.DefaultFor(descriptor.Id)));
     }
     Graphs = new ReadOnlyCollection<GraphRowViewModel>(rows);
+
+    // Seed the general selectors to the current shared state: use a uniform value where every row
+    // agrees, else the persisted category / a sensible default. These are only the apply-to-all
+    // starting positions; the per-row values remain authoritative. Set the backing fields directly
+    // so seeding does not propagate back over the freshly-loaded rows.
+    _category = settings.Category;
+    _kind = rows.Count > 0 && rows.All(r => r.Kind == rows[0].Kind) ? rows[0].Kind : GraphDefaults.Kind;
+    _historyLength = rows.Count > 0 && rows.All(r => r.HistoryLength == rows[0].HistoryLength)
+        ? rows[0].HistoryLength : GraphDefaults.HistoryLength;
 
     // Group by component while preserving first-seen order, so the popup shows one header block per
     // component in catalog order.
@@ -200,14 +278,18 @@ public sealed class GraphSettingsViewModel : BindableBase {
       list.Add(row);
     }
     Groups = new ReadOnlyCollection<GraphGroupViewModel>(groups);
+
+    ResetCommand = new DelegateCommand(Reset);
   }
 
+  /// <summary>General category; selecting one applies it to every graph row.</summary>
   public GraphCategory Category {
     get => _category;
     set {
       if (!SetProperty(ref _category, value)) return;
       RaisePropertyChanged(nameof(IsNoFrills));
       RaisePropertyChanged(nameof(IsFullGraph));
+      foreach (var row in Graphs) row.Category = value;
     }
   }
 
@@ -221,8 +303,59 @@ public sealed class GraphSettingsViewModel : BindableBase {
     set { if (value) Category = GraphCategory.FullGraph; }
   }
 
+  /// <summary>General graph kind; selecting one applies it to every graph row.</summary>
+  public GraphKindChoice Kind {
+    get => _kind;
+    set {
+      if (!SetProperty(ref _kind, value)) return;
+      RaisePropertyChanged(nameof(IsSegmentedBar));
+      RaisePropertyChanged(nameof(IsFilledLine));
+      foreach (var row in Graphs) row.Kind = value;
+    }
+  }
+
+  public bool IsSegmentedBar {
+    get => Kind == GraphKindChoice.SegmentedBar;
+    set { if (value) Kind = GraphKindChoice.SegmentedBar; }
+  }
+
+  public bool IsFilledLine {
+    get => Kind == GraphKindChoice.FilledLine;
+    set { if (value) Kind = GraphKindChoice.FilledLine; }
+  }
+
+  /// <summary>
+  /// General history length. A valid value (1–240) is applied to every graph row; out-of-range input
+  /// is kept in the box but not propagated, so a stray keystroke never rewrites every graph.
+  /// </summary>
+  public int HistoryLength {
+    get => _historyLength;
+    set {
+      if (!SetProperty(ref _historyLength, value)) return;
+      if (value is >= 1 and <= 240) foreach (var row in Graphs) row.HistoryLength = value;
+    }
+  }
+
   public IReadOnlyList<GraphRowViewModel> Graphs { get; }
   public IReadOnlyList<GraphGroupViewModel> Groups { get; }
+
+  /// <summary>Resets the general selectors and every row to the factory defaults.</summary>
+  public ICommand ResetCommand { get; }
+
+  private void Reset() {
+    // Update the general selectors (raises their bound properties) …
+    Category = GraphDefaults.Category;
+    Kind = GraphDefaults.Kind;
+    HistoryLength = GraphDefaults.HistoryLength;
+    // … then force every row, including any it did not touch because a general value was unchanged.
+    foreach (var row in Graphs) {
+      row.Category = GraphDefaults.Category;
+      row.Kind = GraphDefaults.Kind;
+      row.HistoryLength = GraphDefaults.HistoryLength;
+      row.CustomColor = null;
+      row.Accent = GraphDefaults.Accent;
+    }
+  }
 
   public GraphSettings ToSettings() {
     var settings = new GraphSettings { Category = Category };

@@ -4,13 +4,15 @@
         xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
         xmlns:vm="clr-namespace:Crystal.Shell.ViewModels"
         Title="Graph Settings"
-        Width="880" Height="500"
+        Width="1280" Height="560"
         WindowStartupLocation="CenterOwner"
         Background="Black"
         BorderBrush="{StaticResource AccentBrush}" BorderThickness="1"
         Foreground="{StaticResource TextBrush}"
         FontFamily="{StaticResource UiFontFamily}">
   <Window.Resources>
+    <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+
     <!-- Custom caption buttons mirroring the shell's title bar (Segoe MDL2 Assets glyphs). -->
     <Style x:Key="SettingsCaptionButtonStyle" TargetType="Button">
       <Setter Property="Background" Value="Transparent"/>
@@ -140,6 +142,42 @@
       <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
       <Setter Property="FontWeight" Value="SemiBold"/>
     </Style>
+
+    <!-- Rainbow fill for the custom-colour picker, signalling "any colour". -->
+    <LinearGradientBrush x:Key="RainbowBrush" StartPoint="0,0" EndPoint="1,1">
+      <GradientStop Color="#E82A7A" Offset="0.0"/>
+      <GradientStop Color="#E89B2A" Offset="0.2"/>
+      <GradientStop Color="#3BD15A" Offset="0.45"/>
+      <GradientStop Color="#3E9BE8" Offset="0.7"/>
+      <GradientStop Color="#9B5AE8" Offset="1.0"/>
+    </LinearGradientBrush>
+
+    <!-- Custom-colour picker: a rainbow disc with a small "+" that opens the colour dialog. -->
+    <Style x:Key="CustomColorButtonStyle" TargetType="Button">
+      <Setter Property="Margin" Value="6,0,8,0"/>
+      <Setter Property="Cursor" Value="Hand"/>
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="BorderThickness" Value="0"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="Button">
+            <Grid Width="24" Height="24">
+              <Ellipse Margin="3" Fill="{StaticResource RainbowBrush}"/>
+              <Border x:Name="Badge" Width="12" Height="12" CornerRadius="6"
+                      Background="#1A1A1A" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                <TextBlock Text="+" Foreground="White" FontSize="10" FontWeight="Bold"
+                           HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-1,0,0"/>
+              </Border>
+            </Grid>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="Badge" Property="Background" Value="{StaticResource AccentBrush}"/>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
   </Window.Resources>
 
   <shell:WindowChrome.WindowChrome>
@@ -168,14 +206,30 @@
       </StackPanel>
     </Grid>
 
-    <!-- Category selector: shared by every graph. -->
-    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="16,12,16,8">
+    <!-- General selectors: applied to every graph when changed; each row can still override. -->
+    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="16,12,16,8" VerticalAlignment="Center">
       <TextBlock Text="Category:" Foreground="{StaticResource LabelBrush}"
                  VerticalAlignment="Center" Margin="0,0,16,0"/>
-      <RadioButton Content="No Frills" Style="{StaticResource OptionRadioStyle}"
+      <RadioButton Content="No Frills" GroupName="GeneralCategory" Style="{StaticResource OptionRadioStyle}"
                    IsChecked="{Binding IsNoFrills}"/>
-      <RadioButton Content="Full Graphs" Style="{StaticResource OptionRadioStyle}"
+      <RadioButton Content="Full Graphs" GroupName="GeneralCategory" Style="{StaticResource OptionRadioStyle}"
                    IsChecked="{Binding IsFullGraph}"/>
+
+      <TextBlock Text="Graph:" Foreground="{StaticResource LabelBrush}"
+                 VerticalAlignment="Center" Margin="12,0,16,0"/>
+      <RadioButton Content="Line" GroupName="GeneralKind" Style="{StaticResource OptionRadioStyle}"
+                   IsChecked="{Binding IsFilledLine}"/>
+      <RadioButton Content="Segmented Bar" GroupName="GeneralKind" Style="{StaticResource OptionRadioStyle}"
+                   IsChecked="{Binding IsSegmentedBar}"/>
+
+      <TextBlock Text="History:" Foreground="{StaticResource LabelBrush}"
+                 VerticalAlignment="Center" Margin="12,0,6,0"/>
+      <TextBox Style="{StaticResource HistoryTextBoxStyle}"
+               Text="{Binding HistoryLength, UpdateSourceTrigger=LostFocus}"/>
+
+      <Button x:Name="ResetButton" Command="{Binding ResetCommand}"
+              Style="{StaticResource SettingsCaptionButtonStyle}" Margin="16,0,0,0"
+              Content="&#xE72C;" ToolTip="Reset all graphs to defaults"/>
     </StackPanel>
 
     <!-- Per-graph rows, grouped by component. -->
@@ -193,45 +247,70 @@
                   <DataTemplate>
                     <Grid Margin="8,3,0,3">
                       <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="140"/>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                       </Grid.ColumnDefinitions>
                       <TextBlock Grid.Column="0" Text="{Binding Metric}"
                                  Foreground="{StaticResource TextBrush}" VerticalAlignment="Center"/>
-                      <!-- Kind: exclusivity is data-driven (separate panel = its own group). -->
+                      <!-- Category: chrome for this graph (separate panel = its own radio group). -->
                       <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center"
                                   Margin="0,0,20,0">
+                        <TextBlock Text="Category:" Foreground="{StaticResource LabelBrush}"
+                                   VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <RadioButton Content="No Frills" Style="{StaticResource OptionRadioStyle}"
+                                     IsChecked="{Binding IsNoFrills}"/>
+                        <RadioButton Content="Full Graphs" Style="{StaticResource OptionRadioStyle}"
+                                     IsChecked="{Binding IsFullGraph}"/>
+                      </StackPanel>
+                      <!-- Kind: exclusivity is data-driven (separate panel = its own group). -->
+                      <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center"
+                                  Margin="0,0,20,0">
+                        <TextBlock Text="Graph:" Foreground="{StaticResource LabelBrush}"
+                                   VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <RadioButton Content="Line" Style="{StaticResource OptionRadioStyle}"
+                                     IsChecked="{Binding IsFilledLine}"/>
                         <RadioButton Content="Segmented Bar" Style="{StaticResource OptionRadioStyle}"
                                      IsChecked="{Binding IsSegmentedBar}"/>
-                        <RadioButton Content="Filled Line" Style="{StaticResource OptionRadioStyle}"
-                                     IsChecked="{Binding IsFilledLine}"/>
                       </StackPanel>
                       <!-- History length (x-axis span, sample count). -->
-                      <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center"
+                      <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center"
                                   Margin="0,0,20,0">
                         <TextBlock Text="History:" Foreground="{StaticResource LabelBrush}"
                                    VerticalAlignment="Center" Margin="0,0,6,0"/>
                         <TextBox Style="{StaticResource HistoryTextBoxStyle}"
                                  Text="{Binding HistoryLength, UpdateSourceTrigger=LostFocus}"/>
                       </StackPanel>
-                      <!-- Accent swatches: one radio per predefined colour. -->
-                      <ItemsControl Grid.Column="3" ItemsSource="{Binding AccentOptions}"
-                                    VerticalAlignment="Center">
-                        <ItemsControl.ItemsPanel>
-                          <ItemsPanelTemplate>
-                            <StackPanel Orientation="Horizontal"/>
-                          </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                          <DataTemplate>
-                            <RadioButton Style="{StaticResource ColorSwatchStyle}"
-                                         IsChecked="{Binding IsSelected}"
-                                         ToolTip="{Binding Accent}"/>
-                          </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                      </ItemsControl>
+                      <!-- Accent swatches + custom-colour picker and its display swatch. -->
+                      <StackPanel Grid.Column="4" Orientation="Horizontal" VerticalAlignment="Center">
+                        <ItemsControl ItemsSource="{Binding AccentOptions}" VerticalAlignment="Center">
+                          <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                              <StackPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                          </ItemsControl.ItemsPanel>
+                          <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                              <RadioButton Style="{StaticResource ColorSwatchStyle}"
+                                           IsChecked="{Binding IsSelected}"
+                                           ToolTip="{Binding Accent}"/>
+                            </DataTemplate>
+                          </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <!-- Custom-colour picker: opens the colour dialog. -->
+                        <Button Style="{StaticResource CustomColorButtonStyle}"
+                                Click="OnPickCustomColorClick"
+                                ToolTip="Pick a custom colour…"/>
+                        <!-- Display swatch: shows the selected custom colour (empty when none). -->
+                        <Grid Width="24" Height="24" ToolTip="Custom colour">
+                          <Ellipse Stroke="{StaticResource TextBrush}" StrokeThickness="2"
+                                   Visibility="{Binding HasCustomColor, Converter={StaticResource BoolToVisibility}}"/>
+                          <Ellipse Margin="3" Fill="{Binding CustomSwatch}"
+                                   Stroke="{StaticResource DividerBrush}" StrokeThickness="1"/>
+                        </Grid>
+                      </StackPanel>
                     </Grid>
                   </DataTemplate>
                 </ItemsControl.ItemTemplate>

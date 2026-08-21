@@ -23,6 +23,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <InternalsVisibleTo Include="Crystal.Shell.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
     <!-- Ship the icon so the window can load it at runtime via pack URI. -->
     <Resource Include="Crystal.ico" />
   </ItemGroup>

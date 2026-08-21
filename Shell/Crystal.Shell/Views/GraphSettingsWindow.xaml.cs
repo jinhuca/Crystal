@@ -1,6 +1,7 @@
 using Crystal.Shell.Settings;
 using Crystal.Shell.ViewModels;
 using System.Windows;
+using System.Windows.Media;
 
 namespace Crystal.Shell.Views;
 
@@ -18,6 +19,14 @@ public partial class GraphSettingsWindow : Window {
     InitializeComponent();
     _viewModel = new GraphSettingsViewModel(store.Current);
     DataContext = _viewModel;
+  }
+
+  // The rainbow picker opens the in-app colour dialog for the clicked row.
+  private void OnPickCustomColorClick(object sender, RoutedEventArgs e) {
+    if (sender is not FrameworkElement { DataContext: GraphRowViewModel row }) return;
+
+    var dialog = new ColorPickerDialog(row.CustomColor ?? Colors.Gray) { Owner = this };
+    if (dialog.ShowDialog() == true) row.CustomColor = dialog.SelectedColor;
   }
 
   private void OnCloseClick(object sender, RoutedEventArgs e) => Close();
