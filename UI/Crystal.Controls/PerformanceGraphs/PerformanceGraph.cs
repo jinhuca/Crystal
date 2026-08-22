@@ -105,12 +105,19 @@ public class PerformanceGraph : FrameworkElement {
 
   private readonly BackgroundRenderer _backgroundRender = new();
   private readonly GridRenderer _gridRender;
-  private readonly FilledLineRenderer _filledLineRender = new();
-  private readonly BarRenderer _barRender = new();
-  private readonly SegmentedBarRenderer _segmentedBarRender = new();
   private readonly BorderRenderer _borderRender = new();
-  private readonly MarkerRenderer _markerRender = new();
   private readonly GraphStyle _graphStyle = new();
+
+  // Only one data renderer is exercised per frame (the one matching Kind), and the marker renderer
+  // only when a graph opts into markers — yet a graph would otherwise allocate all of them up front.
+  // Across the ~20 live graphs that's mostly renderers that never draw, so each is created lazily on
+  // first use and a graph holds only what its Kind (and marker setting) actually needs. Kind is an
+  // AffectsRender DP, so a runtime switch simply allocates the newly-needed renderer on the next pass.
+  private FilledLineRenderer? _filledLineRender;
+  private BarRenderer? _barRender;
+  private SegmentedBarRenderer? _segmentedBarRender;
+  private DotRenderer? _dotRender;
+  private MarkerRenderer? _markerRender;
 
   // Right-aligned sample buffer for the primary series (index 0): index 0 is oldest, [Count-1] is
   // the most recent value. The primary series' line/fill live in _graphStyle and are driven by the
@@ -493,16 +500,19 @@ public class PerformanceGraph : FrameworkElement {
     // regardless of how many grid lines happen to be drawn across it.
     switch (Kind) {
       case GraphKind.Bar:
-        _barRender.Draw(dc, bounds, _graphStyle, _values, _historyLength, MinValue, MaxValue);
+        (_barRender ??= new BarRenderer()).Draw(dc, bounds, _graphStyle, _values, _historyLength, MinValue, MaxValue);
         break;
       case GraphKind.SegmentedBar:
-        _segmentedBarRender.Draw(dc, bounds, _graphStyle, _values, _historyLength, MinValue, MaxValue, Rows, Flip);
+        (_segmentedBarRender ??= new SegmentedBarRenderer()).Draw(dc, bounds, _graphStyle, _values, _historyLength, MinValue, MaxValue, Rows, Flip);
+        break;
+      case GraphKind.Dot:
+        (_dotRender ??= new DotRenderer()).Draw(dc, bounds, _graphStyle, _values, _historyLength, MinValue, MaxValue, Rows);
         break;
       default:
         // Primary series first (so its fill sits underneath), then each overlay on top. Each series
         // draws through its own renderer so the reused-across-frames StreamGeometry of one isn't
         // re-Opened by another within this same pass (which would render both with the last geometry).
-        _filledLineRender.Draw(dc, bounds, _values, _historyLength, MinValue, MaxValue,
+        (_filledLineRender ??= new FilledLineRenderer()).Draw(dc, bounds, _values, _historyLength, MinValue, MaxValue,
             _graphStyle.LinePen, _graphStyle.FillBrush);
         foreach (var s in _extraSeries)
           s.Renderer.Draw(dc, bounds, s.Values, _historyLength, MinValue, MaxValue,
@@ -511,14 +521,18 @@ public class PerformanceGraph : FrameworkElement {
     }
 
     // Session-extreme markers over the data line but under the border, so a recovered dip/spike
-    // stays visible. No-ops unless MarkerBrush is set and the value is a real number. When
-    // MarkerFormat is set, each line is labeled with its value: the high label drops below its line,
-    // the low label lifts above its, so neither is clipped at the plot edge.
-    double dpi = VisualTreeHelper.GetDpi(this).PixelsPerDip;
-    _markerRender.Draw(dc, bounds, _graphStyle, LowMarker, MinValue, MaxValue,
-        FormatMarker(LowMarker), topBiased: false, dpi);
-    _markerRender.Draw(dc, bounds, _graphStyle, HighMarker, MinValue, MaxValue,
-        FormatMarker(HighMarker), topBiased: true, dpi);
+    // stays visible. Only graphs that opt in (via MarkerBrush) draw these, so skip the whole block —
+    // and its per-frame DPI lookup and value formatting — for the majority that never set a marker.
+    // When MarkerFormat is set, each line is labeled with its value: the high label drops below its
+    // line, the low label lifts above its, so neither is clipped at the plot edge.
+    if (_graphStyle.MarkerPen != null) {
+      double dpi = VisualTreeHelper.GetDpi(this).PixelsPerDip;
+      var marker = _markerRender ??= new MarkerRenderer();
+      marker.Draw(dc, bounds, _graphStyle, LowMarker, MinValue, MaxValue,
+          FormatMarker(LowMarker), topBiased: false, dpi);
+      marker.Draw(dc, bounds, _graphStyle, HighMarker, MinValue, MaxValue,
+          FormatMarker(HighMarker), topBiased: true, dpi);
+    }
 
     // Border drawn last so its edge stays crisp over the fill/grid instead of being covered.
     _borderRender.Draw(dc, bounds, _graphStyle);

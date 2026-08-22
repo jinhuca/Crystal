@@ -206,8 +206,9 @@
       </StackPanel>
     </Grid>
 
+    <StackPanel Grid.Row="1">
     <!-- General selectors: applied to every graph when changed; each row can still override. -->
-    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="16,12,16,8" VerticalAlignment="Center">
+    <StackPanel Orientation="Horizontal" Margin="16,12,16,8" VerticalAlignment="Center">
       <TextBlock Text="Category:" Foreground="{StaticResource LabelBrush}"
                  VerticalAlignment="Center" Margin="0,0,16,0"/>
       <RadioButton Content="No Frills" GroupName="GeneralCategory" Style="{StaticResource OptionRadioStyle}"
@@ -221,6 +222,8 @@
                    IsChecked="{Binding IsFilledLine}"/>
       <RadioButton Content="Segmented Bar" GroupName="GeneralKind" Style="{StaticResource OptionRadioStyle}"
                    IsChecked="{Binding IsSegmentedBar}"/>
+      <RadioButton Content="Dot" GroupName="GeneralKind" Style="{StaticResource OptionRadioStyle}"
+                   IsChecked="{Binding IsDot}"/>
 
       <TextBlock Text="History:" Foreground="{StaticResource LabelBrush}"
                  VerticalAlignment="Center" Margin="12,0,6,0"/>
@@ -230,6 +233,27 @@
       <Button x:Name="ResetButton" Command="{Binding ResetCommand}"
               Style="{StaticResource SettingsCaptionButtonStyle}" Margin="16,0,0,0"
               Content="&#xE72C;" ToolTip="Reset all graphs to defaults"/>
+    </StackPanel>
+
+    <!-- CPU core strip: global bar shape + colouring for the per-core load/clock/temp meters. These
+         are not PerformanceGraphs, so they sit apart from the per-graph catalog below. -->
+    <StackPanel Orientation="Horizontal" Margin="16,0,16,10" VerticalAlignment="Center">
+      <TextBlock Text="CPU Cores:" Foreground="{StaticResource ValueBrush}" FontWeight="SemiBold"
+                 VerticalAlignment="Center" Margin="0,0,16,0"/>
+      <TextBlock Text="Bar style:" Foreground="{StaticResource LabelBrush}"
+                 VerticalAlignment="Center" Margin="0,0,10,0"/>
+      <RadioButton Content="Bar" GroupName="CoreBarStyle" Style="{StaticResource OptionRadioStyle}"
+                   IsChecked="{Binding IsCoreBar}"/>
+      <RadioButton Content="Segmented Bar" GroupName="CoreBarStyle" Style="{StaticResource OptionRadioStyle}"
+                   IsChecked="{Binding IsCoreSegmentedBar}"/>
+
+      <TextBlock Text="Colour:" Foreground="{StaticResource LabelBrush}"
+                 VerticalAlignment="Center" Margin="12,0,10,0"/>
+      <RadioButton Content="Colourful" GroupName="CoreBarColor" Style="{StaticResource OptionRadioStyle}"
+                   IsChecked="{Binding IsCoreColorful}"/>
+      <RadioButton Content="Grey" GroupName="CoreBarColor" Style="{StaticResource OptionRadioStyle}"
+                   IsChecked="{Binding IsCoreGrey}"/>
+    </StackPanel>
     </StackPanel>
 
     <!-- Per-graph rows, grouped by component. -->
@@ -274,6 +298,8 @@
                                      IsChecked="{Binding IsFilledLine}"/>
                         <RadioButton Content="Segmented Bar" Style="{StaticResource OptionRadioStyle}"
                                      IsChecked="{Binding IsSegmentedBar}"/>
+                        <RadioButton Content="Dot" Style="{StaticResource OptionRadioStyle}"
+                                     IsChecked="{Binding IsDot}"/>
                       </StackPanel>
                       <!-- History length (x-axis span, sample count). -->
                       <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center"

@@ -1,3 +1,4 @@
+using Crystal.Controls.Meters;
 using Crystal.Controls.PerformanceGraphs;
 using Crystal.Controls.PerformanceGraphs.Kinds;
 using System.Windows;
@@ -20,14 +21,29 @@ public sealed class GraphAppearanceService {
 
     // Newly-tagged graphs apply as they appear; a Save re-applies to every live graph.
     GraphIdentity.GraphRegistered += Apply;
-    _store.Changed += ApplyToAll;
+    _store.Changed += OnChanged;
 
     // Anything already tagged before we subscribed (defensive; normally none yet).
+    ApplyCoreBars();
+    ApplyToAll();
+  }
+
+  private void OnChanged() {
+    ApplyCoreBars();
     ApplyToAll();
   }
 
   private void ApplyToAll() {
     foreach (var graph in GraphIdentity.LiveGraphs()) Apply(graph);
+  }
+
+  // The CPU core strip binds to CoreBarAppearance across the module boundary; push the global
+  // selection there so it takes effect immediately and is reproduced on the next launch. Both this
+  // ctor call and store saves originate on the UI thread, so the bound bars update in place.
+  private void ApplyCoreBars() {
+    var settings = _store.Current;
+    CoreBarAppearance.Current.Segmented = settings.CoreBarStyle == CoreBarStyle.SegmentedBar;
+    CoreBarAppearance.Current.Monochrome = settings.CoreBarColor == CoreBarColor.Grey;
   }
 
   private void Apply(PerformanceGraph graph) {
@@ -78,7 +94,8 @@ public sealed class GraphAppearanceService {
       graph.LineThickness = 1.0;
       graph.FillBrush = custom is Color cf ? CustomFill(cf) : (AccentFill(setting.Accent) ?? flat);
     } else {
-      graph.Kind = GraphKind.SegmentedBar;
+      // Both discrete kinds draw many separate shapes, so a flat accent fill (no glow gradient).
+      graph.Kind = setting.Kind == GraphKindChoice.Dot ? GraphKind.Dot : GraphKind.SegmentedBar;
       graph.LineBrush = flat;
       graph.FillBrush = flat;
     }

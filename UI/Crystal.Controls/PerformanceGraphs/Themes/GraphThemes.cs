@@ -60,6 +60,8 @@ public static class GraphThemes {
       BorderBrush = DefaultBorder,
       LineBrush = Freeze(new SolidColorBrush(accent)),
       LineThickness = 1.5,
+      // Only the continuous Line kind gets the vertical glow gradient; the discrete kinds
+      // (Bar/SegmentedBar/Dot) draw many separate shapes, so a gradient would restart in each.
       FillBrush = kind == GraphKind.Line ? CreateVerticalGlow(accent) : Freeze(new SolidColorBrush(accent))
     };
   }

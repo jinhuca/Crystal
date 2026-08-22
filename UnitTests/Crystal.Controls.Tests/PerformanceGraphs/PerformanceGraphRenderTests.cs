@@ -97,6 +97,26 @@ public class PerformanceGraphRenderTests {
         $"over-range value should not climb above a full-scale reading, got max@{atMax} over@{overMax}");
   });
 
+  [Fact]
+  public void VisibleGrid_RendersAndSurvivesAResize() => StaRunner.Run(() => {
+    var grid = Color.FromRgb(0x20, 0x40, 0xFF); // distinct from Plot/Overlay and the black layers
+    var graph = new PerformanceGraph {
+      MinValue = 0,
+      MaxValue = 100,
+      GraphBackground = Brushes.Black,
+      BorderBrush = Brushes.Black,
+      GridBrush = new SolidColorBrush(grid),
+      GridThickness = 1.5,
+    };
+    graph.ApplyVisibility(true);
+
+    // First render builds and caches the grid geometry; a second render at the SAME size reuses it.
+    Assert.True(new PixelRenderer(graph, 240, 120).CountColor(grid) > 0, "grid should paint");
+    Assert.True(new PixelRenderer(graph, 240, 120).CountColor(grid) > 0, "cached grid should still paint");
+    // A different size must invalidate the cache and rebuild the geometry rather than reuse stale lines.
+    Assert.True(new PixelRenderer(graph, 400, 80).CountColor(grid) > 0, "resized grid should repaint");
+  });
+
   private static int TopDataRow(GraphKind kind, double value) {
     var graph = NewGraph(kind);
     for (int i = 0; i < 10; i++) graph.AddValue(value);

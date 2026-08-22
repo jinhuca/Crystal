@@ -262,6 +262,13 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
 
   /// <summary>
   /// The private backing fields for the public properties, initialized to default values.
+  /// Defaults to true so a desktop shows rails from the first paint; the firmware snapshot flips it
+  /// off for laptop-class chassis, which have no ATX +3.3/+5/+12V rails or CMOS coin cell to plot.
+  /// </summary>
+  private bool _showVoltageRails = true;
+
+  /// <summary>
+  /// The private backing fields for the public properties, initialized to default values.
   /// </summary>
   private PerformanceGraph? _rail3V3Graph;
 
@@ -675,6 +682,13 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
   public bool HasBoardSensors { get => _hasBoardSensors; private set => SetProperty(ref _hasBoardSensors, value); }
 
   /// <summary>
+  /// Whether the ATX voltage rails (+3.3/+5/+12V) and CMOS battery trend should be shown. False on
+  /// laptop-class chassis, where those rails and a serviceable coin cell don't exist, so the detail
+  /// and summary views hide those rows rather than plotting perpetually-empty graphs.
+  /// </summary>
+  public bool ShowVoltageRails { get => _showVoltageRails; private set => SetProperty(ref _showVoltageRails, value); }
+
+  /// <summary>
   /// Session log of out-of-spec episodes, ongoing first. Empty until something first leaves spec.
   /// </summary>
   public ObservableCollection<BoardHealthEventViewModel> HealthEvents { get; } = [];
@@ -868,6 +882,7 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
     BaseboardManufacturer = Text(s.Baseboard?.Manufacturer);
     BaseboardProduct = Text(s.Baseboard?.Product);
     ChassisType = FormatChassis(s.Chassis?.ChassisType);
+    ShowVoltageRails = !IsLaptopChassis(s.Chassis?.ChassisType);
 
     SecureBoot = FormatSecureBoot(s.SecureBoot);
     Tpm = FormatTpm(s.Tpm);
@@ -1279,6 +1294,24 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
   /// <returns>The formatted string.</returns>
   private static string FormatChassis(Crystal.Service.Bios.ChassisType? type) =>
     type is null or Crystal.Service.Bios.ChassisType.Unknown ? Dash : SpaceCamelCase(type.Value.ToString());
+
+  /// <summary>
+  /// True for portable, battery-powered form factors (laptops, notebooks, tablets, convertibles…),
+  /// which draw from a single battery/adapter rail and have no ATX +3.3/+5/+12V rails or a
+  /// serviceable CMOS coin cell to trend. A null/unknown chassis is treated as non-laptop so a
+  /// desktop that simply didn't report SMBIOS Type 3 still shows its rails.
+  /// </summary>
+  /// <param name="type">The chassis type.</param>
+  /// <returns>True when the chassis is a laptop-class device.</returns>
+  private static bool IsLaptopChassis(Crystal.Service.Bios.ChassisType? type) => type is
+    Crystal.Service.Bios.ChassisType.Portable or
+    Crystal.Service.Bios.ChassisType.Laptop or
+    Crystal.Service.Bios.ChassisType.Notebook or
+    Crystal.Service.Bios.ChassisType.HandHeld or
+    Crystal.Service.Bios.ChassisType.SubNotebook or
+    Crystal.Service.Bios.ChassisType.Tablet or
+    Crystal.Service.Bios.ChassisType.Convertible or
+    Crystal.Service.Bios.ChassisType.Detachable;
 
   /// <summary>
   /// Formats the hardware security status to a human-readable string. If the status is enabled, it will return "Enabled".

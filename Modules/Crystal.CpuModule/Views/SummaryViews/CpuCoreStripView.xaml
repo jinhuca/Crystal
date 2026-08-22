@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:meters="clr-namespace:Crystal.Controls.Meters;assembly=Crystal.Controls"
              mc:Ignorable="d"
              d:DesignHeight="200" d:DesignWidth="220">
   <!-- DataContext is the CPU SensorsViewModel, inherited from the host tile.
@@ -14,6 +15,35 @@
     <SolidColorBrush x:Key="CoreClockBrush" Color="#6EB4F0"/>
     <SolidColorBrush x:Key="CoreLoadBrush" Color="#6FCF6F"/>
     <SolidColorBrush x:Key="CoreTempBrush" Color="#D2691E"/>
+    <!-- Uniform muted grey applied to every bar in the "grey" style. -->
+    <SolidColorBrush x:Key="CoreGreyBrush" Color="#8A94A0"/>
+
+    <!-- Core meter bars share the global bar-shape / colour selection published by the shell's
+         graph-settings feature via CoreBarAppearance. The monochrome trigger overrides the
+         per-metric Fill, so a grey selection wins over the colourful default. -->
+    <Style x:Key="CoreMeterBase" TargetType="meters:SegmentedBar">
+      <Setter Property="Height" Value="6"/>
+      <Setter Property="Margin" Value="0,0,8,0"/>
+      <Setter Property="VerticalAlignment" Value="Center"/>
+      <Setter Property="TrackBrush" Value="#1A1A1A"/>
+      <Setter Property="Stroke" Value="{StaticResource BorderBrush}"/>
+      <Setter Property="Segmented"
+              Value="{Binding Segmented, Source={x:Static meters:CoreBarAppearance.Current}}"/>
+      <Style.Triggers>
+        <DataTrigger Binding="{Binding Monochrome, Source={x:Static meters:CoreBarAppearance.Current}}" Value="True">
+          <Setter Property="Fill" Value="{StaticResource CoreGreyBrush}"/>
+        </DataTrigger>
+      </Style.Triggers>
+    </Style>
+    <Style x:Key="CoreLoadMeter" TargetType="meters:SegmentedBar" BasedOn="{StaticResource CoreMeterBase}">
+      <Setter Property="Fill" Value="{StaticResource CoreLoadBrush}"/>
+    </Style>
+    <Style x:Key="CoreClockMeter" TargetType="meters:SegmentedBar" BasedOn="{StaticResource CoreMeterBase}">
+      <Setter Property="Fill" Value="{StaticResource CoreClockBrush}"/>
+    </Style>
+    <Style x:Key="CoreTempMeter" TargetType="meters:SegmentedBar" BasedOn="{StaticResource CoreMeterBase}">
+      <Setter Property="Fill" Value="{StaticResource CoreTempBrush}"/>
+    </Style>
   </UserControl.Resources>
 
   <DockPanel LastChildFill="False">
@@ -55,23 +85,20 @@
                        FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Top"/>
 
             <!-- Each metric occupies one row so its bar and value stay aligned. -->
-            <ProgressBar Grid.Row="0" Grid.Column="1" Minimum="0" Maximum="100" Value="{Binding Load}" Height="6" Margin="0,0,8,0"
-                         VerticalAlignment="Center" Background="#1A1A1A" BorderBrush="{StaticResource BorderBrush}"
-                         Foreground="{StaticResource CoreLoadBrush}"/>
+            <meters:SegmentedBar Grid.Row="0" Grid.Column="1" Style="{StaticResource CoreLoadMeter}"
+                                 Minimum="0" Maximum="100" Value="{Binding Load}"/>
             <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Load, StringFormat={}{0:0}%}"
                        Foreground="{StaticResource CoreLoadBrush}" VerticalAlignment="Center"
                        FontSize="{StaticResource MicroFontSize}" FontFamily="{StaticResource MonoFontFamily}" TextAlignment="Right"/>
 
-            <ProgressBar Grid.Row="1" Grid.Column="1" Minimum="0" Maximum="6" Value="{Binding SpeedGhz}" Height="6" Margin="0,0,8,0"
-                         VerticalAlignment="Center" Background="#1A1A1A" BorderBrush="{StaticResource BorderBrush}"
-                         Foreground="{StaticResource CoreClockBrush}"/>
+            <meters:SegmentedBar Grid.Row="1" Grid.Column="1" Style="{StaticResource CoreClockMeter}"
+                                 Minimum="0" Maximum="6" Value="{Binding SpeedGhz}"/>
             <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding SpeedGhz, StringFormat={}{0:0.00} GHz}"
                        Foreground="{StaticResource CoreClockBrush}" VerticalAlignment="Center"
                        FontSize="{StaticResource MicroFontSize}" FontFamily="{StaticResource MonoFontFamily}" TextAlignment="Right"/>
 
-            <ProgressBar Grid.Row="2" Grid.Column="1" Minimum="0" Maximum="100" Value="{Binding Temperature}" Height="6" Margin="0,0,8,0"
-                         VerticalAlignment="Center" Background="#1A1A1A" BorderBrush="{StaticResource BorderBrush}"
-                         Foreground="{StaticResource CoreTempBrush}"/>
+            <meters:SegmentedBar Grid.Row="2" Grid.Column="1" Style="{StaticResource CoreTempMeter}"
+                                 Minimum="0" Maximum="100" Value="{Binding Temperature}"/>
             <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding Temperature, StringFormat={}{0:0.00}℃}"
                        Foreground="{StaticResource CoreTempBrush}" VerticalAlignment="Center"
                        FontSize="{StaticResource MicroFontSize}" FontFamily="{StaticResource MonoFontFamily}" TextAlignment="Right"/>

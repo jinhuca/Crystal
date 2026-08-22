@@ -26,6 +26,21 @@ public class GraphSettingsViewModelTests {
 
     vm.IsSegmentedBar = true;
     Assert.All(vm.Graphs, r => Assert.True(r.IsSegmentedBar));
+
+    vm.IsDot = true;
+    Assert.All(vm.Graphs, r => Assert.True(r.IsDot));
+  }
+
+  [Fact]
+  public void Selecting_dot_deselects_the_other_kinds() {
+    var row = NewViewModel().Graphs[0];
+
+    row.IsDot = true;
+
+    Assert.Equal(GraphKindChoice.Dot, row.Kind);
+    Assert.True(row.IsDot);
+    Assert.False(row.IsFilledLine);
+    Assert.False(row.IsSegmentedBar);
   }
 
   [Fact]
@@ -144,11 +159,79 @@ public class GraphSettingsViewModelTests {
   }
 
   [Fact]
+  public void Dot_kind_persists_and_round_trips() {
+    var vm = NewViewModel();
+    var row = vm.Graphs[0];
+    row.IsDot = true;
+
+    var saved = vm.ToSettings().Graphs[row.Id];
+    Assert.Equal(GraphKindChoice.Dot, saved.Kind);
+
+    var reloaded = new GraphSettingsViewModel(vm.ToSettings()).Graphs.Single(r => r.Id == row.Id);
+    Assert.True(reloaded.IsDot);
+  }
+
+  [Fact]
   public void Rows_with_no_custom_color_persist_null() {
     var vm = NewViewModel();
 
     var saved = vm.ToSettings().Graphs[vm.Graphs[0].Id];
 
     Assert.Null(saved.CustomColor);
+  }
+
+  [Fact]
+  public void Core_bar_selectors_seed_from_settings() {
+    var vm = new GraphSettingsViewModel(new GraphSettings {
+      CoreBarStyle = CoreBarStyle.Bar,
+      CoreBarColor = CoreBarColor.Grey,
+    });
+
+    Assert.True(vm.IsCoreBar);
+    Assert.False(vm.IsCoreSegmentedBar);
+    Assert.True(vm.IsCoreGrey);
+    Assert.False(vm.IsCoreColorful);
+  }
+
+  [Fact]
+  public void Core_bar_style_selection_is_mutually_exclusive() {
+    var vm = NewViewModel();
+
+    vm.IsCoreBar = true;
+    Assert.Equal(CoreBarStyle.Bar, vm.CoreBarStyle);
+    Assert.False(vm.IsCoreSegmentedBar);
+
+    vm.IsCoreSegmentedBar = true;
+    Assert.Equal(CoreBarStyle.SegmentedBar, vm.CoreBarStyle);
+    Assert.False(vm.IsCoreBar);
+  }
+
+  [Fact]
+  public void Core_bar_settings_persist_and_round_trip() {
+    var vm = NewViewModel();
+    vm.IsCoreBar = true;
+    vm.IsCoreGrey = true;
+
+    var settings = vm.ToSettings();
+    Assert.Equal(CoreBarStyle.Bar, settings.CoreBarStyle);
+    Assert.Equal(CoreBarColor.Grey, settings.CoreBarColor);
+
+    var reloaded = new GraphSettingsViewModel(settings);
+    Assert.True(reloaded.IsCoreBar);
+    Assert.True(reloaded.IsCoreGrey);
+  }
+
+  [Fact]
+  public void Reset_restores_core_bar_defaults() {
+    var vm = NewViewModel();
+    vm.IsCoreBar = true;
+    vm.IsCoreGrey = true;
+
+    vm.ResetCommand.Execute(null);
+
+    Assert.Equal(GraphDefaults.CoreBarStyle, vm.CoreBarStyle);
+    Assert.Equal(GraphDefaults.CoreBarColor, vm.CoreBarColor);
+    Assert.True(vm.IsCoreSegmentedBar);
+    Assert.True(vm.IsCoreColorful);
   }
 }

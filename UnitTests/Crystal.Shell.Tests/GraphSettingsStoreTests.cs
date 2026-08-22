@@ -46,6 +46,37 @@ public class GraphSettingsStoreTests : IDisposable {
   }
 
   [Fact]
+  public void Dot_kind_round_trips() {
+    var store = new GraphSettingsStore(_dir);
+    var settings = new GraphSettings();
+    settings.Graphs["Gpu.Clock"] = new GraphSetting { Kind = GraphKindChoice.Dot };
+
+    store.Save(settings);
+
+    var reloaded = new GraphSettingsStore(_dir).Current;
+    Assert.Equal(GraphKindChoice.Dot, reloaded.Graphs["Gpu.Clock"].Kind);
+  }
+
+  [Fact]
+  public void Core_bar_options_round_trip() {
+    var store = new GraphSettingsStore(_dir);
+
+    store.Save(new GraphSettings { CoreBarStyle = CoreBarStyle.Bar, CoreBarColor = CoreBarColor.Grey });
+
+    var reloaded = new GraphSettingsStore(_dir).Current;
+    Assert.Equal(CoreBarStyle.Bar, reloaded.CoreBarStyle);
+    Assert.Equal(CoreBarColor.Grey, reloaded.CoreBarColor);
+  }
+
+  [Fact]
+  public void Core_bar_options_default_when_absent_from_file() {
+    var store = new GraphSettingsStore(_dir);
+
+    Assert.Equal(GraphDefaults.CoreBarStyle, store.Current.CoreBarStyle);
+    Assert.Equal(GraphDefaults.CoreBarColor, store.Current.CoreBarColor);
+  }
+
+  [Fact]
   public void Save_raises_changed() {
     var store = new GraphSettingsStore(_dir);
     var raised = false;

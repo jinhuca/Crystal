@@ -15,11 +15,13 @@ public enum GraphCategory {
 /// <summary>
 /// The graph shapes the user can pick per graph. These map onto the control's Kind:
 /// <see cref="SegmentedBar"/> → <c>SegmentedBar</c>, <see cref="FilledLine"/> → <c>Line</c> (with a
-/// gradient fill). Bar (non-segmented) is intentionally not offered.
+/// gradient fill), <see cref="Dot"/> → <c>Dot</c> (a dot-matrix). Bar (non-segmented) is
+/// intentionally not offered.
 /// </summary>
 public enum GraphKindChoice {
   SegmentedBar,
   FilledLine,
+  Dot,
 }
 
 /// <summary>
@@ -56,6 +58,24 @@ public sealed class GraphSetting {
 }
 
 /// <summary>
+/// The bar shape for the CPU per-core meter strip: a solid <see cref="Bar"/> or a discrete
+/// <see cref="SegmentedBar"/> (LED-meter), applied globally to all three core bars.
+/// </summary>
+public enum CoreBarStyle {
+  Bar,
+  SegmentedBar,
+}
+
+/// <summary>
+/// The colouring for the CPU per-core meter strip: <see cref="Colorful"/> keeps the distinct
+/// per-metric colours (clock/load/temp); <see cref="Grey"/> paints every bar a uniform muted grey.
+/// </summary>
+public enum CoreBarColor {
+  Colorful,
+  Grey,
+}
+
+/// <summary>
 /// The factory-reset appearance applied to every graph by the settings popup's reset action:
 /// a grey, No-Frills segmented bar with a 20-sample history.
 /// </summary>
@@ -64,6 +84,8 @@ public static class GraphDefaults {
   public const GraphKindChoice Kind = GraphKindChoice.SegmentedBar;
   public const GraphAccent Accent = GraphAccent.Grey;
   public const int HistoryLength = 20;
+  public const CoreBarStyle CoreBarStyle = Settings.CoreBarStyle.SegmentedBar;
+  public const CoreBarColor CoreBarColor = Settings.CoreBarColor.Colorful;
 }
 
 /// <summary>
@@ -74,4 +96,9 @@ public static class GraphDefaults {
 public sealed class GraphSettings {
   public GraphCategory Category { get; set; } = GraphCategory.NoFrills;
   public Dictionary<string, GraphSetting> Graphs { get; set; } = new();
+
+  // Global CPU core-strip look. A file that predates these fields keeps the defaults because absent
+  // JSON properties leave the initializer values untouched.
+  public CoreBarStyle CoreBarStyle { get; set; } = GraphDefaults.CoreBarStyle;
+  public CoreBarColor CoreBarColor { get; set; } = GraphDefaults.CoreBarColor;
 }

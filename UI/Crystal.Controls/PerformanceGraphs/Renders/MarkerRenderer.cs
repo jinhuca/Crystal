@@ -14,6 +14,16 @@ internal sealed class MarkerRenderer {
   private const double LabelPadding = 2;
   private static readonly Typeface LabelTypeface = new("Consolas");
 
+  // A marker's label only changes when its extreme does (rare), but OnRender re-runs every sample,
+  // and FormattedText is comparatively expensive to build. Cache the last one so a steady extreme
+  // reuses it frame after frame instead of re-shaping the glyphs each time. Keyed on everything the
+  // text depends on; the low and high markers each own an instance, so their labels don't thrash a
+  // shared single-entry cache.
+  private string? _cachedLabel;
+  private Brush? _cachedBrush;
+  private double _cachedDpi = double.NaN;
+  private FormattedText? _cachedText;
+
   // topBiased: true for the high marker (label sits below the line, growing down into the plot),
   // false for the low marker (label sits above the line, growing up) — so neither label is clipped
   // at the plot edge and the two never overlap when the markers are far apart.
@@ -32,8 +42,7 @@ internal sealed class MarkerRenderer {
     dc.DrawLine(style.MarkerPen, new Point(bounds.Left, y), new Point(bounds.Right, y));
 
     if (string.IsNullOrEmpty(label)) return;
-    var text = new FormattedText(label, CultureInfo.InvariantCulture, FlowDirection.LeftToRight,
-        LabelTypeface, LabelFontSize, style.MarkerPen.Brush, pixelsPerDip);
+    FormattedText text = GetOrBuildText(label, style.MarkerPen.Brush, pixelsPerDip);
     // Right-align against the plot edge; drop below the line for the high marker, lift above it for
     // the low one, then clamp so a marker near an edge keeps its whole label inside the plot.
     double x = bounds.Right - text.Width - LabelPadding;
@@ -41,5 +50,20 @@ internal sealed class MarkerRenderer {
     if (textY < bounds.Top) textY = bounds.Top;
     if (textY + text.Height > bounds.Bottom) textY = bounds.Bottom - text.Height;
     dc.DrawText(text, new Point(x, textY));
+  }
+
+  private FormattedText GetOrBuildText(string label, Brush brush, double pixelsPerDip) {
+    if (_cachedText != null && _cachedLabel == label &&
+        ReferenceEquals(_cachedBrush, brush) && _cachedDpi == pixelsPerDip) {
+      return _cachedText;
+    }
+
+    var text = new FormattedText(label, CultureInfo.InvariantCulture, FlowDirection.LeftToRight,
+        LabelTypeface, LabelFontSize, brush, pixelsPerDip);
+    _cachedLabel = label;
+    _cachedBrush = brush;
+    _cachedDpi = pixelsPerDip;
+    _cachedText = text;
+    return text;
   }
 }

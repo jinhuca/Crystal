@@ -223,6 +223,9 @@ public interface IBiosViewModel {
   ReadingSeverity BoardTemperatureSeverity { get; }
   ObservableCollection<BoardSensorRowViewModel> BoardSensors { get; }
   bool HasBoardSensors { get; }
+  // False on laptop-class chassis, which have no ATX +3.3/+5/+12V rails or CMOS coin cell to plot;
+  // the views hide those rail/CMOS rows accordingly.
+  bool ShowVoltageRails { get; }
 
   // Session log of out-of-spec episodes (ongoing first), so a transient fault leaves a durable trail.
   ObservableCollection<BoardHealthEventViewModel> HealthEvents { get; }

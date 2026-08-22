@@ -133,6 +133,7 @@ public sealed class GraphRowViewModel : BindableBase {
       if (!SetProperty(ref _kind, value)) return;
       RaisePropertyChanged(nameof(IsSegmentedBar));
       RaisePropertyChanged(nameof(IsFilledLine));
+      RaisePropertyChanged(nameof(IsDot));
     }
   }
 
@@ -185,6 +186,14 @@ public sealed class GraphRowViewModel : BindableBase {
   public bool IsFilledLine {
     get => Kind == GraphKindChoice.FilledLine;
     set { if (value) Kind = GraphKindChoice.FilledLine; }
+  }
+
+  /// <summary>
+  /// True if the graph kind is Dot; false if not. Setting to true changes the kind to Dot.
+  /// </summary>
+  public bool IsDot {
+    get => Kind == GraphKindChoice.Dot;
+    set { if (value) Kind = GraphKindChoice.Dot; }
   }
 
   /// <summary>
@@ -247,6 +256,8 @@ public sealed class GraphSettingsViewModel : BindableBase {
   private GraphCategory _category;
   private GraphKindChoice _kind;
   private int _historyLength;
+  private CoreBarStyle _coreBarStyle;
+  private CoreBarColor _coreBarColor;
 
   public GraphSettingsViewModel(GraphSettings settings) {
     var rows = new List<GraphRowViewModel>();
@@ -264,6 +275,8 @@ public sealed class GraphSettingsViewModel : BindableBase {
     _kind = rows.Count > 0 && rows.All(r => r.Kind == rows[0].Kind) ? rows[0].Kind : GraphDefaults.Kind;
     _historyLength = rows.Count > 0 && rows.All(r => r.HistoryLength == rows[0].HistoryLength)
         ? rows[0].HistoryLength : GraphDefaults.HistoryLength;
+    _coreBarStyle = settings.CoreBarStyle;
+    _coreBarColor = settings.CoreBarColor;
 
     // Group by component while preserving first-seen order, so the popup shows one header block per
     // component in catalog order.
@@ -310,6 +323,7 @@ public sealed class GraphSettingsViewModel : BindableBase {
       if (!SetProperty(ref _kind, value)) return;
       RaisePropertyChanged(nameof(IsSegmentedBar));
       RaisePropertyChanged(nameof(IsFilledLine));
+      RaisePropertyChanged(nameof(IsDot));
       foreach (var row in Graphs) row.Kind = value;
     }
   }
@@ -324,6 +338,11 @@ public sealed class GraphSettingsViewModel : BindableBase {
     set { if (value) Kind = GraphKindChoice.FilledLine; }
   }
 
+  public bool IsDot {
+    get => Kind == GraphKindChoice.Dot;
+    set { if (value) Kind = GraphKindChoice.Dot; }
+  }
+
   /// <summary>
   /// General history length. A valid value (1–240) is applied to every graph row; out-of-range input
   /// is kept in the box but not propagated, so a stray keystroke never rewrites every graph.
@@ -334,6 +353,46 @@ public sealed class GraphSettingsViewModel : BindableBase {
       if (!SetProperty(ref _historyLength, value)) return;
       if (value is >= 1 and <= 240) foreach (var row in Graphs) row.HistoryLength = value;
     }
+  }
+
+  /// <summary>Global bar shape for the CPU core strip (solid bar vs segmented LED-meter).</summary>
+  public CoreBarStyle CoreBarStyle {
+    get => _coreBarStyle;
+    set {
+      if (!SetProperty(ref _coreBarStyle, value)) return;
+      RaisePropertyChanged(nameof(IsCoreBar));
+      RaisePropertyChanged(nameof(IsCoreSegmentedBar));
+    }
+  }
+
+  public bool IsCoreBar {
+    get => CoreBarStyle == CoreBarStyle.Bar;
+    set { if (value) CoreBarStyle = CoreBarStyle.Bar; }
+  }
+
+  public bool IsCoreSegmentedBar {
+    get => CoreBarStyle == CoreBarStyle.SegmentedBar;
+    set { if (value) CoreBarStyle = CoreBarStyle.SegmentedBar; }
+  }
+
+  /// <summary>Global colouring for the CPU core strip (per-metric colours vs uniform grey).</summary>
+  public CoreBarColor CoreBarColor {
+    get => _coreBarColor;
+    set {
+      if (!SetProperty(ref _coreBarColor, value)) return;
+      RaisePropertyChanged(nameof(IsCoreColorful));
+      RaisePropertyChanged(nameof(IsCoreGrey));
+    }
+  }
+
+  public bool IsCoreColorful {
+    get => CoreBarColor == CoreBarColor.Colorful;
+    set { if (value) CoreBarColor = CoreBarColor.Colorful; }
+  }
+
+  public bool IsCoreGrey {
+    get => CoreBarColor == CoreBarColor.Grey;
+    set { if (value) CoreBarColor = CoreBarColor.Grey; }
   }
 
   public IReadOnlyList<GraphRowViewModel> Graphs { get; }
@@ -347,6 +406,8 @@ public sealed class GraphSettingsViewModel : BindableBase {
     Category = GraphDefaults.Category;
     Kind = GraphDefaults.Kind;
     HistoryLength = GraphDefaults.HistoryLength;
+    CoreBarStyle = GraphDefaults.CoreBarStyle;
+    CoreBarColor = GraphDefaults.CoreBarColor;
     // … then force every row, including any it did not touch because a general value was unchanged.
     foreach (var row in Graphs) {
       row.Category = GraphDefaults.Category;
@@ -358,7 +419,11 @@ public sealed class GraphSettingsViewModel : BindableBase {
   }
 
   public GraphSettings ToSettings() {
-    var settings = new GraphSettings { Category = Category };
+    var settings = new GraphSettings {
+      Category = Category,
+      CoreBarStyle = CoreBarStyle,
+      CoreBarColor = CoreBarColor,
+    };
     foreach (var row in Graphs) settings.Graphs[row.Id] = row.ToSetting();
     return settings;
   }

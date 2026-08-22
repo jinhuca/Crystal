@@ -9,5 +9,8 @@ public enum GraphKind {
   Bar,
 
   /// <summary>Discrete bars made of stacked LED-style segments, one per sample.</summary>
-  SegmentedBar
+  SegmentedBar,
+
+  /// <summary>A matrix of small dots, each sample a column of dots rising to its value.</summary>
+  Dot
 }

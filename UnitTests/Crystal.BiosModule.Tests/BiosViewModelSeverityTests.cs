@@ -753,6 +753,64 @@ public class BiosViewModelSeverityTests {
           SecureBoot: SecureBootInfo.Unknown, Tpm: TpmInfo.Absent, Boot: null,
           FirmwareInventory: inventory);
 
+  private static FirmwareSnapshot FirmwareWithChassis(ChassisType? chassis) =>
+      new(Manufacturer: null, Version: null, ReleaseDate: null, SerialNumber: null,
+          SmbiosSpecVersion: null, PrimaryBios: null, Status: null, RomSizeBytes: null,
+          IsUefi: null, BiosRevision: null, EmbeddedControllerRevision: null, Capabilities: null,
+          System: null, Baseboard: null,
+          Chassis: chassis is { } c ? new FirmwareChassisInfo(null, c, null, null) : null,
+          HardwareSecurity: null, SecureBoot: SecureBootInfo.Unknown, Tpm: TpmInfo.Absent,
+          Boot: null, FirmwareInventory: []);
+
+  [Fact]
+  public void Voltage_rails_are_shown_by_default_before_any_firmware_arrives() {
+    var vm = CreateVm(out _);
+
+    Assert.True(vm.ShowVoltageRails);
+  }
+
+  [Theory]
+  [InlineData(ChassisType.Laptop)]
+  [InlineData(ChassisType.Notebook)]
+  [InlineData(ChassisType.Portable)]
+  [InlineData(ChassisType.HandHeld)]
+  [InlineData(ChassisType.SubNotebook)]
+  [InlineData(ChassisType.Tablet)]
+  [InlineData(ChassisType.Convertible)]
+  [InlineData(ChassisType.Detachable)]
+  public void Laptop_class_chassis_hides_the_voltage_rails(ChassisType chassis) {
+    var vm = CreateVm(out var model);
+
+    model.FirmwareSubject.OnNext(FirmwareWithChassis(chassis));
+
+    Assert.False(vm.ShowVoltageRails);
+  }
+
+  [Theory]
+  [InlineData(ChassisType.Desktop)]
+  [InlineData(ChassisType.Tower)]
+  [InlineData(ChassisType.MiniTower)]
+  [InlineData(ChassisType.AllInOne)]
+  [InlineData(ChassisType.MainServerChassis)]
+  public void Desktop_class_chassis_keeps_the_voltage_rails(ChassisType chassis) {
+    var vm = CreateVm(out var model);
+
+    model.FirmwareSubject.OnNext(FirmwareWithChassis(chassis));
+
+    Assert.True(vm.ShowVoltageRails);
+  }
+
+  [Fact]
+  public void Unknown_or_missing_chassis_keeps_the_voltage_rails() {
+    var vm = CreateVm(out var model);
+
+    model.FirmwareSubject.OnNext(FirmwareWithChassis(null));
+    Assert.True(vm.ShowVoltageRails);
+
+    model.FirmwareSubject.OnNext(FirmwareWithChassis(ChassisType.Unknown));
+    Assert.True(vm.ShowVoltageRails);
+  }
+
   private static FirmwareComponent Component(string name, ulong imageSizeBytes) =>
       new(ComponentName: name, Version: "1.0", ReleaseDate: null, Manufacturer: null,
           LowestSupportedVersion: null, ImageSizeBytes: imageSizeBytes,

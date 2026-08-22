@@ -66,7 +66,8 @@
                                  graphs:GraphIdentity.Id="Bios.BoardTemp"
                                  Loaded="OnBoardTempSparkLoaded" MinValue="20" MaxValue="90"/>
       </StackPanel>
-      <StackPanel Grid.Row="0" Grid.Column="2" Style="{StaticResource FieldCell}">
+      <StackPanel Grid.Row="0" Grid.Column="2" Style="{StaticResource FieldCell}"
+                  Visibility="{Binding ShowVoltageRails, Converter={StaticResource BoolToVisibility}}">
         <TextBlock Text="CMOS battery" Style="{StaticResource FieldLabel}"/>
         <TextBlock Text="{Binding CmosVoltage}" Style="{StaticResource FieldValue}"
                    Foreground="{Binding CmosSeverity, Converter={StaticResource SeverityToBrush}}"/>
@@ -78,7 +79,8 @@
       <!-- Row 1: voltage rails, each with a dim min–max stability sub-line and a compact
            sparkline. The graph's Y-axis is nominal ±10%, so the plot edges are the critical
            band — a rail hugging the centerline reads as rock-steady at a glance. -->
-      <StackPanel Grid.Row="1" Grid.Column="0">
+      <StackPanel Grid.Row="1" Grid.Column="0"
+                  Visibility="{Binding ShowVoltageRails, Converter={StaticResource BoolToVisibility}}">
         <TextBlock Text="+3.3V" Style="{StaticResource FieldLabel}"/>
         <TextBlock Text="{Binding Rail3V3}" Style="{StaticResource FieldValue}"
                    Foreground="{Binding Rail3V3Severity, Converter={StaticResource SeverityToBrush}}"/>
@@ -87,7 +89,8 @@
                                  graphs:GraphIdentity.Id="Bios.Rail3V3"
                                  Loaded="OnGraphLoaded" MinValue="2.97" MaxValue="3.63"/>
       </StackPanel>
-      <StackPanel Grid.Row="1" Grid.Column="1">
+      <StackPanel Grid.Row="1" Grid.Column="1"
+                  Visibility="{Binding ShowVoltageRails, Converter={StaticResource BoolToVisibility}}">
         <TextBlock Text="+5V" Style="{StaticResource FieldLabel}"/>
         <TextBlock Text="{Binding Rail5V}" Style="{StaticResource FieldValue}"
                    Foreground="{Binding Rail5VSeverity, Converter={StaticResource SeverityToBrush}}"/>
@@ -96,7 +99,8 @@
                                  graphs:GraphIdentity.Id="Bios.Rail5V"
                                  Loaded="OnGraphLoaded" MinValue="4.5" MaxValue="5.5"/>
       </StackPanel>
-      <StackPanel Grid.Row="1" Grid.Column="2">
+      <StackPanel Grid.Row="1" Grid.Column="2"
+                  Visibility="{Binding ShowVoltageRails, Converter={StaticResource BoolToVisibility}}">
         <TextBlock Text="+12V" Style="{StaticResource FieldLabel}"/>
         <TextBlock Text="{Binding Rail12V}" Style="{StaticResource FieldValue}"
                    Foreground="{Binding Rail12VSeverity, Converter={StaticResource SeverityToBrush}}"/>
