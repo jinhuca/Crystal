@@ -7,7 +7,7 @@ internal sealed class GraphStyle {
     BorderPen = Helpers.CreateFrozenPen(Brushes.Black, 0.8);
     BorderThickness = 0.8;
 
-    GridPen = Helpers.CreateFrozenPen(Brushes.DarkBlue, 0.6);
+    GridPen = Helpers.CreateFrozenPen(Brushes.Transparent, 0.6);
     LinePen = Helpers.CreateFrozenPen(Brushes.Blue, 1);
 
     FillBrush = Brushes.Transparent;
