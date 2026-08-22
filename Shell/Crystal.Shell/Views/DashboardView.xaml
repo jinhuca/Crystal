@@ -1,4 +1,5 @@
 <UserControl x:Class="Crystal.Shell.Views.DashboardView"
+             x:Name="Root"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -6,6 +7,7 @@
              xmlns:prism="http://prismlibrary.com/"
 						 xmlns:ctrls="clr-namespace:Crystal.Controls.Comet;assembly=Crystal.Controls"
              xmlns:const="clr-namespace:Crystal.Infrastructure.Constants;assembly=Crystal.Infrastructure.Constants"
+             xmlns:local="clr-namespace:Crystal.Shell.Views;assembly=Crystal.Shell"
              mc:Ignorable="d"
              d:DesignHeight="860" d:DesignWidth="1600"
              Background="Black" Foreground="{StaticResource TextBrush}"
@@ -117,13 +119,13 @@
       <ColumnDefinition Width="*"/>
     </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
-      <RowDefinition x:Name="CpuRow" Height="1*"/>
+      <RowDefinition x:Name="CpuRow" Height="{Binding ElementName=Root, Path=CpuDefault}"/>
       <RowDefinition Height="Auto"/>
-      <RowDefinition x:Name="GpuRow" Height="1*"/>
+      <RowDefinition x:Name="GpuRow" Height="{Binding ElementName=Root, Path=GpuDefault}"/>
       <RowDefinition Height="Auto"/>
-      <RowDefinition x:Name="ComponentsRow" Height="1*"/>
+      <RowDefinition x:Name="ComponentsRow" Height="{Binding ElementName=Root, Path=ComponentsDefault}"/>
       <RowDefinition Height="Auto"/>
-      <RowDefinition x:Name="ProcessesRow" Height="1.2*"/>
+      <RowDefinition x:Name="ProcessesRow" Height="{Binding ElementName=Root, Path=ProcessesDefault}"/>
     </Grid.RowDefinitions>
 
     <!-- Row 1: CPU, full width -->
@@ -145,13 +147,13 @@
          grid stays full-width for the other rows). Each column has a MinWidth floor. -->
     <Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="12">
       <Grid.ColumnDefinitions>
-        <ColumnDefinition x:Name="MemoryCol" Width="*" MinWidth="120"/>
+        <ColumnDefinition x:Name="MemoryCol" Width="{Binding ElementName=Root, Path=ComponentColumnDefault}" MinWidth="80"/>
         <ColumnDefinition Width="Auto"/>
-        <ColumnDefinition x:Name="StorageCol" Width="*" MinWidth="120"/>
+        <ColumnDefinition x:Name="StorageCol" Width="{Binding ElementName=Root, Path=ComponentColumnDefault}" MinWidth="80"/>
         <ColumnDefinition Width="Auto"/>
-        <ColumnDefinition x:Name="NetworkCol" Width="*" MinWidth="120"/>
+        <ColumnDefinition x:Name="NetworkCol" Width="{Binding ElementName=Root, Path=ComponentColumnDefault}" MinWidth="80"/>
         <ColumnDefinition Width="Auto"/>
-        <ColumnDefinition x:Name="BiosCol" Width="*" MinWidth="120"/>
+        <ColumnDefinition x:Name="BiosCol" Width="{Binding ElementName=Root, Path=ComponentColumnDefault}" MinWidth="80"/>
       </Grid.ColumnDefinitions>
 
       <Border Grid.Column="0" Style="{StaticResource Tile}" Margin="3,1">
@@ -178,9 +180,9 @@
          expense. Defaults to 2:1 (Processes wider); each column has a MinWidth floor. -->
     <Grid Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="12">
       <Grid.ColumnDefinitions>
-        <ColumnDefinition x:Name="ProcessesCol" Width="3.2*" MinWidth="200"/>
+        <ColumnDefinition x:Name="ProcessesCol" Width="{Binding ElementName=Root, Path=ProcessesColumnDefault}" MinWidth="200"/>
         <ColumnDefinition Width="Auto"/>
-        <ColumnDefinition x:Name="OsCol" Width="1*" MinWidth="100"/>
+        <ColumnDefinition x:Name="OsCol" Width="{Binding ElementName=Root, Path=OsColumnDefault}" MinWidth="100"/>
       </Grid.ColumnDefinitions>
 
       <Border Grid.Column="0" Style="{StaticResource Tile}" Margin="3,1,1,5">

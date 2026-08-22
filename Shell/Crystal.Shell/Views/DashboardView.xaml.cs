@@ -12,19 +12,44 @@ namespace Crystal.Shell.Views;
 /// restores their default star proportions.
 /// </summary>
 public partial class DashboardView : UserControl {
-  // Default row heights, kept in one place so ResetLayout and the XAML stay in sync.
-  private static readonly GridLength CpuDefault = new(1, GridUnitType.Star);
-  private static readonly GridLength GpuDefault = new(1, GridUnitType.Star);
-  private static readonly GridLength ComponentsDefault = new(1.2, GridUnitType.Star);
-  private static readonly GridLength ProcessesDefault = new(1.6, GridUnitType.Star);
+  /// <summary>
+  /// Default row heights, kept in one place so ResetLayout and the XAML stay in sync.
+  /// </summary>
+  public GridLength CpuDefault {  get; } = new(1, GridUnitType.Star);
 
-  // Default width for each Row #3 tile column (Memory/Storage/Network/BIOS): equal star shares.
-  private static readonly GridLength ComponentColumnDefault = new(1, GridUnitType.Star);
+  /// <summary>
+  /// Default row heights, kept in one place so ResetLayout and the XAML stay in sync.
+  /// </summary>
+  public GridLength GpuDefault {  get; } = new(1, GridUnitType.Star);
 
-  // Default widths for the bottom row's Processes (2*) and OS (1*) tile columns.
-  private static readonly GridLength ProcessesColumnDefault = new(2, GridUnitType.Star);
-  private static readonly GridLength OsColumnDefault = new(1, GridUnitType.Star);
+  /// <summary>
+  /// Default row heights, kept in one place so ResetLayout and the XAML stay in sync.
+  /// </summary>
+  public GridLength ComponentsDefault {  get; } = new(1.2, GridUnitType.Star);
 
+  /// <summary>
+  /// Default row heights, kept in one place so ResetLayout and the XAML stay in sync.
+  /// </summary>
+  public GridLength ProcessesDefault {  get; } = new(1.6, GridUnitType.Star);
+
+  /// <summary>
+  /// Default width for each Row #3 tile column (Memory/Storage/Network/BIOS): equal star shares.
+  /// </summary>
+  public GridLength ComponentColumnDefault { get; } = new(1, GridUnitType.Star);
+
+  /// <summary>
+  /// Default widths for the bottom row's Processes (2*) and OS (1*) tile columns.
+  /// </summary>
+  public GridLength ProcessesColumnDefault { get; } = new(1, GridUnitType.Star);
+
+  /// <summary>
+  /// Default widths for the bottom row's Processes (2*) and OS (1*) tile columns.
+  /// </summary>
+  public GridLength OsColumnDefault { get; } = new(0.334, GridUnitType.Star);
+
+  /// <summary>
+  /// Initializes a new instance of the <see cref="DashboardView"/> class.
+  /// </summary>
   public DashboardView() {
     InitializeComponent();
     // Each tile is an async-warming LoadingHost that swaps its spinner for real content on a
