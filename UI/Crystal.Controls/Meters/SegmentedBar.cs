@@ -5,47 +5,105 @@ namespace Crystal.Controls.Meters;
 
 /// <summary>
 /// A single-value horizontal meter bar. Renders <see cref="Value"/> (clamped to
-/// <see cref="Minimum"/>..<see cref="Maximum"/>) either as a solid fill or, when <see cref="Segmented"/>
-/// is set, as a row of discrete LED-meter blocks — matching the look of the PerformanceGraph
-/// SegmentedBar kind but for a horizontal, one-shot reading rather than a time series. Used by the CPU
-/// core strip in place of a plain <c>ProgressBar</c> so the load/clock/temp bars can adopt the meter
-/// aesthetic and follow the shared <see cref="CoreBarAppearance"/> selection.
+/// <see cref="Minimum"/>..<see cref="Maximum"/>) either as a solid fill or, 
+/// when <see cref="Segmented"/> is set, as a row of discrete LED-meter blocks — matching 
+/// the look of the PerformanceGraph SegmentedBar kind but for a horizontal, one-shot reading 
+/// rather than a time series. Used by the CPU core strip in place of a plain <c>ProgressBar</c> 
+/// so the load/clock/temp bars can adopt the meter aesthetic and follow the shared 
+/// <see cref="CoreBarAppearance"/> selection.
 /// </summary>
 public sealed class SegmentedBar : FrameworkElement {
-  // LED-block geometry (device-independent px): each lit block plus the gap to the next.
+  /// <summary>
+  /// LED-block geometry (device-independent px): each lit block plus the gap to the next. 
+  /// </summary>
   private const double SegmentWidth = 4;
+
+  /// <summary>
+  /// Gap between LED blocks (device-independent px): each lit block plus the gap to the next.
+  /// </summary>
   private const double SegmentGap = 2;
 
+  /// <summary>
+  /// The minimum value of the meter. The <see cref="Value"/> is clamped to the range 
+  /// <see cref="Minimum"/>..<see cref="Maximum"/>.
+  /// </summary>
   public static readonly DependencyProperty MinimumProperty = DependencyProperty.Register(
-      nameof(Minimum), typeof(double), typeof(SegmentedBar),
-      new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender));
+    nameof(Minimum),
+    typeof(double),
+    typeof(SegmentedBar),
+    new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender));
 
+  /// <summary>
+  /// The maximum value of the meter. The <see cref="Value"/> is clamped to the range
+  /// </summary>
   public static readonly DependencyProperty MaximumProperty = DependencyProperty.Register(
-      nameof(Maximum), typeof(double), typeof(SegmentedBar),
-      new FrameworkPropertyMetadata(100.0, FrameworkPropertyMetadataOptions.AffectsRender));
+    nameof(Maximum),
+    typeof(double),
+    typeof(SegmentedBar),
+    new FrameworkPropertyMetadata(100.0, FrameworkPropertyMetadataOptions.AffectsRender));
 
+  /// <summary>
+  /// The current value of the meter. The <see cref="Value"/> is clamped to the range
+  /// </summary>
   public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-      nameof(Value), typeof(double), typeof(SegmentedBar),
-      new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender));
+    nameof(Value),
+    typeof(double),
+    typeof(SegmentedBar),
+    new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender));
 
+  /// <summary>
+  /// The brush used to fill the meter's value. When <see cref="Segmented"/> is true, 
+  /// this is the color of the lit LED blocks.
+  /// </summary>
   public static readonly DependencyProperty FillProperty = DependencyProperty.Register(
-      nameof(Fill), typeof(Brush), typeof(SegmentedBar),
-      new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender));
+    nameof(Fill),
+    typeof(Brush),
+    typeof(SegmentedBar),
+    new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender));
 
+  /// <summary>
+  /// The brush used to fill the meter's background track. When <see cref="Segmented"/> is true,
+  /// </summary>
   public static readonly DependencyProperty TrackBrushProperty = DependencyProperty.Register(
-      nameof(TrackBrush), typeof(Brush), typeof(SegmentedBar),
-      new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender));
+    nameof(TrackBrush),
+    typeof(Brush),
+    typeof(SegmentedBar),
+    new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender));
 
+  /// <summary>
+  /// The brush used to draw a 1px border around the meter. 
+  /// The border is inset half a pixel so it stays inside the element's bounds instead of straddling them.
+  /// </summary>
   public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(
-      nameof(Stroke), typeof(Brush), typeof(SegmentedBar),
-      new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender));
+    nameof(Stroke),
+    typeof(Brush),
+    typeof(SegmentedBar),
+    new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender));
 
+  /// <summary>
+  /// True to render the meter as a discrete LED-meter (segmented); false for a solid fill.
+  /// </summary>
   public static readonly DependencyProperty SegmentedProperty = DependencyProperty.Register(
-      nameof(Segmented), typeof(bool), typeof(SegmentedBar),
-      new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsRender));
+    nameof(Segmented),
+    typeof(bool),
+    typeof(SegmentedBar),
+    new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsRender));
 
-  public double Minimum { get => (double)GetValue(MinimumProperty); set => SetValue(MinimumProperty, value); }
-  public double Maximum { get => (double)GetValue(MaximumProperty); set => SetValue(MaximumProperty, value); }
+  /// <summary>
+  /// The minimum value of the meter. The <see cref="Value"/> is clamped to the range
+  /// </summary>
+  public double Minimum {
+    get => (double)GetValue(MinimumProperty);
+    set => SetValue(MinimumProperty, value);
+  }
+
+  /// <summary>
+  /// The maximum value of the meter. The <see cref="Value"/> is clamped to the range
+  /// </summary>
+  public double Maximum {
+    get => (double)GetValue(MaximumProperty);
+    set => SetValue(MaximumProperty, value);
+  }
   public double Value { get => (double)GetValue(ValueProperty); set => SetValue(ValueProperty, value); }
   public Brush? Fill { get => (Brush?)GetValue(FillProperty); set => SetValue(FillProperty, value); }
   public Brush? TrackBrush { get => (Brush?)GetValue(TrackBrushProperty); set => SetValue(TrackBrushProperty, value); }
@@ -73,7 +131,8 @@ public sealed class SegmentedBar : FrameworkElement {
             double drawWidth = (blockRight > filled ? filled : blockRight) - x;
             if (drawWidth > 0) dc.DrawRectangle(fill, null, new Rect(x, 0, drawWidth, h));
           }
-        } else {
+        }
+        else {
           dc.DrawRectangle(fill, null, new Rect(0, 0, filled, h));
         }
       }
