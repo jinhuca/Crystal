@@ -12,16 +12,15 @@
              FontFamily="{StaticResource UiFontFamily}">
   <!-- MetricValue/MetricUnit/MetricCaption now shared via Crystal.Resources -->
 
-
   <Border Background="Transparent" MouseLeftButtonDown="OnTileClick">
     <Grid Margin="5">
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
         <RowDefinition Height="*"/>
       </Grid.RowDefinitions>
 
-      <!-- Dense header bar: accent tick + title. Per-adapter identity rides directly above each
-           adapter's graph block below, so the label sits with the graphs it owns. -->
+      <!-- Section title: accent tick + "GPU". -->
       <Border Grid.Row="0" BorderBrush="{StaticResource DividerBrush}" BorderThickness="0,0,0,1"
               Padding="0,0,0,4" Margin="0,0,0,2">
         <StackPanel Orientation="Horizontal">
@@ -31,10 +30,10 @@
         </StackPanel>
       </Border>
 
-      <!-- One block per adapter, laid out side by side. Each block leads with an identity strip
-           (accent tick + kind + name) so the label sits directly over the graphs it owns, then two
-           graph columns (Utilization + Temperature | Clock + Power) span the adapter's full width. -->
-      <ItemsControl Grid.Row="1" ItemsSource="{Binding Adapters}">
+      <!-- Per-adapter caption row, column-aligned with the graph row below: same UniformGrid +
+           same Margin/Border/Padding per item, so the two rows' column boundaries match exactly.
+           Caption is centered within its column, directly above the graphs it labels. -->
+      <ItemsControl Grid.Row="0" ItemsSource="{Binding Adapters}" Margin="0,0,0,6" VerticalAlignment="Center">
         <ItemsControl.ItemsPanel>
           <ItemsPanelTemplate>
             <UniformGrid Rows="1"/>
@@ -42,50 +41,58 @@
         </ItemsControl.ItemsPanel>
         <ItemsControl.ItemTemplate>
           <DataTemplate>
-            <!-- Left accent bar binds the adapter's identity + graphs into one visual panel. -->
+            <Border Margin="0,0,16,0" BorderBrush="{StaticResource DividerBrush}" BorderThickness="1,0,0,0"
+                    Padding="8,0,0,0">
+              <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <TextBlock Width="33"/>
+                <TextBlock Text="{Binding KindLabel}" Foreground="{StaticResource AccentBrush}" FontSize="{StaticResource CaptionFontSize}"
+                           FontWeight="SemiBold" VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding Name}" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}"
+                           VerticalAlignment="Center" Margin="8,0,0,0" MaxWidth="120" TextTrimming="None"
+                           ToolTip="{Binding Name}"/>
+              </StackPanel>
+            </Border>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+
+      <!-- One block per adapter: two graph columns (Utilization + Temperature | Clock + Power)
+           spanning the adapter's full width. Same left-border decoration and Margin as the
+           caption row above, so the vertical divider runs continuously through both rows. -->
+      <ItemsControl Grid.Row="2" ItemsSource="{Binding Adapters}">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate>
+            <UniformGrid Rows="1"/>
+          </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
             <Border Margin="0,0,16,0" BorderBrush="{StaticResource DividerBrush}" BorderThickness="1,0,0,0"
                     Padding="8,0,0,0" VerticalAlignment="Top">
               <Grid VerticalAlignment="Top">
-                <Grid.RowDefinitions>
-                  <RowDefinition Height="Auto"/>
-                  <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*"/>
+                  <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-                <!-- Identity strip: kind (accent) + name (dim), directly above this adapter's graphs. -->
-                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,6">
-                  <TextBlock Text="{Binding KindLabel}" Foreground="{StaticResource AccentBrush}" FontSize="{StaticResource CaptionFontSize}"
-                             FontWeight="SemiBold" VerticalAlignment="Center"/>
-                  <TextBlock Text="{Binding Name}" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}"
-                             VerticalAlignment="Center" Margin="8,0,0,0" TextTrimming="CharacterEllipsis"/>
-                </StackPanel>
+                <!-- Left: Utilization (top) + Temperature (bottom) stacked graphs. -->
+                <Grid Grid.Column="0" VerticalAlignment="Top" Margin="0,0,16,0">
+                  <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                  </Grid.RowDefinitions>
+                  <sv:GpuUtilizationView Grid.Row="0" Margin="0,0,0,6"/>
+                  <sv:GpuTemperatureView Grid.Row="1"/>
+                </Grid>
 
-                <!-- Two graph columns spanning the adapter's full width. Each metric tile lives in
-                     Views/SummaryViews and inherits this adapter as its DataContext. -->
-                <Grid Grid.Row="1" VerticalAlignment="Top">
-                  <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                  </Grid.ColumnDefinitions>
-
-                  <!-- Left: Utilization (top) + Temperature (bottom) stacked graphs. -->
-                  <Grid Grid.Column="0" VerticalAlignment="Top" Margin="0,0,16,0">
-                    <Grid.RowDefinitions>
-                      <RowDefinition/>
-                      <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <sv:GpuUtilizationView Grid.Row="0" Margin="0,0,0,6"/>
-                    <sv:GpuTemperatureView Grid.Row="1"/>
-                  </Grid>
-
-                  <!-- Right: Clock (top) + Power (bottom) stacked graphs. -->
-                  <Grid Grid.Column="1" VerticalAlignment="Top">
-                    <Grid.RowDefinitions>
-                      <RowDefinition/>
-                      <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <sv:GpuClockView Grid.Row="0" Margin="0,0,0,6"/>
-                    <sv:GpuPowerView Grid.Row="1"/>
-                  </Grid>
+                <!-- Right: Clock (top) + Power (bottom) stacked graphs. -->
+                <Grid Grid.Column="1" VerticalAlignment="Top">
+                  <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                  </Grid.RowDefinitions>
+                  <sv:GpuClockView Grid.Row="0" Margin="0,0,0,6"/>
+                  <sv:GpuPowerView Grid.Row="1"/>
                 </Grid>
               </Grid>
             </Border>
