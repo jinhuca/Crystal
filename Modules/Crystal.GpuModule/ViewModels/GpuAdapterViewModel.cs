@@ -4,28 +4,6 @@ using System.Collections.ObjectModel;
 
 namespace Crystal.GpuModule.ViewModels;
 
-/// <summary>One engine row in the per-adapter utilization breakdown. The name is fixed for the
-/// life of the row; only <see cref="LoadPercent"/> ticks each poll.</summary>
-public sealed class GpuEngineLoadViewModel : BindableBase {
-  private double _loadPercent;
-
-  public GpuEngineLoadViewModel(string name) => Name = name;
-
-  public string Name { get; }
-  public double LoadPercent { get => _loadPercent; set => SetProperty(ref _loadPercent, value); }
-}
-
-/// <summary>One rail row in the per-adapter power breakdown. The name is fixed for the life of the
-/// row; only <see cref="PowerW"/> ticks each poll.</summary>
-public sealed class GpuPowerRailViewModel : BindableBase {
-  private double _powerW;
-
-  public GpuPowerRailViewModel(string name) => Name = name;
-
-  public string Name { get; }
-  public double PowerW { get => _powerW; set => SetProperty(ref _powerW, value); }
-}
-
 /// <summary>
 /// One GPU column in the view: an adapter's static identity plus its live core-load value and
 /// history graph. The graph is a ring buffer owned by <see cref="PerformanceGraph"/>, so the
@@ -97,20 +75,28 @@ public sealed class GpuAdapterViewModel : BindableBase {
   public double? PcieRxMBps { get => _pcieRxMBps; private set => SetProperty(ref _pcieRxMBps, value); }
   public double? PcieTxMBps { get => _pcieTxMBps; private set => SetProperty(ref _pcieTxMBps, value); }
 
-  /// <summary>Upper bound of the core-clock history graph, ratcheted to a round value above the
-  /// running peak so a 1.3 GHz iGPU and a 2.6 GHz dGPU each plot on a sensibly-scaled axis.</summary>
+  /// <summary>
+  /// Upper bound of the core-clock history graph, ratcheted to a round value above the
+  /// running peak so a 1.3 GHz iGPU and a 2.6 GHz dGPU each plot on a sensibly-scaled axis.
+  /// </summary>
   public double ClockScaleMax { get => _clockScaleMax; private set => SetProperty(ref _clockScaleMax, value); }
 
-  /// <summary>Upper bound of the power history graph, ratcheted like <see cref="ClockScaleMax"/>.</summary>
+  /// <summary>
+  /// Upper bound of the power history graph, ratcheted like <see cref="ClockScaleMax"/>.
+  /// </summary>
   public double PowerScaleMax { get => _powerScaleMax; private set => SetProperty(ref _powerScaleMax, value); }
 
-  /// <summary>Per-engine utilization breakdown, reconciled in place across polls so the rows stay
-  /// stable and only their values tick.</summary>
+  /// <summary>
+  /// Per-engine utilization breakdown, reconciled in place across polls so the rows stay
+  /// stable and only their values tick.
+  /// </summary>
   public ObservableCollection<GpuEngineLoadViewModel> EngineLoads { get; } = [];
 
   public bool HasEngineLoads => EngineLoads.Count > 0;
 
-  /// <summary>Per-rail power breakdown, reconciled in place across polls like <see cref="EngineLoads"/>.</summary>
+  /// <summary>
+  /// Per-rail power breakdown, reconciled in place across polls like <see cref="EngineLoads"/>.
+  /// </summary>
   public ObservableCollection<GpuPowerRailViewModel> PowerRails { get; } = [];
 
   public bool HasPowerRails => PowerRails.Count > 0;
@@ -121,7 +107,9 @@ public sealed class GpuAdapterViewModel : BindableBase {
     if (_graphs.TryGetValue(id, out var graph)) graph.AddValue(value);
   }
 
-  /// <summary>Refreshes the static identity from the inventory row.</summary>
+  /// <summary>
+  /// Refreshes the static identity from the inventory row.
+  /// </summary>
   public void UpdateSpecs(GpuAdapterInfo info) {
     Name = info.Name;
     KindLabel = info.Kind == GpuKind.Integrated ? "Integrated GPU" : "Dedicated GPU";
@@ -134,7 +122,9 @@ public sealed class GpuAdapterViewModel : BindableBase {
     RefreshRateHz = info.RefreshRateHz;
   }
 
-  /// <summary>Pushes fresh live readings into the values and history graphs.</summary>
+  /// <summary>
+  /// Pushes fresh live readings into the values and history graphs.
+  /// </summary>
   public void UpdateLoad(GpuLoadReading reading) {
     Load = reading.CoreLoadPercent;
     FeedGraph("Gpu.Utilization", reading.CoreLoadPercent);
@@ -173,8 +163,11 @@ public sealed class GpuAdapterViewModel : BindableBase {
     ReconcilePowerRails(reading.PowerRails ?? []);
   }
 
-  // The engine set is stable across polls (same D3D nodes), so match by name and update values in
-  // place rather than replacing the collection — keeps the list from flickering every second.
+  /// <summary>
+  /// The engine set is stable across polls (same D3D nodes), so match by name and update values in
+  /// place rather than replacing the collection — keeps the list from flickering every second.
+  /// </summary>
+  /// <param name="engines">The latest engine load readings.</param>
   private void ReconcileEngineLoads(IReadOnlyList<GpuEngineLoad> engines) {
     int before = EngineLoads.Count;
 
@@ -193,6 +186,11 @@ public sealed class GpuAdapterViewModel : BindableBase {
     if ((before > 0) != (EngineLoads.Count > 0)) RaisePropertyChanged(nameof(HasEngineLoads));
   }
 
+  /// <summary>
+  /// The power rail set is stable across polls (same physical rails), so match by name and update
+  /// values in place rather than replacing the collection — keeps the list from flickering every second.
+  /// </summary>
+  /// <param name="rails">The latest power rail readings.</param>
   private void ReconcilePowerRails(IReadOnlyList<GpuPowerRail> rails) {
     int before = PowerRails.Count;
 
@@ -211,8 +209,13 @@ public sealed class GpuAdapterViewModel : BindableBase {
     if ((before > 0) != (PowerRails.Count > 0)) RaisePropertyChanged(nameof(HasPowerRails));
   }
 
-  // Round the peak up to a "nice" 1/2/5·10ⁿ value (never below the floor) so the graph ceiling stays
-  // readable and doesn't jitter its axis on every sample.
+  /// <summary>
+  /// Round the peak up to a "nice" 1/2/5·10ⁿ value (never below the floor) so the graph ceiling stays
+  /// readable and doesn't jitter its axis on every sample.
+  /// </summary>
+  /// <param name="value">The value to scale.</param>
+  /// <param name="min">The minimum value.</param>
+  /// <returns>The scaled value.</returns>
   private static double NiceScale(double value, double min) {
     if (value <= min) return min;
     var magnitude = Math.Pow(10, Math.Floor(Math.Log10(value)));

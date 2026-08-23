@@ -8,6 +8,15 @@ namespace Crystal.GpuModule.Models;
 /// live load) on a fixed cadence while subscribed.
 /// </summary>
 public interface IGpuModel {
+  /// <summary>
+  /// Emits a single snapshot of the GPU adapter inventory, including static specs and the
+  /// live sensor readings.
+  /// </summary>
   IObservable<GpuSnapshot> Specs { get; }
+
+  /// <summary>
+  /// Emits a full snapshot of the GPU adapter inventory, including static specs and the live
+  /// sensor readings.
+  /// </summary>
   IObservable<GpuSnapshot> Sensors { get; }
 }

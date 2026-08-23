@@ -9,11 +9,19 @@ namespace Crystal.GpuModule.ViewModels;
 /// the reference design) and the two navigation commands the shell wires to.
 /// </summary>
 public interface IGpuViewModel {
+  /// <summary>
+  /// Exposes one <see cref="GpuAdapterViewModel"/> per detected adapter (integrated / dedicated
+  /// columns of the reference design).
+  /// </summary>
   ObservableCollection<GpuAdapterViewModel> Adapters { get; }
 
-  /// <summary>Raises <c>ShowDetailEvent</c> so the shell swaps in the GPU detail view.</summary>
+  /// <summary>
+  /// Raises <c>ShowDetailEvent</c> so the shell swaps in the GPU detail view.
+  /// </summary>
   ICommand ShowDetailCommand { get; }
 
-  /// <summary>Raises <c>ShowDashboardEvent</c> so the shell returns to the tile dashboard.</summary>
+  /// <summary>
+  /// Raises <c>ShowDashboardEvent</c> so the shell returns to the tile dashboard.
+  /// </summary>
   ICommand ShowDashboardCommand { get; }
 }
