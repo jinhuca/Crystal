@@ -2,6 +2,10 @@
 
 namespace Crystal.Provider.Mmi.HardwareFeatures.Bios;
 
+/// <summary>
+/// Provides extension methods for <see cref="IWmiHardwareProvider"/> to safely retrieve BIOS metrics from WMI (<c>Win32_BIOS</c>), 
+/// handling nulls and exceptions gracefully.
+/// </summary>
 public static class WmiBiosExtensions {
   public static async Task<BiosMetrics> ToSafeBiosMetricsAsync(this IWmiHardwareProvider provider, CancellationToken cancellationToken) {
     try {

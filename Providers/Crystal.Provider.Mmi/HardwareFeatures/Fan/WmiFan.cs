@@ -2,6 +2,9 @@ using Crystal.Provider.Mmi.Wmi;
 
 namespace Crystal.Provider.Mmi.HardwareFeatures.Fan;
 
+/// <summary>
+/// Contains the WMI class name and property names for the Win32_Fan WMI class.
+/// </summary>
 internal static class WmiFan {
   // ---------------------------------------------------------------------
   // WMI Class

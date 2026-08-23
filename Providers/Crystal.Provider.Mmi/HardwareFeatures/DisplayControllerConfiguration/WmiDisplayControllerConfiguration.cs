@@ -2,6 +2,9 @@ using Crystal.Provider.Mmi.Wmi;
 
 namespace Crystal.Provider.Mmi.HardwareFeatures.DisplayControllerConfiguration;
 
+/// <summary>
+/// Contains the WMI class name and property names for the <c>Win32_DisplayControllerConfiguration</c> WMI class.
+/// </summary>
 internal static class WmiDisplayControllerConfiguration {
   // ---------------------------------------------------------------------
   // WMI Class

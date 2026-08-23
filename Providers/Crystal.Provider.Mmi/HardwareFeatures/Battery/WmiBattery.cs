@@ -2,6 +2,9 @@
 
 namespace Crystal.Provider.Mmi.HardwareFeatures.Battery;
 
+/// <summary>
+/// Contains the WMI class name and property names for the Win32_Battery WMI class.
+/// </summary>
 internal static class WmiBattery {
   // ---------------------------------------------------------------------
   // WMI Class

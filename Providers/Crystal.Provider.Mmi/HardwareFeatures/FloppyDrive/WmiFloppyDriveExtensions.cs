@@ -1,6 +1,10 @@
 using Crystal.Provider.Mmi.MmiEngine;
 
 namespace Crystal.Provider.Mmi.HardwareFeatures.FloppyDrive;
+
+/// <summary>
+/// Provide extension methods for <see cref="IWmiHardwareProvider"/> to read floppy driven.
+/// </summary>
 public static class WmiFloppyDriveExtensions {
   private const string WmiClassName = WmiFloppyDrive.ClassName;
 

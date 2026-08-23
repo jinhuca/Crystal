@@ -2,6 +2,9 @@ using Crystal.Provider.Mmi.Wmi;
 
 namespace Crystal.Provider.Mmi.HardwareFeatures.FloppyDrive;
 
+/// <summary>
+/// Contains the WMI class name and property names for the <c>Win32_FloppyDrive</c> WMI class.
+/// </summary>
 internal static class WmiFloppyDrive {
   // ---------------------------------------------------------------------
   // WMI Class

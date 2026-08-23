@@ -1,5 +1,8 @@
 namespace Crystal.Provider.Mmi.HardwareFeatures.ComputerSystemProduct;
 
+/// <summary>
+/// Contains the WMI class name and property names for Win32_ComputerSystemProduct.
+/// </summary>
 internal static class WmiComputerSystemProduct {
   public const string ClassName = "Win32_ComputerSystemProduct";
   public const string Name = nameof(Name);

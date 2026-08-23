@@ -2,6 +2,9 @@ using Crystal.Provider.Mmi.Wmi;
 
 namespace Crystal.Provider.Mmi.HardwareFeatures.FloppyController;
 
+/// <summary>
+/// Contains the WMI class name and property names for the <c>Win32_FloppyController</c> WMI class.
+/// </summary>
 internal static class WmiFloppyController {
   // ---------------------------------------------------------------------
   // WMI Class

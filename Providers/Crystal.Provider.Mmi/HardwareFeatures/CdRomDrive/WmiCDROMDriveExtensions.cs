@@ -2,9 +2,21 @@ using Crystal.Provider.Mmi.MmiEngine;
 
 namespace Crystal.Provider.Mmi.HardwareFeatures.CdRomDrive;
 
+/// <summary>
+/// Provides extension methods for <see cref="IWmiHardwareProvider"/> to fetch and convert WMI
+/// </summary>
 public static class WmiCDROMDriveExtensions {
+  /// <summary>
+  /// The WMI class name for CD-ROM drives, used to query the WMI provider for instances of this class.
+  /// </summary>
   private const string WmiClassName = WmiCDROMDrive.ClassName;
 
+  /// <summary>
+  /// Fetches CD-ROM drive metrics from the WMI provider and converts them into a list of <see cref="CDROMDriveMetrics"/> objects.
+  /// </summary>
+  /// <param name="provider">The WMI hardware provider.</param>
+  /// <param name="cancellationToken">The cancellation token.</param>
+  /// <returns>A task that represents the asynchronous operation and returns a list of CD-ROM drive metrics.</returns>
   public static async Task<IReadOnlyList<CDROMDriveMetrics>> ToSafeCDROMDriveMetricsAsync(
     this IWmiHardwareProvider provider,
     CancellationToken cancellationToken) {

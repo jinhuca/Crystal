@@ -2,6 +2,11 @@ using Crystal.Provider.Mmi.Wmi;
 
 namespace Crystal.Provider.Mmi.HardwareFeatures.Bus;
 
+/// <summary>
+/// Contains the WMI class name and property names for the Win32_Bus WMI class, which represents a bus
+/// on a computer system. This class provides constants for the class name and its properties, allowing 
+/// for easy access to WMI information related to buses in the system.
+/// </summary>
 internal static class WmiBus {
   // ---------------------------------------------------------------------
   // WMI Class

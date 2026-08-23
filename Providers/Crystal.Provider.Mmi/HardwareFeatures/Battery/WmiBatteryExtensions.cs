@@ -2,9 +2,22 @@ using Crystal.Provider.Mmi.MmiEngine;
 
 namespace Crystal.Provider.Mmi.HardwareFeatures.Battery;
 
+/// <summary>
+/// Provides extension methods for <see cref="IWmiHardwareProvider"/> to retrieve battery metrics from WMI (<c>Win32_Battery</c>).
+/// </summary>
 public static class WmiBatteryExtensions {
+  /// <summary>
+  /// The WMI class name for battery metrics (<c>Win32_Battery</c>).
+  /// </summary>
   private const string WmiClassName = WmiBattery.ClassName;
 
+  /// <summary>
+  /// Asynchronously retrieves battery metrics from WMI using the provided <see cref="IWmiHardwareProvider"/>. 
+  /// If any error occurs during retrieval, it returns a <see cref="BatteryMetrics"/> instance with all properties set to null.
+  /// </summary>
+  /// <param name="provider">The WMI hardware provider.</param>
+  /// <param name="cancellationToken">The cancellation token.</param>
+  /// <returns>A task that represents the asynchronous operation and returns the battery metrics.</returns>
   public static async Task<BatteryMetrics> ToSafeBatteryMetricsAsync(
     this IWmiHardwareProvider provider,
     CancellationToken cancellationToken) {

@@ -81,8 +81,9 @@ public sealed class GpuViewModel : BindableBase, IGpuViewModel, IDisposable {
     foreach (var adapter in Adapters) {
       var reading = snapshot.Loads.FirstOrDefault(l =>
           string.Equals(l.AdapterName, adapter.Name, StringComparison.OrdinalIgnoreCase));
-      if (reading is not null)
+      if (reading is not null) {
         adapter.UpdateLoad(reading);
+      }
     }
   }
 

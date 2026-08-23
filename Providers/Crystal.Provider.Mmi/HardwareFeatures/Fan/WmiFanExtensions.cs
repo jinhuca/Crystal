@@ -1,8 +1,26 @@
 using Crystal.Provider.Mmi.MmiEngine;
 
 namespace Crystal.Provider.Mmi.HardwareFeatures.Fan;
+
+/// <summary>
+/// Provides extension methods for <see cref="IWmiHardwareProvider"/> to read fan metrics from WMI
+/// (<c>Win32_Fan</c>) and convert them into safe, null-tolerant <see cref="FanMetrics"/> objects.
+/// </summary>
 public static class WmiFanExtensions {
+  /// <summary>
+  /// The WMI class name for fan metrics (<c>Win32_Fan</c>), used to query the WMI provider.
+  /// </summary>
   private const string WmiClassName = WmiFan.ClassName;
+
+  /// <summary>
+  /// Asynchronously retrieves fan metrics from the WMI provider and converts them into a list 
+  /// of <see cref="FanMetrics"/> objects.
+  /// </summary>
+  /// <param name="provider">The WMI hardware provider.</param>
+  /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+  /// <returns>
+  /// A task that represents the asynchronous operation and returns a list of <see cref="FanMetrics"/> objects.
+  /// </returns>
 
   public static async Task<IReadOnlyList<FanMetrics>> ToSafeFanMetricsAsync(
     this IWmiHardwareProvider provider,

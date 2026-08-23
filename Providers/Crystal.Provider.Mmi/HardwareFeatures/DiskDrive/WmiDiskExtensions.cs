@@ -2,8 +2,24 @@
 
 namespace Crystal.Provider.Mmi.HardwareFeatures.DiskDrive;
 
+/// <summary>
+/// Provides extension methods for <see cref="IWmiHardwareProvider"/> to read disk drive metrics from WMI 
+/// (<c>Win32_DiskDrive</c>) and convert them into safe, null-tolerant <see cref="DiskDriveMetrics"/> objects.
+/// </summary>
 public static class WmiDiskExtensions {
+  /// <summary>
+  /// The WMI class name for physical disk drives, used to query the WMI provider for disk drive metrics.
+  /// </summary>
   private const string WmiClassName = WmiDiskDrive.ClassName;
+
+  /// <summary>
+  /// Asynchronously queries the WMI provider for physical disk drive metrics and converts them into a list 
+  /// of <see cref="DiskDriveMetrics"/> objects.
+  /// </summary>
+  /// <param name="provider">The WMI hardware provider.</param>
+  /// <param name="cancellationToken">The cancellation token.</param>
+  /// <param name="bypassCache">A value indicating whether to bypass the cache.</param>
+  /// <returns>A task representing the asynchronous operation.</returns>
 
   public static async Task<IReadOnlyList<DiskDriveMetrics>> ToSafeDiskDriveMetricsAsync(
     this IWmiHardwareProvider provider,

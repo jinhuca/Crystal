@@ -1,9 +1,25 @@
 using Crystal.Provider.Mmi.MmiEngine;
 
 namespace Crystal.Provider.Mmi.HardwareFeatures.FloppyController;
+
+/// <summary>
+/// Provides extension methods for <see cref="IWmiHardwareProvider"/> to read floppy controller metrics from WMI 
+/// (<c>Win32_FloppyController</c>) and convert them into safe, null-tolerant <see cref="FloppyControllerMetrics"/> 
+/// instances.
+/// </summary>
 public static class WmiFloppyControllerExtensions {
+  /// <summary>
+  /// The WMI class name for floppy controllers, used to query the WMI provider for metrics.
+  /// </summary>
   private const string WmiClassName = WmiFloppyController.ClassName;
 
+  /// <summary>
+  /// Asynchronously retrieves floppy controller metrics from WMI and converts them into a list of 
+  /// <see cref="FloppyControllerMetrics"/> instances.
+  /// </summary>
+  /// <param name="provider">The WMI hardware provider.</param>
+  /// <param name="cancellationToken">The cancellation token.</param>
+  /// <returns>A task that represents the asynchronous operation and returns a list of floppy controller metrics.</returns>
   public static async Task<IReadOnlyList<FloppyControllerMetrics>> ToSafeFloppyControllerMetricsAsync(
     this IWmiHardwareProvider provider,
     CancellationToken cancellationToken) {

@@ -2,6 +2,9 @@
 
 namespace Crystal.Provider.Mmi.HardwareFeatures.BaseBoard;
 
+/// <summary>
+/// Contains the WMI class name and property names for the base board (motherboard) hardware feature.
+/// </summary>
 internal static class WmiBaseBoard {
   // ---------------------------------------------------------------------
   // WMI Class

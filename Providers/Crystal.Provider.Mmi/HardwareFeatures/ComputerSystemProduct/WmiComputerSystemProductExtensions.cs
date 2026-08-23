@@ -2,7 +2,17 @@ using Crystal.Provider.Mmi.MmiEngine;
 
 namespace Crystal.Provider.Mmi.HardwareFeatures.ComputerSystemProduct;
 
+/// <summary>
+/// Provides extension methods for <see cref="IWmiHardwareProvider"/> to read the WMI class
+/// </summary>
 public static class WmiComputerSystemProductExtensions {
+  /// <summary>
+  /// Reads the WMI class <c>Win32_ComputerSystemProduct</c> and returns a <see cref="ComputerSystemProductMetrics"/> 
+  /// object with the metrics.
+  /// </summary>
+  /// <param name="provider">The WMI hardware provider.</param>
+  /// <param name="cancellationToken">The cancellation token.</param>
+  /// <returns>The computer system product metrics.</returns>
   public static async Task<ComputerSystemProductMetrics> ToSafeComputerSystemProductMetricsAsync(
     this IWmiHardwareProvider provider, 
     CancellationToken cancellationToken) {

@@ -1,6 +1,11 @@
 using Crystal.Provider.Mmi.MmiEngine;
 
 namespace Crystal.Provider.Mmi.HardwareFeatures.Bus;
+
+/// <summary>
+/// Provides extension methods for <see cref="IWmiHardwareProvider"/> to read bus metrics from WMI (<c>Win32_Bus</c>) 
+/// and convert them into safe, null-tolerant <see cref="BusMetrics"/> instances.
+/// </summary>
 public static class WmiBusExtensions {
   private const string WmiClassName = WmiBus.ClassName;
 

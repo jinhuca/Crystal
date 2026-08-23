@@ -2,6 +2,9 @@ using Crystal.Provider.Mmi.Wmi;
 
 namespace Crystal.Provider.Mmi.HardwareFeatures.CdRomDrive;
 
+/// <summary>
+/// Contains the WMI class name and property names for the CD-ROM drive hardware feature.
+/// </summary>
 internal static class WmiCDROMDrive {
   // ---------------------------------------------------------------------
   // WMI Class

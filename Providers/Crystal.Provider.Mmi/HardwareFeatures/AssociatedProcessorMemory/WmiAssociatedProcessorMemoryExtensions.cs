@@ -1,9 +1,23 @@
 using Crystal.Provider.Mmi.MmiEngine;
 
 namespace Crystal.Provider.Mmi.HardwareFeatures.AssociatedProcessorMemory;
+
+/// <summary>
+/// Provides extension methods for <see cref="IWmiHardwareProvider"/> to read the
+/// <see cref="AssociatedProcessorMemoryMetrics"/> from WMI.
+/// </summary>
 public static class WmiAssociatedProcessorMemoryExtensions {
+  /// <summary>
+  /// The WMI class name for the associated processor memory relationship.
+  /// </summary>
   private const string WmiClassName = WmiAssociatedProcessorMemory.ClassName;
 
+  /// <summary>
+  /// Asynchronously retrieves the associated processor memory metrics from WMI using the provided hardware provider.
+  /// </summary>
+  /// <param name="provider">The WMI hardware provider.</param>
+  /// <param name="cancellationToken">The cancellation token.</param>
+  /// <returns>A task that represents the asynchronous operation and returns a list of associated processor memory metrics.</returns>
   public static async Task<IReadOnlyList<AssociatedProcessorMemoryMetrics>> ToSafeAssociatedProcessorMemoryMetricsAsync(
     this IWmiHardwareProvider provider,
     CancellationToken cancellationToken) {

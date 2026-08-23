@@ -2,9 +2,21 @@ using Crystal.Provider.Mmi.MmiEngine;
 
 namespace Crystal.Provider.Mmi.HardwareFeatures.DesktopMonitor;
 
+/// <summary>
+/// Provides extension methods for <see cref="IWmiHardwareProvider"/> to fetch and convert WMI
+/// </summary>
 public static class WmiDesktopMonitorExtensions {
+  /// <summary>
+  /// The WMI class name for desktop monitor metrics.
+  /// </summary>
   private const string WmiClassName = WmiDesktopMonitor.ClassName;
 
+  /// <summary>
+  /// Fetches and converts WMI desktop monitor metrics into a safe, null-tolerant list of <see cref="DesktopMonitorMetrics"/> instances.
+  /// </summary>
+  /// <param name="provider">The WMI hardware provider.</param>
+  /// <param name="cancellationToken">The cancellation token.</param>
+  /// <returns>A task representing the asynchronous operation.</returns>
   public static async Task<IReadOnlyList<DesktopMonitorMetrics>> ToSafeDesktopMonitorMetricsAsync(
     this IWmiHardwareProvider provider,
     CancellationToken cancellationToken) {

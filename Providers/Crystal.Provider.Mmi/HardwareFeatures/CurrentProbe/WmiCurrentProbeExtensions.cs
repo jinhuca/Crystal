@@ -1,9 +1,23 @@
 using Crystal.Provider.Mmi.MmiEngine;
 
 namespace Crystal.Provider.Mmi.HardwareFeatures.CurrentProbe;
+
+/// <summary>
+/// Provides extension methods for <see cref="IWmiHardwareProvider"/> to read and map WMI
+/// </summary>
 public static class WmiCurrentProbeExtensions {
+  /// <summary>
+  /// The WMI class name for current probe metrics.
+  /// </summary>
   private const string WmiClassName = WmiCurrentProbe.ClassName;
 
+  /// <summary>
+  /// Asynchronously retrieves current probe metrics from the WMI hardware provider and maps them to a list 
+  /// of <see cref="CurrentProbeMetrics"/> objects.
+  /// </summary>
+  /// <param name="provider">The WMI hardware provider.</param>
+  /// <param name="cancellationToken">The cancellation token.</param>
+  /// <returns>A task that represents the asynchronous operation.</returns>
   public static async Task<IReadOnlyList<CurrentProbeMetrics>> ToSafeCurrentProbeMetricsAsync(
     this IWmiHardwareProvider provider,
     CancellationToken cancellationToken) {

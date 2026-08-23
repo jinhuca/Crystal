@@ -172,18 +172,23 @@ public sealed class GpuAdapterViewModel : BindableBase {
     int before = EngineLoads.Count;
 
     for (int i = EngineLoads.Count - 1; i >= 0; i--)
-      if (!engines.Any(e => e.Name == EngineLoads[i].Name))
+      if (!engines.Any(e => e.Name == EngineLoads[i].Name)) {
         EngineLoads.RemoveAt(i);
+      }
 
     foreach (var engine in engines) {
       var existing = EngineLoads.FirstOrDefault(vm => vm.Name == engine.Name);
-      if (existing is null)
+      if (existing is null) {
         EngineLoads.Add(new GpuEngineLoadViewModel(engine.Name) { LoadPercent = engine.LoadPercent });
-      else
+      }
+      else {
         existing.LoadPercent = engine.LoadPercent;
+      }
     }
 
-    if ((before > 0) != (EngineLoads.Count > 0)) RaisePropertyChanged(nameof(HasEngineLoads));
+    if ((before > 0) != (EngineLoads.Count > 0)) {
+      RaisePropertyChanged(nameof(HasEngineLoads));
+    }
   }
 
   /// <summary>
@@ -195,18 +200,23 @@ public sealed class GpuAdapterViewModel : BindableBase {
     int before = PowerRails.Count;
 
     for (int i = PowerRails.Count - 1; i >= 0; i--)
-      if (!rails.Any(r => r.Name == PowerRails[i].Name))
+      if (!rails.Any(r => r.Name == PowerRails[i].Name)) {
         PowerRails.RemoveAt(i);
+      }
 
     foreach (var rail in rails) {
       var existing = PowerRails.FirstOrDefault(vm => vm.Name == rail.Name);
-      if (existing is null)
+      if (existing is null) {
         PowerRails.Add(new GpuPowerRailViewModel(rail.Name) { PowerW = rail.PowerW });
-      else
+      }
+      else {
         existing.PowerW = rail.PowerW;
+      }
     }
 
-    if ((before > 0) != (PowerRails.Count > 0)) RaisePropertyChanged(nameof(HasPowerRails));
+    if ((before > 0) != (PowerRails.Count > 0)) {
+      RaisePropertyChanged(nameof(HasPowerRails));
+    }
   }
 
   /// <summary>
@@ -217,7 +227,10 @@ public sealed class GpuAdapterViewModel : BindableBase {
   /// <param name="min">The minimum value.</param>
   /// <returns>The scaled value.</returns>
   private static double NiceScale(double value, double min) {
-    if (value <= min) return min;
+    if (value <= min) {
+      return min;
+    }
+
     var magnitude = Math.Pow(10, Math.Floor(Math.Log10(value)));
     var normalized = value / magnitude;
     var nice = normalized <= 1 ? 1 : normalized <= 2 ? 2 : normalized <= 5 ? 5 : 10;

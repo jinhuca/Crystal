@@ -10,12 +10,12 @@ public enum GpuKind { Integrated, Dedicated }
 /// on the sensor stream and matched back to this adapter by <see cref="Name"/>.
 /// </summary>
 public sealed record GpuAdapterInfo(
-    string Name,
-    GpuKind Kind,
-    double? VideoRamGB,
-    string DisplayMode,
-    string? DriverVersion,
-    DateTime? DriverDate,
-    string? VideoProcessor,
-    string? PhysicalLocation,
-    uint? RefreshRateHz);
+  string Name,
+  GpuKind Kind,
+  double? VideoRamGB,
+  string DisplayMode,
+  string? DriverVersion,
+  DateTime? DriverDate,
+  string? VideoProcessor,
+  string? PhysicalLocation,
+  uint? RefreshRateHz);

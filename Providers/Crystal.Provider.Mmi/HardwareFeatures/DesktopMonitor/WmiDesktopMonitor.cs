@@ -2,6 +2,9 @@
 
 namespace Crystal.Provider.Mmi.HardwareFeatures.DesktopMonitor;
 
+/// <summary>
+/// Contains the WMI class name and property names for <c>Win32_DesktopMonitor</c>.
+/// </summary>
 internal static class WmiDesktopMonitor {
   // ---------------------------------------------------------------------
   // WMI Class

@@ -2,6 +2,9 @@ using Crystal.Provider.Mmi.Wmi;
 
 namespace Crystal.Provider.Mmi.HardwareFeatures.AssociatedProcessorMemory;
 
+/// <summary>
+/// Contains the WMI class name and property names for the <c>AssociatedProcessorMemory</c> association.
+/// </summary>
 internal static class WmiAssociatedProcessorMemory {
   // ---------------------------------------------------------------------
   // WMI Class

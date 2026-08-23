@@ -1,5 +1,41 @@
 namespace Crystal.Provider.Mmi.HardwareFeatures.Battery;
 
+/// <summary>
+/// Represents the metrics of a battery, including its status, capacity, and other relevant information.
+/// </summary>
+/// <param name="Availability">The availability of the battery.</param>
+/// <param name="BatteryRechargeTime">The time required to recharge the battery.</param>
+/// <param name="BatteryStatus">The status of the battery.</param>
+/// <param name="Caption">The caption of the battery.</param>
+/// <param name="Chemistry">The chemistry of the battery.</param>
+/// <param name="ConfigManagerErrorCode">The error code from the configuration manager.</param>
+/// <param name="ConfigManagerUserConfig">Indicates whether the configuration is user-defined.</param>
+/// <param name="CreationClassName">The class name of the creation.</param>
+/// <param name="Description">The description of the battery.</param>
+/// <param name="DesignCapacity">The design capacity of the battery.</param>
+/// <param name="DesignVoltage">The design voltage of the battery.</param>
+/// <param name="DeviceID">The device ID of the battery.</param>
+/// <param name="ErrorCleared">Indicates whether the error is cleared.</param>
+/// <param name="ErrorDescription">The description of the error.</param>
+/// <param name="EstimatedChargeRemaining">The estimated charge remaining of the battery.</param>
+/// <param name="EstimatedRunTime">The estimated run time of the battery.</param>
+/// <param name="ExpectedBatteryLife">The expected battery life.</param>
+/// <param name="ExpectedLife">The expected life.</param>
+/// <param name="FullChargeCapacity">The full charge capacity of the battery.</param>
+/// <param name="InstallDate">The installation date of the battery.</param>
+/// <param name="LastErrorCode">The last error code.</param>
+/// <param name="MaxRechargeTime">The maximum recharge time of the battery.</param>
+/// <param name="Name">The name of the battery.</param>
+/// <param name="PNPDeviceID">The PNP device ID of the battery.</param>
+/// <param name="PowerManagementCapabilities">The power management capabilities of the battery.</param>
+/// <param name="PowerManagementSupported">Indicates whether power management is supported.</param>
+/// <param name="SmartBatteryVersion">The version of the smart battery.</param>
+/// <param name="Status">The status of the battery.</param>
+/// <param name="StatusInfo">The status information of the battery.</param>
+/// <param name="SystemCreationClassName">The class name of the system creation.</param>
+/// <param name="SystemName">The name of the system.</param>
+/// <param name="TimeOnBattery">The time the battery has been on.</param>
+/// <param name="TimeToFullCharge">The time required to fully charge the battery.</param>
 public record BatteryMetrics(
   ushort? Availability,
   uint? BatteryRechargeTime,

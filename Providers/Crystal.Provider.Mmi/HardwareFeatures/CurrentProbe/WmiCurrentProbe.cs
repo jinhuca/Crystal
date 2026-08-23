@@ -2,6 +2,10 @@ using Crystal.Provider.Mmi.Wmi;
 
 namespace Crystal.Provider.Mmi.HardwareFeatures.CurrentProbe;
 
+/// <summary>
+/// Contains the WMI class name and property names for the CurrentProbe WMI class. 
+/// This class is used to retrieve information about current probes in the system.
+/// </summary>
 internal static class WmiCurrentProbe {
   // ---------------------------------------------------------------------
   // WMI Class

@@ -1,6 +1,10 @@
 using Crystal.Provider.Mmi.MmiEngine;
 namespace Crystal.Provider.Mmi.HardwareFeatures.CacheMemory;
 
+/// <summary>
+/// Extension methods for <see cref="IWmiHardwareProvider"/> to read cache memory metrics from WMI (<c>Win32_CacheMemory</c>) 
+/// and convert them into safe, null-tolerant <see cref="CacheMemoryMetrics"/> instances.
+/// </summary>
 public static class WmiCacheMemoryExtensions {
   public static async Task<IReadOnlyList<CacheMemoryMetrics>> ToSafeCacheMemoryMetricsAsync(this IWmiHardwareProvider provider, CancellationToken cancellationToken) {
     try {

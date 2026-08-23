@@ -2,6 +2,9 @@ using Crystal.Provider.Mmi.Wmi;
 
 namespace Crystal.Provider.Mmi.HardwareFeatures.ComputerSystem;
 
+/// <summary>
+/// Contains the WMI class name and property names for <c>Win32_ComputerSystem</c>.
+/// </summary>
 internal static class WmiComputerSystem {
   public const string ClassName = WmiClasses.ComputerSystem;
   public const string Name = CommonWmiProperties.Name;

@@ -1,8 +1,18 @@
 ﻿using Crystal.Provider.Mmi.HardwareFeatures.DiskDrive;
 using Crystal.Provider.Mmi.MmiEngine;
 
-namespace Crystal.Provider.Mmi.HardwareFeatures.DiskPartition; 
+namespace Crystal.Provider.Mmi.HardwareFeatures.DiskPartition;
+
+/// <summary>
+/// Extension methods for <see cref="IWmiHardwareProvider"/> to read and resolve disk partition metrics from WMI.
+/// </summary>
 public static class WmiDiskPartitionExtensions {
+  /// <summary>
+  /// Fetches disk partition metrics from WMI and safely converts them into a list of <see cref="DiskPartitionMetrics"/> records.
+  /// </summary>
+  /// <param name="provider">The WMI hardware provider.</param>
+  /// <param name="cancellationToken">The cancellation token.</param>
+  /// <returns>A task that represents the asynchronous operation and returns a list of disk partition metrics.</returns>
   public static async Task<IReadOnlyList<DiskPartitionMetrics>> ToSafeDiskPartitionMetricsAsync(
     this IWmiHardwareProvider provider,
     CancellationToken cancellationToken) {
@@ -72,6 +82,13 @@ public static class WmiDiskPartitionExtensions {
     }
   }
 
+  /// <summary>
+  /// Fetches disk drive and partition metrics from WMI and resolves them into a structured topology of physical drives, 
+  /// their partitions, and associated volume letters.
+  /// </summary>
+  /// <param name="provider">The WMI hardware provider.</param>
+  /// <param name="cancellationToken">The cancellation token.</param>
+  /// <returns>A task that represents the asynchronous operation and returns a list of resolved physical drives.</returns>
   public static async Task<IReadOnlyList<ResolvedPhysicalDrive>> ToResolvedDriveTopologyAsync(
     this IWmiHardwareProvider provider,
     CancellationToken cancellationToken) {
@@ -147,14 +164,22 @@ public static class WmiDiskPartitionExtensions {
   }
 }
 
+/// <summary>
+/// Represents a resolved disk partition with its metrics and associated volume letters.
+/// </summary>
+/// <param name="PartitionInfo">The metrics for the resolved disk partition.</param>
+/// <param name="VolumeLetters">The list of volume letters associated with the partition.</param>
 public record ResolvedPartition(
     DiskPartitionMetrics PartitionInfo,
     IReadOnlyList<string> VolumeLetters // Can be empty, or contain multiple letters (e.g., "C:", "D:")
 );
 
+/// <summary>
+/// Represents a resolved physical drive with its metrics and associated partitions.
+/// </summary>
+/// <param name="DriveInfo">The metrics for the resolved physical drive.</param>
+/// <param name="Partitions">The list of resolved partitions associated with the drive.</param>
 public record ResolvedPhysicalDrive(
     DiskDriveMetrics DriveInfo,
     IReadOnlyList<ResolvedPartition> Partitions
 );
-
-

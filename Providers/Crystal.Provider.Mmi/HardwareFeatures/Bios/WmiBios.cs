@@ -2,6 +2,9 @@
 
 namespace Crystal.Provider.Mmi.HardwareFeatures.Bios;
 
+/// <summary>
+/// Contains the WMI class name and property names for the BIOS feature. This is used to query BIOS information via WMI.
+/// </summary>
 internal static class WmiBios {
   // ---------------------------------------------------------------------
   // WMI Class

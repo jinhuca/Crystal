@@ -13,6 +13,8 @@ namespace Crystal.Provider.Mmi.HardwareFeatures.FirmwareSecurity;
 /// (key or value missing, or the read failed).
 /// </param>
 public record SecureBootState(bool Supported, bool? Enabled) {
-  /// <summary>Represents "could not determine" (read failed or non-Windows).</summary>
+  /// <summary>
+  /// Represents "could not determine" (read failed or non-Windows).
+  /// </summary>
   public static SecureBootState Unknown { get; } = new(false, null);
 }

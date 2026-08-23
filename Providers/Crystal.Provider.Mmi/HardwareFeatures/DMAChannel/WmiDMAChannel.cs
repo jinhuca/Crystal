@@ -2,6 +2,11 @@ using Crystal.Provider.Mmi.Wmi;
 
 namespace Crystal.Provider.Mmi.HardwareFeatures.DMAChannel;
 
+/// <summary>
+/// Contains the WMI class name and property names for the CIM_DMAChannel class, 
+/// which represents a DMA channel on a computer system. This class is used to 
+/// retrieve information about DMA channels through WMI queries.
+/// </summary>
 internal static class WmiDMAChannel {
   // ---------------------------------------------------------------------
   // WMI Class

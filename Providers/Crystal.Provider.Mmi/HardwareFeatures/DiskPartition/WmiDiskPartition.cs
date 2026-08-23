@@ -2,6 +2,9 @@
 
 namespace Crystal.Provider.Mmi.HardwareFeatures.DiskPartition;
 
+/// <summary>
+/// Contains the WMI class name and property names for the <c>Win32_DiskPartition</c> WMI class.
+/// </summary>
 internal static class WmiDiskPartition {
   // ---------------------------------------------------------------------
   // WMI Class

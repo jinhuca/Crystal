@@ -3,9 +3,21 @@ using Crystal.Provider.Mmi.Wmi;
 
 namespace Crystal.Provider.Mmi.HardwareFeatures.BaseBoard;
 
+/// <summary>
+/// Provides extension methods for <see cref="IWmiHardwareProvider"/> to retrieve baseboard metrics from WMI (<c>Win32_BaseBoard</c>).
+/// </summary>
 public static class WmiBaseBoardExtensions {
+  /// <summary>
+  /// The WMI class name for baseboard information.
+  /// </summary>
   private const string WmiClassName = WmiClasses.BaseBoard;
 
+  /// <summary>
+  /// Asynchronously retrieves baseboard metrics from WMI using the provided <see cref="IWmiHardwareProvider"/>.
+  /// </summary>
+  /// <param name="provider">The WMI hardware provider.</param>
+  /// <param name="cancellationToken">The cancellation token.</param>
+  /// <returns>A task that represents the asynchronous operation and returns the baseboard metrics.</returns>
   public static async Task<BaseBoardMetrics> ToSafeBaseBoardMetricsAsync(
     this IWmiHardwareProvider provider,
     CancellationToken cancellationToken) {

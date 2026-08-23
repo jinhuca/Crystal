@@ -1,9 +1,24 @@
 using Crystal.Provider.Mmi.MmiEngine;
 
 namespace Crystal.Provider.Mmi.HardwareFeatures.DisplayControllerConfiguration;
+
+/// <summary>
+/// Provides extension methods for <see cref="IWmiHardwareProvider"/> to read display controller configuration metrics 
+/// from WMI (<c>Win32_DisplayControllerConfiguration</c>).
+/// </summary>
 public static class WmiDisplayControllerConfigurationExtensions {
+  /// <summary>
+  /// The WMI class name for display controller configuration metrics.
+  /// </summary>
   private const string WmiClassName = WmiDisplayControllerConfiguration.ClassName;
 
+  /// <summary>
+  /// Asynchronously retrieves display controller configuration metrics from WMI and maps them to a list of 
+  /// <see cref="DisplayControllerConfigurationMetrics"/> objects.
+  /// </summary>
+  /// <param name="provider">The WMI hardware provider.</param>
+  /// <param name="cancellationToken">The cancellation token.</param>
+  /// <returns>A task that represents the asynchronous operation and returns a list of display controller configuration metrics.</returns>
   public static async Task<IReadOnlyList<DisplayControllerConfigurationMetrics>> ToSafeDisplayControllerConfigurationMetricsAsync(
     this IWmiHardwareProvider provider,
     CancellationToken cancellationToken) {

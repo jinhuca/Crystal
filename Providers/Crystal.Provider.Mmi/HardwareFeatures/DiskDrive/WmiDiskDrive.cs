@@ -2,6 +2,9 @@
 
 namespace Crystal.Provider.Mmi.HardwareFeatures.DiskDrive;
 
+/// <summary>
+/// Contains the WMI class name and property names for the Win32_DiskDrive WMI class.
+/// </summary>
 internal static class WmiDiskDrive {
   // ---------------------------------------------------------------------
   // WMI Class

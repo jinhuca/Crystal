@@ -1,9 +1,24 @@
 using Crystal.Provider.Mmi.MmiEngine;
 
 namespace Crystal.Provider.Mmi.HardwareFeatures.DMAChannel;
+
+/// <summary>
+/// Provides extension methods for <see cref="IWmiHardwareProvider"/> to read DMA channel metrics from WMI 
+/// (<c>Win32_DMAChannel</c>) and convert them into safe, null-tolerant <see cref="DMAChannelMetrics"/> instances.
+/// </summary>
 public static class WmiDMAChannelExtensions {
+  /// <summary>
+  /// The WMI class name for DMA channel metrics (<c>Win32_DMAChannel</c>).
+  /// </summary>
   private const string WmiClassName = WmiDMAChannel.ClassName;
 
+  /// <summary>
+  /// Asynchronously retrieves DMA channel metrics from WMI and converts them into a list of 
+  /// <see cref="DMAChannelMetrics"/> instances.
+  /// </summary>
+  /// <param name="provider">The WMI hardware provider.</param>
+  /// <param name="cancellationToken">The cancellation token.</param>
+  /// <returns>A task that represents the asynchronous operation and returns a list of DMA channel metrics.</returns>
   public static async Task<IReadOnlyList<DMAChannelMetrics>> ToSafeDMAChannelMetricsAsync(
     this IWmiHardwareProvider provider,
     CancellationToken cancellationToken) {

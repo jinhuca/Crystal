@@ -2,6 +2,9 @@ using Crystal.Provider.Mmi.Wmi;
 
 namespace Crystal.Provider.Mmi.HardwareFeatures.DeviceSettings;
 
+/// <summary>
+/// Contains the WMI class name and property names for the DeviceSettings association class.
+/// </summary>
 internal static class WmiDeviceSettings {
   // ---------------------------------------------------------------------
   // WMI Class
