@@ -62,20 +62,20 @@ public sealed class CpuIdProvider : ICpuIdProvider {
     var instructionSet = DecodeInstructionSet((uint)feat1Ecx, (uint)feat1Edx, feat7Ebx, feat7Ecx, extEcx, extEdx);
 
     return new CpuIdRawData(
-        Brand: brand,
-        Vendor: vendor,
-        FamilyId: family,
-        ModelId: model,
-        SteppingId: stepping,
-        BaseSpeedMHz: baseMHz,
-        BusSpeedMHz: busMHz,
-        PhysicalCoreCount: 0,   // CPUID topology is per-package/thread-local; SMBIOS/WMI own the totals.
-        LogicalCoreCount: (uint)Environment.ProcessorCount,
-        VirtualizationSupported: virtualizationSupported,
+      Brand: brand,
+      Vendor: vendor,
+      FamilyId: family,
+      ModelId: model,
+      SteppingId: stepping,
+      BaseSpeedMHz: baseMHz,
+      BusSpeedMHz: busMHz,
+      PhysicalCoreCount: 0,   // CPUID topology is per-package/thread-local; SMBIOS/WMI own the totals.
+      LogicalCoreCount: (uint)Environment.ProcessorCount,
+      VirtualizationSupported: virtualizationSupported,
         // CPUID can't observe the firmware toggle; only WMI can. Report false here and let WMI override.
-        VirtualizationFirmwareEnabled: false,
-        CacheInfo: QueryCacheInfo(),
-        InstructionSet: instructionSet);
+      VirtualizationFirmwareEnabled: false,
+      CacheInfo: QueryCacheInfo(),
+      InstructionSet: instructionSet);
   }
 
   /// <summary>
@@ -133,10 +133,12 @@ public sealed class CpuIdProvider : ICpuIdProvider {
   [return: MarshalAs(UnmanagedType.Bool)]
   private static extern bool GetLogicalProcessorInformation(nint buffer, ref uint returnLength);
 
-  // Mirrors the native SYSTEM_LOGICAL_PROCESSOR_INFORMATION (x64 layout — the managed default
-  // platform). The trailing union's ULONGLONG Reserved[2] arm forces 8-byte alignment, so the
-  // Cache descriptor sits at offset 16 (not 12); the two reserved qwords overlay it to pin the
-  // union offset and total size (32 bytes) exactly.
+  /// <summary>
+  /// Mirrors the native SYSTEM_LOGICAL_PROCESSOR_INFORMATION (x64 layout — the managed default
+  /// platform). The trailing union's ULONGLONG Reserved[2] arm forces 8-byte alignment, so the
+  /// Cache descriptor sits at offset 16 (not 12); the two reserved qwords overlay it to pin the
+  /// union offset and total size (32 bytes) exactly.
+  /// </summary>
   [StructLayout(LayoutKind.Explicit)]
   private struct SYSTEM_LOGICAL_PROCESSOR_INFORMATION {
     [FieldOffset(0)] public ulong ProcessorMask;
@@ -146,6 +148,9 @@ public sealed class CpuIdProvider : ICpuIdProvider {
     [FieldOffset(24)] private readonly ulong _reserved1;
   }
 
+  /// <summary>
+  /// Cache_Descriptor
+  /// </summary>
   [StructLayout(LayoutKind.Sequential)]
   private struct CACHE_DESCRIPTOR {
     public byte Level;
@@ -155,6 +160,11 @@ public sealed class CpuIdProvider : ICpuIdProvider {
     public int Type;
   }
 
+  /// <summary>
+  /// 
+  /// </summary>
+  /// <param name="eax"></param>
+  /// <returns></returns>
   internal static (uint family, uint model, uint stepping) DecodeFms(int eax) {
     uint v = (uint)eax;
     uint stepping = v & 0xF;
@@ -176,6 +186,10 @@ public sealed class CpuIdProvider : ICpuIdProvider {
     return Encoding.ASCII.GetString(buf).Trim();
   }
 
+  /// <summary>
+  /// 
+  /// </summary>
+  /// <returns></returns>
   private static string DecodeBrand() {
     Span<byte> buf = stackalloc byte[48];
     for (int i = 0; i < 3; i++) {
@@ -191,6 +205,16 @@ public sealed class CpuIdProvider : ICpuIdProvider {
     return Encoding.ASCII.GetString(buf[..len]).Trim();
   }
 
+  /// <summary>
+  /// 
+  /// </summary>
+  /// <param name="f1Ecx"></param>
+  /// <param name="f1Edx"></param>
+  /// <param name="f7Ebx"></param>
+  /// <param name="f7Ecx"></param>
+  /// <param name="eEcx"></param>
+  /// <param name="eEdx"></param>
+  /// <returns></returns>
   internal static CpuInstructionInfo DecodeInstructionSet(
       uint f1Ecx, uint f1Edx, uint f7Ebx, uint f7Ecx, uint eEcx, uint eEdx) {
     static bool Bit(uint value, int bit) => (value & (1u << bit)) != 0;

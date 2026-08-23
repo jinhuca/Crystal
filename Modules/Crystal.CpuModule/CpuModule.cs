@@ -6,7 +6,6 @@ using Crystal.CpuModule.Views;
 using Crystal.Infrastructure.Constants;
 using Crystal.Infrastructure.Constants.Navigation;
 using Crystal.Provider.CpuId;
-using Crystal.Provider.Mmi.HardwareFeatures.Processor;
 using Crystal.Provider.Mmi.MmiEngine;
 using Crystal.Provider.Smbios.HardwareFeatures.Processor;
 using Crystal.Service.Cpu;

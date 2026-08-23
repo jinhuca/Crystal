@@ -9,16 +9,16 @@ namespace Crystal.Provider.CpuId;
 /// SMBIOS/WMI values.
 /// </summary>
 public sealed record CpuIdRawData(
-    string? Brand,
-    string? Vendor,
-    uint FamilyId,
-    uint ModelId,
-    uint SteppingId,
-    uint BaseSpeedMHz,
-    uint BusSpeedMHz,
-    uint PhysicalCoreCount,
-    uint LogicalCoreCount,
-    bool VirtualizationSupported,
-    bool VirtualizationFirmwareEnabled,
-    CpuCacheInfo? CacheInfo,
-    CpuInstructionInfo? InstructionSet);
+  string? Brand,
+  string? Vendor,
+  uint FamilyId,
+  uint ModelId,
+  uint SteppingId,
+  uint BaseSpeedMHz,
+  uint BusSpeedMHz,
+  uint PhysicalCoreCount,
+  uint LogicalCoreCount,
+  bool VirtualizationSupported,
+  bool VirtualizationFirmwareEnabled,
+  CpuCacheInfo? CacheInfo,
+  CpuInstructionInfo? InstructionSet);
