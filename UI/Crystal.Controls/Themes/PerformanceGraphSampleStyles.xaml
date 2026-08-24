@@ -11,12 +11,12 @@
     vertical glow gradient fill; Bar/SegmentedBar kinds use a flat fill (a gradient would restart
     per bar/segment).
 
-    Colors live in Crystal.Resources/Styles/GraphPalette.xaml. It is merged here (not just app-wide)
+    Colors live in Styles/GraphPalette.xaml. It is merged here (not just app-wide)
     because a StaticResource inside this dictionary resolves against this dictionary's own merged
     scope, not sibling dictionaries merged elsewhere in App.xaml.
   -->
   <ResourceDictionary.MergedDictionaries>
-    <ResourceDictionary Source="/Crystal.Resources;component/Styles/GraphPalette.xaml"/>
+    <ResourceDictionary Source="/Crystal.Controls;component/Styles/GraphPalette.xaml"/>
   </ResourceDictionary.MergedDictionaries>
 
   <!-- =====================================================================================

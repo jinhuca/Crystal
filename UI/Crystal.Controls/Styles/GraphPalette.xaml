@@ -1,0 +1,40 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+  <!--
+    PLACEHOLDER PALETTE - see Palette.xaml's header comment.
+
+    Themes/PerformanceGraphSampleStyles.xaml merges
+    "/Crystal.Controls;component/Styles/GraphPalette.xaml" and uses every key below across its
+    keyed graph styles (RoseLineGraphStyle, SegBarLoadGraphEmeraldStyle030, FullGraphStyle, etc.).
+    Accent colors here deliberately match the hardcoded accents GraphThemes.cs already uses for
+    its code-first Rose/Emerald/Amber/Sky/Purple presets (see Crystal.Controls's own
+    PerformanceGraphs/Themes/GraphThemes.cs), so a graph styled through either route reads as the
+    same color family. The *Fill brushes are the same accent at reduced alpha, for use as a flat
+    fill behind a line/bar/segment (see GraphThemes.FromAccent's own remarks on why Bar/SegmentedBar
+    kinds want a flat fill rather than a gradient).
+  -->
+  <SolidColorBrush x:Key="GraphPlotBackgroundBrush" Color="#0A0A0A"/>
+  <SolidColorBrush x:Key="GraphGridBrush" Color="#2A2A2A"/>
+  <SolidColorBrush x:Key="GraphAxisBorderBrush" Color="#3E7BC4"/>
+
+  <SolidColorBrush x:Key="GraphRoseBrush" Color="#E82A7A"/>
+  <SolidColorBrush x:Key="GraphRoseFill" Color="#40E82A7A"/>
+
+  <SolidColorBrush x:Key="GraphEmeraldBrush" Color="#3BD15A"/>
+  <SolidColorBrush x:Key="GraphEmeraldFill" Color="#403BD15A"/>
+
+  <SolidColorBrush x:Key="GraphSkyBrush" Color="#3E9BE8"/>
+  <SolidColorBrush x:Key="GraphSkyFill" Color="#403E9BE8"/>
+
+  <SolidColorBrush x:Key="GraphAmberBrush" Color="#E89B2A"/>
+  <SolidColorBrush x:Key="GraphAmberFill" Color="#40E89B2A"/>
+
+  <SolidColorBrush x:Key="GraphGreyBrush" Color="#9AA0A6"/>
+  <SolidColorBrush x:Key="GraphGreyFill" Color="#409AA0A6"/>
+
+  <SolidColorBrush x:Key="GraphPurpleBrush" Color="#9B5AE8"/>
+
+  <!-- Minimum height for a "summary" (small, chrome-light) graph tile. -->
+  <sys:Double x:Key="SummaryGraphMinHeight">48</sys:Double>
+</ResourceDictionary>

@@ -15,13 +15,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!-- Shared palette: control themes (scrollbar, loading host) pull their brushes from the
-         solution-wide palette instead of inlining hex, so a color change is one edit. -->
-    <ProjectReference Include="..\Crystal.Resources\Crystal.Resources.csproj" />
+    <Folder Include="Comet\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Comet\" />
+    <ProjectReference Include="..\Crystal.Resources\Crystal.Resources.csproj" />
   </ItemGroup>
 
 </Project>

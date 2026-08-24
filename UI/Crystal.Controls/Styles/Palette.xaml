@@ -1,0 +1,17 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <!--
+    PLACEHOLDER PALETTE.
+
+    ScrollBarStyles.xaml and LoadingHostStyles.xaml both merge
+    "/Crystal.Controls;component/Styles/Palette.xaml" and reference the six brush keys below.
+    Every key name below is required (Crystal.Controls's XAML looks it up by exactly this name);
+    the color values are the only part that's arbitrary - swap them for the real palette.
+  -->
+  <SolidColorBrush x:Key="DividerBrush" Color="#2A2A2A"/>
+  <SolidColorBrush x:Key="BorderBrush" Color="#333333"/>
+  <SolidColorBrush x:Key="AccentBrush" Color="#3E9BE8"/>
+  <SolidColorBrush x:Key="ValueBrush" Color="#EAEAEA"/>
+  <SolidColorBrush x:Key="LabelBrush" Color="#AAAAAA"/>
+  <SolidColorBrush x:Key="TextMutedBrush" Color="#8A8A8A"/>
+</ResourceDictionary>

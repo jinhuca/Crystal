@@ -3,7 +3,7 @@
   <!-- Palette merged into this dictionary's own scope so the StaticResource brush keys resolve
        (a sibling merged dictionary is never searched). -->
   <ResourceDictionary.MergedDictionaries>
-    <ResourceDictionary Source="/Crystal.Resources;component/Styles/Palette.xaml"/>
+    <ResourceDictionary Source="/Crystal.Controls;component/Styles/Palette.xaml"/>
   </ResourceDictionary.MergedDictionaries>
 
   <!-- Flat, dark, sharp-edged scrollbar matching the HWiNFO tile palette: no arrow buttons,
