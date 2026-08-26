@@ -12,7 +12,7 @@
         Title="Crystal"
         Icon="Crystal.ico"
         Background="Transparent"
-        BorderBrush="{StaticResource AccentBrush}" BorderThickness="1">
+        BorderBrush="{StaticResource AccentBrush}" BorderThickness="1.5">
   <!-- Strip the OS-drawn frame and its native caption buttons (GlassFrameThickness=0,
        UseAeroCaptionButtons=False) so the window's own 1dip BorderBrush is the only visible
        edge and we draw our own min/max/close buttons in the title bar below. -->
