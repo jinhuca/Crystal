@@ -18,8 +18,4 @@
     <Folder Include="Comet\" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Crystal.Resources\Crystal.Resources.csproj" />
-  </ItemGroup>
-
 </Project>

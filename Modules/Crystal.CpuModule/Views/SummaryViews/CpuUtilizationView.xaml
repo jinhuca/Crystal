@@ -12,10 +12,11 @@
       <ColumnDefinition Width="*"/>
       <ColumnDefinition Width="Auto"/>
     </Grid.ColumnDefinitions>
-    <graphs:PerformanceGraph x:Name="CpuUtilizationGraph" Grid.Column="0"
-                             graphs:GraphIdentity.Id="Cpu.Utilization"
-                             MinValue="0" MaxValue="100"
-                             MinHeight="{StaticResource SummaryGraphMinHeight}"/>
+    <graphs:PerformanceGraphLite x:Name="CpuUtilizationGraph" Grid.Column="0"
+                                 graphs:GraphIdentity.Id="Cpu.Utilization"
+                                 Style="{StaticResource SquareDotGraphLiteStyle}"
+                                 MinValue="0" MaxValue="100"
+                                 MinHeight="{StaticResource SummaryGraphMinHeight}"/>
     <StackPanel Grid.Column="1" Style="{StaticResource SummaryStackPanelStyle}">
       <StackPanel Orientation="Horizontal">
         <TextBlock Text="{Binding Load, StringFormat={}{0:0.00}}" Style="{StaticResource MetricValue}"/>

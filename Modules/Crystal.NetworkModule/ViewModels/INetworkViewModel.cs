@@ -57,7 +57,7 @@ public interface INetworkViewModel {
   /// (e.g. "Network.Download" / "Network.Upload"). The throughput sub-view self-registers its
   /// sparklines on load, so the view model feeds only the graphs a consumer chose to realize.
   /// </summary>
-  void AttachGraph(string id, PerformanceGraph graph);
+  void AttachGraph(string id, ISingleSeriesGraph graph);
 
   /// <summary>True when a Wi-Fi adapter is connected; drives the summary tile's Wi-Fi row.</summary>
   bool HasWifi { get; }

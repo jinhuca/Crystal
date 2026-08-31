@@ -39,12 +39,12 @@ public class CpuModule(IRegionManager regionManager) : IModule {
     // Built via a factory: CpuInfoBuilder's telemetry parameter is optional (defaults to null),
     // and Unity won't inject an optional ctor parameter — leaving it null makes every sensor read
     // empty (0.00). Resolve it explicitly so live sensors are wired in.
-    containerRegistry.Register<CpuInfoBuilder>(factoryMethod: cp => new CpuInfoBuilder(
-      cpuId: cp.Resolve<ICpuIdProvider>(),
-      smbios: cp.Resolve<ISmbiosProcessorProvider>(),
-      wmi: cp.Resolve<IWmiHardwareProvider>(),
-      resolver: cp.Resolve<ICpuSpecsResolver>(),
-      telemetry: cp.Resolve<ICpuTelemetrySource>()));
+    containerRegistry.Register<CpuInfoBuilder>(cp => new CpuInfoBuilder(
+      cp.Resolve<ICpuIdProvider>(),
+      cp.Resolve<ISmbiosProcessorProvider>(),
+      cp.Resolve<IWmiHardwareProvider>(),
+      cp.Resolve<ICpuSpecsResolver>(),
+      cp.Resolve<ICpuTelemetrySource>()));
 
     // CpuMonitor owns the polling lifetime and its Specs replay cache, so it must be a singleton.
     // Built via a factory: its ctor's optional TimeSpan?/IScheduler? params can't be resolved by

@@ -12,10 +12,11 @@
       <ColumnDefinition Width="*"/>
       <ColumnDefinition Width="Auto"/>
     </Grid.ColumnDefinitions>
-    <graphs:PerformanceGraph x:Name="CpuFanGraph" Grid.Column="0"
-                             graphs:GraphIdentity.Id="Cpu.Fan"
-                             Margin="0,1,0,1" MinHeight="{StaticResource SummaryGraphMinHeight}"
-                             MaxValue="{Binding FanGraphMax}"/>
+    <graphs:PerformanceGraphLite x:Name="CpuFanGraph" Grid.Column="0"
+                                 graphs:GraphIdentity.Id="Cpu.Fan"
+                                 Style="{StaticResource SquareDotGraphLiteStyle}"
+                                 Margin="0,1,0,1" MinHeight="{StaticResource SummaryGraphMinHeight}"
+                                 MaxValue="{Binding FanGraphMax}"/>
     <StackPanel Grid.Column="1" Style="{StaticResource SummaryStackPanelStyle}">
       <StackPanel Orientation="Horizontal">
         <TextBlock Text="{Binding FanReadoutText}" Style="{StaticResource MetricValue}"/>

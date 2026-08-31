@@ -25,4 +25,13 @@ internal sealed class RangeBarStyle {
 
   /// <summary>Stroke thickness of the outer border.</summary>
   public double BorderThickness { get; set; }
+
+  /// <summary>True to draw the filled portion as discrete LED-meter blocks instead of a solid fill.</summary>
+  public bool Segmented { get; set; }
+
+  /// <summary>Width (px) of each lit LED block when <see cref="Segmented"/> is true.</summary>
+  public double SegmentWidth { get; set; } = 4;
+
+  /// <summary>Gap (px) between LED blocks when <see cref="Segmented"/> is true.</summary>
+  public double SegmentGap { get; set; } = 2;
 }

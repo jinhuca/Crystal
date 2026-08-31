@@ -1,0 +1,107 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs;assembly=Crystal.Controls"
+    xmlns:converters="clr-namespace:Crystal.Controls.Converters;assembly=Crystal.Controls">
+
+  <!--
+    This file lives in Crystal.Controls.Demo, a DIFFERENT assembly than PerformanceGraphLite
+    (which lives in Crystal.Controls) - that's why the xmlns above needs ";assembly=Crystal.Controls".
+    The sibling file at Crystal.Controls/Themes/PerformanceGraphLiteStyles.xaml lives in the SAME
+    assembly as the type it targets, so it deliberately omits the assembly qualifier instead -
+    including it there causes MC3066 (the markup compiler tries to resolve the type by loading
+    the assembly currently being built, which doesn't exist as a DLL yet mid-compile).
+  -->
+
+  <converters:CapacityToRatioConverter x:Key="CapToRatioConverter"/>
+
+  <!-- No-key: applies automatically to every PerformanceGraphLite instance once this dictionary
+       is merged into scope (see App.xaml, which does merge it). Real behavior change for
+       GraphLiteWindow.xaml's Lite1/Lite2, which set neither ColorMode/Color1..Color9 nor Rows
+       locally: they now render this style's ramp/Rows instead of Crystal.Controls's own internal
+       defaults. Height is unaffected for both since each sets its own local Height via a
+       MultiBinding already - local always wins over a Style setter. -->
+  <Style TargetType="{x:Type graphs:PerformanceGraphLite}">
+    <Setter Property="MinWidth" Value="240"/>
+    <Setter Property="MinHeight" Value="80"/>
+    <Setter Property="Height">
+      <Setter.Value>
+        <MultiBinding Converter="{StaticResource CapToRatioConverter}">
+          <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}"/>
+          <Binding Path="Capacity" RelativeSource="{RelativeSource Self}"/>
+          <Binding Path="Rows" RelativeSource="{RelativeSource Self}"/>
+        </MultiBinding>
+      </Setter.Value>
+    </Setter>
+    <Setter Property="GraphBackground" Value="#101010"/>
+    <Setter Property="MinValue" Value="0"/>
+    <Setter Property="MaxValue" Value="100"/>
+    <Setter Property="Rows" Value="10"/>
+    <Setter Property="ColorMode" Value="Banded"/>
+    <Setter Property="Color1" Value="#1E7B34"/>
+    <Setter Property="Color2" Value="#2FA84A"/>
+    <Setter Property="Color3" Value="#55C65C"/>
+    <Setter Property="Color4" Value="#A9D62E"/>
+    <Setter Property="Color5" Value="#F4E409"/>
+    <Setter Property="Color6" Value="#F7A800"/>
+    <Setter Property="Color7" Value="#F26F21"/>
+    <Setter Property="Color8" Value="#E8412B"/>
+    <Setter Property="Color9" Value="#C81E1E"/>
+  </Style>
+
+  <!-- Keyed: NOT applied automatically. Exists as a BasedOn parent for role-specific styles, and/or
+       to be referenced directly via Style="{StaticResource ...}" on individual tiles.
+       Height used to be a flat Setter Value="120" here - replaced with the same
+       CapacityToRatioConverter MultiBinding the no-key style above uses, since a flat 120 was
+       only ever really correct for Capacity=60/Rows=10 (this project's own established default
+       pairing) and silently wrong for anything else - the exact class of bug fixed elsewhere in
+       PerformanceGraphLite's own MeasureOverride and in this project's real GraphLiteWindow.xaml. -->
+  <Style x:Key="PerformanceGraphLiteBaseStyle" TargetType="{x:Type graphs:PerformanceGraphLite}">
+    <Setter Property="MinWidth" Value="240"/>
+    <Setter Property="MinHeight" Value="80"/>
+    <Setter Property="Height">
+      <Setter.Value>
+        <MultiBinding Converter="{StaticResource CapToRatioConverter}">
+          <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}"/>
+          <Binding Path="Capacity" RelativeSource="{RelativeSource Self}"/>
+          <Binding Path="Rows" RelativeSource="{RelativeSource Self}"/>
+        </MultiBinding>
+      </Setter.Value>
+    </Setter>
+    <Setter Property="GraphBackground" Value="#101010"/>
+    <Setter Property="Rows" Value="10"/>
+  </Style>
+
+  <Style x:Key="CpuUtilizationGraphStyle" TargetType="{x:Type graphs:PerformanceGraphLite}"
+         BasedOn="{StaticResource PerformanceGraphLiteBaseStyle}">
+    <Setter Property="MinValue" Value="0"/>
+    <Setter Property="MaxValue" Value="100"/>
+    <Setter Property="ColorMode" Value="Banded"/>
+    <Setter Property="Color1" Value="#1E7B34"/>
+    <Setter Property="Color9" Value="#C81E1E"/>
+  </Style>
+
+  <Style x:Key="TemperatureGraphStyle" TargetType="{x:Type graphs:PerformanceGraphLite}"
+         BasedOn="{StaticResource PerformanceGraphLiteBaseStyle}">
+    <Setter Property="MinValue" Value="30"/>
+    <Setter Property="MaxValue" Value="100"/>
+    <Setter Property="ColorMode" Value="SingleColor"/>
+    <Setter Property="DotColor" Value="#3EE8FF"/>
+  </Style>
+
+  <!-- Adds nothing beyond PerformanceGraphLiteBaseStyle except CornerRadius. The value here (999)
+       is deliberately larger than any real dot could ever be - AddDotFigure's own per-dot clamp
+       (radius = min(CornerRadius, width/2, height/2)) means an oversized value always resolves to
+       exactly half of whichever dimension is smaller, i.e. a fully round dot, for ANY
+       Capacity/Rows/Width combination this style ends up applied to - rather than a fixed pixel
+       number that would only happen to be exactly right for one specific instance's actual dot
+       size. Paired with the base style's square-dot Height sizing (each dot's width and height
+       already come out equal), that fully-round dot reads as a true circle, not a stadium/pill
+       shape - the same visual result the earlier arc-based Circle DotShape gave, produced here as
+       a side effect of the existing clamp instead of a second rendering path. -->
+  <Style x:Key="RoundedDotGraphStyle" TargetType="{x:Type graphs:PerformanceGraphLite}"
+         BasedOn="{StaticResource PerformanceGraphLiteBaseStyle}">
+    <Setter Property="CornerRadius" Value="999"/>
+  </Style>
+
+</ResourceDictionary>

@@ -15,10 +15,11 @@
       <ColumnDefinition Width="*"/>
       <ColumnDefinition Width="Auto"/>
     </Grid.ColumnDefinitions>
-    <graphs:PerformanceGraph x:Name="CpuTemperatureGraph" Grid.Column="0"
-                             graphs:GraphIdentity.Id="Cpu.Temperature"
-                             MinValue="30" MaxValue="120"
-                             MinHeight="{StaticResource SummaryGraphMinHeight}"/>
+    <graphs:PerformanceGraphLite x:Name="CpuTemperatureGraph" Grid.Column="0"
+                                 graphs:GraphIdentity.Id="Cpu.Temperature"
+                                 Style="{StaticResource SquareDotGraphLiteStyle}"
+                                 MinValue="30" MaxValue="120"
+                                 MinHeight="{StaticResource SummaryGraphMinHeight}"/>
     <StackPanel Grid.Column="1" Style="{StaticResource SummaryStackPanelStyle}">
       <StackPanel Orientation="Horizontal">
         <TextBlock Text="{Binding Temperature, StringFormat={}{0:0.00}}" Style="{StaticResource MetricValue}"/>

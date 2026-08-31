@@ -38,7 +38,7 @@ public interface IStorageViewModel {
   /// (e.g. "Storage.Activity", "Storage.Transfer"). Each metric sub-view self-registers its own
   /// graph on load, so the view model feeds only the graphs that were realized.
   /// </summary>
-  void AttachGraph(string id, PerformanceGraph graph);
+  void AttachGraph(string id, ISingleSeriesGraph graph);
 
   ICommand ShowDetailCommand { get; }
   ICommand ShowDashboardCommand { get; }

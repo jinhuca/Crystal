@@ -13,15 +13,10 @@ namespace Crystal.Controls.RangeBars.Renders;
 /// </summary>
 internal sealed class FillRenderer {
   public void Draw(DrawingContext dc, Rect bounds, RangeBarStyle style, double fraction) {
-    fraction = fraction < 0 ? 0 : (fraction > 1 ? 1 : fraction);
+    fraction = Math.Clamp(fraction, 0, 1);
 
-    // Inset by the border so the interior sits inside the stroke, which straddles the edge.
-    double inset = style.BorderThickness / 2;
-    Rect interior = new(
-        bounds.X + inset,
-        bounds.Y + inset,
-        Math.Max(0, bounds.Width - style.BorderThickness),
-        Math.Max(0, bounds.Height - style.BorderThickness));
+    // The interior sits inside the border stroke, which straddles the edge.
+    Rect interior = Helpers.Deflate(bounds, style.BorderThickness);
     if (interior.Width <= 0 || interior.Height <= 0) return;
 
     if (style.TrackBrush != null) {
@@ -30,8 +25,25 @@ internal sealed class FillRenderer {
 
     double fillWidth = interior.Width * fraction;
     if (fillWidth > 0 && style.FillBrush != null) {
-      dc.DrawRectangle(style.FillBrush, null,
-          new Rect(interior.X, interior.Y, fillWidth, interior.Height));
+      if (style.Segmented) {
+        // LED blocks left→right within the interior; the block straddling the fill edge is clipped
+        // so the meter reads as "this much lit" rather than snapping to the next whole block. The
+        // step guard keeps a zeroed SegmentWidth+SegmentGap from spinning the loop forever.
+        double step = style.SegmentWidth + style.SegmentGap;
+        if (step > 0) {
+          for (double x = 0; x < fillWidth; x += step) {
+            double blockRight = x + style.SegmentWidth;
+            double drawWidth = (blockRight > fillWidth ? fillWidth : blockRight) - x;
+            if (drawWidth > 0)
+              dc.DrawRectangle(style.FillBrush, null,
+                  new Rect(interior.X + x, interior.Y, drawWidth, interior.Height));
+          }
+        }
+      }
+      else {
+        dc.DrawRectangle(style.FillBrush, null,
+            new Rect(interior.X, interior.Y, fillWidth, interior.Height));
+      }
     }
   }
 }

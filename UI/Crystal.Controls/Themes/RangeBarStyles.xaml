@@ -71,7 +71,13 @@
             <!-- Range bar track -->
             <bars:RangeBar x:Name="PART_Bar" Grid.Column="4"
                            Height="40"
-                           VerticalAlignment="Center"/>
+                           VerticalAlignment="Center"
+                           Value="{TemplateBinding Value}"
+                           MinValue="{TemplateBinding MinValue}"
+                           MaxValue="{TemplateBinding MaxValue}"
+                           Segmented="{TemplateBinding Segmented}"
+                           SegmentWidth="{TemplateBinding SegmentWidth}"
+                           SegmentGap="{TemplateBinding SegmentGap}"/>
 
             <!-- Max value end label -->
             <TextBlock Grid.Column="5"

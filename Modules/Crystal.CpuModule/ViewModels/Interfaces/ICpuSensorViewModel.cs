@@ -151,7 +151,7 @@ public interface ICpuSensorViewModel {
   /// (e.g. "Cpu.Utilization"). Each metric sub-view self-registers its own graph on load, so the
   /// view model feeds only the graphs a given consumer chose to realize.
   /// </summary>
-  void AttachGraph(string id, PerformanceGraph graph);
+  void AttachGraph(string id, ISingleSeriesGraph graph);
 
   /// <summary>
   /// Reads the socket's live sensors and pushes samples into the attached graphs.

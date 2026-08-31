@@ -1,0 +1,369 @@
+<Window x:Class="Crystal.Controls.Demo.AllControlsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs;assembly=Crystal.Controls"
+        xmlns:graphControls="clr-namespace:Crystal.Controls.PerformanceGraphs.Controls;assembly=Crystal.Controls"
+        xmlns:barControls="clr-namespace:Crystal.Controls.RangeBars.Controls;assembly=Crystal.Controls"
+        xmlns:rangeBars="clr-namespace:Crystal.Controls.RangeBars;assembly=Crystal.Controls"
+        xmlns:conv="clr-namespace:Crystal.Controls.Converters;assembly=Crystal.Controls"
+        xmlns:meters="clr-namespace:Crystal.Controls.Meters;assembly=Crystal.Controls"
+        xmlns:comet="clr-namespace:Crystal.Controls.Comet;assembly=Crystal.Controls"
+        xmlns:loading="clr-namespace:Crystal.Controls.Loading;assembly=Crystal.Controls"
+        Title="Crystal.Controls Demo" Height="1100" Width="1180"
+        Background="#0A0A0A" FontFamily="Segoe UI">
+
+  <Window.Resources>
+    <Style x:Key="SectionHeaderStyle" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="#EAEAEA"/>
+      <Setter Property="FontSize" Value="16"/>
+      <Setter Property="FontWeight" Value="Bold"/>
+      <Setter Property="Margin" Value="0,26,0,6"/>
+    </Style>
+    <Style x:Key="SectionSubtitleStyle" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="#8A8A8A"/>
+      <Setter Property="FontSize" Value="12"/>
+      <Setter Property="Margin" Value="0,0,0,12"/>
+      <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+    <Style x:Key="TileCaptionStyle" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="#AAAAAA"/>
+      <Setter Property="FontSize" Value="12"/>
+      <Setter Property="FontWeight" Value="SemiBold"/>
+      <Setter Property="Margin" Value="0,0,0,6"/>
+    </Style>
+    <!-- Shared tile chrome for every section below. Width is a default only - several tiles
+         (PerformanceGraphView, RangeBarView, PerformanceGraphMultipleDS, the square-grid
+         PerformanceGraph) override it locally since they need to be wider than the small square
+         comparison tiles, or to stretch with the window. -->
+    <Style x:Key="TileBorderStyle" TargetType="Border">
+      <Setter Property="Background" Value="#141414"/>
+      <Setter Property="BorderBrush" Value="#2A2A2A"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="CornerRadius" Value="6"/>
+      <Setter Property="Padding" Value="10"/>
+      <Setter Property="Margin" Value="0,0,12,0"/>
+    </Style>
+
+    <!-- Value-banded fill: 0-20 green, 20-40 yellow, 40-60 orange, 60-80 red, 80-100 dark red,
+         out-of-range grey. Band brushes are listed low-to-high as the converter's direct content. -->
+    <conv:ValueToBrushConverter x:Key="LoadColor" Minimum="0" Step="20" Fallback="#9AA0A6">
+      <SolidColorBrush Color="#22B14C"/>
+      <SolidColorBrush Color="#E8C22A"/>
+      <SolidColorBrush Color="#FF7F27"/>
+      <SolidColorBrush Color="#ED1C24"/>
+      <SolidColorBrush Color="#B0171F"/>
+    </conv:ValueToBrushConverter>
+  </Window.Resources>
+
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+    <Grid Grid.Row="0">
+			<Border Background="#44e1e1e1">
+      <!-- ColorMode and Colors left at their defaults: Banded mode, the built-in linear green→red
+           9-band ramp (Color1 green … Color9 red). Set Color1..Color9 to override individual bands,
+           or set ColorMode="SingleColor" + DotColor for a flat single-color, single-draw-call look
+           (see the SingleColor tile below). -->
+      <graphs:PerformanceGraphLite x:Name="LiteThemed" Margin="40" Width="720" CornerRadius="2" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                    MinValue="0" MaxValue="100" Rows="10" GraphBackground="#EE121212"/>
+			</Border>
+		</Grid>
+    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="24">
+      <StackPanel>
+        <TextBlock Text="Crystal.Controls Demo" Foreground="White" FontSize="24" FontWeight="Bold"/>
+        <TextBlock Foreground="#8A8A8A" FontSize="13" Margin="0,4,0,0" TextWrapping="Wrap"
+                 Text="Every control in the library, live-updating off one shared DispatcherTimer (see AllControlsWindow.xaml.cs). This single window replaces the earlier MainWindow/GraphLiteWindow/MultipleDSWindow split."/>
+
+        <!-- ============================================================================
+           A: PerformanceGraph - the four GraphKinds, same data, theme applied per tile
+           via ApplyTheme(GraphThemes.X(kind)) in code-behind.
+           ============================================================================ -->
+        <TextBlock Text="PerformanceGraph — the four GraphKinds" Style="{StaticResource SectionHeaderStyle}"/>
+        <TextBlock Style="{StaticResource SectionSubtitleStyle}"
+                 Text="Same live series (a simulated utilization %) rendered by each GraphKind side by side."/>
+        <StackPanel Orientation="Horizontal">
+          <Border Style="{StaticResource TileBorderStyle}">
+            <StackPanel>
+              <TextBlock Text="Line" Style="{StaticResource TileCaptionStyle}"/>
+              <graphs:PerformanceGraph x:Name="KindLineGraph" Kind="Line"
+                                      MinValue="0" MaxValue="100" HistoryLength="30"/>
+            </StackPanel>
+          </Border>
+          <Border Style="{StaticResource TileBorderStyle}">
+            <StackPanel>
+              <TextBlock Text="Bar" Style="{StaticResource TileCaptionStyle}"/>
+              <graphs:PerformanceGraph x:Name="KindBarGraph" Height="120" Kind="Bar"
+                                      MinValue="0" MaxValue="100" HistoryLength="40"/>
+            </StackPanel>
+          </Border>
+          <Border Style="{StaticResource TileBorderStyle}">
+            <StackPanel>
+              <TextBlock Text="SegmentedBar" Style="{StaticResource TileCaptionStyle}"/>
+              <graphs:PerformanceGraph x:Name="KindSegGraph" Height="120" Kind="SegmentedBar"
+                                      MinValue="0" MaxValue="100" HistoryLength="30"/>
+            </StackPanel>
+          </Border>
+          <Border Style="{StaticResource TileBorderStyle}" Margin="0">
+            <StackPanel>
+              <TextBlock Text="Dot" Style="{StaticResource TileCaptionStyle}"/>
+              <graphs:PerformanceGraph x:Name="KindDotGraph" Height="120" Kind="Dot"
+                                      MinValue="0" MaxValue="100" HistoryLength="40"/>
+            </StackPanel>
+          </Border>
+        </StackPanel>
+
+        <!-- ============================================================================
+           B: no frills. Left tile is a full PerformanceGraph with its grid/border switched
+           off via properties (still carries the unused machinery). The rest are
+           PerformanceGraphLite, where that machinery doesn't exist to begin with.
+           ============================================================================ -->
+        <TextBlock Text="Dot-only, no frills: PerformanceGraph vs. PerformanceGraphLite" Style="{StaticResource SectionHeaderStyle}"/>
+        <TextBlock Style="{StaticResource SectionSubtitleStyle}"
+                 Text="Left: a full PerformanceGraph with GraphBackground/GridThickness/BorderThickness zeroed out - it still carries the Line/Bar/SegmentedBar renderers and grid/border pens, just unused. The rest are PerformanceGraphLite: a default-look tile that renders through the no-key style merged in App.xaml, an explicit SingleColor tile, a ValuesSource tile fed entirely by binding to an ObservableCollection of double instead of any AddValue call, a tile configured entirely through CpuUtilizationGraphStyle, a rounded-dot tile using CornerRadius via RoundedDotGraphStyle, and a seventh tile built with a non-default capacity (30) from code-behind demonstrating Flip together with SingleColor."/>
+        <StackPanel x:Name="LiteRow" Orientation="Horizontal">
+          <Border Style="{StaticResource TileBorderStyle}">
+            <StackPanel>
+              <TextBlock Text="PerformanceGraph (Dot, chrome off)" Style="{StaticResource TileCaptionStyle}"/>
+              <graphs:PerformanceGraph x:Name="NoFrillsDotGraph" Height="120" Kind="Dot"
+                                      MinValue="0" MaxValue="100" HistoryLength="40"
+                                      GraphBackground="Transparent" GridThickness="0" BorderThickness="0"
+                                      FillBrush="#3EE8FF"/>
+            </StackPanel>
+          </Border>
+          <Border Style="{StaticResource TileBorderStyle}">
+            <StackPanel>
+              <TextBlock Text="PerformanceGraphLite (default look, from merged app style)" Style="{StaticResource TileCaptionStyle}"/>
+              <!-- Sets no Color1..Color9/GraphBackground/Rows locally, so the no-key style merged
+                 in App.xaml is what actually renders it. -->
+              <graphs:PerformanceGraphLite x:Name="LiteDefault" Height="120" MinValue="0" MaxValue="100"/>
+            </StackPanel>
+          </Border>
+          <Border Style="{StaticResource TileBorderStyle}">
+            <StackPanel>
+              <TextBlock Text="PerformanceGraphLite (SingleColor)" Style="{StaticResource TileCaptionStyle}"/>
+              <graphs:PerformanceGraphLite x:Name="LiteSingleColor" Height="120" MinValue="0" MaxValue="100"
+                                            ColorMode="SingleColor" DotColor="#3EE8FF"/>
+            </StackPanel>
+          </Border>
+          <Border Style="{StaticResource TileBorderStyle}">
+            <StackPanel>
+              <TextBlock Text="PerformanceGraphLite (ValuesSource binding)" Style="{StaticResource TileCaptionStyle}"/>
+              <!-- DataContext is set in code-behind (a LiteValuesSourceDemo instance) - no AddValue
+                 call targets this graph anywhere in code-behind, every sample arrives through the
+                 bound ObservableCollection<double> instead. -->
+              <graphs:PerformanceGraphLite x:Name="LiteBound" Height="120" MinValue="0" MaxValue="100"
+                                            ValuesSource="{Binding UtilizationSamples}"/>
+            </StackPanel>
+          </Border>
+          <Border Style="{StaticResource TileBorderStyle}">
+            <StackPanel>
+              <TextBlock Text="PerformanceGraphLite (Style: CpuUtilizationGraphStyle)" Style="{StaticResource TileCaptionStyle}"/>
+              <!-- No local properties at all - everything comes from PerformanceGraphLiteBaseStyle
+                 and CpuUtilizationGraphStyle (BasedOn). -->
+              <graphs:PerformanceGraphLite x:Name="LiteStyled" Style="{StaticResource CpuUtilizationGraphStyle}"/>
+            </StackPanel>
+          </Border>
+          <Border Style="{StaticResource TileBorderStyle}">
+            <StackPanel>
+              <TextBlock Text="PerformanceGraphLite (CornerRadius: RoundedDotGraphStyle)" Style="{StaticResource TileCaptionStyle}"/>
+              <!-- CornerRadius=999 in the style clamps down to exactly half of each dot's own
+                 smaller dimension - a fully round dot, without a separate circle-shape code path. -->
+              <graphs:PerformanceGraphLite x:Name="LiteRounded" Style="{StaticResource RoundedDotGraphStyle}"
+                                            MinValue="0" MaxValue="100"/>
+            </StackPanel>
+          </Border>
+          <!-- An eighth tile (Capacity: 30, Flip: true, via the (int capacity) constructor) is
+             appended here in code-behind - XAML can only reach PerformanceGraphLite's
+             parameterless constructor without the verbose x:Arguments syntax. -->
+        </StackPanel>
+
+        <!-- ============================================================================
+           C: PerformanceGraphView - the labeled chrome (title/max header, time footer)
+           around a single PerformanceGraph.
+           ============================================================================ -->
+        <TextBlock Text="PerformanceGraphView — labeled chrome around a PerformanceGraph" Style="{StaticResource SectionHeaderStyle}"/>
+        <TextBlock Style="{StaticResource SectionSubtitleStyle}"
+                 Text="A templated Control wrapping a PerformanceGraph with a title/max-value header and a max/min-time footer. Its Graph is only available once the template has applied, so the constructor calls ApplyTemplate() explicitly before touching it."/>
+        <Border Style="{StaticResource TileBorderStyle}" Width="360" Margin="0" HorizontalAlignment="Left">
+          <graphControls:PerformanceGraphView x:Name="CpuUtilView" Height="150"
+            Title="CPU Utilization" MinValue="0" MaxValue="100"
+            MaxValueFormat="{}{0}%" MaxTime="60" MaxTimeFormat="{}{0} seconds" MinTime="0"/>
+        </Border>
+
+        <!-- ============================================================================
+           C2: PerformanceGraph - square grid cells via SquareGridPerformanceGraphStyle,
+           which ties GridColumns to Capacity and derives Height from ActualWidth/GridRows/
+           GridColumns via GridSquareRatioConverter.
+           ============================================================================ -->
+        <TextBlock Text="PerformanceGraph — square grid cells" Style="{StaticResource SectionHeaderStyle}"/>
+        <TextBlock Style="{StaticResource SectionSubtitleStyle}"
+                 Text="Styled with SquareGridPerformanceGraphStyle: GridColumns is bound to Capacity and Height is derived from ActualWidth/GridRows/GridColumns via GridSquareRatioConverter, so every grid cell renders as a perfect square regardless of window width. HorizontalAlignment=Stretch is what gives this element a real ActualWidth to square against - resize the window and the cells stay square."/>
+        <Border Background="#141414" BorderBrush="#2A2A2A" BorderThickness="1" CornerRadius="6" Padding="10">
+          <graphs:PerformanceGraph x:Name="SquareGridGraph" HorizontalAlignment="Stretch"
+                                    MinValue="0" MaxValue="100" GridRows="10" GridBrush="#AA333333" GridThickness="0.3"
+                                    Style="{StaticResource SquareGridPerformanceGraphStyle}"/>
+        </Border>
+
+        <!-- ============================================================================
+           C3: PerformanceGraphMultipleDS - three independent DataSeries on one shared
+           graph, sharing MinValue/MaxValue/Capacity.
+           ============================================================================ -->
+        <TextBlock Text="PerformanceGraphMultipleDS — multiple data sources on one graph" Style="{StaticResource SectionHeaderStyle}"/>
+        <TextBlock Style="{StaticResource SectionSubtitleStyle}"
+                 Text="Three independent DataSeries sharing one MinValue/MaxValue/Capacity axis. CPU and RAM are fed imperatively via DataSeries.AddValue; GPU is fed entirely through ValuesSource, bound to an ObservableCollection of double that the tick handler only ever calls Add/RemoveAt on - no AddValue call for GPU anywhere in code-behind. ValuesSource is assigned in code-behind rather than a XAML Binding: DataSeries is a plain DependencyObject, not a FrameworkElement, so it has no DataContext of its own to bind against. CPU also has a FillBrush (a semi-transparent tint of its own LineBrush) demonstrating FilledLineRenderer's fill path; RAM/GPU stay plain lines since overlapping fills would occlude each other. This tile is also styled with SquareGridPerformanceGraphMultipleDSStyle - the multi-series counterpart of the square-grid PerformanceGraph above - so its grid cells stay perfectly square as the window resizes (GridColumns bound to Capacity, Height derived from ActualWidth/GridRows/GridColumns via GridSquareRatioConverter)."/>
+        <Border Background="#101010" BorderBrush="#2A2A2A" BorderThickness="1" CornerRadius="6" Padding="10">
+          <graphs:PerformanceGraphMultipleDS x:Name="MultiGraph" HorizontalAlignment="Stretch"
+                                              MinValue="0" MaxValue="100" Capacity="60" GridRows="12"
+                                              GraphBackground="#141414" GridBrush="#333333" GridThickness="0.5"
+                                              Style="{StaticResource SquareGridPerformanceGraphMultipleDSStyle}">
+            <graphs:PerformanceGraphMultipleDS.Series>
+							<graphs:DataSeries x:Name="CpuSeries" Name="CPU" LineBrush="#E82A7A" FillBrush="#11E82A7A" LineThickness="1"/>
+							<graphs:DataSeries x:Name="RamSeries" Name="RAM" LineBrush="#3BD15A" FillBrush="#113BD15A" LineThickness="1"/>
+							<graphs:DataSeries x:Name="GpuSeries" Name="GPU" LineBrush="#3E9BE8" FillBrush="#113E9BE8" LineThickness="1"/>
+            </graphs:PerformanceGraphMultipleDS.Series>
+          </graphs:PerformanceGraphMultipleDS>
+        </Border>
+        <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
+          <Border Background="#E82A7A" Width="12" Height="12" Margin="0,0,6,0"/>
+          <TextBlock Text="CPU (AddValue, filled)" Foreground="#CCCCCC" Margin="0,0,20,0"/>
+          <Border Background="#3BD15A" Width="12" Height="12" Margin="0,0,6,0"/>
+          <TextBlock Text="RAM (AddValue)" Foreground="#CCCCCC" Margin="0,0,20,0"/>
+          <Border Background="#3E9BE8" Width="12" Height="12" Margin="0,0,6,0"/>
+          <TextBlock Text="GPU (ValuesSource)" Foreground="#CCCCCC"/>
+        </StackPanel>
+
+        <!-- ============================================================================
+           D: RangeBarView - min/value/max labeled bars.
+           ============================================================================ -->
+        <TextBlock Text="RangeBarView — labeled min / value / max bars" Style="{StaticResource SectionHeaderStyle}"/>
+        <TextBlock Style="{StaticResource SectionSubtitleStyle}"
+                 Text="Same ApplyTemplate() timing requirement as PerformanceGraphView, before reaching .Bar to call RangeBar.ApplyTheme(...)."/>
+        <StackPanel Orientation="Horizontal">
+          <Border Style="{StaticResource TileBorderStyle}" Width="380">
+            <barControls:RangeBarView x:Name="VoltageBarView" Title="Voltage" Unit="V"
+              MinValue="0" MaxValue="3" ValueFormat="{}{0:0.00}"/>
+          </Border>
+          <Border Style="{StaticResource TileBorderStyle}" Width="380">
+            <barControls:RangeBarView x:Name="LoadBarView" Title="Load" Unit="%"
+              MinValue="0" MaxValue="100" ValueFormat="{}{0:0}"/>
+          </Border>
+          <Border Style="{StaticResource TileBorderStyle}" Width="380" Margin="0">
+            <!-- Same labeled chrome, but the inner bar renders as an LED meter via the view's
+                 Segmented property (merged from the former Meters.SegmentedBar). -->
+            <barControls:RangeBarView x:Name="MemBarView" Title="Memory" Unit="%"
+              MinValue="0" MaxValue="100" ValueFormat="{}{0:0}" Segmented="True"/>
+          </Border>
+        </StackPanel>
+
+        <!-- ============================================================================
+           E: RangeBar (segmented) - per-core meter bars sharing CoreBarAppearance.Current,
+           the same singleton the real CPU module and shell settings feature coordinate
+           through. (Formerly Meters.SegmentedBar, now folded into RangeBar's Segmented mode.)
+           ============================================================================ -->
+        <TextBlock Text="RangeBar (segmented) — per-core bars sharing CoreBarAppearance" Style="{StaticResource SectionHeaderStyle}"/>
+        <TextBlock Style="{StaticResource SectionSubtitleStyle}"
+                 Text="Each bar's Segmented property is bound to the shared CoreBarAppearance.Current singleton - toggling the checkbox flips every bar at once, the way a shell-wide settings change would. These are RangeBar instances in Segmented mode (the former Meters.SegmentedBar, now merged into RangeBar)."/>
+        <CheckBox Content="Segmented meter style" Foreground="#CCCCCC" Margin="0,0,0,10"
+                IsChecked="{Binding Segmented, Source={x:Static meters:CoreBarAppearance.Current}, Mode=TwoWay}"/>
+        <StackPanel Orientation="Horizontal">
+          <Border Style="{StaticResource TileBorderStyle}">
+            <StackPanel>
+              <TextBlock Text="Core 0 Load" Style="{StaticResource TileCaptionStyle}"/>
+              <rangeBars:RangeBar x:Name="Core0Bar" Height="18" MinValue="0" MaxValue="100"
+                FillBrush="#3EE8FF" BarBackground="#1E1E1E" TrackBrush="#1E1E1E" BorderBrush="#333333" BorderThickness="1"
+                Segmented="{Binding Segmented, Source={x:Static meters:CoreBarAppearance.Current}}"/>
+            </StackPanel>
+          </Border>
+          <Border Style="{StaticResource TileBorderStyle}">
+            <StackPanel>
+              <TextBlock Text="Core 1 Load" Style="{StaticResource TileCaptionStyle}"/>
+              <rangeBars:RangeBar x:Name="Core1Bar" Height="18" MinValue="0" MaxValue="100"
+                FillBrush="#3BD15A" BarBackground="#1E1E1E" TrackBrush="#1E1E1E" BorderBrush="#333333" BorderThickness="1"
+                Segmented="{Binding Segmented, Source={x:Static meters:CoreBarAppearance.Current}}"/>
+            </StackPanel>
+          </Border>
+          <Border Style="{StaticResource TileBorderStyle}" Margin="0">
+            <StackPanel>
+              <TextBlock Text="Core 2 Load" Style="{StaticResource TileCaptionStyle}"/>
+              <rangeBars:RangeBar x:Name="Core2Bar" Height="18" MinValue="0" MaxValue="100"
+                FillBrush="#E89B2A" BarBackground="#1E1E1E" TrackBrush="#1E1E1E" BorderBrush="#333333" BorderThickness="1"
+                Segmented="{Binding Segmented, Source={x:Static meters:CoreBarAppearance.Current}}"/>
+            </StackPanel>
+          </Border>
+        </StackPanel>
+
+        <!-- ============================================================================
+           E2: Value-banded fill color - a solid and a segmented RangeBar whose fill
+           brush is bound to their own Value through ValueToBrushConverter (the "LoadColor"
+           resource above). No code-behind colour logic: the converter picks the band.
+           ============================================================================ -->
+        <TextBlock Text="Value-banded fill color — ValueToBrushConverter" Style="{StaticResource SectionHeaderStyle}"/>
+        <TextBlock Style="{StaticResource SectionSubtitleStyle}"
+                 Text="A solid RangeBar and a segmented RangeBar whose fill colour binds to their own Value via ValueToBrushConverter: 0-20 green, 20-40 yellow, 40-60 orange, 60-80 red, 80-100 dark red, out-of-range grey. Both are driven by the same live value, so the colour steps as it crosses each 20-wide gate - the binding uses RelativeSource Self, so there is no colour code in the code-behind."/>
+        <StackPanel Orientation="Horizontal">
+          <Border Style="{StaticResource TileBorderStyle}" Width="380">
+            <StackPanel>
+              <TextBlock Text="RangeBar (solid)" Style="{StaticResource TileCaptionStyle}"/>
+              <rangeBars:RangeBar x:Name="BandedRangeBar" Height="24"
+                MinValue="0" MaxValue="100"
+                BarBackground="#0A0A0A" BorderBrush="#333333" BorderThickness="1" TrackBrush="#1E1E1E"
+                FillBrush="{Binding Value, RelativeSource={RelativeSource Self}, Converter={StaticResource LoadColor}}"/>
+            </StackPanel>
+          </Border>
+          <Border Style="{StaticResource TileBorderStyle}" Width="380" Margin="0">
+            <StackPanel>
+              <TextBlock Text="RangeBar (segmented)" Style="{StaticResource TileCaptionStyle}"/>
+              <rangeBars:RangeBar x:Name="BandedSegBar" Height="24" MinValue="0" MaxValue="100"
+                BarBackground="#0A0A0A" TrackBrush="#1E1E1E" BorderBrush="#333333" BorderThickness="1" Segmented="True"
+                FillBrush="{Binding Value, RelativeSource={RelativeSource Self}, Converter={StaticResource LoadColor}}"/>
+            </StackPanel>
+          </Border>
+        </StackPanel>
+
+        <!-- ============================================================================
+           F: Comet - LivenessIndicator vs. LivenessIndicatorLite, each decorating a
+           sibling Border in the same Grid cell (adopts its CornerRadius automatically).
+           ============================================================================ -->
+        <TextBlock Text="Comet — LivenessIndicator vs. LivenessIndicatorLite" Style="{StaticResource SectionHeaderStyle}"/>
+        <TextBlock Style="{StaticResource SectionSubtitleStyle}"
+                 Text="Each indicator sits as a sibling of a Border in the same Grid cell and adopts that Border's CornerRadius on its own (LivenessIndicatorBase.ResolveCornerRadius) - neither indicator below sets CornerRadius itself."/>
+        <CheckBox x:Name="CometActiveCheckBox" Content="Active" Foreground="#CCCCCC" Margin="0,0,0,10" IsChecked="True"/>
+        <StackPanel Orientation="Horizontal">
+          <Grid Width="220" Height="120" Margin="0,0,12,0">
+            <Border CornerRadius="10" Background="#141414" BorderBrush="#2A2A2A" BorderThickness="1"/>
+            <comet:LivenessIndicator x:Name="CometFullIndicator" Color="#4DD8FF"
+              IsActive="{Binding IsChecked, ElementName=CometActiveCheckBox}"/>
+            <TextBlock Text="LivenessIndicator" Foreground="#AAAAAA" FontSize="12" FontWeight="SemiBold"
+                     HorizontalAlignment="Center" VerticalAlignment="Center"/>
+          </Grid>
+          <Grid Width="220" Height="120">
+            <Border CornerRadius="10" Background="#141414" BorderBrush="#2A2A2A" BorderThickness="1"/>
+            <comet:LivenessIndicatorLite x:Name="CometLiteIndicator" Color="#3BD15A"
+              IsActive="{Binding IsChecked, ElementName=CometActiveCheckBox}"/>
+            <TextBlock Text="LivenessIndicatorLite" Foreground="#AAAAAA" FontSize="12" FontWeight="SemiBold"
+                     HorizontalAlignment="Center" VerticalAlignment="Center"/>
+          </Grid>
+        </StackPanel>
+
+        <!-- ============================================================================
+           G: Loading.LoadingHost - async tile warm-up, success and failure paths.
+           ============================================================================ -->
+        <TextBlock Text="Loading.LoadingHost — async tile warm-up" Style="{StaticResource SectionHeaderStyle}"/>
+        <TextBlock Style="{StaticResource SectionSubtitleStyle}"
+                 Text="Begin(warm, createContent) runs 'warm' on a background thread, then swaps in real content on the UI thread - or shows a failure marker if either step throws. The right-hand tile deliberately throws to demonstrate the Failed state."/>
+        <Button x:Name="RestartLoadingButton" Content="Restart both tiles" HorizontalAlignment="Left"
+              Padding="10,4" Margin="0,0,0,10" Click="RestartLoadingButton_Click"/>
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,24">
+          <Border Style="{StaticResource TileBorderStyle}" Height="90">
+            <loading:LoadingHost x:Name="LoadingA" Label="Sensors"/>
+          </Border>
+          <Border Style="{StaticResource TileBorderStyle}" Height="90" Margin="0">
+            <loading:LoadingHost x:Name="LoadingB" Label="Storage"/>
+          </Border>
+        </StackPanel>
+      </StackPanel>
+    </ScrollViewer>
+  </Grid>
+</Window>
