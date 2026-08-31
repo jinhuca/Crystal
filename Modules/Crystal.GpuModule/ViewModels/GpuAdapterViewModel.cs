@@ -49,7 +49,7 @@ public sealed class GpuAdapterViewModel : BindableBase {
   // detail view registers with the same ids explicitly), then fed by that same id in UpdateLoad.
   // One graph per id per adapter; last registration for an id wins, matching the previous
   // single-field behaviour when the summary and detail views attach to the same adapter VM.
-  private readonly Dictionary<string, PerformanceGraph> _graphs = [];
+  private readonly Dictionary<string, ISingleSeriesGraph> _graphs = [];
 
   public string Name { get => _name; private set => SetProperty(ref _name, value); }
   public string KindLabel { get => _kindLabel; private set => SetProperty(ref _kindLabel, value); }
@@ -101,7 +101,7 @@ public sealed class GpuAdapterViewModel : BindableBase {
 
   public bool HasPowerRails => PowerRails.Count > 0;
 
-  public void AttachGraph(string id, PerformanceGraph graph) => _graphs[id] = graph;
+  public void AttachGraph(string id, ISingleSeriesGraph graph) => _graphs[id] = graph;
 
   private void FeedGraph(string id, double value) {
     if (_graphs.TryGetValue(id, out var graph)) graph.AddValue(value);

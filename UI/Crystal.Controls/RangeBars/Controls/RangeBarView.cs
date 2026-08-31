@@ -49,7 +49,7 @@ public class RangeBarView : Control {
   /// <summary>Current reading; fills the bar and shows as the value label. Drives <see cref="RangeBar.Value"/>.</summary>
   public static readonly DependencyProperty ValueProperty =
       DependencyProperty.Register(nameof(Value), typeof(double), typeof(RangeBarView),
-          new FrameworkPropertyMetadata(0.0, OnValueChanged));
+          new FrameworkPropertyMetadata(0.0));
 
   public double Value {
     get => (double)GetValue(ValueProperty);
@@ -69,7 +69,7 @@ public class RangeBarView : Control {
   /// <summary>Left end of the bar's scale. Drives <see cref="RangeBar.MinValue"/>.</summary>
   public static readonly DependencyProperty MinValueProperty =
       DependencyProperty.Register(nameof(MinValue), typeof(double), typeof(RangeBarView),
-          new FrameworkPropertyMetadata(0.0, OnMinValueChanged));
+          new FrameworkPropertyMetadata(0.0));
 
   public double MinValue {
     get => (double)GetValue(MinValueProperty);
@@ -79,11 +79,42 @@ public class RangeBarView : Control {
   /// <summary>Right end of the bar's scale. Drives <see cref="RangeBar.MaxValue"/>.</summary>
   public static readonly DependencyProperty MaxValueProperty =
       DependencyProperty.Register(nameof(MaxValue), typeof(double), typeof(RangeBarView),
-          new FrameworkPropertyMetadata(100.0, OnMaxValueChanged));
+          new FrameworkPropertyMetadata(100.0));
 
   public double MaxValue {
     get => (double)GetValue(MaxValueProperty);
     set => SetValue(MaxValueProperty, value);
+  }
+
+  /// <summary>When true, the inner bar draws its fill as discrete LED-meter blocks instead of a
+  /// solid fill. Drives <see cref="RangeBar.Segmented"/>.</summary>
+  public static readonly DependencyProperty SegmentedProperty =
+      DependencyProperty.Register(nameof(Segmented), typeof(bool), typeof(RangeBarView),
+          new FrameworkPropertyMetadata(false));
+
+  public bool Segmented {
+    get => (bool)GetValue(SegmentedProperty);
+    set => SetValue(SegmentedProperty, value);
+  }
+
+  /// <summary>Width (px) of each lit LED block when <see cref="Segmented"/> is true. Drives <see cref="RangeBar.SegmentWidth"/>.</summary>
+  public static readonly DependencyProperty SegmentWidthProperty =
+      DependencyProperty.Register(nameof(SegmentWidth), typeof(double), typeof(RangeBarView),
+          new FrameworkPropertyMetadata(4.0));
+
+  public double SegmentWidth {
+    get => (double)GetValue(SegmentWidthProperty);
+    set => SetValue(SegmentWidthProperty, value);
+  }
+
+  /// <summary>Gap (px) between LED blocks when <see cref="Segmented"/> is true. Drives <see cref="RangeBar.SegmentGap"/>.</summary>
+  public static readonly DependencyProperty SegmentGapProperty =
+      DependencyProperty.Register(nameof(SegmentGap), typeof(double), typeof(RangeBarView),
+          new FrameworkPropertyMetadata(2.0));
+
+  public double SegmentGap {
+    get => (double)GetValue(SegmentGapProperty);
+    set => SetValue(SegmentGapProperty, value);
   }
 
   /// <summary>The wrapped bar, available once the template is applied.</summary>
@@ -91,25 +122,8 @@ public class RangeBarView : Control {
 
   public override void OnApplyTemplate() {
     base.OnApplyTemplate();
+    // Value/MinValue/MaxValue flow to the bar via TemplateBindings in the control template;
+    // Bar is captured only so callers can set a theme or the segment style on the primitive.
     Bar = GetTemplateChild(PartBar) as RangeBar;
-    if (Bar != null) {
-      // The scale DPs may have been set (or bound) before the template produced the bar;
-      // push their current values so the fill starts in sync.
-      Bar.MinValue = MinValue;
-      Bar.MaxValue = MaxValue;
-      Bar.Value = Value;
-    }
-  }
-
-  private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-    if (((RangeBarView)d).Bar is { } bar) bar.Value = (double)e.NewValue;
-  }
-
-  private static void OnMinValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-    if (((RangeBarView)d).Bar is { } bar) bar.MinValue = (double)e.NewValue;
-  }
-
-  private static void OnMaxValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-    if (((RangeBarView)d).Bar is { } bar) bar.MaxValue = (double)e.NewValue;
   }
 }

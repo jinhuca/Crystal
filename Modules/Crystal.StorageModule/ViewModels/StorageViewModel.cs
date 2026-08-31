@@ -36,7 +36,7 @@ public sealed class StorageViewModel : BindableBase, IStorageViewModel, IDisposa
 
   // History graphs are registered by their GraphIdentity.Id as each metric sub-view loads, then
   // fed by that same id in ApplyLoad. A consumer that realizes only some tiles feeds only those.
-  private readonly Dictionary<string, PerformanceGraph> _graphs = [];
+  private readonly Dictionary<string, ISingleSeriesGraph> _graphs = [];
 
   public StorageViewModel(IStorageModel model, IEventAggregator events) {
     ShowDetailCommand = new DelegateCommand(
@@ -100,7 +100,7 @@ public sealed class StorageViewModel : BindableBase, IStorageViewModel, IDisposa
   public ICommand ShowDetailCommand { get; }
   public ICommand ShowDashboardCommand { get; }
 
-  public void AttachGraph(string id, PerformanceGraph graph) => _graphs[id] = graph;
+  public void AttachGraph(string id, ISingleSeriesGraph graph) => _graphs[id] = graph;
 
   private void FeedGraph(string id, double value) {
     if (_graphs.TryGetValue(id, out var graph)) graph.AddValue(value);

@@ -21,7 +21,7 @@ public sealed class MemoryViewModel : BindableBase, IMemoryViewModel, IDisposabl
   // Summary-tile history graphs, registered by their GraphIdentity.Id as each metric sub-view
   // loads, then fed by that same id in ApplyLoad. The detail view's usage/commit graphs use a
   // different wrapper control with no id and stay on their own attach methods below.
-  private readonly Dictionary<string, PerformanceGraph> _graphs = [];
+  private readonly Dictionary<string, ISingleSeriesGraph> _graphs = [];
   private PerformanceGraph? _usageGraph;
   private PerformanceGraph? _commitGraph;
 
@@ -108,7 +108,7 @@ public sealed class MemoryViewModel : BindableBase, IMemoryViewModel, IDisposabl
   public ICommand ShowDetailCommand { get; }
   public ICommand ShowDashboardCommand { get; }
 
-  public void AttachGraph(string id, PerformanceGraph graph) => _graphs[id] = graph;
+  public void AttachGraph(string id, ISingleSeriesGraph graph) => _graphs[id] = graph;
   public void AttachUsageGraph(PerformanceGraph graph) => _usageGraph = graph;
   public void AttachCommitGraph(PerformanceGraph graph) => _commitGraph = graph;
 

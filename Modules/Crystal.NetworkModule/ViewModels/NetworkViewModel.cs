@@ -19,7 +19,7 @@ public sealed class NetworkViewModel : BindableBase, INetworkViewModel, IDisposa
   private string _uploadLabel = "—";
   // History graphs are registered by their GraphIdentity.Id as the throughput sub-view loads, then
   // fed by that same id in Apply(). A consumer that realizes only some graphs feeds only those.
-  private readonly Dictionary<string, PerformanceGraph> _graphs = [];
+  private readonly Dictionary<string, ISingleSeriesGraph> _graphs = [];
   private double _throughputMax = ThroughputFloorBytesPerSecond;
   private bool _hasWifi;
   private string _wifiLabel = "—";
@@ -84,7 +84,7 @@ public sealed class NetworkViewModel : BindableBase, INetworkViewModel, IDisposa
   public ICommand ShowDetailCommand { get; }
   public ICommand ShowDashboardCommand { get; }
 
-  public void AttachGraph(string id, PerformanceGraph graph) => _graphs[id] = graph;
+  public void AttachGraph(string id, ISingleSeriesGraph graph) => _graphs[id] = graph;
 
   private void FeedGraph(string id, double value) {
     if (_graphs.TryGetValue(id, out var graph)) graph.AddValue(value);

@@ -39,35 +39,50 @@ internal sealed class FilledLineRenderer {
     var firstPoint = new Point(firstX, firstY);
     var capStart = new Point(firstPoint.X - slotWidth / 2, firstPoint.Y);
 
-    using (StreamGeometryContext fillCtx = _fillGeometry.Open())
-    using (StreamGeometryContext lineCtx = _lineGeometry.Open()) {
-      // Leading half-slot cap: fills the whole occupied first slot while the measured
-      // vertex stays centred within its cell.
-      fillCtx.BeginFigure(new Point(capStart.X, bounds.Bottom), isFilled: true, isClosed: true);
-      fillCtx.LineTo(capStart, isStroked: false, isSmoothJoin: false);
-      fillCtx.LineTo(firstPoint, isStroked: false, isSmoothJoin: false);
+    // fillBrush is documented as commonly null (an overlaid series drawn as a plain line, so it
+    // doesn't occlude the one underneath) - skip opening/building _fillGeometry entirely in that
+    // case rather than tracing every sample into a geometry that's never drawn. linePen isn't
+    // given the same treatment: both call sites (the primary series' LineBrush-derived pen and
+    // AddSeries's required lineBrush parameter) always produce a non-null Pen in practice, so
+    // there's no real case where that work would actually go to waste.
+    bool needsFill = fillBrush != null;
+    StreamGeometryContext? fillCtx = needsFill ? _fillGeometry.Open() : null;
+    try {
+      using (StreamGeometryContext lineCtx = _lineGeometry.Open()) {
+        // Leading half-slot cap: fills the whole occupied first slot while the measured
+        // vertex stays centred within its cell.
+        if (fillCtx != null) {
+          fillCtx.BeginFigure(new Point(capStart.X, bounds.Bottom), isFilled: true, isClosed: true);
+          fillCtx.LineTo(capStart, isStroked: false, isSmoothJoin: false);
+          fillCtx.LineTo(firstPoint, isStroked: false, isSmoothJoin: false);
+        }
 
-      lineCtx.BeginFigure(capStart, isFilled: false, isClosed: false);
-      lineCtx.LineTo(firstPoint, isStroked: true, isSmoothJoin: true);
+        lineCtx.BeginFigure(capStart, isFilled: false, isClosed: false);
+        lineCtx.LineTo(firstPoint, isStroked: true, isSmoothJoin: true);
 
-      Point previousPoint = firstPoint;
+        Point previousPoint = firstPoint;
 
-      for (int i = 1; i < count; i++) {
-        double x = bounds.Right - (count - i - 0.5) * slotWidth;
-        double y = ComputeY(values[i], minValue, range, bounds);
-        var point = new Point(x, y);
+        for (int i = 1; i < count; i++) {
+          double x = bounds.Right - (count - i - 0.5) * slotWidth;
+          double y = ComputeY(values[i], minValue, range, bounds);
+          var point = new Point(x, y);
 
-        fillCtx.LineTo(point, isStroked: false, isSmoothJoin: false);
-        lineCtx.LineTo(point, isStroked: true, isSmoothJoin: true);
+          fillCtx?.LineTo(point, isStroked: false, isSmoothJoin: false);
+          lineCtx.LineTo(point, isStroked: true, isSmoothJoin: true);
 
-        previousPoint = point;
+          previousPoint = point;
+        }
+
+        // Trailing half-slot cap, mirroring the leading one.
+        var capEnd = new Point(previousPoint.X + slotWidth / 2, previousPoint.Y);
+        if (fillCtx != null) {
+          fillCtx.LineTo(capEnd, isStroked: false, isSmoothJoin: false);
+          fillCtx.LineTo(new Point(capEnd.X, bounds.Bottom), isStroked: false, isSmoothJoin: false);
+        }
+        lineCtx.LineTo(capEnd, isStroked: true, isSmoothJoin: true);
       }
-
-      // Trailing half-slot cap, mirroring the leading one.
-      var capEnd = new Point(previousPoint.X + slotWidth / 2, previousPoint.Y);
-      fillCtx.LineTo(capEnd, isStroked: false, isSmoothJoin: false);
-      fillCtx.LineTo(new Point(capEnd.X, bounds.Bottom), isStroked: false, isSmoothJoin: false);
-      lineCtx.LineTo(capEnd, isStroked: true, isSmoothJoin: true);
+    } finally {
+      fillCtx?.Close();
     }
 
     if (fillBrush != null) {

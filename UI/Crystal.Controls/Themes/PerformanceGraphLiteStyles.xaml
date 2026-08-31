@@ -1,0 +1,39 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs"
+    xmlns:converters="clr-namespace:Crystal.Controls.Converters">
+
+  <!--
+    This file lives in the SAME assembly as PerformanceGraphLite and CapacityToRatioConverter, so the
+    xmlns above deliberately omit ";assembly=Crystal.Controls" - including it mid-compile triggers
+    MC3066 (the markup compiler tries to load the assembly currently being built). It's merged into
+    app scope via this assembly's Themes/Generic.xaml, so the keyed style below resolves through
+    StaticResource from any view in any module that references Crystal.Controls.
+  -->
+
+  <converters:CapacityToRatioConverter x:Key="CapacityToRatioConverter"/>
+
+  <!--
+    Keyed, opt-in: the PerformanceGraphLite counterpart of PerformanceGraph's
+    SquareGridPerformanceGraphStyle. Derives Height from ActualWidth/Capacity/Rows via
+    CapacityToRatioConverter (the control's own SquareDotAspectRatio math) so every plotted dot
+    renders square as its container resizes, and stretches horizontally so there's a real
+    ActualWidth to square against. Value range (MinValue/MaxValue), MinHeight floor, and any Flip
+    are left to each consuming tile, exactly as the sibling PerformanceGraph tiles set them.
+  -->
+  <Style x:Key="SquareDotGraphLiteStyle" TargetType="{x:Type graphs:PerformanceGraphLite}">
+    <Setter Property="CornerRadius" Value="1"/>
+    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+    <Setter Property="Height">
+      <Setter.Value>
+        <MultiBinding Converter="{StaticResource CapacityToRatioConverter}">
+          <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}"/>
+          <Binding Path="Capacity" RelativeSource="{RelativeSource Self}"/>
+          <Binding Path="Rows" RelativeSource="{RelativeSource Self}"/>
+        </MultiBinding>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+</ResourceDictionary>

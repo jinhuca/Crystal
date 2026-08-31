@@ -46,7 +46,12 @@ public sealed class GraphAppearanceService {
     CoreBarAppearance.Current.Monochrome = settings.CoreBarColor == CoreBarColor.Grey;
   }
 
-  private void Apply(PerformanceGraph graph) {
+  private void Apply(IPerformanceGraph registered) {
+    // The appearance system drives PerformanceGraph's chrome/kind/accent DPs specifically; the other
+    // graph controls that now share GraphIdentity (Lite, MultipleDS) don't expose that surface, so
+    // they keep whatever XAML style they were given rather than being reshaped here.
+    if (registered is not PerformanceGraph graph) return;
+
     // Property mutation must run on the graph's dispatcher; registrations and saves both originate on
     // the UI thread, but marshal defensively in case that ever changes.
     if (!graph.CheckAccess()) {

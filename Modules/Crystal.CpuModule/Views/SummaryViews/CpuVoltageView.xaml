@@ -12,10 +12,11 @@
       <ColumnDefinition Width="*"/>
       <ColumnDefinition Width="Auto"/>
     </Grid.ColumnDefinitions>
-    <graphs:PerformanceGraph x:Name="CpuVoltageGraph" Grid.Column="0"
-                             graphs:GraphIdentity.Id="Cpu.Voltage"
-                             MinHeight="{StaticResource SummaryGraphMinHeight}"
-                             Margin="0,1,0,1" MinValue="0" MaxValue="2"/>
+    <graphs:PerformanceGraphLite x:Name="CpuVoltageGraph" Grid.Column="0"
+                                 graphs:GraphIdentity.Id="Cpu.Voltage"
+                                 Style="{StaticResource SquareDotGraphLiteStyle}"
+                                 MinHeight="{StaticResource SummaryGraphMinHeight}"
+                                 Margin="0,1,0,1" MinValue="0" MaxValue="2"/>
     <StackPanel Grid.Column="1" Style="{StaticResource SummaryStackPanelStyle}">
       <StackPanel Orientation="Horizontal">
         <TextBlock Text="{Binding Voltage, StringFormat={}{0:0.00}}" Style="{StaticResource MetricValue}" FontSize="{StaticResource BigValueFontSize}"/>

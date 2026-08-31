@@ -8,6 +8,9 @@
          the dictionaries it merges). Runtime StaticResource resolution comes from the Shell's App.xaml
          merging this whole Generic.xaml into app scope — so this file is listed in exactly one place. -->
     <ResourceDictionary Source="/Crystal.Controls;component/Themes/PerformanceGraphSampleStyles.xaml"/>
+    <!-- Keyed, opt-in PerformanceGraphLite styles (the square-dot counterpart of the keyed
+         PerformanceGraph sample styles above); same one-place-merge reasoning as those. -->
+    <ResourceDictionary Source="/Crystal.Controls;component/Themes/PerformanceGraphLiteStyles.xaml"/>
     <ResourceDictionary Source="/Crystal.Controls;component/Themes/RangeBarStyles.xaml"/>
     <ResourceDictionary Source="/Crystal.Controls;component/Themes/ScrollBarStyles.xaml"/>
     <ResourceDictionary Source="/Crystal.Controls;component/Themes/LoadingHostStyles.xaml"/>

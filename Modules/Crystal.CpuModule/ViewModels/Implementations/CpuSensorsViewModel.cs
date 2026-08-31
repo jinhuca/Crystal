@@ -137,7 +137,7 @@ public sealed class CpuSensorsViewModel : BindableBase, ICpuSensorViewModel {
   /// History graphs are registered by their GraphIdentity.Id as each metric sub-view loads, then
   /// fed by that same id in Update(). A consumer that realizes only some tiles feeds only those.
   /// </summary>
-  private readonly Dictionary<string, PerformanceGraph> _graphs = [];
+  private readonly Dictionary<string, ISingleSeriesGraph> _graphs = [];
 
   /// <summary>
   /// Current CPU load percentage, 0–100. Updated in place on every sensor emission.
@@ -364,8 +364,8 @@ public sealed class CpuSensorsViewModel : BindableBase, ICpuSensorViewModel {
   /// Attaches a performance graph to this view model, keyed by its identity. The graph will be fed
   /// </summary>
   /// <param name="id">string</param>
-  /// <param name="graph">PerformanceGraph</param>
-  public void AttachGraph(string id, PerformanceGraph graph) => _graphs[id] = graph;
+  /// <param name="graph">ISingleSeriesGraph</param>
+  public void AttachGraph(string id, ISingleSeriesGraph graph) => _graphs[id] = graph;
 
   /// <summary>
   /// Feeds the performance graph identified by <paramref name="id"/> with the specified <paramref name="value"/>.
