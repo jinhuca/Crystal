@@ -62,6 +62,21 @@ public class RangeBar : FrameworkElement {
       DependencyProperty.Register(nameof(BorderThickness), typeof(double), typeof(RangeBar),
           new FrameworkPropertyMetadata(3.0, FrameworkPropertyMetadataOptions.AffectsRender, OnBorderThicknessChanged));
 
+  /// <summary>Identifies the <see cref="Segmented"/> dependency property.</summary>
+  public static readonly DependencyProperty SegmentedProperty =
+      DependencyProperty.Register(nameof(Segmented), typeof(bool), typeof(RangeBar),
+          new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsRender, OnSegmentedChanged));
+
+  /// <summary>Identifies the <see cref="SegmentWidth"/> dependency property.</summary>
+  public static readonly DependencyProperty SegmentWidthProperty =
+      DependencyProperty.Register(nameof(SegmentWidth), typeof(double), typeof(RangeBar),
+          new FrameworkPropertyMetadata(4.0, FrameworkPropertyMetadataOptions.AffectsRender, OnSegmentWidthChanged));
+
+  /// <summary>Identifies the <see cref="SegmentGap"/> dependency property.</summary>
+  public static readonly DependencyProperty SegmentGapProperty =
+      DependencyProperty.Register(nameof(SegmentGap), typeof(double), typeof(RangeBar),
+          new FrameworkPropertyMetadata(2.0, FrameworkPropertyMetadataOptions.AffectsRender, OnSegmentGapChanged));
+
   private readonly BackgroundRenderer _backgroundRender = new();
   private readonly FillRenderer _fillRender = new();
   private readonly BorderRenderer _borderRender = new();
@@ -120,6 +135,28 @@ public class RangeBar : FrameworkElement {
     set => SetValue(BorderThicknessProperty, value);
   }
 
+  /// <summary>When true, the filled portion is drawn as a row of discrete LED-meter blocks
+  /// (each <see cref="SegmentWidth"/> wide, separated by <see cref="SegmentGap"/>) rather than a
+  /// solid fill; the block straddling the fill edge is clipped so the meter reads as a partial
+  /// value instead of snapping to the next whole block. The unfilled remainder still shows
+  /// <see cref="TrackBrush"/> behind the blocks.</summary>
+  public bool Segmented {
+    get => (bool)GetValue(SegmentedProperty);
+    set => SetValue(SegmentedProperty, value);
+  }
+
+  /// <summary>Width (device-independent px) of each lit LED block when <see cref="Segmented"/> is true.</summary>
+  public double SegmentWidth {
+    get => (double)GetValue(SegmentWidthProperty);
+    set => SetValue(SegmentWidthProperty, value);
+  }
+
+  /// <summary>Gap (device-independent px) between LED blocks when <see cref="Segmented"/> is true.</summary>
+  public double SegmentGap {
+    get => (double)GetValue(SegmentGapProperty);
+    set => SetValue(SegmentGapProperty, value);
+  }
+
   /// <summary>Applies every property the given theme sets, leaving anything it leaves null untouched.</summary>
   public void ApplyTheme(RangeBarTheme theme) {
     if (theme == null) return;
@@ -150,6 +187,15 @@ public class RangeBar : FrameworkElement {
     bar._style.BorderPen = Helpers.CreateFrozenPen(bar._style.BorderPen.Brush, thickness);
     bar._style.BorderThickness = thickness;
   }
+
+  private static void OnSegmentedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) =>
+      ((RangeBar)d)._style.Segmented = (bool)e.NewValue;
+
+  private static void OnSegmentWidthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) =>
+      ((RangeBar)d)._style.SegmentWidth = (double)e.NewValue;
+
+  private static void OnSegmentGapChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) =>
+      ((RangeBar)d)._style.SegmentGap = (double)e.NewValue;
 
   protected override Size MeasureOverride(Size availableSize) {
     double width = double.IsInfinity(availableSize.Width) ? 200 : availableSize.Width;

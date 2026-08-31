@@ -1,8 +1,6 @@
-﻿using System.Windows;
+using System.Windows;
 
-namespace Crystal.Controls.Demo; 
-/// <summary>
-/// Interaction logic for App.xaml
-/// </summary>
+namespace Crystal.Controls.Demo;
+
 public partial class App : Application {
 }

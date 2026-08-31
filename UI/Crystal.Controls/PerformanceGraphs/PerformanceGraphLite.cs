@@ -1,5 +1,8 @@
 using Crystal.Controls.PerformanceGraphs.Buffers;
+using Crystal.Controls.PerformanceGraphs.Kinds;
 using System;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Media;
 
@@ -61,6 +64,27 @@ namespace Crystal.Controls.PerformanceGraphs;
 /// rectangle like every other dot (see <see cref="AddDotFigure"/>) - never a different shape,
 /// partial opacity, or a clip.
 /// </para>
+/// <para>
+/// <b>Color mode.</b> <see cref="ColorMode"/> selects between the value-banded coloring described
+/// above (<see cref="DotColorMode.Banded"/>, the default - preserves the original behavior) and a
+/// single flat <see cref="DotColor"/> (<see cref="DotColorMode.SingleColor"/>). The two modes
+/// aren't just a different paint step: <see cref="DotColorMode.SingleColor"/> skips the per-row
+/// band lookup entirely and batches every dot into one reused <see cref="StreamGeometry"/> with
+/// exactly one <see cref="DrawingContext.DrawGeometry(Brush, Pen, Geometry)"/> call per frame,
+/// instead of up to nine geometries/calls - and the nine band geometries are never even allocated
+/// for a graph that stays in <see cref="DotColorMode.SingleColor"/>.
+/// </para>
+/// <para>
+/// <b>Corner radius.</b> <see cref="CornerRadius"/> rounds every dot's corners by a single,
+/// uniform pixel radius (not the four-value <see cref="System.Windows.CornerRadius"/> struct
+/// <see cref="System.Windows.Controls.Border"/> uses - just a plain <see cref="double"/>, since a
+/// small square dot has no meaningful use for four independent corners). Defaults to 0 (sharp
+/// corners, the original unrounded look). <see cref="AddDotFigure"/> clamps the radius per dot to
+/// at most half of that dot's own smaller dimension, so an oversized value can't self-intersect
+/// the geometry - the practical ceiling is a fully round dot when the radius reaches half the
+/// smaller side, at which point a square dot reads as a circle without a second shape or a
+/// separate rendering path to switch between.
+/// </para>
 /// </remarks>
 public sealed class PerformanceGraphLite : FrameworkElement {
   private const int DefaultCapacity = 60;
@@ -73,6 +97,22 @@ public sealed class PerformanceGraphLite : FrameworkElement {
   // for column. A fractional dot keeps this same width and starting height, just shortened.
   private const double ColumnWidthRatio = 0.7;
   private const double DotSizeRatio = 0.55;
+
+  /// <summary>
+  /// The Height/Width ratio that makes every rendered dot come out perfectly square for a graph
+  /// with the given <paramref name="rows"/>/<paramref name="capacity"/> - not merely square grid
+  /// cells, the actual drawn dot after <see cref="ColumnWidthRatio"/>/<see cref="DotSizeRatio"/>
+  /// shrink each cell down to the dot inside it. Multiply this by an actual pixel width to get the
+  /// exact height that squares every dot at that width, whatever the width turns out to be -
+  /// this is the single source of truth for that math (matching exactly what <see cref="OnRender"/>
+  /// itself computes), meant for a XAML binding/converter that only has ActualWidth to work with
+  /// and needs to derive Height from it without duplicating or guessing these ratio constants.
+  /// </summary>
+  public static double SquareDotAspectRatio(int rows, int capacity) {
+    if (rows <= 0) throw new ArgumentOutOfRangeException(nameof(rows), "Rows must be positive.");
+    if (capacity <= 0) throw new ArgumentOutOfRangeException(nameof(capacity), "Capacity must be positive.");
+    return (ColumnWidthRatio / DotSizeRatio) * (rows / (double)capacity);
+  }
 
   // Default green→red gauge ramp (Color1 green … Color9 red). An unconfigured graph reads as a
   // linear low-to-high palette rather than flat gray. Each brush is frozen once and shared by
@@ -99,6 +139,11 @@ public sealed class PerformanceGraphLite : FrameworkElement {
     }
     return brushes;
   }
+
+  /// <summary>Identifies the <see cref="ValuesSource"/> dependency property.</summary>
+  public static readonly DependencyProperty ValuesSourceProperty =
+      DependencyProperty.Register(nameof(ValuesSource), typeof(ObservableCollection<double>), typeof(PerformanceGraphLite),
+          new FrameworkPropertyMetadata(null, OnValuesSourceChanged));
 
   /// <summary>Identifies the <see cref="GraphBackground"/> dependency property.</summary>
   public static readonly DependencyProperty GraphBackgroundProperty =
@@ -127,6 +172,25 @@ public sealed class PerformanceGraphLite : FrameworkElement {
   public static readonly DependencyProperty FlipProperty =
       DependencyProperty.Register(nameof(Flip), typeof(bool), typeof(PerformanceGraphLite),
           new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsRender));
+
+  /// <summary>Identifies the <see cref="ColorMode"/> dependency property.</summary>
+  public static readonly DependencyProperty ColorModeProperty =
+      DependencyProperty.Register(nameof(ColorMode), typeof(DotColorMode), typeof(PerformanceGraphLite),
+          new FrameworkPropertyMetadata(DotColorMode.Banded, FrameworkPropertyMetadataOptions.AffectsRender));
+
+  /// <summary>Identifies the <see cref="CornerRadius"/> dependency property.</summary>
+  public static readonly DependencyProperty CornerRadiusProperty =
+      DependencyProperty.Register(nameof(CornerRadius), typeof(double), typeof(PerformanceGraphLite),
+          new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender),
+          ValidateCornerRadius);
+
+  private static bool ValidateCornerRadius(object value) => value is double radius && radius >= 0;
+
+  /// <summary>Identifies the <see cref="DotColor"/> dependency property.</summary>
+  public static readonly DependencyProperty DotColorProperty =
+      DependencyProperty.Register(nameof(DotColor), typeof(Brush), typeof(PerformanceGraphLite),
+          new FrameworkPropertyMetadata(Brushes.Gray, FrameworkPropertyMetadataOptions.AffectsRender,
+              (d, e) => ((PerformanceGraphLite)d)._resolvedDotColor = ResolveSolidBrush((Brush)e.NewValue)));
 
   /// <summary>Identifies the <see cref="Color1"/> dependency property.</summary>
   public static readonly DependencyProperty Color1Property = RegisterBandColor(nameof(Color1), 0);
@@ -160,6 +224,17 @@ public sealed class PerformanceGraphLite : FrameworkElement {
   // frame), never one per dot and never one per sample.
   private readonly StreamGeometry[] _bandGeometries = { new(), new(), new(), new(), new(), new(), new(), new(), new() };
 
+  // The single reused StreamGeometry for SingleColor mode - lazily created on first render in that
+  // mode, for the same reason _bandGeometries above is lazy, just in the other direction: a graph
+  // that only ever renders Banded never allocates this one either.
+  private StreamGeometry? _singleGeometry;
+
+  private static StreamGeometry[] CreateBandGeometries() {
+    var geometries = new StreamGeometry[BandCount];
+    for (int i = 0; i < BandCount; i++) geometries[i] = new StreamGeometry();
+    return geometries;
+  }
+
   // Resolved once per color change, not per frame - mirrors the default ramp until a Color1..9
   // DP's changed callback above updates the matching slot. Clone so a control can freeze its own
   // (frozen) brush references without touching the shared defaults array.
@@ -169,6 +244,34 @@ public sealed class PerformanceGraphLite : FrameworkElement {
 
   /// <summary>Number of samples retained and plotted. Fixed at construction.</summary>
   public int Capacity { get; }
+
+  /// <summary>Identifies the <see cref="Capacity"/> dependency property.</summary>
+  public static readonly DependencyProperty CapacityProperty =
+      DependencyProperty.Register(nameof(Capacity), typeof(int), typeof(PerformanceGraphLite),
+          new FrameworkPropertyMetadata(DefaultCapacity, FrameworkPropertyMetadataOptions.AffectsRender, OnCapacityChanged),
+          ValidateCapacity);
+
+  private static bool ValidateCapacity(object value) => value is int capacity && capacity > 0;
+
+  private static void OnCapacityChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+    var graph = (PerformanceGraphLite)d;
+    int newCapacity = (int)e.NewValue;
+    if (graph._values != null && newCapacity == graph._values.Capacity) return; // e.g. the constructor's own sync set
+
+    // Unlike PerformanceGraph.HistoryLength, this does not carry samples over - see the class
+    // remarks for why. This exists so Capacity is reachable from XAML/bindings/styles at all
+    // (the (int capacity) constructor overload never was reachable from plain XAML), not to
+    // support changing it live under a running feed.
+    graph._values = new CircularBuffer<double>(newCapacity);
+  }
+
+  /// <summary>Number of samples retained and plotted. Settable, but see the class remarks - this
+  /// does not preserve existing samples across a change the way <see cref="PerformanceGraph"/>'s
+  /// <c>HistoryLength</c> does.</summary>
+  public int Capacity {
+    get => (int)GetValue(CapacityProperty);
+    set => SetValue(CapacityProperty, value);
+  }
 
   // Off-screen render suspension — identical rationale and mechanics to PerformanceGraph's: a
   // collapsed tile, minimized window, or closed detail window flips IsVisible to false. Samples
@@ -188,6 +291,12 @@ public sealed class PerformanceGraphLite : FrameworkElement {
 
     Capacity = capacity;
     _values = new CircularBuffer<double>(capacity);
+
+    // Keep the Capacity DP in step with the constructor argument (the DP defaults to
+    // DefaultCapacity, so a non-default programmatic size would otherwise disagree with it).
+    // SetCurrentValue leaves a later Style/Binding/XAML attribute free to override;
+    // OnCapacityChanged no-ops here because _values is already this size.
+    SetCurrentValue(CapacityProperty, capacity);
 
     SnapsToDevicePixels = true;
     UseLayoutRounding = true;
@@ -220,6 +329,64 @@ public sealed class PerformanceGraphLite : FrameworkElement {
       return;
     }
     InvalidateVisual();
+  }
+
+  /// <summary>
+  /// Binds the graph's data to an <see cref="ObservableCollection{T}"/> of <see cref="double"/>
+  /// instead of driving it imperatively via <see cref="AddValue"/> from code-behind - e.g.
+  /// <c>ValuesSource="{Binding UtilizationSamples}"</c> in XAML. Setting this property (assignment
+  /// or binding alike) clears the buffer and seeds it with the collection's current contents, then
+  /// every subsequent <see cref="INotifyCollectionChanged.CollectionChanged"/> notification that
+  /// carries new items appends them through the same <see cref="AddValue"/> path used by the
+  /// code-behind API - same O(1) ring-buffer append, same off-screen render-suspension behavior.
+  /// A <see cref="NotifyCollectionChangedAction.Reset"/> (e.g. <c>Collection.Clear()</c>) clears
+  /// the buffer and re-seeds it from the collection's post-reset contents; Remove/Replace/Move
+  /// aren't translated into buffer edits beyond appending any NewItems they carry - there's no
+  /// buffer operation that corresponds to "un-plot a sample already drawn," so aging out old
+  /// samples is left entirely to the ring buffer's own capacity-driven eviction, not to source
+  /// removals.
+  /// <para>
+  /// <b>Threading:</b> unlike <see cref="AddValue"/>, which accepts calls from a background thread
+  /// and hops onto the UI thread itself, <see cref="ObservableCollection{T}"/> is not safe to
+  /// mutate from a background thread - only the thread that owns the collection may call
+  /// Add/Clear on it. Keep using <see cref="AddValue"/> directly for a sensor-polling thread; use
+  /// <see cref="ValuesSource"/> when the data both originates on and is mutated from the UI thread
+  /// (e.g. a view-model collection updated from a DispatcherTimer), or when the feed already
+  /// marshals its own collection edits onto it.
+  /// </para>
+  /// </summary>
+  public ObservableCollection<double>? ValuesSource {
+    get => (ObservableCollection<double>?)GetValue(ValuesSourceProperty);
+    set => SetValue(ValuesSourceProperty, value);
+  }
+
+  private static void OnValuesSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+    var graph = (PerformanceGraphLite)d;
+
+    if (e.OldValue is ObservableCollection<double> oldSource)
+      oldSource.CollectionChanged -= graph.OnValuesSourceCollectionChanged;
+
+    graph.ClearValues();
+
+    if (e.NewValue is ObservableCollection<double> newSource) {
+      foreach (double value in newSource) graph.AddValue(value);
+      newSource.CollectionChanged += graph.OnValuesSourceCollectionChanged;
+    }
+  }
+
+  private void OnValuesSourceCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e) {
+    if (e.Action == NotifyCollectionChangedAction.Reset) {
+      ClearValues();
+      if (sender is ObservableCollection<double> source)
+        foreach (double value in source) AddValue(value);
+      return;
+    }
+
+    // Add, Replace, and Move all surface their new elements via NewItems - appending them covers
+    // the live-append scenario this property exists for. There's no corresponding "remove the
+    // matching sample" for a plain Remove, so a bare Remove is a no-op here by design.
+    if (e.NewItems == null) return;
+    foreach (double value in e.NewItems) AddValue(value);
   }
 
   /// <summary>Solid backdrop painted behind the dots. Null (the default) paints nothing at all,
@@ -257,6 +424,36 @@ public sealed class PerformanceGraphLite : FrameworkElement {
   public bool Flip {
     get => (bool)GetValue(FlipProperty);
     set => SetValue(FlipProperty, value);
+  }
+
+  /// <summary>Selects whether dots are colored by the <see cref="Color1"/>..<see cref="Color9"/>
+  /// value bands (<see cref="DotColorMode.Banded"/>, the default) or by a single flat
+  /// <see cref="DotColor"/> (<see cref="DotColorMode.SingleColor"/>). Switching to
+  /// <see cref="DotColorMode.SingleColor"/> also switches the render path to exactly one draw call
+  /// per frame with no band lookup - see the class remarks.</summary>
+  public DotColorMode ColorMode {
+    get => (DotColorMode)GetValue(ColorModeProperty);
+    set => SetValue(ColorModeProperty, value);
+  }
+
+  /// <summary>Uniform corner radius, in pixels, applied to every dot. Not the four-value
+  /// <see cref="System.Windows.CornerRadius"/> struct - a plain <see cref="double"/>, since a
+  /// small square dot has no use for four independent corners. Defaults to 0 (sharp corners).
+  /// <see cref="AddDotFigure"/> clamps this per dot to at most half of that dot's own smaller
+  /// dimension, so a value larger than the dot itself can't self-intersect the geometry - set it
+  /// to half the dot size (see <see cref="SquareDotAspectRatio"/> for computing a size where width
+  /// and height match) for a fully round dot.</summary>
+  public double CornerRadius {
+    get => (double)GetValue(CornerRadiusProperty);
+    set => SetValue(CornerRadiusProperty, value);
+  }
+
+  /// <summary>The single color used for every dot when <see cref="ColorMode"/> is
+  /// <see cref="DotColorMode.SingleColor"/>. Ignored (and never resolved into the render path) in
+  /// <see cref="DotColorMode.Banded"/> mode.</summary>
+  public Brush DotColor {
+    get => (Brush)GetValue(DotColorProperty);
+    set => SetValue(DotColorProperty, value);
   }
 
   /// <summary>Color for the lowest (1st) of the 9 value bands. Defaults to green.</summary>
@@ -334,6 +531,28 @@ public sealed class PerformanceGraphLite : FrameworkElement {
 
   protected override Size ArrangeOverride(Size finalSize) => finalSize;
 
+  // Bundles the per-frame layout math shared by both render paths into one value passed by `in`
+  // (a struct, so this costs nothing beyond a handful of doubles on the stack - no heap allocation
+  // either mode's caller wouldn't already have paid for as local variables).
+  private readonly struct DotLayout {
+    public DotLayout(double slotWidth, double dotColumnWidth, double columnInset,
+        double rowHeight, double dotSize, double rowPadding) {
+      SlotWidth = slotWidth;
+      DotColumnWidth = dotColumnWidth;
+      ColumnInset = columnInset;
+      RowHeight = rowHeight;
+      DotSize = dotSize;
+      RowPadding = rowPadding;
+    }
+
+    public double SlotWidth { get; }
+    public double DotColumnWidth { get; }
+    public double ColumnInset { get; }
+    public double RowHeight { get; }
+    public double DotSize { get; }
+    public double RowPadding { get; }
+  }
+
   protected override void OnRender(DrawingContext dc) {
     base.OnRender(dc);
 
@@ -360,7 +579,70 @@ public sealed class PerformanceGraphLite : FrameworkElement {
     if (dotSize > dotColumnWidth) dotSize = dotColumnWidth;
     double rowPadding = (rowHeight - dotSize) / 2;
 
+    var layout = new DotLayout(slotWidth, dotColumnWidth, columnInset, rowHeight, dotSize, rowPadding);
     bool flip = Flip;
+    double cornerRadius = CornerRadius;
+
+    // The two modes are genuinely different render paths, not a shared loop with a color lookup
+    // swapped out - SingleColor never touches BandForRow, never allocates the nine band
+    // geometries, and never opens more than one StreamGeometryContext for the whole frame.
+    if (ColorMode == DotColorMode.SingleColor)
+      RenderSingleColor(dc, bounds, count, rows, minValue, range, in layout, flip, cornerRadius);
+    else
+      RenderBanded(dc, bounds, count, rows, minValue, range, in layout, flip, cornerRadius);
+  }
+
+  // SingleColor path: one geometry, one Open()/Close() pair, one DrawGeometry call - regardless of
+  // sample count or Rows. No BandForRow call anywhere in this method.
+  private void RenderSingleColor(DrawingContext dc, Rect bounds, int count, int rows, double minValue,
+      double range, in DotLayout layout, bool flip, double cornerRadius) {
+    StreamGeometry geometry = _singleGeometry ??= new StreamGeometry();
+
+    using (StreamGeometryContext ctx = geometry.Open()) {
+      for (int i = 0; i < count; i++) {
+        double slotRight = bounds.Right - (count - 1 - i) * layout.SlotWidth;
+        double left = slotRight - layout.SlotWidth + layout.ColumnInset;
+        double cx = left + layout.DotColumnWidth / 2;
+
+        double t = (_values[i] - minValue) / range;
+        t = t < 0 ? 0 : (t > 1 ? 1 : t);
+
+        double fillHeight = t * bounds.Height;
+        int fullRows = (int)(fillHeight / layout.RowHeight);
+        if (fullRows > rows) fullRows = rows;
+
+        double partialFraction = 0;
+        if (fullRows < rows) {
+          partialFraction = (fillHeight - fullRows * layout.RowHeight) / layout.RowHeight;
+          partialFraction = partialFraction < 0 ? 0 : (partialFraction > 1 ? 1 : partialFraction);
+        }
+
+        for (int r = 0; r < fullRows; r++) {
+          double top = flip
+              ? bounds.Top + r * layout.RowHeight + layout.RowPadding
+              : bounds.Bottom - (r + 1) * layout.RowHeight + layout.RowPadding;
+          AddDotFigure(ctx, cx - layout.DotSize / 2, top, layout.DotSize, layout.DotSize, cornerRadius);
+        }
+
+        if (partialFraction > 0 && fullRows < rows) {
+          double partialHeight = layout.DotSize * partialFraction;
+          double top = flip
+              ? bounds.Top + fullRows * layout.RowHeight + layout.RowPadding
+              : bounds.Bottom - (fullRows + 1) * layout.RowHeight + layout.RowPadding + (layout.DotSize - partialHeight);
+          AddDotFigure(ctx, cx - layout.DotSize / 2, top, layout.DotSize, partialHeight, cornerRadius);
+        }
+      }
+    }
+
+    dc.DrawGeometry(_resolvedDotColor, null, geometry);
+  }
+
+  // Banded path: unchanged algorithm from before ColorMode existed, just gated behind it and
+  // reading layout fields instead of locals. Up to nine geometries, opened/closed once per frame,
+  // one DrawGeometry call per band that actually has a dot in it this frame.
+  private void RenderBanded(DrawingContext dc, Rect bounds, int count, int rows, double minValue,
+      double range, in DotLayout layout, bool flip, double cornerRadius) {
+    StreamGeometry[] geometries = _bandGeometries ??= CreateBandGeometries();
 
     var contexts = new StreamGeometryContext[BandCount];
     try {
@@ -425,9 +707,39 @@ public sealed class PerformanceGraphLite : FrameworkElement {
     double right = left + width;
     double bottom = top + height;
 
-    ctx.BeginFigure(new Point(left, top), isFilled: true, isClosed: true);
-    ctx.LineTo(new Point(right, top), isStroked: false, isSmoothJoin: false);
-    ctx.LineTo(new Point(right, bottom), isStroked: false, isSmoothJoin: false);
-    ctx.LineTo(new Point(left, bottom), isStroked: false, isSmoothJoin: false);
+    // Clamped per dot, not once per frame: a fractional (partially-lit) row's shortened height
+    // must not let the radius exceed half of whichever dimension is smaller here specifically, or
+    // the corner arcs below would overlap/self-intersect for that one shortened dot even though
+    // full-height dots in the same frame are fine at the same CornerRadius value.
+    double radius = cornerRadius;
+    double maxRadius = Math.Min(width, height) / 2;
+    if (radius > maxRadius) radius = maxRadius;
+
+    if (radius <= 0) {
+      // Plain rectangle - unchanged from before CornerRadius existed, and the common case (the
+      // property defaults to 0), so it stays the cheapest path rather than routing everything
+      // through the arc-based corners below just to draw them at a zero radius.
+      ctx.BeginFigure(new Point(left, top), isFilled: true, isClosed: true);
+      ctx.LineTo(new Point(right, top), isStroked: false, isSmoothJoin: false);
+      ctx.LineTo(new Point(right, bottom), isStroked: false, isSmoothJoin: false);
+      ctx.LineTo(new Point(left, bottom), isStroked: false, isSmoothJoin: false);
+      return;
+    }
+
+    // Rounded rectangle: each corner replaced by a 90-degree ArcTo (always the "small" arc, since
+    // 90 degrees is under the 180-degree large/small boundary), traced clockwise around the
+    // perimeter starting just right of the top-left corner. The final ArcTo's endpoint is exactly
+    // the BeginFigure start point, so the figure is already closed by the segments themselves -
+    // isClosed: true here governs the corner join, not an extra implicit closing line.
+    var radii = new Size(radius, radius);
+    ctx.BeginFigure(new Point(left + radius, top), isFilled: true, isClosed: true);
+    ctx.LineTo(new Point(right - radius, top), isStroked: false, isSmoothJoin: false);
+    ctx.ArcTo(new Point(right, top + radius), radii, 0, isLargeArc: false, SweepDirection.Clockwise, isStroked: false, isSmoothJoin: false);
+    ctx.LineTo(new Point(right, bottom - radius), isStroked: false, isSmoothJoin: false);
+    ctx.ArcTo(new Point(right - radius, bottom), radii, 0, isLargeArc: false, SweepDirection.Clockwise, isStroked: false, isSmoothJoin: false);
+    ctx.LineTo(new Point(left + radius, bottom), isStroked: false, isSmoothJoin: false);
+    ctx.ArcTo(new Point(left, bottom - radius), radii, 0, isLargeArc: false, SweepDirection.Clockwise, isStroked: false, isSmoothJoin: false);
+    ctx.LineTo(new Point(left, top + radius), isStroked: false, isSmoothJoin: false);
+    ctx.ArcTo(new Point(left + radius, top), radii, 0, isLargeArc: false, SweepDirection.Clockwise, isStroked: false, isSmoothJoin: false);
   }
 }

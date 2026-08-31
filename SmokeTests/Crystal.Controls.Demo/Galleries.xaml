@@ -1,0 +1,96 @@
+﻿<Window x:Class="Crystal.Controls.Demo.Galleries"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs;assembly=Crystal.Controls"
+        xmlns:graphControls="clr-namespace:Crystal.Controls.PerformanceGraphs.Controls;assembly=Crystal.Controls"
+        xmlns:barControls="clr-namespace:Crystal.Controls.RangeBars.Controls;assembly=Crystal.Controls"
+        xmlns:rangeBars="clr-namespace:Crystal.Controls.RangeBars;assembly=Crystal.Controls"
+        xmlns:conv="clr-namespace:Crystal.Controls.Converters;assembly=Crystal.Controls"
+        xmlns:meters="clr-namespace:Crystal.Controls.Meters;assembly=Crystal.Controls"
+        xmlns:comet="clr-namespace:Crystal.Controls.Comet;assembly=Crystal.Controls"
+        xmlns:loading="clr-namespace:Crystal.Controls.Loading;assembly=Crystal.Controls"
+        Title="Crystal.Controls Demo" Height="1000" Width="1180"
+        Background="#0A0A0A" FontFamily="Segoe UI">
+	<Window.Resources>
+		<Style x:Key="SectionHeaderStyle" TargetType="TextBlock">
+			<Setter Property="Foreground" Value="#EAEAEA"/>
+			<Setter Property="FontSize" Value="16"/>
+			<Setter Property="FontWeight" Value="Bold"/>
+			<Setter Property="Margin" Value="0,26,0,6"/>
+		</Style>
+		<Style x:Key="SectionSubtitleStyle" TargetType="TextBlock">
+			<Setter Property="Foreground" Value="#8A8A8A"/>
+			<Setter Property="FontSize" Value="12"/>
+			<Setter Property="Margin" Value="0,0,0,12"/>
+			<Setter Property="TextWrapping" Value="Wrap"/>
+		</Style>
+		<Style x:Key="TileCaptionStyle" TargetType="TextBlock">
+			<Setter Property="Foreground" Value="#AAAAAA"/>
+			<Setter Property="FontSize" Value="12"/>
+			<Setter Property="FontWeight" Value="SemiBold"/>
+			<Setter Property="Margin" Value="0,0,0,6"/>
+		</Style>
+		<Style x:Key="TileBorderStyle" TargetType="Border">
+			<Setter Property="Background" Value="#141414"/>
+			<Setter Property="BorderBrush" Value="#2A2A2A"/>
+			<Setter Property="BorderThickness" Value="1"/>
+			<Setter Property="CornerRadius" Value="6"/>
+			<Setter Property="Padding" Value="10"/>
+			<Setter Property="Margin" Value="0,0,12,0"/>
+			<Setter Property="Width" Value="220"/>
+		</Style>
+		<!-- Value-banded fill: 0-20 green, 20-40 yellow, 40-60 orange, 60-80 red, 80-100 dark red,
+         out-of-range grey. Band brushes are listed low-to-high as the converter's direct content. -->
+		<conv:ValueToBrushConverter x:Key="LoadColor" Minimum="0" Step="20" Fallback="#9AA0A6">
+			<SolidColorBrush Color="#22B14C"/>
+			<SolidColorBrush Color="#E8C22A"/>
+			<SolidColorBrush Color="#FF7F27"/>
+			<SolidColorBrush Color="#ED1C24"/>
+			<SolidColorBrush Color="#B0171F"/>
+		</conv:ValueToBrushConverter>
+	</Window.Resources>
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition/>
+			<RowDefinition/>
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition/>
+			<ColumnDefinition/>
+			<ColumnDefinition/>
+			<ColumnDefinition/>
+		</Grid.ColumnDefinitions>
+		<StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4">
+			<TextBlock Text="Crystal.Controls Demo" Foreground="White" FontSize="24" FontWeight="Bold"/>
+			<TextBlock Foreground="#8A8A8A" FontSize="13" Margin="0,4,0,0" TextWrapping="Wrap"
+                 Text="Every control in the library, live-updating off one shared DispatcherTimer (see AllControlsWindow.xaml.cs). This single window replaces the earlier MainWindow/GraphLiteWindow/MultipleDSWindow split."/>
+		</StackPanel>
+		<StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4">
+			<!-- ============================================================================
+           A: PerformanceGraph - the four GraphKinds, same data, theme applied per tile
+           via ApplyTheme(GraphThemes.X(kind)) in code-behind.
+           ============================================================================ -->
+			<TextBlock Text="PerformanceGraph — the four GraphKinds" Style="{StaticResource SectionHeaderStyle}"/>
+			<TextBlock Style="{StaticResource SectionSubtitleStyle}"
+                 Text="Same live series (a simulated utilization %) rendered by each GraphKind side by side."/>
+		</StackPanel>
+		<Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4">
+			<Border Grid.Row="2" Grid.Column="0" Style="{StaticResource TileBorderStyle}">
+				<StackPanel>
+					<TextBlock Text="Line" Style="{StaticResource TileCaptionStyle}"/>
+					<graphs:PerformanceGraph x:Name="KindLineGraph" HorizontalAlignment="Stretch" Kind="Line"
+																 MinValue="0" MaxValue="100" HistoryLength="40"/>
+				</StackPanel>
+			</Border>
+			<Border Grid.Row="2" Grid.Column="1" Style="{StaticResource TileBorderStyle}">
+				<StackPanel>
+					<TextBlock Text="Bar" Style="{StaticResource TileCaptionStyle}"/>
+					<graphs:PerformanceGraph x:Name="KindBarGraph" Kind="Bar"
+                                      MinValue="0" MaxValue="100" HistoryLength="40"/>
+				</StackPanel>
+			</Border>
+		</Grid>
+	</Grid>
+</Window>
