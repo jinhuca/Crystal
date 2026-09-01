@@ -23,8 +23,8 @@
     are left to each consuming tile, exactly as the sibling PerformanceGraph tiles set them.
   -->
   <Style x:Key="SquareDotGraphLiteStyle" TargetType="{x:Type graphs:PerformanceGraphLite}">
-    <Setter Property="CornerRadius" Value="1"/>
     <Setter Property="HorizontalAlignment" Value="Stretch"/>
+    <Setter Property="CornerRadius" Value="1"/>
     <Setter Property="Height">
       <Setter.Value>
         <MultiBinding Converter="{StaticResource CapacityToRatioConverter}">

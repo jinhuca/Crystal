@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:prism="http://prismlibrary.com/"
              xmlns:local="clr-namespace:Crystal.CpuModule.Views"
+             xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs;assembly=Crystal.Controls"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
              d:DesignHeight="820" d:DesignWidth="1600"
@@ -286,6 +287,60 @@
         <TextBlock Text="{Binding FanReadoutUnit}" Style="{StaticResource SpecLabel}"
                    Margin="4,1,0,1" VerticalAlignment="Center"/>
       </StackPanel>
+
+      <!-- Metric history graphs relocated from the summary tiles. Each self-registers on load so
+           this view's own SensorsViewModel feeds it every poll (the summary keeps only utilization). -->
+      <TextBlock Text="History:" Foreground="{StaticResource TextMutedBrush}"
+                 FontSize="{StaticResource SubHeadingFontSize}" Margin="0,0,0,6"/>
+      <Grid Margin="0,0,0,12">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="0" Margin="0,0,10,0">
+          <TextBlock Text="Clock (GHz)" Style="{StaticResource MetricCaption}" Margin="0,0,0,4"/>
+          <graphs:PerformanceGraphLite Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Cpu.Clock"
+                                       Style="{StaticResource SquareDotGraphLiteStyle}"
+                                       Capacity="120" MinValue="0" MaxValue="6"
+                                       MinHeight="{StaticResource SummaryGraphMinHeight}"/>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Margin="0,0,10,0">
+          <TextBlock Text="Voltage (V)" Style="{StaticResource MetricCaption}" Margin="0,0,0,4"/>
+          <graphs:PerformanceGraphLite Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Cpu.Voltage"
+                                       Style="{StaticResource SquareDotGraphLiteStyle}"
+                                       Capacity="120" MinValue="0" MaxValue="2"
+                                       MinHeight="{StaticResource SummaryGraphMinHeight}"/>
+        </StackPanel>
+
+        <StackPanel Grid.Column="2" Margin="0,0,10,0">
+          <TextBlock Text="Temperature (℃)" Style="{StaticResource MetricCaption}" Margin="0,0,0,4"/>
+          <graphs:PerformanceGraphLite Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Cpu.Temperature"
+                                       Style="{StaticResource SquareDotGraphLiteStyle}"
+                                       Capacity="120" MinValue="30" MaxValue="120"
+                                       MinHeight="{StaticResource SummaryGraphMinHeight}"/>
+        </StackPanel>
+
+        <StackPanel Grid.Column="3" Margin="0,0,10,0">
+          <TextBlock Text="Power (W)" Style="{StaticResource MetricCaption}" Margin="0,0,0,4"/>
+          <graphs:PerformanceGraphLite Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Cpu.Power"
+                                       Style="{StaticResource SquareDotGraphLiteStyle}"
+                                       Capacity="120" MinValue="0" MaxValue="100"
+                                       MinHeight="{StaticResource SummaryGraphMinHeight}"/>
+        </StackPanel>
+
+        <StackPanel Grid.Column="4">
+          <TextBlock Text="Fan" Style="{StaticResource MetricCaption}" Margin="0,0,0,4"/>
+          <graphs:PerformanceGraphLite Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Cpu.Fan"
+                                       Style="{StaticResource SquareDotGraphLiteStyle}"
+                                       Capacity="120" MinValue="0" MaxValue="{Binding FanGraphMax}"
+                                       MinHeight="{StaticResource SummaryGraphMinHeight}"/>
+        </StackPanel>
+      </Grid>
 
       <TextBlock Text="Per-Core Clocks:" Foreground="{StaticResource TextMutedBrush}"
                  FontSize="{StaticResource SubHeadingFontSize}" Margin="0,0,0,6"/>

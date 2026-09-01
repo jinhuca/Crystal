@@ -3,26 +3,32 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs;assembly=Crystal.Controls"
+             xmlns:bars="clr-namespace:Crystal.Controls.RangeBars;assembly=Crystal.Controls"
+             xmlns:conv="clr-namespace:Crystal.Controls.Converters;assembly=Crystal.Controls"
              mc:Ignorable="d"
-             d:DesignHeight="90" d:DesignWidth="320">
-  <!-- DataContext is the CPU SensorsViewModel, inherited from the host tile. -->
-  <Grid>
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="*"/>
-      <ColumnDefinition Width="Auto"/>
-    </Grid.ColumnDefinitions>
-    <graphs:PerformanceGraphLite x:Name="CpuFanGraph" Grid.Column="0"
-                                 graphs:GraphIdentity.Id="Cpu.Fan"
-                                 Style="{StaticResource SquareDotGraphLiteStyle}"
-                                 Margin="0,1,0,1" MinHeight="{StaticResource SummaryGraphMinHeight}"
-                                 MaxValue="{Binding FanGraphMax}"/>
-    <StackPanel Grid.Column="1" Style="{StaticResource SummaryStackPanelStyle}">
-      <StackPanel Orientation="Horizontal">
-        <TextBlock Text="{Binding FanReadoutText}" Style="{StaticResource MetricValue}"/>
-        <TextBlock Text="{Binding FanReadoutUnit}" Style="{StaticResource MetricUnit}"/>
-      </StackPanel>
-      <TextBlock Text="CPU Fan" Style="{StaticResource MetricCaption}"/>
+             d:DesignHeight="90" d:DesignWidth="130">
+  <!-- DataContext is the CPU SensorsViewModel, inherited from the host tile.
+       Value-banded segmented range bar over the live fan reading; the history graph moved to the detail view. -->
+  <UserControl.Resources>
+    <conv:ValueToBrushConverter x:Key="FanFill" Minimum="0" Step="800" Fallback="#9AA0A6">
+      <SolidColorBrush Color="#22B14C"/>
+      <SolidColorBrush Color="#E8C22A"/>
+      <SolidColorBrush Color="#FF7F27"/>
+      <SolidColorBrush Color="#ED1C24"/>
+      <SolidColorBrush Color="#B0171F"/>
+    </conv:ValueToBrushConverter>
+  </UserControl.Resources>
+  <StackPanel Width="120" HorizontalAlignment="Left">
+    <bars:RangeBar Height="5" Margin="0,0,0,4"
+                   MinValue="0" MaxValue="{Binding FanGraphMax}" Value="{Binding FanReadoutValue}"
+                   Segmented="True" SegmentWidth="4" SegmentGap="2"
+                   BarBackground="#141414" TrackBrush="#1E1E1E"
+                   BorderBrush="{StaticResource BorderBrush}" BorderThickness="1"
+                   FillBrush="{Binding Value, RelativeSource={RelativeSource Self}, Converter={StaticResource FanFill}}"/>
+    <StackPanel Orientation="Horizontal">
+      <TextBlock Text="{Binding FanReadoutText}" Style="{StaticResource MetricValue}"/>
+      <TextBlock Text="{Binding FanReadoutUnit}" Style="{StaticResource MetricUnit}"/>
     </StackPanel>
-  </Grid>
+    <TextBlock Text="CPU Fan" Style="{StaticResource MetricCaption}"/>
+  </StackPanel>
 </UserControl>

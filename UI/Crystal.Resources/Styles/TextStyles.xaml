@@ -30,6 +30,9 @@
     <Setter Property="FontSize" Value="11"/>
     <Setter Property="FontFamily" Value="Consolas"/>
   </Style>
+  <Style x:Key="UtilizationCaption" TargetType="TextBlock" BasedOn="{StaticResource MetricValue}">
+    <Setter Property="FontSize" Value="{StaticResource UtilizationValueSize}"/>
+  </Style>
 
   <!-- Inline spec in a summary header row. -->
   <Style x:Key="HeaderSpec" TargetType="TextBlock">
