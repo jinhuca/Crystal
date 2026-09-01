@@ -10,10 +10,12 @@
              d:DesignHeight="240" d:DesignWidth="1000"
              Background="Transparent" Foreground="{StaticResource TextBrush}"
              FontFamily="{StaticResource UiFontFamily}">
-  <!-- Layout only: the header and each metric tile live in Views/SummaryViews. 
-       The body grid sets DataContext to SensorsViewModel so every metric tile inherits it; 
-       the header inherits the root ICpuViewModel (it needs both SpecsViewModel and SensorsViewModel). 
-       Each metric tile that owns a history graph self-registers it with the view model on load. -->
+  <!-- Layout only: the header and each metric tile live in Views/SummaryViews.
+       The body grid sets DataContext to SensorsViewModel so every metric tile inherits it;
+       the header inherits the root ICpuViewModel (it needs both SpecsViewModel and SensorsViewModel).
+       Three columns per CpuSV.png: (1/4) fixed-size value-banded metric tiles aligned left,
+       (1/2) the full CPU-utilization graph in the middle, (1/4) the live per-core strip aligned
+       right. History graphs for clock/voltage/temperature/power/fan now live in the detail view. -->
   <Border Background="Transparent" MouseLeftButtonDown="OnTileClick">
     <Grid Margin="5">
       <Grid.RowDefinitions>
@@ -23,55 +25,36 @@
 
       <sv:CpuHeaderView Grid.Row="0"/>
 
-      <Grid Grid.Row="1" DataContext="{Binding SensorsViewModel}" Margin="10,5,0,5">
+      <Grid Grid.Row="1" DataContext="{Binding SensorsViewModel}" Margin="10,5,0,5" ShowGridLines="False">
         <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="*"/>
-          <ColumnDefinition Width="*"/>
-          <ColumnDefinition Width="*"/>
-          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="1.1*"/>
+          <ColumnDefinition Width="2*"/>
+          <ColumnDefinition Width="1.5*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- Column 0: Clock (top) + Voltage (bottom) -->
-        <Grid Grid.Column="0" Margin="0,0,10,0" VerticalAlignment="Top">
+        <!-- Column 0 (1/4): fixed-size metric tiles, aligned left. -->
+        <Grid Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,10,0">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
           <Grid.RowDefinitions>
-            <RowDefinition Height="1"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="8"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="1"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
           </Grid.RowDefinitions>
-          <sv:CpuClockView Grid.Row="1"/>
-          <sv:CpuVoltageView Grid.Row="3"/>
+          <sv:CpuClockView       Grid.Row="0" Grid.Column="0" Margin="0,0,42,15"/>
+          <sv:CpuTemperatureView Grid.Row="0" Grid.Column="1" Margin="0,0,42,15"/>
+          <sv:CpuPowerView       Grid.Row="0" Grid.Column="2" Margin="0,0,0,15"/>
+          <sv:CpuVoltageView     Grid.Row="1" Grid.Column="0" Margin="0,0,42,0"/>
+          <sv:CpuFanView         Grid.Row="1" Grid.Column="1" Margin="0,0,42,0"/>
         </Grid>
 
-        <!-- Column 1: Temperature (top) + Power (bottom) -->
-        <Grid Grid.Column="1" Margin="0,0,10,0" VerticalAlignment="Top">
-          <Grid.RowDefinitions>
-            <RowDefinition Height="1"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="8"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="1"/>
-          </Grid.RowDefinitions>
-          <sv:CpuTemperatureView Grid.Row="1"/>
-          <sv:CpuPowerView Grid.Row="3"/>
-        </Grid>
+        <!-- Column 1 (1/2): full CPU-utilization graph, centered. -->
+        <sv:CpuUtilizationView Grid.Column="1" Margin="10,0,10,0"/>
 
-        <!-- Column 2: Utilization (top) + CPU Fan (bottom) -->
-        <Grid Grid.Column="2" Margin="0,0,10,0" VerticalAlignment="Top">
-          <Grid.RowDefinitions>
-            <RowDefinition Height="1"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="8"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="1"/>
-          </Grid.RowDefinitions>
-          <sv:CpuUtilizationView Grid.Row="1"/>
-          <sv:CpuFanView Grid.Row="3"/>
-        </Grid>
-
-        <!-- Column 3: per-core strip -->
-        <sv:CpuCoreStripView Grid.Column="3"/>
+        <!-- Column 2 (1/4): live per-core strip, aligned right. -->
+        <sv:CpuCoreStripView Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center"/>
       </Grid>
     </Grid>
   </Border>

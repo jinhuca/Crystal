@@ -5,10 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:meters="clr-namespace:Crystal.Controls.Meters;assembly=Crystal.Controls"
              mc:Ignorable="d"
-             d:DesignHeight="200" d:DesignWidth="220">
+             d:DesignHeight="200" d:DesignWidth="400">
   <!-- DataContext is the CPU SensorsViewModel, inherited from the host tile.
        Per-core strip: a load bar (heat-coloured) stacked over a clock bar (accent, fixed 0-6 GHz
-       scale) so the per-core boost spread reads at a glance. Fills top-to-bottom then wraps. -->
+       scale) and a temperature bar. Laid out in exactly two columns inside a scroll viewer whose
+       scrollbars are hidden (mouse-wheel still scrolls when more cores than fit are present). -->
   <UserControl.Resources>
     <!-- Per-core category colors, shared by legend swatch, bar and value so each metric reads as
          one color: clock=light blue, load=light green, temperature=bright brown. -->
@@ -25,7 +26,7 @@
       <Setter Property="Height" Value="6"/>
       <Setter Property="Margin" Value="0,0,8,0"/>
       <Setter Property="VerticalAlignment" Value="Center"/>
-      <Setter Property="TrackBrush" Value="#1A1A1A"/>
+      <Setter Property="TrackBrush" Value="#331A1A1A"/>
       <Setter Property="Stroke" Value="{StaticResource BorderBrush}"/>
       <Setter Property="Segmented"
               Value="{Binding Segmented, Source={x:Static meters:CoreBarAppearance.Current}}"/>
@@ -46,9 +47,11 @@
     </Style>
   </UserControl.Resources>
 
-  <DockPanel LastChildFill="False">
+  <!-- Fixed to two columns: the item panel is exactly two item-widths wide so rows wrap after the
+       second core, and the scroll viewer hides its bars while still allowing wheel scrolling. -->
+  <DockPanel HorizontalAlignment="Stretch">
     <!-- Legend: which bar is which. -->
-    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="30,0,0,4">
+    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,4">
       <Border Width="10" Height="6" Background="{StaticResource CoreClockBrush}" VerticalAlignment="Center"/>
       <TextBlock Text="clock" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource MicroFontSize}"
                  FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Center" Margin="4,0,12,0"/>
@@ -60,51 +63,53 @@
                  FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Center" Margin="4,0,0,0"/>
     </StackPanel>
 
-    <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding CoreLoads}">
-      <ItemsControl.ItemsPanel>
-        <ItemsPanelTemplate>
-          <WrapPanel Orientation="Vertical" ItemHeight="36" ItemWidth="200"/>
-        </ItemsPanelTemplate>
-      </ItemsControl.ItemsPanel>
-      <ItemsControl.ItemTemplate>
-        <DataTemplate>
-          <Grid Margin="0,1,12,1" VerticalAlignment="Top">
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="30"/>
-              <ColumnDefinition Width="*"/>
-              <ColumnDefinition Width="72"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-              <RowDefinition Height="Auto"/>
-              <RowDefinition Height="Auto"/>
-              <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+    <ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
+      <ItemsControl ItemsSource="{Binding CoreLoads}">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate>
+            <WrapPanel Orientation="Horizontal" ItemHeight="48" ItemWidth="280"/>
+          </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <Grid Margin="0,12,30,0" VerticalAlignment="Top">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="28"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="72"/>
+              </Grid.ColumnDefinitions>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+              </Grid.RowDefinitions>
 
-            <!-- Core label spans all three metric rows, aligned to the top of the stack. -->
-            <TextBlock Grid.Column="0" Grid.RowSpan="3" Text="{Binding Label}" Foreground="{StaticResource LabelBrush}"
-                       FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Top"/>
+              <!-- Core label spans all three metric rows, aligned to the top of the stack. -->
+              <TextBlock Grid.Column="0" Grid.RowSpan="3" Text="{Binding Label}" Foreground="{StaticResource LabelBrush}"
+                         FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Top"/>
 
-            <!-- Each metric occupies one row so its bar and value stay aligned. -->
-            <meters:SegmentedBar Grid.Row="0" Grid.Column="1" Style="{StaticResource CoreLoadMeter}"
-                                 Minimum="0" Maximum="100" Value="{Binding Load}"/>
-            <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Load, StringFormat={}{0:0}%}"
-                       Foreground="{StaticResource CoreLoadBrush}" VerticalAlignment="Center"
-                       FontSize="{StaticResource MicroFontSize}" FontFamily="{StaticResource MonoFontFamily}" TextAlignment="Right"/>
+              <!-- Each metric occupies one row so its bar and value stay aligned. -->
+              <meters:SegmentedBar Grid.Row="0" Grid.Column="1" Style="{StaticResource CoreLoadMeter}"
+                                   Minimum="0" Maximum="100" Value="{Binding Load}"/>
+              <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Load, StringFormat={}{0:0}%}"
+                         Foreground="{StaticResource CoreLoadBrush}" VerticalAlignment="Center"
+                         FontSize="{StaticResource MicroFontSize}" FontFamily="{StaticResource MonoFontFamily}" TextAlignment="Right"/>
 
-            <meters:SegmentedBar Grid.Row="1" Grid.Column="1" Style="{StaticResource CoreClockMeter}"
-                                 Minimum="0" Maximum="6" Value="{Binding SpeedGhz}"/>
-            <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding SpeedGhz, StringFormat={}{0:0.00} GHz}"
-                       Foreground="{StaticResource CoreClockBrush}" VerticalAlignment="Center"
-                       FontSize="{StaticResource MicroFontSize}" FontFamily="{StaticResource MonoFontFamily}" TextAlignment="Right"/>
+              <meters:SegmentedBar Grid.Row="1" Grid.Column="1" Style="{StaticResource CoreClockMeter}"
+                                   Minimum="0" Maximum="6" Value="{Binding SpeedGhz}"/>
+              <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding SpeedGhz, StringFormat={}{0:0.00} GHz}"
+                         Foreground="{StaticResource CoreClockBrush}" VerticalAlignment="Center"
+                         FontSize="{StaticResource MicroFontSize}" FontFamily="{StaticResource MonoFontFamily}" TextAlignment="Right"/>
 
-            <meters:SegmentedBar Grid.Row="2" Grid.Column="1" Style="{StaticResource CoreTempMeter}"
-                                 Minimum="0" Maximum="100" Value="{Binding Temperature}"/>
-            <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding Temperature, StringFormat={}{0:0.00}℃}"
-                       Foreground="{StaticResource CoreTempBrush}" VerticalAlignment="Center"
-                       FontSize="{StaticResource MicroFontSize}" FontFamily="{StaticResource MonoFontFamily}" TextAlignment="Right"/>
-          </Grid>
-        </DataTemplate>
-      </ItemsControl.ItemTemplate>
-    </ItemsControl>
+              <meters:SegmentedBar Grid.Row="2" Grid.Column="1" Style="{StaticResource CoreTempMeter}"
+                                   Minimum="0" Maximum="100" Value="{Binding Temperature}"/>
+              <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding Temperature, StringFormat={}{0:0.00}℃}"
+                         Foreground="{StaticResource CoreTempBrush}" VerticalAlignment="Center"
+                         FontSize="{StaticResource MicroFontSize}" FontFamily="{StaticResource MonoFontFamily}" TextAlignment="Right"/>
+            </Grid>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </ScrollViewer>
   </DockPanel>
 </UserControl>

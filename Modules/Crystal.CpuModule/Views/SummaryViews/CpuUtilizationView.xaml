@@ -5,69 +5,33 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs;assembly=Crystal.Controls"
              mc:Ignorable="d"
-             d:DesignHeight="90" d:DesignWidth="320">
-  <!-- DataContext is the CPU SensorsViewModel, inherited from the host tile. -->
-  <Grid>
+             d:DesignHeight="200" d:DesignWidth="500">
+  <!-- DataContext is the CPU SensorsViewModel, inherited from the host tile.
+       The full CPU-utilization history graph; self-registers so the view model feeds it on each poll. -->
+  <Grid VerticalAlignment="Stretch" HorizontalAlignment="Center" Background="Transparent" ShowGridLines="False">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="*"/>
-      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="100"/>
     </Grid.ColumnDefinitions>
-    <graphs:PerformanceGraphLite x:Name="CpuUtilizationGraph" Grid.Column="0"
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+
+    <TextBlock Grid.Row="0" Grid.Column="0" Text="Utilization" HorizontalAlignment="Right" VerticalAlignment="Center"
+               Margin="0,0,12,0"
+               Style="{StaticResource MetricCaption}"/>
+    <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom">
+      <TextBlock Text="{Binding Load, StringFormat={}{0:0.00}}" Style="{StaticResource UtilizationCaption}" VerticalAlignment="Bottom"/>
+      <TextBlock Text="%" Style="{StaticResource MetricUnit}" VerticalAlignment="Bottom"/>
+    </StackPanel>
+    
+    <graphs:PerformanceGraphLite x:Name="CpuUtilizationGraph" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1"
                                  graphs:GraphIdentity.Id="Cpu.Utilization"
                                  Style="{StaticResource SquareDotGraphLiteStyle}"
-                                 MinValue="0" MaxValue="100"
-                                 MinHeight="{StaticResource SummaryGraphMinHeight}"/>
-    <StackPanel Grid.Column="1" Style="{StaticResource SummaryStackPanelStyle}">
-      <StackPanel Orientation="Horizontal">
-        <TextBlock Text="{Binding Load, StringFormat={}{0:0.00}}" Style="{StaticResource MetricValue}"/>
-        <TextBlock Text="%" Style="{StaticResource MetricUnit}"/>
-      </StackPanel>
-      <TextBlock Text="Utilization" Style="{StaticResource MetricCaption}"/>
-      <!-- Package idle (C-state) residency; Intel MSR-sourced, hidden per state when not exposed. -->
-      <TextBlock Text="{Binding PackageC2Pct, StringFormat=C2 {0:0}%}">
-        <TextBlock.Style>
-          <Style TargetType="TextBlock" BasedOn="{StaticResource MetricCaption}">
-            <Style.Triggers>
-              <DataTrigger Binding="{Binding PackageC2Pct}" Value="0">
-                <Setter Property="Visibility" Value="Collapsed"/>
-              </DataTrigger>
-            </Style.Triggers>
-          </Style>
-        </TextBlock.Style>
-      </TextBlock>
-      <TextBlock Text="{Binding PackageC3Pct, StringFormat=C3 {0:0}%}">
-        <TextBlock.Style>
-          <Style TargetType="TextBlock" BasedOn="{StaticResource MetricCaption}">
-            <Style.Triggers>
-              <DataTrigger Binding="{Binding PackageC3Pct}" Value="0">
-                <Setter Property="Visibility" Value="Collapsed"/>
-              </DataTrigger>
-            </Style.Triggers>
-          </Style>
-        </TextBlock.Style>
-      </TextBlock>
-      <TextBlock Text="{Binding PackageC6Pct, StringFormat=C6 {0:0}%}">
-        <TextBlock.Style>
-          <Style TargetType="TextBlock" BasedOn="{StaticResource MetricCaption}">
-            <Style.Triggers>
-              <DataTrigger Binding="{Binding PackageC6Pct}" Value="0">
-                <Setter Property="Visibility" Value="Collapsed"/>
-              </DataTrigger>
-            </Style.Triggers>
-          </Style>
-        </TextBlock.Style>
-      </TextBlock>
-      <TextBlock Text="{Binding PackageC7Pct, StringFormat=C7 {0:0}%}">
-        <TextBlock.Style>
-          <Style TargetType="TextBlock" BasedOn="{StaticResource MetricCaption}">
-            <Style.Triggers>
-              <DataTrigger Binding="{Binding PackageC7Pct}" Value="0">
-                <Setter Property="Visibility" Value="Collapsed"/>
-              </DataTrigger>
-            </Style.Triggers>
-          </Style>
-        </TextBlock.Style>
-      </TextBlock>
-    </StackPanel>
+                                 Capacity="120" MinValue="0" MaxValue="100"
+                                 VerticalAlignment="Bottom"/>
+
+
   </Grid>
 </UserControl>
