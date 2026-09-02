@@ -17,22 +17,19 @@
        (1/2) the full CPU-utilization graph in the middle, (1/4) the live per-core strip aligned
        right. History graphs for clock/voltage/temperature/power/fan now live in the detail view. -->
   <Border Background="Transparent" MouseLeftButtonDown="OnTileClick">
-    <Grid Margin="5">
+    <Grid Margin="5" ShowGridLines="False">
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>
         <RowDefinition Height="*"/>
-      </Grid.RowDefinitions>
-
+			</Grid.RowDefinitions>
       <sv:CpuHeaderView Grid.Row="0"/>
-
       <Grid Grid.Row="1" DataContext="{Binding SensorsViewModel}" Margin="10,5,0,5" ShowGridLines="False">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="1.1*"/>
           <ColumnDefinition Width="2*"/>
-          <ColumnDefinition Width="1.5*"/>
+          <ColumnDefinition Width="1.4*"/>
         </Grid.ColumnDefinitions>
-
-        <!-- Column 0 (1/4): fixed-size metric tiles, aligned left. -->
+        <!-- Column 0: fixed-size metric tiles, aligned left. -->
         <Grid Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,10,0">
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -50,10 +47,10 @@
           <sv:CpuFanView         Grid.Row="1" Grid.Column="1" Margin="0,0,42,0"/>
         </Grid>
 
-        <!-- Column 1 (1/2): full CPU-utilization graph, centered. -->
+        <!-- Column 1: full CPU-utilization graph, centered. -->
         <sv:CpuUtilizationView Grid.Column="1" Margin="10,0,10,0"/>
 
-        <!-- Column 2 (1/4): live per-core strip, aligned right. -->
+        <!-- Column 2: live per-core strip, aligned right. -->
         <sv:CpuCoreStripView Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center"/>
       </Grid>
     </Grid>
