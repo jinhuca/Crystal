@@ -19,16 +19,16 @@
     </conv:ValueToBrushConverter>
   </UserControl.Resources>
   <StackPanel Width="120" HorizontalAlignment="Left">
-    <bars:RangeBar Height="5" Margin="0,0,0,4"
+		<StackPanel Orientation="Horizontal">
+			<TextBlock Text="{Binding FanReadoutText}" Style="{StaticResource MetricValue}"/>
+			<TextBlock Text="{Binding FanReadoutUnit}" Style="{StaticResource MetricUnit}"/>
+		</StackPanel>
+		<bars:RangeBar Height="5" Margin="0,0,0,4"
                    MinValue="0" MaxValue="{Binding FanGraphMax}" Value="{Binding FanReadoutValue}"
                    Segmented="True" SegmentWidth="4" SegmentGap="2"
                    BarBackground="#141414" TrackBrush="#1E1E1E"
                    BorderBrush="{StaticResource BorderBrush}" BorderThickness="1"
                    FillBrush="{Binding Value, RelativeSource={RelativeSource Self}, Converter={StaticResource FanFill}}"/>
-    <StackPanel Orientation="Horizontal">
-      <TextBlock Text="{Binding FanReadoutText}" Style="{StaticResource MetricValue}"/>
-      <TextBlock Text="{Binding FanReadoutUnit}" Style="{StaticResource MetricUnit}"/>
-    </StackPanel>
     <TextBlock Text="CPU Fan" Style="{StaticResource MetricCaption}"/>
   </StackPanel>
 </UserControl>

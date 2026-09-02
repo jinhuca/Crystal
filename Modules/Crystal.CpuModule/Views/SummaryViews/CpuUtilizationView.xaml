@@ -17,21 +17,16 @@
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="*"/>
     </Grid.RowDefinitions>
-
     <TextBlock Grid.Row="0" Grid.Column="0" Text="Utilization" HorizontalAlignment="Right" VerticalAlignment="Center"
-               Margin="0,0,12,0"
-               Style="{StaticResource MetricCaption}"/>
+               Margin="0,0,12,0" Style="{StaticResource MetricCaption}"/>
     <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom">
-      <TextBlock Text="{Binding Load, StringFormat={}{0:0.00}}" Style="{StaticResource UtilizationCaption}" VerticalAlignment="Bottom"/>
-      <TextBlock Text="%" Style="{StaticResource MetricUnit}" VerticalAlignment="Bottom"/>
+      <TextBlock Text="{Binding Load, StringFormat={}{0:0.00}}" Style="{StaticResource UtilizationCaption}" VerticalAlignment="Center"/>
+      <TextBlock Text="%" Style="{StaticResource MetricUnit}" VerticalAlignment="Center"/>
     </StackPanel>
-    
     <graphs:PerformanceGraphLite x:Name="CpuUtilizationGraph" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1"
                                  graphs:GraphIdentity.Id="Cpu.Utilization"
                                  Style="{StaticResource SquareDotGraphLiteStyle}"
                                  Capacity="120" MinValue="0" MaxValue="100"
-                                 VerticalAlignment="Bottom"/>
-
-
+                                 VerticalAlignment="Center"/>
   </Grid>
 </UserControl>

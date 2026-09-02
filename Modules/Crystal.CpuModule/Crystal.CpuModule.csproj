@@ -24,4 +24,8 @@
     <ProjectReference Include="..\..\Infrastructures\Crystal.Infrastructure.Constants\Crystal.Infrastructure.Constants.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\DetailViews\" />
+  </ItemGroup>
+
 </Project>
