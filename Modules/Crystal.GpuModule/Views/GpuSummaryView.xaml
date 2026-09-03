@@ -7,22 +7,35 @@
              xmlns:sv="clr-namespace:Crystal.GpuModule.Views.SummaryViews"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
-             d:DesignHeight="240" d:DesignWidth="760"
+             d:DesignHeight="200" d:DesignWidth="1000"
              Background="Transparent" Foreground="{StaticResource TextBrush}"
              FontFamily="{StaticResource UiFontFamily}">
-  <!-- MetricValue/MetricUnit/MetricCaption now shared via Crystal.Resources -->
+  <!-- Two asymmetric blocks per GpuSV.png: the integrated GPU (left) shows a 2x2 meter block
+       (Temperature/Memory Used over Power/3D) beside its utilization graph; the dedicated GPU
+       (right) shows a 3x2 meter block (Temperature/Memory Used/Clock over Hot Spot/3D/Power)
+       beside its utilization graph and a PCIe Rx/Tx column. Each block collapses when the machine
+       lacks that adapter. The per-metric tiles live in Views/SummaryViews. -->
+  <UserControl.Resources>
+    <!-- A block collapses when its adapter is absent (DataContext bound to a null adapter). -->
+    <Style x:Key="AdapterBlockStyle" TargetType="Border">
+      <Style.Triggers>
+        <DataTrigger Binding="{Binding}" Value="{x:Null}">
+          <Setter Property="Visibility" Value="Collapsed"/>
+        </DataTrigger>
+      </Style.Triggers>
+    </Style>
+  </UserControl.Resources>
 
   <Border Background="Transparent" MouseLeftButtonDown="OnTileClick">
     <Grid Margin="5">
       <Grid.RowDefinitions>
-        <RowDefinition Height="Auto"/>
         <RowDefinition Height="Auto"/>
         <RowDefinition Height="*"/>
       </Grid.RowDefinitions>
 
       <!-- Section title: accent tick + "GPU". -->
       <Border Grid.Row="0" BorderBrush="{StaticResource DividerBrush}" BorderThickness="0,0,0,1"
-              Padding="0,0,0,4" Margin="0,0,0,2">
+              Padding="0,0,0,4" Margin="0,0,0,6">
         <StackPanel Orientation="Horizontal">
           <Border Width="3" Background="{StaticResource AccentBrush}" Margin="0,1,8,1"/>
           <TextBlock Text="GPU" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource BodyFontSize}" FontWeight="SemiBold"
@@ -30,75 +43,79 @@
         </StackPanel>
       </Border>
 
-      <!-- Per-adapter caption row, column-aligned with the graph row below: same UniformGrid +
-           same Margin/Border/Padding per item, so the two rows' column boundaries match exactly.
-           Caption is centered within its column, directly above the graphs it labels. -->
-      <ItemsControl Grid.Row="0" ItemsSource="{Binding Adapters}" Margin="0,0,0,6" VerticalAlignment="Center">
-        <ItemsControl.ItemsPanel>
-          <ItemsPanelTemplate>
-            <UniformGrid Rows="1"/>
-          </ItemsPanelTemplate>
-        </ItemsControl.ItemsPanel>
-        <ItemsControl.ItemTemplate>
-          <DataTemplate>
-            <Border Margin="0,0,16,0" BorderBrush="{StaticResource DividerBrush}" BorderThickness="1,0,0,0"
-                    Padding="8,0,0,0">
-              <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                <TextBlock Width="33"/>
-                <TextBlock Text="{Binding KindLabel}" Foreground="{StaticResource AccentBrush}" FontSize="{StaticResource CaptionFontSize}"
-                           FontWeight="SemiBold" VerticalAlignment="Center"/>
-                <TextBlock Text="{Binding Name}" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}"
-                           VerticalAlignment="Center" Margin="8,0,0,0" MaxWidth="120" TextTrimming="None"
-                           ToolTip="{Binding Name}"/>
-              </StackPanel>
-            </Border>
-          </DataTemplate>
-        </ItemsControl.ItemTemplate>
-      </ItemsControl>
+      <Grid Grid.Row="1" VerticalAlignment="Top">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="1*"/>
+          <ColumnDefinition Width="1.55*"/>
+        </Grid.ColumnDefinitions>
 
-      <!-- One block per adapter: two graph columns (Utilization + Temperature | Clock + Power)
-           spanning the adapter's full width. Same left-border decoration and Margin as the
-           caption row above, so the vertical divider runs continuously through both rows. -->
-      <ItemsControl Grid.Row="2" ItemsSource="{Binding Adapters}">
-        <ItemsControl.ItemsPanel>
-          <ItemsPanelTemplate>
-            <UniformGrid Rows="1"/>
-          </ItemsPanelTemplate>
-        </ItemsControl.ItemsPanel>
-        <ItemsControl.ItemTemplate>
-          <DataTemplate>
-            <Border Margin="0,0,16,0" BorderBrush="{StaticResource DividerBrush}" BorderThickness="1,0,0,0"
-                    Padding="8,0,0,0" VerticalAlignment="Top">
-              <Grid VerticalAlignment="Top">
-                <Grid.ColumnDefinitions>
-                  <ColumnDefinition Width="*"/>
-                  <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+        <!-- Integrated GPU block. -->
+        <Border Grid.Column="0" DataContext="{Binding IntegratedAdapter}" Style="{StaticResource AdapterBlockStyle}"
+                Margin="0,0,16,0">
+          <Grid VerticalAlignment="Top">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-                <!-- Left: Utilization (top) + Temperature (bottom) stacked graphs. -->
-                <Grid Grid.Column="0" VerticalAlignment="Top" Margin="0,0,16,0">
-                  <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                  </Grid.RowDefinitions>
-                  <sv:GpuUtilizationView Grid.Row="0" Margin="0,0,0,6"/>
-                  <sv:GpuTemperatureView Grid.Row="1"/>
-                </Grid>
+            <!-- 2x2 meter block. -->
+            <Grid Grid.Column="0">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+              </Grid.ColumnDefinitions>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+              </Grid.RowDefinitions>
+              <sv:GpuTemperatureView Grid.Row="0" Grid.Column="0" Margin="0,0,20,14"/>
+              <sv:GpuMemoryView      Grid.Row="0" Grid.Column="1" Margin="0,0,0,14"/>
+              <sv:GpuPowerView       Grid.Row="1" Grid.Column="0" Margin="0,0,20,0"/>
+              <sv:Gpu3DView          Grid.Row="1" Grid.Column="1" Margin="0,0,0,0"/>
+            </Grid>
 
-                <!-- Right: Clock (top) + Power (bottom) stacked graphs. -->
-                <Grid Grid.Column="1" VerticalAlignment="Top">
-                  <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                  </Grid.RowDefinitions>
-                  <sv:GpuClockView Grid.Row="0" Margin="0,0,0,6"/>
-                  <sv:GpuPowerView Grid.Row="1"/>
-                </Grid>
-              </Grid>
-            </Border>
-          </DataTemplate>
-        </ItemsControl.ItemTemplate>
-      </ItemsControl>
+            <!-- Utilization graph, captioned with the adapter identity. -->
+            <sv:GpuUtilizationView Grid.Column="1" Margin="20,0,0,0" VerticalAlignment="Stretch"/>
+          </Grid>
+        </Border>
+
+        <!-- Dedicated GPU block. -->
+        <Border Grid.Column="1" DataContext="{Binding DedicatedAdapter}" Style="{StaticResource AdapterBlockStyle}"
+                BorderBrush="{StaticResource DividerBrush}" BorderThickness="1,0,0,0" Padding="16,0,0,0">
+          <Grid VerticalAlignment="Top">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- 3x2 meter block. -->
+            <Grid Grid.Column="0">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+              </Grid.ColumnDefinitions>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+              </Grid.RowDefinitions>
+              <sv:GpuTemperatureView Grid.Row="0" Grid.Column="0" Margin="0,0,20,14"/>
+              <sv:GpuMemoryView      Grid.Row="0" Grid.Column="1" Margin="0,0,20,14"/>
+              <sv:GpuClockView       Grid.Row="0" Grid.Column="2" Margin="0,0,0,14"/>
+              <sv:GpuHotSpotView     Grid.Row="1" Grid.Column="0" Margin="0,0,20,0"/>
+              <sv:Gpu3DView          Grid.Row="1" Grid.Column="1" Margin="0,0,20,0"/>
+              <sv:GpuPowerView       Grid.Row="1" Grid.Column="2" Margin="0,0,0,0"/>
+            </Grid>
+
+            <!-- Utilization graph, captioned with the adapter identity. -->
+            <sv:GpuUtilizationView Grid.Column="1" Margin="20,0,20,0" VerticalAlignment="Stretch"/>
+
+            <!-- PCIe Rx/Tx throughput column. -->
+            <sv:GpuPcieView Grid.Column="2" Width="170" VerticalAlignment="Stretch"/>
+          </Grid>
+        </Border>
+      </Grid>
     </Grid>
   </Border>
 </UserControl>

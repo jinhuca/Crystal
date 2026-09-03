@@ -1,0 +1,42 @@
+<UserControl x:Class="Crystal.GpuModule.Views.SummaryViews.GpuMemoryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:bars="clr-namespace:Crystal.Controls.RangeBars;assembly=Crystal.Controls"
+             xmlns:conv="clr-namespace:Crystal.Controls.Converters;assembly=Crystal.Controls"
+             mc:Ignorable="d"
+             d:DesignHeight="44" d:DesignWidth="150">
+  <!-- DataContext is a GpuAdapterViewModel, inherited from the per-adapter block.
+       "used / total GB (percent)" readout over a segmented range bar driven by the used-percent. -->
+  <UserControl.Resources>
+    <conv:ValueToBrushConverter x:Key="MemoryFill" Minimum="0" Step="20" Fallback="#9AA0A6">
+      <SolidColorBrush Color="#22B14C"/>
+      <SolidColorBrush Color="#E8C22A"/>
+      <SolidColorBrush Color="#FF7F27"/>
+      <SolidColorBrush Color="#ED1C24"/>
+      <SolidColorBrush Color="#B0171F"/>
+    </conv:ValueToBrushConverter>
+  </UserControl.Resources>
+  <StackPanel Width="150" HorizontalAlignment="Left">
+    <StackPanel Orientation="Horizontal">
+      <TextBlock Style="{StaticResource MetricValue}" FontSize="{StaticResource BodyFontSize}" VerticalAlignment="Bottom">
+        <TextBlock.Text>
+          <MultiBinding StringFormat="{}{0:0.0} / {1:0.0} GB">
+            <Binding Path="MemoryUsedGB" TargetNullValue="0.0"/>
+            <Binding Path="MemoryTotalGB" TargetNullValue="0.0"/>
+          </MultiBinding>
+        </TextBlock.Text>
+      </TextBlock>
+      <TextBlock Text="{Binding MemoryUsedPercent, StringFormat={}({0:0}%), TargetNullValue=(0%)}"
+                 Style="{StaticResource MetricCaption}" VerticalAlignment="Bottom" Margin="6,0,0,0"/>
+    </StackPanel>
+    <bars:RangeBar Height="5" Margin="0,3,0,4"
+                   MinValue="0" MaxValue="100" Value="{Binding MemoryUsedPercent, TargetNullValue=0}"
+                   Segmented="True" SegmentWidth="4" SegmentGap="2"
+                   BarBackground="#141414" TrackBrush="#1E1E1E"
+                   BorderBrush="{StaticResource BorderBrush}" BorderThickness="1"
+                   FillBrush="{Binding Value, RelativeSource={RelativeSource Self}, Converter={StaticResource MemoryFill}}"/>
+    <TextBlock Text="Memory Used" Style="{StaticResource MetricCaption}"/>
+  </StackPanel>
+</UserControl>

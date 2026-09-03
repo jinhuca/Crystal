@@ -20,6 +20,9 @@ public sealed class GpuAdapterViewModel : BindableBase {
   private string? _physicalLocation;
   private uint? _refreshRateHz;
   private double _load;
+  private double _load3D;
+  private bool _isIntegrated;
+  private bool _isDedicated;
   private double? _temperatureC;
   private double? _clockMhz;
   private double? _powerW;
@@ -40,10 +43,15 @@ public sealed class GpuAdapterViewModel : BindableBase {
   private const double PeakDecay = 0.95;
   private const double MinClockScale = 500;
   private const double MinPowerScale = 50;
+  private const double MinPcieScale = 10;
   private double _clockScaleMax = MinClockScale;
   private double _powerScaleMax = MinPowerScale;
+  private double _pcieRxScaleMax = MinPcieScale;
+  private double _pcieTxScaleMax = MinPcieScale;
   private double _clockPeak;
   private double _powerPeak;
+  private double _pcieRxPeak;
+  private double _pcieTxPeak;
 
   // History graphs are registered by their GraphIdentity.Id as each metric sub-view loads (the
   // detail view registers with the same ids explicitly), then fed by that same id in UpdateLoad.
@@ -61,6 +69,17 @@ public sealed class GpuAdapterViewModel : BindableBase {
   public string? PhysicalLocation { get => _physicalLocation; private set => SetProperty(ref _physicalLocation, value); }
   public uint? RefreshRateHz { get => _refreshRateHz; private set => SetProperty(ref _refreshRateHz, value); }
   public double Load { get => _load; private set => SetProperty(ref _load, value); }
+
+  /// <summary>Utilization of the 3D engine (0-100%), the headline "3D" tile in the reference
+  /// design. Falls back to the aggregate core load when the adapter exposes no distinct 3D engine.</summary>
+  public double Load3D { get => _load3D; private set => SetProperty(ref _load3D, value); }
+
+  /// <summary>True when this adapter is the CPU's integrated graphics (left column of the design).</summary>
+  public bool IsIntegrated { get => _isIntegrated; private set => SetProperty(ref _isIntegrated, value); }
+
+  /// <summary>True when this adapter is a discrete card (right column of the design).</summary>
+  public bool IsDedicated { get => _isDedicated; private set => SetProperty(ref _isDedicated, value); }
+
   public double? TemperatureC { get => _temperatureC; private set => SetProperty(ref _temperatureC, value); }
   public double? ClockMhz { get => _clockMhz; private set => SetProperty(ref _clockMhz, value); }
   public double? PowerW { get => _powerW; private set => SetProperty(ref _powerW, value); }
@@ -85,6 +104,19 @@ public sealed class GpuAdapterViewModel : BindableBase {
   /// Upper bound of the power history graph, ratcheted like <see cref="ClockScaleMax"/>.
   /// </summary>
   public double PowerScaleMax { get => _powerScaleMax; private set => SetProperty(ref _powerScaleMax, value); }
+
+  /// <summary>
+  /// Upper bound of the PCIe Rx throughput graph, ratcheted over that direction's running peak.
+  /// Scaled independently of <see cref="PcieTxScaleMax"/> so a busy Rx direction can't flatten a
+  /// low-but-live Tx trace (Rx/Tx routinely differ by an order of magnitude).
+  /// </summary>
+  public double PcieRxScaleMax { get => _pcieRxScaleMax; private set => SetProperty(ref _pcieRxScaleMax, value); }
+
+  /// <summary>
+  /// Upper bound of the PCIe Tx throughput graph, ratcheted over that direction's running peak,
+  /// independently of <see cref="PcieRxScaleMax"/>.
+  /// </summary>
+  public double PcieTxScaleMax { get => _pcieTxScaleMax; private set => SetProperty(ref _pcieTxScaleMax, value); }
 
   /// <summary>
   /// Per-engine utilization breakdown, reconciled in place across polls so the rows stay
@@ -112,6 +144,8 @@ public sealed class GpuAdapterViewModel : BindableBase {
   /// </summary>
   public void UpdateSpecs(GpuAdapterInfo info) {
     Name = info.Name;
+    IsIntegrated = info.Kind == GpuKind.Integrated;
+    IsDedicated = info.Kind == GpuKind.Dedicated;
     KindLabel = info.Kind == GpuKind.Integrated ? "Integrated GPU" : "Dedicated GPU";
     VideoRamGB = info.VideoRamGB;
     DisplayMode = info.DisplayMode;
@@ -156,11 +190,24 @@ public sealed class GpuAdapterViewModel : BindableBase {
     CoreVoltageV = reading.CoreVoltageV;
     HotSpotTemperatureC = reading.HotSpotTemperatureC;
     MemoryTemperatureC = reading.MemoryTemperatureC;
+
     PcieRxMBps = reading.PcieRxMBps;
     PcieTxMBps = reading.PcieTxMBps;
+    if (reading.PcieRxMBps is { } rx) FeedGraph("Gpu.PcieRx", rx);
+    if (reading.PcieTxMBps is { } tx) FeedGraph("Gpu.PcieTx", tx);
+    _pcieRxPeak = Math.Max(reading.PcieRxMBps ?? 0, _pcieRxPeak * PeakDecay);
+    PcieRxScaleMax = NiceScale(_pcieRxPeak, MinPcieScale);
+    _pcieTxPeak = Math.Max(reading.PcieTxMBps ?? 0, _pcieTxPeak * PeakDecay);
+    PcieTxScaleMax = NiceScale(_pcieTxPeak, MinPcieScale);
 
-    ReconcileEngineLoads(reading.EngineLoads ?? []);
+    var engines = reading.EngineLoads ?? [];
+    ReconcileEngineLoads(engines);
     ReconcilePowerRails(reading.PowerRails ?? []);
+
+    // "3D" is the headline engine in the design; fall back to aggregate core load when the adapter
+    // exposes no distinct 3D engine, so the tile always shows a live value.
+    var threeD = engines.FirstOrDefault(e => e.Name.Contains("3D", StringComparison.OrdinalIgnoreCase));
+    Load3D = threeD?.LoadPercent ?? reading.CoreLoadPercent;
   }
 
   /// <summary>
