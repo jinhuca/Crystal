@@ -44,9 +44,11 @@
       </Border>
 
       <Grid Grid.Row="1" VerticalAlignment="Top">
+        <!-- Content-sized so an absent (collapsed) adapter block reserves no width, and neither
+             block's utilization graph is stretched wider than the other. -->
         <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="1*"/>
-          <ColumnDefinition Width="1.55*"/>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
         <!-- Integrated GPU block. -->
@@ -55,7 +57,7 @@
           <Grid VerticalAlignment="Top">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="Auto"/>
-              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
             <!-- 2x2 meter block. -->
@@ -85,7 +87,7 @@
           <Grid VerticalAlignment="Top">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="Auto"/>
-              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="Auto"/>
               <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 

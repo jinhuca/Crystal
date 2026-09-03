@@ -18,16 +18,17 @@
       <SolidColorBrush Color="#B0171F"/>
     </conv:ValueToBrushConverter>
   </UserControl.Resources>
-  <StackPanel Width="150" HorizontalAlignment="Left">
+  <StackPanel Width="170" HorizontalAlignment="Left">
     <StackPanel Orientation="Horizontal">
-      <TextBlock Style="{StaticResource MetricValue}" FontSize="{StaticResource BodyFontSize}" VerticalAlignment="Bottom">
+      <TextBlock Style="{StaticResource MetricValue}">
         <TextBlock.Text>
-          <MultiBinding StringFormat="{}{0:0.0} / {1:0.0} GB">
+          <MultiBinding StringFormat="{}{0:0.0} / {1:0.0}">
             <Binding Path="MemoryUsedGB" TargetNullValue="0.0"/>
             <Binding Path="MemoryTotalGB" TargetNullValue="0.0"/>
           </MultiBinding>
         </TextBlock.Text>
       </TextBlock>
+      <TextBlock Text="GB" Style="{StaticResource MetricUnit}"/>
       <TextBlock Text="{Binding MemoryUsedPercent, StringFormat={}({0:0}%), TargetNullValue=(0%)}"
                  Style="{StaticResource MetricCaption}" VerticalAlignment="Bottom" Margin="6,0,0,0"/>
     </StackPanel>

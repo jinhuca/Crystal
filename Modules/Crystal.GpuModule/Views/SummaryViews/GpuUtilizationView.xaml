@@ -35,10 +35,13 @@
       <TextBlock Text="%" Style="{StaticResource MetricUnit}" VerticalAlignment="Center"/>
     </StackPanel>
 
+    <!-- Fixed width so the integrated and dedicated graphs render at an identical size: the square-dot
+         style derives Height from ActualWidth, so equal width yields equal height and capacity. -->
     <graphs:PerformanceGraphLite x:Name="UtilizationGraph" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
                                  graphs:GraphIdentity.Id="Gpu.Utilization"
                                  Style="{StaticResource SquareDotGraphLiteStyle}"
                                  Capacity="60" MinValue="0" MaxValue="100"
-                                 Margin="0,6,0,0" VerticalAlignment="Center"/>
+                                 Width="500" HorizontalAlignment="Left"
+                                 Margin="0,6,0,0" VerticalAlignment="Top"/>
   </Grid>
 </UserControl>
