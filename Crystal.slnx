@@ -45,18 +45,9 @@
   <Folder Name="/Shell/">
     <Project Path="Shell/Crystal.Shell/Crystal.Shell.csproj" Id="34c04727-c18d-49e7-bdb5-9bb18e95078b" />
   </Folder>
-  <Folder Name="/SmokeTests/">
-    <Project Path="SmokeTests/Crystal.Controls.Demo/Crystal.Controls.Demo.csproj" />
-    <Project Path="SmokeTests/Crystal.Provider.Mmi.Cli/Crystal.Provider.Mmi.Cli.csproj" />
-    <Project Path="SmokeTests/Crystal.Provider.Smbios.Cli/Crystal.Provider.Smbios.Cli.csproj" />
-    <Project Path="SmokeTests/Crystal.Service.Cpu.Cli/Crystal.Service.Cpu.Cli.csproj" />
-  </Folder>
   <Folder Name="/Solution Items/">
     <File Path="Directory.Build.props" />
     <File Path="nuget.config" />
-  </Folder>
-  <Folder Name="/TryIt/">
-    <Project Path="TryIt/TryIt01_PInvoke/TryIt01_PInvoke.csproj" Id="f4f46e8b-a092-464c-a99d-c8374c69fe1b" />
   </Folder>
   <Folder Name="/UI/">
     <Project Path="UI/Crystal.Resources/Crystal.Resources.csproj" />
@@ -65,9 +56,7 @@
   </Folder>
   <Folder Name="/UnitTests/">
     <Project Path="UnitTests/Crystal.Shell.Tests/Crystal.Shell.Tests.csproj">
-      <Platform Solution="*|Any CPU" Project="x64" />
-      <Platform Solution="*|x64" Project="x64" />
-      <Platform Solution="*|x86" Project="x64" />
+      <Platform Project="x64" />
     </Project>
     <Project Path="UnitTests/Crystal.Controls.Tests/Crystal.Controls.Tests.csproj" />
     <Project Path="UnitTests/Crystal.Resources.Tests/Crystal.Resources.Tests.csproj" />
