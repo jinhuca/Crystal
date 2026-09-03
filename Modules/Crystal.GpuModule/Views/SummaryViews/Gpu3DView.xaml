@@ -1,4 +1,4 @@
-<UserControl x:Class="Crystal.GpuModule.Views.SummaryViews.GpuPowerView"
+<UserControl x:Class="Crystal.GpuModule.Views.SummaryViews.Gpu3DView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -8,9 +8,9 @@
              mc:Ignorable="d"
              d:DesignHeight="44" d:DesignWidth="130">
   <!-- DataContext is a GpuAdapterViewModel, inherited from the per-adapter block.
-       Value-banded segmented range bar over the live package power; the history graph lives in the detail view. -->
+       Value-banded segmented range bar over the live 3D-engine utilization (0-100%). -->
   <UserControl.Resources>
-    <conv:ValueToBrushConverter x:Key="PowerFill" Minimum="0" Step="60" Fallback="#9AA0A6">
+    <conv:ValueToBrushConverter x:Key="LoadFill" Minimum="0" Step="20" Fallback="#9AA0A6">
       <SolidColorBrush Color="#22B14C"/>
       <SolidColorBrush Color="#E8C22A"/>
       <SolidColorBrush Color="#FF7F27"/>
@@ -20,15 +20,15 @@
   </UserControl.Resources>
   <StackPanel Width="130" HorizontalAlignment="Left">
     <StackPanel Orientation="Horizontal">
-      <TextBlock Text="{Binding PowerW, StringFormat={}{0:0.00}, TargetNullValue=0.00}" Style="{StaticResource MetricValue}"/>
-      <TextBlock Text="Watts" Style="{StaticResource MetricUnit}"/>
+      <TextBlock Text="{Binding Load3D, StringFormat={}{0:0.00}}" Style="{StaticResource MetricValue}"/>
+      <TextBlock Text="%" Style="{StaticResource MetricUnit}"/>
     </StackPanel>
     <bars:RangeBar Height="5" Margin="0,0,0,4"
-                   MinValue="0" MaxValue="{Binding PowerScaleMax}" Value="{Binding PowerW, TargetNullValue=0}"
+                   MinValue="0" MaxValue="100" Value="{Binding Load3D}"
                    Segmented="True" SegmentWidth="4" SegmentGap="2"
                    BarBackground="#141414" TrackBrush="#1E1E1E"
                    BorderBrush="{StaticResource BorderBrush}" BorderThickness="1"
-                   FillBrush="{Binding Value, RelativeSource={RelativeSource Self}, Converter={StaticResource PowerFill}}"/>
-    <TextBlock Text="Power" Style="{StaticResource MetricCaption}"/>
+                   FillBrush="{Binding Value, RelativeSource={RelativeSource Self}, Converter={StaticResource LoadFill}}"/>
+    <TextBlock Text="3D" Style="{StaticResource MetricCaption}"/>
   </StackPanel>
 </UserControl>

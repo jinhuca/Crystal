@@ -3,24 +3,23 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs;assembly=Crystal.Controls"
+             xmlns:bars="clr-namespace:Crystal.Controls.RangeBars;assembly=Crystal.Controls"
              mc:Ignorable="d"
-             d:DesignHeight="44" d:DesignWidth="300">
-  <!-- DataContext is a GpuAdapterViewModel, inherited from the per-adapter item. -->
-  <Grid>
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="*"/>
-      <ColumnDefinition Width="Auto"/>
-    </Grid.ColumnDefinitions>
-    <graphs:PerformanceGraph x:Name="ClockGraph" Grid.Column="0"
-                             graphs:GraphIdentity.Id="Gpu.Clock"
-                             MinHeight="40" MinValue="0" MaxValue="3000"/>
-    <StackPanel Grid.Column="1" Style="{StaticResource SummaryStackPanelStyle}">
-      <StackPanel Orientation="Horizontal">
-        <TextBlock Text="{Binding ClockMhz, StringFormat={}{0:0}, TargetNullValue=—}" Style="{StaticResource MetricValue}"/>
-        <TextBlock Text="MHz" Style="{StaticResource MetricUnit}"/>
-      </StackPanel>
-      <TextBlock Text="Clock" Style="{StaticResource MetricCaption}"/>
+             d:DesignHeight="44" d:DesignWidth="130">
+  <!-- DataContext is a GpuAdapterViewModel, inherited from the per-adapter block.
+       Segmented range bar over the live core clock (a high clock is desirable, not a warning, so a
+       steady accent fill rather than a green-to-red band); the history graph lives in the detail view. -->
+  <StackPanel Width="130" HorizontalAlignment="Left">
+    <StackPanel Orientation="Horizontal">
+      <TextBlock Text="{Binding ClockMhz, StringFormat={}{0:0}, TargetNullValue=—}" Style="{StaticResource MetricValue}"/>
+      <TextBlock Text="MHz" Style="{StaticResource MetricUnit}"/>
     </StackPanel>
-  </Grid>
+    <bars:RangeBar Height="5" Margin="0,0,0,4"
+                   MinValue="0" MaxValue="{Binding ClockScaleMax}" Value="{Binding ClockMhz, TargetNullValue=0}"
+                   Segmented="True" SegmentWidth="4" SegmentGap="2"
+                   BarBackground="#141414" TrackBrush="#1E1E1E"
+                   BorderBrush="{StaticResource BorderBrush}" BorderThickness="1"
+                   FillBrush="{StaticResource AccentBrush}"/>
+    <TextBlock Text="Clock" Style="{StaticResource MetricCaption}"/>
+  </StackPanel>
 </UserControl>

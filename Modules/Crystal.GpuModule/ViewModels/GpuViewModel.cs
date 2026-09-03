@@ -47,6 +47,27 @@ public sealed class GpuViewModel : BindableBase, IGpuViewModel, IDisposable {
   /// </summary>
   public ObservableCollection<GpuAdapterViewModel> Adapters { get; } = [];
 
+  private GpuAdapterViewModel? _integratedAdapter;
+  private GpuAdapterViewModel? _dedicatedAdapter;
+
+  /// <summary>
+  /// The integrated adapter, bound to the left block of the summary design (null when the machine
+  /// has no integrated graphics, in which case the block is collapsed).
+  /// </summary>
+  public GpuAdapterViewModel? IntegratedAdapter {
+    get => _integratedAdapter;
+    private set => SetProperty(ref _integratedAdapter, value);
+  }
+
+  /// <summary>
+  /// The dedicated adapter, bound to the right block of the summary design (null when the machine
+  /// has no discrete card, in which case the block is collapsed).
+  /// </summary>
+  public GpuAdapterViewModel? DedicatedAdapter {
+    get => _dedicatedAdapter;
+    private set => SetProperty(ref _dedicatedAdapter, value);
+  }
+
   /// <summary>
   /// Raises <c>ShowDetailEvent</c> so the shell swaps in the GPU detail view.
   /// </summary>
@@ -70,6 +91,10 @@ public sealed class GpuViewModel : BindableBase, IGpuViewModel, IDisposable {
       vm.UpdateSpecs(info);
       Adapters.Add(vm);
     }
+
+    IntegratedAdapter = Adapters.FirstOrDefault(a => a.IsIntegrated);
+    DedicatedAdapter = Adapters.FirstOrDefault(a => a.IsDedicated);
+
     ApplyLoads(snapshot);
   }
 

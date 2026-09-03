@@ -1,0 +1,153 @@
+<UserControl x:Class="Crystal.CpuModule.Views.DetailViews.CpuDetailHeaderView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="90" d:DesignWidth="1600"
+             Foreground="{StaticResource TextBrush}" FontFamily="{StaticResource UiFontFamily}">
+  <!-- DataContext is the root ICpuViewModel, inherited from the host view: the back button binds
+       ShowDashboardCommand directly, while the static spec readout binds SpecsViewModel. -->
+  <UserControl.Resources>
+    <!-- Module-specific: CPU's spec value is the OK-green readout, distinct from other modules'
+         neutral SpecValue. Label tone is slightly lighter than the shared LabelBrush by design. -->
+    <Style x:Key="SpecLabel" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="#9AA0A6"/>
+      <Setter Property="FontSize" Value="{StaticResource BodyFontSize}"/>
+      <Setter Property="Margin" Value="0,1"/>
+    </Style>
+    <Style x:Key="SpecValue" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="{StaticResource OkBrush}"/>
+      <Setter Property="FontSize" Value="{StaticResource BodyFontSize}"/>
+      <Setter Property="Margin" Value="6,1,0,1"/>
+    </Style>
+  </UserControl.Resources>
+
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
+
+    <Button Grid.Column="0" Content="&#x2190; Back" Command="{Binding ShowDashboardCommand}"
+            VerticalAlignment="Top" Margin="0,0,20,0"
+            Style="{StaticResource DetailBackButtonStyle}"/>
+
+    <Grid Grid.Column="1" DataContext="{Binding SpecsViewModel}">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+
+      <TextBlock Grid.Column="0" Text="CPU" Foreground="{StaticResource AccentBrush}" FontSize="26"
+                 FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,32,0"/>
+
+      <!-- Identity block -->
+      <Grid Grid.Column="1" Margin="0,0,28,0">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Vendor:" Style="{StaticResource SpecLabel}"/>
+        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Vendor}" Style="{StaticResource SpecValue}"/>
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Socket:" Style="{StaticResource SpecLabel}"/>
+        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Socket}" Style="{StaticResource SpecValue}"/>
+      </Grid>
+
+      <!-- Brand / topology block -->
+      <Grid Grid.Column="2" Margin="0,0,28,0">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Brand:" Style="{StaticResource SpecLabel}"/>
+        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Brand}" Style="{StaticResource SpecValue}"/>
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Physical Cores:" Style="{StaticResource SpecLabel}"/>
+        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding PhysicalCores}" Style="{StaticResource SpecValue}"/>
+      </Grid>
+
+      <!-- Family / logical block -->
+      <Grid Grid.Column="3" Margin="0,0,28,0">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Family:" Style="{StaticResource SpecLabel}"/>
+        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Family}" Style="{StaticResource SpecValue}"/>
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Logical Cores:" Style="{StaticResource SpecLabel}"/>
+        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding LogicalCores}" Style="{StaticResource SpecValue}"/>
+      </Grid>
+
+      <!-- Model / stepping / cache block -->
+      <Grid Grid.Column="4" Margin="0,0,28,0">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Model:" Style="{StaticResource SpecLabel}"/>
+        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Model}" Style="{StaticResource SpecValue}"/>
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Stepping:" Style="{StaticResource SpecLabel}"/>
+        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Stepping}" Style="{StaticResource SpecValue}"/>
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="L1 Cache Size:" Style="{StaticResource SpecLabel}"/>
+        <TextBlock Grid.Row="2" Grid.Column="1" Style="{StaticResource SpecValue}"
+                   Text="{Binding L1CacheKb, StringFormat={}{0:0.00} KB}"/>
+      </Grid>
+
+      <!-- Speeds / cache / virtualization block -->
+      <Grid Grid.Column="5">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="40"/>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Base Speed:" Style="{StaticResource SpecLabel}"/>
+        <TextBlock Grid.Row="0" Grid.Column="1" Style="{StaticResource SpecValue}"
+                   Text="{Binding BaseSpeedMHz, StringFormat={}{0:0.00} MHz}"/>
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Bus Speed:" Style="{StaticResource SpecLabel}"/>
+        <TextBlock Grid.Row="1" Grid.Column="1" Style="{StaticResource SpecValue}"
+                   Text="{Binding BusSpeedMHz, StringFormat={}{0:0.00} MHz}"/>
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Line Size:" Style="{StaticResource SpecLabel}"/>
+        <TextBlock Grid.Row="2" Grid.Column="1" Style="{StaticResource SpecValue}"
+                   Text="{Binding LineSizeBytes, StringFormat={}{0} B}"/>
+
+        <TextBlock Grid.Row="0" Grid.Column="3" Text="L2 Cache Size:" Style="{StaticResource SpecLabel}"/>
+        <TextBlock Grid.Row="0" Grid.Column="4" Style="{StaticResource SpecValue}"
+                   Text="{Binding L2CacheKb, StringFormat={}{0:0.00} KB}"/>
+        <TextBlock Grid.Row="1" Grid.Column="3" Text="L3 Cache Size:" Style="{StaticResource SpecLabel}"/>
+        <TextBlock Grid.Row="1" Grid.Column="4" Style="{StaticResource SpecValue}"
+                   Text="{Binding L3CacheKb, StringFormat={}{0:0.00} KB}"/>
+        <TextBlock Grid.Row="2" Grid.Column="3" Text="Virtualization:" Style="{StaticResource SpecLabel}"/>
+        <TextBlock Grid.Row="2" Grid.Column="4" Text="{Binding Virtualization}" Style="{StaticResource SpecValue}"/>
+      </Grid>
+    </Grid>
+  </Grid>
+</UserControl>
