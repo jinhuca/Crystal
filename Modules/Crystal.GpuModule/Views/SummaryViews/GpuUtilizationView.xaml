@@ -48,6 +48,6 @@
                                  graphs:GraphIdentity.Id="Gpu.Utilization"
                                  Style="{StaticResource UtilizationGraphLiteStyle}"
                                  Capacity="90" MinValue="0" MaxValue="100"
-                                 Margin="0,6,0,10" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+                                 Margin="0,6,0,10" HorizontalAlignment="Left" VerticalAlignment="Center"/>
   </Grid>
 </UserControl>

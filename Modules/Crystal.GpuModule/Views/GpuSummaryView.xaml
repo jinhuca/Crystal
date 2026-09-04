@@ -28,7 +28,7 @@
               BorderThickness="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ContentPresenter}, Converter={StaticResource TileChrome}, ConverterParameter=border}">
         <!-- Fixed width in a 0.8:1.2 ratio with the dedicated tile (780 : 1170). Stretches vertically
              so the bottom-anchored utilization graph reaches the bottom of the GPU summary view. -->
-        <Grid VerticalAlignment="Stretch">
+        <Grid VerticalAlignment="Center">
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
@@ -44,14 +44,14 @@
               <RowDefinition Height="Auto"/>
               <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <sv:GpuTemperatureView Grid.Row="0" Grid.Column="0" Margin="0,0,20,14"/>
-            <sv:GpuMemoryView      Grid.Row="0" Grid.Column="1" Margin="0,0,0,14"/>
-            <sv:GpuPowerView       Grid.Row="1" Grid.Column="0" Margin="0,0,20,0"/>
+            <sv:GpuTemperatureView Grid.Row="0" Grid.Column="0" Margin="0,0,8,8"/>
+            <sv:GpuMemoryView      Grid.Row="0" Grid.Column="1" Margin="0,0,0,8"/>
+            <sv:GpuPowerView       Grid.Row="1" Grid.Column="0" Margin="0,0,8,0"/>
             <sv:Gpu3DView          Grid.Row="1" Grid.Column="1" Margin="0,0,0,0"/>
           </Grid>
 
           <!-- Utilization graph, captioned with the adapter identity. -->
-          <sv:GpuUtilizationView Grid.Column="1" Margin="20,0,0,0" VerticalAlignment="Stretch"/>
+          <sv:GpuUtilizationView Grid.Column="1" Margin="0,0,0,0" VerticalAlignment="Center"/>
         </Grid>
       </Border>
     </DataTemplate>
@@ -62,36 +62,36 @@
               Padding="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ContentPresenter}, Converter={StaticResource TileChrome}}"
               BorderBrush="{StaticResource DividerBrush}"
               BorderThickness="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ContentPresenter}, Converter={StaticResource TileChrome}, ConverterParameter=border}">
-        <Grid VerticalAlignment="Stretch">
+        <Grid VerticalAlignment="Center">
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
           </Grid.ColumnDefinitions>
 
-          <!-- 3x3 meter block: Temperature/Memory/Clock, then Hot Spot/3D/Power, then PCIe Rx/Tx. -->
-          <Grid Grid.Column="0" VerticalAlignment="Top">
+          <!-- 2x4 meter block: Temperature/Memory/Clock, then Hot Spot/3D/Power, then PCIe Rx/Tx. -->
+          <Grid Grid.Column="0" VerticalAlignment="Bottom">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="Auto"/>
               <ColumnDefinition Width="Auto"/>
               <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-              <RowDefinition Height="Auto"/>
-              <RowDefinition Height="Auto"/>
-              <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <sv:GpuTemperatureView Grid.Row="0" Grid.Column="0" Margin="0,0,20,14"/>
-            <sv:GpuMemoryView      Grid.Row="0" Grid.Column="1" Margin="0,0,20,14"/>
-            <sv:GpuClockView       Grid.Row="0" Grid.Column="2" Margin="0,0,0,14"/>
-            <sv:GpuHotSpotView     Grid.Row="1" Grid.Column="0" Margin="0,0,20,14"/>
-            <sv:Gpu3DView          Grid.Row="1" Grid.Column="1" Margin="0,0,20,14"/>
-            <sv:GpuPowerView       Grid.Row="1" Grid.Column="2" Margin="0,0,0,14"/>
-            <sv:GpuPcieRxView      Grid.Row="2" Grid.Column="0" Margin="0,0,20,0"/>
-            <sv:GpuPcieTxView      Grid.Row="2" Grid.Column="1" Margin="0,0,20,0"/>
+            <sv:GpuTemperatureView Grid.Row="0" Grid.Column="0" Margin="0,0,8,8"/>
+            <sv:GpuMemoryView      Grid.Row="0" Grid.Column="1" Margin="0,0,8,8"/>
+            <sv:GpuClockView       Grid.Row="0" Grid.Column="2" Margin="0,0,8,8"/>
+            <sv:GpuHotSpotView     Grid.Row="1" Grid.Column="0" Margin="0,0,8,8"/>
+            <sv:Gpu3DView          Grid.Row="1" Grid.Column="1" Margin="0,0,8,8"/>
+            <sv:GpuPowerView       Grid.Row="1" Grid.Column="2" Margin="0,0,8,8"/>
+            <sv:GpuPcieRxView      Grid.Row="0" Grid.Column="3" Margin="0,0,8,0"/>
+            <sv:GpuPcieTxView      Grid.Row="1" Grid.Column="3" Margin="0,0,8,0"/>
           </Grid>
 
           <!-- Utilization graph, captioned with the adapter identity. -->
-          <sv:GpuUtilizationView Grid.Column="1" Margin="20,0,0,0" VerticalAlignment="Stretch"/>
+          <sv:GpuUtilizationView Grid.Column="1" Margin="0,0,0,0" VerticalAlignment="Center"/>
         </Grid>
       </Border>
     </DataTemplate>
@@ -127,7 +127,7 @@
   </UserControl.Resources>
 
   <Border Background="Transparent">
-    <Grid Margin="5">
+    <Grid Margin="5" HorizontalAlignment="Center" VerticalAlignment="Stretch">
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>
         <RowDefinition Height="*"/>
@@ -147,7 +147,7 @@
            adapters render as a horizontally scrollable strip (AdapterStripTemplate). Swapping the
            ContentTemplate means only the active branch is instantiated, so the single-adapter case
            builds none of the scroll machinery. -->
-      <ContentControl Grid.Row="1" Content="{Binding}" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch">
+      <ContentControl Grid.Row="1" Content="{Binding}" VerticalAlignment="Center" VerticalContentAlignment="Stretch">
         <ContentControl.Style>
           <Style TargetType="ContentControl">
             <Setter Property="ContentTemplate" Value="{StaticResource AdapterStripTemplate}"/>
