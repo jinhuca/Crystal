@@ -26,15 +26,16 @@
               Padding="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ContentPresenter}, Converter={StaticResource TileChrome}}"
               BorderBrush="{StaticResource DividerBrush}"
               BorderThickness="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ContentPresenter}, Converter={StaticResource TileChrome}, ConverterParameter=border}">
-        <!-- Fixed width in a 0.8:1.2 ratio with the dedicated tile (780 : 1170). -->
-        <Grid VerticalAlignment="Top" Width="780">
+        <!-- Fixed width in a 0.8:1.2 ratio with the dedicated tile (780 : 1170). Stretches vertically
+             so the bottom-anchored utilization graph reaches the bottom of the GPU summary view. -->
+        <Grid VerticalAlignment="Stretch" Width="780">
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
           </Grid.ColumnDefinitions>
 
           <!-- 2x2 meter block. -->
-          <Grid Grid.Column="0">
+          <Grid Grid.Column="0" VerticalAlignment="Top">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="Auto"/>
               <ColumnDefinition Width="Auto"/>
@@ -61,15 +62,16 @@
               Padding="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ContentPresenter}, Converter={StaticResource TileChrome}}"
               BorderBrush="{StaticResource DividerBrush}"
               BorderThickness="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ContentPresenter}, Converter={StaticResource TileChrome}, ConverterParameter=border}">
-        <!-- Fixed width in a 0.8:1.2 ratio with the integrated tile (780 : 1170). -->
-        <Grid VerticalAlignment="Top" Width="1170">
+        <!-- Fixed width in a 0.8:1.2 ratio with the integrated tile (780 : 1170). Stretches vertically
+             so the bottom-anchored utilization graph reaches the bottom of the GPU summary view. -->
+        <Grid VerticalAlignment="Stretch" Width="1170">
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
           </Grid.ColumnDefinitions>
 
           <!-- 3x3 meter block: Temperature/Memory/Clock, then Hot Spot/3D/Power, then PCIe Rx/Tx. -->
-          <Grid Grid.Column="0">
+          <Grid Grid.Column="0" VerticalAlignment="Top">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="Auto"/>
               <ColumnDefinition Width="Auto"/>
@@ -104,7 +106,8 @@
          built. The 10px left inset matches CpuSummaryView so the GPU tiles line up with the CPU tiles. -->
     <DataTemplate x:Key="SingleAdapterTemplate">
       <ContentControl Margin="10,0,0,0" Content="{Binding Adapters[0]}"
-                      ContentTemplateSelector="{StaticResource TileSelector}"/>
+                      ContentTemplateSelector="{StaticResource TileSelector}"
+                      VerticalAlignment="Stretch" VerticalContentAlignment="Stretch"/>
     </DataTemplate>
 
     <!-- Several adapters: a horizontally scrollable strip (scrollbars hidden, wheel scrolls sideways),
@@ -146,7 +149,7 @@
            adapters render as a horizontally scrollable strip (AdapterStripTemplate). Swapping the
            ContentTemplate means only the active branch is instantiated, so the single-adapter case
            builds none of the scroll machinery. -->
-      <ContentControl Grid.Row="1" Content="{Binding}" VerticalAlignment="Top">
+      <ContentControl Grid.Row="1" Content="{Binding}" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch">
         <ContentControl.Style>
           <Style TargetType="ContentControl">
             <Setter Property="ContentTemplate" Value="{StaticResource AdapterStripTemplate}"/>

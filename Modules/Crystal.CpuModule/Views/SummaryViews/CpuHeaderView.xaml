@@ -14,18 +14,13 @@
         <ColumnDefinition Width="*"/>
         <ColumnDefinition Width="Auto"/>
       </Grid.ColumnDefinitions>
+      <!-- Clean title row, matching the GPU header: just the accent tick + "CPU". The static specs
+           (brand, core counts, cache, base speed) moved to the top-left of the utilization graph
+           (brand) and a centered strip along the bottom of the summary tile (the rest). -->
       <StackPanel Grid.Column="0" Orientation="Horizontal">
         <Border Width="3" Background="{StaticResource AccentBrush}" Margin="0,1,8,1"/>
         <TextBlock Text="CPU" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource BodyFontSize}" FontWeight="SemiBold"
-                   VerticalAlignment="Center" Margin="0,0,16,0"/>
-        <TextBlock Text="{Binding Brand}" Style="{StaticResource HeaderSpec}"
-                   TextTrimming="CharacterEllipsis"/>
-        <TextBlock Text="{Binding PhysicalCores, StringFormat=Physical Cores: {0}}" Style="{StaticResource HeaderSpec}"/>
-        <TextBlock Text="{Binding LogicalCores, StringFormat=Logical Cores: {0}}" Style="{StaticResource HeaderSpec}"/>
-        <TextBlock Text="{Binding L1CacheKb, StringFormat=L1: {0:N0} KB}" Style="{StaticResource HeaderSpec}"/>
-        <TextBlock Text="{Binding L2CacheKb, StringFormat=L2: {0:N0} KB}" Style="{StaticResource HeaderSpec}"/>
-        <TextBlock Text="{Binding L3CacheKb, StringFormat=L3: {0:N0} KB}" Style="{StaticResource HeaderSpec}"/>
-        <TextBlock Text="{Binding BaseSpeedMHz, StringFormat=Base Speed: {0:N0} MHz}" Style="{StaticResource HeaderSpec}"/>
+                   VerticalAlignment="Center"/>
       </StackPanel>
       <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
         <!-- Throttle badge: shown only while the package is throttling. IsThrottling/ThrottleStatus
