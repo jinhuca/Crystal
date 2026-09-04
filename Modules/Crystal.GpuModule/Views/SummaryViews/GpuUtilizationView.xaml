@@ -10,7 +10,7 @@
   <!-- DataContext is a GpuAdapterViewModel, inherited from the per-adapter block. The adapter's
        core-load history graph, captioned with the adapter identity and the live utilization value;
        self-registers so the view model feeds it on each poll. -->
-  <Grid VerticalAlignment="Stretch" HorizontalAlignment="Center" ShowGridLines="True">
+  <Grid VerticalAlignment="Stretch" HorizontalAlignment="Center" ShowGridLines="False">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="*"/>

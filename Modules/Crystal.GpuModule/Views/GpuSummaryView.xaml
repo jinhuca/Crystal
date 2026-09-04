@@ -28,14 +28,14 @@
               BorderThickness="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ContentPresenter}, Converter={StaticResource TileChrome}, ConverterParameter=border}">
         <!-- Fixed width in a 0.8:1.2 ratio with the dedicated tile (780 : 1170). Stretches vertically
              so the bottom-anchored utilization graph reaches the bottom of the GPU summary view. -->
-        <Grid VerticalAlignment="Stretch" Width="780">
+        <Grid VerticalAlignment="Stretch">
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
           </Grid.ColumnDefinitions>
 
           <!-- 2x2 meter block. -->
-          <Grid Grid.Column="0" VerticalAlignment="Top">
+          <Grid Grid.Column="0" VerticalAlignment="Center">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="Auto"/>
               <ColumnDefinition Width="Auto"/>
@@ -62,9 +62,7 @@
               Padding="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ContentPresenter}, Converter={StaticResource TileChrome}}"
               BorderBrush="{StaticResource DividerBrush}"
               BorderThickness="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ContentPresenter}, Converter={StaticResource TileChrome}, ConverterParameter=border}">
-        <!-- Fixed width in a 0.8:1.2 ratio with the integrated tile (780 : 1170). Stretches vertically
-             so the bottom-anchored utilization graph reaches the bottom of the GPU summary view. -->
-        <Grid VerticalAlignment="Stretch" Width="1170">
+        <Grid VerticalAlignment="Stretch">
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
