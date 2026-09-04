@@ -23,11 +23,8 @@
 			<TextBlock Text="{Binding Temperature, StringFormat={}{0:0.00}}" Style="{StaticResource MetricValue}"/>
 			<TextBlock Text="°C" Style="{StaticResource MetricUnit}"/>
 		</StackPanel>
-		<bars:RangeBar Height="5" Margin="0,0,0,4"
+		<bars:RangeBar Style="{StaticResource SummaryRangeBarStyle}"
                    MinValue="30" MaxValue="120" Value="{Binding Temperature}"
-                   Segmented="True" SegmentWidth="4" SegmentGap="2"
-                   BarBackground="#141414" TrackBrush="#1E1E1E"
-                   BorderBrush="{StaticResource BorderBrush}" BorderThickness="1"
                    FillBrush="{Binding Value, RelativeSource={RelativeSource Self}, Converter={StaticResource TemperatureFill}}"/>
     <TextBlock Text="Temperature" Style="{StaticResource MetricCaption}"/>
     <!-- Intel-only thermal headroom; hidden when not exposed (reads 0 on AMD). -->

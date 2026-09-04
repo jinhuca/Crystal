@@ -14,11 +14,8 @@
       <TextBlock Text="{Binding ClockMhz, StringFormat={}{0:0}, TargetNullValue=—}" Style="{StaticResource MetricValue}"/>
       <TextBlock Text="MHz" Style="{StaticResource MetricUnit}"/>
     </StackPanel>
-    <bars:RangeBar Height="5" Margin="0,0,0,4"
+    <bars:RangeBar Style="{StaticResource SummaryRangeBarStyle}"
                    MinValue="0" MaxValue="{Binding ClockScaleMax}" Value="{Binding ClockMhz, TargetNullValue=0}"
-                   Segmented="True" SegmentWidth="4" SegmentGap="2"
-                   BarBackground="#141414" TrackBrush="#1E1E1E"
-                   BorderBrush="{StaticResource BorderBrush}" BorderThickness="1"
                    FillBrush="{StaticResource AccentBrush}"/>
     <TextBlock Text="Clock" Style="{StaticResource MetricCaption}"/>
   </StackPanel>

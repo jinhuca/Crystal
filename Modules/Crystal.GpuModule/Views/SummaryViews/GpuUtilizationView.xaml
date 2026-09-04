@@ -35,13 +35,13 @@
       <TextBlock Text="%" Style="{StaticResource MetricUnit}" VerticalAlignment="Center"/>
     </StackPanel>
 
-    <!-- Fixed width so the integrated and dedicated graphs render at an identical size: the square-dot
-         style derives Height from ActualWidth, so equal width yields equal height and capacity. -->
+    <!-- Stretches to fill its column so the owning tile's width sets the graph size: the integrated and
+         dedicated tiles are sized 0.8:1.2, so their graphs scale with them. The square-dot style derives
+         Height from ActualWidth, keeping the plotted dots square at whatever width the tile allots. -->
     <graphs:PerformanceGraphLite x:Name="UtilizationGraph" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
                                  graphs:GraphIdentity.Id="Gpu.Utilization"
                                  Style="{StaticResource SquareDotGraphLiteStyle}"
                                  Capacity="60" MinValue="0" MaxValue="100"
-                                 Width="500" HorizontalAlignment="Left"
                                  Margin="0,6,0,0" VerticalAlignment="Top"/>
   </Grid>
 </UserControl>

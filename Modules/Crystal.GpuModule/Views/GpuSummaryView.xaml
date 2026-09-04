@@ -4,29 +4,128 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:prism="http://prismlibrary.com/"
+             xmlns:local="clr-namespace:Crystal.GpuModule.Views"
              xmlns:sv="clr-namespace:Crystal.GpuModule.Views.SummaryViews"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
              d:DesignHeight="200" d:DesignWidth="1000"
              Background="Transparent" Foreground="{StaticResource TextBrush}"
              FontFamily="{StaticResource UiFontFamily}">
-  <!-- Two asymmetric blocks per GpuSV.png: the integrated GPU (left) shows a 2x2 meter block
-       (Temperature/Memory Used over Power/3D) beside its utilization graph; the dedicated GPU
-       (right) shows a 3x2 meter block (Temperature/Memory Used/Clock over Hot Spot/3D/Power)
-       beside its utilization graph and a PCIe Rx/Tx column. Each block collapses when the machine
-       lacks that adapter. The per-metric tiles live in Views/SummaryViews. -->
+  <!-- One tile per detected adapter: the integrated GPU shows a 2x2 meter block (Temperature/Memory Used
+       over Power/3D) beside its utilization graph; each dedicated GPU shows a 3x2 meter block
+       (Temperature/Memory Used/Clock over Hot Spot/3D/Power) beside its utilization graph and a PCIe
+       Rx/Tx column. A single adapter renders as one tile with no border and no ScrollViewer; several
+       adapters render as a horizontally scrollable strip (wheel scrolls sideways, scrollbars hidden)
+       where tiles after the first get a left divider. The per-metric tiles live in Views/SummaryViews. -->
   <UserControl.Resources>
-    <!-- A block collapses when its adapter is absent (DataContext bound to a null adapter). -->
-    <Style x:Key="AdapterBlockStyle" TargetType="Border">
-      <Style.Triggers>
-        <DataTrigger Binding="{Binding}" Value="{x:Null}">
-          <Setter Property="Visibility" Value="Collapsed"/>
-        </DataTrigger>
-      </Style.Triggers>
-    </Style>
+    <local:AdapterTileChromeConverter x:Key="TileChrome"/>
+
+    <!-- Integrated adapter tile: 2x2 meter block beside the utilization graph. -->
+    <DataTemplate x:Key="IntegratedTile">
+      <Border Margin="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ContentPresenter}, Converter={StaticResource TileChrome}}"
+              Padding="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ContentPresenter}, Converter={StaticResource TileChrome}}"
+              BorderBrush="{StaticResource DividerBrush}"
+              BorderThickness="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ContentPresenter}, Converter={StaticResource TileChrome}, ConverterParameter=border}">
+        <!-- Fixed width in a 0.8:1.2 ratio with the dedicated tile (780 : 1170). -->
+        <Grid VerticalAlignment="Top" Width="780">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+          </Grid.ColumnDefinitions>
+
+          <!-- 2x2 meter block. -->
+          <Grid Grid.Column="0">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <sv:GpuTemperatureView Grid.Row="0" Grid.Column="0" Margin="0,0,20,14"/>
+            <sv:GpuMemoryView      Grid.Row="0" Grid.Column="1" Margin="0,0,0,14"/>
+            <sv:GpuPowerView       Grid.Row="1" Grid.Column="0" Margin="0,0,20,0"/>
+            <sv:Gpu3DView          Grid.Row="1" Grid.Column="1" Margin="0,0,0,0"/>
+          </Grid>
+
+          <!-- Utilization graph, captioned with the adapter identity. -->
+          <sv:GpuUtilizationView Grid.Column="1" Margin="20,0,0,0" VerticalAlignment="Stretch"/>
+        </Grid>
+      </Border>
+    </DataTemplate>
+
+    <!-- Dedicated adapter tile: 3x2 meter block beside the utilization graph and a PCIe column. -->
+    <DataTemplate x:Key="DedicatedTile">
+      <Border Margin="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ContentPresenter}, Converter={StaticResource TileChrome}}"
+              Padding="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ContentPresenter}, Converter={StaticResource TileChrome}}"
+              BorderBrush="{StaticResource DividerBrush}"
+              BorderThickness="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ContentPresenter}, Converter={StaticResource TileChrome}, ConverterParameter=border}">
+        <!-- Fixed width in a 0.8:1.2 ratio with the integrated tile (780 : 1170). -->
+        <Grid VerticalAlignment="Top" Width="1170">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+          </Grid.ColumnDefinitions>
+
+          <!-- 3x3 meter block: Temperature/Memory/Clock, then Hot Spot/3D/Power, then PCIe Rx/Tx. -->
+          <Grid Grid.Column="0">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <sv:GpuTemperatureView Grid.Row="0" Grid.Column="0" Margin="0,0,20,14"/>
+            <sv:GpuMemoryView      Grid.Row="0" Grid.Column="1" Margin="0,0,20,14"/>
+            <sv:GpuClockView       Grid.Row="0" Grid.Column="2" Margin="0,0,0,14"/>
+            <sv:GpuHotSpotView     Grid.Row="1" Grid.Column="0" Margin="0,0,20,14"/>
+            <sv:Gpu3DView          Grid.Row="1" Grid.Column="1" Margin="0,0,20,14"/>
+            <sv:GpuPowerView       Grid.Row="1" Grid.Column="2" Margin="0,0,0,14"/>
+            <sv:GpuPcieRxView      Grid.Row="2" Grid.Column="0" Margin="0,0,20,0"/>
+            <sv:GpuPcieTxView      Grid.Row="2" Grid.Column="1" Margin="0,0,20,0"/>
+          </Grid>
+
+          <!-- Utilization graph, captioned with the adapter identity. -->
+          <sv:GpuUtilizationView Grid.Column="1" Margin="20,0,0,0" VerticalAlignment="Stretch"/>
+        </Grid>
+      </Border>
+    </DataTemplate>
+
+    <local:GpuAdapterTileTemplateSelector x:Key="TileSelector"
+                                          IntegratedTemplate="{StaticResource IntegratedTile}"
+                                          DedicatedTemplate="{StaticResource DedicatedTile}"/>
+
+    <!-- One adapter: render the tile directly with no ScrollViewer, so none of the scroll machinery is
+         built. The 10px left inset matches CpuSummaryView so the GPU tiles line up with the CPU tiles. -->
+    <DataTemplate x:Key="SingleAdapterTemplate">
+      <ContentControl Margin="10,0,0,0" Content="{Binding Adapters[0]}"
+                      ContentTemplateSelector="{StaticResource TileSelector}"/>
+    </DataTemplate>
+
+    <!-- Several adapters: a horizontally scrollable strip (scrollbars hidden, wheel scrolls sideways),
+         same 10px inset as above. -->
+    <DataTemplate x:Key="AdapterStripTemplate">
+      <ScrollViewer Margin="10,0,0,0"
+                    HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled"
+                    PreviewMouseWheel="OnScrollHorizontally">
+        <ItemsControl ItemsSource="{Binding Adapters}" AlternationCount="99"
+                      ItemTemplateSelector="{StaticResource TileSelector}" VerticalAlignment="Top">
+          <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+              <StackPanel Orientation="Horizontal"/>
+            </ItemsPanelTemplate>
+          </ItemsControl.ItemsPanel>
+        </ItemsControl>
+      </ScrollViewer>
+    </DataTemplate>
   </UserControl.Resources>
 
-  <Border Background="Transparent" MouseLeftButtonDown="OnTileClick">
+  <Border Background="Transparent">
     <Grid Margin="5">
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>
@@ -43,81 +142,22 @@
         </StackPanel>
       </Border>
 
-      <Grid Grid.Row="1" VerticalAlignment="Top">
-        <!-- Content-sized so an absent (collapsed) adapter block reserves no width, and neither
-             block's utilization graph is stretched wider than the other. -->
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="Auto"/>
-          <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
-
-        <!-- Integrated GPU block. -->
-        <Border Grid.Column="0" DataContext="{Binding IntegratedAdapter}" Style="{StaticResource AdapterBlockStyle}"
-                Margin="0,0,16,0">
-          <Grid VerticalAlignment="Top">
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="Auto"/>
-              <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-
-            <!-- 2x2 meter block. -->
-            <Grid Grid.Column="0">
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-              </Grid.ColumnDefinitions>
-              <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-              </Grid.RowDefinitions>
-              <sv:GpuTemperatureView Grid.Row="0" Grid.Column="0" Margin="0,0,20,14"/>
-              <sv:GpuMemoryView      Grid.Row="0" Grid.Column="1" Margin="0,0,0,14"/>
-              <sv:GpuPowerView       Grid.Row="1" Grid.Column="0" Margin="0,0,20,0"/>
-              <sv:Gpu3DView          Grid.Row="1" Grid.Column="1" Margin="0,0,0,0"/>
-            </Grid>
-
-            <!-- Utilization graph, captioned with the adapter identity. -->
-            <sv:GpuUtilizationView Grid.Column="1" Margin="20,0,0,0" VerticalAlignment="Stretch"/>
-          </Grid>
-        </Border>
-
-        <!-- Dedicated GPU block. -->
-        <Border Grid.Column="1" DataContext="{Binding DedicatedAdapter}" Style="{StaticResource AdapterBlockStyle}"
-                BorderBrush="{StaticResource DividerBrush}" BorderThickness="1,0,0,0" Padding="16,0,0,0">
-          <Grid VerticalAlignment="Top">
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="Auto"/>
-              <ColumnDefinition Width="Auto"/>
-              <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-
-            <!-- 3x2 meter block. -->
-            <Grid Grid.Column="0">
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-              </Grid.ColumnDefinitions>
-              <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-              </Grid.RowDefinitions>
-              <sv:GpuTemperatureView Grid.Row="0" Grid.Column="0" Margin="0,0,20,14"/>
-              <sv:GpuMemoryView      Grid.Row="0" Grid.Column="1" Margin="0,0,20,14"/>
-              <sv:GpuClockView       Grid.Row="0" Grid.Column="2" Margin="0,0,0,14"/>
-              <sv:GpuHotSpotView     Grid.Row="1" Grid.Column="0" Margin="0,0,20,0"/>
-              <sv:Gpu3DView          Grid.Row="1" Grid.Column="1" Margin="0,0,20,0"/>
-              <sv:GpuPowerView       Grid.Row="1" Grid.Column="2" Margin="0,0,0,0"/>
-            </Grid>
-
-            <!-- Utilization graph, captioned with the adapter identity. -->
-            <sv:GpuUtilizationView Grid.Column="1" Margin="20,0,20,0" VerticalAlignment="Stretch"/>
-
-            <!-- PCIe Rx/Tx throughput column. -->
-            <sv:GpuPcieView Grid.Column="2" Width="170" VerticalAlignment="Stretch"/>
-          </Grid>
-        </Border>
-      </Grid>
+      <!-- A lone adapter renders as a single tile with no ScrollViewer (SingleAdapterTemplate); several
+           adapters render as a horizontally scrollable strip (AdapterStripTemplate). Swapping the
+           ContentTemplate means only the active branch is instantiated, so the single-adapter case
+           builds none of the scroll machinery. -->
+      <ContentControl Grid.Row="1" Content="{Binding}" VerticalAlignment="Top">
+        <ContentControl.Style>
+          <Style TargetType="ContentControl">
+            <Setter Property="ContentTemplate" Value="{StaticResource AdapterStripTemplate}"/>
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding Adapters.Count}" Value="1">
+                <Setter Property="ContentTemplate" Value="{StaticResource SingleAdapterTemplate}"/>
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </ContentControl.Style>
+      </ContentControl>
     </Grid>
   </Border>
 </UserControl>

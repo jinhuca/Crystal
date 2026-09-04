@@ -12,6 +12,7 @@
          PerformanceGraph sample styles above); same one-place-merge reasoning as those. -->
     <ResourceDictionary Source="/Crystal.Controls;component/Themes/PerformanceGraphLiteStyles.xaml"/>
     <ResourceDictionary Source="/Crystal.Controls;component/Themes/RangeBarStyles.xaml"/>
+    <ResourceDictionary Source="/Crystal.Controls;component/RangeBars/Styles/SummaryRangeBarStyle.xaml"/>
     <ResourceDictionary Source="/Crystal.Controls;component/Themes/ScrollBarStyles.xaml"/>
     <ResourceDictionary Source="/Crystal.Controls;component/Themes/LoadingHostStyles.xaml"/>
   </ResourceDictionary.MergedDictionaries>
