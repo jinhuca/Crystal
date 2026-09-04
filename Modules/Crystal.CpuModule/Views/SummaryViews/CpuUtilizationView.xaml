@@ -48,7 +48,7 @@
                                  graphs:GraphIdentity.Id="Cpu.Utilization"
                                  Style="{StaticResource UtilizationGraphLiteStyle}"
                                  Capacity="120" MinValue="0" MaxValue="100"
-                                 HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+                                 HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
     <!-- Static specs beneath the graph, centered under the utilization column. DataContext is the
          SpecsViewModel reached via the owning CpuSummaryView (this view binds the SensorsViewModel). -->
