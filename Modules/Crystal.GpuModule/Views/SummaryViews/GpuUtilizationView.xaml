@@ -10,7 +10,7 @@
   <!-- DataContext is a GpuAdapterViewModel, inherited from the per-adapter block. The adapter's
        core-load history graph, captioned with the adapter identity and the live utilization value;
        self-registers so the view model feeds it on each poll. -->
-  <Grid>
+  <Grid VerticalAlignment="Stretch" HorizontalAlignment="Center" ShowGridLines="True">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="*"/>
@@ -20,14 +20,20 @@
       <ColumnDefinition Width="Auto"/>
     </Grid.ColumnDefinitions>
 
-    <!-- Caption: "<Integrated/Dedicated> GPU" accent label + the adapter product name. -->
-    <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-      <TextBlock Text="{Binding KindLabel}" Foreground="{StaticResource AccentBrush}"
+    <!-- Caption: "<Integrated/Dedicated> GPU" accent label + the adapter product name. The name sits
+         in a bounded (star) column with TextTrimming so a long dedicated-GPU name ellipsizes inside
+         this cell instead of overflowing rightward and painting over the load value beside it. -->
+    <Grid Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,12,0">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+      <TextBlock Grid.Column="0" Text="{Binding KindLabel}" Foreground="{StaticResource AccentBrush}"
                  FontSize="{StaticResource BodyFontSize}" FontWeight="SemiBold" VerticalAlignment="Center"/>
-      <TextBlock Text="{Binding Name}" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource CaptionFontSize}"
+      <TextBlock Grid.Column="1" Text="{Binding Name}" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource CaptionFontSize}"
                  FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Center" Margin="8,0,0,0"
                  TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}"/>
-    </StackPanel>
+    </Grid>
 
     <!-- Live utilization value, right-aligned above the graph. -->
     <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right">
@@ -35,13 +41,13 @@
       <TextBlock Text="%" Style="{StaticResource MetricUnit}" VerticalAlignment="Center"/>
     </StackPanel>
 
-    <!-- Stretches to fill its column so the owning tile's width sets the graph size: the integrated and
-         dedicated tiles are sized 0.8:1.2, so their graphs scale with them. The square-dot style derives
-         Height from ActualWidth, keeping the plotted dots square at whatever width the tile allots. -->
+    <!-- Fixed dot-cell size (UtilizationGraphLiteStyle pins Height and derives Width) so the plotted
+         cells match the CPU graph and the other GPU tile exactly. Anchored to the bottom of the tile
+         with a 10px margin so it lines up with the bottom of the GPU summary view. -->
     <graphs:PerformanceGraphLite x:Name="UtilizationGraph" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
                                  graphs:GraphIdentity.Id="Gpu.Utilization"
-                                 Style="{StaticResource SquareDotGraphLiteStyle}"
-                                 Capacity="60" MinValue="0" MaxValue="100"
-                                 Margin="0,6,0,0" VerticalAlignment="Top"/>
+                                 Style="{StaticResource UtilizationGraphLiteStyle}"
+                                 Capacity="90" MinValue="0" MaxValue="100"
+                                 Margin="0,6,0,10" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
   </Grid>
 </UserControl>
