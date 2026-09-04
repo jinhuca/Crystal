@@ -1,0 +1,22 @@
+<UserControl x:Class="Crystal.GpuModule.Views.SummaryViews.GpuPcieTxView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:bars="clr-namespace:Crystal.Controls.RangeBars;assembly=Crystal.Controls"
+             mc:Ignorable="d"
+             d:DesignHeight="44" d:DesignWidth="130">
+  <!-- DataContext is a GpuAdapterViewModel, inherited from the per-adapter block. Live PCIe Tx
+       throughput over a segmented range bar, styled to match the other meter tiles; the bar tracks
+       the adapter's auto-ranging Tx scale (PcieTxScaleMax). -->
+  <StackPanel Width="130" HorizontalAlignment="Left">
+    <StackPanel Orientation="Horizontal">
+      <TextBlock Text="{Binding PcieTxMBps, StringFormat={}{0:0.0}, TargetNullValue=0.0}" Style="{StaticResource MetricValue}"/>
+      <TextBlock Text="MB/s" Style="{StaticResource MetricUnit}"/>
+    </StackPanel>
+    <bars:RangeBar Style="{StaticResource SummaryRangeBarStyle}"
+                   MinValue="0" MaxValue="{Binding PcieTxScaleMax}" Value="{Binding PcieTxMBps, TargetNullValue=0}"
+                   FillBrush="#E8C22A"/>
+    <TextBlock Text="PCIe Tx" Style="{StaticResource MetricCaption}"/>
+  </StackPanel>
+</UserControl>

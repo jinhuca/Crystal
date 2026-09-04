@@ -1,0 +1,21 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:bars="clr-namespace:Crystal.Controls.RangeBars">
+
+  <!-- Shared look for the compact LED-meter range bars in the CPU and GPU summary tiles: a thin,
+       segmented, dark-tracked bar. Metric-specific properties (MinValue/MaxValue/Value/FillBrush,
+       and any per-tile Margin) stay on each usage. BorderBrush is a DynamicResource so it resolves
+       against the app palette regardless of merge order. -->
+  <Style x:Key="SummaryRangeBarStyle" TargetType="{x:Type bars:RangeBar}">
+    <Setter Property="Height" Value="6"/>
+    <Setter Property="Margin" Value="0,0,0,4"/>
+    <Setter Property="Segmented" Value="True"/>
+    <Setter Property="SegmentWidth" Value="4"/>
+    <Setter Property="SegmentGap" Value="1"/>
+    <Setter Property="BarBackground" Value="#99141414"/>
+    <Setter Property="TrackBrush" Value="#771E1E1E"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+    <Setter Property="BorderThickness" Value="0.6"/>
+  </Style>
+
+</ResourceDictionary>

@@ -32,11 +32,11 @@
       <TextBlock Text="{Binding MemoryUsedPercent, StringFormat={}({0:0}%), TargetNullValue=(0%)}"
                  Style="{StaticResource MetricCaption}" VerticalAlignment="Bottom" Margin="6,0,0,0"/>
     </StackPanel>
-    <bars:RangeBar Height="5" Margin="0,3,0,4"
+    <!-- Bar width/position pinned to the sibling tiles (130), even though the readout above needs a
+         wider tile, so all the meter bars align. -->
+    <bars:RangeBar Style="{StaticResource SummaryRangeBarStyle}"
+                   Width="130" HorizontalAlignment="Left"
                    MinValue="0" MaxValue="100" Value="{Binding MemoryUsedPercent, TargetNullValue=0}"
-                   Segmented="True" SegmentWidth="4" SegmentGap="2"
-                   BarBackground="#141414" TrackBrush="#1E1E1E"
-                   BorderBrush="{StaticResource BorderBrush}" BorderThickness="1"
                    FillBrush="{Binding Value, RelativeSource={RelativeSource Self}, Converter={StaticResource MemoryFill}}"/>
     <TextBlock Text="Memory Used" Style="{StaticResource MetricCaption}"/>
   </StackPanel>

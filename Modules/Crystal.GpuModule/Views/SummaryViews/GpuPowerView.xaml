@@ -23,11 +23,8 @@
       <TextBlock Text="{Binding PowerW, StringFormat={}{0:0.00}, TargetNullValue=0.00}" Style="{StaticResource MetricValue}"/>
       <TextBlock Text="Watts" Style="{StaticResource MetricUnit}"/>
     </StackPanel>
-    <bars:RangeBar Height="5" Margin="0,0,0,4"
+    <bars:RangeBar Style="{StaticResource SummaryRangeBarStyle}"
                    MinValue="0" MaxValue="{Binding PowerScaleMax}" Value="{Binding PowerW, TargetNullValue=0}"
-                   Segmented="True" SegmentWidth="4" SegmentGap="2"
-                   BarBackground="#141414" TrackBrush="#1E1E1E"
-                   BorderBrush="{StaticResource BorderBrush}" BorderThickness="1"
                    FillBrush="{Binding Value, RelativeSource={RelativeSource Self}, Converter={StaticResource PowerFill}}"/>
     <TextBlock Text="Power" Style="{StaticResource MetricCaption}"/>
   </StackPanel>
