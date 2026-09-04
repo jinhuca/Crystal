@@ -25,9 +25,9 @@
       <sv:CpuHeaderView Grid.Row="0"/>
       <Grid Grid.Row="1" DataContext="{Binding SensorsViewModel}" Margin="10,5,0,5" ShowGridLines="False">
         <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="1.1*"/>
+          <ColumnDefinition Width="1.2*"/>
           <ColumnDefinition Width="2*"/>
-          <ColumnDefinition Width="1.4*"/>
+          <ColumnDefinition Width="1.6*"/>
         </Grid.ColumnDefinitions>
         <!-- Column 0: fixed-size metric tiles, aligned left. -->
         <Grid Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,10,0">
