@@ -45,7 +45,7 @@
          mode, stretch-to-fill dot matrix in Dot mode. Stretches to fill the row so both modes occupy
          the same space (no reflow on toggle). 10px bottom margin lines it up with the tile's base. -->
     <graphs:AdaptiveGraph x:Name="UtilizationGraph" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
-                          graphs:GraphIdentity.Id="Gpu.Utilization"
+                          graphs:GraphIdentity.Id="Gpu.Utilization" VerticalAlignment="Center"
                           Capacity="90" MinValue="0" MaxValue="100"
                           Accent="#3BD15A" ShowChrome="True" Margin="0,6,0,10"
                           CellPitch="{StaticResource DashboardDotPitch}"/>
