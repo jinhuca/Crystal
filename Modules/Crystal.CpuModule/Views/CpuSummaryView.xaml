@@ -23,7 +23,7 @@
         <RowDefinition Height="*"/>
 			</Grid.RowDefinitions>
       <sv:CpuHeaderView Grid.Row="0"/>
-      <Grid Grid.Row="1" DataContext="{Binding SensorsViewModel}" Margin="10,5,0,5" ShowGridLines="False">
+      <Grid Grid.Row="1" DataContext="{Binding SensorsViewModel}" Margin="10,2,0,2" ShowGridLines="False">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="1.2*"/>
           <ColumnDefinition Width="2*"/>
@@ -40,9 +40,9 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
           </Grid.RowDefinitions>
-          <sv:CpuClockView       Grid.Row="0" Grid.Column="0" Margin="0,0,42,15"/>
-          <sv:CpuTemperatureView Grid.Row="0" Grid.Column="1" Margin="0,0,42,15"/>
-          <sv:CpuPowerView       Grid.Row="0" Grid.Column="2" Margin="0,0,0,15"/>
+          <sv:CpuClockView       Grid.Row="0" Grid.Column="0" Margin="0,0,42,8"/>
+          <sv:CpuTemperatureView Grid.Row="0" Grid.Column="1" Margin="0,0,42,8"/>
+          <sv:CpuPowerView       Grid.Row="0" Grid.Column="2" Margin="0,0,0,8"/>
           <sv:CpuVoltageView     Grid.Row="1" Grid.Column="0" Margin="0,0,42,0"/>
           <sv:CpuFanView         Grid.Row="1" Grid.Column="1" Margin="0,0,42,0"/>
         </Grid>

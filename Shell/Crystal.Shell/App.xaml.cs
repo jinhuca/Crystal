@@ -80,12 +80,12 @@ public partial class App : PrismApplication {
     // window service.
     containerRegistry.RegisterSingleton<WindowLayoutStore>();
 
-    // Persists the dashboard graph-appearance selection (category + per-graph kind/accent) across
-    // sessions; shared by the graph-settings popup and the dashboard graphs.
+    // Persists the dashboard graph-appearance selection (render mode + CPU core-strip look) across
+    // sessions; shared by the title-bar Line/Dot toggle and the core-strip appearance service.
     containerRegistry.RegisterSingleton<Settings.GraphSettingsStore>();
 
-    // Applies the persisted selection to live dashboard graphs (on registration and on Save). Resolved
-    // eagerly in OnInitialized so it subscribes before any tile's graphs are realized.
+    // Mirrors the persisted core-strip look onto CoreBarAppearance (on construction and on Save).
+    // Resolved eagerly in OnInitialized so it applies before the CPU tile is realized.
     containerRegistry.RegisterSingleton<Settings.GraphAppearanceService>();
 
     // Long-lived: subscribes to weakly-referenced navigation events (ShowDetail/ShowDashboard),
@@ -113,8 +113,8 @@ public partial class App : PrismApplication {
   protected override void OnInitialized() {
     base.OnInitialized();
 
-    // Start listening for graph registrations before the dashboard's tiles (and their graphs) are
-    // realized, so each graph picks up the saved appearance the moment it is tagged.
+    // Apply the saved CPU core-strip look before the dashboard's tiles are realized, so the strip
+    // paints in the right shape/colour from first render.
     Container.Resolve<Settings.GraphAppearanceService>();
 
     // Navigate to the dashboard immediately: each tile is a self-warming LoadingHost (see the

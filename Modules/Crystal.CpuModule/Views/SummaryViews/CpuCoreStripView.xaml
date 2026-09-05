@@ -51,12 +51,12 @@
     <ItemsControl ItemsSource="{Binding CoreLoads}">
       <ItemsControl.ItemsPanel>
         <ItemsPanelTemplate>
-          <WrapPanel Orientation="Horizontal" ItemHeight="48" ItemWidth="280"/>
+          <WrapPanel Orientation="Horizontal" ItemHeight="42" ItemWidth="280"/>
         </ItemsPanelTemplate>
       </ItemsControl.ItemsPanel>
       <ItemsControl.ItemTemplate>
         <DataTemplate>
-          <Grid Margin="0,12,30,0" VerticalAlignment="Top">
+          <Grid Margin="0,6,30,0" VerticalAlignment="Top">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="28"/>
               <ColumnDefinition Width="*"/>

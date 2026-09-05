@@ -1,4 +1,5 @@
 using Crystal.Shell.Navigation;
+using Crystal.Shell.Settings;
 using Crystal.Shell.Views;
 using System;
 using System.ComponentModel;
@@ -26,6 +27,10 @@ public partial class Shell : Window {
   private readonly Settings.GraphSettingsStore _graphSettings;
   private readonly DispatcherTimer _clock;
 
+  // Guards the title-bar graph-shape radios while their initial checked state is being seeded, so
+  // reflecting the current selection doesn't itself write the settings back.
+  private bool _suppressKindApply;
+
   public Shell(WindowLayoutStore layouts, Settings.GraphSettingsStore graphSettings) {
     _layouts = layouts;
     _graphSettings = graphSettings;
@@ -34,6 +39,7 @@ public partial class Shell : Window {
     StateChanged += (_, _) => UpdateMaximizeButton();
     Closing += OnClosing;
     UpdateMaximizeButton();
+    InitGraphKindToggle();
 
     _clock = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
     _clock.Tick += (_, _) => UpdateClock();
@@ -51,8 +57,33 @@ public partial class Shell : Window {
 
   private void OnCloseClick(object sender, RoutedEventArgs e) => Close();
 
-  private void OnGraphSettingsClick(object sender, RoutedEventArgs e) {
-    new Views.GraphSettingsWindow(_graphSettings) { Owner = this }.ShowDialog();
+  // Reflect the persisted render mode in the title-bar radios and push it onto the global graph
+  // appearance so every AdaptiveGraph builds in the right shape from first paint. Seeding is
+  // suppressed so reflecting the current selection doesn't itself re-save it.
+  private void InitGraphKindToggle() {
+    var mode = _graphSettings.Current.RenderMode;
+    Crystal.Controls.PerformanceGraphs.GraphAppearance.Current.Mode = mode;
+    _suppressKindApply = true;
+    if (mode == Crystal.Controls.PerformanceGraphs.GraphRenderMode.Dot) DotGraphRadio.IsChecked = true;
+    else LineGraphRadio.IsChecked = true;
+    _suppressKindApply = false;
+  }
+
+  private void OnGraphLineChecked(object sender, RoutedEventArgs e) {
+    if (!_suppressKindApply) ApplyRenderMode(Crystal.Controls.PerformanceGraphs.GraphRenderMode.Line);
+  }
+
+  private void OnGraphDotChecked(object sender, RoutedEventArgs e) {
+    if (!_suppressKindApply) ApplyRenderMode(Crystal.Controls.PerformanceGraphs.GraphRenderMode.Dot);
+  }
+
+  // Push the chosen render mode onto the global graph appearance (every live AdaptiveGraph rebuilds
+  // its inner control immediately) and persist it so the choice is restored on the next launch.
+  private void ApplyRenderMode(Crystal.Controls.PerformanceGraphs.GraphRenderMode mode) {
+    Crystal.Controls.PerformanceGraphs.GraphAppearance.Current.Mode = mode;
+    var current = _graphSettings.Current;
+    current.RenderMode = mode;
+    _graphSettings.Save(current);
   }
 
   // Reset the dashboard's resizable rows to their default proportions, and the Processes tile's

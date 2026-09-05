@@ -6,8 +6,9 @@ namespace Crystal.Shell.Views;
 
 /// <summary>
 /// The dashboard: a grid of module summary tiles laid out per the reference design
-/// (CPU top-left, GPU top-right, Memory mid-left, Storage mid-right, BIOS full-width
-/// bottom). Each tile is its own region so a module can inject its summary view.
+/// (CPU and GPU full-width rows, Memory/Storage on the components row, and
+/// BIOS/Network/OS on the bottom row). Each tile is its own region so a
+/// module can inject its summary view.
 /// The content rows are user-resizable via GridSplitters; <see cref="ResetLayout"/>
 /// restores their default star proportions.
 /// </summary>
@@ -25,27 +26,22 @@ public partial class DashboardView : UserControl {
   /// <summary>
   /// Default row heights, kept in one place so ResetLayout and the XAML stay in sync.
   /// </summary>
-  public GridLength ComponentsDefault {  get; } = new(1.2, GridUnitType.Star);
+  public GridLength ComponentsDefault {  get; } = new(2.2, GridUnitType.Star);
 
   /// <summary>
-  /// Default row heights, kept in one place so ResetLayout and the XAML stay in sync.
+  /// Default height of the bottom row (BIOS/Network/OS).
   /// </summary>
-  public GridLength ProcessesDefault {  get; } = new(1.6, GridUnitType.Star);
+  public GridLength BottomDefault {  get; } = new(1.6, GridUnitType.Star);
 
   /// <summary>
-  /// Default width for each Row #3 tile column (Memory/Storage/Network/BIOS): equal star shares.
+  /// Default width for each components-row tile column (Memory/Storage): equal star shares.
   /// </summary>
   public GridLength ComponentColumnDefault { get; } = new(1, GridUnitType.Star);
 
   /// <summary>
-  /// Default widths for the bottom row's Processes (2*) and OS (1*) tile columns.
+  /// Default width for each bottom-row tile column (BIOS/Network/OS): equal star shares.
   /// </summary>
-  public GridLength ProcessesColumnDefault { get; } = new(1, GridUnitType.Star);
-
-  /// <summary>
-  /// Default widths for the bottom row's Processes (2*) and OS (1*) tile columns.
-  /// </summary>
-  public GridLength OsColumnDefault { get; } = new(0.334, GridUnitType.Star);
+  public GridLength BottomColumnDefault { get; } = new(1, GridUnitType.Star);
 
   /// <summary>
   /// Initializes a new instance of the <see cref="DashboardView"/> class.
@@ -68,14 +64,13 @@ public partial class DashboardView : UserControl {
     CpuRow.Height = CpuDefault;
     GpuRow.Height = GpuDefault;
     ComponentsRow.Height = ComponentsDefault;
-    ProcessesRow.Height = ProcessesDefault;
+    BottomRow.Height = BottomDefault;
 
     MemoryCol.Width = ComponentColumnDefault;
     StorageCol.Width = ComponentColumnDefault;
-    NetworkCol.Width = ComponentColumnDefault;
-    BiosCol.Width = ComponentColumnDefault;
 
-    ProcessesCol.Width = ProcessesColumnDefault;
-    OsCol.Width = OsColumnDefault;
+    BiosCol.Width = BottomColumnDefault;
+    NetworkCol.Width = BottomColumnDefault;
+    OsCol.Width = BottomColumnDefault;
   }
 }

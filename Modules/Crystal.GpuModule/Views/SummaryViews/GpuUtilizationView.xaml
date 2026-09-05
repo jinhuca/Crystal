@@ -41,13 +41,12 @@
       <TextBlock Text="%" Style="{StaticResource MetricUnit}" VerticalAlignment="Center"/>
     </StackPanel>
 
-    <!-- Fixed dot-cell size (UtilizationGraphLiteStyle pins Height and derives Width) so the plotted
-         cells match the CPU graph and the other GPU tile exactly. Anchored to the bottom of the tile
-         with a 10px margin so it lines up with the bottom of the GPU summary view. -->
-    <graphs:PerformanceGraphLite x:Name="UtilizationGraph" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
-                                 graphs:GraphIdentity.Id="Gpu.Utilization"
-                                 Style="{StaticResource UtilizationGraphLiteStyle}"
-                                 Capacity="90" MinValue="0" MaxValue="100"
-                                 Margin="0,6,0,10" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+    <!-- Framed history graph mirroring the Memory tile: border + grid + gradient-filled line in Line
+         mode, stretch-to-fill dot matrix in Dot mode. Stretches to fill the row so both modes occupy
+         the same space (no reflow on toggle). 10px bottom margin lines it up with the tile's base. -->
+    <graphs:AdaptiveGraph x:Name="UtilizationGraph" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                          graphs:GraphIdentity.Id="Gpu.Utilization"
+                          Capacity="90" MinValue="0" MaxValue="100"
+                          Accent="#3BD15A" ShowChrome="True" Margin="0,6,0,10"/>
   </Grid>
 </UserControl>

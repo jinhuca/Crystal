@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 namespace Crystal.Shell.Settings;
 
 /// <summary>
-/// Reads and writes the dashboard graph-appearance selection (category + per-graph kind/accent) to a
+/// Reads and writes the dashboard graph-appearance selection (render mode + CPU core-strip look) to a
 /// small JSON file under <c>%AppData%\Crystal</c>, so the chosen look is restored on the next launch.
 /// Mirrors <see cref="Crystal.Shell.Navigation.WindowLayoutStore"/>: all IO is best-effort — a
 /// missing or corrupt file just yields defaults rather than throwing.

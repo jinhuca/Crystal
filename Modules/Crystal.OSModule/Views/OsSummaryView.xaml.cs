@@ -15,4 +15,13 @@ public partial class OsSummaryView : UserControl {
     if (e.ClickCount >= 2 && DataContext is IOsViewModel vm && vm.ShowDetailCommand.CanExecute(null))
       vm.ShowDetailCommand.Execute(null);
   }
+
+  // Double-click on the Processes sub-tile opens the full process list in its own window. Marked
+  // handled so it doesn't bubble to the outer tile's OnTileClick (which opens the OS detail view).
+  private void OnProcessesTileClick(object sender, MouseButtonEventArgs e) {
+    if (e.ClickCount < 2) return;
+    e.Handled = true;
+    if (DataContext is IOsViewModel vm && vm.ShowProcessesCommand.CanExecute(null))
+      vm.ShowProcessesCommand.Execute(null);
+  }
 }
