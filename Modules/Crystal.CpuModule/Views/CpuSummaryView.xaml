@@ -23,11 +23,11 @@
         <RowDefinition Height="*"/>
 			</Grid.RowDefinitions>
       <sv:CpuHeaderView Grid.Row="0"/>
-      <Grid Grid.Row="1" DataContext="{Binding SensorsViewModel}" Margin="10,2,0,2" ShowGridLines="true">
+      <Grid Grid.Row="1" DataContext="{Binding SensorsViewModel}" Margin="10,2,0,2" ShowGridLines="False">
         <Grid.RowDefinitions>
           <RowDefinition/>
           <RowDefinition/>
-          <RowDefinition Height="20"/>
+          <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="1*"/>
@@ -36,20 +36,49 @@
           <ColumnDefinition Width=".5*"/>
         </Grid.ColumnDefinitions>
         
-        <sv:CpuClockView       Grid.Row="0" Grid.Column="0"/>
-        <sv:CpuTemperatureView Grid.Row="0" Grid.Column="1"/>
-        <sv:CpuPowerView       Grid.Row="1" Grid.Column="2"/>
-        <sv:CpuVoltageView     Grid.Row="1" Grid.Column="0"/>
-        <sv:CpuFanView         Grid.Row="1" Grid.Column="1"/>
-        
+        <sv:CpuClockView       Grid.Row="0" Grid.Column="0" Margin="0,0,10,0"/>
+        <sv:CpuTemperatureView Grid.Row="0" Grid.Column="1" Margin="10,0,10,0"/>
+        <sv:CpuPowerView       Grid.Row="1" Grid.Column="2" Margin="10,0,20,0"/>
+        <sv:CpuVoltageView     Grid.Row="1" Grid.Column="0" Margin="0,0,10,0"/>
+        <sv:CpuFanView         Grid.Row="1" Grid.Column="1" Margin="10,0,10,0"/>
+
         <!-- CPU-utilization graph -->
         <sv:CpuUtilizationView Grid.Column="2" Margin="10,0,20,0"/>
 
         <!-- live per-core strip -->
         <sv:CpuCoreStripView Grid.Column="3" Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Right" VerticalAlignment="Top"/>
-        
-        <!-- Instruction set features -->
-        
+
+        <!-- Instruction set features: compact single-line strip across the bottom. Sourced from the
+             root VM's SpecsViewModel (the body grid's DataContext is SensorsViewModel), each ISA
+             extension lit green when available, dimmed when not. -->
+        <ItemsControl Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Margin="0,6,0,0"
+                      VerticalAlignment="Center"
+                      DataContext="{Binding DataContext.SpecsViewModel, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                      ItemsSource="{Binding InstructionSet}">
+          <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+              <WrapPanel Orientation="Horizontal"/>
+            </ItemsPanelTemplate>
+          </ItemsControl.ItemsPanel>
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <TextBlock Text="{Binding Name}" FontSize="9" FontWeight="SemiBold"
+                         Margin="0,0,5,0">
+                <TextBlock.Style>
+                  <Style TargetType="TextBlock">
+                    <Setter Property="Foreground" Value="#4A4A4A"/>
+                    <Style.Triggers>
+                      <DataTrigger Binding="{Binding IsAvailable}" Value="True">
+                        <Setter Property="Foreground" Value="{StaticResource OkBrush}"/>
+                      </DataTrigger>
+                    </Style.Triggers>
+                  </Style>
+                </TextBlock.Style>
+              </TextBlock>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
       </Grid>
     </Grid>
   </Border>
