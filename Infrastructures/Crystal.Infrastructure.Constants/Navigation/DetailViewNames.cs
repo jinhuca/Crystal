@@ -13,4 +13,8 @@ public static class DetailViewNames {
   public const string Bios = "BiosDetailView";
   public const string Network = "NetworkDetailView";
   public const string Os = "OsDetailView";
+
+  // The process list has no dedicated detail view — the summary list is the full surface — so this
+  // opens ProcessSummaryView itself in a detail window. The value doubles as the window title.
+  public const string Process = "Processes";
 }

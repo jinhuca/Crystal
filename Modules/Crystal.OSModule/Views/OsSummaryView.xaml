@@ -99,6 +99,41 @@
             <TextBlock Text="{Binding InstallDateLabel}" Style="{StaticResource FieldValue}"/>
           </StackPanel>
         </Grid>
+
+        <!-- Processes / Threads / Handles sub-tile. Double-clicking opens the full process list in a
+             detail window (handled in code-behind, which marks the event handled so it doesn't also
+             trip the outer tile's open-OS-detail double-click). -->
+        <Border x:Name="ProcessesTile" BorderBrush="{StaticResource DividerBrush}" BorderThickness="1"
+                Background="#101010" CornerRadius="4" Padding="8,6" Cursor="Hand"
+                MouseLeftButtonDown="OnProcessesTileClick"
+                ToolTip="Double-click to open the full process list">
+          <StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+              <Border Width="3" Background="{StaticResource AccentBrush}" Margin="0,1,8,1"/>
+              <TextBlock Text="PROCESSES, THREADS, HANDLES" Foreground="{StaticResource LabelBrush}"
+                         FontSize="{StaticResource MicroFontSize}" FontWeight="SemiBold" VerticalAlignment="Center"/>
+            </StackPanel>
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+              </Grid.ColumnDefinitions>
+              <StackPanel Grid.Column="0">
+                <TextBlock Text="Processes" Style="{StaticResource FieldLabel}"/>
+                <TextBlock Text="{Binding ProcessCountLabel}" Style="{StaticResource FieldValue}" FontSize="{StaticResource SectionFontSize}"/>
+              </StackPanel>
+              <StackPanel Grid.Column="1">
+                <TextBlock Text="Threads" Style="{StaticResource FieldLabel}"/>
+                <TextBlock Text="{Binding ThreadCountLabel}" Style="{StaticResource FieldValue}" FontSize="{StaticResource SectionFontSize}"/>
+              </StackPanel>
+              <StackPanel Grid.Column="2">
+                <TextBlock Text="Handles" Style="{StaticResource FieldLabel}"/>
+                <TextBlock Text="{Binding HandleCountLabel}" Style="{StaticResource FieldValue}" FontSize="{StaticResource SectionFontSize}"/>
+              </StackPanel>
+            </Grid>
+          </StackPanel>
+        </Border>
       </StackPanel>
     </Grid>
   </Border>

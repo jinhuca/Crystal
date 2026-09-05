@@ -1,6 +1,4 @@
 using Crystal.Controls.PerformanceGraphs;
-using Crystal.Controls.PerformanceGraphs.Kinds;
-using Crystal.Controls.PerformanceGraphs.Themes;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -17,15 +15,13 @@ public partial class StorageDetailView : UserControl {
   // The graphs live inside the SelectedDisk content template, so their DataContext is the
   // per-disk VM. Attach on Loaded, which re-runs when the selection swaps the template's disk.
   private void OnActivityGraphLoaded(object sender, RoutedEventArgs e) {
-    if (sender is not PerformanceGraph graph) return;
-    graph.ApplyTheme(GraphThemes.Amber(GraphKind.Line));
+    if (sender is not AdaptiveGraph graph) return;
     if (graph.DataContext is ViewModels.StorageDriveViewModel disk)
       disk.AttachActivityGraph(graph);
   }
 
   private void OnTransferGraphLoaded(object sender, RoutedEventArgs e) {
-    if (sender is not PerformanceGraph graph) return;
-    graph.ApplyTheme(GraphThemes.Sky(GraphKind.Line));
+    if (sender is not AdaptiveGraph graph) return;
     if (graph.DataContext is ViewModels.StorageDriveViewModel disk)
       disk.AttachTransferGraph(graph);
   }

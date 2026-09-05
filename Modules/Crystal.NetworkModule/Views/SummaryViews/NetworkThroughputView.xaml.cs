@@ -20,7 +20,7 @@ public partial class NetworkThroughputView : UserControl {
     Register(vm, NetworkUploadGraph);
   }
 
-  private static void Register(INetworkViewModel vm, PerformanceGraph graph) {
+  private static void Register(INetworkViewModel vm, AdaptiveGraph graph) {
     if (GraphIdentity.GetId(graph) is { } id) vm.AttachGraph(id, graph);
   }
 }

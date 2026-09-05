@@ -44,11 +44,10 @@
       <TextBlock Text="%" Style="{StaticResource MetricUnit}" VerticalAlignment="Center"/>
     </StackPanel>
 
-    <graphs:PerformanceGraphLite x:Name="CpuUtilizationGraph" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1"
-                                 graphs:GraphIdentity.Id="Cpu.Utilization"
-                                 Style="{StaticResource UtilizationGraphLiteStyle}"
-                                 Capacity="120" MinValue="0" MaxValue="100"
-                                 HorizontalAlignment="Left" VerticalAlignment="Center"/>
+    <graphs:AdaptiveGraph x:Name="CpuUtilizationGraph" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1"
+                          graphs:GraphIdentity.Id="Cpu.Utilization"
+                          Capacity="120" MinValue="0" MaxValue="100"
+                          Accent="#3BD15A" ShowChrome="True" MinHeight="90"/>
 
     <!-- Static specs beneath the graph, centered under the utilization column. DataContext is the
          SpecsViewModel reached via the owning CpuSummaryView (this view binds the SensorsViewModel). -->

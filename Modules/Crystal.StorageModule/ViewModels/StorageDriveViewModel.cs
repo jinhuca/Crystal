@@ -31,8 +31,8 @@ public sealed class StorageDriveViewModel : BindableBase {
   private double? _powerOnCount;
   private double _transferMaxMBps = TransferFloorMBps;
   private double _peakTransferMBps;
-  private PerformanceGraph? _activityGraph;
-  private PerformanceGraph? _transferGraph;
+  private ISingleSeriesGraph? _activityGraph;
+  private AdaptiveGraph? _transferGraph;
   private int _transferWriteSeries;
 
   // Write plots as an amber overlay line against the themed (sky) read series. Line-only, so it
@@ -136,9 +136,9 @@ public sealed class StorageDriveViewModel : BindableBase {
       : value >= 1024 ? $"{value / 1024:0.0} TB"
       : $"{value:0.#} GB";
 
-  public void AttachActivityGraph(PerformanceGraph graph) => _activityGraph = graph;
+  public void AttachActivityGraph(ISingleSeriesGraph graph) => _activityGraph = graph;
 
-  public void AttachTransferGraph(PerformanceGraph graph) {
+  public void AttachTransferGraph(AdaptiveGraph graph) {
     // Loaded re-fires with a fresh graph when the disk selection swaps the template. Registering
     // the write overlay once per graph is idempotent: re-attaching the same instance is a no-op.
     if (ReferenceEquals(_transferGraph, graph)) return;

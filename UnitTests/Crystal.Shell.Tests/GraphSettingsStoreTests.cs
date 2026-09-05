@@ -1,3 +1,4 @@
+using Crystal.Controls.PerformanceGraphs;
 using Crystal.Shell.Settings;
 using System.IO;
 using Xunit;
@@ -17,44 +18,19 @@ public class GraphSettingsStoreTests : IDisposable {
     var store = new GraphSettingsStore(_dir);
 
     Assert.NotNull(store.Current);
-    Assert.Equal(GraphCategory.NoFrills, store.Current.Category);
-    Assert.Empty(store.Current.Graphs);
+    Assert.Equal(GraphRenderMode.Line, store.Current.RenderMode);
+    Assert.Equal(GraphDefaults.CoreBarStyle, store.Current.CoreBarStyle);
+    Assert.Equal(GraphDefaults.CoreBarColor, store.Current.CoreBarColor);
   }
 
   [Fact]
-  public void Save_then_reload_round_trips_every_field() {
+  public void Render_mode_round_trips() {
     var store = new GraphSettingsStore(_dir);
-    var settings = new GraphSettings { Category = GraphCategory.FullGraph };
-    settings.Graphs["Cpu.Utilization"] = new GraphSetting {
-      Category = GraphCategory.FullGraph,
-      Kind = GraphKindChoice.FilledLine,
-      Accent = GraphAccent.Rose,
-      CustomColor = "#ABCDEF",
-      HistoryLength = 99,
-    };
 
-    store.Save(settings);
+    store.Save(new GraphSettings { RenderMode = GraphRenderMode.Dot });
 
     var reloaded = new GraphSettingsStore(_dir).Current;
-    Assert.Equal(GraphCategory.FullGraph, reloaded.Category);
-    var g = reloaded.Graphs["Cpu.Utilization"];
-    Assert.Equal(GraphCategory.FullGraph, g.Category);
-    Assert.Equal(GraphKindChoice.FilledLine, g.Kind);
-    Assert.Equal(GraphAccent.Rose, g.Accent);
-    Assert.Equal("#ABCDEF", g.CustomColor);
-    Assert.Equal(99, g.HistoryLength);
-  }
-
-  [Fact]
-  public void Dot_kind_round_trips() {
-    var store = new GraphSettingsStore(_dir);
-    var settings = new GraphSettings();
-    settings.Graphs["Gpu.Clock"] = new GraphSetting { Kind = GraphKindChoice.Dot };
-
-    store.Save(settings);
-
-    var reloaded = new GraphSettingsStore(_dir).Current;
-    Assert.Equal(GraphKindChoice.Dot, reloaded.Graphs["Gpu.Clock"].Kind);
+    Assert.Equal(GraphRenderMode.Dot, reloaded.RenderMode);
   }
 
   [Fact]

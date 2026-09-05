@@ -4,33 +4,319 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:prism="http://prismlibrary.com/"
+             xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs;assembly=Crystal.Controls"
+             xmlns:conv="clr-namespace:Crystal.StorageModule.Converters"
              xmlns:sv="clr-namespace:Crystal.StorageModule.Views.SummaryViews"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
-             d:DesignHeight="240" d:DesignWidth="380"
+             d:DesignHeight="720" d:DesignWidth="1100"
              Background="Transparent" Foreground="{StaticResource TextBrush}"
              FontFamily="{StaticResource UiFontFamily}">
-  <!-- Layout only: the header and each tile live in Views/SummaryViews. All tiles inherit the root
-       IStorageViewModel DataContext; each graph-owning tile self-registers its history graph on
-       load. -->
-  <Border Background="Transparent" MouseLeftButtonDown="OnTileClick">
-    <Grid Margin="10">
-      <Grid.RowDefinitions>
-        <RowDefinition Height="Auto"/>
-        <RowDefinition Height="*"/>
-      </Grid.RowDefinitions>
+  <UserControl.Resources>
+    <conv:FractionToStarConverter x:Key="FractionToStar"/>
 
-      <sv:StorageHeaderView Grid.Row="0"/>
+    <!-- Detail-panel readouts sized/typed to match the other dashboard tiles (e.g. GpuSummaryView):
+         Consolas numerics, MetricValue/MetricCaption scale. -->
+    <Style x:Key="DiskStatCaption" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="{StaticResource LabelBrush}"/>
+      <Setter Property="FontFamily" Value="{StaticResource MonoFontFamily}"/>
+      <Setter Property="FontSize" Value="{StaticResource CaptionFontSize}"/>
+      <Setter Property="Margin" Value="0,0,0,1"/>
+    </Style>
+    <Style x:Key="DiskStatValue" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="{StaticResource ValueBrush}"/>
+      <Setter Property="FontFamily" Value="{StaticResource MonoFontFamily}"/>
+      <Setter Property="FontSize" Value="{StaticResource BigValueFontSize}"/>
+    </Style>
+  </UserControl.Resources>
 
-      <!-- Activity (top) + Transfer (bottom) stacked graph tiles. -->
-      <Grid Grid.Row="1">
-        <Grid.RowDefinitions>
-          <RowDefinition Height="*"/>
-          <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <sv:StorageActivityView Grid.Row="0" Margin="0,0,0,6"/>
-        <sv:StorageTransferView Grid.Row="1"/>
+  <!-- Header roll-up and the disk selector share one line; the selected disk's detail sits below.
+       The header lives in Views/SummaryViews and inherits the root IStorageViewModel DataContext. -->
+  <Grid Margin="8">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>  <!-- header roll-up + disk selector -->
+      <RowDefinition Height="*"/>      <!-- selected disk detail -->
+    </Grid.RowDefinitions>
+
+    <!-- Header + disk-selector tabs on one line, with a single full-width divider below. -->
+    <Border Grid.Row="0" BorderBrush="{StaticResource DividerBrush}" BorderThickness="0,0,0,1"
+            Padding="0,0,0,4" Margin="0,0,0,2">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <sv:StorageHeaderView Grid.Column="0" VerticalAlignment="Top"/>
+
+        <!-- Disk selector: one tab per physical disk. The system disk (first) is selected by
+             default; selecting a tab swaps the detail below. -->
+        <ListBox Grid.Column="1" Margin="16,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                 Background="Transparent" BorderThickness="0"
+                 VerticalContentAlignment="Top"
+                 ItemsSource="{Binding Drives}"
+                 SelectedItem="{Binding SelectedDisk}"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 ScrollViewer.VerticalScrollBarVisibility="Disabled">
+          <ListBox.ItemsPanel>
+            <ItemsPanelTemplate>
+              <StackPanel Orientation="Horizontal"/>
+            </ItemsPanelTemplate>
+          </ListBox.ItemsPanel>
+          <ListBox.ItemContainerStyle>
+            <Style TargetType="ListBoxItem">
+              <Setter Property="Padding" Value="0"/>
+              <Setter Property="Margin" Value="0,0,8,0"/>
+              <Setter Property="Template">
+                <Setter.Value>
+                  <ControlTemplate TargetType="ListBoxItem">
+                    <Border x:Name="Bd" Background="Transparent" BorderBrush="Transparent"
+                            BorderThickness="1" CornerRadius="4" Padding="10,0">
+                      <TextBlock Text="{Binding HeaderLabel}" Foreground="{StaticResource LabelBrush}"
+                                 FontSize="{StaticResource BodyFontSize}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                      <Trigger Property="IsSelected" Value="True">
+                        <Setter TargetName="Bd" Property="Background" Value="#1A222C"/>
+                        <Setter TargetName="Bd" Property="BorderBrush" Value="#4A5562"/>
+                      </Trigger>
+                      <MultiTrigger>
+                        <MultiTrigger.Conditions>
+                          <Condition Property="IsMouseOver" Value="True"/>
+                          <Condition Property="IsSelected" Value="False"/>
+                        </MultiTrigger.Conditions>
+                        <Setter TargetName="Bd" Property="Background" Value="#141A22"/>
+                      </MultiTrigger>
+                    </ControlTemplate.Triggers>
+                  </ControlTemplate>
+                </Setter.Value>
+              </Setter>
+            </Style>
+          </ListBox.ItemContainerStyle>
+        </ListBox>
       </Grid>
-    </Grid>
-  </Border>
+    </Border>
+
+    <!-- Selected disk: identity strip, activity + transfer graphs, capacity bar, stats grid, and
+         endurance. The disk name already shows in the selected tab, so it is not repeated here. -->
+    <ContentControl Grid.Row="1" Content="{Binding SelectedDisk}" Margin="0,10,0,0">
+      <ContentControl.ContentTemplate>
+        <DataTemplate>
+          <Grid>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto"/>  <!-- identity strip (brand + serial) -->
+              <RowDefinition Height="*"/>      <!-- two-column body -->
+            </Grid.RowDefinitions>
+
+            <!-- Identity strip: model (brand) + live activity/capacity at left, serial at right. -->
+            <Grid Grid.Row="0" Margin="0,0,0,8">
+              <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <TextBlock Text="{Binding Model}" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource SubHeadingFontSize}"
+                           VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding ActivityLabel}" Foreground="{StaticResource AccentBrush}" FontSize="{StaticResource SpecFontSize}"
+                           FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Center" Margin="24,0,0,0"/>
+                <TextBlock Text="{Binding CapacityLabel}" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource SpecFontSize}"
+                           FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Center" Margin="12,0,0,0"/>
+              </StackPanel>
+              <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <TextBlock Text="Serial:" Style="{StaticResource SpecCaption}" VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding SerialNumber}" Style="{StaticResource SpecValue}" VerticalAlignment="Center"
+                           TextTrimming="CharacterEllipsis"/>
+              </StackPanel>
+            </Grid>
+
+            <!-- Body: graphs + capacity + endurance on the left; stat readouts and the spec list
+                 on the right. -->
+            <Grid Grid.Row="1">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="270"/>
+              </Grid.ColumnDefinitions>
+
+              <!-- Left column: Active time, transfer rate, capacity, endurance. -->
+              <Grid Grid.Column="0" Margin="0,0,20,0">
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto"/>  <!-- active time caption -->
+                  <RowDefinition Height="*"/>     <!-- activity graph -->
+                  <RowDefinition Height="Auto"/>  <!-- transfer caption -->
+                  <RowDefinition Height="*"/>     <!-- transfer graph -->
+                  <RowDefinition Height="Auto"/>  <!-- capacity caption -->
+                  <RowDefinition Height="Auto"/>  <!-- capacity bar -->
+                  <RowDefinition Height="Auto"/>  <!-- endurance panel -->
+                </Grid.RowDefinitions>
+
+                <!-- Active time -->
+                <Grid Grid.Row="0" Margin="0,0,0,2">
+                  <TextBlock Text="Active time" Foreground="{StaticResource SpecValueBrush}" FontSize="{StaticResource SpecFontSize}" HorizontalAlignment="Left"/>
+                  <TextBlock Text="{Binding ActivityLabel}" Foreground="{StaticResource LabelBrush}" FontFamily="{StaticResource MonoFontFamily}" FontSize="{StaticResource SpecFontSize}" HorizontalAlignment="Right"/>
+                </Grid>
+                <graphs:AdaptiveGraph Grid.Row="1" Margin="0,0,0,12" MinHeight="90"
+                                      Loaded="OnActivityGraphLoaded"
+                                      MinValue="0" MaxValue="100" Accent="#E89B2A" ShowChrome="True"/>
+
+                <!-- Disk transfer rate -->
+                <Grid Grid.Row="2" Margin="0,0,0,2">
+                  <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <TextBlock Text="Disk transfer rate" Foreground="{StaticResource SpecValueBrush}" FontSize="{StaticResource SpecFontSize}" VerticalAlignment="Center"/>
+                    <Rectangle Width="11" Height="11" Fill="{StaticResource AccentBrush}" VerticalAlignment="Center" Margin="16,0,6,0"/>
+                    <TextBlock Text="Read" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource BodyFontSize}" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding ReadSpeedLabel}" Foreground="{StaticResource SpecValueBrush}" FontFamily="{StaticResource MonoFontFamily}" FontSize="{StaticResource BodyFontSize}" Margin="6,0,0,0" VerticalAlignment="Center"/>
+                    <Rectangle Width="11" Height="11" Fill="#E89B2A" VerticalAlignment="Center" Margin="16,0,6,0"/>
+                    <TextBlock Text="Write" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource BodyFontSize}" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding WriteSpeedLabel}" Foreground="{StaticResource SpecValueBrush}" FontFamily="{StaticResource MonoFontFamily}" FontSize="{StaticResource BodyFontSize}" Margin="6,0,0,0" VerticalAlignment="Center"/>
+                  </StackPanel>
+                  <TextBlock Foreground="{StaticResource LabelBrush}" FontFamily="{StaticResource MonoFontFamily}" FontSize="{StaticResource SpecFontSize}" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <Run Text="Peak"/><Run Text=" "/><Run Text="{Binding PeakTransferLabel, Mode=OneWay}"/>
+                  </TextBlock>
+                </Grid>
+                <graphs:AdaptiveGraph Grid.Row="3" Margin="0,0,0,14" MinHeight="90"
+                                      Loaded="OnTransferGraphLoaded"
+                                      MinValue="0" MaxValue="{Binding TransferMaxMBps}"
+                                      Accent="#3E9BE8" ShowChrome="True"/>
+
+                <!-- Capacity: used vs free of the disk's mounted volumes -->
+                <Grid Grid.Row="4" Margin="0,0,0,2">
+                  <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <TextBlock Text="Capacity" Foreground="{StaticResource SpecValueBrush}" FontSize="{StaticResource SpecFontSize}" VerticalAlignment="Center"/>
+                    <Rectangle Width="11" Height="11" Fill="{StaticResource UsageBarUsedBrush}" VerticalAlignment="Center" Margin="16,0,6,0"/>
+                    <TextBlock Text="Used" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource BodyFontSize}" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding UsedSpaceLabel}" Foreground="{StaticResource SpecValueBrush}" FontFamily="{StaticResource MonoFontFamily}" FontSize="{StaticResource BodyFontSize}" Margin="6,0,0,0" VerticalAlignment="Center"/>
+                    <Rectangle Width="11" Height="11" Fill="{StaticResource UsageBarFreeBrush}" VerticalAlignment="Center" Margin="16,0,6,0"/>
+                    <TextBlock Text="Free" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource BodyFontSize}" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding FreeSpaceLabel}" Foreground="{StaticResource SpecValueBrush}" FontFamily="{StaticResource MonoFontFamily}" FontSize="{StaticResource BodyFontSize}" Margin="6,0,0,0" VerticalAlignment="Center"/>
+                  </StackPanel>
+                  <TextBlock Text="{Binding CapacityUsageLabel}" Foreground="{StaticResource LabelBrush}" FontFamily="{StaticResource MonoFontFamily}" FontSize="{StaticResource SpecFontSize}" HorizontalAlignment="Right"/>
+                </Grid>
+                <Border Grid.Row="5" BorderBrush="{StaticResource UsageBarBorderBrush}" BorderThickness="1"
+                        Background="{StaticResource UsageBarTrackBrush}" Height="24" Margin="0,6,0,16">
+                  <Grid>
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="{Binding UsedSpaceFraction, Converter={StaticResource FractionToStar}}"/>
+                      <ColumnDefinition Width="{Binding FreeSpaceFraction, Converter={StaticResource FractionToStar}}"/>
+                    </Grid.ColumnDefinitions>
+                    <Rectangle Grid.Column="0" Fill="{StaticResource UsageBarUsedBrush}" ToolTip="{Binding UsedSpaceLabel}"/>
+                    <Rectangle Grid.Column="1" Fill="{StaticResource UsageBarFreeBrush}" ToolTip="{Binding FreeSpaceLabel}"/>
+                    <TextBlock Grid.ColumnSpan="2" Text="{Binding UsedSpacePercentLabel}" Foreground="{StaticResource TextBrush}"
+                               FontFamily="{StaticResource MonoFontFamily}" FontSize="{StaticResource BodyFontSize}"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                  </Grid>
+                </Border>
+
+                <!-- Endurance (SMART): label at left, lifetime host writes/reads and power-on history. -->
+                <Grid Grid.Row="6">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                  </Grid.ColumnDefinitions>
+                  <TextBlock Grid.Column="0" Text="Endurance (SMART)" Foreground="{StaticResource SpecValueBrush}" FontSize="{StaticResource SpecFontSize}"
+                             VerticalAlignment="Top" Margin="0,0,24,0"/>
+                  <StackPanel Grid.Column="1">
+                    <TextBlock Text="Data written" Style="{StaticResource DiskStatCaption}"/>
+                    <TextBlock Text="{Binding DataWrittenLabel}" Style="{StaticResource DiskStatValue}"/>
+                  </StackPanel>
+                  <StackPanel Grid.Column="2">
+                    <TextBlock Text="Data read" Style="{StaticResource DiskStatCaption}"/>
+                    <TextBlock Text="{Binding DataReadLabel}" Style="{StaticResource DiskStatValue}"/>
+                  </StackPanel>
+                  <StackPanel Grid.Column="3">
+                    <TextBlock Text="Power on" Style="{StaticResource DiskStatCaption}"/>
+                    <TextBlock Text="{Binding PowerOnHoursLabel}" Style="{StaticResource DiskStatValue}"/>
+                  </StackPanel>
+                  <StackPanel Grid.Column="4">
+                    <TextBlock Text="Power cycles" Style="{StaticResource DiskStatCaption}"/>
+                    <TextBlock Text="{Binding PowerOnCountLabel}" Style="{StaticResource DiskStatValue}"/>
+                  </StackPanel>
+                </Grid>
+              </Grid>
+
+              <!-- Right column: stat readouts on top, spec list anchored at the bottom. -->
+              <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto"/>  <!-- stat readouts -->
+                  <RowDefinition Height="*"/>      <!-- spacer -->
+                  <RowDefinition Height="Auto"/>  <!-- spec list -->
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                  </Grid.ColumnDefinitions>
+
+                  <StackPanel Grid.Column="0">
+                    <StackPanel Margin="0,0,0,12">
+                      <TextBlock Text="Active time" Style="{StaticResource DiskStatCaption}"/>
+                      <TextBlock Text="{Binding ActivityLabel}" Style="{StaticResource DiskStatValue}"/>
+                    </StackPanel>
+                    <StackPanel Margin="0,0,0,12">
+                      <TextBlock Text="Read speed" Style="{StaticResource DiskStatCaption}"/>
+                      <TextBlock Text="{Binding ReadSpeedLabel}" Style="{StaticResource DiskStatValue}"/>
+                    </StackPanel>
+                    <StackPanel Margin="0,0,0,12">
+                      <TextBlock Text="Temperature" Style="{StaticResource DiskStatCaption}"/>
+                      <TextBlock Text="{Binding TemperatureLabel}" Style="{StaticResource DiskStatValue}"/>
+                    </StackPanel>
+                    <StackPanel>
+                      <TextBlock Text="Read activity" Style="{StaticResource DiskStatCaption}"/>
+                      <TextBlock Text="{Binding ReadActivityLabel}" Style="{StaticResource DiskStatValue}"/>
+                    </StackPanel>
+                  </StackPanel>
+
+                  <StackPanel Grid.Column="1">
+                    <StackPanel Margin="0,0,0,12">
+                      <TextBlock Text="Average response time" Style="{StaticResource DiskStatCaption}"/>
+                      <TextBlock Text="{Binding ResponseLabel}" Style="{StaticResource DiskStatValue}"/>
+                    </StackPanel>
+                    <StackPanel Margin="0,0,0,12">
+                      <TextBlock Text="Write speed" Style="{StaticResource DiskStatCaption}"/>
+                      <TextBlock Text="{Binding WriteSpeedLabel}" Style="{StaticResource DiskStatValue}"/>
+                    </StackPanel>
+                    <StackPanel Margin="0,0,0,12">
+                      <TextBlock Text="Health (Life)" Style="{StaticResource DiskStatCaption}"/>
+                      <TextBlock Text="{Binding HealthLabel}" Style="{StaticResource DiskStatValue}"/>
+                    </StackPanel>
+                    <StackPanel>
+                      <TextBlock Text="Write activity" Style="{StaticResource DiskStatCaption}"/>
+                      <TextBlock Text="{Binding WriteActivityLabel}" Style="{StaticResource DiskStatValue}"/>
+                    </StackPanel>
+                  </StackPanel>
+                </Grid>
+
+                <Grid Grid.Row="2" VerticalAlignment="Bottom">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                  </Grid.ColumnDefinitions>
+                  <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                  </Grid.RowDefinitions>
+                  <TextBlock Grid.Row="0" Grid.Column="0" Text="Capacity:" Style="{StaticResource SpecCaption}"/>
+                  <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding CapacityLabel}" Style="{StaticResource SpecValue}"/>
+                  <TextBlock Grid.Row="1" Grid.Column="0" Text="Type:" Style="{StaticResource SpecCaption}"/>
+                  <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding MediaType}" Style="{StaticResource SpecValue}"/>
+                  <TextBlock Grid.Row="2" Grid.Column="0" Text="Interface:" Style="{StaticResource SpecCaption}"/>
+                  <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding InterfaceType}" Style="{StaticResource SpecValue}"/>
+                  <TextBlock Grid.Row="3" Grid.Column="0" Text="Partitions:" Style="{StaticResource SpecCaption}"/>
+                  <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding PartitionsLabel}" Style="{StaticResource SpecValue}"/>
+                  <TextBlock Grid.Row="4" Grid.Column="0" Text="Firmware:" Style="{StaticResource SpecCaption}"/>
+                  <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding FirmwareRevision}" Style="{StaticResource SpecValue}"/>
+                  <TextBlock Grid.Row="5" Grid.Column="0" Text="Manufacturer:" Style="{StaticResource SpecCaption}"/>
+                  <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding Manufacturer}" Style="{StaticResource SpecValue}"
+                             TextTrimming="CharacterEllipsis"/>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+        </DataTemplate>
+      </ContentControl.ContentTemplate>
+    </ContentControl>
+  </Grid>
 </UserControl>

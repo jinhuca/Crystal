@@ -18,9 +18,9 @@
       <TextBlock Text="{Binding DownloadLabel}" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource SectionFontSize}"
                  FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Center"/>
     </StackPanel>
-    <graphs:PerformanceGraph x:Name="NetworkDownloadGraph" graphs:GraphIdentity.Id="Network.Download"
-                             Height="22" Margin="0,0,0,10"
-                             MinValue="0" MaxValue="{Binding ThroughputMaxBytesPerSecond}"/>
+    <graphs:AdaptiveGraph x:Name="NetworkDownloadGraph" graphs:GraphIdentity.Id="Network.Download"
+                          Height="22" Margin="0,0,0,10" Accent="#3BD15A"
+                          MinValue="0" MaxValue="{Binding ThroughputMaxBytesPerSecond}"/>
     <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
       <TextBlock Text="&#x25B2;" Foreground="#E89B2A" FontSize="16"
                  VerticalAlignment="Center" Margin="0,0,8,0"/>
@@ -28,8 +28,8 @@
                  FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Center"/>
     </StackPanel>
     <TextBlock Text="upload" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource BodyFontSize}" FontFamily="{StaticResource MonoFontFamily}"/>
-    <graphs:PerformanceGraph x:Name="NetworkUploadGraph" graphs:GraphIdentity.Id="Network.Upload"
-                             Height="22" Margin="0,4,0,0"
-                             MinValue="0" MaxValue="{Binding ThroughputMaxBytesPerSecond}"/>
+    <graphs:AdaptiveGraph x:Name="NetworkUploadGraph" graphs:GraphIdentity.Id="Network.Upload"
+                          Height="22" Margin="0,4,0,0" Accent="#E89B2A"
+                          MinValue="0" MaxValue="{Binding ThroughputMaxBytesPerSecond}"/>
   </StackPanel>
 </UserControl>

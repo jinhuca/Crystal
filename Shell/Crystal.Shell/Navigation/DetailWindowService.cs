@@ -29,11 +29,12 @@ public sealed class DetailWindowService {
       new Dictionary<string, System.Type> {
         [DetailViewNames.Cpu] = typeof(Crystal.CpuModule.Views.CpuDetailView),
         [DetailViewNames.Gpu] = typeof(Crystal.GpuModule.Views.GpuDetailView),
-        [DetailViewNames.Memory] = typeof(Crystal.MemoryModule.Views.MemoryDetailView),
         [DetailViewNames.Storage] = typeof(Crystal.StorageModule.Views.StorageDetailView),
         [DetailViewNames.Bios] = typeof(Crystal.BiosModule.Views.BiosDetailView),
         [DetailViewNames.Network] = typeof(Crystal.NetworkModule.Views.NetworkDetailView),
         [DetailViewNames.Os] = typeof(Crystal.OSModule.Views.OsDetailView),
+        // The process list has no detail view; open the summary list itself in a window.
+        [DetailViewNames.Process] = typeof(Crystal.ProcessModule.Views.ProcessSummaryView),
       };
 
   private const double DefaultWidth = 1280;

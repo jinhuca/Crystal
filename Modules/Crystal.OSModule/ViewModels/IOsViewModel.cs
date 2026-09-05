@@ -21,6 +21,14 @@ public interface IOsViewModel {
   /// <summary>Current wall-clock time, "yyyy-MM-dd HH:mm:ss".</summary>
   string CurrentTimeLabel { get; }
 
+  // --- System-wide process totals (Processes sub-tile) ---
+  /// <summary>Live process count across the system.</summary>
+  string ProcessCountLabel { get; }
+  /// <summary>Live summed thread count across every process.</summary>
+  string ThreadCountLabel { get; }
+  /// <summary>Live summed handle count across every process.</summary>
+  string HandleCountLabel { get; }
+
   // --- Fuller identity (detail view) ---
   string Edition { get; }
   string VersionLabel { get; }
@@ -36,4 +44,6 @@ public interface IOsViewModel {
 
   ICommand ShowDetailCommand { get; }
   ICommand ShowDashboardCommand { get; }
+  /// <summary>Opens the full process list in a detail window (Processes sub-tile double-click).</summary>
+  ICommand ShowProcessesCommand { get; }
 }

@@ -1,6 +1,7 @@
 using Crystal.Controls.Threading;
 using Crystal.Infrastructure.Constants.Navigation;
 using Crystal.OSModule.Models;
+using Crystal.Service.Process;
 using System.Windows.Input;
 
 namespace Crystal.OSModule.ViewModels;
@@ -9,6 +10,7 @@ public sealed class OsViewModel : BindableBase, IOsViewModel, IDisposable {
   private const string Dash = "—";
   private readonly IDisposable _infoSubscription;
   private readonly IDisposable _liveSubscription;
+  private readonly IDisposable _statsSubscription;
   private readonly UiThreadMarshaller _ui = new();
 
   private string _osName = Dash;
@@ -28,17 +30,24 @@ public sealed class OsViewModel : BindableBase, IOsViewModel, IDisposable {
   private string _timeZone = Dash;
   private string _installDateLabel = Dash;
   private string _lastBootTimeLabel = Dash;
+  private string _processCountLabel = Dash;
+  private string _threadCountLabel = Dash;
+  private string _handleCountLabel = Dash;
 
-  public OsViewModel(IOsModel model, IEventAggregator events) {
+  public OsViewModel(IOsModel model, IEventAggregator events, SystemStatsMonitor stats) {
     ArgumentNullException.ThrowIfNull(model);
     ArgumentNullException.ThrowIfNull(events);
+    ArgumentNullException.ThrowIfNull(stats);
     ShowDetailCommand = new DelegateCommand(
         () => events.GetEvent<ShowDetailEvent>().Publish(DetailViewNames.Os));
     ShowDashboardCommand = new DelegateCommand(
         () => events.GetEvent<ShowDashboardEvent>().Publish());
+    ShowProcessesCommand = new DelegateCommand(
+        () => events.GetEvent<ShowDetailEvent>().Publish(DetailViewNames.Process));
 
     _infoSubscription = model.Info.Subscribe(s => OnUi(() => ApplyInfo(s)));
     _liveSubscription = model.Live.Subscribe(r => OnUi(() => ApplyLive(r)));
+    _statsSubscription = stats.Stats.Subscribe(s => OnUi(() => ApplyStats(s)));
   }
 
   public string OsName { get => _osName; private set => SetProperty(ref _osName, value); }
@@ -58,9 +67,13 @@ public sealed class OsViewModel : BindableBase, IOsViewModel, IDisposable {
   public string TimeZone { get => _timeZone; private set => SetProperty(ref _timeZone, value); }
   public string InstallDateLabel { get => _installDateLabel; private set => SetProperty(ref _installDateLabel, value); }
   public string LastBootTimeLabel { get => _lastBootTimeLabel; private set => SetProperty(ref _lastBootTimeLabel, value); }
+  public string ProcessCountLabel { get => _processCountLabel; private set => SetProperty(ref _processCountLabel, value); }
+  public string ThreadCountLabel { get => _threadCountLabel; private set => SetProperty(ref _threadCountLabel, value); }
+  public string HandleCountLabel { get => _handleCountLabel; private set => SetProperty(ref _handleCountLabel, value); }
 
   public ICommand ShowDetailCommand { get; }
   public ICommand ShowDashboardCommand { get; }
+  public ICommand ShowProcessesCommand { get; }
 
   private void ApplyInfo(OsSnapshot s) {
     OsName = Text(s.Caption);
@@ -85,6 +98,12 @@ public sealed class OsViewModel : BindableBase, IOsViewModel, IDisposable {
     CurrentTimeLabel = r.Now.ToString("yyyy-MM-dd HH:mm:ss");
   }
 
+  private void ApplyStats(SystemStats s) {
+    ProcessCountLabel = s.Processes.ToString("N0");
+    ThreadCountLabel = s.Threads.ToString("N0");
+    HandleCountLabel = s.Handles.ToString("N0");
+  }
+
   // "3d 21:22:12" — days only shown once there's at least one, matching the title-bar uptime style.
   internal static string FormatUptime(TimeSpan uptime) {
     if (uptime < TimeSpan.Zero) uptime = TimeSpan.Zero;
@@ -103,5 +122,6 @@ public sealed class OsViewModel : BindableBase, IOsViewModel, IDisposable {
   public void Dispose() {
     _infoSubscription.Dispose();
     _liveSubscription.Dispose();
+    _statsSubscription.Dispose();
   }
 }

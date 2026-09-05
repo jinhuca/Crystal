@@ -18,6 +18,8 @@
     <ProjectReference Include="..\..\UI\Crystal.Resources\Crystal.Resources.csproj" />
     <ProjectReference Include="..\..\UI\Crystal.Controls\Crystal.Controls.csproj" />
     <ProjectReference Include="..\..\Infrastructures\Crystal.Infrastructure.Constants\Crystal.Infrastructure.Constants.csproj" />
+    <!-- System-wide process/thread/handle totals for the OS tile's Processes sub-tile. -->
+    <ProjectReference Include="..\..\Services\Crystal.Service.Process\Crystal.Service.Process.csproj" />
   </ItemGroup>
 
 </Project>

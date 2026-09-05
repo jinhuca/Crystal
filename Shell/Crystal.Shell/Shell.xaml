@@ -92,16 +92,24 @@
              as a static brand mark rather than a hit target. -->
         <Image Source="Crystal.ico" Width="20" Height="20" Margin="0,0,8,0" VerticalAlignment="Center"
                RenderOptions.BitmapScalingMode="HighQuality" WindowChrome.IsHitTestVisibleInChrome="False"/>
-        <TextBlock Text="Crystal" Foreground="{StaticResource LabelBrush}" FontFamily="{StaticResource UiFontFamily}" 
+        <TextBlock Text="Crystal" Foreground="{StaticResource LabelBrush}" FontFamily="{StaticResource UiFontFamily}"
                    FontSize="16" VerticalAlignment="Center"/>
+        <!-- Global graph-shape toggle: switches every dashboard graph between a filled line and a
+             dot-matrix. Excluded from the WindowChrome drag region so the clicks land on the radios. -->
+        <RadioButton x:Name="LineGraphRadio" GroupName="GraphKind" Content="Line"
+                     Foreground="{StaticResource LabelBrush}" FontFamily="{StaticResource UiFontFamily}"
+                     FontSize="14" VerticalAlignment="Center" Margin="24,0,0,0"
+                     WindowChrome.IsHitTestVisibleInChrome="True" Checked="OnGraphLineChecked"/>
+        <RadioButton x:Name="DotGraphRadio" GroupName="GraphKind" Content="Dot"
+                     Foreground="{StaticResource LabelBrush}" FontFamily="{StaticResource UiFontFamily}"
+                     FontSize="14" VerticalAlignment="Center" Margin="14,0,0,0"
+                     WindowChrome.IsHitTestVisibleInChrome="True" Checked="OnGraphDotChecked"/>
       </StackPanel>
       <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
         <TextBlock x:Name="DateTimeText" Foreground="{StaticResource SpecValueBrush}" 
                    FontFamily="{StaticResource UiFontFamily}" FontSize="16" VerticalAlignment="Center"/>
       </StackPanel>
       <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-        <Button x:Name="GraphSettingsButton" Style="{StaticResource CaptionButtonStyle}"
-                Click="OnGraphSettingsClick" Content="&#xE713;" ToolTip="Graph settings"/>
         <Button x:Name="ResetLayoutButton" Style="{StaticResource CaptionButtonStyle}"
                 Click="OnResetLayoutClick" Content="&#xE72C;" ToolTip="Reset dashboard layout"/>
         <Button x:Name="MinimizeButton" Style="{StaticResource CaptionButtonStyle}"
