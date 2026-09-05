@@ -23,35 +23,33 @@
         <RowDefinition Height="*"/>
 			</Grid.RowDefinitions>
       <sv:CpuHeaderView Grid.Row="0"/>
-      <Grid Grid.Row="1" DataContext="{Binding SensorsViewModel}" Margin="10,2,0,2" ShowGridLines="False">
+      <Grid Grid.Row="1" DataContext="{Binding SensorsViewModel}" Margin="10,2,0,2" ShowGridLines="true">
+        <Grid.RowDefinitions>
+          <RowDefinition/>
+          <RowDefinition/>
+          <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="1.2*"/>
-          <ColumnDefinition Width="2*"/>
-          <ColumnDefinition Width="1.6*"/>
+          <ColumnDefinition Width="1*"/>
+          <ColumnDefinition Width="1*"/>
+          <ColumnDefinition Width="1*"/>
+          <ColumnDefinition Width=".5*"/>
         </Grid.ColumnDefinitions>
-        <!-- Column 0: fixed-size metric tiles, aligned left. -->
-        <Grid Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,10,0">
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
-          </Grid.ColumnDefinitions>
-          <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-          </Grid.RowDefinitions>
-          <sv:CpuClockView       Grid.Row="0" Grid.Column="0" Margin="0,0,42,8"/>
-          <sv:CpuTemperatureView Grid.Row="0" Grid.Column="1" Margin="0,0,42,8"/>
-          <sv:CpuPowerView       Grid.Row="0" Grid.Column="2" Margin="0,0,0,8"/>
-          <sv:CpuVoltageView     Grid.Row="1" Grid.Column="0" Margin="0,0,42,0"/>
-          <sv:CpuFanView         Grid.Row="1" Grid.Column="1" Margin="0,0,42,0"/>
-        </Grid>
+        
+        <sv:CpuClockView       Grid.Row="0" Grid.Column="0"/>
+        <sv:CpuTemperatureView Grid.Row="0" Grid.Column="1"/>
+        <sv:CpuPowerView       Grid.Row="1" Grid.Column="2"/>
+        <sv:CpuVoltageView     Grid.Row="1" Grid.Column="0"/>
+        <sv:CpuFanView         Grid.Row="1" Grid.Column="1"/>
+        
+        <!-- CPU-utilization graph -->
+        <sv:CpuUtilizationView Grid.Column="2" Margin="10,0,20,0"/>
 
-        <!-- Column 1: full CPU-utilization graph, centered. -->
-        <sv:CpuUtilizationView Grid.Column="1" Margin="10,0,10,0"/>
-
-        <!-- Column 2: live per-core strip, aligned right. -->
-        <sv:CpuCoreStripView Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        <!-- live per-core strip -->
+        <sv:CpuCoreStripView Grid.Column="3" Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+        
+        <!-- Instruction set features -->
+        
       </Grid>
     </Grid>
   </Border>
