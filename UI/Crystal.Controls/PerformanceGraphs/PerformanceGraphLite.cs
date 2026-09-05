@@ -281,6 +281,31 @@ public sealed class PerformanceGraphLite : FrameworkElement, ISingleSeriesGraph 
     set => SetValue(CapacityProperty, value);
   }
 
+  /// <summary>Identifies the <see cref="CellPitch"/> dependency property.</summary>
+  public static readonly DependencyProperty CellPitchProperty =
+      DependencyProperty.Register(nameof(CellPitch), typeof(double), typeof(PerformanceGraphLite),
+          new FrameworkPropertyMetadata(0.0,
+              FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender),
+          ValidateCellPitch);
+
+  private static bool ValidateCellPitch(object value) => value is double pitch && pitch >= 0;
+
+  /// <summary>
+  /// When greater than 0, the graph draws dots at this fixed pixel pitch instead of spreading
+  /// <see cref="Capacity"/> samples across the whole width and deriving the dot size from that.
+  /// The control fills its measured bounds with a grid of near-pitch-sized cells (both columns and
+  /// rows quantised to the pitch), plots the most recent samples that fit right-aligned, and draws
+  /// every dot the same size - so two graphs sharing a <see cref="CellPitch"/> render dots the same
+  /// size regardless of their differing widths, heights, or Capacity, which the default
+  /// width-and-Capacity-driven sizing cannot do across tiles of different width. 0 (the default)
+  /// keeps that original sizing; <see cref="Rows"/> is likewise ignored while a pitch is set, since
+  /// the row count is then derived from the pitch and the measured height.
+  /// </summary>
+  public double CellPitch {
+    get => (double)GetValue(CellPitchProperty);
+    set => SetValue(CellPitchProperty, value);
+  }
+
   // Off-screen render suspension — identical rationale and mechanics to PerformanceGraph's: a
   // collapsed tile, minimized window, or closed detail window flips IsVisible to false. Samples
   // still land in the buffer so no data gap forms, but queuing a render pass every poll for a
@@ -539,9 +564,10 @@ public sealed class PerformanceGraphLite : FrameworkElement, ISingleSeriesGraph 
     // instead of a flat 200x100 oblivious to either. PixelsPerUnit=12 matches the pitch this
     // project already settled on by hand for Capacity=60/Rows=10 (a 720x120 tile).
     const double PixelsPerUnit = 12;
+    double pitch = CellPitch > 0 ? CellPitch : PixelsPerUnit;
 
-    double width = double.IsInfinity(availableSize.Width) ? Capacity * PixelsPerUnit : availableSize.Width;
-    double height = double.IsInfinity(availableSize.Height) ? Rows * PixelsPerUnit : availableSize.Height;
+    double width = double.IsInfinity(availableSize.Width) ? Capacity * pitch : availableSize.Width;
+    double height = double.IsInfinity(availableSize.Height) ? Rows * pitch : availableSize.Height;
     return new Size(width, height);
   }
 
@@ -579,17 +605,38 @@ public sealed class PerformanceGraphLite : FrameworkElement, ISingleSeriesGraph 
     if (GraphBackground != null) dc.DrawRectangle(GraphBackground, null, bounds);
 
     int count = _values.Count;
-    int rows = Rows;
     double minValue = MinValue;
     double range = MaxValue - minValue;
-    if (count == 0 || rows <= 0 || range <= 0) return;
+    if (count == 0 || range <= 0) return;
 
-    int effectiveCapacity = Capacity > count ? Capacity : count;
-    double slotWidth = bounds.Width / effectiveCapacity;
+    // Newest sample is always pinned to the right edge. In the default sizing mode all `count`
+    // samples spread across the full width; in fixed-pitch mode only the most recent that fit are
+    // drawn (startIndex skips the rest, which scroll off the left).
+    int rows;
+    int startIndex = 0;
+    double slotWidth;
+    double rowHeight;
+    double pitch = CellPitch;
+    if (pitch > 0) {
+      // Fixed-pitch mode: fill the measured bounds with a grid of ~pitch-sized cells, both axes
+      // quantised to the pitch, so every dot comes out the same size no matter this graph's width,
+      // height, or Capacity - which is the whole reason the mode exists (uniform dots across tiles
+      // of different width). Rows is derived from the height here rather than read from the DP.
+      int cols = Math.Max(1, (int)Math.Round(bounds.Width / pitch));
+      rows = Math.Max(1, (int)Math.Round(bounds.Height / pitch));
+      slotWidth = bounds.Width / cols;
+      rowHeight = bounds.Height / rows;
+      if (count > cols) startIndex = count - cols;
+    } else {
+      rows = Rows;
+      if (rows <= 0) return;
+      int effectiveCapacity = Capacity > count ? Capacity : count;
+      slotWidth = bounds.Width / effectiveCapacity;
+      rowHeight = bounds.Height / rows;
+    }
+
     double dotColumnWidth = slotWidth * ColumnWidthRatio;
     double columnInset = (slotWidth - dotColumnWidth) / 2;
-
-    double rowHeight = bounds.Height / rows;
     // One dot per column, centred in its slot. Sizing off the row pitch keeps dots the same
     // size regardless of tile width; a column is never split into 2+ dots across.
     double dotSize = rowHeight * DotSizeRatio;
@@ -604,19 +651,19 @@ public sealed class PerformanceGraphLite : FrameworkElement, ISingleSeriesGraph 
     // swapped out - SingleColor never touches BandForRow, never allocates the nine band
     // geometries, and never opens more than one StreamGeometryContext for the whole frame.
     if (ColorMode == DotColorMode.SingleColor)
-      RenderSingleColor(dc, bounds, count, rows, minValue, range, in layout, flip, cornerRadius);
+      RenderSingleColor(dc, bounds, count, startIndex, rows, minValue, range, in layout, flip, cornerRadius);
     else
-      RenderBanded(dc, bounds, count, rows, minValue, range, in layout, flip, cornerRadius);
+      RenderBanded(dc, bounds, count, startIndex, rows, minValue, range, in layout, flip, cornerRadius);
   }
 
   // SingleColor path: one geometry, one Open()/Close() pair, one DrawGeometry call - regardless of
   // sample count or Rows. No BandForRow call anywhere in this method.
-  private void RenderSingleColor(DrawingContext dc, Rect bounds, int count, int rows, double minValue,
+  private void RenderSingleColor(DrawingContext dc, Rect bounds, int count, int startIndex, int rows, double minValue,
       double range, in DotLayout layout, bool flip, double cornerRadius) {
     StreamGeometry geometry = _singleGeometry ??= new StreamGeometry();
 
     using (StreamGeometryContext ctx = geometry.Open()) {
-      for (int i = 0; i < count; i++) {
+      for (int i = startIndex; i < count; i++) {
         double slotRight = bounds.Right - (count - 1 - i) * layout.SlotWidth;
         double left = slotRight - layout.SlotWidth + layout.ColumnInset;
         double cx = left + layout.DotColumnWidth / 2;
@@ -657,7 +704,7 @@ public sealed class PerformanceGraphLite : FrameworkElement, ISingleSeriesGraph 
   // Banded path: unchanged algorithm from before ColorMode existed, just gated behind it and
   // reading layout fields instead of locals. Up to nine geometries, opened/closed once per frame,
   // one DrawGeometry call per band that actually has a dot in it this frame.
-  private void RenderBanded(DrawingContext dc, Rect bounds, int count, int rows, double minValue,
+  private void RenderBanded(DrawingContext dc, Rect bounds, int count, int startIndex, int rows, double minValue,
       double range, in DotLayout layout, bool flip, double cornerRadius) {
     StreamGeometry[] geometries = _bandGeometries ??= CreateBandGeometries();
 
@@ -665,7 +712,7 @@ public sealed class PerformanceGraphLite : FrameworkElement, ISingleSeriesGraph 
     try {
       for (int b = 0; b < BandCount; b++) contexts[b] = geometries[b].Open();
 
-      for (int i = 0; i < count; i++) {
+      for (int i = startIndex; i < count; i++) {
         // Newest sample (last, index count-1) pinned to the right edge; each older sample steps
         // one slot to the left — the same right-aligned layout PerformanceGraph's renderers use,
         // so a Lite graph's columns land where a full graph's would at the same capacity.

@@ -95,7 +95,8 @@
             <TextBlock Text="{Binding UsageLabel}" Style="{StaticResource TileLegendCaption}" HorizontalAlignment="Right"/>
           </Grid>
           <graphs:AdaptiveGraph x:Name="UsageGraph" Grid.Row="1" MinHeight="90" Margin="0,0,0,8"
-                                MinValue="0" MaxValue="100" Accent="#3E9BE8" ShowChrome="True"/>
+                                MinValue="0" MaxValue="100" Accent="#3E9BE8" ShowChrome="True"
+                                CellPitch="{StaticResource DashboardDotPitch}"/>
 
           <!-- Commit charge: caption (left) + used/limit · pct (right) -->
           <Grid Grid.Row="2" Margin="0,0,0,2">
@@ -104,7 +105,8 @@
           </Grid>
           <graphs:AdaptiveGraph x:Name="CommitGraph" Grid.Row="3" MinHeight="90" Margin="0,0,0,12"
                                 MinValue="0" MaxValue="{Binding CommitLimitGB, TargetNullValue=64}"
-                                Accent="#E89B2A" ShowChrome="True"/>
+                                Accent="#E89B2A" ShowChrome="True"
+                                CellPitch="{StaticResource DashboardDotPitch}"/>
 
           <!-- Memory composition title + the segment legend on one line: title left, legend right. -->
           <Grid Grid.Row="4" Margin="0,0,0,4">

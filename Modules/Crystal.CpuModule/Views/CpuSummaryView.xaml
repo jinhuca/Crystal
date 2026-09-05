@@ -26,7 +26,6 @@
       <Grid Grid.Row="1" DataContext="{Binding SensorsViewModel}" Margin="10,2,0,2" ShowGridLines="False">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="1.2*"/>
-          
           <ColumnDefinition Width="2*"/>
           <ColumnDefinition Width="1.6*"/>
         </Grid.ColumnDefinitions>
