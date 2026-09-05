@@ -3,75 +3,84 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:bars="clr-namespace:Crystal.Controls.RangeBars;assembly=Crystal.Controls"
-             xmlns:conv="clr-namespace:Crystal.Controls.Converters;assembly=Crystal.Controls"
+             xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs;assembly=Crystal.Controls"
              mc:Ignorable="d"
-             d:DesignHeight="90" d:DesignWidth="130">
-  <!-- DataContext is the CPU SensorsViewModel, inherited from the host tile.
-       Value-banded segmented range bar over the live power; the history graph moved to the detail view. -->
+             d:DesignHeight="120" d:DesignWidth="260">
+  <!-- DataContext is the CPU SensorsViewModel, inherited from the host tile. Power history graph,
+       titled in the utilization pattern: metric label + inline limits/currents — PL1/PL2 on Intel,
+       TDC/EDC on AMD, each hidden when unexposed (left), live value (right). Self-registers under
+       "Cpu.Power" so the view model feeds it on each poll. -->
   <UserControl.Resources>
-    <conv:ValueToBrushConverter x:Key="PowerFill" Minimum="0" Step="20" Fallback="#9AA0A6">
-      <SolidColorBrush Color="#22B14C"/>
-      <SolidColorBrush Color="#E8C22A"/>
-      <SolidColorBrush Color="#FF7F27"/>
-      <SolidColorBrush Color="#ED1C24"/>
-      <SolidColorBrush Color="#B0171F"/>
-    </conv:ValueToBrushConverter>
+    <Style x:Key="PowerSubCaption" TargetType="TextBlock" BasedOn="{StaticResource MetricCaption}">
+      <Setter Property="Margin" Value="10,0,0,0"/>
+    </Style>
   </UserControl.Resources>
-  <StackPanel Width="120" HorizontalAlignment="Left">
-		<StackPanel Orientation="Horizontal">
-			<TextBlock Text="{Binding Power, StringFormat={}{0:0.00}}" Style="{StaticResource MetricValue}"/>
-			<TextBlock Text="Watts" Style="{StaticResource MetricUnit}"/>
-		</StackPanel>
-		<bars:RangeBar Style="{StaticResource SummaryRangeBarStyle}"
-                   MinValue="0" MaxValue="100" Value="{Binding Power}"
-                   FillBrush="{Binding Value, RelativeSource={RelativeSource Self}, Converter={StaticResource PowerFill}}"/>
-    <TextBlock Text="Power" Style="{StaticResource MetricCaption}"/>
-    <!-- Intel RAPL power limits; hidden when not exposed (read 0 on AMD). -->
-    <TextBlock Text="{Binding PowerLimitLongW, StringFormat=PL1 {0:0} W}">
-      <TextBlock.Style>
-        <Style TargetType="TextBlock" BasedOn="{StaticResource MetricCaption}">
-          <Style.Triggers>
-            <DataTrigger Binding="{Binding PowerLimitLongW}" Value="0">
-              <Setter Property="Visibility" Value="Collapsed"/>
-            </DataTrigger>
-          </Style.Triggers>
-        </Style>
-      </TextBlock.Style>
-    </TextBlock>
-    <TextBlock Text="{Binding PowerLimitShortW, StringFormat=PL2 {0:0} W}">
-      <TextBlock.Style>
-        <Style TargetType="TextBlock" BasedOn="{StaticResource MetricCaption}">
-          <Style.Triggers>
-            <DataTrigger Binding="{Binding PowerLimitShortW}" Value="0">
-              <Setter Property="Visibility" Value="Collapsed"/>
-            </DataTrigger>
-          </Style.Triggers>
-        </Style>
-      </TextBlock.Style>
-    </TextBlock>
-    <!-- AMD SMU package current; hidden when not exposed (read 0 on Intel). -->
-    <TextBlock Text="{Binding TdcAmps, StringFormat=TDC {0:0} A}">
-      <TextBlock.Style>
-        <Style TargetType="TextBlock" BasedOn="{StaticResource MetricCaption}">
-          <Style.Triggers>
-            <DataTrigger Binding="{Binding TdcAmps}" Value="0">
-              <Setter Property="Visibility" Value="Collapsed"/>
-            </DataTrigger>
-          </Style.Triggers>
-        </Style>
-      </TextBlock.Style>
-    </TextBlock>
-    <TextBlock Text="{Binding EdcAmps, StringFormat=EDC {0:0} A}">
-      <TextBlock.Style>
-        <Style TargetType="TextBlock" BasedOn="{StaticResource MetricCaption}">
-          <Style.Triggers>
-            <DataTrigger Binding="{Binding EdcAmps}" Value="0">
-              <Setter Property="Visibility" Value="Collapsed"/>
-            </DataTrigger>
-          </Style.Triggers>
-        </Style>
-      </TextBlock.Style>
-    </TextBlock>
-  </StackPanel>
+  <Grid VerticalAlignment="Stretch" Background="Transparent">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+
+    <Grid Grid.Row="0" Margin="0,0,0,4">
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+        <TextBlock Text="Power" Style="{StaticResource MetricCaption}" Foreground="{StaticResource TextBrush}"/>
+        <!-- Intel RAPL power limits; hidden when not exposed (read 0 on AMD). -->
+        <TextBlock Text="{Binding PowerLimitLongW, StringFormat=PL1 {0:0} W}">
+          <TextBlock.Style>
+            <Style TargetType="TextBlock" BasedOn="{StaticResource PowerSubCaption}">
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding PowerLimitLongW}" Value="0">
+                  <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </TextBlock.Style>
+        </TextBlock>
+        <TextBlock Text="{Binding PowerLimitShortW, StringFormat=PL2 {0:0} W}">
+          <TextBlock.Style>
+            <Style TargetType="TextBlock" BasedOn="{StaticResource PowerSubCaption}">
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding PowerLimitShortW}" Value="0">
+                  <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </TextBlock.Style>
+        </TextBlock>
+        <!-- AMD SMU package current; hidden when not exposed (read 0 on Intel). -->
+        <TextBlock Text="{Binding TdcAmps, StringFormat=TDC {0:0} A}">
+          <TextBlock.Style>
+            <Style TargetType="TextBlock" BasedOn="{StaticResource PowerSubCaption}">
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding TdcAmps}" Value="0">
+                  <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </TextBlock.Style>
+        </TextBlock>
+        <TextBlock Text="{Binding EdcAmps, StringFormat=EDC {0:0} A}">
+          <TextBlock.Style>
+            <Style TargetType="TextBlock" BasedOn="{StaticResource PowerSubCaption}">
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding EdcAmps}" Value="0">
+                  <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </TextBlock.Style>
+        </TextBlock>
+      </StackPanel>
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+        <TextBlock Text="{Binding Power, StringFormat={}{0:0.00}}" Style="{StaticResource UtilizationCaption}" VerticalAlignment="Bottom"/>
+        <TextBlock Text="Watts" Style="{StaticResource MetricUnit}" VerticalAlignment="Bottom"/>
+      </StackPanel>
+    </Grid>
+
+    <graphs:AdaptiveGraph x:Name="PowerGraph" Grid.Row="1"
+                          graphs:GraphIdentity.Id="Cpu.Power"
+                          Capacity="120" MinValue="0" MaxValue="100"
+                          Accent="#3BD15A" ShowChrome="True" MinHeight="40"
+                          CellPitch="{StaticResource DashboardDotPitch}"/>
+  </Grid>
 </UserControl>

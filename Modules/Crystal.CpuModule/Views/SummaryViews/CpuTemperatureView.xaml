@@ -3,41 +3,44 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:bars="clr-namespace:Crystal.Controls.RangeBars;assembly=Crystal.Controls"
-             xmlns:conv="clr-namespace:Crystal.Controls.Converters;assembly=Crystal.Controls"
+             xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs;assembly=Crystal.Controls"
              mc:Ignorable="d"
-             d:DesignHeight="90" d:DesignWidth="130">
-  <!-- DataContext is the CPU SensorsViewModel, inherited from the host tile.
-       Value-banded segmented range bar over the live temperature; the history graph moved to the detail view. -->
-  <UserControl.Resources>
-    <conv:ValueToBrushConverter x:Key="TemperatureFill" Minimum="30" Step="18" Fallback="#9AA0A6">
-      <SolidColorBrush Color="#22B14C"/>
-      <SolidColorBrush Color="#E8C22A"/>
-      <SolidColorBrush Color="#FF7F27"/>
-      <SolidColorBrush Color="#ED1C24"/>
-      <SolidColorBrush Color="#B0171F"/>
-    </conv:ValueToBrushConverter>
-  </UserControl.Resources>
-  <StackPanel Width="120" HorizontalAlignment="Left">
-		<StackPanel Orientation="Horizontal">
-			<TextBlock Text="{Binding Temperature, StringFormat={}{0:0.00}}" Style="{StaticResource MetricValue}"/>
-			<TextBlock Text="°C" Style="{StaticResource MetricUnit}"/>
-		</StackPanel>
-		<bars:RangeBar Style="{StaticResource SummaryRangeBarStyle}"
-                   MinValue="30" MaxValue="120" Value="{Binding Temperature}"
-                   FillBrush="{Binding Value, RelativeSource={RelativeSource Self}, Converter={StaticResource TemperatureFill}}"/>
-    <TextBlock Text="Temperature" Style="{StaticResource MetricCaption}"/>
-    <!-- Intel-only thermal headroom; hidden when not exposed (reads 0 on AMD). -->
-    <TextBlock Text="{Binding DistanceToTjMax, StringFormat=TjMax +{0:0}°C}">
-      <TextBlock.Style>
-        <Style TargetType="TextBlock" BasedOn="{StaticResource MetricCaption}">
-          <Style.Triggers>
-            <DataTrigger Binding="{Binding DistanceToTjMax}" Value="0">
-              <Setter Property="Visibility" Value="Collapsed"/>
-            </DataTrigger>
-          </Style.Triggers>
-        </Style>
-      </TextBlock.Style>
-    </TextBlock>
-  </StackPanel>
+             d:DesignHeight="120" d:DesignWidth="260">
+  <!-- DataContext is the CPU SensorsViewModel, inherited from the host tile. Temperature history
+       graph, titled in the utilization pattern: metric label + inline TjMax headroom (left), live
+       value (right). Self-registers under "Cpu.Temperature" so the view model feeds it each poll. -->
+  <Grid VerticalAlignment="Stretch" Background="Transparent">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+
+    <Grid Grid.Row="0" Margin="0,0,0,4">
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+        <TextBlock Text="Temperature" Style="{StaticResource MetricCaption}" Foreground="{StaticResource TextBrush}"/>
+        <!-- Intel-only thermal headroom; hidden when not exposed (reads 0 on AMD). -->
+        <TextBlock Text="{Binding DistanceToTjMax, StringFormat=TjMax +{0:0}°C}" Margin="10,0,0,0">
+          <TextBlock.Style>
+            <Style TargetType="TextBlock" BasedOn="{StaticResource MetricCaption}">
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding DistanceToTjMax}" Value="0">
+                  <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </TextBlock.Style>
+        </TextBlock>
+      </StackPanel>
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+        <TextBlock Text="{Binding Temperature, StringFormat={}{0:0.00}}" Style="{StaticResource UtilizationCaption}" VerticalAlignment="Bottom"/>
+        <TextBlock Text="°C" Style="{StaticResource MetricUnit}" VerticalAlignment="Bottom"/>
+      </StackPanel>
+    </Grid>
+
+    <graphs:AdaptiveGraph x:Name="TemperatureGraph" Grid.Row="1"
+                          graphs:GraphIdentity.Id="Cpu.Temperature"
+                          Capacity="120" MinValue="30" MaxValue="120"
+                          Accent="#3BD15A" ShowChrome="True" MinHeight="40"
+                          CellPitch="{StaticResource DashboardDotPitch}"/>
+  </Grid>
 </UserControl>

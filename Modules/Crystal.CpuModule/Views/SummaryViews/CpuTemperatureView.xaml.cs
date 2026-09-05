@@ -1,12 +1,24 @@
+using Crystal.Controls.PerformanceGraphs;
+using Crystal.CpuModule.ViewModels.Interfaces;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Crystal.CpuModule.Views.SummaryViews;
 
 /// <summary>
 /// Temperature metric tile for the CPU summary: the live package temperature and thermal headroom
-/// (TjMax) over a value-banded segmented range bar. Binds to the CPU SensorsViewModel inherited
-/// from the host tile. The temperature history graph now lives in the CPU detail view.
+/// (TjMax) over its history graph. Binds to the CPU SensorsViewModel inherited from the host tile
+/// and self-registers its graph so the view model feeds it on each poll.
 /// </summary>
 public partial class CpuTemperatureView : UserControl {
-  public CpuTemperatureView() => InitializeComponent();
+  public CpuTemperatureView() {
+    InitializeComponent();
+    Loaded += OnLoaded;
+  }
+
+  private void OnLoaded(object sender, RoutedEventArgs e) {
+    if (DataContext is ICpuSensorViewModel vm && GraphIdentity.GetId(TemperatureGraph) is { } id) {
+      vm.AttachGraph(id, TemperatureGraph);
+    }
+  }
 }
