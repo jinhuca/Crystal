@@ -94,7 +94,9 @@ namespace Crystal.Controls.PerformanceGraphs;
 public sealed class PerformanceGraphLite : FrameworkElement, ISingleSeriesGraph {
   private const int DefaultCapacity = 60;
   private const int DefaultRows = 10;
-  private const int BandCount = 9;
+  // Kept equal to the shared ramp length: the dot bands, Color1..Color9, and DefaultBandColors
+  // (= GaugeBandPalette.Solid) all index this, so they stay the same size from one source.
+  private const int BandCount = GaugeBandPalette.BandCount;
 
   // Fraction of each column slot's width the dot occupies, and of each row's height a
   // *full* dot occupies — the same ratios PerformanceGraph's DotRenderer uses, so a Lite graph
@@ -120,30 +122,9 @@ public sealed class PerformanceGraphLite : FrameworkElement, ISingleSeriesGraph 
   }
 
   // Default green→red gauge ramp (Color1 green … Color9 red). An unconfigured graph reads as a
-  // linear low-to-high palette rather than flat gray. Each brush is frozen once and shared by
-  // every instance's Color1..9 metadata default and its initial resolved-color slots.
-  private static readonly Brush[] DefaultBandColors = CreateDefaultBandColors();
-
-  private static Brush[] CreateDefaultBandColors() {
-    (byte R, byte G, byte B)[] ramp = {
-      (0x2E, 0xCC, 0x40), // Color1 - green
-      (0x5F, 0xCA, 0x34),
-      (0x90, 0xC8, 0x28),
-      (0xC0, 0xC6, 0x1B),
-      (0xF1, 0xC4, 0x0F), // Color5 - yellow
-      (0xF0, 0x9A, 0x14),
-      (0xEF, 0x70, 0x1A),
-      (0xEE, 0x46, 0x1F),
-      (0xED, 0x1C, 0x24), // Color9 - red
-    };
-    var brushes = new Brush[ramp.Length];
-    for (int i = 0; i < ramp.Length; i++) {
-      var brush = new SolidColorBrush(Color.FromRgb(ramp[i].R, ramp[i].G, ramp[i].B));
-      brush.Freeze();
-      brushes[i] = brush;
-    }
-    return brushes;
-  }
+  // linear low-to-high palette rather than flat gray. Single-sourced from GaugeBandPalette so the
+  // dot matrix and PerformanceGraph's banded Line kind share the exact same colors.
+  private static readonly Brush[] DefaultBandColors = GaugeBandPalette.Solid;
 
   /// <summary>Identifies the <see cref="ValuesSource"/> dependency property.</summary>
   public static readonly DependencyProperty ValuesSourceProperty =

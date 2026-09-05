@@ -29,7 +29,7 @@
     <graphs:AdaptiveGraph x:Name="CpuUtilizationGraph" Grid.Row="1"
                           graphs:GraphIdentity.Id="Cpu.Utilization"
                           Capacity="120" MinValue="0" MaxValue="100"
-                          Accent="#3BD15A" ShowChrome="True" MinHeight="90"
+                          Accent="#3BD15A" ShowChrome="True" MinHeight="40"
                           CellPitch="{StaticResource DashboardDotPitch}"/>
   </Grid>
 </UserControl>

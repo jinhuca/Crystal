@@ -33,6 +33,11 @@
   <Style x:Key="UtilizationCaption" TargetType="TextBlock" BasedOn="{StaticResource MetricValue}">
     <Setter Property="FontSize" Value="{StaticResource UtilizationValueSize}"/>
   </Style>
+  <!-- Compact value for a narrow dashboard tile header, where the title and value share one line:
+       MetricValue at a smaller size so both fit without colliding. -->
+  <Style x:Key="TileMetricValue" TargetType="TextBlock" BasedOn="{StaticResource MetricValue}">
+    <Setter Property="FontSize" Value="13"/>
+  </Style>
 
   <!-- Inline spec in a summary header row. -->
   <Style x:Key="HeaderSpec" TargetType="TextBlock">
