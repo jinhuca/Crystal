@@ -185,10 +185,12 @@ public sealed class GpuAdapterViewModel : BindableBase {
     MemoryUsedPercent = reading is { MemoryUsedGB: { } used, MemoryTotalGB: { } total } && total > 0
         ? used / total * 100
         : null;
+    if (MemoryUsedPercent is { } mem) FeedGraph("Gpu.Memory", mem);
     MemoryClockMhz = reading.MemoryClockMhz;
     FanRpm = reading.FanRpm;
     CoreVoltageV = reading.CoreVoltageV;
     HotSpotTemperatureC = reading.HotSpotTemperatureC;
+    if (reading.HotSpotTemperatureC is { } hot) FeedGraph("Gpu.HotSpot", hot);
     MemoryTemperatureC = reading.MemoryTemperatureC;
 
     PcieRxMBps = reading.PcieRxMBps;
@@ -208,6 +210,7 @@ public sealed class GpuAdapterViewModel : BindableBase {
     // exposes no distinct 3D engine, so the tile always shows a live value.
     var threeD = engines.FirstOrDefault(e => e.Name.Contains("3D", StringComparison.OrdinalIgnoreCase));
     Load3D = threeD?.LoadPercent ?? reading.CoreLoadPercent;
+    FeedGraph("Gpu.3D", Load3D);
   }
 
   /// <summary>

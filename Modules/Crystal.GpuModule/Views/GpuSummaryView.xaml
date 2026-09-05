@@ -29,21 +29,22 @@
         <!-- The tile sizes to content (meter block + graph). The graph carries an explicit width
              (below) because these tiles sit in a horizontal strip measured with infinite width, where
              an unbounded stretchy graph would otherwise blow up to Capacity×12px. -->
-        <Grid VerticalAlignment="Center">
+        <Grid VerticalAlignment="Stretch">
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
           </Grid.ColumnDefinitions>
 
-          <!-- 2x2 meter block. -->
-          <Grid Grid.Column="0" VerticalAlignment="Center">
+          <!-- 2x2 meter block. Rows are equal-height (*) and the block stretches so each tile's
+               history graph fills its half of the row, matching the utilization graph's height. -->
+          <Grid Grid.Column="0" VerticalAlignment="Stretch">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="Auto"/>
               <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-              <RowDefinition Height="Auto"/>
-              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="*"/>
+              <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <sv:GpuTemperatureView Grid.Row="0" Grid.Column="0" Margin="0,0,8,8"/>
             <sv:GpuMemoryView      Grid.Row="0" Grid.Column="1" Margin="0,0,0,8"/>
@@ -53,7 +54,7 @@
 
           <!-- Utilization graph, captioned with the adapter identity. Fixed width so it sizes the tile
                instead of ballooning in the infinite-width adapter strip; the long adapter name trims. -->
-          <sv:GpuUtilizationView Grid.Column="1" Width="460" Margin="0,0,0,0" VerticalAlignment="Center"/>
+          <sv:GpuUtilizationView Grid.Column="1" Width="460" Margin="0,0,0,0" VerticalAlignment="Stretch"/>
         </Grid>
       </Border>
     </DataTemplate>
@@ -66,17 +67,19 @@
               BorderThickness="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ContentPresenter}, Converter={StaticResource TileChrome}, ConverterParameter=border}">
         <!-- The tile sizes to content (wider meter block + graph); the graph carries the same explicit
              width as the integrated tile (see there) so it can't balloon in the infinite-width strip. -->
-        <Grid VerticalAlignment="Center">
+        <Grid VerticalAlignment="Stretch">
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
           </Grid.ColumnDefinitions>
 
-          <!-- 2x4 meter block: Temperature/Memory/Clock, then Hot Spot/3D/Power, then PCIe Rx/Tx. -->
-          <Grid Grid.Column="0" VerticalAlignment="Bottom">
+          <!-- 2x4 meter block: Temperature/Memory/Clock, then Hot Spot/3D/Power, then PCIe Rx/Tx.
+               Rows are equal-height (*) and the block stretches so each tile's history graph fills its
+               half of the row, matching the utilization graph's height. -->
+          <Grid Grid.Column="0" VerticalAlignment="Stretch">
             <Grid.RowDefinitions>
-              <RowDefinition Height="Auto"/>
-              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="*"/>
+              <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="Auto"/>
@@ -90,13 +93,13 @@
             <sv:GpuHotSpotView     Grid.Row="1" Grid.Column="0" Margin="0,0,8,8"/>
             <sv:Gpu3DView          Grid.Row="1" Grid.Column="1" Margin="0,0,8,8"/>
             <sv:GpuPowerView       Grid.Row="1" Grid.Column="2" Margin="0,0,8,8"/>
-            <sv:GpuPcieRxView      Grid.Row="0" Grid.Column="3" Margin="0,0,8,0"/>
-            <sv:GpuPcieTxView      Grid.Row="1" Grid.Column="3" Margin="0,0,8,0"/>
+            <sv:GpuPcieRxView      Grid.Row="0" Grid.Column="3" Margin="0,0,8,8"/>
+            <sv:GpuPcieTxView      Grid.Row="1" Grid.Column="3" Margin="0,0,8,8"/>
           </Grid>
 
           <!-- Utilization graph, captioned with the adapter identity. Same fixed width as the
                integrated tile (see there) so both graphs match and neither balloons. -->
-          <sv:GpuUtilizationView Grid.Column="1" Width="460" Margin="0,0,0,0" VerticalAlignment="Center"/>
+          <sv:GpuUtilizationView Grid.Column="1" Width="460" Margin="0,0,0,0" VerticalAlignment="Stretch"/>
         </Grid>
       </Border>
     </DataTemplate>

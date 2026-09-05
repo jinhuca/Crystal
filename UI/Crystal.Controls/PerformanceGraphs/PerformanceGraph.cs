@@ -111,6 +111,16 @@ public class PerformanceGraph : FrameworkElement, ISingleSeriesGraph {
       DependencyProperty.Register(nameof(MarkerFormat), typeof(string), typeof(PerformanceGraph),
           new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender));
 
+  /// <summary>Identifies the <see cref="BandedLine"/> dependency property.</summary>
+  public static readonly DependencyProperty BandedLineProperty =
+      DependencyProperty.Register(nameof(BandedLine), typeof(bool), typeof(PerformanceGraph),
+          new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsRender));
+
+  /// <summary>Identifies the <see cref="CellPitch"/> dependency property.</summary>
+  public static readonly DependencyProperty CellPitchProperty =
+      DependencyProperty.Register(nameof(CellPitch), typeof(double), typeof(PerformanceGraph),
+          new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender));
+
   private readonly BackgroundRenderer _backgroundRender = new();
   private GridRenderer _gridRender;
   private readonly BorderRenderer _borderRender = new();
@@ -126,6 +136,25 @@ public class PerformanceGraph : FrameworkElement, ISingleSeriesGraph {
   private SegmentedBarRenderer? _segmentedBarRender;
   private DotRenderer? _dotRender;
   private MarkerRenderer? _markerRender;
+
+  // Solid band pens for BandedLine mode, one per gauge band at the current LineThickness. Built
+  // lazily and rebuilt only when the thickness changes, so a banded graph pays the pen allocation
+  // once, not per frame. The band fill brushes are the shared frozen GaugeBandPalette.Fill array,
+  // so they need no per-instance caching.
+  private Pen[]? _bandLinePens;
+  private double _bandPenThickness = double.NaN;
+
+  private Pen[] BandLinePens() {
+    double thickness = LineThickness;
+    if (_bandLinePens == null || _bandPenThickness != thickness) {
+      var solids = GaugeBandPalette.Solid;
+      var pens = new Pen[solids.Length];
+      for (int i = 0; i < solids.Length; i++) pens[i] = Helpers.CreateFrozenPen(solids[i], thickness);
+      _bandLinePens = pens;
+      _bandPenThickness = thickness;
+    }
+    return _bandLinePens;
+  }
 
   // Right-aligned sample buffer for the primary series (index 0): index 0 is oldest, [Count-1] is
   // the most recent value. The primary series' line/fill live in _graphStyle and are driven by the
@@ -369,6 +398,32 @@ public class PerformanceGraph : FrameworkElement, ISingleSeriesGraph {
   public GraphKind Kind {
     get => (GraphKind)GetValue(KindProperty);
     set => SetValue(KindProperty, value);
+  }
+
+  /// <summary>
+  /// When true, the <see cref="GraphKind.Line"/> primary series is colored by value: the plotted
+  /// range is split into a green→red gauge ramp and both the line stroke and the area beneath it
+  /// take each point's band color, so the trace reads green while low and red where it spikes
+  /// (the same ramp <see cref="PerformanceGraphLite"/>'s dot gauge uses). Ignores
+  /// <see cref="LineBrush"/>/<see cref="FillBrush"/> for the primary series while set. Applies only
+  /// to a single-series Line graph — a graph carrying overlay series (see <see cref="AddSeries"/>)
+  /// keeps its per-series colors and is drawn unbanded, since banding a read/write pair would lose
+  /// the distinction between them. Defaults to false, so existing single-color graphs are unchanged.
+  /// </summary>
+  public bool BandedLine {
+    get => (bool)GetValue(BandedLineProperty);
+    set => SetValue(BandedLineProperty, value);
+  }
+
+  /// <summary>When greater than 0, the <see cref="GraphKind.Line"/> series plot samples at this
+  /// fixed pixel pitch and draw only the most recent that fit the width, matching how
+  /// <see cref="PerformanceGraphLite.CellPitch"/> windows its dots. A Line graph and a Dot graph
+  /// sharing one pitch then show the same time window, so an <see cref="AdaptiveGraph"/> toggle
+  /// between them doesn't change how much history is visible. 0 (the default) spreads all
+  /// <see cref="HistoryLength"/> samples across the full width.</summary>
+  public double CellPitch {
+    get => (double)GetValue(CellPitchProperty);
+    set => SetValue(CellPitchProperty, value);
   }
 
   /// <summary>When true, a <see cref="GraphKind.SegmentedBar"/> is drawn mirrored (180°): its
@@ -658,11 +713,16 @@ public class PerformanceGraph : FrameworkElement, ISingleSeriesGraph {
         // Primary series first (so its fill sits underneath), then each overlay on top. Each series
         // draws through its own renderer so the reused-across-frames StreamGeometry of one isn't
         // re-Opened by another within this same pass (which would render both with the last geometry).
+        // Banding is a single-series look: a graph with overlays keeps its per-series colors so a
+        // read/write pair stays distinguishable, so gate it on there being no overlay series.
+        bool banded = BandedLine && _extraSeries.Count == 0;
+        double cellPitch = CellPitch;
         (_filledLineRender ??= new FilledLineRenderer()).Draw(dc, bounds, _values, _historyLength, minValue, maxValue,
-            _graphStyle.LinePen, _graphStyle.FillBrush);
+            _graphStyle.LinePen, _graphStyle.FillBrush,
+            banded ? BandLinePens() : null, banded ? GaugeBandPalette.Fill : null, cellPitch);
         foreach (var s in _extraSeries)
           s.Renderer.Draw(dc, bounds, s.Values, _historyLength, minValue, maxValue,
-              s.LinePen, s.FillBrush);
+              s.LinePen, s.FillBrush, cellPitch: cellPitch);
         break;
     }
 

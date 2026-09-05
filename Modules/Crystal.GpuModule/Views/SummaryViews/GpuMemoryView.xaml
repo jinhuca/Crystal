@@ -3,41 +3,37 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:bars="clr-namespace:Crystal.Controls.RangeBars;assembly=Crystal.Controls"
-             xmlns:conv="clr-namespace:Crystal.Controls.Converters;assembly=Crystal.Controls"
+             xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs;assembly=Crystal.Controls"
              mc:Ignorable="d"
-             d:DesignHeight="44" d:DesignWidth="150">
-  <!-- DataContext is a GpuAdapterViewModel, inherited from the per-adapter block.
-       "used / total GB (percent)" readout over a segmented range bar driven by the used-percent. -->
-  <UserControl.Resources>
-    <conv:ValueToBrushConverter x:Key="MemoryFill" Minimum="0" Step="20" Fallback="#9AA0A6">
-      <SolidColorBrush Color="#22B14C"/>
-      <SolidColorBrush Color="#E8C22A"/>
-      <SolidColorBrush Color="#FF7F27"/>
-      <SolidColorBrush Color="#ED1C24"/>
-      <SolidColorBrush Color="#B0171F"/>
-    </conv:ValueToBrushConverter>
-  </UserControl.Resources>
-  <StackPanel Width="170" HorizontalAlignment="Left">
-    <StackPanel Orientation="Horizontal">
-      <TextBlock Style="{StaticResource MetricValue}">
-        <TextBlock.Text>
-          <MultiBinding StringFormat="{}{0:0.0} / {1:0.0}">
-            <Binding Path="MemoryUsedGB" TargetNullValue="0.0"/>
-            <Binding Path="MemoryTotalGB" TargetNullValue="0.0"/>
-          </MultiBinding>
-        </TextBlock.Text>
-      </TextBlock>
-      <TextBlock Text="GB" Style="{StaticResource MetricUnit}"/>
-      <TextBlock Text="{Binding MemoryUsedPercent, StringFormat={}({0:0}%), TargetNullValue=(0%)}"
-                 Style="{StaticResource MetricCaption}" VerticalAlignment="Bottom" Margin="6,0,0,0"/>
-    </StackPanel>
-    <!-- Bar width/position pinned to the sibling tiles (130), even though the readout above needs a
-         wider tile, so all the meter bars align. -->
-    <bars:RangeBar Style="{StaticResource SummaryRangeBarStyle}"
-                   Width="130" HorizontalAlignment="Left"
-                   MinValue="0" MaxValue="100" Value="{Binding MemoryUsedPercent, TargetNullValue=0}"
-                   FillBrush="{Binding Value, RelativeSource={RelativeSource Self}, Converter={StaticResource MemoryFill}}"/>
-    <TextBlock Text="Memory Used" Style="{StaticResource MetricCaption}"/>
-  </StackPanel>
+             d:DesignHeight="88" d:DesignWidth="170">
+  <!-- DataContext is a GpuAdapterViewModel, inherited from the per-adapter block. Header ("Memory
+       Used" left, "used / total GB (percent)" right) over a value-banded history graph driven by the
+       used-percent; self-registers so the view model feeds it on each poll. -->
+  <Grid Width="170">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+    <Grid Grid.Row="0" Margin="0,0,0,2">
+      <TextBlock Text="Memory Used" Style="{StaticResource MetricCaption}" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+        <TextBlock Style="{StaticResource TileMetricValue}">
+          <TextBlock.Text>
+            <MultiBinding StringFormat="{}{0:0.0} / {1:0.0}">
+              <Binding Path="MemoryUsedGB" TargetNullValue="0.0"/>
+              <Binding Path="MemoryTotalGB" TargetNullValue="0.0"/>
+            </MultiBinding>
+          </TextBlock.Text>
+        </TextBlock>
+        <TextBlock Text="GB" Style="{StaticResource MetricUnit}"/>
+      </StackPanel>
+    </Grid>
+    <!-- Graph pinned to the sibling tiles' width (130) and left-aligned, even though the readout
+         above needs a wider tile (170), so every meter graph is the same width and lines up. -->
+    <graphs:AdaptiveGraph x:Name="Graph" Grid.Row="1" graphs:GraphIdentity.Id="Gpu.Memory"
+                          Width="130" HorizontalAlignment="Left"
+                          Capacity="90" MinValue="0" MaxValue="100" Accent="#3BD15A"
+                          ShowChrome="True" MinHeight="40"
+                          CellPitch="{StaticResource DashboardDotPitch}"/>
+  </Grid>
 </UserControl>

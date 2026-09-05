@@ -23,6 +23,27 @@ namespace Crystal.Controls.PerformanceGraphs;
 /// read/write pair) are supported in Line mode and degrade to the primary series alone in Dot mode,
 /// since <see cref="PerformanceGraphLite"/> is single-series.</para>
 /// </summary>
+/// <remarks>
+/// <para><b>Keeping Line and Dot in sync.</b> Configure the host, never the inner controls — this
+/// forwards its properties to whichever child is live, so both modes stay in step by construction.
+/// Set <see cref="Capacity"/>, <see cref="MinValue"/>/<see cref="MaxValue"/>, <see cref="Accent"/>
+/// and <see cref="BandedLine"/> here; height/margin/layout go on the host too, so both modes inherit
+/// the same box (height is synced for free).</para>
+/// <para>Pick exactly one sizing regime per tile — never set both <see cref="CellPitch"/> and
+/// <see cref="DotStyle"/>:
+/// <list type="bullet">
+/// <item><b>Stretch-to-fill tile</b> (the dashboard default): set <see cref="CellPitch"/> (the shared
+/// DashboardDotPitch resource) and let the tile stretch. Both modes then draw the same most-recent
+/// width/pitch samples at the same spacing, so window, density and dot size match — across tiles too.
+/// Here <see cref="Capacity"/> is only the max history retained (shown = width/pitch), so keep it at
+/// least the widest tile's width/pitch.</item>
+/// <item><b>Fixed-cell tile</b>: set <see cref="DotStyle"/> (fixed Height + Rows), leave
+/// <see cref="CellPitch"/> unset. Dot renders a fixed square-cell grid and Line auto-pins to that
+/// footprint, so both occupy identical space.</item>
+/// </list>
+/// If Line and Dot legitimately need to differ, that's the signal to use the concrete control
+/// directly rather than an <see cref="AdaptiveGraph"/>.</para>
+/// </remarks>
 public sealed class AdaptiveGraph : Decorator, ISingleSeriesGraph {
   // Overlay series registered via AddSeries, replayed onto a freshly-built PerformanceGraph so a
   // mode toggle (or disk-selection template swap) reconstructs the same read/write pair.
@@ -67,6 +88,11 @@ public sealed class AdaptiveGraph : Decorator, ISingleSeriesGraph {
       DependencyProperty.Register(nameof(ShowChrome), typeof(bool), typeof(AdaptiveGraph),
           new FrameworkPropertyMetadata(false));
 
+  /// <summary>Identifies the <see cref="BandedLine"/> dependency property.</summary>
+  public static readonly DependencyProperty BandedLineProperty =
+      DependencyProperty.Register(nameof(BandedLine), typeof(bool), typeof(AdaptiveGraph),
+          new FrameworkPropertyMetadata(true));
+
   /// <summary>Identifies the <see cref="DotStyle"/> dependency property.</summary>
   public static readonly DependencyProperty DotStyleProperty =
       DependencyProperty.Register(nameof(DotStyle), typeof(Style), typeof(AdaptiveGraph),
@@ -106,6 +132,16 @@ public sealed class AdaptiveGraph : Decorator, ISingleSeriesGraph {
   public bool ShowChrome {
     get => (bool)GetValue(ShowChromeProperty);
     set => SetValue(ShowChromeProperty, value);
+  }
+
+  /// <summary>When true (the default), Line mode colors the trace by value using the green→red
+  /// gauge ramp instead of the flat <see cref="Accent"/>, matching how Dot mode already bands its
+  /// dots — so the Line/Dot toggle reads as the same gauge either way. Set false to keep a flat
+  /// single-<see cref="Accent"/> line. Has no effect on graphs with overlay series (e.g. a
+  /// read/write pair), which stay unbanded so their per-series colors remain distinct.</summary>
+  public bool BandedLine {
+    get => (bool)GetValue(BandedLineProperty);
+    set => SetValue(BandedLineProperty, value);
   }
 
   /// <summary>Optional style applied to the inner <see cref="PerformanceGraphLite"/> in Dot mode
@@ -160,10 +196,17 @@ public sealed class AdaptiveGraph : Decorator, ISingleSeriesGraph {
       HistoryLength = Capacity,
       MinValue = MinValue,
       MaxValue = MaxValue,
+      BandedLine = BandedLine,
+      // Match Dot mode's fixed-pitch windowing so toggling keeps the same visible history: with a
+      // pitch set, both modes draw the same most-recent width/pitch samples at the same spacing.
+      CellPitch = CellPitch,
       HorizontalAlignment = HorizontalAlignment.Stretch,
       VerticalAlignment = VerticalAlignment.Stretch,
     };
 
+    // ApplyTheme still sets the flat accent line/fill; when BandedLine is on, PerformanceGraph
+    // ignores those for the primary series and paints the value-banded ramp instead. Applying it
+    // regardless keeps the accent as the fallback if banding is turned off at runtime.
     graph.ApplyTheme(GraphThemes.FromAccent(Accent, GraphKind.Line));
     if (!ShowChrome) {
       // Accent line + glow over the tile's own background, no dark backdrop, grid or border —

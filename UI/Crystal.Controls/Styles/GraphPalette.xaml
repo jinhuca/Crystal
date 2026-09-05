@@ -1,12 +1,12 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <!--
     PLACEHOLDER PALETTE - see Palette.xaml's header comment.
 
     Themes/PerformanceGraphSampleStyles.xaml merges
-    "/Crystal.Controls;component/Styles/GraphPalette.xaml" and uses every key below across its
+    "/Crystal.Controls;component/Styles/GraphPalette.xaml" and uses every color key below across its
     keyed graph styles (RoseLineGraphStyle, SegBarLoadGraphEmeraldStyle030, FullGraphStyle, etc.).
+    The SummaryGraphMinHeight dimension token lives in Crystal.Resources' Styles/Dimensions.xaml.
     Accent colors here deliberately match the hardcoded accents GraphThemes.cs already uses for
     its code-first Rose/Emerald/Amber/Sky/Purple presets (see Crystal.Controls's own
     PerformanceGraphs/Themes/GraphThemes.cs), so a graph styled through either route reads as the
@@ -34,7 +34,4 @@
   <SolidColorBrush x:Key="GraphGreyFill" Color="#409AA0A6"/>
 
   <SolidColorBrush x:Key="GraphPurpleBrush" Color="#9B5AE8"/>
-
-  <!-- Minimum height for a "summary" (small, chrome-light) graph tile. -->
-  <sys:Double x:Key="SummaryGraphMinHeight">48</sys:Double>
 </ResourceDictionary>

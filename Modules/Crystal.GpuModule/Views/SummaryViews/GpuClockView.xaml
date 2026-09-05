@@ -3,20 +3,29 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:bars="clr-namespace:Crystal.Controls.RangeBars;assembly=Crystal.Controls"
+             xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs;assembly=Crystal.Controls"
              mc:Ignorable="d"
-             d:DesignHeight="44" d:DesignWidth="130">
-  <!-- DataContext is a GpuAdapterViewModel, inherited from the per-adapter block.
-       Segmented range bar over the live core clock (a high clock is desirable, not a warning, so a
-       steady accent fill rather than a green-to-red band); the history graph lives in the detail view. -->
-  <StackPanel Width="130" HorizontalAlignment="Left">
-    <StackPanel Orientation="Horizontal">
-      <TextBlock Text="{Binding ClockMhz, StringFormat={}{0:0}, TargetNullValue=—}" Style="{StaticResource MetricValue}"/>
-      <TextBlock Text="MHz" Style="{StaticResource MetricUnit}"/>
-    </StackPanel>
-    <bars:RangeBar Style="{StaticResource SummaryRangeBarStyle}"
-                   MinValue="0" MaxValue="{Binding ClockScaleMax}" Value="{Binding ClockMhz, TargetNullValue=0}"
-                   FillBrush="{StaticResource AccentBrush}"/>
-    <TextBlock Text="Clock" Style="{StaticResource MetricCaption}"/>
-  </StackPanel>
+             d:DesignHeight="88" d:DesignWidth="130">
+  <!-- DataContext is a GpuAdapterViewModel, inherited from the per-adapter block. Header (title left,
+       live value right) over the core-clock history graph. A high clock is desirable, not a warning,
+       so BandedLine is off: a steady accent line rather than a green-to-red gauge ramp. Self-registers
+       so the view model feeds it on each poll. -->
+  <Grid Width="130">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+    <Grid Grid.Row="0" Margin="0,0,0,2">
+      <TextBlock Text="Clock" Style="{StaticResource MetricCaption}" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+        <TextBlock Text="{Binding ClockMhz, StringFormat={}{0:0}, TargetNullValue=—}" Style="{StaticResource TileMetricValue}"/>
+        <TextBlock Text="MHz" Style="{StaticResource MetricUnit}"/>
+      </StackPanel>
+    </Grid>
+    <graphs:AdaptiveGraph x:Name="Graph" Grid.Row="1" graphs:GraphIdentity.Id="Gpu.Clock"
+                          Capacity="90" MinValue="0" MaxValue="{Binding ClockScaleMax}"
+                          Accent="#3E9BE8" BandedLine="False"
+                          ShowChrome="True" MinHeight="40"
+                          CellPitch="{StaticResource DashboardDotPitch}"/>
+  </Grid>
 </UserControl>
