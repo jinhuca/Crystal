@@ -152,7 +152,8 @@
                 </Grid>
                 <graphs:AdaptiveGraph Grid.Row="1" Margin="0,0,0,12" MinHeight="90"
                                       Loaded="OnActivityGraphLoaded"
-                                      MinValue="0" MaxValue="100" Accent="#E89B2A" ShowChrome="True"/>
+                                      Capacity="90" MinValue="0" MaxValue="100" Accent="#E89B2A" ShowChrome="True"
+                                      CellPitch="{StaticResource DashboardDotPitch}"/>
 
                 <!-- Disk transfer rate -->
                 <Grid Grid.Row="2" Margin="0,0,0,2">
@@ -171,8 +172,9 @@
                 </Grid>
                 <graphs:AdaptiveGraph Grid.Row="3" Margin="0,0,0,14" MinHeight="90"
                                       Loaded="OnTransferGraphLoaded"
-                                      MinValue="0" MaxValue="{Binding TransferMaxMBps}"
-                                      Accent="#3E9BE8" ShowChrome="True"/>
+                                      Capacity="90" MinValue="0" MaxValue="{Binding TransferMaxMBps}"
+                                      Accent="#3E9BE8" ShowChrome="True"
+                                      CellPitch="{StaticResource DashboardDotPitch}"/>
 
                 <!-- Capacity: used vs free of the disk's mounted volumes -->
                 <Grid Grid.Row="4" Margin="0,0,0,2">

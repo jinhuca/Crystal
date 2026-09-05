@@ -72,6 +72,11 @@ public sealed class AdaptiveGraph : Decorator, ISingleSeriesGraph {
       DependencyProperty.Register(nameof(DotStyle), typeof(Style), typeof(AdaptiveGraph),
           new FrameworkPropertyMetadata(null));
 
+  /// <summary>Identifies the <see cref="CellPitch"/> dependency property.</summary>
+  public static readonly DependencyProperty CellPitchProperty =
+      DependencyProperty.Register(nameof(CellPitch), typeof(double), typeof(AdaptiveGraph),
+          new FrameworkPropertyMetadata(0.0));
+
   /// <summary>Value mapped to the bottom edge of the plot (forwarded to the inner control).</summary>
   public double MinValue {
     get => (double)GetValue(MinValueProperty);
@@ -108,6 +113,16 @@ public sealed class AdaptiveGraph : Decorator, ISingleSeriesGraph {
   public Style? DotStyle {
     get => (Style?)GetValue(DotStyleProperty);
     set => SetValue(DotStyleProperty, value);
+  }
+
+  /// <summary>When greater than 0, Dot mode draws dots at this fixed pixel pitch (forwarded to
+  /// <see cref="PerformanceGraphLite.CellPitch"/>) while still stretching to fill the tile, so every
+  /// dashboard graph sharing one pitch renders dots the same size regardless of width or Capacity.
+  /// Takes precedence over <see cref="DotStyle"/>. Line mode is unaffected (it has no dots) and
+  /// keeps its full stretch-to-fill footprint, since no fixed-size <see cref="DotStyle"/> is applied.</summary>
+  public double CellPitch {
+    get => (double)GetValue(CellPitchProperty);
+    set => SetValue(CellPitchProperty, value);
   }
 
   private void OnLoaded(object sender, RoutedEventArgs e) {
@@ -202,7 +217,14 @@ public sealed class AdaptiveGraph : Decorator, ISingleSeriesGraph {
       MaxValue = MaxValue,
     };
 
-    if (DotStyle is { } style) {
+    if (CellPitch > 0) {
+      // Fixed-pitch dots that still fill the tile: uniform dot size across graphs of differing
+      // width/Capacity, without pinning a fixed footprint the way a fixed-Height DotStyle would.
+      lite.CellPitch = CellPitch;
+      lite.CornerRadius = 1;
+      lite.HorizontalAlignment = HorizontalAlignment.Stretch;
+      lite.VerticalAlignment = VerticalAlignment.Stretch;
+    } else if (DotStyle is { } style) {
       lite.Style = style;
       lite.HorizontalAlignment = HorizontalAlignment.Left;
       lite.VerticalAlignment = VerticalAlignment.Center;

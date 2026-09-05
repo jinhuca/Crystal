@@ -48,6 +48,15 @@
   <sys:Double x:Key="UtilizationGraphHeight">56</sys:Double>
 
   <!--
+    Shared dot pitch for the dashboard summary graphs. Bound to each tile's AdaptiveGraph.CellPitch
+    (the stretch-to-fill fixed-pitch dot mode), so every dashboard dot graph renders its dots at
+    this one pixel size regardless of the tile's width, height, or Capacity - unlike the
+    width/Capacity-derived sizing, where a wider tile or lower Capacity produced visibly larger
+    dots. Bump this single value to scale every dashboard graph's dots together.
+  -->
+  <sys:Double x:Key="DashboardDotPitch">10</sys:Double>
+
+  <!--
     Fixed-cell counterpart of SquareDotGraphLiteStyle: instead of stretching to fill and deriving
     Height from the (container-dependent) Width, it pins a fixed Height and derives Width, so dot
     cells come out the same size across graphs of different Capacity - see SquareDotWidthConverter.

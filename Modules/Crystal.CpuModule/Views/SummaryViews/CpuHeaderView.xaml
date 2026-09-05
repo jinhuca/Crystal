@@ -6,43 +6,50 @@
              mc:Ignorable="d"
              d:DesignHeight="28" d:DesignWidth="1000"
              Foreground="{StaticResource TextBrush}" FontFamily="{StaticResource UiFontFamily}">
-  <!-- DataContext is the root ICpuViewModel, inherited from the host tile: the specs row binds
-       SpecsViewModel; the throttle badge reaches SensorsViewModel via the UserControl ancestor. -->
+  <!-- DataContext is the root ICpuViewModel, inherited from the host tile: the identity/specs row
+       binds SpecsViewModel; the throttle badge reaches SensorsViewModel via the UserControl ancestor. -->
   <Border BorderBrush="{StaticResource DividerBrush}" BorderThickness="0,0,0,1" Padding="0,0,0,4">
     <Grid DataContext="{Binding SpecsViewModel}">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="*"/>
         <ColumnDefinition Width="Auto"/>
       </Grid.ColumnDefinitions>
-      <!-- Clean title row, matching the GPU header: just the accent tick + "CPU". The static specs
-           (brand, core counts, cache, base speed) moved to the top-left of the utilization graph
-           (brand) and a centered strip along the bottom of the summary tile (the rest). -->
+      <!-- Full identity row: accent tick + "CPU", slot, brand, then the static specs (core counts,
+           cache, base speed) inline — all the info that previously sat around the utilization graph. -->
       <StackPanel Grid.Column="0" Orientation="Horizontal">
         <Border Width="3" Background="{StaticResource AccentBrush}" Margin="0,1,8,1"/>
         <TextBlock Text="CPU" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource BodyFontSize}" FontWeight="SemiBold"
-                   VerticalAlignment="Center"/>
-      </StackPanel>
-      <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-        <!-- Throttle badge: shown only while the package is throttling. IsThrottling/ThrottleStatus
-             live on SensorsViewModel, so bind up to the root tile DataContext. -->
-        <Border Margin="0,0,12,0" Padding="8,0" CornerRadius="3"
-                Background="#5A1A1A" BorderBrush="#E04A3A" BorderThickness="1">
-          <Border.Style>
-            <Style TargetType="Border">
-              <Setter Property="Visibility" Value="Collapsed"/>
-              <Style.Triggers>
-                <DataTrigger Binding="{Binding DataContext.SensorsViewModel.IsThrottling, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
-                  <Setter Property="Visibility" Value="Visible"/>
-                </DataTrigger>
-              </Style.Triggers>
-            </Style>
-          </Border.Style>
-          <TextBlock Text="{Binding DataContext.SensorsViewModel.ThrottleStatus, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                     Foreground="#FFD2C8" FontSize="{StaticResource CaptionFontSize}" FontWeight="SemiBold" FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Center"/>
-        </Border>
+                   VerticalAlignment="Center" Margin="0,0,16,0"/>
         <TextBlock Text="{Binding Socket, StringFormat=Slot# {0}}"
-                   Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Center"/>
+                   Foreground="{StaticResource AccentBrush}" FontSize="{StaticResource BodyFontSize}" FontWeight="SemiBold"
+                   FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Center" Margin="0,0,12,0"/>
+        <TextBlock Text="{Binding Brand}" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource CaptionFontSize}"
+                   FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Center" Margin="0,0,16,0"
+                   TextTrimming="CharacterEllipsis" ToolTip="{Binding Brand}"/>
+        <TextBlock Text="{Binding PhysicalCores, StringFormat=Physical Cores: {0}}" Style="{StaticResource HeaderSpec}"/>
+        <TextBlock Text="{Binding LogicalCores, StringFormat=Logical Cores: {0}}" Style="{StaticResource HeaderSpec}"/>
+        <TextBlock Text="{Binding L1CacheKb, StringFormat=L1: {0:N0} KB}" Style="{StaticResource HeaderSpec}"/>
+        <TextBlock Text="{Binding L2CacheKb, StringFormat=L2: {0:N0} KB}" Style="{StaticResource HeaderSpec}"/>
+        <TextBlock Text="{Binding L3CacheKb, StringFormat=L3: {0:N0} KB}" Style="{StaticResource HeaderSpec}"/>
+        <TextBlock Text="{Binding BaseSpeedMHz, StringFormat=Base Speed: {0:N0} MHz}" Style="{StaticResource HeaderSpec}"/>
       </StackPanel>
+      <!-- Throttle badge on the far right: shown only while the package is throttling.
+           IsThrottling/ThrottleStatus live on SensorsViewModel, so bind up to the root tile DataContext. -->
+      <Border Grid.Column="1" Margin="0,0,12,0" Padding="8,0" CornerRadius="3" VerticalAlignment="Center"
+              Background="#5A1A1A" BorderBrush="#E04A3A" BorderThickness="1">
+        <Border.Style>
+          <Style TargetType="Border">
+            <Setter Property="Visibility" Value="Collapsed"/>
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding DataContext.SensorsViewModel.IsThrottling, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
+                <Setter Property="Visibility" Value="Visible"/>
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </Border.Style>
+        <TextBlock Text="{Binding DataContext.SensorsViewModel.ThrottleStatus, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                   Foreground="#FFD2C8" FontSize="{StaticResource CaptionFontSize}" FontWeight="SemiBold" FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Center"/>
+      </Border>
     </Grid>
   </Border>
 </UserControl>
