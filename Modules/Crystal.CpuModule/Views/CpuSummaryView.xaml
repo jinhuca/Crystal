@@ -17,7 +17,7 @@
        (1/2) the full CPU-utilization graph in the middle, (1/4) the live per-core strip aligned
        right. History graphs for clock/voltage/temperature/power/fan now live in the detail view. -->
   <Border Background="Transparent" MouseLeftButtonDown="OnTileClick">
-    <Grid Margin="5" ShowGridLines="False">
+    <Grid Margin="5" ShowGridLines="True">
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>
         <RowDefinition Height="*"/>

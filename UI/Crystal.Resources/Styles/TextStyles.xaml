@@ -15,8 +15,7 @@
   <Style x:Key="MetricValue" TargetType="TextBlock">
     <Setter Property="Foreground" Value="{StaticResource ValueBrush}"/>
     <Setter Property="FontSize" Value="{StaticResource BigValueFontSize}"/>
-    <Setter Property="FontFamily" Value="Consolas"/>
-    <Setter Property="LineHeight" Value="{StaticResource BigValueLineHeight}"/>
+    <Setter Property="FontFamily" Value="UiFontFamily"/>
   </Style>
   <Style x:Key="MetricUnit" TargetType="TextBlock">
     <Setter Property="Foreground" Value="{StaticResource UnitBrush}"/>
@@ -26,9 +25,11 @@
 		<Setter Property="Margin" Value="8,0,0,0"/>
   </Style>
   <Style x:Key="MetricCaption" TargetType="TextBlock">
-    <Setter Property="Foreground" Value="{StaticResource LabelBrush}"/>
+    <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
     <Setter Property="FontSize" Value="11"/>
-    <Setter Property="FontFamily" Value="Consolas"/>
+    <Setter Property="FontFamily" Value="UiFontFamily"/>
+    <Setter Property="HorizontalAlignment" Value="Left"/>
+    <Setter Property="VerticalAlignment" Value="Bottom"/>
   </Style>
   <Style x:Key="UtilizationCaption" TargetType="TextBlock" BasedOn="{StaticResource MetricValue}">
     <Setter Property="FontSize" Value="{StaticResource UtilizationValueSize}"/>
@@ -36,7 +37,9 @@
   <!-- Compact value for a narrow dashboard tile header, where the title and value share one line:
        MetricValue at a smaller size so both fit without colliding. -->
   <Style x:Key="TileMetricValue" TargetType="TextBlock" BasedOn="{StaticResource MetricValue}">
-    <Setter Property="FontSize" Value="13"/>
+    <Setter Property="FontSize" Value="12"/>
+    <Setter Property="Margin" Value="0"/>
+    <Setter Property="VerticalAlignment" Value="Bottom"/>
   </Style>
 
   <!-- Inline spec in a summary header row. -->

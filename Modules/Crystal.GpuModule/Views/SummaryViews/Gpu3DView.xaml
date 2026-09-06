@@ -1,6 +1,7 @@
 <UserControl x:Class="Crystal.GpuModule.Views.SummaryViews.Gpu3DView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Crystal.GpuModule.Views.SummaryViews"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs;assembly=Crystal.Controls"
@@ -11,7 +12,7 @@
        self-registers so the view model feeds it on each poll. -->
   <!-- Left-aligned so the 130-wide content sits at the left of the wider column it shares with the
        Memory tile (170), keeping its graph aligned with Memory's left-pinned graph above. -->
-  <Grid Width="130" HorizontalAlignment="Left">
+  <Grid Width="{x:Static local:GpuSummaryViewConstants.GraphWidth}">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="*"/>

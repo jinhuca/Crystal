@@ -1,6 +1,7 @@
 <UserControl x:Class="Crystal.GpuModule.Views.SummaryViews.GpuMemoryView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Crystal.GpuModule.Views.SummaryViews"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs;assembly=Crystal.Controls"
@@ -9,7 +10,7 @@
   <!-- DataContext is a GpuAdapterViewModel, inherited from the per-adapter block. Header ("Memory
        Used" left, "used / total GB (percent)" right) over a value-banded history graph driven by the
        used-percent; self-registers so the view model feeds it on each poll. -->
-  <Grid Width="170">
+  <Grid Width="{x:Static local:GpuSummaryViewConstants.GraphWidth}">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="*"/>
@@ -31,8 +32,8 @@
     <!-- Graph pinned to the sibling tiles' width (130) and left-aligned, even though the readout
          above needs a wider tile (170), so every meter graph is the same width and lines up. -->
     <graphs:AdaptiveGraph x:Name="Graph" Grid.Row="1" graphs:GraphIdentity.Id="Gpu.Memory"
-                          Width="130" HorizontalAlignment="Left"
-                          Capacity="90" MinValue="0" MaxValue="100" Accent="#3BD15A"
+                          HorizontalAlignment="Left"
+                          Capacity="120" MinValue="0" MaxValue="100" Accent="#3BD15A"
                           ShowChrome="True" MinHeight="40"
                           CellPitch="{StaticResource DashboardDotPitch}"/>
   </Grid>
