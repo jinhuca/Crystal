@@ -33,8 +33,8 @@
          above needs a wider tile (170), so every meter graph is the same width and lines up. -->
     <graphs:AdaptiveGraph x:Name="Graph" Grid.Row="1" graphs:GraphIdentity.Id="Gpu.Memory"
                           HorizontalAlignment="Left"
-                          Capacity="120" MinValue="0" MaxValue="100" Accent="#3BD15A"
-                          ShowChrome="True" MinHeight="40"
+                          Capacity="120" MinValue="0" MaxValue="100" Accent="{StaticResource GraphAccentMemory}"
+                          BandedLine="False" ShowChrome="True" MinHeight="40"
                           CellPitch="{StaticResource DashboardDotPitch}"/>
   </Grid>
 </UserControl>

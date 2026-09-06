@@ -50,6 +50,30 @@ public interface ICpuSensorViewModel {
   double Power { get; }
 
   /// <summary>
+  /// Per-rail power breakdown (Package / Cores / GT / DRAM), each with its current value and
+  /// session min/max in W. Fixed four-row set, updated in place on every sensor emission.
+  /// </summary>
+  ObservableCollection<MetricRowViewModel> PowerRails { get; }
+
+  /// <summary>
+  /// Clock-domain breakdown (Core / Effective) in GHz, each with its current value and session
+  /// min/max. Fixed two-row set, updated in place on every sensor emission.
+  /// </summary>
+  ObservableCollection<MetricRowViewModel> ClockRows { get; }
+
+  /// <summary>
+  /// Temperature-sensor breakdown (Package / Core Max / Core Avg) in °C, each with its current
+  /// value and session min/max. Fixed three-row set, updated in place on every sensor emission.
+  /// </summary>
+  ObservableCollection<MetricRowViewModel> TemperatureRows { get; }
+
+  /// <summary>
+  /// Voltage-rail breakdown (Core / SoC) in V, each with its current value and session min/max.
+  /// Fixed two-row set, updated in place on every sensor emission.
+  /// </summary>
+  ObservableCollection<MetricRowViewModel> VoltageRows { get; }
+
+  /// <summary>
   /// Configured sustained package power limit (PL1) in W. Intel-only; zero when not exposed.
   /// </summary>
   double PowerLimitLongW { get; }

@@ -51,6 +51,7 @@ public sealed class TelemetryCpuSensorSource : ICpuTelemetrySource {
       SocVoltage = Read(sensors, cpu.Name, SensorType.Voltage, "SoC (SVI2 TFN)"),
       PackagePower = Read(sensors, cpu.Name, SensorType.Power, "CPU Package", "Package"),
       CoresPower = Read(sensors, cpu.Name, SensorType.Power, "CPU Cores"),
+      GraphicsPower = Read(sensors, cpu.Name, SensorType.Power, "CPU Graphics"),
       MemoryPower = Read(sensors, cpu.Name, SensorType.Power, "CPU Memory"),
       PlatformPower = Read(sensors, cpu.Name, SensorType.Power, "CPU Platform"),
       PackageTemperature = Read(sensors, cpu.Name, SensorType.Temperature, "CPU Package"),

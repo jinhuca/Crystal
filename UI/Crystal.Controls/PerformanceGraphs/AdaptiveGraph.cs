@@ -121,7 +121,9 @@ public sealed class AdaptiveGraph : Decorator, ISingleSeriesGraph {
     set => SetValue(CapacityProperty, value);
   }
 
-  /// <summary>Line colour used in Line mode. Ignored in Dot mode, which uses the banded gauge ramp.</summary>
+  /// <summary>Accent colour for the trace. In Line mode it's the line colour; in Dot mode it's the
+  /// flat dot colour. Both honour it only when <see cref="BandedLine"/> is false — with banding on,
+  /// each mode paints its value-banded green→red gauge ramp instead and the accent is unused.</summary>
   public Color Accent {
     get => (Color)GetValue(AccentProperty);
     set => SetValue(AccentProperty, value);
@@ -134,11 +136,13 @@ public sealed class AdaptiveGraph : Decorator, ISingleSeriesGraph {
     set => SetValue(ShowChromeProperty, value);
   }
 
-  /// <summary>When true (the default), Line mode colors the trace by value using the green→red
-  /// gauge ramp instead of the flat <see cref="Accent"/>, matching how Dot mode already bands its
-  /// dots — so the Line/Dot toggle reads as the same gauge either way. Set false to keep a flat
-  /// single-<see cref="Accent"/> line. Has no effect on graphs with overlay series (e.g. a
-  /// read/write pair), which stay unbanded so their per-series colors remain distinct.</summary>
+  /// <summary>When true (the default), both modes color the trace by value using the green→red
+  /// gauge ramp instead of the flat <see cref="Accent"/> — Line paints a banded line, Dot bands its
+  /// dots — so the Line/Dot toggle reads as the same gauge either way. Set false to paint a flat
+  /// single-<see cref="Accent"/> trace in both modes (an accent line in Line, flat accent dots in
+  /// Dot), so a per-category accent reads the same whichever mode is showing. Has no effect on the
+  /// Line-mode fill or on graphs with overlay series (e.g. a read/write pair), which stay unbanded
+  /// so their per-series colors remain distinct.</summary>
   public bool BandedLine {
     get => (bool)GetValue(BandedLineProperty);
     set => SetValue(BandedLineProperty, value);
@@ -208,6 +212,9 @@ public sealed class AdaptiveGraph : Decorator, ISingleSeriesGraph {
     // ignores those for the primary series and paints the value-banded ramp instead. Applying it
     // regardless keeps the accent as the fallback if banding is turned off at runtime.
     graph.ApplyTheme(GraphThemes.FromAccent(Accent, GraphKind.Line));
+    // Dashboard tiles read cleaner with a thinner trace than the theme's default; scoped here so the
+    // larger detail-view graphs (PerformanceGraphView) keep the full-weight line.
+    graph.LineThickness = 1.0;
     if (!ShowChrome) {
       // Accent line + glow over the tile's own background, no dark backdrop, grid or border —
       // for inline sparklines and tile-embedded graphs that shouldn't carry a framed plot.
@@ -259,6 +266,15 @@ public sealed class AdaptiveGraph : Decorator, ISingleSeriesGraph {
       MinValue = MinValue,
       MaxValue = MaxValue,
     };
+
+    // Mirror Line mode's BandedLine flag so the Line/Dot toggle stays consistent: a banded graph
+    // keeps the green→red gauge ramp on its dots (Lite's default), while a non-banded graph paints
+    // every dot the flat Accent — the dot-mode counterpart of Line mode's flat accent trace, so a
+    // per-category accent reads the same whichever mode is showing.
+    if (!BandedLine) {
+      lite.ColorMode = DotColorMode.SingleColor;
+      lite.DotColor = new SolidColorBrush(Accent);
+    }
 
     if (CellPitch > 0) {
       // Fixed-pitch dots that still fill the tile: uniform dot size across graphs of differing

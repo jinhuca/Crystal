@@ -175,6 +175,34 @@ public sealed class CpuSensorsViewModel : BindableBase, ICpuSensorViewModel {
   public double Power { get => _power; private set => SetProperty(ref _power, value); }
 
   /// <summary>
+  /// Per-rail power breakdown (Package / Cores / GT / DRAM) in W. Rows are created once and updated in place.
+  /// </summary>
+  public ObservableCollection<MetricRowViewModel> PowerRails { get; } = [
+    new("Package"), new("Cores"), new("GT"), new("DRAM"),
+  ];
+
+  /// <summary>
+  /// Clock-domain breakdown (Core / Effective) in GHz. Rows are created once and updated in place.
+  /// </summary>
+  public ObservableCollection<MetricRowViewModel> ClockRows { get; } = [
+    new("Core"), new("Effective"),
+  ];
+
+  /// <summary>
+  /// Temperature-sensor breakdown (Package / Core Max / Core Avg) in °C. Rows are created once and updated in place.
+  /// </summary>
+  public ObservableCollection<MetricRowViewModel> TemperatureRows { get; } = [
+    new("Package"), new("Core Max"), new("Core Avg"),
+  ];
+
+  /// <summary>
+  /// Voltage-rail breakdown (Core / SoC) in V. Rows are created once and updated in place.
+  /// </summary>
+  public ObservableCollection<MetricRowViewModel> VoltageRows { get; } = [
+    new("Core"), new("SoC"),
+  ];
+
+  /// <summary>
   /// Configured sustained package power limit (PL1) in W. Intel-only; zero when not exposed.
   /// </summary>
   public double PowerLimitLongW { get => _powerLimitLongW; private set => SetProperty(ref _powerLimitLongW, value); }
@@ -394,6 +422,7 @@ public sealed class CpuSensorsViewModel : BindableBase, ICpuSensorViewModel {
     EffectiveSpeedGhz = (sensors.CpuEffectiveSpeed.Value ?? 0) / 1000.0;
     BusSpeedMHz = sensors.BusSpeed.Value ?? 0;
     Power = sensors.PackagePower.Value ?? 0;
+    UpdateMetricRows(sensors);
     PowerLimitLongW = sensors.PowerLimitLong.Value ?? 0;
     PowerLimitShortW = sensors.PowerLimitShort.Value ?? 0;
     TdcAmps = sensors.Tdc.Value ?? 0;
@@ -488,6 +517,41 @@ public sealed class CpuSensorsViewModel : BindableBase, ICpuSensorViewModel {
       row.Temperature = s.Temperature.Value ?? 0;
       UpdateThreadLoads(row, s.ThreadLoads);
     }
+  }
+
+  /// <summary>
+  /// Refreshes the metric breakdown tables (power rails, clock domains, temperature sensors,
+  /// voltage rails) from the socket sensors — each row's current value plus the provider's running
+  /// session min/max. Readings the platform doesn't expose stay at zero. Clock rows are scaled from
+  /// the sensors' MHz to the GHz the table shows.
+  /// </summary>
+  /// <param name="sensors">The CPU sensors.</param>
+  private void UpdateMetricRows(Crystal.Infrastructure.DataStructures.Cpu.Interfaces.Cpus.ICpuSensors sensors) {
+    SetRow(PowerRails, 0, sensors.PackagePower);
+    SetRow(PowerRails, 1, sensors.CoresPower);
+    SetRow(PowerRails, 2, sensors.GraphicsPower);
+    SetRow(PowerRails, 3, sensors.MemoryPower);
+
+    SetRow(ClockRows, 0, sensors.CpuSpeed, 1 / 1000.0);
+    SetRow(ClockRows, 1, sensors.CpuEffectiveSpeed, 1 / 1000.0);
+
+    SetRow(TemperatureRows, 0, sensors.PackageTemperature);
+    SetRow(TemperatureRows, 1, sensors.CoreMaxTemperature);
+    SetRow(TemperatureRows, 2, sensors.CoreAvgTemperature);
+
+    SetRow(VoltageRows, 0, sensors.Voltage);
+    SetRow(VoltageRows, 1, sensors.SocVoltage);
+  }
+
+  /// <summary>
+  /// Copies a sensor reading's value/min/max into <paramref name="rows"/>[<paramref name="index"/>],
+  /// scaling each by <paramref name="scale"/> (e.g. MHz→GHz for clocks).
+  /// </summary>
+  private static void SetRow(ObservableCollection<MetricRowViewModel> rows, int index, SensorReading reading, double scale = 1.0) {
+    var row = rows[index];
+    row.Value = (reading.Value ?? 0) * scale;
+    row.Min = (reading.Min ?? 0) * scale;
+    row.Max = (reading.Max ?? 0) * scale;
   }
 
   /// <summary>

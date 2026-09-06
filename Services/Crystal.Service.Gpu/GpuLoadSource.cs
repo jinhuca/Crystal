@@ -39,25 +39,49 @@ public sealed class GpuLoadSource : IGpuLoadSource, IDisposable {
     var readings = new List<GpuLoadReading>();
     foreach (var gpu in EnumerateGpus()) {
       gpu.Update();
-      var temp = GpuSensorSelector.SelectCoreTemperature(gpu.Sensors)
+      // Single-sensor metrics carry the provider's session Min/Max alongside the value; the
+      // aggregate ones (core load, VRAM, fan) have no meaningful range and stay value-only.
+      var coreTemp = GpuSensorSelector.SelectCoreTemperatureRange(gpu.Sensors);
+      var hotSpot = GpuSensorSelector.SelectHotSpotTemperatureRange(gpu.Sensors);
+      var memTemp = GpuSensorSelector.SelectMemoryTemperatureRange(gpu.Sensors);
+      var coreClock = GpuSensorSelector.SelectCoreClockRange(gpu.Sensors);
+      var memClock = GpuSensorSelector.SelectMemoryClockRange(gpu.Sensors);
+      var voltage = GpuSensorSelector.SelectCoreVoltageRange(gpu.Sensors);
+      var power = GpuSensorSelector.SelectPackagePowerRange(gpu.Sensors);
+      // Intel iGPUs expose no on-die temp; fall back to the shared CPU-package reading (no range).
+      var temp = coreTemp.Value
         ?? (gpu.HardwareType == HardwareType.GpuIntel ? ReadCpuPackageTemperature() : null);
       readings.Add(new GpuLoadReading(
         AdapterName: gpu.Name,
         CoreLoadPercent: GpuSensorSelector.SelectCoreLoad(gpu.Sensors),
         TemperatureC: temp,
-        ClockMhz: GpuSensorSelector.SelectCoreClock(gpu.Sensors),
-        PowerW: GpuSensorSelector.SelectPackagePower(gpu.Sensors),
+        ClockMhz: coreClock.Value,
+        PowerW: power.Value,
         MemoryUsedGB: GpuSensorSelector.SelectMemoryUsedGB(gpu.Sensors),
         MemoryTotalGB: GpuSensorSelector.SelectMemoryTotalGB(gpu.Sensors),
-        MemoryClockMhz: GpuSensorSelector.SelectMemoryClock(gpu.Sensors),
+        MemoryClockMhz: memClock.Value,
         FanRpm: GpuSensorSelector.SelectFanRpm(gpu.Sensors),
-        CoreVoltageV: GpuSensorSelector.SelectCoreVoltage(gpu.Sensors),
-        HotSpotTemperatureC: GpuSensorSelector.SelectHotSpotTemperature(gpu.Sensors),
-        MemoryTemperatureC: GpuSensorSelector.SelectMemoryTemperature(gpu.Sensors),
+        CoreVoltageV: voltage.Value,
+        HotSpotTemperatureC: hotSpot.Value,
+        MemoryTemperatureC: memTemp.Value,
         EngineLoads: GpuSensorSelector.SelectEngineLoads(gpu.Sensors),
         PcieRxMBps: GpuSensorSelector.SelectPcieRxMBps(gpu.Sensors),
         PcieTxMBps: GpuSensorSelector.SelectPcieTxMBps(gpu.Sensors),
-        PowerRails: GpuSensorSelector.SelectPowerRails(gpu.Sensors)));
+        PowerRails: GpuSensorSelector.SelectPowerRails(gpu.Sensors),
+        TemperatureMinC: coreTemp.Min,
+        TemperatureMaxC: coreTemp.Max,
+        HotSpotTemperatureMinC: hotSpot.Min,
+        HotSpotTemperatureMaxC: hotSpot.Max,
+        MemoryTemperatureMinC: memTemp.Min,
+        MemoryTemperatureMaxC: memTemp.Max,
+        ClockMinMhz: coreClock.Min,
+        ClockMaxMhz: coreClock.Max,
+        MemoryClockMinMhz: memClock.Min,
+        MemoryClockMaxMhz: memClock.Max,
+        CoreVoltageMinV: voltage.Min,
+        CoreVoltageMaxV: voltage.Max,
+        PowerMinW: power.Min,
+        PowerMaxW: power.Max));
     }
     return readings;
   }

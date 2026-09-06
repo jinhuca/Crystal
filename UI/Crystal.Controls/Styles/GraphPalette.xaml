@@ -18,6 +18,34 @@
   <SolidColorBrush x:Key="GraphGridBrush" Color="#2A2A2A"/>
   <SolidColorBrush x:Key="GraphAxisBorderBrush" Color="#3E7BC4"/>
 
+  <!--
+    SENSOR-CATEGORY ACCENT COLORS - the single source of truth for per-category graph accents.
+
+    Each dashboard graph identifies its sensor category by colour. AdaptiveGraph.Accent is a Color
+    (not a Brush), so these are <Color> resources referenced as Accent="{StaticResource GraphAccentX}".
+    The line is drawn at full accent (alpha FF); the fill is a vertical gradient from the accent down
+    toward the baseline (see GraphThemes.CreateVerticalGlow). Category accents only show when the graph
+    sets BandedLine="False" — with banding on, the trace is painted by the green->red gauge ramp and
+    the accent is ignored.
+
+    Change a category's colour here and every graph of that category follows.
+  -->
+  <Color x:Key="GraphAccentUtilization">#90EE90</Color>  <!-- LightGreen  -->
+  <Color x:Key="GraphAccentClock">#1E90FF</Color>        <!-- DodgerBlue  -->
+  <Color x:Key="GraphAccentTemperature">#F5F5F5</Color>  <!-- WhiteSmoke  -->
+  <Color x:Key="GraphAccentPower">#FFA500</Color>        <!-- Orange      -->
+  <Color x:Key="GraphAccentVoltage">#FFD700</Color>      <!-- Gold        -->
+  <Color x:Key="GraphAccentMemory">#DA70D6</Color>       <!-- Orchid      -->
+  <Color x:Key="GraphAccentStorage">#40E0D0</Color>      <!-- Turquoise   -->
+
+  <!--
+    Secondary accents for tiles that plot two graphs of the same category and need the pair kept
+    visually distinct (e.g. Memory: Usage + Commit). Same hue family as the category's primary
+    accent above so the category still reads at a glance, just a distinguishable shade.
+  -->
+  <Color x:Key="GraphAccentMemorySecondary">#9370DB</Color>  <!-- MediumPurple -->
+
+
   <SolidColorBrush x:Key="GraphRoseBrush" Color="#E82A7A"/>
   <SolidColorBrush x:Key="GraphRoseFill" Color="#40E82A7A"/>
 

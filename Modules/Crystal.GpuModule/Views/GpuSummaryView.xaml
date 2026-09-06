@@ -13,8 +13,10 @@
              FontFamily="{StaticResource UiFontFamily}">
   <!-- One tile per detected adapter, each an identity header (kind + name + physical location) over a
        meter grid. The integrated GPU is a 3x2 grid — Temperature/Memory Used/Utilization over
-       Power/3D/Info; each dedicated GPU is a 5x2 grid — Temperature/Memory Used/Clock/PCIe Rx/Utilization
-       over Hot Spot/3D/Power/PCIe Tx/Info. "Info" restates the static specs from GpuDetailView. A single
+       Power/3D/Info; each dedicated GPU is a 4x2 grid — Temperature/Memory Used/Clock/Utilization
+       over Hot Spot/3D/Power/Info, with PCIe Rx/Tx throughput shown inline on the identity header
+       (the full PCIe history graphs live in GpuDetailView). "Info" restates the static specs from
+       GpuDetailView. A single
        adapter renders as one tile with no border and no ScrollViewer; several adapters render as a
        horizontally scrollable strip (wheel scrolls sideways, scrollbars hidden) where tiles after the
        first get a left divider. The per-metric tiles live in Views/SummaryViews. -->
@@ -59,8 +61,9 @@
       </Border>
     </DataTemplate>
 
-    <!-- Dedicated adapter tile: an identity header over a 5x2 meter grid. Row 2 is
-         Temperature/Memory Used/Clock/PCIe Rx/Utilization; row 3 is Hot Spot/3D/Power/PCIe Tx/Info. -->
+    <!-- Dedicated adapter tile: an identity header (with inline PCIe Rx/Tx throughput) over a 4x2
+         meter grid. Row 2 is Temperature/Memory Used/Clock/Utilization; row 3 is Hot Spot/3D/Power/Info.
+         Clock and Power carry their value/min/max breakdown tables on the right (CPU-tile style). -->
     <DataTemplate x:Key="DedicatedTile">
       <Border Margin="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ContentPresenter}, Converter={StaticResource TileChrome}}"
               Padding="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ContentPresenter}, Converter={StaticResource TileChrome}}"
@@ -79,29 +82,45 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
           </Grid.ColumnDefinitions>
 
-          <!-- Row 1: adapter identity — "Dedicated GPU" accent label + product name + physical location. -->
-          <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" Orientation="Horizontal" Margin="0,0,0,8">
-            <TextBlock Text="{Binding KindLabel}" Style="{StaticResource TileTitleCaption}"/>
-            <TextBlock Text="{Binding Name}" Style="{StaticResource TileTitleBrand}" Margin="8,0,0,0"
-                       TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}"/>
-            <TextBlock Text="{Binding PhysicalLocation, TargetNullValue=—}" Foreground="{StaticResource LabelBrush}"
-                       FontSize="{StaticResource CaptionFontSize}" VerticalAlignment="Center" Margin="12,0,0,0"/>
-          </StackPanel>
+          <!-- Row 1: adapter identity — "Dedicated GPU" accent label + product name + physical location on
+               the left; the live PCIe Rx (down-triangle) and PCIe Tx (up-triangle) throughput docked to
+               the right edge of the tile. -->
+          <DockPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Margin="0,0,0,8">
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+              <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <Path Data="M0,0 L10,0 L5,7 Z" Fill="#3BD15A" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                <TextBlock Text="PCIe Rx" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource CaptionFontSize}" VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding PcieRxMBps, StringFormat={}{0:0.0}, TargetNullValue=0.0}" Foreground="{StaticResource TextBrush}" FontSize="{StaticResource CaptionFontSize}" VerticalAlignment="Center" Margin="8,0,0,0"/>
+                <TextBlock Text="MB/s" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource CaptionFontSize}" VerticalAlignment="Center" Margin="4,0,0,0"/>
+              </StackPanel>
+              <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="24,0,0,0">
+                <Path Data="M0,7 L10,7 L5,0 Z" Fill="#F0A030" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                <TextBlock Text="PCIe Tx" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource CaptionFontSize}" VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding PcieTxMBps, StringFormat={}{0:0.0}, TargetNullValue=0.0}" Foreground="{StaticResource TextBrush}" FontSize="{StaticResource CaptionFontSize}" VerticalAlignment="Center" Margin="8,0,0,0"/>
+                <TextBlock Text="MB/s" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource CaptionFontSize}" VerticalAlignment="Center" Margin="4,0,0,0"/>
+              </StackPanel>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+              <TextBlock Text="{Binding KindLabel}" Style="{StaticResource TileTitleCaption}"/>
+              <TextBlock Text="{Binding Name}" Style="{StaticResource TileTitleBrand}" Margin="8,0,0,0"
+                         TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}"/>
+              <TextBlock Text="{Binding PhysicalLocation, TargetNullValue=—}" Foreground="{StaticResource LabelBrush}"
+                         FontSize="{StaticResource CaptionFontSize}" VerticalAlignment="Center" Margin="12,0,0,0"/>
+            </StackPanel>
+          </DockPanel>
 
           <sv:GpuTemperatureView Grid.Row="1" Grid.Column="0" Margin="0,0,8,8"/>
           <sv:GpuMemoryView      Grid.Row="1" Grid.Column="1" Margin="0,0,8,8"/>
           <sv:GpuClockView       Grid.Row="1" Grid.Column="2" Margin="0,0,8,8"/>
-          <sv:GpuPcieRxView      Grid.Row="1" Grid.Column="3" Margin="0,0,8,8"/>
-          <sv:GpuUtilizationView Grid.Row="1" Grid.Column="4" Margin="0,0,0,8" VerticalAlignment="Stretch"/>
+          <sv:GpuUtilizationView Grid.Row="1" Grid.Column="3" Margin="0,0,0,8" VerticalAlignment="Stretch"/>
 
           <sv:GpuHotSpotView     Grid.Row="2" Grid.Column="0" Margin="0,0,8,0"/>
           <sv:Gpu3DView          Grid.Row="2" Grid.Column="1" Margin="0,0,8,0"/>
           <sv:GpuPowerView       Grid.Row="2" Grid.Column="2" Margin="0,0,8,0"/>
-          <sv:GpuPcieTxView      Grid.Row="2" Grid.Column="3" Margin="0,0,8,0"/>
-          <sv:GpuInfoView        Grid.Row="2" Grid.Column="4" Margin="0,0,0,0"/>
+          <sv:GpuInfoView        Grid.Row="2" Grid.Column="3" Margin="0,0,0,0"/>
         </Grid>
       </Border>
     </DataTemplate>

@@ -26,7 +26,7 @@
     <graphs:AdaptiveGraph x:Name="UtilizationGraph" Grid.Row="1"
                           graphs:GraphIdentity.Id="Gpu.Utilization"
                           Capacity="90" MinValue="0" MaxValue="100"
-                          Accent="#3BD15A" ShowChrome="True" MinHeight="40"
+                          Accent="{StaticResource GraphAccentUtilization}" BandedLine="False" ShowChrome="True" MinHeight="40"
                           CellPitch="{StaticResource DashboardDotPitch}"/>
   </Grid>
 </UserControl>
