@@ -21,8 +21,8 @@
         <TextBlock Text="{Binding SocVoltage, StringFormat=SoC {0:0.00} V}" Style="{StaticResource MetricCaption}" Margin="10,0,0,0"/>
       </StackPanel>
       <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-        <TextBlock Text="{Binding Voltage, StringFormat={}{0:0.00}}" Style="{StaticResource UtilizationCaption}" VerticalAlignment="Bottom"/>
-        <TextBlock Text="Volt" Style="{StaticResource MetricUnit}" VerticalAlignment="Bottom"/>
+        <TextBlock Text="{Binding Voltage, StringFormat={}{0:0.00}}" Style="{StaticResource TileMetricValue}"/>
+        <TextBlock Text="Volt" Style="{StaticResource MetricUnit}"/>
       </StackPanel>
     </Grid>
 

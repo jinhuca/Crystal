@@ -9,7 +9,25 @@
   <ResourceDictionary.MergedDictionaries>
     <ResourceDictionary Source="/Crystal.Resources;component/Styles/Palette.xaml"/>
     <ResourceDictionary Source="/Crystal.Resources;component/Styles/FontSizes.xaml"/>
+    <ResourceDictionary Source="/Crystal.Resources;component/Styles/Fonts.xaml"/>
   </ResourceDictionary.MergedDictionaries>
+
+  <!-- Dashboard tile title line: an accent kind/slot caption beside the white product/brand name.
+       Shared by the CPU header (Slot# / brand) and each GPU tile header (Integrated/Dedicated GPU /
+       adapter name) so both read identically. -->
+  <Style x:Key="TileTitleCaption" TargetType="TextBlock">
+    <Setter Property="Foreground" Value="{StaticResource AccentBrush}"/>
+    <Setter Property="FontSize" Value="{StaticResource CaptionFontSize}"/>
+    <Setter Property="FontFamily" Value="{StaticResource UiFontFamily}"/>
+    <Setter Property="FontWeight" Value="SemiBold"/>
+    <Setter Property="VerticalAlignment" Value="Center"/>
+  </Style>
+  <Style x:Key="TileTitleBrand" TargetType="TextBlock">
+    <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
+    <Setter Property="FontSize" Value="{StaticResource CaptionFontSize}"/>
+    <Setter Property="FontFamily" Value="{StaticResource UiFontFamily}"/>
+    <Setter Property="VerticalAlignment" Value="Center"/>
+  </Style>
 
   <!-- Metric readout beside a graph: big value, unit line, dim caption. -->
   <Style x:Key="MetricValue" TargetType="TextBlock">
@@ -24,15 +42,14 @@
 		<Setter Property="VerticalAlignment" Value="Bottom"/>
 		<Setter Property="Margin" Value="8,0,0,0"/>
   </Style>
+  <!-- Graph subtitle: the metric label beside/above a history graph (Clock, Temperature,
+       Utilization, Memory Used, ...). White, UI face, one step smaller than a title caption. -->
   <Style x:Key="MetricCaption" TargetType="TextBlock">
     <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
-    <Setter Property="FontSize" Value="11"/>
-    <Setter Property="FontFamily" Value="UiFontFamily"/>
+    <Setter Property="FontSize" Value="{StaticResource MicroFontSize}"/>
+    <Setter Property="FontFamily" Value="{StaticResource UiFontFamily}"/>
     <Setter Property="HorizontalAlignment" Value="Left"/>
     <Setter Property="VerticalAlignment" Value="Bottom"/>
-  </Style>
-  <Style x:Key="UtilizationCaption" TargetType="TextBlock" BasedOn="{StaticResource MetricValue}">
-    <Setter Property="FontSize" Value="{StaticResource UtilizationValueSize}"/>
   </Style>
   <!-- Compact value for a narrow dashboard tile header, where the title and value share one line:
        MetricValue at a smaller size so both fit without colliding. -->

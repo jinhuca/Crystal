@@ -1,0 +1,45 @@
+<UserControl x:Class="Crystal.GpuModule.Views.SummaryViews.GpuInfoView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Crystal.GpuModule.Views.SummaryViews"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="88" d:DesignWidth="260"
+             FontFamily="{StaticResource UiFontFamily}">
+  <!-- DataContext is a GpuAdapterViewModel, inherited from the per-adapter block. Compact restatement
+       of the static specs shown in GpuDetailView (Display Mode / Driver Version / Driver Date /
+       Refresh Rate), filling the tile's row-3 slot beneath the utilization graph. -->
+  <Grid Width="{x:Static local:GpuSummaryViewConstants.UtilizationGraphWidth}" VerticalAlignment="Center">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+
+    <TextBlock Grid.Row="0" Grid.Column="0" Text="Display Mode" Foreground="{StaticResource LabelBrush}"
+               FontSize="{StaticResource CaptionFontSize}" Margin="0,1,16,1"/>
+    <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding DisplayMode, TargetNullValue=—}" Foreground="{StaticResource TextBrush}"
+               FontSize="{StaticResource CaptionFontSize}" Margin="0,1" TextTrimming="CharacterEllipsis" ToolTip="{Binding DisplayMode}"/>
+
+    <TextBlock Grid.Row="1" Grid.Column="0" Text="Driver Version" Foreground="{StaticResource LabelBrush}"
+               FontSize="{StaticResource CaptionFontSize}" Margin="0,1,16,1"/>
+    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding DriverVersion, TargetNullValue=—}" Foreground="{StaticResource TextBrush}"
+               FontSize="{StaticResource CaptionFontSize}" Margin="0,1"/>
+
+    <TextBlock Grid.Row="2" Grid.Column="0" Text="Driver Date" Foreground="{StaticResource LabelBrush}"
+               FontSize="{StaticResource CaptionFontSize}" Margin="0,1,16,1"/>
+    <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding DriverDate, StringFormat={}{0:yyyy-MM-dd}, TargetNullValue=—}" Foreground="{StaticResource TextBrush}"
+               FontSize="{StaticResource CaptionFontSize}" Margin="0,1"/>
+
+    <TextBlock Grid.Row="3" Grid.Column="0" Text="Refresh Rate" Foreground="{StaticResource LabelBrush}"
+               FontSize="{StaticResource CaptionFontSize}" Margin="0,1,16,1"/>
+    <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding RefreshRateHz, StringFormat={}{0} Hz, TargetNullValue=—}" Foreground="{StaticResource TextBrush}"
+               FontSize="{StaticResource CaptionFontSize}" Margin="0,1"/>
+  </Grid>
+</UserControl>

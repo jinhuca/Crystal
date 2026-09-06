@@ -32,8 +32,8 @@
         </TextBlock>
       </StackPanel>
       <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-        <TextBlock Text="{Binding Temperature, StringFormat={}{0:0.00}}" Style="{StaticResource UtilizationCaption}" VerticalAlignment="Bottom"/>
-        <TextBlock Text="°C" Style="{StaticResource MetricUnit}" VerticalAlignment="Bottom"/>
+        <TextBlock Text="{Binding Temperature, StringFormat={}{0:0.00}}" Style="{StaticResource TileMetricValue}"/>
+        <TextBlock Text="°C" Style="{StaticResource MetricUnit}"/>
       </StackPanel>
     </Grid>
 

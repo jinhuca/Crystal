@@ -3,13 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Crystal.GpuModule.Views.SummaryViews"
              xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs;assembly=Crystal.Controls"
              mc:Ignorable="d"
              d:DesignHeight="88" d:DesignWidth="130">
   <!-- DataContext is a GpuAdapterViewModel, inherited from the per-adapter block. Header (title left,
        live value right) over a value-banded history graph of the hot-spot temperature (dedicated
        cards only); self-registers so the view model feeds it on each poll. -->
-  <Grid Width="130">
+  <Grid Width="{x:Static local:GpuSummaryViewConstants.GraphWidth}">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="*"/>

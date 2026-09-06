@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Crystal.GpuModule.Views.SummaryViews"
              xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs;assembly=Crystal.Controls"
              mc:Ignorable="d"
              d:DesignHeight="88" d:DesignWidth="130">
@@ -10,7 +11,7 @@
        live value right) over the core-clock history graph. A high clock is desirable, not a warning,
        so BandedLine is off: a steady accent line rather than a green-to-red gauge ramp. Self-registers
        so the view model feeds it on each poll. -->
-  <Grid Width="130">
+  <Grid Width="{x:Static local:GpuSummaryViewConstants.GraphWidth}">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="*"/>

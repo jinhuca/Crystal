@@ -22,8 +22,8 @@
         <TextBlock Text="{Binding BusSpeedMHz, StringFormat=BCLK {0:0.0} MHz}" Style="{StaticResource MetricCaption}" Margin="10,0,0,0"/>
       </StackPanel>
       <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-        <TextBlock Text="{Binding SpeedGhz, StringFormat={}{0:0.00}}" Style="{StaticResource UtilizationCaption}" VerticalAlignment="Bottom"/>
-        <TextBlock Text="GHz" Style="{StaticResource MetricUnit}" VerticalAlignment="Bottom"/>
+        <TextBlock Text="{Binding SpeedGhz, StringFormat={}{0:0.00}}" Style="{StaticResource TileMetricValue}"/>
+        <TextBlock Text="GHz" Style="{StaticResource MetricUnit}"/>
       </StackPanel>
     </Grid>
 
