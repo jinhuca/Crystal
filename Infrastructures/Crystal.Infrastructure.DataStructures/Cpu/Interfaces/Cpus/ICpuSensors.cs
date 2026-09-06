@@ -15,6 +15,9 @@ public interface ICpuSensors {
   SensorReading PackagePower { get; set; }
   SensorReading MemoryPower { get; set; }
   SensorReading CoresPower { get; set; }
+
+  /// <summary>Integrated-graphics (GT) RAPL power domain in W. Intel-only; empty when not exposed.</summary>
+  SensorReading GraphicsPower { get; set; }
   SensorReading PackageTemperature { get; set; }
   SensorReading CoreMaxTemperature { get; set; }
   SensorReading CoreAvgTemperature { get; set; }

@@ -53,6 +53,22 @@ public partial class GpuDetailView : UserControl {
     Attach(sender, GraphThemes.Emerald(GraphKind.SegmentedBar), (a, g) => a.AttachGraph("Gpu.Power", g));
 
   /// <summary>
+  /// Handles the Loaded event of the PCIe Rx graph control.
+  /// </summary>
+  /// <param name="sender">The source of the event.</param>
+  /// <param name="e">The event data.</param>
+  private void OnPcieRxGraphLoaded(object sender, System.Windows.RoutedEventArgs e) =>
+    Attach(sender, GraphThemes.Amber(GraphKind.Line), (a, g) => a.AttachGraph("Gpu.PcieRx", g));
+
+  /// <summary>
+  /// Handles the Loaded event of the PCIe Tx graph control.
+  /// </summary>
+  /// <param name="sender">The source of the event.</param>
+  /// <param name="e">The event data.</param>
+  private void OnPcieTxGraphLoaded(object sender, System.Windows.RoutedEventArgs e) =>
+    Attach(sender, GraphThemes.Amber(GraphKind.Line), (a, g) => a.AttachGraph("Gpu.PcieTx", g));
+
+  /// <summary>
   /// Attaches the specified graph to the GPU adapter view model and applies the specified theme.
   /// </summary>
   /// <param name="sender">The source of the event.</param>

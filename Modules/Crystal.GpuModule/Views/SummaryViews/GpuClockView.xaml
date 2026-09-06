@@ -6,27 +6,84 @@
              xmlns:local="clr-namespace:Crystal.GpuModule.Views.SummaryViews"
              xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs;assembly=Crystal.Controls"
              mc:Ignorable="d"
-             d:DesignHeight="88" d:DesignWidth="130">
-  <!-- DataContext is a GpuAdapterViewModel, inherited from the per-adapter block. Header (title left,
-       live value right) over the core-clock history graph. A high clock is desirable, not a warning,
+             d:DesignHeight="88" d:DesignWidth="320">
+  <!-- DataContext is a GpuAdapterViewModel, inherited from the per-adapter block. Two columns, matching
+       the CPU summary tiles: (left) title + live value over the core-clock history graph; (right) the
+       clock-domain value/min/max table (Core / Memory) in MHz. A high clock is desirable, not a warning,
        so BandedLine is off: a steady accent line rather than a green-to-red gauge ramp. Self-registers
-       so the view model feeds it on each poll. -->
-  <Grid Width="{x:Static local:GpuSummaryViewConstants.GraphWidth}">
-    <Grid.RowDefinitions>
-      <RowDefinition Height="Auto"/>
-      <RowDefinition Height="*"/>
-    </Grid.RowDefinitions>
-    <Grid Grid.Row="0" Margin="0,0,0,2">
-      <TextBlock Text="Clock" Style="{StaticResource MetricCaption}" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
-      <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-        <TextBlock Text="{Binding ClockMhz, StringFormat={}{0:0}, TargetNullValue=—}" Style="{StaticResource TileMetricValue}"/>
-        <TextBlock Text="MHz" Style="{StaticResource MetricUnit}"/>
-      </StackPanel>
+       so the view model feeds it on each poll. The memory row collapses when no memory clock is exposed. -->
+  <UserControl.Resources>
+    <!-- Memory-row cells: hide the whole row when the adapter exposes no memory clock. -->
+    <Style x:Key="MemLabel" TargetType="TextBlock" BasedOn="{StaticResource MetricTableLabel}">
+      <Style.Triggers>
+        <DataTrigger Binding="{Binding MemoryClockMhz}" Value="{x:Null}">
+          <Setter Property="Visibility" Value="Collapsed"/>
+        </DataTrigger>
+      </Style.Triggers>
+    </Style>
+    <Style x:Key="MemValue" TargetType="TextBlock" BasedOn="{StaticResource MetricTableValue}">
+      <Style.Triggers>
+        <DataTrigger Binding="{Binding MemoryClockMhz}" Value="{x:Null}">
+          <Setter Property="Visibility" Value="Collapsed"/>
+        </DataTrigger>
+      </Style.Triggers>
+    </Style>
+  </UserControl.Resources>
+  <Grid Background="Transparent">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="Auto"/>
+    </Grid.ColumnDefinitions>
+
+    <!-- Left column: title + history graph -->
+    <Grid Grid.Column="0" Width="{x:Static local:GpuSummaryViewConstants.GraphWidth}" VerticalAlignment="Stretch">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="*"/>
+      </Grid.RowDefinitions>
+      <Grid Grid.Row="0" Margin="0,0,0,2">
+        <TextBlock Text="Clock" Style="{StaticResource MetricCaption}" Foreground="{StaticResource TextBrush}" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+          <TextBlock Text="{Binding ClockMhz, StringFormat={}{0:0}, TargetNullValue=—}" Style="{StaticResource TileMetricValue}"/>
+          <TextBlock Text="MHz" Style="{StaticResource MetricUnit}"/>
+        </StackPanel>
+      </Grid>
+      <graphs:AdaptiveGraph x:Name="Graph" Grid.Row="1" graphs:GraphIdentity.Id="Gpu.Clock"
+                            Capacity="90" MinValue="0" MaxValue="{Binding ClockScaleMax}"
+                            Accent="{StaticResource GraphAccentClock}" BandedLine="False"
+                            ShowChrome="True" MinHeight="40"
+                            CellPitch="{StaticResource DashboardDotPitch}"/>
     </Grid>
-    <graphs:AdaptiveGraph x:Name="Graph" Grid.Row="1" graphs:GraphIdentity.Id="Gpu.Clock"
-                          Capacity="90" MinValue="0" MaxValue="{Binding ClockScaleMax}"
-                          Accent="#3E9BE8" BandedLine="False"
-                          ShowChrome="True" MinHeight="40"
-                          CellPitch="{StaticResource DashboardDotPitch}"/>
+
+    <!-- Right column: clock-domain value/min/max table (MHz). -->
+    <Grid Grid.Column="1" Margin="16,0,0,0" VerticalAlignment="Top">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="Auto"/>
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+
+      <TextBlock Grid.Row="0" Grid.Column="1" Text="Value" Style="{StaticResource MetricTableHeader}"/>
+      <TextBlock Grid.Row="0" Grid.Column="2" Text="Min"   Style="{StaticResource MetricTableHeader}"/>
+      <TextBlock Grid.Row="0" Grid.Column="3" Text="Max"   Style="{StaticResource MetricTableHeader}"/>
+
+      <!-- Core -->
+      <TextBlock Grid.Row="1" Grid.Column="0" Text="Core" Style="{StaticResource MetricTableLabel}"/>
+      <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding ClockMhz, StringFormat={}{0:0}, TargetNullValue=—}"    Style="{StaticResource MetricTableValue}"/>
+      <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding ClockMinMhz, StringFormat={}{0:0}, TargetNullValue=—}" Style="{StaticResource MetricTableValue}"/>
+      <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding ClockMaxMhz, StringFormat={}{0:0}, TargetNullValue=—}" Style="{StaticResource MetricTableValue}"/>
+
+      <!-- Memory (collapses when no memory clock is exposed) -->
+      <TextBlock Grid.Row="2" Grid.Column="0" Text="Memory" Style="{StaticResource MemLabel}"/>
+      <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding MemoryClockMhz, StringFormat={}{0:0}}"    Style="{StaticResource MemValue}"/>
+      <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding MemoryClockMinMhz, StringFormat={}{0:0}, TargetNullValue=—}" Style="{StaticResource MemValue}"/>
+      <TextBlock Grid.Row="2" Grid.Column="3" Text="{Binding MemoryClockMaxMhz, StringFormat={}{0:0}, TargetNullValue=—}" Style="{StaticResource MemValue}"/>
+    </Grid>
   </Grid>
 </UserControl>

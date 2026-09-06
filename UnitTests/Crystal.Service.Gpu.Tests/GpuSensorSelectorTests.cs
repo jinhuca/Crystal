@@ -328,4 +328,104 @@ public class GpuSensorSelectorTests {
   [Fact]
   public void SelectPowerRails_OnlyAggregatePresent_ReturnsEmpty() =>
       Assert.Empty(GpuSensorSelector.SelectPowerRails([Sensors.Power("GPU Package", 120)]));
+
+  [Fact]
+  public void SelectCoreClockRange_SurfacesMatchedSensorMinMax() {
+    var sensors = new ISensor[] {
+      Sensors.Clock("GPU Memory", 9000).Range(6000, 10000),
+      Sensors.Clock("GPU Core", 2400).Range(300, 2600),
+    };
+
+    var range = GpuSensorSelector.SelectCoreClockRange(sensors);
+
+    Assert.Equal(new GpuSensorSelector.SensorRange(2400, 300, 2600), range);
+  }
+
+  [Fact]
+  public void SelectCoreClockRange_ZeroValue_IsAbsentWithNoRange() {
+    var range = GpuSensorSelector.SelectCoreClockRange([Sensors.Clock("GPU Core", 0).Range(0, 2600)]);
+
+    Assert.Equal(GpuSensorSelector.SensorRange.None, range);
+  }
+
+  [Fact]
+  public void SelectMemoryClockRange_SurfacesMatchedSensorMinMax() {
+    var range = GpuSensorSelector.SelectMemoryClockRange([Sensors.Clock("GPU Memory", 9000).Range(405, 10502)]);
+
+    Assert.Equal(new GpuSensorSelector.SensorRange(9000, 405, 10502), range);
+  }
+
+  [Fact]
+  public void SelectCoreVoltageRange_SurfacesMatchedSensorMinMax() {
+    var range = GpuSensorSelector.SelectCoreVoltageRange([Sensors.Voltage("GPU Core", 0.85f).Range(0.6f, 1.05f)]);
+
+    Assert.Equal(0.85, range.Value!.Value, 3);
+    Assert.Equal(0.6, range.Min!.Value, 3);
+    Assert.Equal(1.05, range.Max!.Value, 3);
+  }
+
+  [Fact]
+  public void SelectPackagePowerRange_SurfacesChosenRailMinMax() {
+    var sensors = new ISensor[] {
+      Sensors.Power("GPU Total", 200).Range(5, 250),
+      Sensors.Power("GPU Package", 150).Range(8, 320),
+    };
+
+    var range = GpuSensorSelector.SelectPackagePowerRange(sensors);
+
+    // Package is preferred over Total, so its own Min/Max come through.
+    Assert.Equal(new GpuSensorSelector.SensorRange(150, 8, 320), range);
+  }
+
+  [Fact]
+  public void SelectCoreTemperatureRange_TracksTheSensorItChose() {
+    // No "GPU Core"; falls back to the first temperature sensor and reports that sensor's range.
+    var range = GpuSensorSelector.SelectCoreTemperatureRange([Sensors.Temp("GPU Hot Spot", 88).Range(35, 95)]);
+
+    Assert.Equal(new GpuSensorSelector.SensorRange(88, 35, 95), range);
+  }
+
+  [Fact]
+  public void SelectHotSpotTemperatureRange_SurfacesMatchedSensorMinMax() {
+    var range = GpuSensorSelector.SelectHotSpotTemperatureRange([Sensors.Temp("GPU Hot Spot", 90).Range(40, 101)]);
+
+    Assert.Equal(new GpuSensorSelector.SensorRange(90, 40, 101), range);
+  }
+
+  [Fact]
+  public void SelectMemoryTemperatureRange_SurfacesMatchedSensorMinMax() {
+    var range = GpuSensorSelector.SelectMemoryTemperatureRange([Sensors.Temp("GPU Memory Junction", 84).Range(38, 96)]);
+
+    Assert.Equal(new GpuSensorSelector.SensorRange(84, 38, 96), range);
+  }
+
+  [Fact]
+  public void RangeSelectors_NoMatchingSensor_ReturnNone() {
+    Assert.Equal(GpuSensorSelector.SensorRange.None, GpuSensorSelector.SelectCoreClockRange([Sensors.Load("3D", 50)]));
+    Assert.Equal(GpuSensorSelector.SensorRange.None, GpuSensorSelector.SelectPackagePowerRange([Sensors.Load("3D", 50)]));
+    Assert.Equal(GpuSensorSelector.SensorRange.None, GpuSensorSelector.SelectHotSpotTemperatureRange([Sensors.Temp("GPU Core", 65)]));
+  }
+
+  [Fact]
+  public void RangeSelectors_SensorWithoutRecordedExtremes_YieldNullMinMax() {
+    // Provider hasn't recorded a session extreme yet: value present, Min/Max null.
+    var range = GpuSensorSelector.SelectHotSpotTemperatureRange([Sensors.Temp("GPU Hot Spot", 77)]);
+
+    Assert.Equal(new GpuSensorSelector.SensorRange(77, null, null), range);
+  }
+
+  [Fact]
+  public void SelectPowerRails_CarryPerRailMinMax() {
+    var sensors = new ISensor[] {
+      Sensors.Power("GPU Package", 200),                     // aggregate, excluded
+      Sensors.Power("GPU PPT", 220).Range(30, 260),
+      Sensors.Power("GPU SoC", 15).Range(3, 22),
+    };
+
+    var rails = GpuSensorSelector.SelectPowerRails(sensors);
+
+    Assert.Equal(
+        new[] { new GpuPowerRail("PPT", 220, 30, 260), new GpuPowerRail("SoC", 15, 3, 22) },
+        rails);
+  }
 }

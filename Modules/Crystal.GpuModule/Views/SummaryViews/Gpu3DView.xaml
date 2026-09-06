@@ -25,8 +25,8 @@
       </StackPanel>
     </Grid>
     <graphs:AdaptiveGraph x:Name="Graph" Grid.Row="1" graphs:GraphIdentity.Id="Gpu.3D"
-                          Capacity="90" MinValue="0" MaxValue="100" Accent="#3BD15A"
-                          ShowChrome="True" MinHeight="40"
+                          Capacity="90" MinValue="0" MaxValue="100" Accent="{StaticResource GraphAccentUtilization}"
+                          BandedLine="False" ShowChrome="True" MinHeight="40"
                           CellPitch="{StaticResource DashboardDotPitch}"/>
   </Grid>
 </UserControl>

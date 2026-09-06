@@ -41,6 +41,13 @@ internal static class Sensors {
   public static StubSensor Voltage(string name, float? value) => Of(SensorType.Voltage, name, value);
   public static StubSensor SmallData(string name, float? value) => Of(SensorType.SmallData, name, value);
   public static StubSensor Throughput(string name, float? value) => Of(SensorType.Throughput, name, value);
+
+  // Attaches the session Min/Max the provider would track, for exercising the *Range selectors.
+  public static StubSensor Range(this StubSensor sensor, float? min, float? max) {
+    sensor.Min = min;
+    sensor.Max = max;
+    return sensor;
+  }
 }
 
 // GpuInfoBuilder reads adapters via the ToSafeVideoControllerMetricsAsync extension, which calls

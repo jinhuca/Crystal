@@ -36,6 +36,20 @@ public sealed class GpuAdapterViewModel : BindableBase {
   private double? _memoryTemperatureC;
   private double? _pcieRxMBps;
   private double? _pcieTxMBps;
+  private double? _temperatureMinC;
+  private double? _temperatureMaxC;
+  private double? _hotSpotTemperatureMinC;
+  private double? _hotSpotTemperatureMaxC;
+  private double? _memoryTemperatureMinC;
+  private double? _memoryTemperatureMaxC;
+  private double? _clockMinMhz;
+  private double? _clockMaxMhz;
+  private double? _memoryClockMinMhz;
+  private double? _memoryClockMaxMhz;
+  private double? _powerMinW;
+  private double? _powerMaxW;
+  private double? _coreVoltageMinV;
+  private double? _coreVoltageMaxV;
 
   // Core temperature uses a fixed 0-100 °C scale (like Load's 0-100 %); clock and power span wildly
   // different ranges per adapter (iGPU vs dGPU), so their graph ceilings ratchet to a "nice" value
@@ -93,6 +107,23 @@ public sealed class GpuAdapterViewModel : BindableBase {
   public double? MemoryTemperatureC { get => _memoryTemperatureC; private set => SetProperty(ref _memoryTemperatureC, value); }
   public double? PcieRxMBps { get => _pcieRxMBps; private set => SetProperty(ref _pcieRxMBps, value); }
   public double? PcieTxMBps { get => _pcieTxMBps; private set => SetProperty(ref _pcieTxMBps, value); }
+
+  // Session Min/Max for the single-sensor metrics, backing the CPU-style value/min/max tables under
+  // each graph. Null until the provider records an extreme (or when the metric itself is absent).
+  public double? TemperatureMinC { get => _temperatureMinC; private set => SetProperty(ref _temperatureMinC, value); }
+  public double? TemperatureMaxC { get => _temperatureMaxC; private set => SetProperty(ref _temperatureMaxC, value); }
+  public double? HotSpotTemperatureMinC { get => _hotSpotTemperatureMinC; private set => SetProperty(ref _hotSpotTemperatureMinC, value); }
+  public double? HotSpotTemperatureMaxC { get => _hotSpotTemperatureMaxC; private set => SetProperty(ref _hotSpotTemperatureMaxC, value); }
+  public double? MemoryTemperatureMinC { get => _memoryTemperatureMinC; private set => SetProperty(ref _memoryTemperatureMinC, value); }
+  public double? MemoryTemperatureMaxC { get => _memoryTemperatureMaxC; private set => SetProperty(ref _memoryTemperatureMaxC, value); }
+  public double? ClockMinMhz { get => _clockMinMhz; private set => SetProperty(ref _clockMinMhz, value); }
+  public double? ClockMaxMhz { get => _clockMaxMhz; private set => SetProperty(ref _clockMaxMhz, value); }
+  public double? MemoryClockMinMhz { get => _memoryClockMinMhz; private set => SetProperty(ref _memoryClockMinMhz, value); }
+  public double? MemoryClockMaxMhz { get => _memoryClockMaxMhz; private set => SetProperty(ref _memoryClockMaxMhz, value); }
+  public double? PowerMinW { get => _powerMinW; private set => SetProperty(ref _powerMinW, value); }
+  public double? PowerMaxW { get => _powerMaxW; private set => SetProperty(ref _powerMaxW, value); }
+  public double? CoreVoltageMinV { get => _coreVoltageMinV; private set => SetProperty(ref _coreVoltageMinV, value); }
+  public double? CoreVoltageMaxV { get => _coreVoltageMaxV; private set => SetProperty(ref _coreVoltageMaxV, value); }
 
   /// <summary>
   /// Upper bound of the core-clock history graph, ratcheted to a round value above the
@@ -164,9 +195,13 @@ public sealed class GpuAdapterViewModel : BindableBase {
     FeedGraph("Gpu.Utilization", reading.CoreLoadPercent);
 
     TemperatureC = reading.TemperatureC;
+    TemperatureMinC = reading.TemperatureMinC;
+    TemperatureMaxC = reading.TemperatureMaxC;
     if (reading.TemperatureC is { } t) FeedGraph("Gpu.Temperature", t);
 
     ClockMhz = reading.ClockMhz;
+    ClockMinMhz = reading.ClockMinMhz;
+    ClockMaxMhz = reading.ClockMaxMhz;
     if (reading.ClockMhz is { } c) {
       FeedGraph("Gpu.Clock", c);
       _clockPeak = Math.Max(c, _clockPeak * PeakDecay);
@@ -174,6 +209,8 @@ public sealed class GpuAdapterViewModel : BindableBase {
     }
 
     PowerW = reading.PowerW;
+    PowerMinW = reading.PowerMinW;
+    PowerMaxW = reading.PowerMaxW;
     if (reading.PowerW is { } p) {
       FeedGraph("Gpu.Power", p);
       _powerPeak = Math.Max(p, _powerPeak * PeakDecay);
@@ -187,11 +224,19 @@ public sealed class GpuAdapterViewModel : BindableBase {
         : null;
     if (MemoryUsedPercent is { } mem) FeedGraph("Gpu.Memory", mem);
     MemoryClockMhz = reading.MemoryClockMhz;
+    MemoryClockMinMhz = reading.MemoryClockMinMhz;
+    MemoryClockMaxMhz = reading.MemoryClockMaxMhz;
     FanRpm = reading.FanRpm;
     CoreVoltageV = reading.CoreVoltageV;
+    CoreVoltageMinV = reading.CoreVoltageMinV;
+    CoreVoltageMaxV = reading.CoreVoltageMaxV;
     HotSpotTemperatureC = reading.HotSpotTemperatureC;
+    HotSpotTemperatureMinC = reading.HotSpotTemperatureMinC;
+    HotSpotTemperatureMaxC = reading.HotSpotTemperatureMaxC;
     if (reading.HotSpotTemperatureC is { } hot) FeedGraph("Gpu.HotSpot", hot);
     MemoryTemperatureC = reading.MemoryTemperatureC;
+    MemoryTemperatureMinC = reading.MemoryTemperatureMinC;
+    MemoryTemperatureMaxC = reading.MemoryTemperatureMaxC;
 
     PcieRxMBps = reading.PcieRxMBps;
     PcieTxMBps = reading.PcieTxMBps;
@@ -257,10 +302,12 @@ public sealed class GpuAdapterViewModel : BindableBase {
     foreach (var rail in rails) {
       var existing = PowerRails.FirstOrDefault(vm => vm.Name == rail.Name);
       if (existing is null) {
-        PowerRails.Add(new GpuPowerRailViewModel(rail.Name) { PowerW = rail.PowerW });
+        PowerRails.Add(new GpuPowerRailViewModel(rail.Name) { PowerW = rail.PowerW, MinW = rail.MinW, MaxW = rail.MaxW });
       }
       else {
         existing.PowerW = rail.PowerW;
+        existing.MinW = rail.MinW;
+        existing.MaxW = rail.MaxW;
       }
     }
 

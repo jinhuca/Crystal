@@ -92,15 +92,14 @@
               </Grid>
 
               <!-- Live sensor readouts (dense HWiNFO-style): VRAM, memory clock, fan, core voltage.
-                   Each shows "—" when the adapter exposes no matching sensor (common on the iGPU). -->
+                   Each shows "—" when the adapter exposes no matching sensor (common on the iGPU).
+                   PCIe Rx/Tx are not listed here — they have their own history graphs below. -->
               <Grid Grid.Row="3" Margin="0,0,0,16">
                 <Grid.ColumnDefinitions>
                   <ColumnDefinition Width="Auto"/>
                   <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                  <RowDefinition Height="Auto"/>
-                  <RowDefinition Height="Auto"/>
                   <RowDefinition Height="Auto"/>
                   <RowDefinition Height="Auto"/>
                   <RowDefinition Height="Auto"/>
@@ -142,14 +141,6 @@
                 <TextBlock Grid.Row="5" Grid.Column="0" Text="Memory Temp" Foreground="{StaticResource LabelBrush}" Margin="0,2,16,2"/>
                 <TextBlock Grid.Row="5" Grid.Column="1" Foreground="{StaticResource TextBrush}" Margin="0,2"
                            Text="{Binding MemoryTemperatureC, StringFormat={}{0:0.0} °C, TargetNullValue=—}"/>
-
-                <TextBlock Grid.Row="6" Grid.Column="0" Text="PCIe Rx" Foreground="{StaticResource LabelBrush}" Margin="0,2,16,2"/>
-                <TextBlock Grid.Row="6" Grid.Column="1" Foreground="{StaticResource TextBrush}" Margin="0,2"
-                           Text="{Binding PcieRxMBps, StringFormat={}{0:0.0} MB/s, TargetNullValue=—}"/>
-
-                <TextBlock Grid.Row="7" Grid.Column="0" Text="PCIe Tx" Foreground="{StaticResource LabelBrush}" Margin="0,2,16,2"/>
-                <TextBlock Grid.Row="7" Grid.Column="1" Foreground="{StaticResource TextBrush}" Margin="0,2"
-                           Text="{Binding PcieTxMBps, StringFormat={}{0:0.0} MB/s, TargetNullValue=—}"/>
               </Grid>
 
               <!-- Per-engine utilization breakdown (D3D 3D / Video Decode / Copy / …). Hidden when the
@@ -201,6 +192,8 @@
                    running-peak scale so an iGPU and a dGPU each plot sensibly. -->
               <Grid Grid.Row="6">
                 <Grid.RowDefinitions>
+                  <RowDefinition Height="120"/>
+                  <RowDefinition Height="120"/>
                   <RowDefinition Height="120"/>
                   <RowDefinition Height="120"/>
                   <RowDefinition Height="120"/>
@@ -259,7 +252,7 @@
                                                MaxTimeFormat="{}{0}s" MinTime="0"/>
                 </Grid>
 
-                <Grid Grid.Row="3">
+                <Grid Grid.Row="3" Margin="0,0,0,8">
                   <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="150"/>
                     <ColumnDefinition Width="*"/>
@@ -274,6 +267,42 @@
                                                Title="Power" MinValue="0"
                                                MaxValue="{Binding PowerScaleMax}"
                                                MaxValueFormat="{}{0} W" MaxTime="60"
+                                               MaxTimeFormat="{}{0}s" MinTime="0"/>
+                </Grid>
+
+                <Grid Grid.Row="4" Margin="0,0,0,8">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="*"/>
+                  </Grid.ColumnDefinitions>
+                  <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="8,0">
+                    <TextBlock Text="{Binding PcieRxMBps, StringFormat={}{0:0.0}, TargetNullValue=—}" Style="{StaticResource MetricValue}"/>
+                    <TextBlock Text="MB/s" Style="{StaticResource MetricUnit}"/>
+                    <TextBlock Text="PCIe Rx" Style="{StaticResource MetricCaption}"/>
+                  </StackPanel>
+                  <graphs:PerformanceGraphView Grid.Column="1" Margin="12,0"
+                                               Loaded="OnPcieRxGraphLoaded"
+                                               Title="PCIe Rx" MinValue="0"
+                                               MaxValue="{Binding PcieRxScaleMax}"
+                                               MaxValueFormat="{}{0} MB/s" MaxTime="60"
+                                               MaxTimeFormat="{}{0}s" MinTime="0"/>
+                </Grid>
+
+                <Grid Grid.Row="5">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="*"/>
+                  </Grid.ColumnDefinitions>
+                  <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="8,0">
+                    <TextBlock Text="{Binding PcieTxMBps, StringFormat={}{0:0.0}, TargetNullValue=—}" Style="{StaticResource MetricValue}"/>
+                    <TextBlock Text="MB/s" Style="{StaticResource MetricUnit}"/>
+                    <TextBlock Text="PCIe Tx" Style="{StaticResource MetricCaption}"/>
+                  </StackPanel>
+                  <graphs:PerformanceGraphView Grid.Column="1" Margin="12,0"
+                                               Loaded="OnPcieTxGraphLoaded"
+                                               Title="PCIe Tx" MinValue="0"
+                                               MaxValue="{Binding PcieTxScaleMax}"
+                                               MaxValueFormat="{}{0} MB/s" MaxTime="60"
                                                MaxTimeFormat="{}{0}s" MinTime="0"/>
                 </Grid>
               </Grid>

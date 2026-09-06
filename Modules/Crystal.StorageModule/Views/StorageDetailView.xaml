@@ -124,7 +124,7 @@
               </Grid>
               <graphs:AdaptiveGraph Grid.Row="2" Margin="0,0,0,12"
                                     Loaded="OnActivityGraphLoaded"
-                                    MinValue="0" MaxValue="100" Accent="#E89B2A" ShowChrome="True"/>
+                                    MinValue="0" MaxValue="100" Accent="{StaticResource GraphAccentStorage}" BandedLine="False" ShowChrome="True"/>
 
               <!-- Disk transfer rate -->
               <Grid Grid.Row="3" Margin="0,0,0,2">

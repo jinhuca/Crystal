@@ -9,13 +9,16 @@
              FontFamily="{StaticResource UiFontFamily}">
   <!-- DataContext is a GpuAdapterViewModel, inherited from the per-adapter block. Compact restatement
        of the static specs shown in GpuDetailView (Display Mode / Driver Version / Driver Date /
-       Refresh Rate), filling the tile's row-3 slot beneath the utilization graph. -->
+       Refresh Rate), filling the tile's row-3 slot beneath the utilization graph. The live core
+       voltage (with session min/max) is the one dynamic reading with no graph tile of its own, so it
+       lands here as a final row that collapses when the card exposes no voltage sensor. -->
   <Grid Width="{x:Static local:GpuSummaryViewConstants.UtilizationGraphWidth}" VerticalAlignment="Center">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="Auto"/>
       <ColumnDefinition Width="*"/>
     </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="Auto"/>
@@ -41,5 +44,39 @@
                FontSize="{StaticResource CaptionFontSize}" Margin="0,1,16,1"/>
     <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding RefreshRateHz, StringFormat={}{0} Hz, TargetNullValue=—}" Foreground="{StaticResource TextBrush}"
                FontSize="{StaticResource CaptionFontSize}" Margin="0,1"/>
+
+    <!-- Core voltage: live value with session min/max in parentheses. Both cells collapse together
+         (row height goes to 0) when the card reports no voltage sensor, e.g. integrated graphics. -->
+    <TextBlock Grid.Row="4" Grid.Column="0" Text="Core Voltage" Foreground="{StaticResource LabelBrush}"
+               FontSize="{StaticResource CaptionFontSize}" Margin="0,1,16,1">
+      <TextBlock.Style>
+        <Style TargetType="TextBlock">
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding CoreVoltageV}" Value="{x:Null}">
+              <Setter Property="Visibility" Value="Collapsed"/>
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </TextBlock.Style>
+    </TextBlock>
+    <TextBlock Grid.Row="4" Grid.Column="1" Foreground="{StaticResource TextBrush}"
+               FontSize="{StaticResource CaptionFontSize}" Margin="0,1">
+      <TextBlock.Style>
+        <Style TargetType="TextBlock">
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding CoreVoltageV}" Value="{x:Null}">
+              <Setter Property="Visibility" Value="Collapsed"/>
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </TextBlock.Style>
+      <TextBlock.Text>
+        <MultiBinding StringFormat="{}{0:0.000} V  ({1:0.000}–{2:0.000})">
+          <Binding Path="CoreVoltageV"/>
+          <Binding Path="CoreVoltageMinV"/>
+          <Binding Path="CoreVoltageMaxV"/>
+        </MultiBinding>
+      </TextBlock.Text>
+    </TextBlock>
   </Grid>
 </UserControl>
