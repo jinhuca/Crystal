@@ -9,6 +9,6 @@ namespace Crystal.GpuModule.Views.SummaryViews;
 //}
 
 internal static class GpuSummaryViewConstants {
-  public const double GraphWidth = 200d;
-  public const double UtilizationGraphWidth = 240d;
+  public const double GraphWidth = 210d;
+  public const double UtilizationGraphWidth = 260d;
 }

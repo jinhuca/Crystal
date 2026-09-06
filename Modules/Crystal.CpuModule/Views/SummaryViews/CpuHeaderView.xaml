@@ -21,10 +21,8 @@
         <TextBlock Text="CPU" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource BodyFontSize}" FontWeight="SemiBold"
                    VerticalAlignment="Center" Margin="0,0,16,0"/>
         <TextBlock Text="{Binding Socket, StringFormat=Slot# {0}}"
-                   Foreground="{StaticResource AccentBrush}" FontSize="{StaticResource BodyFontSize}" FontWeight="SemiBold"
-                   FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Center" Margin="0,0,12,0"/>
-        <TextBlock Text="{Binding Brand}" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource CaptionFontSize}"
-                   FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Center" Margin="0,0,16,0"
+                   Style="{StaticResource TileTitleCaption}" Margin="0,0,12,0"/>
+        <TextBlock Text="{Binding Brand}" Style="{StaticResource TileTitleBrand}" Margin="0,0,16,0"
                    TextTrimming="CharacterEllipsis" ToolTip="{Binding Brand}"/>
         <TextBlock Text="{Binding PhysicalCores, StringFormat=Physical Cores: {0}}" Style="{StaticResource HeaderSpec}"/>
         <TextBlock Text="{Binding LogicalCores, StringFormat=Logical Cores: {0}}" Style="{StaticResource HeaderSpec}"/>

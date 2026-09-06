@@ -11,16 +11,18 @@
              d:DesignHeight="200" d:DesignWidth="1000"
              Background="Transparent" Foreground="{StaticResource TextBrush}"
              FontFamily="{StaticResource UiFontFamily}">
-  <!-- One tile per detected adapter: the integrated GPU shows a 2x2 meter block (Temperature/Memory Used
-       over Power/3D) beside its utilization graph; each dedicated GPU shows a 3x2 meter block
-       (Temperature/Memory Used/Clock over Hot Spot/3D/Power) beside its utilization graph and a PCIe
-       Rx/Tx column. A single adapter renders as one tile with no border and no ScrollViewer; several
-       adapters render as a horizontally scrollable strip (wheel scrolls sideways, scrollbars hidden)
-       where tiles after the first get a left divider. The per-metric tiles live in Views/SummaryViews. -->
+  <!-- One tile per detected adapter, each an identity header (kind + name + physical location) over a
+       meter grid. The integrated GPU is a 3x2 grid — Temperature/Memory Used/Utilization over
+       Power/3D/Info; each dedicated GPU is a 5x2 grid — Temperature/Memory Used/Clock/PCIe Rx/Utilization
+       over Hot Spot/3D/Power/PCIe Tx/Info. "Info" restates the static specs from GpuDetailView. A single
+       adapter renders as one tile with no border and no ScrollViewer; several adapters render as a
+       horizontally scrollable strip (wheel scrolls sideways, scrollbars hidden) where tiles after the
+       first get a left divider. The per-metric tiles live in Views/SummaryViews. -->
   <UserControl.Resources>
     <local:AdapterTileChromeConverter x:Key="TileChrome"/>
 
-    <!-- Integrated adapter tile: 2x2 meter block beside the utilization graph. -->
+    <!-- Integrated adapter tile: an identity header over a 3x2 meter grid. Row 2 is
+         Temperature/Memory Used/Utilization; row 3 is Power/3D/static-specs Info. -->
     <DataTemplate x:Key="IntegratedTile">
       <Border Margin="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ContentPresenter}, Converter={StaticResource TileChrome}}"
               Padding="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ContentPresenter}, Converter={StaticResource TileChrome}}"
@@ -28,65 +30,78 @@
               BorderThickness="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ContentPresenter}, Converter={StaticResource TileChrome}, ConverterParameter=border}">
         <Grid VerticalAlignment="Stretch" ShowGridLines="False">
           <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition Height="20"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
           </Grid.RowDefinitions>
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
           </Grid.ColumnDefinitions>
-          <sv:GpuTemperatureView Grid.Row="0" Grid.Column="0" Margin="0,0,8,8"/>
-          <sv:GpuMemoryView      Grid.Row="0" Grid.Column="1" Margin="0,0,0,8"/>
-          <sv:GpuPowerView       Grid.Row="1" Grid.Column="0" Margin="0,0,8,0"/>
-          <sv:Gpu3DView          Grid.Row="1" Grid.Column="1" Margin="0,0,0,0"/>
-          <sv:GpuUtilizationView Grid.Row="0" Grid.Column="2" Width="300" Margin="0,0,0,0" VerticalAlignment="Stretch"/>
+
+          <!-- Row 1: adapter identity — "Integrated GPU" accent label + product name + physical location. -->
+          <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" Margin="0,0,0,8">
+            <TextBlock Text="{Binding KindLabel}" Style="{StaticResource TileTitleCaption}"/>
+            <TextBlock Text="{Binding Name}" Style="{StaticResource TileTitleBrand}" Margin="8,0,0,0"
+                       TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}"/>
+            <TextBlock Text="{Binding PhysicalLocation, TargetNullValue=—}" Foreground="{StaticResource LabelBrush}"
+                       FontSize="{StaticResource CaptionFontSize}" VerticalAlignment="Center" Margin="12,0,0,0"/>
+          </StackPanel>
+
+          <sv:GpuTemperatureView Grid.Row="1" Grid.Column="0" Margin="0,0,8,8"/>
+          <sv:GpuMemoryView      Grid.Row="1" Grid.Column="1" Margin="0,0,8,8"/>
+          <sv:GpuUtilizationView Grid.Row="1" Grid.Column="2" Margin="0,0,0,8" VerticalAlignment="Stretch"/>
+          <sv:GpuPowerView       Grid.Row="2" Grid.Column="0" Margin="0,0,8,0"/>
+          <sv:Gpu3DView          Grid.Row="2" Grid.Column="1" Margin="0,0,8,0"/>
+          <sv:GpuInfoView        Grid.Row="2" Grid.Column="2" Margin="0,0,0,0"/>
         </Grid>
       </Border>
     </DataTemplate>
 
-    <!-- Dedicated adapter tile: 3x2 meter block beside the utilization graph and a PCIe column. -->
+    <!-- Dedicated adapter tile: an identity header over a 5x2 meter grid. Row 2 is
+         Temperature/Memory Used/Clock/PCIe Rx/Utilization; row 3 is Hot Spot/3D/Power/PCIe Tx/Info. -->
     <DataTemplate x:Key="DedicatedTile">
       <Border Margin="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ContentPresenter}, Converter={StaticResource TileChrome}}"
               Padding="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ContentPresenter}, Converter={StaticResource TileChrome}}"
               BorderBrush="{StaticResource DividerBrush}"
               BorderThickness="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ContentPresenter}, Converter={StaticResource TileChrome}, ConverterParameter=border}">
-        <!-- The tile sizes to content (wider meter block + graph); the graph carries the same explicit
-             width as the integrated tile (see there) so it can't balloon in the infinite-width strip. -->
+        <!-- The tile sizes to content; each metric view carries its own fixed width (see
+             GpuSummaryViewConstants) so nothing can balloon in the infinite-width strip. -->
         <Grid VerticalAlignment="Stretch">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+          </Grid.RowDefinitions>
           <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
           </Grid.ColumnDefinitions>
 
-          <!-- 2x4 meter block: Temperature/Memory/Clock, then Hot Spot/3D/Power, then PCIe Rx/Tx.
-               Rows are equal-height (*) and the block stretches so each tile's history graph fills its
-               half of the row, matching the utilization graph's height. -->
-          <Grid Grid.Column="0" VerticalAlignment="Stretch">
-            <Grid.RowDefinitions>
-              <RowDefinition Height="*"/>
-              <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="Auto"/>
-              <ColumnDefinition Width="Auto"/>
-              <ColumnDefinition Width="Auto"/>
-              <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <sv:GpuTemperatureView Grid.Row="0" Grid.Column="0" Margin="0,0,8,8"/>
-            <sv:GpuMemoryView      Grid.Row="0" Grid.Column="1" Margin="0,0,8,8"/>
-            <sv:GpuClockView       Grid.Row="0" Grid.Column="2" Margin="0,0,8,8"/>
-            <sv:GpuHotSpotView     Grid.Row="1" Grid.Column="0" Margin="0,0,8,8"/>
-            <sv:Gpu3DView          Grid.Row="1" Grid.Column="1" Margin="0,0,8,8"/>
-            <sv:GpuPowerView       Grid.Row="1" Grid.Column="2" Margin="0,0,8,8"/>
-            <sv:GpuPcieRxView      Grid.Row="0" Grid.Column="3" Margin="0,0,8,8"/>
-            <sv:GpuPcieTxView      Grid.Row="1" Grid.Column="3" Margin="0,0,8,8"/>
-          </Grid>
+          <!-- Row 1: adapter identity — "Dedicated GPU" accent label + product name + physical location. -->
+          <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" Orientation="Horizontal" Margin="0,0,0,8">
+            <TextBlock Text="{Binding KindLabel}" Style="{StaticResource TileTitleCaption}"/>
+            <TextBlock Text="{Binding Name}" Style="{StaticResource TileTitleBrand}" Margin="8,0,0,0"
+                       TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}"/>
+            <TextBlock Text="{Binding PhysicalLocation, TargetNullValue=—}" Foreground="{StaticResource LabelBrush}"
+                       FontSize="{StaticResource CaptionFontSize}" VerticalAlignment="Center" Margin="12,0,0,0"/>
+          </StackPanel>
 
-          <!-- Utilization graph, captioned with the adapter identity. Same fixed width as the
-               integrated tile (see there) so both graphs match and neither balloons. -->
-          <sv:GpuUtilizationView Grid.Column="1" Width="460" Margin="0,0,0,0" VerticalAlignment="Stretch"/>
+          <sv:GpuTemperatureView Grid.Row="1" Grid.Column="0" Margin="0,0,8,8"/>
+          <sv:GpuMemoryView      Grid.Row="1" Grid.Column="1" Margin="0,0,8,8"/>
+          <sv:GpuClockView       Grid.Row="1" Grid.Column="2" Margin="0,0,8,8"/>
+          <sv:GpuPcieRxView      Grid.Row="1" Grid.Column="3" Margin="0,0,8,8"/>
+          <sv:GpuUtilizationView Grid.Row="1" Grid.Column="4" Margin="0,0,0,8" VerticalAlignment="Stretch"/>
+
+          <sv:GpuHotSpotView     Grid.Row="2" Grid.Column="0" Margin="0,0,8,0"/>
+          <sv:Gpu3DView          Grid.Row="2" Grid.Column="1" Margin="0,0,8,0"/>
+          <sv:GpuPowerView       Grid.Row="2" Grid.Column="2" Margin="0,0,8,0"/>
+          <sv:GpuPcieTxView      Grid.Row="2" Grid.Column="3" Margin="0,0,8,0"/>
+          <sv:GpuInfoView        Grid.Row="2" Grid.Column="4" Margin="0,0,0,0"/>
         </Grid>
       </Border>
     </DataTemplate>

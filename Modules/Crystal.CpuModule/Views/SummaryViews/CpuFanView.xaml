@@ -21,8 +21,8 @@
         <TextBlock Text="CPU Fan" Style="{StaticResource MetricCaption}" Foreground="{StaticResource TextBrush}"/>
       </StackPanel>
       <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-        <TextBlock Text="{Binding FanReadoutText}" Style="{StaticResource UtilizationCaption}" VerticalAlignment="Bottom"/>
-        <TextBlock Text="{Binding FanReadoutUnit}" Style="{StaticResource MetricUnit}" VerticalAlignment="Bottom"/>
+        <TextBlock Text="{Binding FanReadoutText}" Style="{StaticResource TileMetricValue}"/>
+        <TextBlock Text="{Binding FanReadoutUnit}" Style="{StaticResource MetricUnit}"/>
       </StackPanel>
     </Grid>
 
