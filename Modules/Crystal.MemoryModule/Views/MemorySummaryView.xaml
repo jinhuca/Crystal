@@ -54,55 +54,37 @@
       <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
     </Style>
   </UserControl.Resources>
-
-  <!-- Task-Manager-style tile, mirroring the Storage tile so the two history graphs track the
-       Storage Active-time / transfer graphs in height: the left column stacks the two graphs
-       (the column's only stretchy rows) over the memory-composition bar and the per-slot module
-       list — exactly as Storage stacks its graphs over the capacity bar and Endurance panel. The
-       right column carries the kernel-memory stats and the hardware specs. -->
-  <Border Background="Transparent">
-    <Grid Margin="8">
+  <Grid Margin="8">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <!-- header -->
+      <RowDefinition Height="*"/>
+      <!-- body: graph column + info column -->
+    </Grid.RowDefinitions>
+    <sv:MemoryHeaderView Grid.Row="0" Margin="0,0,0,6"/>
+    <Grid Grid.Row="1">
       <Grid.RowDefinitions>
+        <RowDefinition Height="100"/>
         <RowDefinition Height="Auto"/>
-        <!-- header -->
-        <RowDefinition Height="*"/>
-        <!-- body: graph column + info column -->
+        <RowDefinition Height="Auto"/>
       </Grid.RowDefinitions>
-      <sv:MemoryHeaderView Grid.Row="0" Margin="0,0,0,6"/>
-      <Grid Grid.Row="1">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="220"/>
+        <ColumnDefinition Width="220"/>
+        <ColumnDefinition/>
+        <ColumnDefinition/>
+      </Grid.ColumnDefinitions>
+
+      <Grid Grid.Row="0" Grid.Column="0">
         <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
           <RowDefinition Height="*"/>
-          <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="*"/>
-          <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
-      </Grid>
-
-      <Grid Grid.Row="1">
-        <Grid.RowDefinitions>
-          <RowDefinition Height="100"/>
-          <RowDefinition Height="Auto"/>
-          <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="220"/>
-          <ColumnDefinition Width="220"/>
-          <ColumnDefinition/>
-          <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-
-        <Grid Grid.Row="0" Grid.Column="0">
-          <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-          </Grid.RowDefinitions>
-          <Grid Grid.Row="0" Grid.Column="0" Margin="0,0,10,0">
-            <TextBlock Text="Memory usage" Style="{StaticResource TileSectionLabel}" HorizontalAlignment="Left"/>
-            <TextBlock Text="{Binding UsageLabel}" Style="{StaticResource TileLegendCaption}" HorizontalAlignment="Right"/>
-          </Grid>
-          <graphs:AdaptiveGraph x:Name="UsageGraph" 
+        <Grid Grid.Row="0" Grid.Column="0" Margin="0,0,10,0">
+          <TextBlock Text="Memory usage" Style="{StaticResource TileSectionLabel}" HorizontalAlignment="Left"/>
+          <TextBlock Text="{Binding UsageLabel}" Style="{StaticResource TileLegendCaption}" HorizontalAlignment="Right"/>
+        </Grid>
+        <graphs:AdaptiveGraph x:Name="UsageGraph" 
                                 Grid.Row="1"
                                 Width="210"
                                 MinHeight="40" 
@@ -113,177 +95,176 @@
                                 Accent="{StaticResource GraphAccentMemory}" 
                                 BandedLine="False" ShowChrome="True"
                                 CellPitch="{StaticResource DashboardDotPitch}"/>
-        </Grid>
+      </Grid>
 
-        <Grid Grid.Row="0" Grid.Column="1" Margin="0,0,10,0">
-          <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-          </Grid.RowDefinitions>
-          <Grid Grid.Row="0" Margin="0,0,5,0">
-            <TextBlock Text="Commit charge" Style="{StaticResource TileSectionLabel}" HorizontalAlignment="Left"/>
-            <TextBlock Text="{Binding CommitUsageLabel}" Style="{StaticResource TileLegendCaption}" HorizontalAlignment="Right"/>
-          </Grid>
-          <graphs:AdaptiveGraph x:Name="CommitGraph" 
+      <Grid Grid.Row="0" Grid.Column="1" Margin="0,0,10,0">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Margin="0,0,5,0">
+          <TextBlock Text="Commit charge" Style="{StaticResource TileSectionLabel}" HorizontalAlignment="Left"/>
+          <TextBlock Text="{Binding CommitUsageLabel}" Style="{StaticResource TileLegendCaption}" HorizontalAlignment="Right"/>
+        </Grid>
+        <graphs:AdaptiveGraph x:Name="CommitGraph" 
                                 Grid.Row="1"
                                 MinHeight="40"
                                 Margin="0,0,0,0"
                                 MinValue="0" MaxValue="{Binding CommitLimitGB, TargetNullValue=64}"
                                 Accent="{StaticResource GraphAccentMemorySecondary}" BandedLine="False" ShowChrome="True"
                                 CellPitch="{StaticResource DashboardDotPitch}"/>
-        </Grid>
+      </Grid>
 
-        <Grid Grid.Row="0" Grid.Column="2" Background="Transparent">
-          <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-          </Grid.RowDefinitions>
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-          </Grid.ColumnDefinitions>
-          <TextBlock Grid.Row="0" Grid.Column="0" Text="In use (Compressed)" Style="{StaticResource TileStatCaption}"/>
-          <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding InUseLabel}" Style="{StaticResource TileStatValue}"/>
-          <TextBlock Grid.Row="0" Grid.Column="1" Text="Committed" Style="{StaticResource TileStatCaption}"/>
-          <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding CommittedLabel}" Style="{StaticResource TileStatValue}"/>
-          <TextBlock Grid.Row="2" Grid.Column="0" Text="Commit peak" Style="{StaticResource TileStatCaption}"/>
-          <TextBlock Grid.Row="3" Grid.Column="0" Text="{Binding CommitPeakLabel}" Style="{StaticResource TileStatValue}"/>
-          <TextBlock Grid.Row="2" Grid.Column="1" Text="Paged pool" Style="{StaticResource TileStatCaption}"/>
-          <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding PagedPoolLabel}" Style="{StaticResource TileStatValue}"/>
-        </Grid>
+      <Grid Grid.Row="0" Grid.Column="2" Background="Transparent">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="*"/>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition/>
+          <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="In use (Compressed)" Style="{StaticResource TileStatCaption}"/>
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding InUseLabel}" Style="{StaticResource TileStatValue}"/>
+        <TextBlock Grid.Row="0" Grid.Column="1" Text="Committed" Style="{StaticResource TileStatCaption}"/>
+        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding CommittedLabel}" Style="{StaticResource TileStatValue}"/>
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Commit peak" Style="{StaticResource TileStatCaption}"/>
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="{Binding CommitPeakLabel}" Style="{StaticResource TileStatValue}"/>
+        <TextBlock Grid.Row="2" Grid.Column="1" Text="Paged pool" Style="{StaticResource TileStatCaption}"/>
+        <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding PagedPoolLabel}" Style="{StaticResource TileStatValue}"/>
+      </Grid>
 
-        <Grid Grid.Row="0" Grid.Column="3" Background="Transparent">
-          <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-          </Grid.RowDefinitions>
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-          </Grid.ColumnDefinitions>
-          <TextBlock Grid.Row="0" Grid.Column="0" Text="Available" Style="{StaticResource TileStatCaption}"/>
-          <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding AvailableLabel}" Style="{StaticResource TileStatValue}"/>
-          <TextBlock Grid.Row="0" Grid.Column="1" Text="Cached" Style="{StaticResource TileStatCaption}"/>
-          <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding CachedLabel}" Style="{StaticResource TileStatValue}"/>
-          <TextBlock Grid.Row="2" Grid.Column="0" Text="Non-paged pool" Style="{StaticResource TileStatCaption}"/>
-          <TextBlock Grid.Row="3" Grid.Column="0" Text="{Binding NonPagedPoolLabel}" Style="{StaticResource TileStatValue}"/>
-          <TextBlock Grid.Row="2" Grid.Column="1" Text="Pagefile (used/size)" Style="{StaticResource TileStatCaption}"/>
-          <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding PageFileLabel}" Style="{StaticResource TileStatValue}"/>
-        </Grid>
+      <Grid Grid.Row="0" Grid.Column="3" Background="Transparent">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="*"/>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition/>
+          <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Available" Style="{StaticResource TileStatCaption}"/>
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding AvailableLabel}" Style="{StaticResource TileStatValue}"/>
+        <TextBlock Grid.Row="0" Grid.Column="1" Text="Cached" Style="{StaticResource TileStatCaption}"/>
+        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding CachedLabel}" Style="{StaticResource TileStatValue}"/>
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Non-paged pool" Style="{StaticResource TileStatCaption}"/>
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="{Binding NonPagedPoolLabel}" Style="{StaticResource TileStatValue}"/>
+        <TextBlock Grid.Row="2" Grid.Column="1" Text="Pagefile (used/size)" Style="{StaticResource TileStatCaption}"/>
+        <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding PageFileLabel}" Style="{StaticResource TileStatValue}"/>
+      </Grid>
 
-        <!-- Hardware spec pairs -->
-        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" VerticalAlignment="Top" Margin="0,5">
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-          </Grid.ColumnDefinitions>
-          <StackPanel Grid.Column="0" Orientation="Horizontal">
-            <TextBlock Text="Speed:" Style="{StaticResource TileSpecCaption}"/>
-            <TextBlock Text="{Binding SpeedLabel}" Style="{StaticResource TileSpecValue}"/>
-          </StackPanel>
-          <StackPanel Grid.Column="1" Orientation="Horizontal">
-            <TextBlock Text="Slots used:" Style="{StaticResource TileSpecCaption}"/>
-            <TextBlock Text="{Binding SlotsUsedLabel}" Style="{StaticResource TileSpecValue}"/>
-          </StackPanel>
-          <StackPanel Grid.Column="2" Orientation="Horizontal">
-            <TextBlock Text="Form factor:" Style="{StaticResource TileSpecCaption}"/>
-            <TextBlock Text="{Binding FormFactorLabel}" Style="{StaticResource TileSpecValue}"/>
-          </StackPanel>
-          <StackPanel Grid.Column="3" Orientation="Horizontal">
-            <TextBlock Grid.Row="0" Grid.Column="6" Text="Hardware reserved:" Style="{StaticResource TileSpecCaption}"/>
-            <TextBlock Grid.Row="0" Grid.Column="7" Text="{Binding HardwareReservedLabel}" Style="{StaticResource TileSpecValue}"/>
-          </StackPanel>
-          <StackPanel Grid.Column="4" Orientation="Horizontal">
-            <TextBlock Text="Pagefile peak:" Style="{StaticResource TileSpecCaption}"/>
-            <TextBlock Text="{Binding PageFilePeakLabel}" Style="{StaticResource TileSpecValue}"/>
-          </StackPanel>
-        </Grid>
+      <!-- Hardware spec pairs -->
+      <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" VerticalAlignment="Top" Margin="0,5">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0" Orientation="Horizontal">
+          <TextBlock Text="Speed:" Style="{StaticResource TileSpecCaption}"/>
+          <TextBlock Text="{Binding SpeedLabel}" Style="{StaticResource TileSpecValue}"/>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Orientation="Horizontal">
+          <TextBlock Text="Slots used:" Style="{StaticResource TileSpecCaption}"/>
+          <TextBlock Text="{Binding SlotsUsedLabel}" Style="{StaticResource TileSpecValue}"/>
+        </StackPanel>
+        <StackPanel Grid.Column="2" Orientation="Horizontal">
+          <TextBlock Text="Form factor:" Style="{StaticResource TileSpecCaption}"/>
+          <TextBlock Text="{Binding FormFactorLabel}" Style="{StaticResource TileSpecValue}"/>
+        </StackPanel>
+        <StackPanel Grid.Column="3" Orientation="Horizontal">
+          <TextBlock Grid.Row="0" Grid.Column="6" Text="Hardware reserved:" Style="{StaticResource TileSpecCaption}"/>
+          <TextBlock Grid.Row="0" Grid.Column="7" Text="{Binding HardwareReservedLabel}" Style="{StaticResource TileSpecValue}"/>
+        </StackPanel>
+        <StackPanel Grid.Column="4" Orientation="Horizontal">
+          <TextBlock Text="Pagefile peak:" Style="{StaticResource TileSpecCaption}"/>
+          <TextBlock Text="{Binding PageFilePeakLabel}" Style="{StaticResource TileSpecValue}"/>
+        </StackPanel>
+      </Grid>
 
-        <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4">
-          <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-          </Grid.RowDefinitions>
-          <!-- Memory composition title + the segment legend on one line: title left, legend right. -->
-          <Grid Grid.Row="0" Margin="0,0,0,4">
-            <TextBlock Text="Memory composition" Style="{StaticResource TileSectionLabel}"
+      <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <!-- Memory composition title + the segment legend on one line: title left, legend right. -->
+        <Grid Grid.Row="0" Margin="0,0,0,4">
+          <TextBlock Text="Memory composition" Style="{StaticResource TileSectionLabel}"
          HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-              <StackPanel Orientation="Horizontal" Margin="0,0,16,0">
-                <Rectangle Width="9" Height="9" Fill="{StaticResource UsageBarUsedBrush}" VerticalAlignment="Center" Margin="0,0,4,0"/>
-                <TextBlock Text="In use" Style="{StaticResource TileLegendCaption}"/>
-                <TextBlock Text="{Binding CompositionInUseLabel}" Style="{StaticResource TileLegendValue}" Margin="4,0,0,0"/>
-              </StackPanel>
-              <StackPanel Orientation="Horizontal" Margin="0,0,16,0">
-                <Rectangle Width="9" Height="9" Fill="#C7902F" VerticalAlignment="Center" Margin="0,0,4,0"/>
-                <TextBlock Text="Modified" Style="{StaticResource TileLegendCaption}"/>
-                <TextBlock Text="{Binding CompositionModifiedLabel}" Style="{StaticResource TileLegendValue}" Margin="4,0,0,0"/>
-              </StackPanel>
-              <StackPanel Orientation="Horizontal" Margin="0,0,16,0">
-                <Rectangle Width="9" Height="9" Fill="#3F8E6E" VerticalAlignment="Center" Margin="0,0,4,0"/>
-                <TextBlock Text="Standby" Style="{StaticResource TileLegendCaption}"/>
-                <TextBlock Text="{Binding CompositionStandbyLabel}" Style="{StaticResource TileLegendValue}" Margin="4,0,0,0"/>
-              </StackPanel>
-              <StackPanel Orientation="Horizontal">
-                <Rectangle Width="9" Height="9" Fill="{StaticResource UsageBarFreeBrush}" VerticalAlignment="Center" Margin="0,0,4,0"/>
-                <TextBlock Text="Free" Style="{StaticResource TileLegendCaption}"/>
-                <TextBlock Text="{Binding CompositionFreeLabel}" Style="{StaticResource TileLegendValue}" Margin="4,0,0,0"/>
-              </StackPanel>
+          <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+            <StackPanel Orientation="Horizontal" Margin="0,0,16,0">
+              <Rectangle Width="9" Height="9" Fill="{StaticResource UsageBarUsedBrush}" VerticalAlignment="Center" Margin="0,0,4,0"/>
+              <TextBlock Text="In use" Style="{StaticResource TileLegendCaption}"/>
+              <TextBlock Text="{Binding CompositionInUseLabel}" Style="{StaticResource TileLegendValue}" Margin="4,0,0,0"/>
             </StackPanel>
-          </Grid>
-          
-          <!-- Task Manager-style breakdown: In use / Modified / Standby / Free segments sized by star
+            <StackPanel Orientation="Horizontal" Margin="0,0,16,0">
+              <Rectangle Width="9" Height="9" Fill="#C7902F" VerticalAlignment="Center" Margin="0,0,4,0"/>
+              <TextBlock Text="Modified" Style="{StaticResource TileLegendCaption}"/>
+              <TextBlock Text="{Binding CompositionModifiedLabel}" Style="{StaticResource TileLegendValue}" Margin="4,0,0,0"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,0,16,0">
+              <Rectangle Width="9" Height="9" Fill="#3F8E6E" VerticalAlignment="Center" Margin="0,0,4,0"/>
+              <TextBlock Text="Standby" Style="{StaticResource TileLegendCaption}"/>
+              <TextBlock Text="{Binding CompositionStandbyLabel}" Style="{StaticResource TileLegendValue}" Margin="4,0,0,0"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+              <Rectangle Width="9" Height="9" Fill="{StaticResource UsageBarFreeBrush}" VerticalAlignment="Center" Margin="0,0,4,0"/>
+              <TextBlock Text="Free" Style="{StaticResource TileLegendCaption}"/>
+              <TextBlock Text="{Binding CompositionFreeLabel}" Style="{StaticResource TileLegendValue}" Margin="4,0,0,0"/>
+            </StackPanel>
+          </StackPanel>
+        </Grid>
+
+        <!-- Task Manager-style breakdown: In use / Modified / Standby / Free segments sized by star
        columns whose weights are the 0-1 fractions (which sum to 1 via the trailing remainder). -->
-          <Border Grid.Row="1" Margin="0,0,0,8" 
+        <Border Grid.Row="1" Margin="0,0,0,8" 
                   BorderBrush="{StaticResource UsageBarBorderBrush}" BorderThickness="1"
                   Background="{StaticResource UsageBarTrackBrush}" Height="18">
-            <Grid>
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="{Binding CompositionInUseFraction, Converter={StaticResource FractionToStar}}"/>
-                <ColumnDefinition Width="{Binding CompositionModifiedFraction, Converter={StaticResource FractionToStar}}"/>
-                <ColumnDefinition Width="{Binding CompositionStandbyFraction, Converter={StaticResource FractionToStar}}"/>
-                <ColumnDefinition Width="{Binding CompositionFreeFraction, Converter={StaticResource FractionToStar}}"/>
-                <ColumnDefinition Width="{Binding CompositionRemainderFraction, Converter={StaticResource FractionToStar}}"/>
-              </Grid.ColumnDefinitions>
-              <Rectangle Grid.Column="0" Fill="{StaticResource UsageBarUsedBrush}" ToolTip="{Binding CompositionInUseLabel}"/>
-              <Rectangle Grid.Column="1" Fill="#C7902F" ToolTip="{Binding CompositionModifiedLabel}"/>
-              <Rectangle Grid.Column="2" Fill="#3F8E6E" ToolTip="{Binding CompositionStandbyLabel}"/>
-              <Rectangle Grid.Column="3" Fill="{StaticResource UsageBarFreeBrush}" ToolTip="{Binding CompositionFreeLabel}"/>
-            </Grid>
-          </Border>
-          
-          <!-- Per-slot module inventory: compact rows (caption font, tight padding) so every column —
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="{Binding CompositionInUseFraction, Converter={StaticResource FractionToStar}}"/>
+              <ColumnDefinition Width="{Binding CompositionModifiedFraction, Converter={StaticResource FractionToStar}}"/>
+              <ColumnDefinition Width="{Binding CompositionStandbyFraction, Converter={StaticResource FractionToStar}}"/>
+              <ColumnDefinition Width="{Binding CompositionFreeFraction, Converter={StaticResource FractionToStar}}"/>
+              <ColumnDefinition Width="{Binding CompositionRemainderFraction, Converter={StaticResource FractionToStar}}"/>
+            </Grid.ColumnDefinitions>
+            <Rectangle Grid.Column="0" Fill="{StaticResource UsageBarUsedBrush}" ToolTip="{Binding CompositionInUseLabel}"/>
+            <Rectangle Grid.Column="1" Fill="#C7902F" ToolTip="{Binding CompositionModifiedLabel}"/>
+            <Rectangle Grid.Column="2" Fill="#3F8E6E" ToolTip="{Binding CompositionStandbyLabel}"/>
+            <Rectangle Grid.Column="3" Fill="{StaticResource UsageBarFreeBrush}" ToolTip="{Binding CompositionFreeLabel}"/>
+          </Grid>
+        </Border>
+
+        <!-- Per-slot module inventory: compact rows (caption font, tight padding) so every column —
        slot, capacity, speed, form factor, manufacturer, part number — fits one line. -->
-          <ItemsControl Grid.Row="2" ItemsSource="{Binding Modules}">
-            <ItemsControl.ItemTemplate>
-              <DataTemplate>
-                <Border Margin="0,0,0,1" Padding="8,0" Background="{StaticResource SurfaceBackgroundBrush}" CornerRadius="3">
-                  <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding SlotLabel}" Style="{StaticResource TileModuleField}"
+        <ItemsControl Grid.Row="2" ItemsSource="{Binding Modules}">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <Border Margin="0,0,0,1" Padding="8,0" Background="{StaticResource SurfaceBackgroundBrush}" CornerRadius="3">
+                <StackPanel Orientation="Horizontal">
+                  <TextBlock Text="{Binding SlotLabel}" Style="{StaticResource TileModuleField}"
                        Foreground="{StaticResource AccentBrush}" FontWeight="SemiBold" Width="150"/>
-                    <TextBlock Text="{Binding CapacityLabel}" Style="{StaticResource TileModuleField}" Width="64"/>
-                    <TextBlock Text="{Binding SpeedLabel}" Style="{StaticResource TileModuleField}"
+                  <TextBlock Text="{Binding CapacityLabel}" Style="{StaticResource TileModuleField}" Width="64"/>
+                  <TextBlock Text="{Binding SpeedLabel}" Style="{StaticResource TileModuleField}"
                        Foreground="{StaticResource TextMutedBrush}" Width="90"/>
-                    <TextBlock Text="{Binding FormFactor}" Style="{StaticResource TileModuleField}"
+                  <TextBlock Text="{Binding FormFactor}" Style="{StaticResource TileModuleField}"
                        Foreground="{StaticResource TextMutedBrush}" Width="120"/>
-                    <TextBlock Text="{Binding Manufacturer}" Style="{StaticResource TileModuleField}"
+                  <TextBlock Text="{Binding Manufacturer}" Style="{StaticResource TileModuleField}"
                        Foreground="{StaticResource TextMutedBrush}" Width="110"/>
-                    <TextBlock Text="{Binding PartNumber}" Style="{StaticResource TileModuleField}"/>
-                  </StackPanel>
-                </Border>
-              </DataTemplate>
-            </ItemsControl.ItemTemplate>
-          </ItemsControl>
-        </Grid>
+                  <TextBlock Text="{Binding PartNumber}" Style="{StaticResource TileModuleField}"/>
+                </StackPanel>
+              </Border>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
       </Grid>
     </Grid>
-  </Border>
+  </Grid>
 </UserControl>
