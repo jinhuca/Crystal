@@ -207,7 +207,7 @@
 
                 <StackPanel Grid.Column="1">
                   <StackPanel Margin="0,0,0,14">
-                    <TextBlock Text="Average response time" Style="{StaticResource StatCaption}"/>
+                    <TextBlock Text="Response time" Style="{StaticResource StatCaption}"/>
                     <TextBlock Text="{Binding ResponseLabel}" Style="{StaticResource StatValue}"/>
                   </StackPanel>
                   <StackPanel Margin="0,0,0,14">
