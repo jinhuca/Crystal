@@ -21,7 +21,7 @@ public partial class DashboardView : UserControl {
   /// <summary>
   /// Default row heights, kept in one place so ResetLayout and the XAML stay in sync.
   /// </summary>
-  public GridLength GpuDefault {  get; } = new(.8, GridUnitType.Star);
+  public GridLength GpuDefault {  get; } = new(1, GridUnitType.Star);
 
   /// <summary>
   /// Default row heights, kept in one place so ResetLayout and the XAML stay in sync.
@@ -31,7 +31,7 @@ public partial class DashboardView : UserControl {
   /// <summary>
   /// Default height of the bottom row (BIOS/Network/OS).
   /// </summary>
-  public GridLength BottomDefault {  get; } = new(.7, GridUnitType.Star);
+  public GridLength BottomDefault {  get; } = new(.8, GridUnitType.Star);
 
   /// <summary>
   /// Default width for each components-row tile column (Memory/Storage): equal star shares.

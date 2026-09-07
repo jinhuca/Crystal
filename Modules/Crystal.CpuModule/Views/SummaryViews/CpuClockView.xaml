@@ -38,7 +38,8 @@
       <graphs:AdaptiveGraph x:Name="ClockGraph" Grid.Row="1"
                             graphs:GraphIdentity.Id="Cpu.Clock"
                             Capacity="120" MinValue="0" MaxValue="6"
-                            Accent="{StaticResource GraphAccentClock}" BandedLine="False" ShowChrome="True" MinHeight="40"
+                            BandedLine="False" ShowChrome="True" MinHeight="40"
+                            Accent="{StaticResource GraphAccentClock}" 
                             CellPitch="{StaticResource DashboardDotPitch}"/>
     </Grid>
 
