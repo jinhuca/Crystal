@@ -15,18 +15,54 @@
   <UserControl.Resources>
     <conv:FractionToStarConverter x:Key="FractionToStar"/>
 
-    <!-- Detail-panel readouts sized/typed to match the other dashboard tiles (e.g. GpuSummaryView):
-         Consolas numerics, MetricValue/MetricCaption scale. -->
-    <Style x:Key="DiskStatCaption" TargetType="TextBlock">
+    <!-- Spec pairs mirroring the Memory tile's bottom hardware-spec row: caption font for both halves,
+         brighter value brush. Keeps the Storage tile's endurance line reading as a sibling of it. -->
+    <Style x:Key="TileSpecCaption" TargetType="TextBlock" BasedOn="{StaticResource MetricCaption}">
+      <Setter Property="Margin" Value="0"/>
+    </Style>
+    <Style x:Key="TileSpecValue" TargetType="TextBlock" BasedOn="{StaticResource MetricCaption}">
+      <Setter Property="Foreground" Value="{StaticResource SpecValueBrush}"/>
+      <Setter Property="Margin" Value="10,0,0,0"/>
+    </Style>
+
+    <!-- Live stat groups (Active time / Response time / … , and the SMART/temperature column):
+         matched to the Memory tile's "In use (Compressed)" readout — MetricCaption caption over a
+         light Consolas value at 16px — so both tiles' stat blocks read identically. -->
+    <Style x:Key="TileStatCaption" TargetType="TextBlock" BasedOn="{StaticResource MetricCaption}">
+      <Setter Property="Margin" Value="0,0,0,1"/>
+    </Style>
+    <Style x:Key="TileStatValue" TargetType="TextBlock" BasedOn="{StaticResource MetricValue}">
+      <Setter Property="FontWeight" Value="Light"/>
+      <Setter Property="FontSize" Value="16"/>
+    </Style>
+
+    <!-- Section heading + legend styles mirroring the Memory tile's "Memory composition" row so the
+         Capacity section and its bar read identically to the composition section on the sibling tile. -->
+    <Style x:Key="TileSectionLabel" TargetType="TextBlock" BasedOn="{StaticResource MetricCaption}">
+      <Setter Property="Foreground" Value="{StaticResource SpecValueBrush}"/>
+    </Style>
+    <Style x:Key="TileLegendCaption" TargetType="TextBlock" BasedOn="{StaticResource MetricCaption}">
+      <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style x:Key="TileLegendValue" TargetType="TextBlock" BasedOn="{StaticResource MetricCaption}">
+      <Setter Property="Foreground" Value="{StaticResource SpecValueBrush}"/>
+      <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+    <!-- Identity/spec header lines above the graphs: compact caption-scale pairs so the two-line
+         block matches the height of the Memory tile's two-row slot list. -->
+    <Style x:Key="IdSpecCaption" TargetType="TextBlock">
       <Setter Property="Foreground" Value="{StaticResource LabelBrush}"/>
       <Setter Property="FontFamily" Value="{StaticResource UiFontFamily}"/>
       <Setter Property="FontSize" Value="{StaticResource CaptionFontSize}"/>
-      <Setter Property="Margin" Value="0,0,0,1"/>
+      <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
-    <Style x:Key="DiskStatValue" TargetType="TextBlock">
-      <Setter Property="Foreground" Value="{StaticResource ValueBrush}"/>
+    <Style x:Key="IdSpecValue" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="{StaticResource SpecValueBrush}"/>
       <Setter Property="FontFamily" Value="{StaticResource UiFontFamily}"/>
       <Setter Property="FontSize" Value="{StaticResource CaptionFontSize}"/>
+      <Setter Property="VerticalAlignment" Value="Center"/>
+      <Setter Property="Margin" Value="6,0,0,0"/>
     </Style>
   </UserControl.Resources>
   <Grid Margin="8">
@@ -92,39 +128,43 @@
       </Grid>
     </Border>
     <!-- Selected disk -->
-    <ContentControl Grid.Row="1" Content="{Binding SelectedDisk}" Margin="0,2,0,0">
+    <ContentControl Grid.Row="1" Content="{Binding SelectedDisk}" Margin="0,0,0,0">
       <ContentControl.ContentTemplate>
         <DataTemplate>
-          <Grid ShowGridLines="False">
+          <Grid ShowGridLines="True">
+            <!-- Row order mirrors the Memory tile so the graphs and the capacity/composition bars
+                 line up across both tiles: identity + spec header (fixed 50 total), then the graphs
+                 (fixed 105), then the capacity bar, then endurance. -->
             <Grid.RowDefinitions>
-              <RowDefinition Height="*"/>
-              <RowDefinition Height="Auto"/>
-              <RowDefinition Height="Auto"/>
-              <RowDefinition Height="Auto"/>
-              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="18"/>
+              <RowDefinition Height="16"/>
+              <RowDefinition Height="92"/>
+              <RowDefinition Height="60"/>
+              <RowDefinition Height="40"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-              <ColumnDefinition/>
-              <ColumnDefinition/>
+              <ColumnDefinition Width="240"/>
+              <ColumnDefinition Width="240"/>
               <ColumnDefinition/>
               <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <!-- Active time -->
-            <Grid Grid.Row="0" Grid.Column="0">
+            <Grid Grid.Row="2" Grid.Column="0" Margin="0,3,0,0">
               <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
               </Grid.RowDefinitions>
-              <Grid Grid.Row="0">
-                <TextBlock Text="Active time" 
-                           Foreground="{StaticResource SpecValueBrush}" 
-                           FontSize="{StaticResource SpecFontSize}" 
-                           HorizontalAlignment="Left"/>
-                <TextBlock Text="{Binding ActivityLabel}" 
-                           Foreground="{StaticResource LabelBrush}" 
-                           FontFamily="{StaticResource MonoFontFamily}" 
-                           FontSize="{StaticResource SpecFontSize}" 
-                           HorizontalAlignment="Right" Margin="0,0,5,0"/>
+              <Grid Grid.Row="0" Margin="0,0,0,4">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                  <TextBlock Text="Active time" Style="{StaticResource MetricCaption}" Foreground="{StaticResource TextBrush}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                  <TextBlock Text="{Binding ActivityLabel}"
+                             Foreground="{StaticResource LabelBrush}"
+                             FontFamily="{StaticResource MonoFontFamily}"
+                             FontSize="{StaticResource CaptionFontSize}"
+                             Margin="0,0,5,0"/>
+                </StackPanel>
               </Grid>
               <graphs:AdaptiveGraph Grid.Row="1" Margin="0,0,5,5" MinHeight="40" Width="230"
                                     Loaded="OnActivityGraphLoaded"
@@ -134,22 +174,19 @@
                                     CellPitch="{StaticResource DashboardDotPitch}"/>
             </Grid>
             <!-- Disk transfer rate -->
-            <Grid Grid.Row="0" Grid.Column="1">
+            <Grid Grid.Row="2" Grid.Column="1" Margin="0,3,0,0">
               <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
               </Grid.RowDefinitions>
-              <Grid Grid.Row="0" Margin="0,0,0,2">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                  <TextBlock Text="Transfer rate" 
-                               Foreground="{StaticResource SpecValueBrush}" 
-                               FontSize="{StaticResource SpecFontSize}" 
-                               VerticalAlignment="Center"/>
+              <Grid Grid.Row="0" Margin="0,0,0,4">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                  <TextBlock Text="Transfer rate" Style="{StaticResource MetricCaption}" Foreground="{StaticResource TextBrush}"/>
                 </StackPanel>
-                <TextBlock Foreground="{StaticResource LabelBrush}" 
-                             FontFamily="{StaticResource MonoFontFamily}" 
-                             FontSize="{StaticResource SpecFontSize}" 
-                             HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0">
+                <TextBlock Foreground="{StaticResource LabelBrush}"
+                             FontFamily="{StaticResource MonoFontFamily}"
+                             FontSize="{StaticResource CaptionFontSize}"
+                             HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,0">
                     <Run Text="Peak"/><Run Text=" "/><Run Text="{Binding PeakTransferLabel, Mode=OneWay}"/>
                 </TextBlock>
               </Grid>
@@ -160,7 +197,7 @@
                                       CellPitch="{StaticResource DashboardDotPitch}"/>
             </Grid>
 
-            <Grid Grid.Row="0" Grid.Column="2" Margin="10,0,0,0">
+            <Grid Grid.Row="2" Grid.Column="2" Margin="10,5,0,0">
               <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
@@ -170,24 +207,24 @@
                 <RowDefinition/>
               </Grid.RowDefinitions>
               <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,0,0">
-                <TextBlock Text="Active time" Style="{StaticResource DiskStatCaption}"/>
-                <TextBlock Text="{Binding ActivityLabel}" Style="{StaticResource DiskStatValue}"/>
+                <TextBlock Text="Active time" Style="{StaticResource TileStatCaption}"/>
+                <TextBlock Text="{Binding ActivityLabel}" Style="{StaticResource TileStatValue}"/>
               </StackPanel>
               <StackPanel Grid.Row="0" Grid.Column="1" Margin="0,0,0,0">
-                <TextBlock Text="Response time" Style="{StaticResource DiskStatCaption}"/>
-                <TextBlock Text="{Binding ResponseLabel}" Style="{StaticResource DiskStatValue}"/>
+                <TextBlock Text="Response time" Style="{StaticResource TileStatCaption}"/>
+                <TextBlock Text="{Binding ResponseLabel}" Style="{StaticResource TileStatValue}"/>
               </StackPanel>
               <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,0,0">
-                <TextBlock Text="Read speed" Style="{StaticResource DiskStatCaption}"/>
-                <TextBlock Text="{Binding ReadSpeedLabel}" Style="{StaticResource DiskStatValue}"/>
+                <TextBlock Text="Read speed" Style="{StaticResource TileStatCaption}"/>
+                <TextBlock Text="{Binding ReadSpeedLabel}" Style="{StaticResource TileStatValue}"/>
               </StackPanel>
               <StackPanel Grid.Row="1" Grid.Column="1" Margin="0,0,0,0">
-                <TextBlock Text="Write speed" Style="{StaticResource DiskStatCaption}"/>
-                <TextBlock Text="{Binding WriteSpeedLabel}" Style="{StaticResource DiskStatValue}"/>
+                <TextBlock Text="Write speed" Style="{StaticResource TileStatCaption}"/>
+                <TextBlock Text="{Binding WriteSpeedLabel}" Style="{StaticResource TileStatValue}"/>
               </StackPanel>
             </Grid>
 
-            <Grid Grid.Row="0" Grid.Column="3" Margin="10,0,0,0">
+            <Grid Grid.Row="2" Grid.Column="3" Margin="10,0,0,0">
               <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
@@ -197,24 +234,24 @@
                 <RowDefinition/>
               </Grid.RowDefinitions>
               <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,0,0">
-                <TextBlock Text="Temperature" Style="{StaticResource DiskStatCaption}"/>
-                <TextBlock Text="{Binding TemperatureLabel}" Style="{StaticResource DiskStatValue}"/>
+                <TextBlock Text="Temperature" Style="{StaticResource TileStatCaption}"/>
+                <TextBlock Text="{Binding TemperatureLabel}" Style="{StaticResource TileStatValue}"/>
               </StackPanel>
               <StackPanel Grid.Row="0" Grid.Column="1" Margin="0,0,0,0">
-                <TextBlock Text="Health (Life)" Style="{StaticResource DiskStatCaption}"/>
-                <TextBlock Text="{Binding HealthLabel}" Style="{StaticResource DiskStatValue}"/>
+                <TextBlock Text="Health (Life)" Style="{StaticResource TileStatCaption}"/>
+                <TextBlock Text="{Binding HealthLabel}" Style="{StaticResource TileStatValue}"/>
               </StackPanel>
               <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,0,0">
-                <TextBlock Text="Read activity" Style="{StaticResource DiskStatCaption}"/>
-                <TextBlock Text="{Binding ReadActivityLabel}" Style="{StaticResource DiskStatValue}"/>
+                <TextBlock Text="Read activity" Style="{StaticResource TileStatCaption}"/>
+                <TextBlock Text="{Binding ReadActivityLabel}" Style="{StaticResource TileStatValue}"/>
               </StackPanel>
               <StackPanel Grid.Row="1" Grid.Column="1">
-                <TextBlock Text="Write activity" Style="{StaticResource DiskStatCaption}"/>
-                <TextBlock Text="{Binding WriteActivityLabel}" Style="{StaticResource DiskStatValue}"/>
+                <TextBlock Text="Write activity" Style="{StaticResource TileStatCaption}"/>
+                <TextBlock Text="{Binding WriteActivityLabel}" Style="{StaticResource TileStatValue}"/>
               </StackPanel>
             </Grid>
 
-            <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" Margin="0">
+            <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" Margin="0,2,0,0" Background="CadetBlue">
               <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1.2*"/>
                 <ColumnDefinition Width="*"/>
@@ -227,48 +264,58 @@
                   <TextBlock Text="{Binding CapacityLabel}" Style="{StaticResource SpecValue}"/>
                 </StackPanel>-->
               <StackPanel Grid.Column="0" Orientation="Horizontal">
-                <TextBlock Text="Type:" Style="{StaticResource SpecCaption}"/>
-                <TextBlock Text="{Binding MediaType}" Style="{StaticResource SpecValue}"/>
+                <TextBlock Text="Type:" Style="{StaticResource IdSpecCaption}"/>
+                <TextBlock Text="{Binding MediaType}" Style="{StaticResource IdSpecValue}"/>
               </StackPanel>
               <StackPanel Grid.Column="1" Orientation="Horizontal">
-                <TextBlock Text="Interface:" Style="{StaticResource SpecCaption}"/>
-                <TextBlock Text="{Binding InterfaceType}" Style="{StaticResource SpecValue}"/>
+                <TextBlock Text="Interface:" Style="{StaticResource IdSpecCaption}"/>
+                <TextBlock Text="{Binding InterfaceType}" Style="{StaticResource IdSpecValue}"/>
               </StackPanel>
               <StackPanel Grid.Column="2" Orientation="Horizontal">
-                <TextBlock Text="Partitions:" Style="{StaticResource SpecCaption}"/>
-                <TextBlock Text="{Binding PartitionsLabel}" Style="{StaticResource SpecValue}"/>
+                <TextBlock Text="Partitions:" Style="{StaticResource IdSpecCaption}"/>
+                <TextBlock Text="{Binding PartitionsLabel}" Style="{StaticResource IdSpecValue}"/>
               </StackPanel>
               <StackPanel Grid.Column="3" Orientation="Horizontal">
-                <TextBlock Text="Firmware:" Style="{StaticResource SpecCaption}"/>
-                <TextBlock Text="{Binding FirmwareRevision}" Style="{StaticResource SpecValue}"/>
+                <TextBlock Text="Firmware:" Style="{StaticResource IdSpecCaption}"/>
+                <TextBlock Text="{Binding FirmwareRevision}" Style="{StaticResource IdSpecValue}"/>
               </StackPanel>
               <StackPanel Grid.Column="4" Orientation="Horizontal">
-                <TextBlock Text="Manufacturer:" Style="{StaticResource SpecCaption}"/>
-                <TextBlock Text="{Binding Manufacturer}" Style="{StaticResource SpecValue}"
+                <TextBlock Text="Manufacturer:" Style="{StaticResource IdSpecCaption}"/>
+                <TextBlock Text="{Binding Manufacturer}" Style="{StaticResource IdSpecValue}"
                              TextTrimming="CharacterEllipsis"/>
               </StackPanel>
             </Grid>
 
             <!-- Capacity: used vs free of the disk's mounted volumes -->
-            <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4">
+            <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4">
               <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="24"/>
                 <RowDefinition Height="Auto"/>
               </Grid.RowDefinitions>
-              <Grid Grid.Row="0" Margin="0,0,0,0">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                  <TextBlock Text="Capacity" Foreground="{StaticResource SpecValueBrush}" FontSize="{StaticResource SpecFontSize}" VerticalAlignment="Center"/>
-                  <Rectangle Width="11" Height="11" Fill="{StaticResource UsageBarUsedBrush}" VerticalAlignment="Center" Margin="16,0,6,0"/>
-                  <TextBlock Text="Used" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource BodyFontSize}" VerticalAlignment="Center"/>
-                  <TextBlock Text="{Binding UsedSpaceLabel}" Foreground="{StaticResource SpecValueBrush}" FontFamily="{StaticResource MonoFontFamily}" FontSize="{StaticResource BodyFontSize}" Margin="6,0,0,0" VerticalAlignment="Center"/>
-                  <Rectangle Width="11" Height="11" Fill="{StaticResource UsageBarFreeBrush}" VerticalAlignment="Center" Margin="16,0,6,0"/>
-                  <TextBlock Text="Free" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource BodyFontSize}" VerticalAlignment="Center"/>
-                  <TextBlock Text="{Binding FreeSpaceLabel}" Foreground="{StaticResource SpecValueBrush}" FontFamily="{StaticResource MonoFontFamily}" FontSize="{StaticResource BodyFontSize}" Margin="6,0,0,0" VerticalAlignment="Center"/>
+              <Grid Grid.Row="0" Margin="0,0,0,4">
+                <TextBlock Text="Capacity" Style="{StaticResource TileSectionLabel}"
+                           HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                  <StackPanel Orientation="Horizontal" Margin="0,0,16,0">
+                    <Rectangle Width="9" Height="9" Fill="{StaticResource UsageBarUsedBrush}" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                    <TextBlock Text="Used" Style="{StaticResource TileLegendCaption}"/>
+                    <TextBlock Text="{Binding UsedSpaceLabel}" Style="{StaticResource TileLegendValue}" Margin="4,0,0,0"/>
+                  </StackPanel>
+                  <StackPanel Orientation="Horizontal" Margin="0,0,16,0">
+                    <Rectangle Width="9" Height="9" Fill="{StaticResource UsageBarFreeBrush}" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                    <TextBlock Text="Free" Style="{StaticResource TileLegendCaption}"/>
+                    <TextBlock Text="{Binding FreeSpaceLabel}" Style="{StaticResource TileLegendValue}" Margin="4,0,0,0"/>
+                  </StackPanel>
+                  <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="9" Height="9" Fill="White" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                    <TextBlock Text="Total" Style="{StaticResource TileLegendCaption}"/>
+                    <TextBlock Text="{Binding TotalSpaceLabel}" Style="{StaticResource TileLegendValue}" Margin="4,0,0,0"/>
+                  </StackPanel>
                 </StackPanel>
-                <TextBlock Text="{Binding CapacityUsageLabel}" Foreground="{StaticResource LabelBrush}" FontFamily="{StaticResource MonoFontFamily}" FontSize="{StaticResource SpecFontSize}" HorizontalAlignment="Right"/>
               </Grid>
-              <Border Grid.Row="1" BorderBrush="{StaticResource UsageBarBorderBrush}" BorderThickness="1"
-                        Background="{StaticResource UsageBarTrackBrush}" Height="18" Margin="0,2,0,10">
+              <Border Grid.Row="1" Margin="0,0,0,8"
+                        BorderBrush="{StaticResource UsageBarBorderBrush}" BorderThickness="1"
+                        Background="{StaticResource UsageBarTrackBrush}" Height="18">
                 <Grid>
                   <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="{Binding UsedSpaceFraction, Converter={StaticResource FractionToStar}}"/>
@@ -276,65 +323,60 @@
                   </Grid.ColumnDefinitions>
                   <Rectangle Grid.Column="0" Fill="{StaticResource UsageBarUsedBrush}" ToolTip="{Binding UsedSpaceLabel}"/>
                   <Rectangle Grid.Column="1" Fill="{StaticResource UsageBarFreeBrush}" ToolTip="{Binding FreeSpaceLabel}"/>
-                  <TextBlock Grid.ColumnSpan="2" Text="{Binding UsedSpacePercentLabel}" Foreground="{StaticResource TextBrush}"
-                               FontFamily="{StaticResource MonoFontFamily}" FontSize="{StaticResource BodyFontSize}"
-                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Grid>
               </Border>
             </Grid>
 
-            <!-- Endurance (SMART): label at left, lifetime host writes/reads and power-on history. -->
-            <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" ShowGridLines="True">
+            <!-- Lifetime host writes/reads and power-on history (SMART), as spec pairs matching the
+                 Memory tile's bottom hardware-spec row. -->
+            <Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" VerticalAlignment="Top" Margin="0,5">
               <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
               </Grid.ColumnDefinitions>
-              <TextBlock Grid.Column="0" Text="Endurance (SMART)" Foreground="{StaticResource SpecValueBrush}" FontSize="{StaticResource SpecFontSize}"
-                             VerticalAlignment="Top" Margin="0,0,24,0"/>
+              <StackPanel Grid.Column="0" Orientation="Horizontal">
+                <TextBlock Text="Data written:" Style="{StaticResource TileSpecCaption}"/>
+                <TextBlock Text="{Binding DataWrittenLabel}" Style="{StaticResource TileSpecValue}"/>
+              </StackPanel>
               <StackPanel Grid.Column="1" Orientation="Horizontal">
-                <TextBlock Text="Data written" Style="{StaticResource DiskStatCaption}"/>
-                <TextBlock Text="{Binding DataWrittenLabel}" Style="{StaticResource DiskStatValue}" Margin="12,0,0,0"/>
+                <TextBlock Text="Data read:" Style="{StaticResource TileSpecCaption}"/>
+                <TextBlock Text="{Binding DataReadLabel}" Style="{StaticResource TileSpecValue}"/>
               </StackPanel>
               <StackPanel Grid.Column="2" Orientation="Horizontal">
-                <TextBlock Text="Data read" Style="{StaticResource DiskStatCaption}"/>
-                <TextBlock Text="{Binding DataReadLabel}" Style="{StaticResource DiskStatValue}" Margin="12,0,0,0"/>
+                <TextBlock Text="Power on:" Style="{StaticResource TileSpecCaption}"/>
+                <TextBlock Text="{Binding PowerOnHoursLabel}" Style="{StaticResource TileSpecValue}"/>
               </StackPanel>
               <StackPanel Grid.Column="3" Orientation="Horizontal">
-                <TextBlock Text="Power on" Style="{StaticResource DiskStatCaption}"/>
-                <TextBlock Text="{Binding PowerOnHoursLabel}" Style="{StaticResource DiskStatValue}" Margin="12,0,0,0"/>
+                <TextBlock Text="Power cycles:" Style="{StaticResource TileSpecCaption}"/>
+                <TextBlock Text="{Binding PowerOnCountLabel}" Style="{StaticResource TileSpecValue}"/>
               </StackPanel>
-              <StackPanel Grid.Column="4" Orientation="Horizontal">
-                <TextBlock Text="Power cycles" Style="{StaticResource DiskStatCaption}"/>
-                <TextBlock Text="{Binding PowerOnCountLabel}" Style="{StaticResource DiskStatValue}" Margin="12,0,0,0"/>
-              </StackPanel>
-
             </Grid>
 
             <!-- Identity strip: model (brand) + live activity/capacity at left, serial at right. -->
-            <Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4">
-              <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                <TextBlock Text="{Binding Model}" 
-                             Foreground="{StaticResource ValueBrush}" 
-                             FontSize="{StaticResource SubHeadingFontSize}" 
-                             VerticalAlignment="Center"/>
-                <TextBlock Text="{Binding ActivityLabel}" 
-                             Foreground="{StaticResource AccentBrush}" 
-                             FontSize="{StaticResource SpecFontSize}"
-                             FontFamily="{StaticResource MonoFontFamily}" 
-                             VerticalAlignment="Center" 
+            <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" VerticalAlignment="Center">
+              <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <TextBlock Text="{Binding Model}"
+                             Foreground="{StaticResource ValueBrush}"
+                             FontSize="{StaticResource CaptionFontSize}" 
+                           FontWeight="SemiBold"
+                             VerticalAlignment="Top"/>
+                <TextBlock Text="{Binding ActivityLabel}"
+                             Foreground="{StaticResource AccentBrush}"
+                             FontSize="{StaticResource CaptionFontSize}"
+                             FontFamily="{StaticResource MonoFontFamily}"
+                             VerticalAlignment="Center"
                              Margin="24,0,0,0"/>
-                <TextBlock Text="{Binding CapacityLabel}" 
-                             Foreground="{StaticResource LabelBrush}" 
-                             FontSize="{StaticResource SpecFontSize}"
-                             FontFamily="{StaticResource MonoFontFamily}" 
+                <TextBlock Text="{Binding CapacityLabel}"
+                             Foreground="{StaticResource LabelBrush}"
+                             FontSize="{StaticResource CaptionFontSize}"
+                             FontFamily="{StaticResource MonoFontFamily}"
                              VerticalAlignment="Center" Margin="12,0,0,0"/>
               </StackPanel>
               <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                <TextBlock Text="Serial:" Style="{StaticResource SpecCaption}" VerticalAlignment="Center"/>
-                <TextBlock Text="{Binding SerialNumber}" Style="{StaticResource SpecValue}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                <TextBlock Text="Serial:" Style="{StaticResource IdSpecCaption}"/>
+                <TextBlock Text="{Binding SerialNumber}" Style="{StaticResource IdSpecValue}" TextTrimming="CharacterEllipsis"/>
               </StackPanel>
             </Grid>
           </Grid>

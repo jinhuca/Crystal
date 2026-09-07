@@ -16,7 +16,7 @@
       <RowDefinition Height="*"/>
     </Grid.RowDefinitions>
     <Grid Grid.Row="0" Margin="0,0,0,2">
-      <TextBlock Text="Memory Used" Style="{StaticResource MetricCaption}" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+      <TextBlock Text="Memory Used" Style="{StaticResource MetricCaption}" Foreground="{StaticResource TextBrush}" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
       <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
         <TextBlock Style="{StaticResource TileMetricValue}">
           <TextBlock.Text>
