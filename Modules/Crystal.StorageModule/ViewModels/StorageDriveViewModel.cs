@@ -120,6 +120,7 @@ public sealed class StorageDriveViewModel : BindableBase {
       UsedSpaceGB is { } used && _totalSpaceGB is { } total ? $"{used:0.#} / {total:0.#} GB" : "—";
   public string UsedSpaceLabel => UsedSpaceGB is { } used ? $"{used:0.#} GB" : "—";
   public string FreeSpaceLabel => _freeSpaceGB is { } free ? $"{free:0.#} GB" : "—";
+  public string TotalSpaceLabel => _totalSpaceGB is { } total ? $"{total:0.#} GB" : "—";
   public string UsedSpacePercentLabel => _totalSpaceGB is { } t and > 0 || _usedSpacePercent is not null
       ? $"{UsedSpaceFraction * 100:0}%" : "—";
 
@@ -191,6 +192,7 @@ public sealed class StorageDriveViewModel : BindableBase {
     RaisePropertyChanged(nameof(CapacityUsageLabel));
     RaisePropertyChanged(nameof(UsedSpaceLabel));
     RaisePropertyChanged(nameof(FreeSpaceLabel));
+    RaisePropertyChanged(nameof(TotalSpaceLabel));
     RaisePropertyChanged(nameof(UsedSpacePercentLabel));
     RaisePropertyChanged(nameof(DataWrittenLabel));
     RaisePropertyChanged(nameof(DataReadLabel));

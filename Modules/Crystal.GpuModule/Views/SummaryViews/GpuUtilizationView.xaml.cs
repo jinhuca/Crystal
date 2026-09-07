@@ -19,6 +19,18 @@ public partial class GpuUtilizationView : UserControl {
     Loaded += OnLoaded;
   }
 
+  /// <summary>Identifies the <see cref="Capacity"/> dependency property.</summary>
+  public static readonly DependencyProperty CapacityProperty =
+      DependencyProperty.Register(nameof(Capacity), typeof(int), typeof(GpuUtilizationView),
+          new FrameworkPropertyMetadata(90));
+
+  /// <summary>History length of the utilization graph. Set per host tile (the integrated and
+  /// dedicated tiles share this view but keep different-length histories).</summary>
+  public int Capacity {
+    get => (int)GetValue(CapacityProperty);
+    set => SetValue(CapacityProperty, value);
+  }
+
   /// <summary>
   /// Handles the Loaded event of the GpuUtilizationView control. When the control is loaded, 
   /// it checks if the DataContext is a GpuAdapterViewModel and if the UtilizationGraph has a valid ID. 

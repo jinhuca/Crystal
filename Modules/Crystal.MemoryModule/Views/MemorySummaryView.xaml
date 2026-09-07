@@ -61,52 +61,89 @@
       <RowDefinition Height="*"/>
       <!-- body: graph column + info column -->
     </Grid.RowDefinitions>
-    <sv:MemoryHeaderView Grid.Row="0" Margin="0,0,0,6"/>
-    <Grid Grid.Row="1">
+    <sv:MemoryHeaderView Grid.Row="0" Margin="0,0,0,0"/>
+    <Grid Grid.Row="1" ShowGridLines="True">
       <Grid.RowDefinitions>
-        <RowDefinition Height="100"/>
-        <RowDefinition Height="Auto"/>
-        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="34"/>
+        <RowDefinition Height="92"/>
+        <RowDefinition Height="60"/>
+        <RowDefinition Height="40"/>
       </Grid.RowDefinitions>
       <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="220"/>
-        <ColumnDefinition Width="220"/>
+        <ColumnDefinition Width="240"/>
+        <ColumnDefinition Width="240"/>
         <ColumnDefinition/>
         <ColumnDefinition/>
       </Grid.ColumnDefinitions>
 
-      <Grid Grid.Row="0" Grid.Column="0">
+      <!-- Per-slot module inventory, pinned to the top so it aligns with the Storage tile's
+           identity/spec header block; the graphs and bars below line up across both tiles.
+           Capped to two rows tall — any extra modules scroll — so the list never grows the block. -->
+      <ScrollViewer Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" VerticalAlignment="Top" Height="34"
+                    VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Disabled"
+                    Background="Beige">
+        <ItemsControl ItemsSource="{Binding Modules}">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <Border Margin="0,0,0,1" Padding="1,0" Background="{StaticResource SurfaceBackgroundBrush}" CornerRadius="3">
+                <StackPanel Orientation="Horizontal">
+                  <TextBlock Text="{Binding SlotLabel}" Style="{StaticResource TileModuleField}"
+                       Foreground="{StaticResource AccentBrush}" FontWeight="SemiBold" Width="150"/>
+                  <TextBlock Text="{Binding CapacityLabel}" Style="{StaticResource TileModuleField}" Width="64"/>
+                  <TextBlock Text="{Binding SpeedLabel}" Style="{StaticResource TileModuleField}"
+                       Foreground="{StaticResource TextMutedBrush}" Width="90"/>
+                  <TextBlock Text="{Binding FormFactor}" Style="{StaticResource TileModuleField}"
+                       Foreground="{StaticResource TextMutedBrush}" Width="120"/>
+                  <TextBlock Text="{Binding Manufacturer}" Style="{StaticResource TileModuleField}"
+                       Foreground="{StaticResource TextMutedBrush}" Width="110"/>
+                  <TextBlock Text="{Binding PartNumber}" Style="{StaticResource TileModuleField}"/>
+                </StackPanel>
+              </Border>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </ScrollViewer>
+
+      <Grid Grid.Row="1" Grid.Column="0">
         <Grid.RowDefinitions>
           <RowDefinition Height="Auto"/>
           <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" Grid.Column="0" Margin="0,0,10,0">
-          <TextBlock Text="Memory usage" Style="{StaticResource TileSectionLabel}" HorizontalAlignment="Left"/>
-          <TextBlock Text="{Binding UsageLabel}" Style="{StaticResource TileLegendCaption}" HorizontalAlignment="Right"/>
+        <Grid Grid.Row="0" Grid.Column="0" Margin="0,0,10,4">
+          <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+            <TextBlock Text="Memory usage" Style="{StaticResource MetricCaption}" Foreground="{StaticResource TextBrush}"/>
+          </StackPanel>
+          <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <TextBlock Text="{Binding UsageLabel}" Style="{StaticResource TileLegendCaption}"/>
+          </StackPanel>
         </Grid>
-        <graphs:AdaptiveGraph x:Name="UsageGraph" 
+        <graphs:AdaptiveGraph x:Name="UsageGraph"
                                 Grid.Row="1"
                                 Width="210"
-                                MinHeight="40" 
+                                MinHeight="40"
                                 VerticalAlignment="Stretch"
                                 HorizontalAlignment="Left"
                                 Margin="0,0,0,0"
-                                MinValue="0" MaxValue="100" 
-                                Accent="{StaticResource GraphAccentMemory}" 
+                                MinValue="0" MaxValue="100"
+                                Accent="{StaticResource GraphAccentMemory}"
                                 BandedLine="False" ShowChrome="True"
                                 CellPitch="{StaticResource DashboardDotPitch}"/>
       </Grid>
 
-      <Grid Grid.Row="0" Grid.Column="1" Margin="0,0,10,0">
+      <Grid Grid.Row="1" Grid.Column="1" Margin="0,0,10,0">
         <Grid.RowDefinitions>
           <RowDefinition Height="Auto"/>
           <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" Margin="0,0,5,0">
-          <TextBlock Text="Commit charge" Style="{StaticResource TileSectionLabel}" HorizontalAlignment="Left"/>
-          <TextBlock Text="{Binding CommitUsageLabel}" Style="{StaticResource TileLegendCaption}" HorizontalAlignment="Right"/>
+        <Grid Grid.Row="0" Margin="0,0,5,4">
+          <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+            <TextBlock Text="Commit charge" Style="{StaticResource MetricCaption}" Foreground="{StaticResource TextBrush}"/>
+          </StackPanel>
+          <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <TextBlock Text="{Binding CommitUsageLabel}" Style="{StaticResource TileLegendCaption}"/>
+          </StackPanel>
         </Grid>
-        <graphs:AdaptiveGraph x:Name="CommitGraph" 
+        <graphs:AdaptiveGraph x:Name="CommitGraph"
                                 Grid.Row="1"
                                 MinHeight="40"
                                 Margin="0,0,0,0"
@@ -115,7 +152,7 @@
                                 CellPitch="{StaticResource DashboardDotPitch}"/>
       </Grid>
 
-      <Grid Grid.Row="0" Grid.Column="2" Background="Transparent">
+      <Grid Grid.Row="1" Grid.Column="2" Background="Transparent">
         <Grid.RowDefinitions>
           <RowDefinition Height="Auto"/>
           <RowDefinition Height="*"/>
@@ -136,7 +173,7 @@
         <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding PagedPoolLabel}" Style="{StaticResource TileStatValue}"/>
       </Grid>
 
-      <Grid Grid.Row="0" Grid.Column="3" Background="Transparent">
+      <Grid Grid.Row="1" Grid.Column="3" Background="Transparent">
         <Grid.RowDefinitions>
           <RowDefinition Height="Auto"/>
           <RowDefinition Height="*"/>
@@ -158,7 +195,7 @@
       </Grid>
 
       <!-- Hardware spec pairs -->
-      <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" VerticalAlignment="Top" Margin="0,5">
+      <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" VerticalAlignment="Top" Margin="0,5">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="*"/>
           <ColumnDefinition Width="*"/>
@@ -190,8 +227,7 @@
 
       <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4">
         <Grid.RowDefinitions>
-          <RowDefinition Height="Auto"/>
-          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="24"/>
           <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <!-- Memory composition title + the segment legend on one line: title left, legend right. -->
@@ -241,29 +277,6 @@
             <Rectangle Grid.Column="3" Fill="{StaticResource UsageBarFreeBrush}" ToolTip="{Binding CompositionFreeLabel}"/>
           </Grid>
         </Border>
-
-        <!-- Per-slot module inventory: compact rows (caption font, tight padding) so every column —
-       slot, capacity, speed, form factor, manufacturer, part number — fits one line. -->
-        <ItemsControl Grid.Row="2" ItemsSource="{Binding Modules}">
-          <ItemsControl.ItemTemplate>
-            <DataTemplate>
-              <Border Margin="0,0,0,1" Padding="8,0" Background="{StaticResource SurfaceBackgroundBrush}" CornerRadius="3">
-                <StackPanel Orientation="Horizontal">
-                  <TextBlock Text="{Binding SlotLabel}" Style="{StaticResource TileModuleField}"
-                       Foreground="{StaticResource AccentBrush}" FontWeight="SemiBold" Width="150"/>
-                  <TextBlock Text="{Binding CapacityLabel}" Style="{StaticResource TileModuleField}" Width="64"/>
-                  <TextBlock Text="{Binding SpeedLabel}" Style="{StaticResource TileModuleField}"
-                       Foreground="{StaticResource TextMutedBrush}" Width="90"/>
-                  <TextBlock Text="{Binding FormFactor}" Style="{StaticResource TileModuleField}"
-                       Foreground="{StaticResource TextMutedBrush}" Width="120"/>
-                  <TextBlock Text="{Binding Manufacturer}" Style="{StaticResource TileModuleField}"
-                       Foreground="{StaticResource TextMutedBrush}" Width="110"/>
-                  <TextBlock Text="{Binding PartNumber}" Style="{StaticResource TileModuleField}"/>
-                </StackPanel>
-              </Border>
-            </DataTemplate>
-          </ItemsControl.ItemTemplate>
-        </ItemsControl>
       </Grid>
     </Grid>
   </Grid>

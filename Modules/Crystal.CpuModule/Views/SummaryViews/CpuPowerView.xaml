@@ -21,6 +21,7 @@
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="*"/>
       <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="Auto"/>
     </Grid.ColumnDefinitions>
 
     <!-- Left column: title + history graph -->
@@ -88,13 +89,13 @@
 
       <graphs:AdaptiveGraph x:Name="PowerGraph" Grid.Row="1"
                             graphs:GraphIdentity.Id="Cpu.Power"
-                            Capacity="120" MinValue="0" MaxValue="100"
+                            Capacity="90" MinValue="0" MaxValue="100"
                             Accent="{StaticResource GraphAccentPower}" BandedLine="False" ShowChrome="True" MinHeight="40"
                             CellPitch="{StaticResource DashboardDotPitch}"/>
     </Grid>
 
     <!-- Right column: per-rail power table -->
-    <Grid Grid.Column="1" Margin="24,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Right">
+    <Grid Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Right">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="Auto"/>
         <ColumnDefinition Width="Auto"/>
@@ -138,5 +139,11 @@
       <TextBlock Grid.Row="4" Grid.Column="2" Text="{Binding PowerRails[3].Min, StringFormat={}{0:0.00}}"   Style="{StaticResource MetricTableValue}"/>
       <TextBlock Grid.Row="4" Grid.Column="3" Text="{Binding PowerRails[3].Max, StringFormat={}{0:0.00}}"   Style="{StaticResource MetricTableValue}"/>
     </Grid>
+
+    <!-- Full-height accent divider: closes the group in the Power graph's accent color, separating
+         it from the next metric group. -->
+    <Border Grid.Column="2" Width="2" Margin="12,0,0,0" VerticalAlignment="Stretch">
+      <Border.Background><SolidColorBrush Color="{StaticResource GraphAccentPower}"/></Border.Background>
+    </Border>
   </Grid>
 </UserControl>
