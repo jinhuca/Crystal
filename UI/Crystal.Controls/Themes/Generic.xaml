@@ -10,6 +10,7 @@
     <ResourceDictionary Source="/Crystal.Controls;component/Themes/PerformanceGraphSampleStyles.xaml"/>
     <!-- Keyed, opt-in PerformanceGraphLite styles (the square-dot counterpart of the keyed
          PerformanceGraph sample styles above); same one-place-merge reasoning as those. -->
+    <ResourceDictionary Source="/Crystal.Controls;component/Themes/AdaptiveGraphStyles.xaml"/>
     <ResourceDictionary Source="/Crystal.Controls;component/Themes/PerformanceGraphLiteStyles.xaml"/>
     <ResourceDictionary Source="/Crystal.Controls;component/Themes/RangeBarStyles.xaml"/>
     <ResourceDictionary Source="/Crystal.Controls;component/RangeBars/Styles/SummaryRangeBarStyle.xaml"/>
