@@ -13,7 +13,6 @@
              Background="Black" Foreground="{StaticResource TextBrush}"
              FontFamily="{StaticResource UiFontFamily}">
   <UserControl.Resources>
-    <!-- HWiNFO-style panel: sharp edges, thin border, tight gutters, dense packing. -->
     <Style x:Key="Tile" TargetType="Border">
       <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
       <Setter Property="BorderThickness" Value="1"/>
