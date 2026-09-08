@@ -26,7 +26,7 @@ public partial class DashboardView : UserControl {
   /// <summary>
   /// Default row heights, kept in one place so ResetLayout and the XAML stay in sync.
   /// </summary>
-  public GridLength ComponentsDefault {  get; } = new(1, GridUnitType.Star);
+  public GridLength ComponentsDefault {  get; } = new(0.9, GridUnitType.Star);
 
   /// <summary>
   /// Default height of the bottom row (BIOS/Network/OS).
