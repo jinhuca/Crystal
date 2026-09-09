@@ -1,6 +1,3 @@
-using Crystal.Controls.PerformanceGraphs;
-using Crystal.GpuModule.ViewModels;
-using System.Windows;
 using System.Windows.Controls;
 
 namespace Crystal.GpuModule.Views.SummaryViews;
@@ -17,12 +14,5 @@ public partial class GpuMemoryView : UserControl {
   /// </summary>
   public GpuMemoryView() {
     InitializeComponent();
-    Loaded += OnLoaded;
-  }
-
-  private void OnLoaded(object sender, RoutedEventArgs e) {
-    if (DataContext is GpuAdapterViewModel adapter && GraphIdentity.GetId(Graph) is { } id) {
-      adapter.AttachGraph(id, Graph);
-    }
   }
 }

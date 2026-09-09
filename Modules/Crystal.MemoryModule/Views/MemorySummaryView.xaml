@@ -13,6 +13,10 @@
              Background="Transparent" Foreground="{StaticResource TextBrush}"
              FontFamily="{StaticResource UiFontFamily}">
   <UserControl.Resources>
+    <ResourceDictionary>
+    <ResourceDictionary.MergedDictionaries>
+      <ResourceDictionary Source="/Crystal.Controls;component/Metrics/MetricEnrichmentResources.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
     <conv:FractionToStarConverter x:Key="FractionToStar"/>
 
     <!-- Fonts mirror the CPU/GPU tiles: captions use MetricCaption (Consolas 11), values use
@@ -53,6 +57,7 @@
       <Setter Property="VerticalAlignment" Value="Center"/>
       <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
     </Style>
+    </ResourceDictionary>
   </UserControl.Resources>
   <Grid Margin="8">
     <Grid.RowDefinitions>
@@ -108,7 +113,7 @@
           <ColumnDefinition Width="*"/>
           <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <!-- Memory usage -->
+        <!-- Memory usage — graph replaced with a value readout (test/minimal-graphs). -->
         <Grid Grid.Column="0" Margin="2,2,2,2">
           <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -118,23 +123,15 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom">
               <TextBlock Text="Memory usage" Style="{StaticResource MetricCaption}" Foreground="{StaticResource TextBrush}"/>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-              <TextBlock Text="{Binding UsageLabel}" Style="{StaticResource TileLegendCaption}"/>
-            </StackPanel>
           </Grid>
-          <graphs:AdaptiveGraph 
-            Grid.Row="1"
-            x:Name="UsageGraph"
-            MinHeight="40"  
-            Width="230"
-            VerticalAlignment="Stretch"
-            HorizontalAlignment="Left"
-            Capacity="60" MinValue="0" MaxValue="100"
-            Accent="{StaticResource GraphAccentMemory}"
-            BandedLine="False" ShowChrome="True"
-            CellPitch="{StaticResource DashboardDotPitch}"/>
+          <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Text="{Binding UsageLabel}" Style="{StaticResource TileMetricValue}"/>
+            <TextBlock Text="{Binding UsageRow.Trend, Converter={StaticResource TrendToGlyph}}"
+                       Foreground="{Binding UsageRow.Trend, Converter={StaticResource TrendToBrush}}"
+                       Style="{StaticResource MetricUnit}" Margin="4,0,0,0"/>
+          </StackPanel>
         </Grid>
-        <!-- Commit charge -->
+        <!-- Commit charge — graph replaced with a value readout (test/minimal-graphs). -->
         <Grid Grid.Column="1" Margin="2,2,2,2">
           <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -144,24 +141,13 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom">
               <TextBlock Text="Commit charge" Style="{StaticResource MetricCaption}" Foreground="{StaticResource TextBrush}"/>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-              <TextBlock Text="{Binding CommitUsageLabel}" Style="{StaticResource TileLegendCaption}"/>
-            </StackPanel>
           </Grid>
-          <graphs:AdaptiveGraph 
-            Grid.Row="1"
-            x:Name="CommitGraph"
-            MinHeight="40"
-            Width="230"
-            VerticalAlignment="Stretch"
-            HorizontalAlignment="Left"
-            Margin="0,0,0,0" 
-            Capacity="60"
-            MinValue="0" 
-            MaxValue="{Binding CommitLimitGB, TargetNullValue=64}"
-            Accent="{StaticResource GraphAccentMemorySecondary}" 
-            BandedLine="False" ShowChrome="True"
-            CellPitch="{StaticResource DashboardDotPitch}"/>
+          <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Text="{Binding CommitUsageLabel}" Style="{StaticResource TileMetricValue}"/>
+            <TextBlock Text="{Binding CommitRow.Trend, Converter={StaticResource TrendToGlyph}}"
+                       Foreground="{Binding CommitRow.Trend, Converter={StaticResource TrendToBrush}}"
+                       Style="{StaticResource MetricUnit}" Margin="4,0,0,0"/>
+          </StackPanel>
         </Grid>
 
         <Grid Grid.Column="2" Margin="12,2,2,2">

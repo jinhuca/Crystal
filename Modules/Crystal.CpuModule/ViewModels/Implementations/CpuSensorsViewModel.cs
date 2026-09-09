@@ -1,3 +1,4 @@
+using Crystal.Controls.Metrics;
 using Crystal.Controls.PerformanceGraphs;
 using Crystal.CpuModule.Models;
 using Crystal.CpuModule.ViewModels;
@@ -137,7 +138,7 @@ public sealed class CpuSensorsViewModel : BindableBase, ICpuSensorViewModel {
   /// History graphs are registered by their GraphIdentity.Id as each metric sub-view loads, then
   /// fed by that same id in Update(). A consumer that realizes only some tiles feeds only those.
   /// </summary>
-  private readonly Dictionary<string, ISingleSeriesGraph> _graphs = [];
+  private readonly GraphFeedRegistry _graphs = new();
 
   /// <summary>
   /// Current CPU load percentage, 0–100. Updated in place on every sensor emission.
@@ -201,6 +202,12 @@ public sealed class CpuSensorsViewModel : BindableBase, ICpuSensorViewModel {
   public ObservableCollection<MetricRowViewModel> VoltageRows { get; } = [
     new("Core"), new("SoC"),
   ];
+
+  /// <summary>
+  /// Session min/max/avg + trend for the fan readout (RPM, or PWM% on tachometer-less laptops). The
+  /// fan has no provider-side session extremes, so this row self-tracks them from the fed values.
+  /// </summary>
+  public MetricRowViewModel FanRow { get; } = new("Fan");
 
   /// <summary>
   /// Configured sustained package power limit (PL1) in W. Intel-only; zero when not exposed.
@@ -393,16 +400,14 @@ public sealed class CpuSensorsViewModel : BindableBase, ICpuSensorViewModel {
   /// </summary>
   /// <param name="id">string</param>
   /// <param name="graph">ISingleSeriesGraph</param>
-  public void AttachGraph(string id, ISingleSeriesGraph graph) => _graphs[id] = graph;
+  public void AttachGraph(string id, ISingleSeriesGraph graph) => _graphs.Attach(id, graph);
 
   /// <summary>
   /// Feeds the performance graph identified by <paramref name="id"/> with the specified <paramref name="value"/>.
   /// </summary>
   /// <param name="id">string</param>
   /// <param name="value">double</param>
-  private void FeedGraph(string id, double value) {
-    if (_graphs.TryGetValue(id, out var graph)) graph.AddValue(value);
-  }
+  private void FeedGraph(string id, double value) => _graphs.Feed(id, value);
 
   /// <summary>
   /// Updates the view model with the latest CPU readings from the provided <paramref name="info"/>.
@@ -460,6 +465,7 @@ public sealed class CpuSensorsViewModel : BindableBase, ICpuSensorViewModel {
     // sync, and gating it on a fan being latched started it a tick late (a fixed ~1s lag). We sample
     // the latest latched fan value here — 0 until the first reading, matching the "0 RPM" readout.
     FeedGraph("Cpu.Fan", FanReadoutValue);
+    FanRow.Update(FanReadoutValue);
 
     // Composite readouts derive from several sensors above; refresh them once per poll.
     RaisePropertyChanged(nameof(ClockReadoutLabel));
@@ -548,10 +554,10 @@ public sealed class CpuSensorsViewModel : BindableBase, ICpuSensorViewModel {
   /// scaling each by <paramref name="scale"/> (e.g. MHz→GHz for clocks).
   /// </summary>
   private static void SetRow(ObservableCollection<MetricRowViewModel> rows, int index, SensorReading reading, double scale = 1.0) {
-    var row = rows[index];
-    row.Value = (reading.Value ?? 0) * scale;
-    row.Min = (reading.Min ?? 0) * scale;
-    row.Max = (reading.Max ?? 0) * scale;
+    rows[index].Update(
+      (reading.Value ?? 0) * scale,
+      (reading.Min ?? 0) * scale,
+      (reading.Max ?? 0) * scale);
   }
 
   /// <summary>

@@ -1,0 +1,17 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:metrics="clr-namespace:Crystal.Controls.Metrics">
+  <!-- Shared by every graph-less summary tile: the readouts that replaced sparklines show session
+       min/avg/max and a trend glyph beneath the value, recovering the range/direction cues at no
+       per-frame render cost. Converters live in Crystal.Controls.Metrics; the stat-line style
+       derives from the app-level MetricCaption (resolved at load). -->
+  <metrics:TrendToGlyphConverter x:Key="TrendToGlyph"/>
+  <metrics:TrendToBrushConverter x:Key="TrendToBrush"/>
+  <metrics:TemperatureToBrushConverter x:Key="TemperatureToBrush"/>
+
+  <!-- Compact, dimmed min/avg/max line centered under a tile's primary value. -->
+  <Style x:Key="MetricStatLine" TargetType="TextBlock" BasedOn="{StaticResource MetricCaption}">
+    <Setter Property="HorizontalAlignment" Value="Center"/>
+    <Setter Property="Margin" Value="0,2,0,0"/>
+  </Style>
+</ResourceDictionary>

@@ -17,9 +17,13 @@ public sealed class NetworkViewModel : BindableBase, INetworkViewModel, IDisposa
   private readonly Dictionary<uint, ProcessNetworkRowViewModel> _talkersByPid = new();
   private string _downloadLabel = "—";
   private string _uploadLabel = "—";
+  private string _downloadPeakLabel = "—";
+  private string _uploadPeakLabel = "—";
+  private double _downloadPeak;
+  private double _uploadPeak;
   // History graphs are registered by their GraphIdentity.Id as the throughput sub-view loads, then
   // fed by that same id in Apply(). A consumer that realizes only some graphs feeds only those.
-  private readonly Dictionary<string, ISingleSeriesGraph> _graphs = [];
+  private readonly GraphFeedRegistry _graphs = new();
   private double _throughputMax = ThroughputFloorBytesPerSecond;
   private bool _hasWifi;
   private string _wifiLabel = "—";
@@ -73,6 +77,10 @@ public sealed class NetworkViewModel : BindableBase, INetworkViewModel, IDisposa
   public string TopTalkersStatusLabel { get => _topTalkersStatusLabel; private set => SetProperty(ref _topTalkersStatusLabel, value); }
   public string DownloadLabel { get => _downloadLabel; private set => SetProperty(ref _downloadLabel, value); }
   public string UploadLabel { get => _uploadLabel; private set => SetProperty(ref _uploadLabel, value); }
+  /// <summary>Session peak download throughput — the range cue recovered from the removed sparkline.</summary>
+  public string DownloadPeakLabel { get => _downloadPeakLabel; private set => SetProperty(ref _downloadPeakLabel, value); }
+  /// <summary>Session peak upload throughput — the range cue recovered from the removed sparkline.</summary>
+  public string UploadPeakLabel { get => _uploadPeakLabel; private set => SetProperty(ref _uploadPeakLabel, value); }
   public double ThroughputMaxBytesPerSecond { get => _throughputMax; private set => SetProperty(ref _throughputMax, value); }
   public bool HasWifi { get => _hasWifi; private set => SetProperty(ref _hasWifi, value); }
   public string WifiLabel { get => _wifiLabel; private set => SetProperty(ref _wifiLabel, value); }
@@ -84,11 +92,9 @@ public sealed class NetworkViewModel : BindableBase, INetworkViewModel, IDisposa
   public ICommand ShowDetailCommand { get; }
   public ICommand ShowDashboardCommand { get; }
 
-  public void AttachGraph(string id, ISingleSeriesGraph graph) => _graphs[id] = graph;
+  public void AttachGraph(string id, ISingleSeriesGraph graph) => _graphs.Attach(id, graph);
 
-  private void FeedGraph(string id, double value) {
-    if (_graphs.TryGetValue(id, out var graph)) graph.AddValue(value);
-  }
+  private void FeedGraph(string id, double value) => _graphs.Feed(id, value);
 
   private void Apply(NetworkSnapshot snapshot) {
     // Reconcile the adapter list against the current interfaces (they can come and go as NICs
@@ -107,6 +113,14 @@ public sealed class NetworkViewModel : BindableBase, INetworkViewModel, IDisposa
 
     DownloadLabel = FormatSpeed(totalDownload);
     UploadLabel = FormatSpeed(totalUpload);
+    if (totalDownload > _downloadPeak) {
+      _downloadPeak = totalDownload;
+      DownloadPeakLabel = FormatSpeed(totalDownload);
+    }
+    if (totalUpload > _uploadPeak) {
+      _uploadPeak = totalUpload;
+      UploadPeakLabel = FormatSpeed(totalUpload);
+    }
 
     FeedGraph("Network.Download", totalDownload);
     FeedGraph("Network.Upload", totalUpload);

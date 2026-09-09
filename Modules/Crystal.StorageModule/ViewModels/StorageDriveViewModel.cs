@@ -1,3 +1,4 @@
+using Crystal.Controls.Metrics;
 using Crystal.Controls.PerformanceGraphs;
 using Crystal.Service.Storage;
 using System.Windows.Media;
@@ -91,7 +92,16 @@ public sealed class StorageDriveViewModel : BindableBase {
   public double WriteRateMBps { get => _writeRateMBps; private set => SetProperty(ref _writeRateMBps, value); }
   public double TransferMaxMBps { get => _transferMaxMBps; private set => SetProperty(ref _transferMaxMBps, value); }
 
+  // Trend backing for the two de-graphed cells: rise/fall/flat glyphs fed in Update, recovering the
+  // removed sparklines' direction cue at no render cost.
+  public MetricRowViewModel ActivityRow { get; } = new("Active");
+  public MetricRowViewModel TransferRow { get; } = new("Transfer");
+
   public string ActivityLabel => $"{ActivityPercent:0.0}%";
+  // Live combined read+write rate (the transfer tile's headline); GB/s once past 1000 MB/s. The
+  // session peak lives in the tile's caption, so the value area shows the current rate + its trend.
+  public string CurrentTransferLabel =>
+      ReadRateMBps + WriteRateMBps is var rate && rate >= 1000 ? $"{rate / 1000:0.0} GB/s" : $"{rate:0.0} MB/s";
   public string ReadActivityLabel => $"{ReadActivityPercent:0.0}%";
   public string WriteActivityLabel => $"{WriteActivityPercent:0.0}%";
   public string ReadSpeedLabel => $"{ReadRateMBps:0.0} MB/s";
@@ -178,7 +188,11 @@ public sealed class StorageDriveViewModel : BindableBase {
     TransferMaxMBps = NiceCeiling(Math.Max(TransferFloorMBps, _transferSamples.Max()));
     _peakTransferMBps = Math.Max(_peakTransferMBps, load.ReadRateMBps + load.WriteRateMBps);
 
+    ActivityRow.Update(load.ActivityPercent);
+    TransferRow.Update(load.ReadRateMBps + load.WriteRateMBps);
+
     RaisePropertyChanged(nameof(ActivityLabel));
+    RaisePropertyChanged(nameof(CurrentTransferLabel));
     RaisePropertyChanged(nameof(PeakTransferLabel));
     RaisePropertyChanged(nameof(ReadActivityLabel));
     RaisePropertyChanged(nameof(WriteActivityLabel));

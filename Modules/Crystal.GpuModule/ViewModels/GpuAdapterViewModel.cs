@@ -1,3 +1,4 @@
+using Crystal.Controls.Metrics;
 using Crystal.Controls.PerformanceGraphs;
 using Crystal.Service.Gpu;
 using System.Collections.ObjectModel;
@@ -71,7 +72,7 @@ public sealed class GpuAdapterViewModel : BindableBase {
   // detail view registers with the same ids explicitly), then fed by that same id in UpdateLoad.
   // One graph per id per adapter; last registration for an id wins, matching the previous
   // single-field behaviour when the summary and detail views attach to the same adapter VM.
-  private readonly Dictionary<string, ISingleSeriesGraph> _graphs = [];
+  private readonly GraphFeedRegistry _graphs = new();
 
   public string Name { get => _name; private set => SetProperty(ref _name, value); }
   public string KindLabel { get => _kindLabel; private set => SetProperty(ref _kindLabel, value); }
@@ -125,6 +126,15 @@ public sealed class GpuAdapterViewModel : BindableBase {
   public double? CoreVoltageMinV { get => _coreVoltageMinV; private set => SetProperty(ref _coreVoltageMinV, value); }
   public double? CoreVoltageMaxV { get => _coreVoltageMaxV; private set => SetProperty(ref _coreVoltageMaxV, value); }
 
+  // Trend backing for the de-graphed summary tiles: each carries the session min/avg/max and an
+  // EMA-based rise/fall/flat glyph, fed alongside the live values in UpdateLoad. No render cost.
+  public MetricRowViewModel Load3DRow { get; } = new("3D");
+  public MetricRowViewModel ClockRow { get; } = new("Clock");
+  public MetricRowViewModel PowerRow { get; } = new("Power");
+  public MetricRowViewModel TemperatureRow { get; } = new("Temperature");
+  public MetricRowViewModel HotSpotRow { get; } = new("Hot Spot");
+  public MetricRowViewModel MemoryRow { get; } = new("Memory");
+
   /// <summary>
   /// Upper bound of the core-clock history graph, ratcheted to a round value above the
   /// running peak so a 1.3 GHz iGPU and a 2.6 GHz dGPU each plot on a sensibly-scaled axis.
@@ -164,11 +174,9 @@ public sealed class GpuAdapterViewModel : BindableBase {
 
   public bool HasPowerRails => PowerRails.Count > 0;
 
-  public void AttachGraph(string id, ISingleSeriesGraph graph) => _graphs[id] = graph;
+  public void AttachGraph(string id, ISingleSeriesGraph graph) => _graphs.Attach(id, graph);
 
-  private void FeedGraph(string id, double value) {
-    if (_graphs.TryGetValue(id, out var graph)) graph.AddValue(value);
-  }
+  private void FeedGraph(string id, double value) => _graphs.Feed(id, value);
 
   /// <summary>
   /// Refreshes the static identity from the inventory row.
@@ -197,13 +205,17 @@ public sealed class GpuAdapterViewModel : BindableBase {
     TemperatureC = reading.TemperatureC;
     TemperatureMinC = reading.TemperatureMinC;
     TemperatureMaxC = reading.TemperatureMaxC;
-    if (reading.TemperatureC is { } t) FeedGraph("Gpu.Temperature", t);
+    if (reading.TemperatureC is { } t) {
+      FeedGraph("Gpu.Temperature", t);
+      TemperatureRow.Update(t, reading.TemperatureMinC, reading.TemperatureMaxC);
+    }
 
     ClockMhz = reading.ClockMhz;
     ClockMinMhz = reading.ClockMinMhz;
     ClockMaxMhz = reading.ClockMaxMhz;
     if (reading.ClockMhz is { } c) {
       FeedGraph("Gpu.Clock", c);
+      ClockRow.Update(c, reading.ClockMinMhz, reading.ClockMaxMhz);
       _clockPeak = Math.Max(c, _clockPeak * PeakDecay);
       ClockScaleMax = NiceScale(_clockPeak, MinClockScale);
     }
@@ -213,6 +225,7 @@ public sealed class GpuAdapterViewModel : BindableBase {
     PowerMaxW = reading.PowerMaxW;
     if (reading.PowerW is { } p) {
       FeedGraph("Gpu.Power", p);
+      PowerRow.Update(p, reading.PowerMinW, reading.PowerMaxW);
       _powerPeak = Math.Max(p, _powerPeak * PeakDecay);
       PowerScaleMax = NiceScale(_powerPeak, MinPowerScale);
     }
@@ -222,7 +235,10 @@ public sealed class GpuAdapterViewModel : BindableBase {
     MemoryUsedPercent = reading is { MemoryUsedGB: { } used, MemoryTotalGB: { } total } && total > 0
         ? used / total * 100
         : null;
-    if (MemoryUsedPercent is { } mem) FeedGraph("Gpu.Memory", mem);
+    if (MemoryUsedPercent is { } mem) {
+      FeedGraph("Gpu.Memory", mem);
+      MemoryRow.Update(mem);
+    }
     MemoryClockMhz = reading.MemoryClockMhz;
     MemoryClockMinMhz = reading.MemoryClockMinMhz;
     MemoryClockMaxMhz = reading.MemoryClockMaxMhz;
@@ -233,7 +249,10 @@ public sealed class GpuAdapterViewModel : BindableBase {
     HotSpotTemperatureC = reading.HotSpotTemperatureC;
     HotSpotTemperatureMinC = reading.HotSpotTemperatureMinC;
     HotSpotTemperatureMaxC = reading.HotSpotTemperatureMaxC;
-    if (reading.HotSpotTemperatureC is { } hot) FeedGraph("Gpu.HotSpot", hot);
+    if (reading.HotSpotTemperatureC is { } hot) {
+      FeedGraph("Gpu.HotSpot", hot);
+      HotSpotRow.Update(hot, reading.HotSpotTemperatureMinC, reading.HotSpotTemperatureMaxC);
+    }
     MemoryTemperatureC = reading.MemoryTemperatureC;
     MemoryTemperatureMinC = reading.MemoryTemperatureMinC;
     MemoryTemperatureMaxC = reading.MemoryTemperatureMaxC;
@@ -256,6 +275,7 @@ public sealed class GpuAdapterViewModel : BindableBase {
     var threeD = engines.FirstOrDefault(e => e.Name.Contains("3D", StringComparison.OrdinalIgnoreCase));
     Load3D = threeD?.LoadPercent ?? reading.CoreLoadPercent;
     FeedGraph("Gpu.3D", Load3D);
+    Load3DRow.Update(Load3D);
   }
 
   /// <summary>

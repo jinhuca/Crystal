@@ -6,6 +6,9 @@
              xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs;assembly=Crystal.Controls"
              mc:Ignorable="d"
              d:DesignHeight="120" d:DesignWidth="520">
+  <UserControl.Resources>
+    <ResourceDictionary Source="/Crystal.Controls;component/Metrics/MetricEnrichmentResources.xaml"/>
+  </UserControl.Resources>
   <!-- DataContext is the CPU SensorsViewModel, inherited from the host tile. Two columns:
        (left) the metric title — label + inline TjMax headroom (Intel), live value on the right —
        over the temperature history graph; (right) the temperature-sensor breakdown table
@@ -41,17 +44,25 @@
             </TextBlock.Style>
           </TextBlock>
         </StackPanel>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-          <TextBlock Text="{Binding Temperature, StringFormat={}{0:0.00}}" Style="{StaticResource TileMetricValue}"/>
-          <TextBlock Text="°C" Style="{StaticResource MetricUnit}"/>
-        </StackPanel>
       </Grid>
 
-      <graphs:AdaptiveGraph x:Name="TemperatureGraph" Grid.Row="1"
-                            graphs:GraphIdentity.Id="Cpu.Temperature"
-                            Capacity="90" MinValue="30" MaxValue="120"
-                            Accent="{StaticResource GraphAccentTemperature}" BandedLine="False" ShowChrome="True" MinHeight="40"
-                            CellPitch="{StaticResource DashboardDotPitch}"/>
+      <!-- Graph replaced with an enriched value readout (test/minimal-graphs): the live value (tinted
+           amber/red when the package runs warm/hot) with a trend glyph, over a session min/avg/max line. -->
+      <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+          <TextBlock Text="{Binding Temperature, StringFormat={}{0:0.00}}" Style="{StaticResource TileMetricValue}"
+                     Foreground="{Binding Temperature, Converter={StaticResource TemperatureToBrush}}"/>
+          <TextBlock Text="°C" Style="{StaticResource MetricUnit}"/>
+          <TextBlock Text="{Binding TemperatureRows[0].Trend, Converter={StaticResource TrendToGlyph}}"
+                     Foreground="{Binding TemperatureRows[0].Trend, Converter={StaticResource TrendToBrush}}"
+                     Style="{StaticResource MetricUnit}" Margin="4,0,0,0"/>
+        </StackPanel>
+        <TextBlock Style="{StaticResource MetricStatLine}">
+          <Run Text="min "/><Run Text="{Binding TemperatureRows[0].Min, StringFormat={}{0:0.0}}"/>
+          <Run Text="   avg "/><Run Text="{Binding TemperatureRows[0].Avg, StringFormat={}{0:0.0}}"/>
+          <Run Text="   max "/><Run Text="{Binding TemperatureRows[0].Max, StringFormat={}{0:0.0}}"/>
+        </TextBlock>
+      </StackPanel>
     </Grid>
 
     <!-- Right column: temperature-sensor table -->

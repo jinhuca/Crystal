@@ -1,4 +1,5 @@
 using Crystal.BiosModule.Models;
+using Crystal.Controls.Metrics;
 using Crystal.Controls.PerformanceGraphs;
 using Crystal.Controls.PerformanceGraphs.Kinds;
 using Crystal.Controls.PerformanceGraphs.Themes;
@@ -631,6 +632,18 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
   public string Rail12VRange { get => _rail12VRange; private set => SetProperty(ref _rail12VRange, value); }
 
   /// <summary>
+  /// Trend backing for the summary tile's board readings: rise/fall/flat glyphs fed from the
+  /// headline telemetry tick, recovering the removed sparklines' direction cue at no render cost.
+  /// The detail view keeps its full severity-themed trend graphs; these serve the compact tile.
+  /// </summary>
+  public MetricRowViewModel BoardTempRow { get; } = new("Board temp");
+  public MetricRowViewModel CmosRow { get; } = new("CMOS");
+  public MetricRowViewModel ChassisFanRow { get; } = new("Chassis fan");
+  public MetricRowViewModel Rail3V3Row { get; } = new("+3.3V");
+  public MetricRowViewModel Rail5VRow { get; } = new("+5V");
+  public MetricRowViewModel Rail12VRow { get; } = new("+12V");
+
+  /// <summary>
   /// Gets the severity of the CMOS voltage reading.
   /// </summary>
   public ReadingSeverity CmosSeverity { get => _cmosSeverity; private set => SetProperty(ref _cmosSeverity, value); }
@@ -927,11 +940,12 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
 
     // Trend each rail against its nominal so droop/ripple is visible; a missing reading skips the
     // tick rather than plotting a false zero that would swamp the ±10%-of-nominal window.
-    if (t.Rail3V3.Value is { } v3) Feed(_rail3V3Graph, v3);
-    if (t.Rail5V.Value is { } v5) Feed(_rail5VGraph, v5);
-    if (t.Rail12V.Value is { } v12) Feed(_rail12VGraph, v12);
-    if (t.BoardTemperature is { } bt) Feed(_boardTempGraph, bt);
-    if (t.CmosVoltage is { } cv) Feed(_cmosGraph, cv);
+    if (t.Rail3V3.Value is { } v3) { Feed(_rail3V3Graph, v3); Rail3V3Row.Update(v3); }
+    if (t.Rail5V.Value is { } v5) { Feed(_rail5VGraph, v5); Rail5VRow.Update(v5); }
+    if (t.Rail12V.Value is { } v12) { Feed(_rail12VGraph, v12); Rail12VRow.Update(v12); }
+    if (t.BoardTemperature is { } bt) { Feed(_boardTempGraph, bt); BoardTempRow.Update(bt); }
+    if (t.CmosVoltage is { } cv) { Feed(_cmosGraph, cv); CmosRow.Update(cv); }
+    if (t.ChassisFanRpm is { } fan) ChassisFanRow.Update(fan);
 
     CmosSeverity = BoardReadingSeverity.Cmos(t.CmosVoltage);
     Rail3V3Severity = BoardReadingSeverity.Rail(t.Rail3V3.Value, 3.3f);
