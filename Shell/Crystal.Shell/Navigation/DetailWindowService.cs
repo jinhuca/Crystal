@@ -1,4 +1,5 @@
 using Crystal.Infrastructure.Constants.Navigation;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -265,6 +266,9 @@ public sealed class DetailWindowService {
   // desktop — the desktop shrinks when a monitor is unplugged, stranding windows that were on it.
   // Requiring both a minimum-visible width/height and the title bar to be reachable keeps a
   // restored window grabbable rather than opening it fully or partly off-screen.
+  // SystemParameters.VirtualScreen* is only the *bounding box* of all monitors, so on an L-shaped
+  // or offset arrangement a rect can pass those checks yet sit in a dead gap no monitor covers;
+  // the final MonitorFromRect test rejects exactly that.
   private static bool IsOnScreen(WindowLayout saved) {
     double vLeft = SystemParameters.VirtualScreenLeft;
     double vTop = SystemParameters.VirtualScreenTop;
@@ -278,8 +282,39 @@ public sealed class DetailWindowService {
 
     // The title bar (top edge) must sit within the desktop, else it can't be dragged back.
     bool titleBarReachable = saved.Top >= vTop && saved.Top <= vBottom - MinVisible;
-    return titleBarReachable && visibleWidth >= MinVisible && visibleHeight >= MinVisible;
+    return titleBarReachable && visibleWidth >= MinVisible && visibleHeight >= MinVisible
+           && IntersectsRealMonitor(saved);
   }
+
+  // True if the saved rect actually overlaps a physical monitor. Window bounds are stored in WPF
+  // logical units (device-independent, at the primary monitor's DPI even under PerMonitorV2), so we
+  // scale them to physical pixels before asking Win32 which monitor they land on. MONITOR_DEFAULTTONULL
+  // makes MonitorFromRect return NULL when the rect touches no monitor — the dead-gap case that the
+  // bounding-box check above cannot see.
+  private static bool IntersectsRealMonitor(WindowLayout saved) {
+    double scale = PrimaryScale();
+    var rect = new Rect {
+      Left = (int)System.Math.Floor(saved.Left * scale),
+      Top = (int)System.Math.Floor(saved.Top * scale),
+      Right = (int)System.Math.Ceiling((saved.Left + saved.Width) * scale),
+      Bottom = (int)System.Math.Ceiling((saved.Top + saved.Height) * scale),
+    };
+    return MonitorFromRect(ref rect, MonitorDefaultToNull) != 0;
+  }
+
+  // Primary-monitor DIP-to-pixel scale (1.0 at 96 DPI). Read from the shell window's presentation
+  // source; before it is sourced there is nothing to restore, so the 1.0 fallback is harmless.
+  private static double PrimaryScale() =>
+      PresentationSource.FromVisual(Application.Current?.MainWindow)
+          ?.CompositionTarget?.TransformToDevice.M11 ?? 1.0;
+
+  private const uint MonitorDefaultToNull = 0x00000000;
+
+  [StructLayout(LayoutKind.Sequential)]
+  private struct Rect { public int Left, Top, Right, Bottom; }
+
+  [DllImport("user32.dll")]
+  private static extern nint MonitorFromRect(ref Rect rect, uint flags);
 
   private void PersistLayout(string detailViewName, Window window, bool open) {
     // RestoreBounds holds the normal-state rect even when minimized/maximized; fall back to the

@@ -1,3 +1,4 @@
+using Crystal.Controls.Metrics;
 using Crystal.Controls.PerformanceGraphs;
 using Crystal.CpuModule.Models;
 using Crystal.CpuModule.ViewModels;
@@ -72,6 +73,12 @@ public interface ICpuSensorViewModel {
   /// Fixed two-row set, updated in place on every sensor emission.
   /// </summary>
   ObservableCollection<MetricRowViewModel> VoltageRows { get; }
+
+  /// <summary>
+  /// Session min/max/avg + trend for the fan readout (RPM, or PWM% on tachometer-less laptops),
+  /// self-tracked from the sample stream since the fan has no provider-side session extremes.
+  /// </summary>
+  MetricRowViewModel FanRow { get; }
 
   /// <summary>
   /// Configured sustained package power limit (PL1) in W. Intel-only; zero when not exposed.

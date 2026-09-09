@@ -13,6 +13,10 @@
              Background="Transparent" Foreground="{StaticResource TextBrush}"
              FontFamily="{StaticResource UiFontFamily}">
   <UserControl.Resources>
+    <ResourceDictionary>
+    <ResourceDictionary.MergedDictionaries>
+      <ResourceDictionary Source="/Crystal.Controls;component/Metrics/MetricEnrichmentResources.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
     <conv:FractionToStarConverter x:Key="FractionToStar"/>
 
     <!-- Spec pairs mirroring the Memory tile's bottom hardware-spec row: caption font for both halves,
@@ -64,6 +68,7 @@
       <Setter Property="VerticalAlignment" Value="Center"/>
       <Setter Property="Margin" Value="6,0,0,0"/>
     </Style>
+    </ResourceDictionary>
   </UserControl.Resources>
   <Grid Margin="8">
     <Grid.RowDefinitions>
@@ -227,17 +232,13 @@
                     <TextBlock Text="{Binding ActivityLabel}" Style="{StaticResource TileLegendCaption}"/>
                   </StackPanel>
                 </Grid>
-                <graphs:AdaptiveGraph 
-                  Grid.Row="1" 
-                  MinHeight="40" 
-                  Width="230"
-                  VerticalAlignment="Stretch"
-                  HorizontalAlignment="Left"
-                  Loaded="OnActivityGraphLoaded"
-                  Capacity="60" MinValue="0" MaxValue="100" 
-                  Accent="{StaticResource GraphAccentStorage}" 
-                  BandedLine="False" ShowChrome="True"
-                  CellPitch="{StaticResource DashboardDotPitch}"/>
+                <!-- Graph replaced with a value readout + trend glyph (test/minimal-graphs). -->
+                <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                  <TextBlock Text="{Binding ActivityLabel}" Style="{StaticResource TileMetricValue}"/>
+                  <TextBlock Text="{Binding ActivityRow.Trend, Converter={StaticResource TrendToGlyph}}"
+                             Foreground="{Binding ActivityRow.Trend, Converter={StaticResource TrendToBrush}}"
+                             Style="{StaticResource MetricUnit}" Margin="4,0,0,0"/>
+                </StackPanel>
               </Grid>
               <!-- Disk transfer rate -->
               <Grid Grid.Column="1" Margin="2,2,2,2">
@@ -255,16 +256,14 @@
                     </TextBlock>
                   </StackPanel>
                 </Grid>
-                <graphs:AdaptiveGraph 
-                  Grid.Row="1" 
-                  MinHeight="40" 
-                  Width="230"
-                  VerticalAlignment="Stretch"
-                  HorizontalAlignment="Left"
-                  Loaded="OnTransferGraphLoaded"
-                  Capacity="60" MinValue="0" MaxValue="{Binding TransferMaxMBps}"
-                  Accent="#3E9BE8" BandedLine="False" ShowChrome="True"
-                  CellPitch="{StaticResource DashboardDotPitch}"/>
+                <!-- Graph replaced with the live rate + trend glyph (test/minimal-graphs); the session
+                     peak is in the caption above, so the value area shows the current rate. -->
+                <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                  <TextBlock Text="{Binding CurrentTransferLabel}" Style="{StaticResource TileMetricValue}"/>
+                  <TextBlock Text="{Binding TransferRow.Trend, Converter={StaticResource TrendToGlyph}}"
+                             Foreground="{Binding TransferRow.Trend, Converter={StaticResource TrendToBrush}}"
+                             Style="{StaticResource MetricUnit}" Margin="4,0,0,0"/>
+                </StackPanel>
               </Grid>
 
               <Grid Grid.Column="2" Margin="12,2,2,2">

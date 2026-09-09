@@ -6,6 +6,9 @@
              xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs;assembly=Crystal.Controls"
              mc:Ignorable="d"
              d:DesignHeight="120" d:DesignWidth="520">
+  <UserControl.Resources>
+    <ResourceDictionary Source="/Crystal.Controls;component/Metrics/MetricEnrichmentResources.xaml"/>
+  </UserControl.Resources>
   <!-- DataContext is the CPU SensorsViewModel, inherited from the host tile. Two columns:
        (left) the metric title — label + inline BCLK, live value on the right — over the clock
        history graph; (right) the clock-domain breakdown table (Core / Effective) with each
@@ -30,18 +33,24 @@
           <TextBlock Text="Clock" Style="{StaticResource MetricCaption}" Foreground="{StaticResource TextBrush}"/>
           <TextBlock Text="{Binding BusSpeedMHz, StringFormat=BCLK {0:0.0} MHz}" Style="{StaticResource MetricCaption}" Margin="10,0,0,0"/>
         </StackPanel>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-          <TextBlock Text="{Binding SpeedGhz, StringFormat={}{0:0.00}}" Style="{StaticResource TileMetricValue}"/>
-          <TextBlock Text="GHz" Style="{StaticResource MetricUnit}"/>
-        </StackPanel>
       </Grid>
 
-      <graphs:AdaptiveGraph x:Name="ClockGraph" Grid.Row="1"
-                            graphs:GraphIdentity.Id="Cpu.Clock"
-                            Capacity="90" MinValue="0" MaxValue="6"
-                            BandedLine="False" ShowChrome="True" MinHeight="40"
-                            Accent="{StaticResource GraphAccentClock}" 
-                            CellPitch="{StaticResource DashboardDotPitch}"/>
+      <!-- Graph replaced with an enriched value readout (test/minimal-graphs): the live clock with a
+           trend glyph, over a session min/avg/max line. -->
+      <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+          <TextBlock Text="{Binding SpeedGhz, StringFormat={}{0:0.00}}" Style="{StaticResource TileMetricValue}"/>
+          <TextBlock Text="GHz" Style="{StaticResource MetricUnit}"/>
+          <TextBlock Text="{Binding ClockRows[0].Trend, Converter={StaticResource TrendToGlyph}}"
+                     Foreground="{Binding ClockRows[0].Trend, Converter={StaticResource TrendToBrush}}"
+                     Style="{StaticResource MetricUnit}" Margin="4,0,0,0"/>
+        </StackPanel>
+        <TextBlock Style="{StaticResource MetricStatLine}">
+          <Run Text="min "/><Run Text="{Binding ClockRows[0].Min, StringFormat={}{0:0.00}}"/>
+          <Run Text="   avg "/><Run Text="{Binding ClockRows[0].Avg, StringFormat={}{0:0.00}}"/>
+          <Run Text="   max "/><Run Text="{Binding ClockRows[0].Max, StringFormat={}{0:0.00}}"/>
+        </TextBlock>
+      </StackPanel>
     </Grid>
 
     <!-- Right column: clock-domain table -->

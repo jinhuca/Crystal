@@ -12,9 +12,14 @@
        per-rail breakdown table (Package / Cores / GT / DRAM) with each rail's value and session
        min/max. The graph self-registers under "Cpu.Power" so the view model feeds it each poll. -->
   <UserControl.Resources>
-    <Style x:Key="PowerSubCaption" TargetType="TextBlock" BasedOn="{StaticResource MetricCaption}">
-      <Setter Property="Margin" Value="10,0,0,0"/>
-    </Style>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Crystal.Controls;component/Metrics/MetricEnrichmentResources.xaml"/>
+      </ResourceDictionary.MergedDictionaries>
+      <Style x:Key="PowerSubCaption" TargetType="TextBlock" BasedOn="{StaticResource MetricCaption}">
+        <Setter Property="Margin" Value="10,0,0,0"/>
+      </Style>
+    </ResourceDictionary>
   </UserControl.Resources>
 
   <Grid Background="Transparent">
@@ -81,17 +86,24 @@
             </TextBlock.Style>
           </TextBlock>
         </StackPanel>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-          <TextBlock Text="{Binding Power, StringFormat={}{0:0.00}}" Style="{StaticResource TileMetricValue}"/>
-          <TextBlock Text="Watts" Style="{StaticResource MetricUnit}"/>
-        </StackPanel>
       </Grid>
 
-      <graphs:AdaptiveGraph x:Name="PowerGraph" Grid.Row="1"
-                            graphs:GraphIdentity.Id="Cpu.Power"
-                            Capacity="90" MinValue="0" MaxValue="100"
-                            Accent="{StaticResource GraphAccentPower}" BandedLine="False" ShowChrome="True" MinHeight="40"
-                            CellPitch="{StaticResource DashboardDotPitch}"/>
+      <!-- Graph replaced with an enriched value readout (test/minimal-graphs): the live package power
+           with a trend glyph, over a session min/avg/max line. -->
+      <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+          <TextBlock Text="{Binding Power, StringFormat={}{0:0.00}}" Style="{StaticResource TileMetricValue}"/>
+          <TextBlock Text="Watts" Style="{StaticResource MetricUnit}"/>
+          <TextBlock Text="{Binding PowerRails[0].Trend, Converter={StaticResource TrendToGlyph}}"
+                     Foreground="{Binding PowerRails[0].Trend, Converter={StaticResource TrendToBrush}}"
+                     Style="{StaticResource MetricUnit}" Margin="4,0,0,0"/>
+        </StackPanel>
+        <TextBlock Style="{StaticResource MetricStatLine}">
+          <Run Text="min "/><Run Text="{Binding PowerRails[0].Min, StringFormat={}{0:0.0}}"/>
+          <Run Text="   avg "/><Run Text="{Binding PowerRails[0].Avg, StringFormat={}{0:0.0}}"/>
+          <Run Text="   max "/><Run Text="{Binding PowerRails[0].Max, StringFormat={}{0:0.0}}"/>
+        </TextBlock>
+      </StackPanel>
     </Grid>
 
     <!-- Right column: per-rail power table -->

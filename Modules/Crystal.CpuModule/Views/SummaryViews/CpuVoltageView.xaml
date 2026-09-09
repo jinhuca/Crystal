@@ -6,6 +6,9 @@
              xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs;assembly=Crystal.Controls"
              mc:Ignorable="d"
              d:DesignHeight="120" d:DesignWidth="520">
+  <UserControl.Resources>
+    <ResourceDictionary Source="/Crystal.Controls;component/Metrics/MetricEnrichmentResources.xaml"/>
+  </UserControl.Resources>
   <!-- DataContext is the CPU SensorsViewModel, inherited from the host tile. Two columns:
        (left) the metric title — label, live value on the right — over the voltage history graph;
        (right) the voltage-rail breakdown table (Core / SoC) with each rail's value and session
@@ -28,17 +31,24 @@
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom">
           <TextBlock Text="Voltage" Style="{StaticResource MetricCaption}" Foreground="{StaticResource TextBrush}"/>
         </StackPanel>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-          <TextBlock Text="{Binding Voltage, StringFormat={}{0:0.00}}" Style="{StaticResource TileMetricValue}"/>
-          <TextBlock Text="Volt" Style="{StaticResource MetricUnit}"/>
-        </StackPanel>
       </Grid>
 
-      <graphs:AdaptiveGraph x:Name="VoltageGraph" Grid.Row="1"
-                            graphs:GraphIdentity.Id="Cpu.Voltage"
-                            Capacity="90" MinValue="0" MaxValue="2"
-                            Accent="{StaticResource GraphAccentVoltage}" BandedLine="False" ShowChrome="True" MinHeight="40"
-                            CellPitch="{StaticResource DashboardDotPitch}"/>
+      <!-- Graph replaced with an enriched value readout (test/minimal-graphs): the live core voltage
+           with a trend glyph, over a session min/avg/max line. -->
+      <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+          <TextBlock Text="{Binding Voltage, StringFormat={}{0:0.000}}" Style="{StaticResource TileMetricValue}"/>
+          <TextBlock Text="Volt" Style="{StaticResource MetricUnit}"/>
+          <TextBlock Text="{Binding VoltageRows[0].Trend, Converter={StaticResource TrendToGlyph}}"
+                     Foreground="{Binding VoltageRows[0].Trend, Converter={StaticResource TrendToBrush}}"
+                     Style="{StaticResource MetricUnit}" Margin="4,0,0,0"/>
+        </StackPanel>
+        <TextBlock Style="{StaticResource MetricStatLine}">
+          <Run Text="min "/><Run Text="{Binding VoltageRows[0].Min, StringFormat={}{0:0.000}}"/>
+          <Run Text="   avg "/><Run Text="{Binding VoltageRows[0].Avg, StringFormat={}{0:0.000}}"/>
+          <Run Text="   max "/><Run Text="{Binding VoltageRows[0].Max, StringFormat={}{0:0.000}}"/>
+        </TextBlock>
+      </StackPanel>
     </Grid>
 
     <!-- Right column: voltage-rail table -->

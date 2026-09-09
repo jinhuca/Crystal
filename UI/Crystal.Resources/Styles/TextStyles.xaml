@@ -55,7 +55,7 @@
   <!-- Compact value for a narrow dashboard tile header, where the title and value share one line:
        MetricValue at a smaller size so both fit without colliding. -->
   <Style x:Key="TileMetricValue" TargetType="TextBlock" BasedOn="{StaticResource MetricValue}">
-    <Setter Property="FontSize" Value="12"/>
+    <Setter Property="FontSize" Value="20"/>
     <Setter Property="Margin" Value="0"/>
     <Setter Property="VerticalAlignment" Value="Bottom"/>
   </Style>

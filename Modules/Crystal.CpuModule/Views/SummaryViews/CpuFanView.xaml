@@ -6,6 +6,9 @@
              xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs;assembly=Crystal.Controls"
              mc:Ignorable="d"
              d:DesignHeight="120" d:DesignWidth="260">
+  <UserControl.Resources>
+    <ResourceDictionary Source="/Crystal.Controls;component/Metrics/MetricEnrichmentResources.xaml"/>
+  </UserControl.Resources>
   <!-- DataContext is the CPU SensorsViewModel, inherited from the host tile. Fan history graph,
        titled in the utilization pattern: metric label (left), live readout — RPM, or PWM percentage
        on tachometer-less laptops (right). Self-registers under "Cpu.Fan" so the view model feeds it
@@ -20,16 +23,23 @@
       <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom">
         <TextBlock Text="CPU Fan" Style="{StaticResource MetricCaption}" Foreground="{StaticResource TextBrush}"/>
       </StackPanel>
-      <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-        <TextBlock Text="{Binding FanReadoutText}" Style="{StaticResource TileMetricValue}"/>
-        <TextBlock Text="{Binding FanReadoutUnit}" Style="{StaticResource MetricUnit}"/>
-      </StackPanel>
     </Grid>
 
-    <graphs:AdaptiveGraph x:Name="FanGraph" Grid.Row="1"
-                          graphs:GraphIdentity.Id="Cpu.Fan"
-                          Capacity="120" MinValue="0" MaxValue="{Binding FanGraphMax}"
-                          Accent="#3BD15A" ShowChrome="True" MinHeight="40"
-                          CellPitch="{StaticResource DashboardDotPitch}"/>
+    <!-- Graph replaced with an enriched value readout (test/minimal-graphs): the live fan speed with
+         a trend glyph, over a session min/avg/max line. -->
+    <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+        <TextBlock Text="{Binding FanReadoutText}" Style="{StaticResource TileMetricValue}"/>
+        <TextBlock Text="{Binding FanReadoutUnit}" Style="{StaticResource MetricUnit}"/>
+        <TextBlock Text="{Binding FanRow.Trend, Converter={StaticResource TrendToGlyph}}"
+                   Foreground="{Binding FanRow.Trend, Converter={StaticResource TrendToBrush}}"
+                   Style="{StaticResource MetricUnit}" Margin="4,0,0,0"/>
+      </StackPanel>
+      <TextBlock Style="{StaticResource MetricStatLine}">
+        <Run Text="min "/><Run Text="{Binding FanRow.Min, StringFormat={}{0:0}}"/>
+        <Run Text="   avg "/><Run Text="{Binding FanRow.Avg, StringFormat={}{0:0}}"/>
+        <Run Text="   max "/><Run Text="{Binding FanRow.Max, StringFormat={}{0:0}}"/>
+      </TextBlock>
+    </StackPanel>
   </Grid>
 </UserControl>
