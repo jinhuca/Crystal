@@ -92,11 +92,12 @@ public partial class App : PrismApplication {
     // so it must not be collected. Resolved eagerly in OnInitialized.
     containerRegistry.RegisterSingleton<DetailWindowService>();
 
-    // System-wide sensor stream shared by every module that subscribes. SensorMonitor owns the
-    // polling lifetime and the hardware session, so it must be a singleton. Built via a factory:
-    // its ctor's optional TimeSpan?/IScheduler? params can't be resolved by the container, and we
-    // want the default 1-second poll cadence.
-    containerRegistry.RegisterSingleton<SensorMonitor>(_ => new SensorMonitor());
+    // System-wide board sensor stream shared by the BIOS tile and the CPU-fan readout. SensorMonitor
+    // owns the polling lifetime and the hardware session, so it must be a singleton. Polled every 2s
+    // rather than the 1s of the per-source sessions: board temps/voltages/fan RPM change slowly, and
+    // this is the only session that reads the ACPI embedded controller — halving its cadence halves
+    // how often that read can overlap out-of-band EC access (the "race condition possible" trace).
+    containerRegistry.RegisterSingleton<SensorMonitor>(_ => new SensorMonitor(TimeSpan.FromSeconds(2)));
   }
 
   protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog) {

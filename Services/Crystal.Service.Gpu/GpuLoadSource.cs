@@ -1,4 +1,5 @@
 using Crystal.Provider.Telemetry.Hardware;
+using System.Runtime.Intrinsics.X86;
 
 namespace Crystal.Service.Gpu;
 
@@ -26,10 +27,26 @@ public sealed class GpuLoadSource : IGpuLoadSource, IDisposable {
   /// Initializes a new instance of the <see cref="GpuLoadSource"/> class, and opening the Telemetry provider.
   /// </summary>
   public GpuLoadSource() {
-    // GPU groups depend on the CPU group being present to detect Intel integrated GPUs
-    // (see Computer.IsGpuEnabled), so enable both.
-    _computer = new Computer { IsCpuEnabled = true, IsGpuEnabled = true };
+    // The CPU group is only needed to detect Intel integrated GPUs — Computer.IsGpuEnabled builds
+    // the Intel iGPU group solely when the CPU group is present — and to read the CPU-package temp
+    // as the iGPU temperature fallback. An Intel iGPU can only exist on an Intel CPU, so on any
+    // other vendor enabling the CPU group would enumerate MSRs/PawnIO every session-open for a group
+    // that can never surface a GPU. Gate it on the CPU vendor to skip that work on AMD/ARM systems.
+    bool intelCpu = IsIntelCpu();
+    _computer = new Computer { IsCpuEnabled = intelCpu, IsGpuEnabled = true };
     _computer.Open();
+  }
+
+  // Reads the CPUID vendor string (leaf 0: EBX+EDX+ECX = "GenuineIntel") in-framework — no driver or
+  // elevation. False on non-x86, which likewise have no Intel iGPU.
+  private static bool IsIntelCpu() {
+    if (!X86Base.IsSupported) return false;
+    var (_, ebx, ecx, edx) = X86Base.CpuId(0, 0);
+    Span<byte> vendor = stackalloc byte[12];
+    BitConverter.TryWriteBytes(vendor[..4], ebx);
+    BitConverter.TryWriteBytes(vendor[4..8], edx);
+    BitConverter.TryWriteBytes(vendor[8..], ecx);
+    return vendor.SequenceEqual("GenuineIntel"u8);
   }
 
   /// <summary>

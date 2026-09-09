@@ -4,12 +4,21 @@ using Crystal.Provider.Telemetry.Hardware;
 namespace Crystal.Service.Sensors;
 
 /// <summary>
-/// Reads live sensors for every enabled hardware category from the Telemetry
-/// provider (a LibreHardwareMonitor fork) and projects them onto the neutral
-/// <see cref="SensorReading"/> type.
+/// Reads live board sensors from the Telemetry provider (a LibreHardwareMonitor fork) and projects
+/// them onto the neutral <see cref="SensorReading"/> type.
 /// <para>
-/// Temperature, clock, voltage and power for CPU/GPU come from MSRs via the
-/// ring-0 driver, so they read as empty unless the process is elevated.
+/// Only the Motherboard (SuperIO + embedded controller) and Controller (liquid-cooler) groups are
+/// enabled: the shared <see cref="SensorMonitor"/> that drives this source is consumed solely by the
+/// BIOS board tile and the CPU-fan readout, both of which read only the Motherboard and Cooler
+/// categories. CPU/GPU/Memory/Storage/Network each have their own dedicated telemetry session, so
+/// enabling them here would re-enumerate and re-poll the same hardware every second for data nobody
+/// reads off this stream — wasted work whose co-scheduled bus I/O widens the window in which our
+/// once-per-second embedded-controller read overlaps external EC access, amplifying the ACPI EC
+/// "race condition possible" trace. Keep the tree minimal so the EC read is the poll's only bus work.
+/// </para>
+/// <para>
+/// Board temperatures, voltages and fan RPM come from the SuperIO/EC via the ring-0 driver, so they
+/// read as empty unless the process is elevated with the PawnIO driver installed.
 /// </para>
 /// </summary>
 public sealed class TelemetrySensorSource : ISensorTelemetrySource {
@@ -18,15 +27,8 @@ public sealed class TelemetrySensorSource : ISensorTelemetrySource {
 
   public TelemetrySensorSource() {
     _computer = new Computer {
-      IsCpuEnabled = true,
-      IsGpuEnabled = true,
-      IsMemoryEnabled = true,
       IsMotherboardEnabled = true,
-      IsStorageEnabled = true,
-      IsNetworkEnabled = true,
       IsControllerEnabled = true,
-      IsBatteryEnabled = true,
-      IsPsuEnabled = true,
     };
     _computer.Open();
   }
