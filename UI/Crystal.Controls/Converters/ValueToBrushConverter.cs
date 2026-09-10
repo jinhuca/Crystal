@@ -57,8 +57,10 @@ public sealed class ValueToBrushConverter : IValueConverter {
         try {
           result = c.ToDouble(culture);
           return true;
-        } catch (FormatException) {
-        } catch (InvalidCastException) {
+        }
+        catch (FormatException) {
+        }
+        catch (InvalidCastException) {
         }
         break;
     }

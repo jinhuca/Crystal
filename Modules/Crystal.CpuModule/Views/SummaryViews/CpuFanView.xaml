@@ -7,39 +7,50 @@
              mc:Ignorable="d"
              d:DesignHeight="120" d:DesignWidth="260">
   <UserControl.Resources>
-    <ResourceDictionary Source="/Crystal.Controls;component/Metrics/MetricEnrichmentResources.xaml"/>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Crystal.Controls;component/Metrics/MetricEnrichmentResources.xaml"/>
+        <ResourceDictionary Source="/Crystal.Resources;component/Styles/BorderStyles.xaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
   </UserControl.Resources>
   <!-- DataContext is the CPU SensorsViewModel, inherited from the host tile. Fan history graph,
        titled in the utilization pattern: metric label (left), live readout — RPM, or PWM percentage
        on tachometer-less laptops (right). Self-registers under "Cpu.Fan" so the view model feeds it
        on each poll; its upper bound tracks FanGraphMax (100% or 4000 RPM). -->
-  <Grid VerticalAlignment="Stretch" Background="Transparent">
-    <Grid.RowDefinitions>
-      <RowDefinition Height="Auto"/>
-      <RowDefinition Height="*"/>
-    </Grid.RowDefinitions>
-
-    <Grid Grid.Row="0" Margin="0,0,0,4">
+  <Border Style="{StaticResource SummaryTileBorderStyle}">
+    <Grid MinHeight="60" ShowGridLines="False">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="20"/>
+        <RowDefinition Height="1.6*"/>
+        <RowDefinition Height=".7*"/>
+      </Grid.RowDefinitions>
       <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom">
-        <TextBlock Text="CPU Fan" Style="{StaticResource MetricCaption}" Foreground="{StaticResource TextBrush}"/>
+        <TextBlock Text="CPU Fan" Style="{StaticResource SummaryTileTitleTextBlockStyle}"/>
       </StackPanel>
-    </Grid>
 
-    <!-- Graph replaced with an enriched value readout (test/minimal-graphs): the live fan speed with
-         a trend glyph, over a session min/avg/max line. -->
-    <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-      <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-        <TextBlock Text="{Binding FanReadoutText}" Style="{StaticResource TileMetricValue}"/>
-        <TextBlock Text="{Binding FanReadoutUnit}" Style="{StaticResource MetricUnit}"/>
-        <TextBlock Text="{Binding FanRow.Trend, Converter={StaticResource TrendToGlyph}}"
+      <Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" ShowGridLines="False">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="60"/>
+          <ColumnDefinition Width="40"/>
+          <ColumnDefinition Width="40"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Column="0" 
+                   Text="{Binding FanReadoutText}" Style="{StaticResource TileMetricValue}"/>
+        <TextBlock Grid.Column="1" 
+                   Text="{Binding FanReadoutUnit}" Style="{StaticResource MetricUnit}"/>
+        <TextBlock Grid.Column="2" 
+                   Text="{Binding FanRow.Trend, Converter={StaticResource TrendToGlyph}}"
                    Foreground="{Binding FanRow.Trend, Converter={StaticResource TrendToBrush}}"
                    Style="{StaticResource MetricUnit}" Margin="4,0,0,0"/>
+      </Grid>
+      <StackPanel Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2,0,0,0">
+        <TextBlock Style="{StaticResource MetricStatLine}">
+        <Run Text="min " Foreground="{StaticResource AccentBrush}"/><Run Text="{Binding FanRow.Min, StringFormat={}{0:0}}"/>
+        <Run Text="   avg " Foreground="{StaticResource AccentBrush}"/><Run Text="{Binding FanRow.Avg, StringFormat={}{0:0}}"/>
+        <Run Text="   max " Foreground="{StaticResource AccentBrush}"/><Run Text="{Binding FanRow.Max, StringFormat={}{0:0}}"/>
+        </TextBlock>
       </StackPanel>
-      <TextBlock Style="{StaticResource MetricStatLine}">
-        <Run Text="min "/><Run Text="{Binding FanRow.Min, StringFormat={}{0:0}}"/>
-        <Run Text="   avg "/><Run Text="{Binding FanRow.Avg, StringFormat={}{0:0}}"/>
-        <Run Text="   max "/><Run Text="{Binding FanRow.Max, StringFormat={}{0:0}}"/>
-      </TextBlock>
-    </StackPanel>
-  </Grid>
+    </Grid>
+  </Border>
 </UserControl>
