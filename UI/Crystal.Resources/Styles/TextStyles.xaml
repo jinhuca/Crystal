@@ -38,9 +38,9 @@
   <Style x:Key="MetricUnit" TargetType="TextBlock">
     <Setter Property="Foreground" Value="{StaticResource UnitBrush}"/>
     <Setter Property="FontSize" Value="12"/>
-    <Setter Property="FontFamily" Value="Consolas"/>
+    <Setter Property="FontFamily" Value="{StaticResource UiFontFamily}"/>
 		<Setter Property="VerticalAlignment" Value="Bottom"/>
-		<Setter Property="Margin" Value="8,0,0,0"/>
+		<Setter Property="Margin" Value="8,0,0,2"/>
   </Style>
   <!-- Graph subtitle: the metric label beside/above a history graph (Clock, Temperature,
        Utilization, Memory Used, ...). Dim label face, one step smaller than a title caption;
@@ -55,7 +55,7 @@
   <!-- Compact value for a narrow dashboard tile header, where the title and value share one line:
        MetricValue at a smaller size so both fit without colliding. -->
   <Style x:Key="TileMetricValue" TargetType="TextBlock" BasedOn="{StaticResource MetricValue}">
-    <Setter Property="FontSize" Value="20"/>
+    <Setter Property="FontSize" Value="22"/>
     <Setter Property="Margin" Value="0"/>
     <Setter Property="VerticalAlignment" Value="Bottom"/>
   </Style>
@@ -64,14 +64,14 @@
        a dim right-aligned column header, a dim left row label, and light right-aligned value cells.
        Shared so every CPU metric tile's table reads identically. -->
   <Style x:Key="MetricTableHeader" TargetType="TextBlock" BasedOn="{StaticResource MetricCaption}">
-    <Setter Property="Foreground" Value="{StaticResource LabelBrush}"/>
+    <Setter Property="Foreground" Value="{StaticResource AccentBrush}"/>
     <Setter Property="HorizontalAlignment" Value="Right"/>
-    <Setter Property="Margin" Value="16,0,0,4"/>
+    <Setter Property="Margin" Value="10,0,0,0"/>
   </Style>
   <Style x:Key="MetricTableLabel" TargetType="TextBlock" BasedOn="{StaticResource MetricCaption}">
     <Setter Property="Foreground" Value="{StaticResource LabelBrush}"/>
     <Setter Property="VerticalAlignment" Value="Center"/>
-    <Setter Property="Margin" Value="0,2"/>
+    <Setter Property="Margin" Value="0"/>
   </Style>
   <Style x:Key="MetricTableValue" TargetType="TextBlock" BasedOn="{StaticResource MetricCaption}">
     <Setter Property="HorizontalAlignment" Value="Right"/>
@@ -112,5 +112,21 @@
     <Setter Property="Foreground" Value="{StaticResource SpecValueBrush}"/>
     <Setter Property="FontSize" Value="13"/>
     <Setter Property="Margin" Value="24,3,0,3"/>
+  </Style>
+
+  <Style x:Key="SummaryTileTitleTextBlockStyle" TargetType="TextBlock">
+    <Setter Property="Foreground" Value="{StaticResource AccentBrush}"/>
+    <Setter Property="FontFamily" Value="{StaticResource UiFontFamily}"/>
+    <Setter Property="FontSize" Value="{StaticResource SummaryTileTitleFontSize}"/>
+    <Setter Property="FontWeight" Value="Normal"/>
+    <Setter Property="VerticalAlignment" Value="Bottom"/>
+  </Style>
+
+  <Style x:Key="SummaryTileSubtitleTextBlockStyle" TargetType="TextBlock">
+    <Setter Property="Foreground" Value="{StaticResource LabelBrush}"/>
+    <Setter Property="FontSize" Value="{StaticResource MicroFontSize}"/>
+    <Setter Property="FontFamily" Value="{StaticResource UiFontFamily}"/>
+    <Setter Property="HorizontalAlignment" Value="Left"/>
+    <Setter Property="VerticalAlignment" Value="Bottom"/>
   </Style>
 </ResourceDictionary>
