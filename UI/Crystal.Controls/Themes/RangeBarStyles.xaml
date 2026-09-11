@@ -77,7 +77,12 @@
                            MaxValue="{TemplateBinding MaxValue}"
                            Segmented="{TemplateBinding Segmented}"
                            SegmentWidth="{TemplateBinding SegmentWidth}"
-                           SegmentGap="{TemplateBinding SegmentGap}"/>
+                           SegmentGap="{TemplateBinding SegmentGap}"
+                           SegmentCount="{TemplateBinding SegmentCount}"
+                           AccentColor="{TemplateBinding AccentColor}"
+                           Direction="{TemplateBinding Direction}"
+                           LowestAlpha="{TemplateBinding LowestAlpha}"
+                           HighestAlpha="{TemplateBinding HighestAlpha}"/>
 
             <!-- Max value end label -->
             <TextBlock Grid.Column="5"

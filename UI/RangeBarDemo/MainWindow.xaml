@@ -1,0 +1,87 @@
+<Window x:Class="RangeBarDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RangeBarDemo"
+        xmlns:controls="clr-namespace:Crystal.Controls.RangeBars.Controls;assembly=Crystal.Controls"
+        xmlns:bars="clr-namespace:Crystal.Controls.RangeBars;assembly=Crystal.Controls"
+        mc:Ignorable="d"
+        Title="RangeBar Gradient Demo" Height="620" Width="900"
+        Background="#111114">
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0"
+                   Text="RangeBar — accent-color alpha gradient"
+                   Foreground="White" FontSize="22" FontWeight="Bold"
+                   Margin="0,0,0,16"/>
+
+        <!-- Shared value slider: every bar below binds its Value to this. -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,20">
+            <TextBlock Text="Value" Foreground="#AAA" VerticalAlignment="Center" Margin="0,0,12,0"/>
+            <Slider x:Name="ValueSlider" Width="500" Minimum="0" Maximum="100" Value="72"
+                    VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding Value, ElementName=ValueSlider, StringFormat={}{0:0}}"
+                       Foreground="White" FontWeight="Bold" VerticalAlignment="Center" Margin="12,0,0,0"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="2">
+            <!-- 1. No accent: the original solid FillBrush behavior is preserved. -->
+            <controls:RangeBarView Title="Solid" Unit="(no accent)" Height="44" Margin="0,0,0,10"
+                                   MinValue="0" MaxValue="100"
+                                   Value="{Binding Value, ElementName=ValueSlider}"/>
+
+            <!-- 2. Accent gradient, ascending: alpha rises #55 -> #FF left to right. -->
+            <controls:RangeBarView Title="Gradient" Unit="asc" Height="44" Margin="0,0,0,10"
+                                   MinValue="0" MaxValue="100"
+                                   AccentColor="#3BD15A"
+                                   Direction="Ascending"
+                                   Value="{Binding Value, ElementName=ValueSlider}"/>
+
+            <!-- 3. Accent gradient, descending: alpha falls #FF -> #55 left to right. -->
+            <controls:RangeBarView Title="Gradient" Unit="desc" Height="44" Margin="0,0,0,10"
+                                   MinValue="0" MaxValue="100"
+                                   AccentColor="#3E9BE8"
+                                   Direction="Descending"
+                                   Value="{Binding Value, ElementName=ValueSlider}"/>
+
+            <!-- 4. Segmented gradient: each LED block samples the full-range gradient. -->
+            <controls:RangeBarView Title="Segmented" Unit="grad" Height="44" Margin="0,0,0,10"
+                                   MinValue="0" MaxValue="100"
+                                   AccentColor="#E82A7A"
+                                   Segmented="True" SegmentWidth="20" SegmentGap="2"
+                                   Value="{Binding Value, ElementName=ValueSlider}"/>
+
+            <!-- 4b. 10 squares, each worth 10: value 55 => 5½ squares lit. -->
+            <controls:RangeBarView Title="10 squares" Unit="x10" Height="44" Margin="0,0,0,10"
+                                   MinValue="0" MaxValue="100"
+                                   AccentColor="#3BD15A"
+                                   Segmented="True" SegmentCount="10"
+                                   Value="{Binding Value, ElementName=ValueSlider}"/>
+
+            <!-- 5. Custom alpha bounds: near-invisible low end, opaque high end. -->
+            <controls:RangeBarView Title="Custom α" Unit="10-FF" Height="44" Margin="0,0,0,10"
+                                   MinValue="0" MaxValue="100"
+                                   AccentColor="#E89B2A"
+                                   LowestAlpha="16" HighestAlpha="255"
+                                   Value="{Binding Value, ElementName=ValueSlider}"/>
+
+            <!-- 6. Raw RangeBar primitive (segmented, ascending) to show the gradient spans the
+                 full min..max range, not just up to the current value. -->
+            <Border Background="Black" Padding="2" Margin="0,10,0,0">
+                <bars:RangeBar Height="48"
+                               MinValue="0" MaxValue="100"
+                               AccentColor="#3BD15A"
+                               Segmented="True" SegmentCount="10"
+                               BarBackground="#1A1A1E"
+                               TrackBrush="#26262C"
+                               Value="{Binding Value, ElementName=ValueSlider}"/>
+            </Border>
+        </StackPanel>
+    </Grid>
+</Window>

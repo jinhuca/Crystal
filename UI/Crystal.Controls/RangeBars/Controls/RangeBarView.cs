@@ -1,5 +1,6 @@
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace Crystal.Controls.RangeBars.Controls;
 
@@ -115,6 +116,58 @@ public class RangeBarView : Control {
   public double SegmentGap {
     get => (double)GetValue(SegmentGapProperty);
     set => SetValue(SegmentGapProperty, value);
+  }
+
+  /// <summary>When &gt; 0, the inner bar draws exactly this many squares across the full scale
+  /// instead of pixel-sized LED blocks. Drives <see cref="RangeBar.SegmentCount"/>.</summary>
+  public static readonly DependencyProperty SegmentCountProperty =
+      DependencyProperty.Register(nameof(SegmentCount), typeof(int), typeof(RangeBarView),
+          new FrameworkPropertyMetadata(0));
+
+  public int SegmentCount {
+    get => (int)GetValue(SegmentCountProperty);
+    set => SetValue(SegmentCountProperty, value);
+  }
+
+  /// <summary>When set, the inner bar paints its fill with an alpha gradient generated from this
+  /// color. Drives <see cref="RangeBar.AccentColor"/>.</summary>
+  public static readonly DependencyProperty AccentColorProperty =
+      DependencyProperty.Register(nameof(AccentColor), typeof(Color?), typeof(RangeBarView),
+          new FrameworkPropertyMetadata(null));
+
+  public Color? AccentColor {
+    get => (Color?)GetValue(AccentColorProperty);
+    set => SetValue(AccentColorProperty, value);
+  }
+
+  /// <summary>Whether the accent alpha gradient rises or falls across the scale. Drives <see cref="RangeBar.Direction"/>.</summary>
+  public static readonly DependencyProperty DirectionProperty =
+      DependencyProperty.Register(nameof(Direction), typeof(RangeBarGradientDirection), typeof(RangeBarView),
+          new FrameworkPropertyMetadata(RangeBarGradientDirection.Ascending));
+
+  public RangeBarGradientDirection Direction {
+    get => (RangeBarGradientDirection)GetValue(DirectionProperty);
+    set => SetValue(DirectionProperty, value);
+  }
+
+  /// <summary>Alpha at the low end of the accent gradient. Drives <see cref="RangeBar.LowestAlpha"/>.</summary>
+  public static readonly DependencyProperty LowestAlphaProperty =
+      DependencyProperty.Register(nameof(LowestAlpha), typeof(byte), typeof(RangeBarView),
+          new FrameworkPropertyMetadata((byte)0x55));
+
+  public byte LowestAlpha {
+    get => (byte)GetValue(LowestAlphaProperty);
+    set => SetValue(LowestAlphaProperty, value);
+  }
+
+  /// <summary>Alpha at the high end of the accent gradient. Drives <see cref="RangeBar.HighestAlpha"/>.</summary>
+  public static readonly DependencyProperty HighestAlphaProperty =
+      DependencyProperty.Register(nameof(HighestAlpha), typeof(byte), typeof(RangeBarView),
+          new FrameworkPropertyMetadata((byte)0xFF));
+
+  public byte HighestAlpha {
+    get => (byte)GetValue(HighestAlphaProperty);
+    set => SetValue(HighestAlphaProperty, value);
   }
 
   /// <summary>The wrapped bar, available once the template is applied.</summary>
