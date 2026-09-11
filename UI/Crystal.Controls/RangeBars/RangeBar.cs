@@ -87,6 +87,32 @@ public class RangeBar : FrameworkElement {
       DependencyProperty.Register(nameof(SegmentGap), typeof(double), typeof(RangeBar),
           new FrameworkPropertyMetadata(2.0, FrameworkPropertyMetadataOptions.AffectsRender, OnSegmentGapChanged));
 
+  /// <summary>Identifies the <see cref="SegmentCount"/> dependency property.</summary>
+  public static readonly DependencyProperty SegmentCountProperty =
+      DependencyProperty.Register(nameof(SegmentCount), typeof(int), typeof(RangeBar),
+          new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.AffectsRender, OnSegmentCountChanged));
+
+  /// <summary>Identifies the <see cref="AccentColor"/> dependency property.</summary>
+  public static readonly DependencyProperty AccentColorProperty =
+      DependencyProperty.Register(nameof(AccentColor), typeof(Color?), typeof(RangeBar),
+          new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender, OnAccentColorChanged));
+
+  /// <summary>Identifies the <see cref="Direction"/> dependency property.</summary>
+  public static readonly DependencyProperty DirectionProperty =
+      DependencyProperty.Register(nameof(Direction), typeof(RangeBarGradientDirection), typeof(RangeBar),
+          new FrameworkPropertyMetadata(RangeBarGradientDirection.Ascending,
+              FrameworkPropertyMetadataOptions.AffectsRender, OnDirectionChanged));
+
+  /// <summary>Identifies the <see cref="LowestAlpha"/> dependency property.</summary>
+  public static readonly DependencyProperty LowestAlphaProperty =
+      DependencyProperty.Register(nameof(LowestAlpha), typeof(byte), typeof(RangeBar),
+          new FrameworkPropertyMetadata((byte)0x55, FrameworkPropertyMetadataOptions.AffectsRender, OnLowestAlphaChanged));
+
+  /// <summary>Identifies the <see cref="HighestAlpha"/> dependency property.</summary>
+  public static readonly DependencyProperty HighestAlphaProperty =
+      DependencyProperty.Register(nameof(HighestAlpha), typeof(byte), typeof(RangeBar),
+          new FrameworkPropertyMetadata((byte)0xFF, FrameworkPropertyMetadataOptions.AffectsRender, OnHighestAlphaChanged));
+
   private readonly BackgroundRenderer _backgroundRender = new();
   private readonly FillRenderer _fillRender = new();
   private readonly BorderRenderer _borderRender = new();
@@ -167,6 +193,42 @@ public class RangeBar : FrameworkElement {
     set => SetValue(SegmentGapProperty, value);
   }
 
+  /// <summary>When &gt; 0 and <see cref="Segmented"/> is true, the bar draws exactly this many
+  /// equally spaced squares (side = bar height) across the full scale instead of pixel-sized LED
+  /// blocks, overriding <see cref="SegmentWidth"/>/<see cref="SegmentGap"/>. The meter fills per
+  /// square, so a value of 55 on a 0..100 bar with 10 squares shows 5½ squares.</summary>
+  public int SegmentCount {
+    get => (int)GetValue(SegmentCountProperty);
+    set => SetValue(SegmentCountProperty, value);
+  }
+
+  /// <summary>When set, the fill is painted with a linear gradient generated from this color by
+  /// varying only its alpha channel across the full <see cref="MinValue"/>..<see cref="MaxValue"/>
+  /// scale (see <see cref="Direction"/>, <see cref="LowestAlpha"/>, <see cref="HighestAlpha"/>).
+  /// Leave null to keep the solid <see cref="FillBrush"/>.</summary>
+  public Color? AccentColor {
+    get => (Color?)GetValue(AccentColorProperty);
+    set => SetValue(AccentColorProperty, value);
+  }
+
+  /// <summary>Whether the accent alpha gradient rises (min→max) or falls across the scale.</summary>
+  public RangeBarGradientDirection Direction {
+    get => (RangeBarGradientDirection)GetValue(DirectionProperty);
+    set => SetValue(DirectionProperty, value);
+  }
+
+  /// <summary>Alpha at the low end of the accent gradient (default 0x55).</summary>
+  public byte LowestAlpha {
+    get => (byte)GetValue(LowestAlphaProperty);
+    set => SetValue(LowestAlphaProperty, value);
+  }
+
+  /// <summary>Alpha at the high end of the accent gradient (default 0xFF).</summary>
+  public byte HighestAlpha {
+    get => (byte)GetValue(HighestAlphaProperty);
+    set => SetValue(HighestAlphaProperty, value);
+  }
+
   /// <summary>Applies every property the given theme sets, leaving anything it leaves null untouched.</summary>
   public void ApplyTheme(RangeBarTheme theme) {
     if (theme == null) return;
@@ -206,6 +268,21 @@ public class RangeBar : FrameworkElement {
 
   private static void OnSegmentGapChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) =>
       ((RangeBar)d)._style.SegmentGap = (double)e.NewValue;
+
+  private static void OnSegmentCountChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) =>
+      ((RangeBar)d)._style.SegmentCount = (int)e.NewValue;
+
+  private static void OnAccentColorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) =>
+      ((RangeBar)d)._style.AccentColor = (Color?)e.NewValue;
+
+  private static void OnDirectionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) =>
+      ((RangeBar)d)._style.Direction = (RangeBarGradientDirection)e.NewValue;
+
+  private static void OnLowestAlphaChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) =>
+      ((RangeBar)d)._style.LowestAlpha = (byte)e.NewValue;
+
+  private static void OnHighestAlphaChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) =>
+      ((RangeBar)d)._style.HighestAlpha = (byte)e.NewValue;
 
   protected override Size MeasureOverride(Size availableSize) {
     double width = double.IsInfinity(availableSize.Width) ? 200 : availableSize.Width;

@@ -53,6 +53,7 @@
     <Project Path="UI/Crystal.Resources/Crystal.Resources.csproj" />
     <Project Path="UI/Crystal.Controls/Crystal.Controls.csproj" />
     <Project Path="UI/Crystal.WpfConverters/Crystal.WpfConverters.csproj" />
+    <Project Path="UI/RangeBarDemo/RangeBarDemo.csproj" />
   </Folder>
   <Folder Name="/UnitTests/">
     <Project Path="UnitTests/Crystal.Shell.Tests/Crystal.Shell.Tests.csproj">
