@@ -6,37 +6,47 @@
              xmlns:local="clr-namespace:Crystal.GpuModule.Views.SummaryViews"
              xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs;assembly=Crystal.Controls"
              mc:Ignorable="d"
-             d:DesignHeight="88" d:DesignWidth="210">
-  <!-- DataContext is a GpuAdapterViewModel, inherited from the per-adapter block. Title + live value
-       over the core-clock history graph; a high clock is desirable, not a warning, so BandedLine is
-       off (a steady accent line, not a green-to-red gauge ramp). Self-registers so the view model
-       feeds it on each poll. The clock-domain value/min/max table now lives in GpuDetailView. -->
-  <!-- Graph replaced with a header-only value+unit readout plus a trend glyph (test/minimal-graphs). -->
+             d:DesignHeight="120" d:DesignWidth="210">
+  <!-- DataContext is a GpuAdapterViewModel, inherited from the per-adapter block. Boxed sensor tile
+       matching the CpuSummaryView pattern: accent title, big core-clock value + unit + trend glyph,
+       and a session min/avg/max stat line. A high clock is desirable, not a warning, so the value is
+       left un-banded (steady accent, not a green-to-red ramp). The clock-domain value/min/max table
+       lives in GpuDetailView. -->
   <UserControl.Resources>
-    <ResourceDictionary Source="/Crystal.Controls;component/Metrics/MetricEnrichmentResources.xaml"/>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Crystal.Controls;component/Metrics/MetricEnrichmentResources.xaml"/>
+        <ResourceDictionary Source="/Crystal.Resources;component/Styles/BorderStyles.xaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
   </UserControl.Resources>
-  <Grid Width="{x:Static local:GpuSummaryViewConstants.GraphWidth}" VerticalAlignment="Stretch">
-    <Grid.RowDefinitions>
-      <RowDefinition Height="Auto"/>
-      <RowDefinition Height="*"/>
-    </Grid.RowDefinitions>
+  <Border Style="{StaticResource SummaryTileBorderStyle}" Width="{x:Static local:GpuSummaryViewConstants.GraphWidth}">
+    <Grid MinHeight="60" ShowGridLines="False">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="20"/>
+        <RowDefinition Height="1.6*"/>
+        <RowDefinition Height=".7*"/>
+      </Grid.RowDefinitions>
 
-    <TextBlock Grid.Row="0" Text="Clock" Style="{StaticResource MetricCaption}"
-               Foreground="{StaticResource TextBrush}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0,0,0,4"/>
+      <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="4,0,0,4">
+        <TextBlock Text="Clock" Style="{StaticResource SummaryTileTitleTextBlockStyle}"/>
+      </StackPanel>
 
-    <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-      <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+      <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
         <TextBlock Text="{Binding ClockMhz, StringFormat={}{0:0}, TargetNullValue=—}" Style="{StaticResource TileMetricValue}"/>
         <TextBlock Text="MHz" Style="{StaticResource MetricUnit}"/>
         <TextBlock Text="{Binding ClockRow.Trend, Converter={StaticResource TrendToGlyph}}"
                    Foreground="{Binding ClockRow.Trend, Converter={StaticResource TrendToBrush}}"
-                   Style="{StaticResource MetricUnit}" Margin="4,0,0,0"/>
+                   Style="{StaticResource MetricUnit}" Margin="4,0,0,2"/>
       </StackPanel>
-      <TextBlock Style="{StaticResource MetricStatLine}">
-        <Run Text="min "/><Run Text="{Binding ClockRow.Min, StringFormat={}{0:0}}"/>
-        <Run Text="   avg "/><Run Text="{Binding ClockRow.Avg, StringFormat={}{0:0}}"/>
-        <Run Text="   max "/><Run Text="{Binding ClockRow.Max, StringFormat={}{0:0}}"/>
-      </TextBlock>
-    </StackPanel>
-  </Grid>
+
+      <StackPanel Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <TextBlock Style="{StaticResource MetricStatLine}">
+          <Run Text="min " Foreground="{StaticResource AccentBrush}"/><Run Text="{Binding ClockRow.Min, StringFormat={}{0:0}}"/>
+          <Run Text="   avg " Foreground="{StaticResource AccentBrush}"/><Run Text="{Binding ClockRow.Avg, StringFormat={}{0:0}}"/>
+          <Run Text="   max " Foreground="{StaticResource AccentBrush}"/><Run Text="{Binding ClockRow.Max, StringFormat={}{0:0}}"/>
+        </TextBlock>
+      </StackPanel>
+    </Grid>
+  </Border>
 </UserControl>
