@@ -6,40 +6,47 @@
              xmlns:local="clr-namespace:Crystal.GpuModule.Views.SummaryViews"
              xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs;assembly=Crystal.Controls"
              mc:Ignorable="d"
-             d:DesignHeight="88" d:DesignWidth="130">
-  <!-- DataContext is a GpuAdapterViewModel, inherited from the per-adapter block. Header carries the
-       title, the session Min/Max of the hot-spot temperature inline, and the live value on the right,
-       over a value-banded history graph (dedicated cards only); self-registers so the view model feeds
-       it on each poll. -->
-  <!-- Graph replaced with a header-only readout (test/minimal-graphs): inline session Min/Max, a
-       severity-colored live value, and a trend glyph. -->
+             d:DesignHeight="120" d:DesignWidth="210">
+  <!-- DataContext is a GpuAdapterViewModel, inherited from the per-adapter block. Boxed sensor tile
+       matching the CpuSummaryView pattern: accent title, severity-colored hot-spot value + unit +
+       trend glyph, and a session min/avg/max stat line (dedicated cards only). -->
   <UserControl.Resources>
-    <ResourceDictionary Source="/Crystal.Controls;component/Metrics/MetricEnrichmentResources.xaml"/>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Crystal.Controls;component/Metrics/MetricEnrichmentResources.xaml"/>
+        <ResourceDictionary Source="/Crystal.Resources;component/Styles/BorderStyles.xaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
   </UserControl.Resources>
-  <Grid Width="{x:Static local:GpuSummaryViewConstants.GraphWidth}" VerticalAlignment="Stretch">
-    <Grid.RowDefinitions>
-      <RowDefinition Height="Auto"/>
-      <RowDefinition Height="*"/>
-    </Grid.RowDefinitions>
+  <Border Style="{StaticResource SummaryTileBorderStyle}" Width="{x:Static local:GpuSummaryViewConstants.GraphWidth}">
+    <Grid MinHeight="60" ShowGridLines="False">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="20"/>
+        <RowDefinition Height="1.6*"/>
+        <RowDefinition Height=".7*"/>
+      </Grid.RowDefinitions>
 
-    <TextBlock Grid.Row="0" Text="Hot Spot" Style="{StaticResource MetricCaption}"
-               Foreground="{StaticResource TextBrush}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0,0,0,4"/>
+      <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="4,0,0,4">
+        <TextBlock Text="Hot Spot" Style="{StaticResource SummaryTileTitleTextBlockStyle}"/>
+      </StackPanel>
 
-    <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-      <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+      <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
         <TextBlock Text="{Binding HotSpotTemperatureC, StringFormat={}{0:0.00}, TargetNullValue=0.00}"
                    Foreground="{Binding HotSpotTemperatureC, Converter={StaticResource TemperatureToBrush}}"
                    Style="{StaticResource TileMetricValue}"/>
         <TextBlock Text="°C" Style="{StaticResource MetricUnit}"/>
         <TextBlock Text="{Binding HotSpotRow.Trend, Converter={StaticResource TrendToGlyph}}"
                    Foreground="{Binding HotSpotRow.Trend, Converter={StaticResource TrendToBrush}}"
-                   Style="{StaticResource MetricUnit}" Margin="4,0,0,0"/>
+                   Style="{StaticResource MetricUnit}" Margin="4,0,0,2"/>
       </StackPanel>
-      <TextBlock Style="{StaticResource MetricStatLine}">
-        <Run Text="min "/><Run Text="{Binding HotSpotRow.Min, StringFormat={}{0:0}}"/>
-        <Run Text="   avg "/><Run Text="{Binding HotSpotRow.Avg, StringFormat={}{0:0}}"/>
-        <Run Text="   max "/><Run Text="{Binding HotSpotRow.Max, StringFormat={}{0:0}}"/>
-      </TextBlock>
-    </StackPanel>
-  </Grid>
+
+      <StackPanel Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <TextBlock Style="{StaticResource MetricStatLine}">
+          <Run Text="min " Foreground="{StaticResource AccentBrush}"/><Run Text="{Binding HotSpotRow.Min, StringFormat={}{0:0}}"/>
+          <Run Text="   avg " Foreground="{StaticResource AccentBrush}"/><Run Text="{Binding HotSpotRow.Avg, StringFormat={}{0:0}}"/>
+          <Run Text="   max " Foreground="{StaticResource AccentBrush}"/><Run Text="{Binding HotSpotRow.Max, StringFormat={}{0:0}}"/>
+        </TextBlock>
+      </StackPanel>
+    </Grid>
+  </Border>
 </UserControl>

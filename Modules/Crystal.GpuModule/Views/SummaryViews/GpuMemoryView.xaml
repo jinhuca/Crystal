@@ -6,26 +6,32 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs;assembly=Crystal.Controls"
              mc:Ignorable="d"
-             d:DesignHeight="88" d:DesignWidth="170">
-  <!-- DataContext is a GpuAdapterViewModel, inherited from the per-adapter block. Header ("Memory
-       Used" left, "used / total GB (percent)" right) over a value-banded history graph driven by the
-       used-percent; self-registers so the view model feeds it on each poll. -->
-  <!-- Graph replaced with a header-only value+unit readout plus a trend glyph (test/minimal-graphs).
-       The glyph tracks used-percent, so it reflects pressure even as the GB figure ticks. -->
+             d:DesignHeight="120" d:DesignWidth="210">
+  <!-- DataContext is a GpuAdapterViewModel, inherited from the per-adapter block. Boxed sensor tile
+       matching the CpuSummaryView pattern: accent title, "used / total GB" value + unit + trend glyph,
+       and a session min/avg/max stat line. The trend and stats track used-percent, so they reflect
+       pressure even as the GB figure ticks. -->
   <UserControl.Resources>
-    <ResourceDictionary Source="/Crystal.Controls;component/Metrics/MetricEnrichmentResources.xaml"/>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Crystal.Controls;component/Metrics/MetricEnrichmentResources.xaml"/>
+        <ResourceDictionary Source="/Crystal.Resources;component/Styles/BorderStyles.xaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
   </UserControl.Resources>
-  <Grid Width="{x:Static local:GpuSummaryViewConstants.GraphWidth}" VerticalAlignment="Stretch">
-    <Grid.RowDefinitions>
-      <RowDefinition Height="Auto"/>
-      <RowDefinition Height="*"/>
-    </Grid.RowDefinitions>
+  <Border Style="{StaticResource SummaryTileBorderStyle}" Width="{x:Static local:GpuSummaryViewConstants.GraphWidth}">
+    <Grid MinHeight="60" ShowGridLines="False">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="20"/>
+        <RowDefinition Height="1.6*"/>
+        <RowDefinition Height=".7*"/>
+      </Grid.RowDefinitions>
 
-    <TextBlock Grid.Row="0" Text="Memory Used" Style="{StaticResource MetricCaption}"
-               Foreground="{StaticResource TextBrush}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0,0,0,4"/>
+      <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="4,0,0,4">
+        <TextBlock Text="Memory Used" Style="{StaticResource SummaryTileTitleTextBlockStyle}"/>
+      </StackPanel>
 
-    <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-      <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+      <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
         <TextBlock Style="{StaticResource TileMetricValue}">
           <TextBlock.Text>
             <MultiBinding StringFormat="{}{0:0.0} / {1:0.0}">
@@ -37,13 +43,16 @@
         <TextBlock Text="GB" Style="{StaticResource MetricUnit}"/>
         <TextBlock Text="{Binding MemoryRow.Trend, Converter={StaticResource TrendToGlyph}}"
                    Foreground="{Binding MemoryRow.Trend, Converter={StaticResource TrendToBrush}}"
-                   Style="{StaticResource MetricUnit}" Margin="4,0,0,0"/>
+                   Style="{StaticResource MetricUnit}" Margin="4,0,0,2"/>
       </StackPanel>
-      <TextBlock Style="{StaticResource MetricStatLine}">
-        <Run Text="min "/><Run Text="{Binding MemoryRow.Min, StringFormat={}{0:0}}"/><Run Text="%"/>
-        <Run Text="   avg "/><Run Text="{Binding MemoryRow.Avg, StringFormat={}{0:0}}"/><Run Text="%"/>
-        <Run Text="   max "/><Run Text="{Binding MemoryRow.Max, StringFormat={}{0:0}}"/><Run Text="%"/>
-      </TextBlock>
-    </StackPanel>
-  </Grid>
+
+      <StackPanel Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <TextBlock Style="{StaticResource MetricStatLine}">
+          <Run Text="min " Foreground="{StaticResource AccentBrush}"/><Run Text="{Binding MemoryRow.Min, StringFormat={}{0:0}}"/><Run Text="%"/>
+          <Run Text="   avg " Foreground="{StaticResource AccentBrush}"/><Run Text="{Binding MemoryRow.Avg, StringFormat={}{0:0}}"/><Run Text="%"/>
+          <Run Text="   max " Foreground="{StaticResource AccentBrush}"/><Run Text="{Binding MemoryRow.Max, StringFormat={}{0:0}}"/><Run Text="%"/>
+        </TextBlock>
+      </StackPanel>
+    </Grid>
+  </Border>
 </UserControl>

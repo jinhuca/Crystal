@@ -17,17 +17,27 @@ namespace Crystal.Controls.RangeBars;
 /// </para>
 /// </summary>
 public class RangeBar : FrameworkElement {
-  /// <summary>Identifies the <see cref="Value"/> dependency property.</summary>
-  public static readonly DependencyProperty ValueProperty =
-      DependencyProperty.Register(nameof(Value), typeof(double), typeof(RangeBar),
-          new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender));
+  /// <summary>
+  /// Identifies the <see cref="Value"/> dependency property.
+  /// </summary>
+  public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
+    nameof(Value),
+    typeof(double),
+    typeof(RangeBar),
+    new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender));
 
-  /// <summary>Identifies the <see cref="MinValue"/> dependency property.</summary>
-  public static readonly DependencyProperty MinValueProperty =
-      DependencyProperty.Register(nameof(MinValue), typeof(double), typeof(RangeBar),
-          new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender));
+  /// <summary>
+  /// Identifies the <see cref="MinValue"/> dependency property.
+  /// </summary>
+  public static readonly DependencyProperty MinValueProperty = DependencyProperty.Register(
+    nameof(MinValue), 
+    typeof(double),
+    typeof(RangeBar),
+    new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender));
 
-  /// <summary>Identifies the <see cref="MaxValue"/> dependency property.</summary>
+  /// <summary>
+  /// Identifies the <see cref="MaxValue"/> dependency property.
+  /// </summary>
   public static readonly DependencyProperty MaxValueProperty =
       DependencyProperty.Register(nameof(MaxValue), typeof(double), typeof(RangeBar),
           new FrameworkPropertyMetadata(100.0, FrameworkPropertyMetadataOptions.AffectsRender));
