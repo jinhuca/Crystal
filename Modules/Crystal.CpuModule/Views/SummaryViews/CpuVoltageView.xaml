@@ -14,81 +14,98 @@
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </UserControl.Resources>
-  <!-- DataContext is the CPU SensorsViewModel, inherited from the host tile. Two columns:
-       (left) the metric title — label, live value on the right — over the voltage history graph;
-       (right) the voltage-rail breakdown table (Core / SoC) with each rail's value and session
-       min/max in V. The graph self-registers under "Cpu.Voltage" so the view model feeds it each poll. -->
+  <!-- DataContext is the CPU SensorsViewModel, inherited from the host tile. Same three-row layout
+       as CpuPowerView for consistency: (row 0) title + inline min/avg/max stat glyphs + NOW/MIN/MAX
+       table headers; (row 1) the live value + unit + trend on the left (voltage has no subtitle),
+       the voltage-rail breakdown table (Core / SoC) on the right; (row 2) the dot-style history
+       strip, self-registered under "Cpu.Voltage" so the view model feeds it each poll. -->
   <Border Style="{StaticResource SummaryTileBorderStyle}">
-    <Grid MinHeight="60" ShowGridLines="False">
+    <Grid HorizontalAlignment="Stretch" ShowGridLines="False">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="18"/>
+        <RowDefinition Height="50"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
       <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="90"/>
+        <ColumnDefinition Width="140"/>
+        <ColumnDefinition Width="*"/>
         <ColumnDefinition Width="*"/>
         <ColumnDefinition Width="*"/>
       </Grid.ColumnDefinitions>
-
-      <!-- Left column: title + history graph -->
-      <Grid Grid.Column="0" VerticalAlignment="Stretch">
-        <Grid.RowDefinitions>
-          <RowDefinition Height="20"/>
-          <RowDefinition Height="1.6*"/>
-          <RowDefinition Height=".7*"/>
-        </Grid.RowDefinitions>
-        <Grid Grid.Row="0" Margin="4,0,0,4">
-          <TextBlock Text="Voltage" Style="{StaticResource SummaryTileTitleTextBlockStyle}"/>
-        </Grid>
-        <Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" ShowGridLines="False">
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="60"/>
-            <ColumnDefinition Width="40"/>
-            <ColumnDefinition Width="40"/>
-          </Grid.ColumnDefinitions>
-          <TextBlock Grid.Column="0" 
-                   Text="{Binding Voltage, StringFormat={}{0:0.000}}" Style="{StaticResource TileMetricValue}"/>
-          <TextBlock Grid.Column="1" 
-                   Text="Volt" Style="{StaticResource MetricUnit}"/>
-          <TextBlock Grid.Column="2" 
-                   Text="{Binding VoltageRows[0].Trend, Converter={StaticResource TrendToGlyph}}"
-                   Foreground="{Binding VoltageRows[0].Trend, Converter={StaticResource TrendToBrush}}"
-                   Style="{StaticResource MetricUnit}" Margin="4,0,0,0"/>
-        </Grid>
-        <StackPanel Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2,0,0,0">
-          <TextBlock Style="{StaticResource MetricStatLine}">
-          <Run Text="min " Foreground="{StaticResource AccentBrush}"/><Run Text="{Binding VoltageRows[0].Min, StringFormat={}{0:0.000}}"/>
-          <Run Text="   avg " Foreground="{StaticResource AccentBrush}"/><Run Text="{Binding VoltageRows[0].Avg, StringFormat={}{0:0.000}}"/>
-          <Run Text="   max " Foreground="{StaticResource AccentBrush}"/><Run Text="{Binding VoltageRows[0].Max, StringFormat={}{0:0.000}}"/>
-          </TextBlock>
-        </StackPanel>
-      </Grid>
-      <!-- Right column: voltage-rail table -->
-      <Grid Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Right">
+      <!-- Header -->
+      <TextBlock Grid.Row="0" Grid.Column="0" Text="Voltage" Style="{StaticResource SummaryTileTitleTextBlockStyle}"/>
+      <TextBlock Grid.Row="0" Grid.Column="1" Style="{StaticResource MetricStatLine}">
+          <Run FontFamily="Segoe Fluent Icons" Text="&#xE70D; " Foreground="LightGreen"/><Run Text="{Binding VoltageRows[0].Min, StringFormat={}{0:0.000}}"/>
+          <Run FontFamily="Segoe Fluent Icons" Text=" &#xE738; " Foreground="{StaticResource AccentBrush}"/><Run Text="{Binding VoltageRows[0].Avg, StringFormat={}{0:0.000}}"/>
+          <Run FontFamily="Segoe Fluent Icons" Text=" &#xE70E; " Foreground="Crimson"/><Run Text="{Binding VoltageRows[0].Max, StringFormat={}{0:0.000}}"/>
+      </TextBlock>
+      <TextBlock Grid.Row="0" Grid.Column="2" Text="NOW" Style="{StaticResource MetricTableHeader}"/>
+      <TextBlock Grid.Row="0" Grid.Column="3" Text="MIN" Style="{StaticResource MetricTableHeader}"/>
+      <TextBlock Grid.Row="0" Grid.Column="4" Text="MAX" Style="{StaticResource MetricTableHeader}"/>
+      <!-- Content -->
+      <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" Background="Transparent" VerticalAlignment="Center" ShowGridLines="False">
         <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="Auto"/>
-          <ColumnDefinition Width="Auto"/>
-          <ColumnDefinition Width="Auto"/>
-          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="42"/>
+          <ColumnDefinition Width="40"/>
+          <ColumnDefinition Width="40"/>
+          <ColumnDefinition Width="40"/>
         </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-          <RowDefinition Height="Auto"/>
-          <RowDefinition Height="Auto"/>
-          <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+        <Grid Grid.Column="0" Grid.ColumnSpan="2" ShowGridLines="False">
+          <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="18"/>
+          </Grid.RowDefinitions>
+          <Grid Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" ShowGridLines="False">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="60"/>
+              <ColumnDefinition Width="40"/>
+              <ColumnDefinition Width="40"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="{Binding Voltage, StringFormat={}{0:0.000}}" Style="{StaticResource TileMetricValue}"/>
+            <TextBlock Grid.Column="1" Text="Volt" Style="{StaticResource MetricUnit}"/>
+            <TextBlock Grid.Column="2"
+               Text="{Binding VoltageRows[0].Trend, Converter={StaticResource TrendToGlyph}}"
+               Foreground="{Binding VoltageRows[0].Trend, Converter={StaticResource TrendToBrush}}"
+               Style="{StaticResource MetricUnit}" />
+          </Grid>
+        </Grid>
 
-        <!-- Column headers -->
-        <TextBlock Grid.Row="0" Grid.Column="1" Text="Value" Style="{StaticResource MetricTableHeader}"/>
-        <TextBlock Grid.Row="0" Grid.Column="2" Text="Min"   Style="{StaticResource MetricTableHeader}"/>
-        <TextBlock Grid.Row="0" Grid.Column="3" Text="Max"   Style="{StaticResource MetricTableHeader}"/>
+        <Grid Grid.Column="1" Grid.ColumnSpan="4">
+          <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+          </Grid.RowDefinitions>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+          </Grid.ColumnDefinitions>
+          <!-- Core -->
+          <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding VoltageRows[0].Label}" Style="{StaticResource MetricTableLabel}"/>
+          <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding VoltageRows[0].Value, StringFormat={}{0:0.000}}" Style="{StaticResource MetricTableValue}"/>
+          <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding VoltageRows[0].Min, StringFormat={}{0:0.000}}"   Style="{StaticResource MetricTableValue}"/>
+          <TextBlock Grid.Row="0" Grid.Column="3" Text="{Binding VoltageRows[0].Max, StringFormat={}{0:0.000}}"   Style="{StaticResource MetricTableValue}"/>
 
-        <!-- Core -->
-        <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding VoltageRows[0].Label}" Style="{StaticResource MetricTableLabel}"/>
-        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding VoltageRows[0].Value, StringFormat={}{0:0.000}}" Style="{StaticResource MetricTableValue}"/>
-        <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding VoltageRows[0].Min, StringFormat={}{0:0.000}}"   Style="{StaticResource MetricTableValue}"/>
-        <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding VoltageRows[0].Max, StringFormat={}{0:0.000}}"   Style="{StaticResource MetricTableValue}"/>
-
-        <!-- SoC -->
-        <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding VoltageRows[1].Label}" Style="{StaticResource MetricTableLabel}"/>
-        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding VoltageRows[1].Value, StringFormat={}{0:0.000}}" Style="{StaticResource MetricTableValue}"/>
-        <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding VoltageRows[1].Min, StringFormat={}{0:0.000}}"   Style="{StaticResource MetricTableValue}"/>
-        <TextBlock Grid.Row="2" Grid.Column="3" Text="{Binding VoltageRows[1].Max, StringFormat={}{0:0.000}}"   Style="{StaticResource MetricTableValue}"/>
+          <!-- SoC -->
+          <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding VoltageRows[1].Label}" Style="{StaticResource MetricTableLabel}"/>
+          <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding VoltageRows[1].Value, StringFormat={}{0:0.000}}" Style="{StaticResource MetricTableValue}"/>
+          <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding VoltageRows[1].Min, StringFormat={}{0:0.000}}"   Style="{StaticResource MetricTableValue}"/>
+          <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding VoltageRows[1].Max, StringFormat={}{0:0.000}}"   Style="{StaticResource MetricTableValue}"/>
+        </Grid>
       </Grid>
+
+      <!-- Dot-style voltage history strip; self-registers under "Cpu.Voltage" (shared feed key with
+           the detail-view history graph). SingleColor + accent blue. -->
+      <graphs:PerformanceGraphLite Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5" GraphBackground="Transparent"
+                                   Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Cpu.Voltage"
+                                   HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                                   Height="15" Rows="5" Capacity="120"
+                                   MinValue="0" MaxValue="2" CornerRadius="1"
+                                   ColorMode="SingleColor" DotColor="{StaticResource AccentBrush}"
+                                   Margin="0,6,0,0"/>
     </Grid>
   </Border>
 </UserControl>
