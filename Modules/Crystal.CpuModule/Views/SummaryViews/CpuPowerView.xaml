@@ -20,26 +20,59 @@
        per-rail breakdown table (Package / Cores / GT / DRAM) with each rail's value and session
        min/max. The graph self-registers under "Cpu.Power" so the view model feeds it each poll. -->
   <Border Style="{StaticResource SummaryTileBorderStyle}">
-    <Grid MinHeight="60">
+    <Grid HorizontalAlignment="Stretch">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="18"/>
+        <RowDefinition Height="*"/>
+      </Grid.RowDefinitions>
       <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="60"/>
+        <ColumnDefinition Width="140"/>
+        <ColumnDefinition Width="*"/>
         <ColumnDefinition Width="*"/>
         <ColumnDefinition Width="*"/>
       </Grid.ColumnDefinitions>
-
-      <!-- Left column: title + history graph -->
-      <Grid Grid.Column="0" VerticalAlignment="Stretch" 
-            ShowGridLines="False" Background="Transparent">
-        <Grid.RowDefinitions>
-          <RowDefinition Height="20"/>
-          <RowDefinition Height="1.6*"/>
-          <RowDefinition Height=".7*"/>
-        </Grid.RowDefinitions>
-
-        <Grid Grid.Row="0" Margin="4,0,0,4">
-          <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom">
-            <TextBlock Text="Power" Style="{StaticResource SummaryTileTitleTextBlockStyle}"/>
+      <!-- Header -->
+      <TextBlock Grid.Row="0" Grid.Column="0" Text="Power" Style="{StaticResource SummaryTileTitleTextBlockStyle}"/>
+      <TextBlock Grid.Row="0" Grid.Column="1" Style="{StaticResource MetricStatLine}">
+          <Run FontFamily="Segoe Fluent Icons" Text="&#xE70D; " Foreground="LightGreen"/><Run Text="{Binding PowerRails[0].Min, StringFormat={}{0:0.0}}"/>
+          <Run FontFamily="Segoe Fluent Icons" Text=" &#xE738; " Foreground="{StaticResource AccentBrush}"/><Run Text="{Binding PowerRails[0].Avg, StringFormat={}{0:0.0}}"/>
+          <Run FontFamily="Segoe Fluent Icons" Text=" &#xE70E; " Foreground="Crimson"/><Run Text="{Binding PowerRails[0].Max, StringFormat={}{0:0.0}}"/>
+      </TextBlock>
+      <TextBlock Grid.Row="0" Grid.Column="2" Text="NOW" Style="{StaticResource MetricTableHeader}"/>
+      <TextBlock Grid.Row="0" Grid.Column="3" Text="MIN" Style="{StaticResource MetricTableHeader}"/>
+      <TextBlock Grid.Row="0" Grid.Column="4" Text="MAX" Style="{StaticResource MetricTableHeader}"/>
+      <!-- Content -->
+      <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" Background="Transparent" VerticalAlignment="Center" ShowGridLines="False">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="42"/>
+          <ColumnDefinition Width="40"/>
+          <ColumnDefinition Width="40"/>
+          <ColumnDefinition Width="40"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0" Grid.ColumnSpan="2" ShowGridLines="False">
+          <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="18"/>
+          </Grid.RowDefinitions>
+          <Grid Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" ShowGridLines="False">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="60"/>
+              <ColumnDefinition Width="40"/>
+              <ColumnDefinition Width="40"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="{Binding Power, StringFormat={}{0:0.00}}" Style="{StaticResource TileMetricValue}"/>
+            <TextBlock Grid.Column="1" Text="Watts" Style="{StaticResource MetricUnit}"/>
+            <TextBlock Grid.Column="2" 
+               Text="{Binding PowerRails[0].Trend, Converter={StaticResource TrendToGlyph}}"
+               Foreground="{Binding PowerRails[0].Trend, Converter={StaticResource TrendToBrush}}"
+               Style="{StaticResource MetricUnit}" />
+          </Grid>
+          <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" 
+                      HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Horizontal">
             <!-- Intel RAPL power limits; hidden when not exposed (read 0 on AMD). -->
-            <TextBlock Text="{Binding PowerLimitLongW, StringFormat=PL1 {0:0} W}" Margin="10,0,0,0">
+            <TextBlock Text="{Binding PowerLimitLongW, StringFormat=PL1 {0:0} W}" Margin="0,0,0,0">
               <TextBlock.Style>
                 <Style TargetType="TextBlock" BasedOn="{StaticResource SummaryTileSubtitleTextBlockStyle}">
                   <Style.Triggers>
@@ -86,74 +119,37 @@
             </TextBlock>
           </StackPanel>
         </Grid>
-
-        <Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" ShowGridLines="False">
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="60"/>
-            <ColumnDefinition Width="40"/>
-            <ColumnDefinition Width="40"/>
-          </Grid.ColumnDefinitions>
-          <TextBlock Grid.Column="0" Text="{Binding Power, StringFormat={}{0:0.00}}" Style="{StaticResource TileMetricValue}"/>
-          <TextBlock Grid.Column="1" Text="Watts" Style="{StaticResource MetricUnit}"/>
-          <TextBlock Grid.Column="2" 
-                     Text="{Binding PowerRails[0].Trend, Converter={StaticResource TrendToGlyph}}"
-                     Foreground="{Binding PowerRails[0].Trend, Converter={StaticResource TrendToBrush}}"
-                     Style="{StaticResource MetricUnit}" />
-        </Grid>
         
-        <StackPanel Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2,0,0,0">
-          <TextBlock Style="{StaticResource MetricStatLine}">
-          <Run Text="min " Foreground="{StaticResource AccentBrush}"/><Run Text="{Binding PowerRails[0].Min, StringFormat={}{0:0.0}}"/>
-          <Run Text="   avg " Foreground="{StaticResource AccentBrush}"/><Run Text="{Binding PowerRails[0].Avg, StringFormat={}{0:0.0}}"/>
-          <Run Text="   max " Foreground="{StaticResource AccentBrush}"/><Run Text="{Binding PowerRails[0].Max, StringFormat={}{0:0.0}}"/>
-          </TextBlock>
-        </StackPanel>
-      </Grid>
+        <Grid Grid.Column="1" Grid.ColumnSpan="4">
+          <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+          </Grid.RowDefinitions>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+          </Grid.ColumnDefinitions>
+          <!-- Package -->
+          <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding PowerRails[0].Label}" Style="{StaticResource MetricTableLabel}"/>
+          <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding PowerRails[0].Value, StringFormat={}{0:0.00}}" Style="{StaticResource MetricTableValue}"/>
+          <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding PowerRails[0].Min, StringFormat={}{0:0.00}}"   Style="{StaticResource MetricTableValue}"/>
+          <TextBlock Grid.Row="0" Grid.Column="3" Text="{Binding PowerRails[0].Max, StringFormat={}{0:0.00}}"   Style="{StaticResource MetricTableValue}"/>
 
-      <!-- Right column: per-rail power table -->
-      <Grid Grid.Column="1" Margin="0,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Right" ShowGridLines="False">
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="Auto"/>
-          <ColumnDefinition Width="Auto"/>
-          <ColumnDefinition Width="Auto"/>
-          <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-          <RowDefinition Height="Auto"/>
-          <RowDefinition Height="Auto"/>
-          <RowDefinition Height="Auto"/>
-          <RowDefinition Height="Auto"/>
-          <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+          <!-- Cores -->
+          <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding PowerRails[1].Label}" Style="{StaticResource MetricTableLabel}"/>
+          <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding PowerRails[1].Value, StringFormat={}{0:0.00}}" Style="{StaticResource MetricTableValue}"/>
+          <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding PowerRails[1].Min, StringFormat={}{0:0.00}}"   Style="{StaticResource MetricTableValue}"/>
+          <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding PowerRails[1].Max, StringFormat={}{0:0.00}}"   Style="{StaticResource MetricTableValue}"/>
 
-        <!-- Column headers -->
-        <TextBlock Grid.Row="0" Grid.Column="1" Text="Value" Style="{StaticResource MetricTableHeader}"/>
-        <TextBlock Grid.Row="0" Grid.Column="2" Text="Min"   Style="{StaticResource MetricTableHeader}"/>
-        <TextBlock Grid.Row="0" Grid.Column="3" Text="Max"   Style="{StaticResource MetricTableHeader}"/>
-
-        <!-- Package -->
-        <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding PowerRails[0].Label}" Style="{StaticResource MetricTableLabel}"/>
-        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding PowerRails[0].Value, StringFormat={}{0:0.00}}" Style="{StaticResource MetricTableValue}"/>
-        <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding PowerRails[0].Min, StringFormat={}{0:0.00}}"   Style="{StaticResource MetricTableValue}"/>
-        <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding PowerRails[0].Max, StringFormat={}{0:0.00}}"   Style="{StaticResource MetricTableValue}"/>
-
-        <!-- Cores -->
-        <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding PowerRails[1].Label}" Style="{StaticResource MetricTableLabel}"/>
-        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding PowerRails[1].Value, StringFormat={}{0:0.00}}" Style="{StaticResource MetricTableValue}"/>
-        <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding PowerRails[1].Min, StringFormat={}{0:0.00}}"   Style="{StaticResource MetricTableValue}"/>
-        <TextBlock Grid.Row="2" Grid.Column="3" Text="{Binding PowerRails[1].Max, StringFormat={}{0:0.00}}"   Style="{StaticResource MetricTableValue}"/>
-
-        <!-- GT -->
-        <TextBlock Grid.Row="3" Grid.Column="0" Text="{Binding PowerRails[2].Label}" Style="{StaticResource MetricTableLabel}"/>
-        <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding PowerRails[2].Value, StringFormat={}{0:0.00}}" Style="{StaticResource MetricTableValue}"/>
-        <TextBlock Grid.Row="3" Grid.Column="2" Text="{Binding PowerRails[2].Min, StringFormat={}{0:0.00}}"   Style="{StaticResource MetricTableValue}"/>
-        <TextBlock Grid.Row="3" Grid.Column="3" Text="{Binding PowerRails[2].Max, StringFormat={}{0:0.00}}"   Style="{StaticResource MetricTableValue}"/>
-
-        <!-- DRAM -->
-        <TextBlock Grid.Row="4" Grid.Column="0" Text="{Binding PowerRails[3].Label}" Style="{StaticResource MetricTableLabel}"/>
-        <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding PowerRails[3].Value, StringFormat={}{0:0.00}}" Style="{StaticResource MetricTableValue}"/>
-        <TextBlock Grid.Row="4" Grid.Column="2" Text="{Binding PowerRails[3].Min, StringFormat={}{0:0.00}}"   Style="{StaticResource MetricTableValue}"/>
-        <TextBlock Grid.Row="4" Grid.Column="3" Text="{Binding PowerRails[3].Max, StringFormat={}{0:0.00}}"   Style="{StaticResource MetricTableValue}"/>
+          <!-- DRAM -->
+          <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding PowerRails[3].Label}" Style="{StaticResource MetricTableLabel}"/>
+          <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding PowerRails[3].Value, StringFormat={}{0:0.00}}" Style="{StaticResource MetricTableValue}"/>
+          <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding PowerRails[3].Min, StringFormat={}{0:0.00}}"   Style="{StaticResource MetricTableValue}"/>
+          <TextBlock Grid.Row="2" Grid.Column="3" Text="{Binding PowerRails[3].Max, StringFormat={}{0:0.00}}"   Style="{StaticResource MetricTableValue}"/>
+        </Grid>
       </Grid>
     </Grid>
   </Border>
