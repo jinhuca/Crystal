@@ -20,10 +20,11 @@
        per-rail breakdown table (Package / Cores / GT / DRAM) with each rail's value and session
        min/max. The graph self-registers under "Cpu.Power" so the view model feeds it each poll. -->
   <Border Style="{StaticResource SummaryTileBorderStyle}">
-    <Grid HorizontalAlignment="Stretch">
+    <Grid HorizontalAlignment="Stretch" ShowGridLines="False">
       <Grid.RowDefinitions>
         <RowDefinition Height="18"/>
-        <RowDefinition Height="*"/>
+        <RowDefinition Height="50"/>
+        <RowDefinition Height="Auto"/>
       </Grid.RowDefinitions>
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="60"/>
@@ -151,6 +152,18 @@
           <TextBlock Grid.Row="2" Grid.Column="3" Text="{Binding PowerRails[3].Max, StringFormat={}{0:0.00}}"   Style="{StaticResource MetricTableValue}"/>
         </Grid>
       </Grid>
+
+      <!-- Dot-style power history strip across the bottom of the tile. Self-registers under
+           "Cpu.Power" (the same feed key the detail-view history graph uses; GraphFeedRegistry fans
+           one sample out to every live graph on that key), so the SensorsViewModel feeds it each
+           poll. SingleColor + accent blue instead of the default green→red gauge ramp. -->
+      <graphs:PerformanceGraphLite Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5" GraphBackground="Transparent"
+                                   Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Cpu.Power"
+                                   HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                                   Height="15" Rows="5" Capacity="120"
+                                   MinValue="0" MaxValue="100" CornerRadius="1"
+                                   ColorMode="SingleColor" DotColor="{StaticResource AccentBrush}"
+                                   Margin="0,6,0,0"/>
     </Grid>
   </Border>
 </UserControl>

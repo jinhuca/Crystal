@@ -29,9 +29,15 @@ public partial class ProcessSummaryView : UserControl {
   public GridLength DefaultMasterWidth { get; } = new(1, GridUnitType.Star);
 
   /// <summary>
-  /// Default width for the detail column (the process metrics) in the list/detail split.
+  /// Default width for the detail column (the process metrics) in the list/detail split. Equal to
+  /// the master column so the list and the detail panel (with its utilization graphs) start at the
+  /// same width; the user can drag the splitter and that split is persisted across sessions.
   /// </summary>
-  public GridLength DefaultDetailWidth { get; } = new(0.3, GridUnitType.Star);
+  public GridLength DefaultDetailWidth { get; } = new(1, GridUnitType.Star);
+
+  /// <summary>Persists the user-dragged list/detail split across sessions (best-effort JSON under
+  /// %AppData%\Crystal). Restored on load; re-saved whenever the splitter drag completes.</summary>
+  private readonly ProcessLayoutStore _layoutStore = new();
 
   /// <summary>
   /// Guards the Width-coercion re-entrancy: setting Width from inside the change handler would fire the
@@ -46,6 +52,18 @@ public partial class ProcessSummaryView : UserControl {
     InitializeComponent();
     _defaultColumnWidths = [.. ProcessGridView.Columns.Select(c => c.Width)];
 
+    // Feed the detail-panel utilization graphs from the view model's rolling history collections.
+    // DataSeries is a plain DependencyObject with no DataContext, so its ValuesSource can't be bound
+    // in XAML (see DataSeries remarks) — it's wired here instead. AutoWireViewModel may set the
+    // DataContext during or after InitializeComponent, so handle both: wire now if it's already set,
+    // and again whenever it changes.
+    DataContextChanged += (_, e) => {
+      if (e.NewValue is ProcessListViewModel vm) WireGraphSeries(vm);
+    };
+    if (DataContext is ProcessListViewModel current) {
+      WireGraphSeries(current);
+    }
+
     // Watch each column's Width so a gripper drag below the floor is snapped back up. The header's
     // own MinWidth doesn't clamp the drag, so we coerce the property itself.
     var widthProperty = DependencyPropertyDescriptor.FromProperty(
@@ -53,6 +71,48 @@ public partial class ProcessSummaryView : UserControl {
     foreach (var column in ProcessGridView.Columns) {
       widthProperty.AddValueChanged(column, OnColumnWidthChanged);
     }
+
+    // Restore the list/detail split the user last dragged, overriding the equal-width default.
+    if (_layoutStore.Load() is { } saved) {
+      MasterColumn.Width = new GridLength(saved.MasterStar, GridUnitType.Star);
+      DetailColumn.Width = new GridLength(saved.DetailStar, GridUnitType.Star);
+    }
+  }
+
+  /// <summary>
+  /// Persists the list/detail split once the user finishes dragging the splitter. Both columns stay
+  /// star-sized, so saving their star weights preserves the ratio regardless of window width. Saving
+  /// on drag-completed (rather than on exit) captures the change reliably even if the app is closed
+  /// abruptly.
+  /// </summary>
+  /// <param name="sender">The sender of the event.</param>
+  /// <param name="e">The event arguments.</param>
+  private void OnSplitterDragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e) {
+    if (MasterColumn.Width.IsStar && DetailColumn.Width.IsStar) {
+      _layoutStore.Save(new ProcessSplitLayout {
+        MasterStar = MasterColumn.Width.Value,
+        DetailStar = DetailColumn.Width.Value,
+      });
+    }
+  }
+
+  /// <summary>
+  /// Points each detail-panel graph series at its backing history collection on the view model. The
+  /// "Total" lines are system-wide (summed across processes); the "Process" lines follow the
+  /// selected process and are cleared by the VM when the selection changes.
+  /// </summary>
+  /// <param name="vm">The process list view model supplying the history collections.</param>
+  private void WireGraphSeries(ProcessListViewModel vm) {
+    CpuTotalSeries.ValuesSource = vm.TotalCpuHistory;
+    CpuProcessSeries.ValuesSource = vm.SelectedCpuHistory;
+    GpuTotalSeries.ValuesSource = vm.TotalGpuHistory;
+    GpuProcessSeries.ValuesSource = vm.SelectedGpuHistory;
+    MemoryTotalSeries.ValuesSource = vm.TotalMemoryHistory;
+    MemoryProcessSeries.ValuesSource = vm.SelectedMemoryHistory;
+    DiskTotalSeries.ValuesSource = vm.TotalDiskHistory;
+    DiskProcessSeries.ValuesSource = vm.SelectedDiskHistory;
+    NetTotalSeries.ValuesSource = vm.TotalNetHistory;
+    NetProcessSeries.ValuesSource = vm.SelectedNetHistory;
   }
 
   /// <summary>

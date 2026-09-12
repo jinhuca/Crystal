@@ -6,6 +6,18 @@
     <ResourceDictionary Source="/Crystal.Resources;component/Styles/Palette.xaml"/>
   </ResourceDictionary.MergedDictionaries>
 
+  <!-- Vertical "glow" fills for the detail-panel utilization graphs, mirroring the dashboard line
+       tiles (GraphThemes.CreateVerticalGlow): full-ish accent at the trace, fading down toward the
+       baseline. Blue = selected process, amber = machine-wide total. -->
+  <LinearGradientBrush x:Key="ProcessSeriesFill" StartPoint="0,0" EndPoint="0,1">
+    <GradientStop Color="#C03E9BE8" Offset="0"/>
+    <GradientStop Color="#503E9BE8" Offset="1"/>
+  </LinearGradientBrush>
+  <LinearGradientBrush x:Key="TotalSeriesFill" StartPoint="0,0" EndPoint="0,1">
+    <GradientStop Color="#C0E0B84C" Offset="0"/>
+    <GradientStop Color="#50E0B84C" Offset="1"/>
+  </LinearGradientBrush>
+
   <!-- Flat dark button matching the tile palette: neutral dark fill, grey border, accent-blue on
        press, and a strip of the stock light-blue default-button chrome. Shared by the process
        toolbar (ToolbarButtonStyle) and the Run-new-task dialog (DialogButtonStyle) so the two read
