@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:prism="http://prismlibrary.com/"
+             xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs;assembly=Crystal.Controls"
              xmlns:local="clr-namespace:Crystal.ProcessModule.Views"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
@@ -598,7 +599,8 @@
       <GridSplitter Grid.Column="1" Width="7" HorizontalAlignment="Center"
                     VerticalAlignment="Stretch" Background="Transparent"
                     ResizeBehavior="PreviousAndNext" ResizeDirection="Columns"
-                    ShowsPreview="False" Cursor="SizeWE">
+                    ShowsPreview="False" Cursor="SizeWE"
+                    DragCompleted="OnSplitterDragCompleted">
         <GridSplitter.Template>
           <ControlTemplate TargetType="GridSplitter">
             <Grid Background="{TemplateBinding Background}">
@@ -623,8 +625,12 @@
                      HorizontalAlignment="Center" VerticalAlignment="Center"
                      Visibility="{Binding SelectedRow, Converter={StaticResource NullToVisibility}, ConverterParameter=invert}"/>
 
-          <StackPanel Margin="12,10" DataContext="{Binding SelectedRow}"
-                      Visibility="{Binding Converter={StaticResource NullToVisibility}}">
+          <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
+                        Visibility="{Binding SelectedRow, Converter={StaticResource NullToVisibility}}">
+            <ScrollViewer.Resources>
+              <Style TargetType="ScrollBar" BasedOn="{StaticResource CrystalScrollBarStyle}"/>
+            </ScrollViewer.Resources>
+          <StackPanel Margin="12,10" DataContext="{Binding SelectedRow}">
             <!-- Process identity -->
             <TextBlock Text="{Binding Name}" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource SubHeadingFontSize}"
                        FontWeight="SemiBold" FontFamily="{StaticResource MonoFontFamily}"
@@ -720,7 +726,183 @@
                        FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}" Margin="0,0,0,2"/>
             <TextBlock Text="{Binding ExecutablePathLabel}" Foreground="{StaticResource TextMutedBrush}"
                        FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}" TextWrapping="Wrap"/>
+
+            <!-- Per-resource utilization graphs: selected process vs. system-wide total, each a
+                 two-series line graph. The series data is wired in code-behind (DataSeries can't bind
+                 its ValuesSource in XAML); the accent-blue line is the selected process, the amber
+                 line the summed total across every process. -->
+            <Border BorderBrush="{StaticResource DividerBrush}" BorderThickness="1" Margin="0,12,0,0" Padding="6,4">
+              <StackPanel>
+                <Grid Margin="0,0,0,4">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                  </Grid.ColumnDefinitions>
+                  <TextBlock Grid.Column="0" Text="CPU Utilization (%)" Foreground="{StaticResource LabelBrush}"
+                             FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}" FontWeight="SemiBold"/>
+                  <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Border Width="8" Height="8" Background="#3E9BE8" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                    <TextBlock Foreground="{StaticResource TextMutedBrush}" FontSize="{StaticResource CaptionFontSize}"
+                               FontFamily="{StaticResource MonoFontFamily}" Margin="0,0,10,0">
+                      <Run Text="Process"/><Run Text=" "/><Run Text="{Binding DataContext.SelectedCpuPercent, ElementName=Root, StringFormat={}{0:0.0}%, Mode=OneWay}" Foreground="{StaticResource ValueBrush}"/>
+                    </TextBlock>
+                    <Border Width="8" Height="8" Background="#E0B84C" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                    <TextBlock Foreground="{StaticResource TextMutedBrush}" FontSize="{StaticResource CaptionFontSize}"
+                               FontFamily="{StaticResource MonoFontFamily}">
+                      <Run Text="Total"/><Run Text=" "/><Run Text="{Binding DataContext.SystemCpuPercent, ElementName=Root, StringFormat={}{0:0.0}%, Mode=OneWay}" Foreground="{StaticResource ValueBrush}"/>
+                    </TextBlock>
+                  </StackPanel>
+                </Grid>
+                <graphs:PerformanceGraphMultipleDS x:Name="CpuGraph" Height="70" MinValue="0" MaxValue="100"
+                                                   GraphBackground="#0A0A0A" GridBrush="#1B1B1B" GridThickness="0.6"
+                                                   BorderBrush="{StaticResource DividerBrush}">
+                  <graphs:PerformanceGraphMultipleDS.Series>
+                    <graphs:DataSeries x:Name="CpuTotalSeries" Name="Total" LineBrush="#E0B84C" LineThickness="1.2" FillBrush="{StaticResource TotalSeriesFill}"/>
+                    <graphs:DataSeries x:Name="CpuProcessSeries" Name="Process" LineBrush="#3E9BE8" LineThickness="1.4" FillBrush="{StaticResource ProcessSeriesFill}"/>
+                  </graphs:PerformanceGraphMultipleDS.Series>
+                </graphs:PerformanceGraphMultipleDS>
+              </StackPanel>
+            </Border>
+
+            <Border BorderBrush="{StaticResource DividerBrush}" BorderThickness="1" Margin="0,8,0,0" Padding="6,4">
+              <StackPanel>
+                <Grid Margin="0,0,0,4">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                  </Grid.ColumnDefinitions>
+                  <TextBlock Grid.Column="0" Text="GPU Utilization (%)" Foreground="{StaticResource LabelBrush}"
+                             FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}" FontWeight="SemiBold"/>
+                  <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Border Width="8" Height="8" Background="#3E9BE8" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                    <TextBlock Foreground="{StaticResource TextMutedBrush}" FontSize="{StaticResource CaptionFontSize}"
+                               FontFamily="{StaticResource MonoFontFamily}" Margin="0,0,10,0">
+                      <Run Text="Process"/><Run Text=" "/><Run Text="{Binding DataContext.SelectedGpuPercent, ElementName=Root, StringFormat={}{0:0.0}%, Mode=OneWay}" Foreground="{StaticResource ValueBrush}"/>
+                    </TextBlock>
+                    <Border Width="8" Height="8" Background="#E0B84C" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                    <TextBlock Foreground="{StaticResource TextMutedBrush}" FontSize="{StaticResource CaptionFontSize}"
+                               FontFamily="{StaticResource MonoFontFamily}">
+                      <Run Text="Total"/><Run Text=" "/><Run Text="{Binding DataContext.SystemGpuPercent, ElementName=Root, StringFormat={}{0:0.0}%, Mode=OneWay}" Foreground="{StaticResource ValueBrush}"/>
+                    </TextBlock>
+                  </StackPanel>
+                </Grid>
+                <graphs:PerformanceGraphMultipleDS x:Name="GpuGraph" Height="70" MinValue="0" MaxValue="100"
+                                                   GraphBackground="#0A0A0A" GridBrush="#1B1B1B" GridThickness="0.6"
+                                                   BorderBrush="{StaticResource DividerBrush}">
+                  <graphs:PerformanceGraphMultipleDS.Series>
+                    <graphs:DataSeries x:Name="GpuTotalSeries" Name="Total" LineBrush="#E0B84C" LineThickness="1.2" FillBrush="{StaticResource TotalSeriesFill}"/>
+                    <graphs:DataSeries x:Name="GpuProcessSeries" Name="Process" LineBrush="#3E9BE8" LineThickness="1.4" FillBrush="{StaticResource ProcessSeriesFill}"/>
+                  </graphs:PerformanceGraphMultipleDS.Series>
+                </graphs:PerformanceGraphMultipleDS>
+              </StackPanel>
+            </Border>
+
+            <Border BorderBrush="{StaticResource DividerBrush}" BorderThickness="1" Margin="0,8,0,0" Padding="6,4">
+              <StackPanel>
+                <Grid Margin="0,0,0,4">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                  </Grid.ColumnDefinitions>
+                  <TextBlock Grid.Column="0" Text="Memory Utilization (%)" Foreground="{StaticResource LabelBrush}"
+                             FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}" FontWeight="SemiBold"/>
+                  <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Border Width="8" Height="8" Background="#3E9BE8" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                    <TextBlock Foreground="{StaticResource TextMutedBrush}" FontSize="{StaticResource CaptionFontSize}"
+                               FontFamily="{StaticResource MonoFontFamily}" Margin="0,0,10,0">
+                      <Run Text="Process"/><Run Text=" "/><Run Text="{Binding DataContext.SelectedMemoryPercent, ElementName=Root, StringFormat={}{0:0.0}%, Mode=OneWay}" Foreground="{StaticResource ValueBrush}"/>
+                    </TextBlock>
+                    <Border Width="8" Height="8" Background="#E0B84C" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                    <TextBlock Foreground="{StaticResource TextMutedBrush}" FontSize="{StaticResource CaptionFontSize}"
+                               FontFamily="{StaticResource MonoFontFamily}">
+                      <Run Text="Total"/><Run Text=" "/><Run Text="{Binding DataContext.SystemMemoryPercent, ElementName=Root, StringFormat={}{0:0.0}%, Mode=OneWay}" Foreground="{StaticResource ValueBrush}"/>
+                    </TextBlock>
+                  </StackPanel>
+                </Grid>
+                <!-- Both series are percentages of total physical memory (process share and machine
+                     load), so the axis is a fixed 0–100 like CPU/GPU. -->
+                <graphs:PerformanceGraphMultipleDS x:Name="MemoryGraph" Height="70" MinValue="0" MaxValue="100"
+                                                   GraphBackground="#0A0A0A" GridBrush="#1B1B1B" GridThickness="0.6"
+                                                   BorderBrush="{StaticResource DividerBrush}">
+                  <graphs:PerformanceGraphMultipleDS.Series>
+                    <graphs:DataSeries x:Name="MemoryTotalSeries" Name="Total" LineBrush="#E0B84C" LineThickness="1.2" FillBrush="{StaticResource TotalSeriesFill}"/>
+                    <graphs:DataSeries x:Name="MemoryProcessSeries" Name="Process" LineBrush="#3E9BE8" LineThickness="1.4" FillBrush="{StaticResource ProcessSeriesFill}"/>
+                  </graphs:PerformanceGraphMultipleDS.Series>
+                </graphs:PerformanceGraphMultipleDS>
+              </StackPanel>
+            </Border>
+
+            <Border BorderBrush="{StaticResource DividerBrush}" BorderThickness="1" Margin="0,8,0,0" Padding="6,4">
+              <StackPanel>
+                <Grid Margin="0,0,0,4">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                  </Grid.ColumnDefinitions>
+                  <TextBlock Grid.Column="0" Text="Disk (MB/s)" Foreground="{StaticResource LabelBrush}"
+                             FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}" FontWeight="SemiBold"/>
+                  <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Border Width="8" Height="8" Background="#3E9BE8" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                    <TextBlock Foreground="{StaticResource TextMutedBrush}" FontSize="{StaticResource CaptionFontSize}"
+                               FontFamily="{StaticResource MonoFontFamily}" Margin="0,0,10,0">
+                      <Run Text="Process"/><Run Text=" "/><Run Text="{Binding DataContext.SelectedDiskMBps, ElementName=Root, StringFormat={}{0:0.00}, Mode=OneWay}" Foreground="{StaticResource ValueBrush}"/>
+                    </TextBlock>
+                    <Border Width="8" Height="8" Background="#E0B84C" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                    <TextBlock Foreground="{StaticResource TextMutedBrush}" FontSize="{StaticResource CaptionFontSize}"
+                               FontFamily="{StaticResource MonoFontFamily}">
+                      <Run Text="Total"/><Run Text=" "/><Run Text="{Binding DataContext.SystemDiskMBps, ElementName=Root, StringFormat={}{0:0.00}, Mode=OneWay}" Foreground="{StaticResource ValueBrush}"/>
+                    </TextBlock>
+                  </StackPanel>
+                </Grid>
+                <!-- Throughput, not a percentage: the axis auto-scales to the windowed peak (DiskMaxMBps)
+                     so both the small per-process line and the larger total stay on-scale. -->
+                <graphs:PerformanceGraphMultipleDS x:Name="DiskGraph" Height="70" MinValue="0"
+                                                   MaxValue="{Binding DataContext.DiskMaxMBps, ElementName=Root, Mode=OneWay}"
+                                                   GraphBackground="#0A0A0A" GridBrush="#1B1B1B" GridThickness="0.6"
+                                                   BorderBrush="{StaticResource DividerBrush}">
+                  <graphs:PerformanceGraphMultipleDS.Series>
+                    <graphs:DataSeries x:Name="DiskTotalSeries" Name="Total" LineBrush="#E0B84C" LineThickness="1.2" FillBrush="{StaticResource TotalSeriesFill}"/>
+                    <graphs:DataSeries x:Name="DiskProcessSeries" Name="Process" LineBrush="#3E9BE8" LineThickness="1.4" FillBrush="{StaticResource ProcessSeriesFill}"/>
+                  </graphs:PerformanceGraphMultipleDS.Series>
+                </graphs:PerformanceGraphMultipleDS>
+              </StackPanel>
+            </Border>
+
+            <Border BorderBrush="{StaticResource DividerBrush}" BorderThickness="1" Margin="0,8,0,0" Padding="6,4">
+              <StackPanel>
+                <Grid Margin="0,0,0,4">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                  </Grid.ColumnDefinitions>
+                  <TextBlock Grid.Column="0" Text="Network (MB/s)" Foreground="{StaticResource LabelBrush}"
+                             FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}" FontWeight="SemiBold"/>
+                  <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Border Width="8" Height="8" Background="#3E9BE8" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                    <TextBlock Foreground="{StaticResource TextMutedBrush}" FontSize="{StaticResource CaptionFontSize}"
+                               FontFamily="{StaticResource MonoFontFamily}" Margin="0,0,10,0">
+                      <Run Text="Process"/><Run Text=" "/><Run Text="{Binding DataContext.SelectedNetMBps, ElementName=Root, StringFormat={}{0:0.00}, Mode=OneWay}" Foreground="{StaticResource ValueBrush}"/>
+                    </TextBlock>
+                    <Border Width="8" Height="8" Background="#E0B84C" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                    <TextBlock Foreground="{StaticResource TextMutedBrush}" FontSize="{StaticResource CaptionFontSize}"
+                               FontFamily="{StaticResource MonoFontFamily}">
+                      <Run Text="Total"/><Run Text=" "/><Run Text="{Binding DataContext.SystemNetMBps, ElementName=Root, StringFormat={}{0:0.00}, Mode=OneWay}" Foreground="{StaticResource ValueBrush}"/>
+                    </TextBlock>
+                  </StackPanel>
+                </Grid>
+                <graphs:PerformanceGraphMultipleDS x:Name="NetGraph" Height="70" MinValue="0"
+                                                   MaxValue="{Binding DataContext.NetMaxMBps, ElementName=Root, Mode=OneWay}"
+                                                   GraphBackground="#0A0A0A" GridBrush="#1B1B1B" GridThickness="0.6"
+                                                   BorderBrush="{StaticResource DividerBrush}">
+                  <graphs:PerformanceGraphMultipleDS.Series>
+                    <graphs:DataSeries x:Name="NetTotalSeries" Name="Total" LineBrush="#E0B84C" LineThickness="1.2" FillBrush="{StaticResource TotalSeriesFill}"/>
+                    <graphs:DataSeries x:Name="NetProcessSeries" Name="Process" LineBrush="#3E9BE8" LineThickness="1.4" FillBrush="{StaticResource ProcessSeriesFill}"/>
+                  </graphs:PerformanceGraphMultipleDS.Series>
+                </graphs:PerformanceGraphMultipleDS>
+              </StackPanel>
+            </Border>
           </StackPanel>
+          </ScrollViewer>
         </Grid>
       </Border>
     </Grid>

@@ -110,6 +110,109 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
   /// <summary>Grouped + sorted view over <see cref="Rows"/>; this is what the ListView binds to.</summary>
   public ListCollectionView RowsView { get; }
 
+  /// <summary>Number of samples retained in each utilization history — one per poll (≈ one second),
+  /// so the detail-panel graphs show roughly the last minute of activity.</summary>
+  public const int HistoryCapacity = 60;
+
+  // Latest machine-wide utilization, cached from the SystemStatsMonitor stream (a separate poll from
+  // the process stream). The graph "Total" lines are appended on the process-stream cadence reading
+  // these cached values, so both series share one append timeline.
+  private double _systemCpuPercent;
+  private double _systemGpuPercent;
+  private double _systemMemoryPercent;
+  // Seeded at 0 (unknown) rather than 1: the process stream can fire before the stats stream first
+  // delivers total physical memory, and dividing a working set by a 1 MB "total" would clamp the
+  // selected-process memory line to 100% for that first poll — the spike seen when the view opens.
+  // The `> 0` guard below means an unknown total yields 0%, so the line stays flat until the real
+  // total arrives.
+  private double _systemMemoryTotalMb;
+  private double _selectedCpuPercent;
+  private double _selectedGpuPercent;
+  private double _selectedMemoryPercent;
+  // Storage/network are throughput rates (MB/s), not a fixed 0–100%, so each graph carries its own
+  // dynamic upper bound tracking the windowed peak total. Seeded at 1 so an all-idle window still
+  // gives the axis a sane, non-zero scale.
+  private double _systemDiskMBps;
+  private double _selectedDiskMBps;
+  private double _systemNetMBps;
+  private double _selectedNetMBps;
+  private double _diskMaxMBps = 1;
+  private double _netMaxMBps = 1;
+
+  /// <summary>Selected process CPU% over the last <see cref="HistoryCapacity"/> polls (newest last).
+  /// Feeds the "Process" line of the CPU graph; cleared when the selection changes.</summary>
+  public ObservableCollection<double> SelectedCpuHistory { get; } = [];
+
+  /// <summary>Machine-wide CPU% (GetSystemTimes busy fraction) over the last polls. Feeds the "Total"
+  /// line of the CPU graph.</summary>
+  public ObservableCollection<double> TotalCpuHistory { get; } = [];
+
+  /// <summary>Selected process GPU% history. Feeds the "Process" line of the GPU graph.</summary>
+  public ObservableCollection<double> SelectedGpuHistory { get; } = [];
+
+  /// <summary>Machine-wide GPU% history (summed per-process busy fraction, capped at 100). Feeds the
+  /// "Total" GPU line.</summary>
+  public ObservableCollection<double> TotalGpuHistory { get; } = [];
+
+  /// <summary>Selected process memory as a percentage of total physical memory. Feeds the "Process"
+  /// line of the memory graph.</summary>
+  public ObservableCollection<double> SelectedMemoryHistory { get; } = [];
+
+  /// <summary>Machine-wide memory load percentage (GlobalMemoryStatusEx). Feeds the "Total" memory
+  /// line.</summary>
+  public ObservableCollection<double> TotalMemoryHistory { get; } = [];
+
+  /// <summary>Latest machine-wide CPU utilization (%), shown live in the CPU graph header's "Total".</summary>
+  public double SystemCpuPercent { get => _systemCpuPercent; private set => SetProperty(ref _systemCpuPercent, value); }
+
+  /// <summary>Latest machine-wide GPU utilization (%), shown live in the GPU graph header's "Total".</summary>
+  public double SystemGpuPercent { get => _systemGpuPercent; private set => SetProperty(ref _systemGpuPercent, value); }
+
+  /// <summary>Latest machine-wide memory utilization (%), shown live in the memory graph header's "Total".</summary>
+  public double SystemMemoryPercent { get => _systemMemoryPercent; private set => SetProperty(ref _systemMemoryPercent, value); }
+
+  /// <summary>Latest selected-process CPU utilization (%), shown live in the CPU graph header's "Process".</summary>
+  public double SelectedCpuPercent { get => _selectedCpuPercent; private set => SetProperty(ref _selectedCpuPercent, value); }
+
+  /// <summary>Latest selected-process GPU utilization (%), shown live in the GPU graph header's "Process".</summary>
+  public double SelectedGpuPercent { get => _selectedGpuPercent; private set => SetProperty(ref _selectedGpuPercent, value); }
+
+  /// <summary>Latest selected-process memory as a percentage of total physical memory, shown live in
+  /// the memory graph header's "Process".</summary>
+  public double SelectedMemoryPercent { get => _selectedMemoryPercent; private set => SetProperty(ref _selectedMemoryPercent, value); }
+
+  /// <summary>Selected process disk throughput (MB/s) history. Feeds the "Process" line of the storage graph.</summary>
+  public ObservableCollection<double> SelectedDiskHistory { get; } = [];
+
+  /// <summary>Total disk throughput (MB/s, summed across every process) history. Feeds the "Total" storage line.</summary>
+  public ObservableCollection<double> TotalDiskHistory { get; } = [];
+
+  /// <summary>Selected process network throughput (MB/s) history. Feeds the "Process" line of the network graph.</summary>
+  public ObservableCollection<double> SelectedNetHistory { get; } = [];
+
+  /// <summary>Total network throughput (MB/s, summed across every process) history. Feeds the "Total" network line.</summary>
+  public ObservableCollection<double> TotalNetHistory { get; } = [];
+
+  /// <summary>Latest total disk throughput (MB/s), shown live in the storage graph header's "Total".</summary>
+  public double SystemDiskMBps { get => _systemDiskMBps; private set => SetProperty(ref _systemDiskMBps, value); }
+
+  /// <summary>Latest selected-process disk throughput (MB/s), shown live in the storage graph header's "Process".</summary>
+  public double SelectedDiskMBps { get => _selectedDiskMBps; private set => SetProperty(ref _selectedDiskMBps, value); }
+
+  /// <summary>Latest total network throughput (MB/s), shown live in the network graph header's "Total".</summary>
+  public double SystemNetMBps { get => _systemNetMBps; private set => SetProperty(ref _systemNetMBps, value); }
+
+  /// <summary>Latest selected-process network throughput (MB/s), shown live in the network graph header's "Process".</summary>
+  public double SelectedNetMBps { get => _selectedNetMBps; private set => SetProperty(ref _selectedNetMBps, value); }
+
+  /// <summary>Upper bound (MB/s) for the storage graph, tracking the windowed peak total with ~10%
+  /// headroom (never below 1) so the small per-process line and the larger total stay on-scale.
+  /// Storage/network are rates, not a fixed 0–100%, so their axes are dynamic.</summary>
+  public double DiskMaxMBps { get => _diskMaxMBps; private set => SetProperty(ref _diskMaxMBps, value); }
+
+  /// <summary>Upper bound (MB/s) for the network graph; windowed peak total with ~10% headroom (never below 1).</summary>
+  public double NetMaxMBps { get => _netMaxMBps; private set => SetProperty(ref _netMaxMBps, value); }
+
   public string SortProperty => _sortProperty;
   public ListSortDirection SortDirection => _sortDirection;
 
@@ -123,6 +226,14 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
         // the ListView can't do on its own once that container has been recycled.
         if (previous is not null) previous.IsSelected = false;
         if (value is not null) value.IsSelected = true;
+        // Restart the per-process graph lines for the newly selected process — the prior history
+        // belonged to a different process and would otherwise read as this one's past. The total
+        // lines are process-independent and keep rolling.
+        SelectedCpuHistory.Clear();
+        SelectedGpuHistory.Clear();
+        SelectedMemoryHistory.Clear();
+        SelectedDiskHistory.Clear();
+        SelectedNetHistory.Clear();
         RaisePropertyChanged(nameof(CanEndSelectedTask));
         RaisePropertyChanged(nameof(CanStartRecording));
       }
@@ -389,6 +500,87 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
 
     RaisePropertyChanged(nameof(HasVisibleRows));
     RecomputeHogCount();
+    UpdateUtilizationHistory(samples);
+  }
+
+  // Append this poll's readings to the rolling utilization histories that back the detail-panel
+  // graphs: the system-wide totals (summed across every process) and the selected process's own
+  // reading, so each graph plots "selected process vs. total" as two series. Runs on the UI thread
+  // (called from Apply), so mutating the bound collections here is safe.
+  private void UpdateUtilizationHistory(IReadOnlyList<ProcessSample> samples) {
+    // GPU has no cheap machine-wide counter here, so approximate the total as the summed per-process
+    // busy fraction, capped at 100% (each per-process value is already clamped to 100). CPU and
+    // memory totals come from the machine-wide sampler (GetSystemTimes / GlobalMemoryStatusEx) cached
+    // off the stats stream — summing per-process CPU would double-count the idle process (~99% bug).
+    double totalGpu = 0;
+    // Storage/network have no machine-wide counter here either, so the total is the summed
+    // per-process throughput. Unlike CPU, summing disk/net I/O has no idle-process inflation, so the
+    // sum is a faithful machine-wide rate. Bytes/sec is null until the ETW backend is live.
+    double totalDiskBytes = 0;
+    double totalNetBytes = 0;
+    foreach (var s in samples) {
+      totalGpu += s.GpuPercent ?? 0;
+      totalDiskBytes += s.DiskBytesPerSec ?? 0;
+      totalNetBytes += s.NetBytesPerSec ?? 0;
+    }
+    totalGpu = Math.Min(100, totalGpu);
+    SystemGpuPercent = totalGpu;
+
+    const double bytesPerMb = 1024 * 1024;
+    double totalDisk = totalDiskBytes / bytesPerMb;
+    double totalNet = totalNetBytes / bytesPerMb;
+
+    Append(TotalCpuHistory, _systemCpuPercent);
+    Append(TotalGpuHistory, totalGpu);
+    Append(TotalMemoryHistory, _systemMemoryPercent);
+    Append(TotalDiskHistory, totalDisk);
+    Append(TotalNetHistory, totalNet);
+
+    var selected = _selectedRow;
+    double selCpu = selected?.CpuPercent ?? 0;
+    double selGpu = selected?.GpuPercent ?? 0;
+    double selMem = _systemMemoryTotalMb > 0
+        ? Math.Min(100, (selected?.WorkingSetMb ?? 0) / _systemMemoryTotalMb * 100)
+        : 0;
+    double selDisk = (selected?.DiskBytesPerSec ?? 0) / bytesPerMb;
+    double selNet = (selected?.NetBytesPerSec ?? 0) / bytesPerMb;
+
+    Append(SelectedCpuHistory, selCpu);
+    Append(SelectedGpuHistory, selGpu);
+    Append(SelectedMemoryHistory, selMem);
+    Append(SelectedDiskHistory, selDisk);
+    Append(SelectedNetHistory, selNet);
+
+    SelectedCpuPercent = selCpu;
+    SelectedGpuPercent = selGpu;
+    SelectedMemoryPercent = selMem;
+    SelectedDiskMBps = selDisk;
+    SelectedNetMBps = selNet;
+    SystemDiskMBps = totalDisk;
+    SystemNetMBps = totalNet;
+
+    // Rescale each throughput axis to the current window's peak (+10% headroom, floor 1 MB/s) so the
+    // small per-process line and the larger total both stay readable as traffic rises and falls.
+    DiskMaxMBps = AxisMax(TotalDiskHistory, SelectedDiskHistory);
+    NetMaxMBps = AxisMax(TotalNetHistory, SelectedNetHistory);
+  }
+
+  // Dynamic upper bound for a throughput graph: the largest value across both series' windows, with
+  // ~10% headroom so the peak doesn't touch the ceiling, never below 1 MB/s so an idle window still
+  // has a sane scale.
+  private static double AxisMax(
+      ObservableCollection<double> a, ObservableCollection<double> b) {
+    double peak = 0;
+    foreach (var v in a) if (v > peak) peak = v;
+    foreach (var v in b) if (v > peak) peak = v;
+    return Math.Max(1, peak * 1.1);
+  }
+
+  // Push a sample onto a fixed-length history, dropping the oldest once full. The graph's own buffer
+  // is circular and ignores the resulting Remove, so trimming here only bounds the collection.
+  private static void Append(ObservableCollection<double> history, double value) {
+    history.Add(value);
+    while (history.Count > HistoryCapacity) history.RemoveAt(0);
   }
 
   // Resolve shell icons for rows that don't have one yet but now know their executable path. The
@@ -519,6 +711,12 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
     ProcessCount = stats.Processes;
     ThreadCount = stats.Threads;
     HandleCount = stats.Handles;
+    if (stats.MemoryTotalMb > 0) _systemMemoryTotalMb = stats.MemoryTotalMb;
+    // Set only through the properties: they write the backing fields (which the graph append reads)
+    // and raise PropertyChanged for the headers. Assigning the fields directly first would make the
+    // property setters see "no change" and skip the notification, freezing the headers at 0.
+    SystemCpuPercent = stats.CpuPercent;
+    SystemMemoryPercent = stats.MemoryPercent;
   }
 
   private void OnUi(Action action) => _ui.Post(action);
