@@ -1,6 +1,7 @@
 using Crystal.Controls.RangeBars.Renders;
 using Crystal.Controls.RangeBars.Styles;
 using Crystal.Controls.RangeBars.Themes;
+using System;
 using System.Windows;
 using System.Windows.Media;
 
@@ -113,14 +114,52 @@ public class RangeBar : FrameworkElement {
       DependencyProperty.Register(nameof(HighestAlpha), typeof(byte), typeof(RangeBar),
           new FrameworkPropertyMetadata((byte)0xFF, FrameworkPropertyMetadataOptions.AffectsRender, OnHighestAlphaChanged));
 
+  /// <summary>Identifies the <see cref="LabelHeight"/> dependency property.</summary>
+  public static readonly DependencyProperty LabelHeightProperty =
+      DependencyProperty.Register(nameof(LabelHeight), typeof(double), typeof(RangeBar),
+          new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender));
+
+  /// <summary>Identifies the <see cref="MarkerLabelFontSize"/> dependency property.</summary>
+  public static readonly DependencyProperty MarkerLabelFontSizeProperty =
+      DependencyProperty.Register(nameof(MarkerLabelFontSize), typeof(double), typeof(RangeBar),
+          new FrameworkPropertyMetadata(11.0, FrameworkPropertyMetadataOptions.AffectsRender));
+
+  /// <summary>Identifies the <see cref="Markers"/> dependency property.</summary>
+  public static readonly DependencyProperty MarkersProperty =
+      DependencyProperty.Register(nameof(Markers), typeof(RangeBarMarkerCollection), typeof(RangeBar),
+          new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender));
+
   private readonly BackgroundRenderer _backgroundRender = new();
   private readonly FillRenderer _fillRender = new();
   private readonly BorderRenderer _borderRender = new();
+  private readonly MarkerRenderer _markerRender = new();
   private readonly RangeBarStyle _style = new();
 
   public RangeBar() {
     SnapsToDevicePixels = true;
     UseLayoutRounding = true;
+    SetCurrentValue(MarkersProperty, new RangeBarMarkerCollection());
+  }
+
+  /// <summary>Height (px) of the band below the track reserved for <see cref="Markers"/> captions.
+  /// 0 (the default) reserves none; the track fills the full height. Set it (and give the control
+  /// extra height) when markers carry <see cref="RangeBarMarker.Label"/>s.</summary>
+  public double LabelHeight {
+    get => (double)GetValue(LabelHeightProperty);
+    set => SetValue(LabelHeightProperty, value);
+  }
+
+  /// <summary>Font size for <see cref="Markers"/> captions (default 11).</summary>
+  public double MarkerLabelFontSize {
+    get => (double)GetValue(MarkerLabelFontSizeProperty);
+    set => SetValue(MarkerLabelFontSizeProperty, value);
+  }
+
+  /// <summary>Reference markers (limit lines, session peak, targets) drawn on the value scale.
+  /// The bar maps each <see cref="RangeBarMarker.Value"/> to a pixel position itself.</summary>
+  public RangeBarMarkerCollection Markers {
+    get => (RangeBarMarkerCollection)GetValue(MarkersProperty);
+    set => SetValue(MarkersProperty, value);
   }
 
   /// <summary>Current reading; clamped to <see cref="MinValue"/>..<see cref="MaxValue"/> when drawn.</summary>
@@ -297,14 +336,22 @@ public class RangeBar : FrameworkElement {
 
     Rect bounds = new(RenderSize);
 
-    _backgroundRender.Draw(dc, bounds, _style);
+    // Reserve a band at the bottom for marker captions; the track/fill/border occupy the rest.
+    Rect barBounds = LabelHeight > 0
+        ? new Rect(bounds.X, bounds.Y, bounds.Width, Math.Max(0, bounds.Height - LabelHeight))
+        : bounds;
+
+    _backgroundRender.Draw(dc, barBounds, _style);
 
     double range = MaxValue - MinValue;
     double fraction = range > 0 ? (Value - MinValue) / range : 0;
 
-    _fillRender.Draw(dc, bounds, _style, fraction);
+    _fillRender.Draw(dc, barBounds, _style, fraction);
 
     // Border drawn last so its edge stays crisp over the fill instead of being covered.
-    _borderRender.Draw(dc, bounds, _style);
+    _borderRender.Draw(dc, barBounds, _style);
+
+    _markerRender.Draw(dc, barBounds, bounds, _style, Markers, MinValue, MaxValue,
+        MarkerLabelFontSize, VisualTreeHelper.GetDpi(this).PixelsPerDip);
   }
 }

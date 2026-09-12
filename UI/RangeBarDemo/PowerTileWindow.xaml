@@ -1,0 +1,180 @@
+<Window x:Class="RangeBarDemo.PowerTileWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RangeBarDemo"
+        xmlns:bars="clr-namespace:Crystal.Controls.RangeBars;assembly=Crystal.Controls"
+        xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs;assembly=Crystal.Controls"
+        mc:Ignorable="d"
+        Title="Power Tile — redesign prototype" Height="560" Width="900"
+        Background="#111114" FontFamily="Segoe UI">
+    <Window.Resources>
+        <!-- Text tokens (dataviz: text wears text tokens, never the accent). -->
+        <SolidColorBrush x:Key="Ink"       Color="#F2F2F5"/>
+        <SolidColorBrush x:Key="InkSecond" Color="#B9BEC7"/>
+        <SolidColorBrush x:Key="InkMuted"  Color="#6E7480"/>
+        <SolidColorBrush x:Key="Accent"    Color="#3E9BE8"/>
+        <SolidColorBrush x:Key="Panel"     Color="#16161A"/>
+
+        <Style x:Key="Col" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource InkSecond}"/>
+            <Setter Property="TextAlignment" Value="Right"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="13"/>
+            <!-- tabular figures: this is a column of numbers that must align vertically. -->
+            <Setter Property="TextOptions.TextFormattingMode" Value="Ideal"/>
+        </Style>
+    </Window.Resources>
+
+    <StackPanel Margin="28">
+
+        <!-- ============================ BEFORE ============================ -->
+        <TextBlock Text="BEFORE" Foreground="{StaticResource InkMuted}" FontWeight="Bold"
+                   FontSize="11" Margin="2,0,0,6"/>
+        <Border Background="{StaticResource Panel}" CornerRadius="8" Padding="18,14" Margin="0,0,0,28"
+                BorderBrush="#26262C" BorderThickness="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Power" Foreground="{StaticResource Accent}" FontWeight="Bold" FontSize="16"/>
+                        <TextBlock Text="PL1 80 W" Foreground="{StaticResource InkMuted}" Margin="14,2,0,0" FontSize="12"/>
+                        <TextBlock Text="PL2 90 W" Foreground="{StaticResource InkMuted}" Margin="10,2,0,0" FontSize="12"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                        <TextBlock Text="12.72" Foreground="{StaticResource Ink}" FontSize="40" FontWeight="SemiBold"/>
+                        <TextBlock Text="Watts" Foreground="{StaticResource InkSecond}" FontSize="16" VerticalAlignment="Bottom" Margin="8,0,6,8"/>
+                        <TextBlock Text="&#x25BC;" Foreground="{StaticResource Accent}" FontSize="14" VerticalAlignment="Bottom" Margin="0,0,0,12"/>
+                    </StackPanel>
+                    <TextBlock Foreground="{StaticResource InkSecond}" FontSize="12" Margin="0,6,0,0">
+                        <Run Text="min 9.2"/>  <Run Text="avg 17.4"/>  <Run Text="max 53.4"/>
+                    </TextBlock>
+                </StackPanel>
+
+                <!-- the redundant Value/Min/Max table -->
+                <Grid Grid.Column="2" VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="70"/>
+                        <ColumnDefinition Width="70"/>
+                        <ColumnDefinition Width="70"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="Value" Style="{StaticResource Col}" Foreground="{StaticResource Accent}"/>
+                    <TextBlock Grid.Row="0" Grid.Column="2" Text="Min"   Style="{StaticResource Col}" Foreground="{StaticResource Accent}"/>
+                    <TextBlock Grid.Row="0" Grid.Column="3" Text="Max"   Style="{StaticResource Col}" Foreground="{StaticResource Accent}"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Package" Foreground="{StaticResource InkSecond}" Margin="0,0,18,0" FontSize="13"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1" Text="12.72" Style="{StaticResource Col}"/>
+                    <TextBlock Grid.Row="1" Grid.Column="2" Text="9.20"  Style="{StaticResource Col}"/>
+                    <TextBlock Grid.Row="1" Grid.Column="3" Text="53.41" Style="{StaticResource Col}"/>
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Cores" Foreground="{StaticResource InkSecond}" FontSize="13"/>
+                    <TextBlock Grid.Row="2" Grid.Column="1" Text="10.09" Style="{StaticResource Col}"/>
+                    <TextBlock Grid.Row="2" Grid.Column="2" Text="6.58"  Style="{StaticResource Col}"/>
+                    <TextBlock Grid.Row="2" Grid.Column="3" Text="49.42" Style="{StaticResource Col}"/>
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="GT" Foreground="{StaticResource InkSecond}" FontSize="13"/>
+                    <TextBlock Grid.Row="3" Grid.Column="1" Text="0.00" Style="{StaticResource Col}"/>
+                    <TextBlock Grid.Row="3" Grid.Column="2" Text="0.00" Style="{StaticResource Col}"/>
+                    <TextBlock Grid.Row="3" Grid.Column="3" Text="0.00" Style="{StaticResource Col}"/>
+                    <TextBlock Grid.Row="4" Grid.Column="0" Text="DRAM" Foreground="{StaticResource InkSecond}" FontSize="13"/>
+                    <TextBlock Grid.Row="4" Grid.Column="1" Text="1.48" Style="{StaticResource Col}"/>
+                    <TextBlock Grid.Row="4" Grid.Column="2" Text="1.41" Style="{StaticResource Col}"/>
+                    <TextBlock Grid.Row="4" Grid.Column="3" Text="3.39" Style="{StaticResource Col}"/>
+                </Grid>
+            </Grid>
+        </Border>
+
+        <!-- ============================ AFTER ============================= -->
+        <TextBlock Text="AFTER" Foreground="{StaticResource InkMuted}" FontWeight="Bold"
+                   FontSize="11" Margin="2,0,0,6"/>
+        <Border Background="{StaticResource Panel}" CornerRadius="8" Padding="18,14"
+                BorderBrush="#26262C" BorderThickness="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- LEFT: header, hero, sparkline, meter -->
+                <StackPanel Grid.Column="0" VerticalAlignment="Center" Width="400">
+                    <TextBlock Text="Power" Foreground="{StaticResource Accent}" FontWeight="Bold" FontSize="16"/>
+
+                    <!-- Hero: number dominates; unit muted; trend + avg as quiet context -->
+                    <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                        <TextBlock Text="12.72" Foreground="{StaticResource Ink}" FontSize="44" FontWeight="SemiBold"/>
+                        <TextBlock Text="W" Foreground="{StaticResource InkMuted}" FontSize="18" VerticalAlignment="Bottom" Margin="8,0,10,10"/>
+                        <TextBlock Text="&#x25BC;" Foreground="{StaticResource InkMuted}" FontSize="13" VerticalAlignment="Bottom" Margin="0,0,10,14"/>
+                        <TextBlock Text="avg 17.4 W" Foreground="{StaticResource InkMuted}" FontSize="12" VerticalAlignment="Bottom" Margin="0,0,0,15"/>
+                    </StackPanel>
+
+                    <!-- Sparkline: trend shape beside the hero (identity blue, single color) -->
+                    <graphs:PerformanceGraphLite x:Name="Spark" Height="26" Width="400"
+                                                 HorizontalAlignment="Left" Margin="0,2,0,10"
+                                                 Rows="6" Capacity="48"
+                                                 MinValue="0" MaxValue="60"
+                                                 ColorMode="SingleColor" DotColor="#3E9BE8" CornerRadius="1"/>
+
+                    <!-- Meter: 0..PL2 scale, accent-gradient fill. Peak/PL1/PL2 are first-class
+                         RangeBar markers now — the control maps each Value to a pixel itself and
+                         stacks the PL1/PL2 captions (LabelLine 0/1) so they don't collide. No
+                         Canvas, no hardcoded offsets. -->
+                    <bars:RangeBar x:Name="PowerMeter" Height="48" Width="360" HorizontalAlignment="Left"
+                                   MinValue="0" MaxValue="90" Value="12.72"
+                                   AccentColor="#3E9BE8"
+                                   LowestAlpha="120" HighestAlpha="255"
+                                   BarBackground="Transparent"
+                                   TrackBrush="#21303D"
+                                   BorderThickness="0"
+                                   LabelHeight="32">
+                        <bars:RangeBar.Markers>
+                            <bars:RangeBarMarker Value="9.2"  Brush="#6E7480" Label="min 9.2"   LabelBrush="#6E7480"/>
+                            <bars:RangeBarMarker Value="53.4" Brush="#6E7480" Label="peak 53.4" LabelBrush="#6E7480"/>
+                            <bars:RangeBarMarker Value="80"   Brush="#E89B2A" Label="PL1 80"    LabelBrush="#E89B2A" LabelLine="0"/>
+                            <bars:RangeBarMarker Value="90"   Brush="#E8564E" Label="PL2 90"    LabelBrush="#E8564E" LabelLine="1"/>
+                        </bars:RangeBar.Markers>
+                    </bars:RangeBar>
+                </StackPanel>
+
+                <!-- RIGHT: quieter Value/Min/Max table, GT dropped (it was all zeros) -->
+                <Grid Grid.Column="2" VerticalAlignment="Center" TextOptions.TextFormattingMode="Ideal">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="72"/>
+                        <ColumnDefinition Width="72"/>
+                        <ColumnDefinition Width="72"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="Value" Style="{StaticResource Col}" Foreground="{StaticResource InkMuted}"/>
+                    <TextBlock Grid.Row="0" Grid.Column="2" Text="Min"   Style="{StaticResource Col}" Foreground="{StaticResource InkMuted}"/>
+                    <TextBlock Grid.Row="0" Grid.Column="3" Text="Max"   Style="{StaticResource Col}" Foreground="{StaticResource InkMuted}"/>
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Package" Foreground="{StaticResource InkSecond}" Margin="0,0,20,0" FontSize="13"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1" Text="12.72" Style="{StaticResource Col}" Foreground="{StaticResource Ink}"/>
+                    <TextBlock Grid.Row="1" Grid.Column="2" Text="9.20"  Style="{StaticResource Col}" Foreground="{StaticResource InkMuted}"/>
+                    <TextBlock Grid.Row="1" Grid.Column="3" Text="53.41" Style="{StaticResource Col}"/>
+
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Cores" Foreground="{StaticResource InkSecond}" FontSize="13"/>
+                    <TextBlock Grid.Row="2" Grid.Column="1" Text="10.09" Style="{StaticResource Col}" Foreground="{StaticResource Ink}"/>
+                    <TextBlock Grid.Row="2" Grid.Column="2" Text="6.58"  Style="{StaticResource Col}" Foreground="{StaticResource InkMuted}"/>
+                    <TextBlock Grid.Row="2" Grid.Column="3" Text="49.42" Style="{StaticResource Col}"/>
+
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="DRAM" Foreground="{StaticResource InkSecond}" FontSize="13"/>
+                    <TextBlock Grid.Row="3" Grid.Column="1" Text="1.48" Style="{StaticResource Col}" Foreground="{StaticResource Ink}"/>
+                    <TextBlock Grid.Row="3" Grid.Column="2" Text="1.41" Style="{StaticResource Col}" Foreground="{StaticResource InkMuted}"/>
+                    <TextBlock Grid.Row="3" Grid.Column="3" Text="3.39" Style="{StaticResource Col}"/>
+                </Grid>
+            </Grid>
+        </Border>
+    </StackPanel>
+</Window>

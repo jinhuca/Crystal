@@ -53,7 +53,7 @@
             <!-- 4. Segmented gradient: each LED block samples the full-range gradient. -->
             <controls:RangeBarView Title="Segmented" Unit="grad" Height="44" Margin="0,0,0,10"
                                    MinValue="0" MaxValue="100"
-                                   AccentColor="#E82A7A"
+                                   AccentColor="Red"
                                    Segmented="True" SegmentWidth="20" SegmentGap="2"
                                    Value="{Binding Value, ElementName=ValueSlider}"/>
 
