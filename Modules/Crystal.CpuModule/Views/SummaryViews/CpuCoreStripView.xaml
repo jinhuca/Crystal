@@ -76,7 +76,7 @@
             <bars:RangeBar Grid.Row="0" Grid.Column="1" Style="{StaticResource SummaryRangeBarStyle}" Margin="0,0,8,0" VerticalAlignment="Center"
                            MinValue="0" MaxValue="100" Value="{Binding Load}"
                            AccentColor="Green" LowestAlpha="120"
-                           FillBrush="{Binding Value, RelativeSource={RelativeSource Self}, Converter={StaticResource CoreLoadFill}}"/>
+                           />
             <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Load, StringFormat={}{0:0}%}"
                        Foreground="{StaticResource CoreLoadBrush}" VerticalAlignment="Center"
                        FontSize="{StaticResource MicroFontSize}" FontFamily="{StaticResource MonoFontFamily}" TextAlignment="Right"/>
