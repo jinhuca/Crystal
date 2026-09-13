@@ -35,8 +35,8 @@
         <Grid VerticalAlignment="Stretch" ShowGridLines="False">
           <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="70"/>
+            <RowDefinition Height="80"/>
           </Grid.RowDefinitions>
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -80,11 +80,11 @@
               BorderThickness="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ContentPresenter}, Converter={StaticResource TileChrome}, ConverterParameter=border}">
         <!-- The tile sizes to content; each metric view carries its own fixed width (see
              GpuSummaryViewConstants) so nothing can balloon in the infinite-width strip. -->
-        <Grid VerticalAlignment="Stretch">
+        <Grid VerticalAlignment="Stretch" ShowGridLines="False">
           <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="70"/>
+            <RowDefinition Height="80"/>
           </Grid.RowDefinitions>
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -131,7 +131,6 @@
           <sv:GpuClockView       Grid.Row="1" Grid.Column="2" Margin="0,0,8,8"/>
           <sv:Gpu3DView          Grid.Row="1" Grid.Column="3" Margin="0,0,8,8"/>
           <sv:GpuPowerView       Grid.Row="1" Grid.Column="4" Margin="0,0,0,8"/>
-
           <sv:GpuUtilizationView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5" Margin="0,0,0,0"
                                  Capacity="180" Width="{x:Static sv:GpuSummaryViewConstants.DedicatedUtilizationWidth}"
                                  HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
@@ -139,9 +138,10 @@
       </Border>
     </DataTemplate>
 
-    <local:GpuAdapterTileTemplateSelector x:Key="TileSelector"
-                                          IntegratedTemplate="{StaticResource IntegratedTile}"
-                                          DedicatedTemplate="{StaticResource DedicatedTile}"/>
+    <local:GpuAdapterTileTemplateSelector 
+      x:Key="TileSelector"
+      IntegratedTemplate="{StaticResource IntegratedTile}"
+      DedicatedTemplate="{StaticResource DedicatedTile}"/>
 
     <!-- One adapter: render the tile directly with no ScrollViewer, so none of the scroll machinery is
          built. The 10px left inset matches CpuSummaryView so the GPU tiles line up with the CPU tiles. -->

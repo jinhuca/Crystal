@@ -23,14 +23,19 @@
     <Grid MinHeight="60" ShowGridLines="False">
       <Grid.RowDefinitions>
         <RowDefinition Height="20"/>
-        <RowDefinition Height="1.6*"/>
-        <RowDefinition Height=".7*"/>
+        <RowDefinition Height="40"/>
       </Grid.RowDefinitions>
-
-      <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="4,0,0,4">
-        <TextBlock Text="Memory Used" Style="{StaticResource SummaryTileTitleTextBlockStyle}"/>
+      <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0,0,0,0">
+        <TextBlock Text="Memory" Style="{StaticResource SummaryTileTitleTextBlockStyle}"/>
+        <TextBlock Style="{StaticResource MetricStatLine}" Margin="20,0,0,0">
+          <Run FontFamily="Segoe Fluent Icons" Text="&#xE70D; " Foreground="LightGreen"/>
+          <Run Text="{Binding MemoryRow.Min, StringFormat={}{0:0}}"/><Run Text="%"/>
+          <Run FontFamily="Segoe Fluent Icons" Text=" &#xE738; " Foreground="{StaticResource AccentBrush}"/>
+          <Run Text="{Binding MemoryRow.Avg, StringFormat={}{0:0}}"/><Run Text="%"/>
+          <Run FontFamily="Segoe Fluent Icons" Text=" &#xE70E; " Foreground="Crimson"/>
+          <Run Text="{Binding MemoryRow.Max, StringFormat={}{0:0}}"/><Run Text="%"/>
+        </TextBlock>        
       </StackPanel>
-
       <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
         <TextBlock Style="{StaticResource TileMetricValue}">
           <TextBlock.Text>
@@ -44,14 +49,6 @@
         <TextBlock Text="{Binding MemoryRow.Trend, Converter={StaticResource TrendToGlyph}}"
                    Foreground="{Binding MemoryRow.Trend, Converter={StaticResource TrendToBrush}}"
                    Style="{StaticResource MetricUnit}" Margin="4,0,0,2"/>
-      </StackPanel>
-
-      <StackPanel Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <TextBlock Style="{StaticResource MetricStatLine}">
-          <Run Text="min " Foreground="{StaticResource AccentBrush}"/><Run Text="{Binding MemoryRow.Min, StringFormat={}{0:0}}"/><Run Text="%"/>
-          <Run Text="   avg " Foreground="{StaticResource AccentBrush}"/><Run Text="{Binding MemoryRow.Avg, StringFormat={}{0:0}}"/><Run Text="%"/>
-          <Run Text="   max " Foreground="{StaticResource AccentBrush}"/><Run Text="{Binding MemoryRow.Max, StringFormat={}{0:0}}"/><Run Text="%"/>
-        </TextBlock>
       </StackPanel>
     </Grid>
   </Border>
