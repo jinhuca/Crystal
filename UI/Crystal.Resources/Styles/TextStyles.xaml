@@ -83,7 +83,7 @@
   <Style x:Key="HeaderSpec" TargetType="TextBlock">
     <Setter Property="Foreground" Value="{StaticResource LabelBrush}"/>
     <Setter Property="FontSize" Value="11"/>
-    <Setter Property="FontFamily" Value="Consolas"/>
+    <Setter Property="FontFamily" Value="{StaticResource UiFontFamily}"/>
     <Setter Property="VerticalAlignment" Value="Center"/>
     <Setter Property="Margin" Value="0,0,12,0"/>
   </Style>

@@ -93,7 +93,10 @@ public sealed class CpuSpecsViewModel : BindableBase, ICpuSpecsViewModel {
   /// <summary>
   /// The CPU brand name.
   /// </summary>
-  public string? Brand { get => _brand; private set => SetProperty(ref _brand, value); }
+  public string? Brand {
+    get => _brand;
+    private set => SetProperty(ref _brand, value);
+  }
 
   /// <summary>
   /// The CPU socket number, e.g. 0 for a single-socket system, 1 for the second socket in a dual-socket system, etc.
@@ -176,7 +179,7 @@ public sealed class CpuSpecsViewModel : BindableBase, ICpuSpecsViewModel {
 
     var s = socket.Specs;
     Vendor = s.VendorName;
-    Brand = s.BrandName;
+    Brand = s?.BrandName?.Replace("(R)","");
     Socket = socket.SocketIndex + 1;
     PhysicalCores = s.PhysicalCoreNum;
     LogicalCores = s.LogicalCoreNum;

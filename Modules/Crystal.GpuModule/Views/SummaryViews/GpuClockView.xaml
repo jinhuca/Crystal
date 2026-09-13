@@ -24,28 +24,25 @@
     <Grid MinHeight="60" ShowGridLines="False">
       <Grid.RowDefinitions>
         <RowDefinition Height="20"/>
-        <RowDefinition Height="1.6*"/>
-        <RowDefinition Height=".7*"/>
+        <RowDefinition Height="40"/>
       </Grid.RowDefinitions>
-
-      <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="4,0,0,4">
+      <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom">
         <TextBlock Text="Clock" Style="{StaticResource SummaryTileTitleTextBlockStyle}"/>
+        <TextBlock Style="{StaticResource MetricStatLine}" Margin="20,0,0,0">
+          <Run FontFamily="Segoe Fluent Icons" Text="&#xE70D; " Foreground="LightGreen"/>
+          <Run Text="{Binding ClockRow.Min, StringFormat={}{0:0}}"/>
+          <Run FontFamily="Segoe Fluent Icons" Text=" &#xE738; " Foreground="{StaticResource AccentBrush}"/>
+          <Run Text="{Binding ClockRow.Avg, StringFormat={}{0:0}}"/>
+          <Run FontFamily="Segoe Fluent Icons" Text=" &#xE70E; " Foreground="Crimson"/>
+          <Run Text="{Binding ClockRow.Max, StringFormat={}{0:0}}"/>
+        </TextBlock>
       </StackPanel>
-
       <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
         <TextBlock Text="{Binding ClockMhz, StringFormat={}{0:0}, TargetNullValue=—}" Style="{StaticResource TileMetricValue}"/>
         <TextBlock Text="MHz" Style="{StaticResource MetricUnit}"/>
         <TextBlock Text="{Binding ClockRow.Trend, Converter={StaticResource TrendToGlyph}}"
                    Foreground="{Binding ClockRow.Trend, Converter={StaticResource TrendToBrush}}"
                    Style="{StaticResource MetricUnit}" Margin="4,0,0,2"/>
-      </StackPanel>
-
-      <StackPanel Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <TextBlock Style="{StaticResource MetricStatLine}">
-          <Run Text="min " Foreground="{StaticResource AccentBrush}"/><Run Text="{Binding ClockRow.Min, StringFormat={}{0:0}}"/>
-          <Run Text="   avg " Foreground="{StaticResource AccentBrush}"/><Run Text="{Binding ClockRow.Avg, StringFormat={}{0:0}}"/>
-          <Run Text="   max " Foreground="{StaticResource AccentBrush}"/><Run Text="{Binding ClockRow.Max, StringFormat={}{0:0}}"/>
-        </TextBlock>
       </StackPanel>
     </Grid>
   </Border>

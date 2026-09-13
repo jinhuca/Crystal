@@ -19,17 +19,22 @@
     </ResourceDictionary>
   </UserControl.Resources>
   <Border Style="{StaticResource SummaryTileBorderStyle}" Width="{x:Static local:GpuSummaryViewConstants.GraphWidth}">
-    <Grid MinHeight="60" ShowGridLines="False">
+    <Grid ShowGridLines="False">
       <Grid.RowDefinitions>
         <RowDefinition Height="20"/>
-        <RowDefinition Height="1.6*"/>
-        <RowDefinition Height=".7*"/>
+        <RowDefinition Height="40"/>
       </Grid.RowDefinitions>
-
-      <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="4,0,0,4">
+      <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0,0,0,0">
         <TextBlock Text="Temperature" Style="{StaticResource SummaryTileTitleTextBlockStyle}"/>
+        <TextBlock Style="{StaticResource MetricStatLine}" Margin="20,0,0,0">
+          <Run FontFamily="Segoe Fluent Icons" Text="&#xE70D; " Foreground="LightGreen"/>
+          <Run Text="{Binding TemperatureRow.Min, StringFormat={}{0:0}}"/>
+          <Run FontFamily="Segoe Fluent Icons" Text=" &#xE738; " Foreground="{StaticResource AccentBrush}"/>
+          <Run Text="{Binding TemperatureRow.Avg, StringFormat={}{0:0}}"/>
+          <Run FontFamily="Segoe Fluent Icons" Text=" &#xE70E; " Foreground="Crimson"/>
+          <Run Text="{Binding TemperatureRow.Max, StringFormat={}{0:0}}"/>
+        </TextBlock>
       </StackPanel>
-
       <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
         <TextBlock Text="{Binding TemperatureC, StringFormat={}{0:0.00}, TargetNullValue=0.00}"
                    Foreground="{Binding TemperatureC, Converter={StaticResource TemperatureToBrush}}"
@@ -38,14 +43,6 @@
         <TextBlock Text="{Binding TemperatureRow.Trend, Converter={StaticResource TrendToGlyph}}"
                    Foreground="{Binding TemperatureRow.Trend, Converter={StaticResource TrendToBrush}}"
                    Style="{StaticResource MetricUnit}" Margin="4,0,0,2"/>
-      </StackPanel>
-
-      <StackPanel Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <TextBlock Style="{StaticResource MetricStatLine}">
-          <Run Text="min " Foreground="{StaticResource AccentBrush}"/><Run Text="{Binding TemperatureRow.Min, StringFormat={}{0:0}}"/>
-          <Run Text="   avg " Foreground="{StaticResource AccentBrush}"/><Run Text="{Binding TemperatureRow.Avg, StringFormat={}{0:0}}"/>
-          <Run Text="   max " Foreground="{StaticResource AccentBrush}"/><Run Text="{Binding TemperatureRow.Max, StringFormat={}{0:0}}"/>
-        </TextBlock>
       </StackPanel>
     </Grid>
   </Border>
