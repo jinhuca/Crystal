@@ -278,6 +278,22 @@ public class GpuSensorSelectorTests {
       Assert.Empty(GpuSensorSelector.SelectEngineLoads([Sensors.Load("GPU Core", 50)]));
 
   [Fact]
+  public void SelectEngineLoads_ClampsOvershootTo100() {
+    var sensors = new ISensor[] { Sensors.Load("D3D 3D", 126.57f) };
+
+    var engines = GpuSensorSelector.SelectEngineLoads(sensors);
+
+    Assert.Equal(new[] { ("3D", 100.0) }, engines.Select(e => (e.Name, e.LoadPercent)));
+  }
+
+  [Fact]
+  public void SelectCoreLoad_ClampsOvershootTo100() {
+    var sensors = new ISensor[] { Sensors.Load("3D", 126.57f) };
+
+    Assert.Equal(100, GpuSensorSelector.SelectCoreLoad(sensors));
+  }
+
+  [Fact]
   public void SelectPcieRxTx_ConvertsBytesPerSecToMBps() {
     var sensors = new ISensor[] {
       Sensors.Throughput("GPU PCIe Rx", 2_000_000),

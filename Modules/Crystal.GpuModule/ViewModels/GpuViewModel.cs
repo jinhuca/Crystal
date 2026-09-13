@@ -105,12 +105,24 @@ public sealed class GpuViewModel : BindableBase, IGpuViewModel, IDisposable {
   private void ApplyLoads(GpuSnapshot snapshot) {
     foreach (var adapter in Adapters) {
       var reading = snapshot.Loads.FirstOrDefault(l =>
-          string.Equals(l.AdapterName, adapter.Name, StringComparison.OrdinalIgnoreCase));
+          string.Equals(NormalizeAdapterName(l.AdapterName), NormalizeAdapterName(adapter.Name),
+              StringComparison.OrdinalIgnoreCase));
       if (reading is not null) {
         adapter.UpdateLoad(reading);
       }
     }
   }
+
+  // WMI and the LibreHardwareMonitor provider report the same adapter with cosmetically different
+  // names: the WMI inventory name is cleaned for display (e.g. the "(R)"/"(TM)" trademark marks are
+  // stripped) while the provider's reading keeps them, so an exact-string join drops the pairing and
+  // the adapter reads all-zero. Strip those marks and surrounding whitespace on both sides so the
+  // join keys on the substantive name.
+  private static string NormalizeAdapterName(string? name) =>
+      (name ?? string.Empty)
+        .Replace("(R)", string.Empty, StringComparison.OrdinalIgnoreCase)
+        .Replace("(TM)", string.Empty, StringComparison.OrdinalIgnoreCase)
+        .Trim();
 
   /// <summary>
   /// Marshals the specified action to the UI thread.

@@ -36,7 +36,7 @@
           <ColumnDefinition Width="40"/>
           <ColumnDefinition Width="40"/>
         </Grid.ColumnDefinitions>
-        <TextBlock Grid.Column="0" 
+        <TextBlock Grid.Column="0" HorizontalAlignment="Right"
                    Text="{Binding FanReadoutText}" Style="{StaticResource TileMetricValue}"/>
         <TextBlock Grid.Column="1" 
                    Text="{Binding FanReadoutUnit}" Style="{StaticResource MetricUnit}"/>

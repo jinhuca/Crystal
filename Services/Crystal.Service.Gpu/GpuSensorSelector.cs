@@ -58,7 +58,9 @@ internal static class GpuSensorSelector {
         max = v;
       }
     }
-    return max;
+    // The provider's D3D utilization is a running-time rate that can transiently overshoot 100%
+    // (overlapping GPU work, timing jitter); clamp so the readout never exceeds full, like Task Manager.
+    return Math.Min(max, 100);
   }
 
   /// <summary>
@@ -169,8 +171,11 @@ internal static class GpuSensorSelector {
     foreach (var s in sensors) {
       if (s.SensorType != SensorType.Load || s.Value is not { } v) continue;
       if (!IsEngineLoad(s.Name)) continue;
+      // The D3D utilization rate can transiently read above 100% (overlapping work, timing jitter);
+      // clamp each node so no engine ever displays more than full, matching Task Manager.
+      double load = Math.Min(v, 100);
       var name = EngineDisplayName(s.Name);
-      if (!byName.TryGetValue(name, out var existing) || v > existing) byName[name] = v;
+      if (!byName.TryGetValue(name, out var existing) || load > existing) byName[name] = load;
     }
     return byName
       .OrderBy(kv => kv.Key, StringComparer.OrdinalIgnoreCase)

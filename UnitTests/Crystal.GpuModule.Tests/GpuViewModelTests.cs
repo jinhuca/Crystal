@@ -92,6 +92,20 @@ public class GpuViewModelTests {
   }
 
   [Fact]
+  public void Sensors_emission_matches_when_provider_name_carries_trademark_marks() {
+    var vm = CreateVm(out var model);
+    // WMI display name is cleaned ("Intel(R) UHD Graphics 630" → "Intel UHD Graphics 630") but the
+    // provider reading keeps the "(R)" mark; the join must still pair them.
+    model.SpecsSubject.OnNext(new GpuSnapshot(
+        [Adapter("Intel UHD Graphics 630", GpuKind.Integrated)], []));
+
+    model.SensorsSubject.OnNext(new GpuSnapshot(
+        [], [Load("Intel(R) UHD Graphics 630", core: 37)]));
+
+    Assert.Equal(37, Assert.Single(vm.Adapters).Load);
+  }
+
+  [Fact]
   public void Sensors_emission_ignores_a_load_with_no_matching_adapter() {
     var vm = CreateVm(out var model);
     model.SpecsSubject.OnNext(new GpuSnapshot([Adapter("NVIDIA GTX 1070", GpuKind.Dedicated)], []));

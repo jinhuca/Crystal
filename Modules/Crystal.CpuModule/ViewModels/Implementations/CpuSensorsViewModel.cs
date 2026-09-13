@@ -210,6 +210,12 @@ public sealed class CpuSensorsViewModel : BindableBase, ICpuSensorViewModel {
   public MetricRowViewModel FanRow { get; } = new("Fan");
 
   /// <summary>
+  /// Session min/max/avg + trend for the CPU utilization readout (%), self-tracked from the same
+  /// per-poll <see cref="Load"/> stream that feeds the "Cpu.Utilization" history graph.
+  /// </summary>
+  public MetricRowViewModel LoadRow { get; } = new("Load");
+
+  /// <summary>
   /// Configured sustained package power limit (PL1) in W. Intel-only; zero when not exposed.
   /// </summary>
   public double PowerLimitLongW { get => _powerLimitLongW; private set => SetProperty(ref _powerLimitLongW, value); }
@@ -454,6 +460,7 @@ public sealed class CpuSensorsViewModel : BindableBase, ICpuSensorViewModel {
     UpdateCoreLoads(socket.Cores);
 
     FeedGraph("Cpu.Utilization", Load);
+    LoadRow.Update(Load);
     FeedGraph("Cpu.Voltage", Voltage);
     FeedGraph("Cpu.Clock", SpeedGhz);
     FeedGraph("Cpu.Power", Power);
