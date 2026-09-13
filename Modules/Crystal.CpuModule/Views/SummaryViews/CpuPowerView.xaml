@@ -65,8 +65,9 @@
             <ColumnDefinition Width="30"/>
             <ColumnDefinition Width="30"/>
           </Grid.ColumnDefinitions>
-          <TextBlock Grid.Column="0" Text="{Binding Power, StringFormat={}{0:0.00}}" Style="{StaticResource TileMetricValue}" VerticalAlignment="Center"/>
-          <TextBlock Grid.Column="1" Text="Watts" Style="{StaticResource MetricUnit}" Margin="6,0,0,0"/>
+          <TextBlock Grid.Column="0" Text="{Binding Power, StringFormat={}{0:0.00}}" Style="{StaticResource TileMetricValue}" 
+                     HorizontalAlignment="Right"/>
+          <TextBlock Grid.Column="1" Text="W" Style="{StaticResource MetricUnit}" Margin="8,0,0,0"/>
           <TextBlock Grid.Column="2" Text="{Binding PowerRails[0].Trend, Converter={StaticResource TrendToGlyph}}"
                      Foreground="{Binding PowerRails[0].Trend, Converter={StaticResource TrendToBrush}}"
                      Style="{StaticResource MetricUnit}" Margin="6,0,0,0"/>
