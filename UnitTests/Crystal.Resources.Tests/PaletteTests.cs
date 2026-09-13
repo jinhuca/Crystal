@@ -33,6 +33,48 @@ public class PaletteTests {
     ("UsageBarFreeBrush", "#3A5068"),
     ("UsageBarTrackBrush", "#12233A"),
     ("UsageBarBorderBrush", "#2E4A6A"),
+
+    // Per-sensor banded ramps (band 1 = lowest reading … band 9 = highest) used by the gauge/graph
+    // tiles to color a reading by where it falls in its range.
+    ("ClockAccentBandedBrush1", "#FFF5F5F5"),
+    ("ClockAccentBandedBrush2", "#FFE8F4E8"),
+    ("ClockAccentBandedBrush3", "#FFDCF3DC"),
+    ("ClockAccentBandedBrush4", "#FFCFF2CF"),
+    ("ClockAccentBandedBrush5", "#FFC2F2C2"),
+    ("ClockAccentBandedBrush6", "#FFB6F1B6"),
+    ("ClockAccentBandedBrush7", "#FFA9F0A9"),
+    ("ClockAccentBandedBrush8", "#FF9DEF9D"),
+    ("ClockAccentBandedBrush9", "#FF90EE90"),
+
+    ("VoltageAccentBandedBrush1", "#FFF5F5F5"),
+    ("VoltageAccentBandedBrush2", "#FFDDDDEA"),
+    ("VoltageAccentBandedBrush3", "#FFC4C5DE"),
+    ("VoltageAccentBandedBrush4", "#FFACADD3"),
+    ("VoltageAccentBandedBrush5", "#FF9494C8"),
+    ("VoltageAccentBandedBrush6", "#FF7C7CBC"),
+    ("VoltageAccentBandedBrush7", "#FF6464B1"),
+    ("VoltageAccentBandedBrush8", "#FF4B4CA5"),
+    ("VoltageAccentBandedBrush9", "#FF33349A"),
+
+    ("TemperatureAccentBandedBrush1", "#FFF5F5F5"),
+    ("TemperatureAccentBandedBrush2", "#FFF6DDD9"),
+    ("TemperatureAccentBandedBrush3", "#FFF8C4BE"),
+    ("TemperatureAccentBandedBrush4", "#FFF9ACA2"),
+    ("TemperatureAccentBandedBrush5", "#FFFA9486"),
+    ("TemperatureAccentBandedBrush6", "#FFFB7B6A"),
+    ("TemperatureAccentBandedBrush7", "#FFFC634E"),
+    ("TemperatureAccentBandedBrush8", "#FFFE4A33"),
+    ("TemperatureAccentBandedBrush9", "#FFFF3217"),
+
+    ("PowerAccentBandedBrush1", "#FFF5F5F5"),
+    ("PowerAccentBandedBrush2", "#FFF4EAE2"),
+    ("PowerAccentBandedBrush3", "#FFF4DECE"),
+    ("PowerAccentBandedBrush4", "#FFF3D3BA"),
+    ("PowerAccentBandedBrush5", "#FFF2C8A7"),
+    ("PowerAccentBandedBrush6", "#FFF2BD94"),
+    ("PowerAccentBandedBrush7", "#FFF1B280"),
+    ("PowerAccentBandedBrush8", "#FFF1A66C"),
+    ("PowerAccentBandedBrush9", "#FFF09B59"),
   };
 
   public static TheoryData<string, string> ExpectedData {

@@ -81,6 +81,12 @@ public interface ICpuSensorViewModel {
   MetricRowViewModel FanRow { get; }
 
   /// <summary>
+  /// Session min/max/avg + trend for the CPU utilization readout (%), self-tracked from the same
+  /// sample stream that feeds the utilization history graph.
+  /// </summary>
+  MetricRowViewModel LoadRow { get; }
+
+  /// <summary>
   /// Configured sustained package power limit (PL1) in W. Intel-only; zero when not exposed.
   /// </summary>
   double PowerLimitLongW { get; }
