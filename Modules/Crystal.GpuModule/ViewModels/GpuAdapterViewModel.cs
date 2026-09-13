@@ -74,7 +74,11 @@ public sealed class GpuAdapterViewModel : BindableBase {
   // single-field behaviour when the summary and detail views attach to the same adapter VM.
   private readonly GraphFeedRegistry _graphs = new();
 
-  public string Name { get => _name; private set => SetProperty(ref _name, value); }
+  public string Name { 
+    get => _name; 
+    private set => SetProperty(ref _name, value); 
+  }
+
   public string KindLabel { get => _kindLabel; private set => SetProperty(ref _kindLabel, value); }
   public double? VideoRamGB { get => _videoRamGB; private set => SetProperty(ref _videoRamGB, value); }
   public string DisplayMode { get => _displayMode; private set => SetProperty(ref _displayMode, value); }
@@ -182,7 +186,7 @@ public sealed class GpuAdapterViewModel : BindableBase {
   /// Refreshes the static identity from the inventory row.
   /// </summary>
   public void UpdateSpecs(GpuAdapterInfo info) {
-    Name = info.Name;
+    Name = info.Name.Replace("(R)","");
     IsIntegrated = info.Kind == GpuKind.Integrated;
     IsDedicated = info.Kind == GpuKind.Dedicated;
     KindLabel = info.Kind == GpuKind.Integrated ? "Integrated GPU" : "Dedicated GPU";
