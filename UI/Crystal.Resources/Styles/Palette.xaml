@@ -33,4 +33,49 @@
   <SolidColorBrush x:Key="UsageBarFreeBrush" Color="#3A5068"/>
   <SolidColorBrush x:Key="UsageBarTrackBrush" Color="#12233A"/>
   <SolidColorBrush x:Key="UsageBarBorderBrush" Color="#2E4A6A"/>
+  
+  <!-- Clock sensor banded colors -->
+  <SolidColorBrush x:Key="ClockAccentBandedBrush1" Color="#FFF5F5F5"/>
+  <SolidColorBrush x:Key="ClockAccentBandedBrush2" Color="#FFE8F4E8"/>
+  <SolidColorBrush x:Key="ClockAccentBandedBrush3" Color="#FFDCF3DC"/>
+  <SolidColorBrush x:Key="ClockAccentBandedBrush4" Color="#FFCFF2CF"/>
+  <SolidColorBrush x:Key="ClockAccentBandedBrush5" Color="#FFC2F2C2"/>
+  <SolidColorBrush x:Key="ClockAccentBandedBrush6" Color="#FFB6F1B6"/>
+  <SolidColorBrush x:Key="ClockAccentBandedBrush7" Color="#FFA9F0A9"/>
+  <SolidColorBrush x:Key="ClockAccentBandedBrush8" Color="#FF9DEF9D"/>
+  <SolidColorBrush x:Key="ClockAccentBandedBrush9" Color="#FF90EE90"/>
+
+  <!-- Voltage sensor banded colors -->
+  <SolidColorBrush x:Key="VoltageAccentBandedBrush1" Color="#FFF5F5F5"/>
+  <SolidColorBrush x:Key="VoltageAccentBandedBrush2" Color="#FFDDDDEA"/>
+  <SolidColorBrush x:Key="VoltageAccentBandedBrush3" Color="#FFC4C5DE"/>
+  <SolidColorBrush x:Key="VoltageAccentBandedBrush4" Color="#FFACADD3"/>
+  <SolidColorBrush x:Key="VoltageAccentBandedBrush5" Color="#FF9494C8"/>
+  <SolidColorBrush x:Key="VoltageAccentBandedBrush6" Color="#FF7C7CBC"/>
+  <SolidColorBrush x:Key="VoltageAccentBandedBrush7" Color="#FF6464B1"/>
+  <SolidColorBrush x:Key="VoltageAccentBandedBrush8" Color="#FF4B4CA5"/>
+  <SolidColorBrush x:Key="VoltageAccentBandedBrush9" Color="#FF33349A"/>
+
+  <!-- Temperature sensor banded colors -->
+  <SolidColorBrush x:Key="TemperatureAccentBandedBrush1" Color="#FFF5F5F5"/>
+  <SolidColorBrush x:Key="TemperatureAccentBandedBrush2" Color="#FFF6DDD9"/>
+  <SolidColorBrush x:Key="TemperatureAccentBandedBrush3" Color="#FFF8C4BE"/>
+  <SolidColorBrush x:Key="TemperatureAccentBandedBrush4" Color="#FFF9ACA2"/>
+  <SolidColorBrush x:Key="TemperatureAccentBandedBrush5" Color="#FFFA9486"/>
+  <SolidColorBrush x:Key="TemperatureAccentBandedBrush6" Color="#FFFB7B6A"/>
+  <SolidColorBrush x:Key="TemperatureAccentBandedBrush7" Color="#FFFC634E"/>
+  <SolidColorBrush x:Key="TemperatureAccentBandedBrush8" Color="#FFFE4A33"/>
+  <SolidColorBrush x:Key="TemperatureAccentBandedBrush9" Color="#FFFF3217"/>
+  
+  <!-- Power sensor banded colors -->
+  <SolidColorBrush x:Key="PowerAccentBandedBrush1" Color="#FFF5F5F5"/>
+  <SolidColorBrush x:Key="PowerAccentBandedBrush2" Color="#FFF4EAE2"/>
+  <SolidColorBrush x:Key="PowerAccentBandedBrush3" Color="#FFF4DECE"/>
+  <SolidColorBrush x:Key="PowerAccentBandedBrush4" Color="#FFF3D3BA"/>
+  <SolidColorBrush x:Key="PowerAccentBandedBrush5" Color="#FFF2C8A7"/>
+  <SolidColorBrush x:Key="PowerAccentBandedBrush6" Color="#FFF2BD94"/>
+  <SolidColorBrush x:Key="PowerAccentBandedBrush7" Color="#FFF1B280"/>
+  <SolidColorBrush x:Key="PowerAccentBandedBrush8" Color="#FFF1A66C"/>
+  <SolidColorBrush x:Key="PowerAccentBandedBrush9" Color="#FFF09B59"/>
+  
 </ResourceDictionary>

@@ -13,11 +13,22 @@ public static class CimAsyncExtensions {
     Exception? error = null;
     bool completed = false;
 
+    // MMI does not cancel its native callbacks synchronously when the subscription is disposed, so
+    // an in-flight onNext/onError/onCompleted can still fire while (or just after) this enumerator
+    // tears down and disposes the semaphore. Releasing a disposed SemaphoreSlim throws
+    // ObjectDisposedException on the native callback thread, which nothing can observe and crashes
+    // the process (seen when closing ProcessDetailView). Swallow it: a late release only matters if
+    // someone is still awaiting, and by then the enumerator is gone.
+    void ReleaseSafe() {
+      try { semaphore.Release(); }
+      catch (ObjectDisposedException) { }
+    }
+
     // Subscribe to the streaming WMI driver events
     using var subscription = observable.Subscribe(
-        onNext: item => { lock (queue) queue.Enqueue(item); semaphore.Release(); },
-        onError: ex => { error = ex; semaphore.Release(); },
-        onCompleted: () => { completed = true; semaphore.Release(); }
+        onNext: item => { lock (queue) queue.Enqueue(item); ReleaseSafe(); },
+        onError: ex => { error = ex; ReleaseSafe(); },
+        onCompleted: () => { completed = true; ReleaseSafe(); }
     );
 
     while (true) {
