@@ -5,6 +5,7 @@ using Crystal.ProcessModule.ViewModels;
 using Crystal.ProcessModule.Views;
 using Crystal.Provider.Etw;
 using Crystal.Provider.Mmi.MmiEngine;
+using Crystal.Service.Gpu;
 using Crystal.Service.Process;
 
 namespace Crystal.ProcessModule;
@@ -30,11 +31,17 @@ public class ProcessModule(IRegionManager regionManager) : IModule {
     containerRegistry.RegisterSingleton<EtwRateBroadcaster>(
         cp => new EtwRateBroadcaster(cp.Resolve<IProcessEtwSource>()));
 
+    // Per-process GPU% from the GPU Engine performance counters — Task Manager's own source, which
+    // (unlike the ETW DMA-packet estimate) captures compute/video workloads. Singleton because it
+    // owns a PDH query handle for the app lifetime; stays inert if the query can't be opened.
+    containerRegistry.RegisterSingleton<GpuProcessUsageSampler>();
+
     // ProcessMonitor owns the poll cadence and the cross-poll CPU-time baseline, so it must be a
     // singleton. Built via a factory: its optional TimeSpan?/IScheduler? params can't be resolved
     // by the container, and we want the default 1-second cadence.
     containerRegistry.RegisterSingleton<ProcessMonitor>(
-        cp => new ProcessMonitor(cp.Resolve<IWmiHardwareProvider>(), cp.Resolve<EtwRateBroadcaster>()));
+        cp => new ProcessMonitor(cp.Resolve<IWmiHardwareProvider>(), cp.Resolve<EtwRateBroadcaster>(),
+            cp.Resolve<GpuProcessUsageSampler>()));
     containerRegistry.RegisterSingleton<IProcessModel, ProcessModel>();
 
     // System-wide process/thread/handle totals for the summary header. Singleton so its
@@ -60,7 +67,7 @@ public class ProcessModule(IRegionManager regionManager) : IModule {
     containerRegistry.Register<ProcessListViewModel>(
         cp => new ProcessListViewModel(cp.Resolve<IProcessModel>(), cp.Resolve<SystemStatsMonitor>(),
             cp.Resolve<ProcessIconProvider>(), controller: cp.Resolve<IProcessController>(),
-            recorder: cp.Resolve<IProcessRecorder>()));
+            recorder: cp.Resolve<IProcessRecorder>(), gpuMonitor: cp.Resolve<GpuMonitor>()));
 
     ViewModelLocationProvider.Register<ProcessSummaryView>(
         () => ContainerLocator.Container.Resolve<ProcessListViewModel>());

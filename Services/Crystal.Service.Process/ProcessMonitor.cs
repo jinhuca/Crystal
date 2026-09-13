@@ -20,6 +20,7 @@ namespace Crystal.Service.Process;
 public sealed class ProcessMonitor {
   private readonly IWmiHardwareProvider _provider;
   private readonly EtwRateBroadcaster? _etw;
+  private readonly GpuProcessUsageSampler? _gpuUsage;
   private readonly int _logicalCores;
   private readonly IObservable<IReadOnlyList<ProcessSample>> _samples;
 
@@ -33,10 +34,12 @@ public sealed class ProcessMonitor {
   private volatile IReadOnlyDictionary<uint, ProcessEtwMetrics>? _latestRates;
 
   public ProcessMonitor(IWmiHardwareProvider provider, EtwRateBroadcaster? etw = null,
+                        GpuProcessUsageSampler? gpuUsage = null,
                         TimeSpan? pollInterval = null, IScheduler? scheduler = null) {
     ArgumentNullException.ThrowIfNull(provider);
     _provider = provider;
     _etw = etw;
+    _gpuUsage = gpuUsage;
     _logicalCores = Environment.ProcessorCount;
     var interval = pollInterval ?? TimeSpan.FromSeconds(1);
     scheduler ??= DefaultScheduler.Instance;
@@ -78,6 +81,12 @@ public sealed class ProcessMonitor {
     // snapshot and overlay by PID. Null until the first broadcast (or when no ETW source exists).
     var etwRates = _latestRates;
 
+    // Per-process GPU% from the GPU Engine performance counters (Task Manager's own source), read
+    // once per poll on this thread. Authoritative over the ETW DMA-packet estimate, which
+    // under-reports compute/video workloads. Empty on the first sample or when the counters are
+    // unavailable — the ETW value stands in for those cases.
+    var gpuByPid = _gpuUsage?.Sample();
+
     // Snapshot which PIDs own a visible window this poll, to split Apps from Background Processes.
     var windowedPids = VisibleWindowScanner.GetPidsWithVisibleWindows();
 
@@ -113,6 +122,13 @@ public sealed class ProcessMonitor {
         // ETW is running but saw no activity for this PID this window — that's a real zero, not
         // "unwired". Show 0 rather than the em-dash placeholder.
         gpu = 0; disk = 0; net = 0;
+      }
+
+      // Prefer the GPU Engine counter reading when the sampler is live: it matches Task Manager
+      // where ETW's DMA-packet timing reads ~0 for compute/video (e.g. AI inference) workloads. A
+      // PID absent from the map genuinely used no GPU this window, so it reads 0.
+      if (gpuByPid is not null && gpuByPid.Count > 0) {
+        gpu = gpuByPid.TryGetValue(pid, out var g) ? g : 0;
       }
 
       // Session 0 is the non-interactive services session → Windows infrastructure. Anything in an

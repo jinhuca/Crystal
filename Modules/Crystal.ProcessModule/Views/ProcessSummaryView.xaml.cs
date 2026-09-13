@@ -105,7 +105,8 @@ public partial class ProcessSummaryView : UserControl {
   private void WireGraphSeries(ProcessListViewModel vm) {
     CpuTotalSeries.ValuesSource = vm.TotalCpuHistory;
     CpuProcessSeries.ValuesSource = vm.SelectedCpuHistory;
-    GpuTotalSeries.ValuesSource = vm.TotalGpuHistory;
+    GpuDedicatedSeries.ValuesSource = vm.DedicatedGpuHistory;
+    GpuIntegratedSeries.ValuesSource = vm.IntegratedGpuHistory;
     GpuProcessSeries.ValuesSource = vm.SelectedGpuHistory;
     MemoryTotalSeries.ValuesSource = vm.TotalMemoryHistory;
     MemoryProcessSeries.ValuesSource = vm.SelectedMemoryHistory;
