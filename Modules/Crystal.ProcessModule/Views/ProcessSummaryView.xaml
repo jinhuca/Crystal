@@ -779,18 +779,32 @@
                                FontFamily="{StaticResource MonoFontFamily}" Margin="0,0,10,0">
                       <Run Text="Process"/><Run Text=" "/><Run Text="{Binding DataContext.SelectedGpuPercent, ElementName=Root, StringFormat={}{0:0.0}%, Mode=OneWay}" Foreground="{StaticResource ValueBrush}"/>
                     </TextBlock>
-                    <Border Width="8" Height="8" Background="#E0B84C" VerticalAlignment="Center" Margin="0,0,4,0"/>
-                    <TextBlock Foreground="{StaticResource TextMutedBrush}" FontSize="{StaticResource CaptionFontSize}"
-                               FontFamily="{StaticResource MonoFontFamily}">
-                      <Run Text="Total"/><Run Text=" "/><Run Text="{Binding DataContext.SystemGpuPercent, ElementName=Root, StringFormat={}{0:0.0}%, Mode=OneWay}" Foreground="{StaticResource ValueBrush}"/>
-                    </TextBlock>
+                    <!-- Dedicated (discrete) GPU — shown only when a discrete card is present. -->
+                    <StackPanel Orientation="Horizontal" Margin="0,0,10,0"
+                                Visibility="{Binding DataContext.HasDedicatedGpu, ElementName=Root, Converter={StaticResource BoolToVisibility}}">
+                      <Border Width="8" Height="8" Background="#E0B84C" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                      <TextBlock Foreground="{StaticResource TextMutedBrush}" FontSize="{StaticResource CaptionFontSize}"
+                                 FontFamily="{StaticResource MonoFontFamily}">
+                        <Run Text="Dedicated"/><Run Text=" "/><Run Text="{Binding DataContext.DedicatedGpuPercent, ElementName=Root, StringFormat={}{0:0.0}%, Mode=OneWay}" Foreground="{StaticResource ValueBrush}"/>
+                      </TextBlock>
+                    </StackPanel>
+                    <!-- Integrated GPU — shown only when an integrated adapter is present. -->
+                    <StackPanel Orientation="Horizontal"
+                                Visibility="{Binding DataContext.HasIntegratedGpu, ElementName=Root, Converter={StaticResource BoolToVisibility}}">
+                      <Border Width="8" Height="8" Background="#6FCF97" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                      <TextBlock Foreground="{StaticResource TextMutedBrush}" FontSize="{StaticResource CaptionFontSize}"
+                                 FontFamily="{StaticResource MonoFontFamily}">
+                        <Run Text="Integrated"/><Run Text=" "/><Run Text="{Binding DataContext.IntegratedGpuPercent, ElementName=Root, StringFormat={}{0:0.0}%, Mode=OneWay}" Foreground="{StaticResource ValueBrush}"/>
+                      </TextBlock>
+                    </StackPanel>
                   </StackPanel>
                 </Grid>
                 <graphs:PerformanceGraphMultipleDS x:Name="GpuGraph" Height="70" MinValue="0" MaxValue="100"
                                                    GraphBackground="#0A0A0A" GridBrush="#1B1B1B" GridThickness="0.6"
                                                    BorderBrush="{StaticResource DividerBrush}">
                   <graphs:PerformanceGraphMultipleDS.Series>
-                    <graphs:DataSeries x:Name="GpuTotalSeries" Name="Total" LineBrush="#E0B84C" LineThickness="1.2" FillBrush="{StaticResource TotalSeriesFill}"/>
+                    <graphs:DataSeries x:Name="GpuDedicatedSeries" Name="Dedicated" LineBrush="#E0B84C" LineThickness="1.2" FillBrush="{StaticResource TotalSeriesFill}"/>
+                    <graphs:DataSeries x:Name="GpuIntegratedSeries" Name="Integrated" LineBrush="#6FCF97" LineThickness="1.2" FillBrush="{StaticResource IntegratedSeriesFill}"/>
                     <graphs:DataSeries x:Name="GpuProcessSeries" Name="Process" LineBrush="#3E9BE8" LineThickness="1.4" FillBrush="{StaticResource ProcessSeriesFill}"/>
                   </graphs:PerformanceGraphMultipleDS.Series>
                 </graphs:PerformanceGraphMultipleDS>

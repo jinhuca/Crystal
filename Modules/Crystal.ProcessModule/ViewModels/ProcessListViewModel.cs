@@ -1,5 +1,6 @@
 using Crystal.Controls.Threading;
 using Crystal.ProcessModule.Models;
+using Crystal.Service.Gpu;
 using Crystal.Service.Process;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -18,6 +19,9 @@ namespace Crystal.ProcessModule.ViewModels;
 public sealed class ProcessListViewModel : BindableBase, IDisposable {
   private readonly IDisposable _subscription;
   private readonly IDisposable _statsSubscription;
+  // Null when no GpuMonitor was supplied (tests, or a build without the GPU service). The GPU
+  // "Total" lines stay empty in that case; the ETW-based per-process line still works.
+  private readonly IDisposable? _gpuSubscription;
   private readonly UiThreadMarshaller _ui = new();
   private readonly Dictionary<uint, ProcessRowViewModel> _rowsByPid = new();
   private int _processCount;
@@ -58,7 +62,8 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
   // skip icons, and inject fakes.
   public ProcessListViewModel(IProcessModel model, SystemStatsMonitor systemStats,
                               ProcessIconProvider? iconProvider = null, Func<DateTimeOffset>? clock = null,
-                              IProcessController? controller = null, IProcessRecorder? recorder = null) {
+                              IProcessController? controller = null, IProcessRecorder? recorder = null,
+                              GpuMonitor? gpuMonitor = null) {
     _clock = clock ?? (() => DateTimeOffset.Now);
     _iconProvider = iconProvider;
     _controller = controller ?? new ProcessController();
@@ -80,6 +85,11 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
 
     _subscription = model.Processes.Subscribe(samples => OnUi(() => Apply(samples)));
     _statsSubscription = systemStats.Stats.Subscribe(s => OnUi(() => UpdateSystemStats(s)));
+    // Real machine-wide GPU utilization from the sensor stack (the same source the dashboard GPU
+    // tile reads), split into dedicated/integrated adapters. Replaces the old "sum of per-process
+    // GPU%" total, which under-measured badly (near 0% while a card was pinned at 100%) because the
+    // per-process signal is ETW DMA-packet timing, not the adapter load sensor.
+    _gpuSubscription = gpuMonitor?.Sensors.Subscribe(s => OnUi(() => UpdateGpuStats(s)));
   }
 
   public ObservableCollection<ProcessRowViewModel> Rows { get; } = [];
@@ -118,8 +128,16 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
   // the process stream). The graph "Total" lines are appended on the process-stream cadence reading
   // these cached values, so both series share one append timeline.
   private double _systemCpuPercent;
-  private double _systemGpuPercent;
   private double _systemMemoryPercent;
+  // Latest per-kind GPU core load (%), cached from the GpuMonitor sensor stream (a separate poll
+  // from the process stream). The GPU "Total" lines are appended on the process-stream cadence
+  // reading these, so every series shares one append timeline. Presence flags gate whether that
+  // adapter's series and legend entry show at all — a machine with no discrete card never plots a
+  // flat-zero "Dedicated" line, and a desktop with no iGPU never plots "Integrated".
+  private double _dedicatedGpuPercent;
+  private double _integratedGpuPercent;
+  private bool _hasDedicatedGpu;
+  private bool _hasIntegratedGpu;
   // Seeded at 0 (unknown) rather than 1: the process stream can fire before the stats stream first
   // delivers total physical memory, and dividing a working set by a 1 MB "total" would clamp the
   // selected-process memory line to 100% for that first poll — the spike seen when the view opens.
@@ -147,12 +165,17 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
   /// line of the CPU graph.</summary>
   public ObservableCollection<double> TotalCpuHistory { get; } = [];
 
-  /// <summary>Selected process GPU% history. Feeds the "Process" line of the GPU graph.</summary>
+  /// <summary>Selected process GPU% history. Feeds the "Process" line of the GPU graph (ETW
+  /// DMA-packet timing — the only per-process GPU signal available).</summary>
   public ObservableCollection<double> SelectedGpuHistory { get; } = [];
 
-  /// <summary>Machine-wide GPU% history (summed per-process busy fraction, capped at 100). Feeds the
-  /// "Total" GPU line.</summary>
-  public ObservableCollection<double> TotalGpuHistory { get; } = [];
+  /// <summary>Dedicated (discrete) GPU core-load% history, from the GPU sensor stream. Feeds the
+  /// "Dedicated" GPU line; only appended (and shown) when a discrete adapter is present.</summary>
+  public ObservableCollection<double> DedicatedGpuHistory { get; } = [];
+
+  /// <summary>Integrated GPU core-load% history, from the GPU sensor stream. Feeds the "Integrated"
+  /// GPU line; only appended (and shown) when an integrated adapter is present.</summary>
+  public ObservableCollection<double> IntegratedGpuHistory { get; } = [];
 
   /// <summary>Selected process memory as a percentage of total physical memory. Feeds the "Process"
   /// line of the memory graph.</summary>
@@ -165,8 +188,19 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
   /// <summary>Latest machine-wide CPU utilization (%), shown live in the CPU graph header's "Total".</summary>
   public double SystemCpuPercent { get => _systemCpuPercent; private set => SetProperty(ref _systemCpuPercent, value); }
 
-  /// <summary>Latest machine-wide GPU utilization (%), shown live in the GPU graph header's "Total".</summary>
-  public double SystemGpuPercent { get => _systemGpuPercent; private set => SetProperty(ref _systemGpuPercent, value); }
+  /// <summary>Latest dedicated (discrete) GPU utilization (%), shown live in the GPU graph header's
+  /// "Dedicated" and fed into <see cref="DedicatedGpuHistory"/>.</summary>
+  public double DedicatedGpuPercent { get => _dedicatedGpuPercent; private set => SetProperty(ref _dedicatedGpuPercent, value); }
+
+  /// <summary>Latest integrated GPU utilization (%), shown live in the GPU graph header's
+  /// "Integrated" and fed into <see cref="IntegratedGpuHistory"/>.</summary>
+  public double IntegratedGpuPercent { get => _integratedGpuPercent; private set => SetProperty(ref _integratedGpuPercent, value); }
+
+  /// <summary>True when a discrete GPU is present; gates the "Dedicated" line and legend entry.</summary>
+  public bool HasDedicatedGpu { get => _hasDedicatedGpu; private set => SetProperty(ref _hasDedicatedGpu, value); }
+
+  /// <summary>True when an integrated GPU is present; gates the "Integrated" line and legend entry.</summary>
+  public bool HasIntegratedGpu { get => _hasIntegratedGpu; private set => SetProperty(ref _hasIntegratedGpu, value); }
 
   /// <summary>Latest machine-wide memory utilization (%), shown live in the memory graph header's "Total".</summary>
   public double SystemMemoryPercent { get => _systemMemoryPercent; private set => SetProperty(ref _systemMemoryPercent, value); }
@@ -508,30 +542,30 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
   // reading, so each graph plots "selected process vs. total" as two series. Runs on the UI thread
   // (called from Apply), so mutating the bound collections here is safe.
   private void UpdateUtilizationHistory(IReadOnlyList<ProcessSample> samples) {
-    // GPU has no cheap machine-wide counter here, so approximate the total as the summed per-process
-    // busy fraction, capped at 100% (each per-process value is already clamped to 100). CPU and
-    // memory totals come from the machine-wide sampler (GetSystemTimes / GlobalMemoryStatusEx) cached
-    // off the stats stream — summing per-process CPU would double-count the idle process (~99% bug).
-    double totalGpu = 0;
-    // Storage/network have no machine-wide counter here either, so the total is the summed
-    // per-process throughput. Unlike CPU, summing disk/net I/O has no idle-process inflation, so the
-    // sum is a faithful machine-wide rate. Bytes/sec is null until the ETW backend is live.
+    // GPU totals come from the GpuMonitor sensor stream (cached in UpdateGpuStats), not from summing
+    // per-process GPU%: the per-process signal is ETW DMA-packet timing, which under-measures real
+    // occupancy, and summing it hid a busy card as near-0. CPU and memory totals come from the
+    // machine-wide sampler (GetSystemTimes / GlobalMemoryStatusEx) cached off the stats stream —
+    // summing per-process CPU would double-count the idle process (~99% bug).
+    // Storage/network have no machine-wide counter here, so the total is the summed per-process
+    // throughput. Unlike CPU, summing disk/net I/O has no idle-process inflation, so the sum is a
+    // faithful machine-wide rate. Bytes/sec is null until the ETW backend is live.
     double totalDiskBytes = 0;
     double totalNetBytes = 0;
     foreach (var s in samples) {
-      totalGpu += s.GpuPercent ?? 0;
       totalDiskBytes += s.DiskBytesPerSec ?? 0;
       totalNetBytes += s.NetBytesPerSec ?? 0;
     }
-    totalGpu = Math.Min(100, totalGpu);
-    SystemGpuPercent = totalGpu;
 
     const double bytesPerMb = 1024 * 1024;
     double totalDisk = totalDiskBytes / bytesPerMb;
     double totalNet = totalNetBytes / bytesPerMb;
 
     Append(TotalCpuHistory, _systemCpuPercent);
-    Append(TotalGpuHistory, totalGpu);
+    // Only plot a GPU-kind line when that adapter exists, so an absent card leaves an empty series
+    // (no line) rather than a misleading flat zero.
+    if (_hasDedicatedGpu) Append(DedicatedGpuHistory, _dedicatedGpuPercent);
+    if (_hasIntegratedGpu) Append(IntegratedGpuHistory, _integratedGpuPercent);
     Append(TotalMemoryHistory, _systemMemoryPercent);
     Append(TotalDiskHistory, totalDisk);
     Append(TotalNetHistory, totalNet);
@@ -719,11 +753,32 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
     SystemMemoryPercent = stats.MemoryPercent;
   }
 
+  // Cache the latest per-kind GPU core load from the sensor snapshot. Each load reading is matched
+  // to its adapter by name to learn its kind; when several adapters share a kind (rare), the busiest
+  // one wins, matching how the dashboard tile reports a kind's utilization. Runs on the UI thread.
+  private void UpdateGpuStats(GpuSnapshot snapshot) {
+    double? dedicated = null, integrated = null;
+    foreach (var reading in snapshot.Loads) {
+      var adapter = snapshot.Adapters.FirstOrDefault(a => a.Name == reading.AdapterName);
+      if (adapter is null) continue;
+      if (adapter.Kind == GpuKind.Dedicated)
+        dedicated = Math.Max(dedicated ?? 0, reading.CoreLoadPercent);
+      else
+        integrated = Math.Max(integrated ?? 0, reading.CoreLoadPercent);
+    }
+
+    HasDedicatedGpu = dedicated is not null;
+    HasIntegratedGpu = integrated is not null;
+    DedicatedGpuPercent = dedicated ?? 0;
+    IntegratedGpuPercent = integrated ?? 0;
+  }
+
   private void OnUi(Action action) => _ui.Post(action);
 
   public void Dispose() {
     _subscription.Dispose();
     _statsSubscription.Dispose();
+    _gpuSubscription?.Dispose();
     // Flush and close any in-progress recording so the file isn't left open if the view is torn down.
     _recorder.Stop();
   }
