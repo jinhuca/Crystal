@@ -51,14 +51,7 @@
       <TextBlock Grid.Row="0" Grid.Column="4" Text="MAX" Style="{StaticResource MetricTableHeader}"/>
 
       <!-- Value block: value + unit + trend (voltage has no subtitle). Spans the table rows. -->
-      <StackPanel Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="2,0,0,0">
-        <StackPanel Orientation="Horizontal">
-          
-          
-        </StackPanel>
-      </StackPanel>
-
-      <Grid Grid.Row="1" Grid.Column="0" Grid.RowSpan="3" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="2,10,0,0">
+      <Grid Grid.Row="1" Grid.Column="0" Grid.RowSpan="3" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="2,10,0,0" ShowGridLines="False">
         <Grid.RowDefinitions>
           <RowDefinition Height="*"/>
           <RowDefinition Height="Auto"/>
@@ -69,14 +62,14 @@
             <ColumnDefinition Width="30"/>
             <ColumnDefinition Width="30"/>
           </Grid.ColumnDefinitions>
-          <TextBlock Grid.Column="0" 
-                     Text="{Binding Voltage, StringFormat={}{0:0.000}}" Style="{StaticResource TileMetricValue}" VerticalAlignment="Bottom"/>
+          <TextBlock Grid.Column="0" HorizontalAlignment="Right"
+                     Text="{Binding Voltage, StringFormat={}{0:0.000}}" Style="{StaticResource TileMetricValue}"/>
           <TextBlock Grid.Column="1"
-                     Text="Volt" Style="{StaticResource MetricUnit}" Margin="6,0,0,0" VerticalAlignment="Bottom"/>
+                     Text="V" Style="{StaticResource MetricUnit}" HorizontalAlignment="Left" Margin="8,0,0,0"/>
           <TextBlock Grid.Column="2" 
                      Text="{Binding VoltageRows[0].Trend, Converter={StaticResource TrendToGlyph}}"
                      Foreground="{Binding VoltageRows[0].Trend, Converter={StaticResource TrendToBrush}}"
-                     Style="{StaticResource MetricUnit}" Margin="6,0,0,0" VerticalAlignment="Bottom"/>
+                     Style="{StaticResource MetricUnit}" Margin="6,0,0,0"/>
         </Grid>
       </Grid>
 

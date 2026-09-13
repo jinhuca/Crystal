@@ -21,11 +21,12 @@
   <Border Style="{StaticResource SummaryTileBorderStyle}">
     <Grid MinHeight="60" ShowGridLines="False">
       <Grid.RowDefinitions>
-        <RowDefinition Height="20"/>
-        <RowDefinition Height="1.6*"/>
-        <RowDefinition Height=".7*"/>
+        <RowDefinition Height="18"/>
+        <RowDefinition Height="48"/>
+        <RowDefinition Height="26"/>
       </Grid.RowDefinitions>
-      <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+      
+      <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom">
         <TextBlock Text="CPU Fan" Style="{StaticResource SummaryTileTitleTextBlockStyle}"/>
       </StackPanel>
 
@@ -45,10 +46,13 @@
                    Style="{StaticResource MetricUnit}" Margin="4,0,0,0"/>
       </Grid>
       <StackPanel Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2,0,0,0">
-        <TextBlock Style="{StaticResource MetricStatLine}">
-        <Run Text="min " Foreground="{StaticResource AccentBrush}"/><Run Text="{Binding FanRow.Min, StringFormat={}{0:0}}"/>
-        <Run Text="   avg " Foreground="{StaticResource AccentBrush}"/><Run Text="{Binding FanRow.Avg, StringFormat={}{0:0}}"/>
-        <Run Text="   max " Foreground="{StaticResource AccentBrush}"/><Run Text="{Binding FanRow.Max, StringFormat={}{0:0}}"/>
+        <TextBlock Style="{StaticResource MetricStatLine}" Margin="12,0,0,0" VerticalAlignment="Center">
+          <Run FontFamily="Segoe Fluent Icons" Text="&#xE70D; " Foreground="LightGreen"/>
+          <Run Text="{Binding FanRow.Min, StringFormat={}{0:0}}"/>
+          <Run FontFamily="Segoe Fluent Icons" Text=" &#xE738; " Foreground="{StaticResource AccentBrush}"/>
+          <Run Text="{Binding FanRow.Avg, StringFormat={}{0:0}}"/>
+          <Run FontFamily="Segoe Fluent Icons" Text=" &#xE70E; " Foreground="Crimson"/>
+          <Run Text="{Binding FanRow.Max, StringFormat={}{0:0}}"/>
         </TextBlock>
       </StackPanel>
     </Grid>
