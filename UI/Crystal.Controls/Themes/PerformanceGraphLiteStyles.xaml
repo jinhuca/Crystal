@@ -38,6 +38,62 @@
     </Setter>
   </Style>
 
+  <Style x:Key="BandedSquareDotGraphLiteStyle" TargetType="{x:Type graphs:PerformanceGraphLite}"
+         BasedOn="{StaticResource SquareDotGraphLiteStyle}">
+    <Setter Property="ColorMode" Value="Banded"/>
+  </Style>
+
+  <Style x:Key="ClockBandedSquareDotGraphLiteStyle" TargetType="{x:Type graphs:PerformanceGraphLite}"
+         BasedOn="{StaticResource BandedSquareDotGraphLiteStyle}">
+    <Setter Property="Color1" Value="{StaticResource ClockAccentBandedBrush1}"/>
+    <Setter Property="Color2" Value="{StaticResource ClockAccentBandedBrush2}"/>
+    <Setter Property="Color3" Value="{StaticResource ClockAccentBandedBrush3}"/>
+    <Setter Property="Color4" Value="{StaticResource ClockAccentBandedBrush4}"/>
+    <Setter Property="Color5" Value="{StaticResource ClockAccentBandedBrush5}"/>
+    <Setter Property="Color6" Value="{StaticResource ClockAccentBandedBrush6}"/>
+    <Setter Property="Color7" Value="{StaticResource ClockAccentBandedBrush7}"/>
+    <Setter Property="Color8" Value="{StaticResource ClockAccentBandedBrush8}"/>
+    <Setter Property="Color9" Value="{StaticResource ClockAccentBandedBrush9}"/>
+  </Style>
+
+  <Style x:Key="VoltageBandedSquareDotGraphLiteStyle" TargetType="{x:Type graphs:PerformanceGraphLite}"
+         BasedOn="{StaticResource BandedSquareDotGraphLiteStyle}">
+    <Setter Property="Color1" Value="{StaticResource VoltageAccentBandedBrush1}"/>
+    <Setter Property="Color2" Value="{StaticResource VoltageAccentBandedBrush2}"/>
+    <Setter Property="Color3" Value="{StaticResource VoltageAccentBandedBrush3}"/>
+    <Setter Property="Color4" Value="{StaticResource VoltageAccentBandedBrush4}"/>
+    <Setter Property="Color5" Value="{StaticResource VoltageAccentBandedBrush5}"/>
+    <Setter Property="Color6" Value="{StaticResource VoltageAccentBandedBrush6}"/>
+    <Setter Property="Color7" Value="{StaticResource VoltageAccentBandedBrush7}"/>
+    <Setter Property="Color8" Value="{StaticResource VoltageAccentBandedBrush8}"/>
+    <Setter Property="Color9" Value="{StaticResource VoltageAccentBandedBrush9}"/>
+  </Style>
+
+  <Style x:Key="TemperatureBandedSquareDotGraphLiteStyle" TargetType="{x:Type graphs:PerformanceGraphLite}"
+         BasedOn="{StaticResource BandedSquareDotGraphLiteStyle}">
+    <Setter Property="Color1" Value="{StaticResource TemperatureAccentBandedBrush1}"/>
+    <Setter Property="Color2" Value="{StaticResource TemperatureAccentBandedBrush2}"/>
+    <Setter Property="Color3" Value="{StaticResource TemperatureAccentBandedBrush3}"/>
+    <Setter Property="Color4" Value="{StaticResource TemperatureAccentBandedBrush4}"/>
+    <Setter Property="Color5" Value="{StaticResource TemperatureAccentBandedBrush5}"/>
+    <Setter Property="Color6" Value="{StaticResource TemperatureAccentBandedBrush6}"/>
+    <Setter Property="Color7" Value="{StaticResource TemperatureAccentBandedBrush7}"/>
+    <Setter Property="Color8" Value="{StaticResource TemperatureAccentBandedBrush8}"/>
+    <Setter Property="Color9" Value="{StaticResource TemperatureAccentBandedBrush9}"/>
+  </Style>
+
+  <Style x:Key="PowerBandedSquareDotGraphLiteStyle" TargetType="{x:Type graphs:PerformanceGraphLite}"
+         BasedOn="{StaticResource BandedSquareDotGraphLiteStyle}">
+    <Setter Property="Color1" Value="{StaticResource PowerAccentBandedBrush1}"/>
+    <Setter Property="Color2" Value="{StaticResource PowerAccentBandedBrush2}"/>
+    <Setter Property="Color3" Value="{StaticResource PowerAccentBandedBrush3}"/>
+    <Setter Property="Color4" Value="{StaticResource PowerAccentBandedBrush4}"/>
+    <Setter Property="Color5" Value="{StaticResource PowerAccentBandedBrush5}"/>
+    <Setter Property="Color6" Value="{StaticResource PowerAccentBandedBrush6}"/>
+    <Setter Property="Color7" Value="{StaticResource PowerAccentBandedBrush7}"/>
+    <Setter Property="Color8" Value="{StaticResource PowerAccentBandedBrush8}"/>
+    <Setter Property="Color9" Value="{StaticResource PowerAccentBandedBrush9}"/>
+  </Style>
   <!--
     Shared dot-cell size for the CPU/GPU utilization graphs. One tunable number: every graph that
     uses UtilizationGraphLiteStyle pins this Height and derives its Width from it, so all of them

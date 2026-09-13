@@ -57,7 +57,6 @@
   <Style x:Key="TileMetricValue" TargetType="TextBlock" BasedOn="{StaticResource MetricValue}">
     <Setter Property="FontSize" Value="22"/>
     <Setter Property="Margin" Value="0"/>
-    <Setter Property="VerticalAlignment" Value="Bottom"/>
   </Style>
 
   <!-- Metric breakdown table beside a tile graph (power rails, clock domains, temperatures, …):
