@@ -15,9 +15,12 @@
   <UserControl.Resources>
     <!-- Per-core category colors for the value readouts: clock=light blue, load=light green,
          temperature=bright brown. -->
-    <SolidColorBrush x:Key="CoreClockBrush" Color="#6EB4F0"/>
-    <SolidColorBrush x:Key="CoreLoadBrush" Color="#6FCF6F"/>
-    <SolidColorBrush x:Key="CoreTempBrush" Color="#D2691E"/>
+    <Color x:Key="CoreLoadColor">#FF6FFF3F</Color>
+    <Color x:Key="CoreClockColor">#FF33A5FE</Color>
+    <Color x:Key="CoreTempColor">#FFCF3322</Color>
+    <SolidColorBrush x:Key="CoreClockBrush" Color="{StaticResource CoreClockColor}"/>
+    <SolidColorBrush x:Key="CoreLoadBrush" Color="{StaticResource CoreLoadColor}"/>
+    <SolidColorBrush x:Key="CoreTempBrush" Color="{StaticResource CoreTempColor}"/>
 
     <!-- Value-banded bar fills (green->red) matching the other CpuSummaryView tiles, so each core
          bar shifts color with its reading. Bands mirror CpuClockView/CpuTemperatureView and the
@@ -56,7 +59,7 @@
       </ItemsControl.ItemsPanel>
       <ItemsControl.ItemTemplate>
         <DataTemplate>
-          <Grid Margin="0,6,30,0" VerticalAlignment="Top">
+          <Grid Margin="0,6,30,0" VerticalAlignment="Top" ShowGridLines="False">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="28"/>
               <ColumnDefinition Width="*"/>
@@ -70,32 +73,31 @@
 
             <!-- Core label spans all three metric rows, aligned to the top of the stack. -->
             <TextBlock Grid.Column="0" Grid.RowSpan="3" Text="{Binding Label}" Foreground="{StaticResource LabelBrush}"
-                       FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Top"/>
+                       FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource UiFontFamily}" VerticalAlignment="Top"/>
 
             <!-- Each metric occupies one row so its bar and value stay aligned. -->
             <bars:RangeBar Grid.Row="0" Grid.Column="1" Style="{StaticResource SummaryRangeBarStyle}" Margin="0,0,8,0" VerticalAlignment="Center"
                            MinValue="0" MaxValue="100" Value="{Binding Load}"
-                           AccentColor="Green" LowestAlpha="120"
-                           FillBrush="{Binding Value, RelativeSource={RelativeSource Self}, Converter={StaticResource CoreLoadFill}}"/>
+                           AccentColor="Green" LowestAlpha="150"/>
             <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Load, StringFormat={}{0:0}%}"
                        Foreground="{StaticResource CoreLoadBrush}" VerticalAlignment="Center"
-                       FontSize="{StaticResource MicroFontSize}" FontFamily="{StaticResource MonoFontFamily}" TextAlignment="Right"/>
+                       FontSize="{StaticResource MicroFontSize}" FontFamily="{StaticResource UiFontFamily}" TextAlignment="Right"/>
 
             <bars:RangeBar Grid.Row="1" Grid.Column="1" Style="{StaticResource SummaryRangeBarStyle}" Margin="0,0,8,0" VerticalAlignment="Center"
                            MinValue="0" MaxValue="6" Value="{Binding SpeedGhz}"
-                           AccentColor="DodgerBlue" LowestAlpha="120"
+                           AccentColor="DodgerBlue" LowestAlpha="150"
                            FillBrush="{Binding Value, RelativeSource={RelativeSource Self}, Converter={StaticResource CoreClockFill}}"/>
             <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding SpeedGhz, StringFormat={}{0:0.00} GHz}"
                        Foreground="{StaticResource CoreClockBrush}" VerticalAlignment="Center"
-                       FontSize="{StaticResource MicroFontSize}" FontFamily="{StaticResource MonoFontFamily}" TextAlignment="Right"/>
+                       FontSize="{StaticResource MicroFontSize}" FontFamily="{StaticResource UiFontFamily}" TextAlignment="Right"/>
 
             <bars:RangeBar Grid.Row="2" Grid.Column="1" Style="{StaticResource SummaryRangeBarStyle}" Margin="0,0,8,0" VerticalAlignment="Center"
                            MinValue="0" MaxValue="100" Value="{Binding Temperature}"
-                           AccentColor="SaddleBrown" LowestAlpha="120"
+                           AccentColor="{StaticResource CoreTempColor}" LowestAlpha="150"
                            FillBrush="{Binding Value, RelativeSource={RelativeSource Self}, Converter={StaticResource CoreTempFill}}"/>
             <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding Temperature, StringFormat={}{0:0.00}℃}"
                        Foreground="{StaticResource CoreTempBrush}" VerticalAlignment="Center"
-                       FontSize="{StaticResource MicroFontSize}" FontFamily="{StaticResource MonoFontFamily}" TextAlignment="Right"/>
+                       FontSize="{StaticResource MicroFontSize}" FontFamily="{StaticResource UiFontFamily}" TextAlignment="Right"/>
           </Grid>
         </DataTemplate>
       </ItemsControl.ItemTemplate>
