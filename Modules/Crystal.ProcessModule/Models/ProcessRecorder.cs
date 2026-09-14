@@ -17,8 +17,9 @@ public sealed class ProcessRecorder : IProcessRecorder {
       "Timestamp,PID,Name,CPU%,PeakCPU%,MemoryMB,PeakMemMB,GPU%,DiskBytesPerSec,NetBytesPerSec";
 
   private StreamWriter? _writer;
-  private double _peakCpu;
-  private double _peakMem;
+  // Running high-water marks per PID, so a file holding several processes reports each one's own
+  // session peak rather than a value contaminated by the others' rows.
+  private readonly Dictionary<uint, (double Cpu, double Mem)> _peaks = [];
 
   public bool IsActive => _writer is not null;
   public int SampleCount { get; private set; }
@@ -40,8 +41,7 @@ public sealed class ProcessRecorder : IProcessRecorder {
       _writer = writer;
       FilePath = filePath;
       SampleCount = 0;
-      _peakCpu = 0;
-      _peakMem = 0;
+      _peaks.Clear();
       return ProcessActionResult.Ok;
     }
     catch (IOException ex) {
@@ -55,19 +55,20 @@ public sealed class ProcessRecorder : IProcessRecorder {
   public void WriteSample(ProcessSample sample, DateTimeOffset timestamp) {
     if (_writer is null) return;
 
-    // The recorder owns the running peaks so the file is self-contained — a reader gets the session
-    // high-water marks without needing the live row VM.
-    if (sample.CpuPercent > _peakCpu) _peakCpu = sample.CpuPercent;
-    if (sample.WorkingSetMb > _peakMem) _peakMem = sample.WorkingSetMb;
+    // The recorder owns the running peaks so the file is self-contained — a reader gets each PID's
+    // session high-water marks without needing the live row VM.
+    _peaks.TryGetValue(sample.ProcessId, out var peak);
+    peak = (Math.Max(peak.Cpu, sample.CpuPercent), Math.Max(peak.Mem, sample.WorkingSetMb));
+    _peaks[sample.ProcessId] = peak;
 
     string line = string.Join(',',
         timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture),
         sample.ProcessId.ToString(CultureInfo.InvariantCulture),
         CsvField(sample.Name),
         Num(sample.CpuPercent, "0.0"),
-        Num(_peakCpu, "0.0"),
+        Num(peak.Cpu, "0.0"),
         Num(sample.WorkingSetMb, "0"),
-        Num(_peakMem, "0"),
+        Num(peak.Mem, "0"),
         NullableNum(sample.GpuPercent, "0.0"),
         NullableNum(sample.DiskBytesPerSec, "0"),
         NullableNum(sample.NetBytesPerSec, "0"));

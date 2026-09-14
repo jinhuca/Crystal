@@ -73,6 +73,23 @@ public class ProcessRecorderCsvTests : IDisposable {
   }
 
   [Fact]
+  public void Peaks_are_tracked_independently_per_pid() {
+    var recorder = new ProcessRecorder();
+    recorder.Start(_path);
+    recorder.WriteSample(Sample(100, "alpha", cpu: 80, mem: 200), At(1));
+    recorder.WriteSample(Sample(200, "beta", cpu: 10, mem: 500), At(1));
+    recorder.WriteSample(Sample(100, "alpha", cpu: 30, mem: 100), At(2)); // alpha dips
+    recorder.WriteSample(Sample(200, "beta", cpu: 40, mem: 900), At(2));  // beta rises
+    recorder.Stop();
+
+    var lines = File.ReadAllLines(_path);
+    // alpha's row keeps alpha's own peaks (cpu 80, mem 200) — not raised by beta's higher numbers.
+    Assert.Equal("2026-08-09T14:00:02,100,alpha,30.0,80.0,100,200,,,", lines[3]);
+    // beta's row keeps beta's own peaks (cpu 40, mem 900).
+    Assert.Equal("2026-08-09T14:00:02,200,beta,40.0,40.0,900,900,,,", lines[4]);
+  }
+
+  [Fact]
   public void A_name_with_a_comma_is_quoted() {
     var recorder = new ProcessRecorder();
     recorder.Start(_path);

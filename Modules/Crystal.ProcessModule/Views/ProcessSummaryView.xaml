@@ -231,6 +231,39 @@
         <MenuItem Header="Copy image path" Click="OnCopyImagePath"/>
       </ContextMenu>
 
+      <!-- Compact dark checkbox for the leftmost "monitor this process" column. Checked = accent
+           fill with a dark tick; shares the row VM's IsSelected with the ListViewItem selection, so
+           the box, the row highlight, and the monitored set all stay in lockstep. -->
+      <Style x:Key="RowCheckBoxStyle" TargetType="CheckBox">
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="CheckBox">
+              <Border x:Name="Box" Width="14" Height="14" Background="#0A0A0A"
+                      BorderBrush="{StaticResource BorderBrush}" BorderThickness="1"
+                      SnapsToDevicePixels="True">
+                <Path x:Name="Check" Data="M 2.5,6.5 L 5.5,9.5 L 11,3.5" Stroke="#0A0A0A"
+                      StrokeThickness="1.6" StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                      Visibility="Collapsed" SnapsToDevicePixels="True"/>
+              </Border>
+              <ControlTemplate.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                  <Setter TargetName="Box" Property="Background" Value="{StaticResource AccentBrush}"/>
+                  <Setter TargetName="Box" Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+                  <Setter TargetName="Check" Property="Visibility" Value="Visible"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                  <Setter TargetName="Box" Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+                </Trigger>
+              </ControlTemplate.Triggers>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style>
+
       <!-- Flat, tight rows; hover and selection are flat fills (no rounded highlight). Ordering
            matters: IsMouseOver comes first so the selection fill (below) wins on a hovered
            selected row, and the MultiTrigger gives a slightly brighter blue for selected+hover. -->
@@ -429,9 +462,9 @@
         <ColumnDefinition x:Name="DetailColumn" Width="{Binding ElementName=Root, Path=DefaultDetailWidth}" MinWidth="100"/>
       </Grid.ColumnDefinitions>
 
-      <ListView Grid.Column="0" 
+      <ListView Grid.Column="0"
                 ItemsSource="{Binding RowsView}"
-                SelectionMode="Single"
+                SelectionMode="Multiple"
                 GridViewColumnHeader.Click="OnColumnHeaderClick"
                 Style="{StaticResource ProcessListViewStyle}"
                 ItemContainerStyle="{StaticResource RowStyle}"
@@ -462,6 +495,22 @@
         </ListView.GroupStyle>
         <ListView.View>
           <GridView x:Name="ProcessGridView" ColumnHeaderContainerStyle="{StaticResource HeaderStyle}">
+            <!-- Explicit "monitor this process" toggle. Bound to the same IsSelected as the row
+                 selection, so ticking the box, clicking the row (SelectionMode="Multiple" toggles
+                 without clearing others), and the monitored graph set all stay in sync. -->
+            <GridViewColumn Width="30">
+              <GridViewColumn.CellTemplate>
+                <DataTemplate>
+                  <!-- Display-only: hit-testing is off so the click falls through to the row, whose
+                       SelectionMode="Multiple" toggle is the single source of truth for IsSelected.
+                       The box just mirrors that state, sidestepping a checkbox/row double-toggle. -->
+                  <CheckBox Style="{StaticResource RowCheckBoxStyle}"
+                            IsHitTestVisible="False"
+                            IsChecked="{Binding IsSelected, Mode=OneWay}"
+                            ToolTip="Monitor this process"/>
+                </DataTemplate>
+              </GridViewColumn.CellTemplate>
+            </GridViewColumn>
             <GridViewColumn Header="Name" Width="160" local:GridViewSort.SortProperty="Name">
               <GridViewColumn.CellTemplate>
                 <DataTemplate>
@@ -630,107 +679,53 @@
             <ScrollViewer.Resources>
               <Style TargetType="ScrollBar" BasedOn="{StaticResource CrystalScrollBarStyle}"/>
             </ScrollViewer.Resources>
-          <StackPanel Margin="12,10" DataContext="{Binding SelectedRow}">
-            <!-- Process identity -->
-            <TextBlock Text="{Binding Name}" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource SubHeadingFontSize}"
-                       FontWeight="SemiBold" FontFamily="{StaticResource MonoFontFamily}"
-                       TextTrimming="CharacterEllipsis"/>
-            <StackPanel Orientation="Horizontal" Margin="0,2,0,10">
-              <TextBlock Text="{Binding ProcessId, StringFormat=PID {0}}"
-                         Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}"
-                         Margin="0,0,12,0"/>
-              <TextBlock Text="{Binding Status}" Foreground="{StaticResource LabelBrush}"
-                         FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}" Margin="0,0,12,0"/>
-              <TextBlock Text="{Binding CategoryName}" Foreground="{StaticResource TextMutedBrush}"
-                         FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}"/>
-            </StackPanel>
+          <StackPanel Margin="12,10">
+            <!-- Legend: one row per monitored process (up to 5), each carrying its line color (the
+                 same color used for that process across every graph), name, PID, and live CPU /
+                 memory / GPU. Replaces the old single-process metric block now that several
+                 processes can be monitored at once. -->
+            <ItemsControl ItemsSource="{Binding MonitoredProcesses}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <Grid Margin="0,2">
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="Auto"/>
+                      <ColumnDefinition Width="*"/>
+                      <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.Column="0" Width="8" Height="8" Background="{Binding Color}"
+                            VerticalAlignment="Center"/>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="6,0,0,0">
+                      <TextBlock Text="{Binding Row.Name}" Foreground="{StaticResource ValueBrush}"
+                                 FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}"
+                                 FontWeight="SemiBold" VerticalAlignment="Center"
+                                 TextTrimming="CharacterEllipsis"/>
+                      <TextBlock Text="{Binding ProcessId, StringFormat=PID {0}}" Foreground="{StaticResource LabelBrush}"
+                                 FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}"
+                                 VerticalAlignment="Center" Margin="6,0,0,0"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2" Orientation="Horizontal">
+                      <TextBlock Text="{Binding Row.CpuPercent, StringFormat={}{0:0.0}%}" Width="52"
+                                 Foreground="{Binding Row.CpuPercent, Converter={StaticResource LoadToBrush}}"
+                                 FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}" TextAlignment="Right"/>
+                      <TextBlock Text="{Binding Row.WorkingSetMb, StringFormat={}{0:0} MB}" Width="72"
+                                 Foreground="{StaticResource TextPrimaryBrush}"
+                                 FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}" TextAlignment="Right"/>
+                      <TextBlock Text="{Binding Row.GpuPercent, Converter={StaticResource NullablePercent}}" Width="52"
+                                 Foreground="{StaticResource TextMutedBrush}"
+                                 FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}" TextAlignment="Right"/>
+                    </StackPanel>
+                  </Grid>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
 
-            <Border BorderBrush="{StaticResource DividerBrush}" BorderThickness="0,1,0,0" Margin="0,0,0,8"/>
+            <Border BorderBrush="{StaticResource DividerBrush}" BorderThickness="0,1,0,0" Margin="0,8,0,0"/>
 
-            <!-- Live metric rows -->
-            <Grid Margin="0,2">
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-              </Grid.ColumnDefinitions>
-              <TextBlock Grid.Column="0" Text="CPU" Foreground="{StaticResource LabelBrush}"
-                         FontSize="{StaticResource BodyFontSize}" FontFamily="{StaticResource MonoFontFamily}"/>
-              <TextBlock Grid.Column="1" Text="{Binding CpuPercent, StringFormat={}{0:0.0}%}"
-                         Foreground="{Binding CpuPercent, Converter={StaticResource LoadToBrush}}"
-                         FontSize="{StaticResource BodyFontSize}" FontFamily="{StaticResource MonoFontFamily}" TextAlignment="Right"/>
-            </Grid>
-            <Grid Margin="0,1">
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-              </Grid.ColumnDefinitions>
-              <TextBlock Grid.Column="0" Text="CPU peak" Foreground="#5A6470"
-                         FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}"/>
-              <TextBlock Grid.Column="1" Text="{Binding PeakCpuPercent, StringFormat={}{0:0.0}%}"
-                         Foreground="#6E7A86" FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}" TextAlignment="Right"/>
-            </Grid>
-            <Grid Margin="0,2">
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-              </Grid.ColumnDefinitions>
-              <TextBlock Grid.Column="0" Text="GPU" Foreground="{StaticResource LabelBrush}"
-                         FontSize="{StaticResource BodyFontSize}" FontFamily="{StaticResource MonoFontFamily}"/>
-              <TextBlock Grid.Column="1" Text="{Binding GpuPercent, Converter={StaticResource NullablePercent}}"
-                         Foreground="{StaticResource TextPrimaryBrush}" FontSize="{StaticResource BodyFontSize}" FontFamily="{StaticResource MonoFontFamily}" TextAlignment="Right"/>
-            </Grid>
-            <Grid Margin="0,2">
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-              </Grid.ColumnDefinitions>
-              <TextBlock Grid.Column="0" Text="Memory" Foreground="{StaticResource LabelBrush}"
-                         FontSize="{StaticResource BodyFontSize}" FontFamily="{StaticResource MonoFontFamily}"/>
-              <TextBlock Grid.Column="1" Text="{Binding WorkingSetMb, StringFormat={}{0:0} MB}"
-                         Foreground="{StaticResource TextPrimaryBrush}" FontSize="{StaticResource BodyFontSize}" FontFamily="{StaticResource MonoFontFamily}" TextAlignment="Right"/>
-            </Grid>
-            <Grid Margin="0,1">
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-              </Grid.ColumnDefinitions>
-              <TextBlock Grid.Column="0" Text="Memory peak" Foreground="#5A6470"
-                         FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}"/>
-              <TextBlock Grid.Column="1" Text="{Binding PeakWorkingSetMb, StringFormat={}{0:0} MB}"
-                         Foreground="#6E7A86" FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}" TextAlignment="Right"/>
-            </Grid>
-            <Grid Margin="0,2">
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-              </Grid.ColumnDefinitions>
-              <TextBlock Grid.Column="0" Text="Disk" Foreground="{StaticResource LabelBrush}"
-                         FontSize="{StaticResource BodyFontSize}" FontFamily="{StaticResource MonoFontFamily}"/>
-              <TextBlock Grid.Column="1" Text="{Binding DiskBytesPerSec, Converter={StaticResource ByteRate}}"
-                         Foreground="{StaticResource TextPrimaryBrush}" FontSize="{StaticResource BodyFontSize}" FontFamily="{StaticResource MonoFontFamily}" TextAlignment="Right"/>
-            </Grid>
-            <Grid Margin="0,2">
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-              </Grid.ColumnDefinitions>
-              <TextBlock Grid.Column="0" Text="Network" Foreground="{StaticResource LabelBrush}"
-                         FontSize="{StaticResource BodyFontSize}" FontFamily="{StaticResource MonoFontFamily}"/>
-              <TextBlock Grid.Column="1" Text="{Binding NetBytesPerSec, Converter={StaticResource ByteRate}}"
-                         Foreground="{StaticResource TextPrimaryBrush}" FontSize="{StaticResource BodyFontSize}" FontFamily="{StaticResource MonoFontFamily}" TextAlignment="Right"/>
-            </Grid>
-
-            <!-- Image path: the full on-disk location, wrapped. "Path unavailable" when WMI can't read it. -->
-            <Border BorderBrush="{StaticResource DividerBrush}" BorderThickness="0,1,0,0" Margin="0,10,0,8"/>
-            <TextBlock Text="Image path" Foreground="{StaticResource LabelBrush}"
-                       FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}" Margin="0,0,0,2"/>
-            <TextBlock Text="{Binding ExecutablePathLabel}" Foreground="{StaticResource TextMutedBrush}"
-                       FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}" TextWrapping="Wrap"/>
-
-            <!-- Per-resource utilization graphs: selected process vs. system-wide total, each a
-                 two-series line graph. The series data is wired in code-behind (DataSeries can't bind
-                 its ValuesSource in XAML); the accent-blue line is the selected process, the amber
-                 line the summed total across every process. -->
+            <!-- Per-resource utilization graphs: one line per monitored process plus the system-wide
+                 total, each a multi-series line graph. Each process's per-metric line is added in
+                 code-behind (DataSeries can't bind its ValuesSource in XAML) in that process's legend
+                 color; the amber line is the summed total across every process. -->
             <Border BorderBrush="{StaticResource DividerBrush}" BorderThickness="1" Margin="0,12,0,0" Padding="6,4">
               <StackPanel>
                 <Grid Margin="0,0,0,4">
@@ -741,11 +736,6 @@
                   <TextBlock Grid.Column="0" Text="CPU Utilization (%)" Foreground="{StaticResource LabelBrush}"
                              FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}" FontWeight="SemiBold"/>
                   <StackPanel Grid.Column="1" Orientation="Horizontal">
-                    <Border Width="8" Height="8" Background="#3E9BE8" VerticalAlignment="Center" Margin="0,0,4,0"/>
-                    <TextBlock Foreground="{StaticResource TextMutedBrush}" FontSize="{StaticResource CaptionFontSize}"
-                               FontFamily="{StaticResource MonoFontFamily}" Margin="0,0,10,0">
-                      <Run Text="Process"/><Run Text=" "/><Run Text="{Binding DataContext.SelectedCpuPercent, ElementName=Root, StringFormat={}{0:0.0}%, Mode=OneWay}" Foreground="{StaticResource ValueBrush}"/>
-                    </TextBlock>
                     <Border Width="8" Height="8" Background="#E0B84C" VerticalAlignment="Center" Margin="0,0,4,0"/>
                     <TextBlock Foreground="{StaticResource TextMutedBrush}" FontSize="{StaticResource CaptionFontSize}"
                                FontFamily="{StaticResource MonoFontFamily}">
@@ -758,7 +748,6 @@
                                                    BorderBrush="{StaticResource DividerBrush}">
                   <graphs:PerformanceGraphMultipleDS.Series>
                     <graphs:DataSeries x:Name="CpuTotalSeries" Name="Total" LineBrush="#E0B84C" LineThickness="1.2" FillBrush="{StaticResource TotalSeriesFill}"/>
-                    <graphs:DataSeries x:Name="CpuProcessSeries" Name="Process" LineBrush="#3E9BE8" LineThickness="1.4" FillBrush="{StaticResource ProcessSeriesFill}"/>
                   </graphs:PerformanceGraphMultipleDS.Series>
                 </graphs:PerformanceGraphMultipleDS>
               </StackPanel>
@@ -774,11 +763,6 @@
                   <TextBlock Grid.Column="0" Text="GPU Utilization (%)" Foreground="{StaticResource LabelBrush}"
                              FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}" FontWeight="SemiBold"/>
                   <StackPanel Grid.Column="1" Orientation="Horizontal">
-                    <Border Width="8" Height="8" Background="#3E9BE8" VerticalAlignment="Center" Margin="0,0,4,0"/>
-                    <TextBlock Foreground="{StaticResource TextMutedBrush}" FontSize="{StaticResource CaptionFontSize}"
-                               FontFamily="{StaticResource MonoFontFamily}" Margin="0,0,10,0">
-                      <Run Text="Process"/><Run Text=" "/><Run Text="{Binding DataContext.SelectedGpuPercent, ElementName=Root, StringFormat={}{0:0.0}%, Mode=OneWay}" Foreground="{StaticResource ValueBrush}"/>
-                    </TextBlock>
                     <!-- Dedicated (discrete) GPU — shown only when a discrete card is present. -->
                     <StackPanel Orientation="Horizontal" Margin="0,0,10,0"
                                 Visibility="{Binding DataContext.HasDedicatedGpu, ElementName=Root, Converter={StaticResource BoolToVisibility}}">
@@ -805,7 +789,6 @@
                   <graphs:PerformanceGraphMultipleDS.Series>
                     <graphs:DataSeries x:Name="GpuDedicatedSeries" Name="Dedicated" LineBrush="#E0B84C" LineThickness="1.2" FillBrush="{StaticResource TotalSeriesFill}"/>
                     <graphs:DataSeries x:Name="GpuIntegratedSeries" Name="Integrated" LineBrush="#6FCF97" LineThickness="1.2" FillBrush="{StaticResource IntegratedSeriesFill}"/>
-                    <graphs:DataSeries x:Name="GpuProcessSeries" Name="Process" LineBrush="#3E9BE8" LineThickness="1.4" FillBrush="{StaticResource ProcessSeriesFill}"/>
                   </graphs:PerformanceGraphMultipleDS.Series>
                 </graphs:PerformanceGraphMultipleDS>
               </StackPanel>
@@ -821,11 +804,6 @@
                   <TextBlock Grid.Column="0" Text="Memory Utilization (%)" Foreground="{StaticResource LabelBrush}"
                              FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}" FontWeight="SemiBold"/>
                   <StackPanel Grid.Column="1" Orientation="Horizontal">
-                    <Border Width="8" Height="8" Background="#3E9BE8" VerticalAlignment="Center" Margin="0,0,4,0"/>
-                    <TextBlock Foreground="{StaticResource TextMutedBrush}" FontSize="{StaticResource CaptionFontSize}"
-                               FontFamily="{StaticResource MonoFontFamily}" Margin="0,0,10,0">
-                      <Run Text="Process"/><Run Text=" "/><Run Text="{Binding DataContext.SelectedMemoryPercent, ElementName=Root, StringFormat={}{0:0.0}%, Mode=OneWay}" Foreground="{StaticResource ValueBrush}"/>
-                    </TextBlock>
                     <Border Width="8" Height="8" Background="#E0B84C" VerticalAlignment="Center" Margin="0,0,4,0"/>
                     <TextBlock Foreground="{StaticResource TextMutedBrush}" FontSize="{StaticResource CaptionFontSize}"
                                FontFamily="{StaticResource MonoFontFamily}">
@@ -833,14 +811,13 @@
                     </TextBlock>
                   </StackPanel>
                 </Grid>
-                <!-- Both series are percentages of total physical memory (process share and machine
-                     load), so the axis is a fixed 0–100 like CPU/GPU. -->
+                <!-- Both the total and per-process series are percentages of total physical memory
+                     (machine load and each process's share), so the axis is a fixed 0–100 like CPU/GPU. -->
                 <graphs:PerformanceGraphMultipleDS x:Name="MemoryGraph" Height="70" MinValue="0" MaxValue="100"
                                                    GraphBackground="#0A0A0A" GridBrush="#1B1B1B" GridThickness="0.6"
                                                    BorderBrush="{StaticResource DividerBrush}">
                   <graphs:PerformanceGraphMultipleDS.Series>
                     <graphs:DataSeries x:Name="MemoryTotalSeries" Name="Total" LineBrush="#E0B84C" LineThickness="1.2" FillBrush="{StaticResource TotalSeriesFill}"/>
-                    <graphs:DataSeries x:Name="MemoryProcessSeries" Name="Process" LineBrush="#3E9BE8" LineThickness="1.4" FillBrush="{StaticResource ProcessSeriesFill}"/>
                   </graphs:PerformanceGraphMultipleDS.Series>
                 </graphs:PerformanceGraphMultipleDS>
               </StackPanel>
@@ -856,11 +833,6 @@
                   <TextBlock Grid.Column="0" Text="Disk (MB/s)" Foreground="{StaticResource LabelBrush}"
                              FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}" FontWeight="SemiBold"/>
                   <StackPanel Grid.Column="1" Orientation="Horizontal">
-                    <Border Width="8" Height="8" Background="#3E9BE8" VerticalAlignment="Center" Margin="0,0,4,0"/>
-                    <TextBlock Foreground="{StaticResource TextMutedBrush}" FontSize="{StaticResource CaptionFontSize}"
-                               FontFamily="{StaticResource MonoFontFamily}" Margin="0,0,10,0">
-                      <Run Text="Process"/><Run Text=" "/><Run Text="{Binding DataContext.SelectedDiskMBps, ElementName=Root, StringFormat={}{0:0.00}, Mode=OneWay}" Foreground="{StaticResource ValueBrush}"/>
-                    </TextBlock>
                     <Border Width="8" Height="8" Background="#E0B84C" VerticalAlignment="Center" Margin="0,0,4,0"/>
                     <TextBlock Foreground="{StaticResource TextMutedBrush}" FontSize="{StaticResource CaptionFontSize}"
                                FontFamily="{StaticResource MonoFontFamily}">
@@ -869,14 +841,13 @@
                   </StackPanel>
                 </Grid>
                 <!-- Throughput, not a percentage: the axis auto-scales to the windowed peak (DiskMaxMBps)
-                     so both the small per-process line and the larger total stay on-scale. -->
+                     so the small per-process lines and the larger total all stay on-scale. -->
                 <graphs:PerformanceGraphMultipleDS x:Name="DiskGraph" Height="70" MinValue="0"
                                                    MaxValue="{Binding DataContext.DiskMaxMBps, ElementName=Root, Mode=OneWay}"
                                                    GraphBackground="#0A0A0A" GridBrush="#1B1B1B" GridThickness="0.6"
                                                    BorderBrush="{StaticResource DividerBrush}">
                   <graphs:PerformanceGraphMultipleDS.Series>
                     <graphs:DataSeries x:Name="DiskTotalSeries" Name="Total" LineBrush="#E0B84C" LineThickness="1.2" FillBrush="{StaticResource TotalSeriesFill}"/>
-                    <graphs:DataSeries x:Name="DiskProcessSeries" Name="Process" LineBrush="#3E9BE8" LineThickness="1.4" FillBrush="{StaticResource ProcessSeriesFill}"/>
                   </graphs:PerformanceGraphMultipleDS.Series>
                 </graphs:PerformanceGraphMultipleDS>
               </StackPanel>
@@ -892,11 +863,6 @@
                   <TextBlock Grid.Column="0" Text="Network (MB/s)" Foreground="{StaticResource LabelBrush}"
                              FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}" FontWeight="SemiBold"/>
                   <StackPanel Grid.Column="1" Orientation="Horizontal">
-                    <Border Width="8" Height="8" Background="#3E9BE8" VerticalAlignment="Center" Margin="0,0,4,0"/>
-                    <TextBlock Foreground="{StaticResource TextMutedBrush}" FontSize="{StaticResource CaptionFontSize}"
-                               FontFamily="{StaticResource MonoFontFamily}" Margin="0,0,10,0">
-                      <Run Text="Process"/><Run Text=" "/><Run Text="{Binding DataContext.SelectedNetMBps, ElementName=Root, StringFormat={}{0:0.00}, Mode=OneWay}" Foreground="{StaticResource ValueBrush}"/>
-                    </TextBlock>
                     <Border Width="8" Height="8" Background="#E0B84C" VerticalAlignment="Center" Margin="0,0,4,0"/>
                     <TextBlock Foreground="{StaticResource TextMutedBrush}" FontSize="{StaticResource CaptionFontSize}"
                                FontFamily="{StaticResource MonoFontFamily}">
@@ -910,7 +876,6 @@
                                                    BorderBrush="{StaticResource DividerBrush}">
                   <graphs:PerformanceGraphMultipleDS.Series>
                     <graphs:DataSeries x:Name="NetTotalSeries" Name="Total" LineBrush="#E0B84C" LineThickness="1.2" FillBrush="{StaticResource TotalSeriesFill}"/>
-                    <graphs:DataSeries x:Name="NetProcessSeries" Name="Process" LineBrush="#3E9BE8" LineThickness="1.4" FillBrush="{StaticResource ProcessSeriesFill}"/>
                   </graphs:PerformanceGraphMultipleDS.Series>
                 </graphs:PerformanceGraphMultipleDS>
               </StackPanel>

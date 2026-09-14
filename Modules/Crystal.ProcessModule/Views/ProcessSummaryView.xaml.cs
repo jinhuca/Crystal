@@ -1,4 +1,6 @@
+using Crystal.Controls.PerformanceGraphs;
 using Crystal.ProcessModule.ViewModels;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -96,24 +98,89 @@ public partial class ProcessSummaryView : UserControl {
     }
   }
 
+  /// <summary>The five detail-panel graphs in a fixed order (CPU, GPU, Memory, Disk, Network). A
+  /// monitored process's per-metric lines are added to these in this same order, matching the
+  /// history each <see cref="MonitoredProcessViewModel"/> feeds.</summary>
+  private PerformanceGraphMultipleDS[] Graphs =>
+      _graphs ??= [CpuGraph, GpuGraph, MemoryGraph, DiskGraph, NetGraph];
+  private PerformanceGraphMultipleDS[]? _graphs;
+
+  /// <summary>The VM whose <see cref="ProcessListViewModel.MonitoredProcesses"/> we're subscribed to,
+  /// so a DataContext change can detach the old subscription before wiring the new one.</summary>
+  private ProcessListViewModel? _wiredVm;
+
+  /// <summary>The dynamic per-process lines, one <see cref="DataSeries"/> per graph (in
+  /// <see cref="Graphs"/> order), keyed by the process they plot — so a removal pulls exactly that
+  /// process's lines from every graph.</summary>
+  private readonly Dictionary<MonitoredProcessViewModel, DataSeries[]> _processSeries = [];
+
   /// <summary>
-  /// Points each detail-panel graph series at its backing history collection on the view model. The
-  /// "Total" lines are system-wide (summed across processes); the "Process" lines follow the
-  /// selected process and are cleared by the VM when the selection changes.
+  /// Wires the static "Total" lines (and the GPU dedicated/integrated lines) to their backing
+  /// history collections, then subscribes to <see cref="ProcessListViewModel.MonitoredProcesses"/> so
+  /// each monitored process gets its own colored line on every graph, added/removed as the selection
+  /// changes. DataSeries has no DataContext, so its ValuesSource is wired here rather than in XAML.
   /// </summary>
   /// <param name="vm">The process list view model supplying the history collections.</param>
   private void WireGraphSeries(ProcessListViewModel vm) {
+    if (ReferenceEquals(_wiredVm, vm)) return;
+
+    if (_wiredVm is not null) {
+      _wiredVm.MonitoredProcesses.CollectionChanged -= OnMonitoredProcessesChanged;
+      RemoveAllProcessSeries();
+    }
+    _wiredVm = vm;
+
     CpuTotalSeries.ValuesSource = vm.TotalCpuHistory;
-    CpuProcessSeries.ValuesSource = vm.SelectedCpuHistory;
     GpuDedicatedSeries.ValuesSource = vm.DedicatedGpuHistory;
     GpuIntegratedSeries.ValuesSource = vm.IntegratedGpuHistory;
-    GpuProcessSeries.ValuesSource = vm.SelectedGpuHistory;
     MemoryTotalSeries.ValuesSource = vm.TotalMemoryHistory;
-    MemoryProcessSeries.ValuesSource = vm.SelectedMemoryHistory;
     DiskTotalSeries.ValuesSource = vm.TotalDiskHistory;
-    DiskProcessSeries.ValuesSource = vm.SelectedDiskHistory;
     NetTotalSeries.ValuesSource = vm.TotalNetHistory;
-    NetProcessSeries.ValuesSource = vm.SelectedNetHistory;
+
+    vm.MonitoredProcesses.CollectionChanged += OnMonitoredProcessesChanged;
+    foreach (var monitor in vm.MonitoredProcesses) AddProcessSeries(monitor);
+  }
+
+  private void OnMonitoredProcessesChanged(object? sender, NotifyCollectionChangedEventArgs e) {
+    if (e.Action == NotifyCollectionChangedAction.Reset) {
+      RemoveAllProcessSeries();
+      if (sender is IEnumerable<MonitoredProcessViewModel> current)
+        foreach (var monitor in current) AddProcessSeries(monitor);
+      return;
+    }
+    if (e.OldItems is not null)
+      foreach (MonitoredProcessViewModel monitor in e.OldItems) RemoveProcessSeries(monitor);
+    if (e.NewItems is not null)
+      foreach (MonitoredProcessViewModel monitor in e.NewItems) AddProcessSeries(monitor);
+  }
+
+  // One line per graph for this process, each in the process's assigned color, pointed at that
+  // graph's matching history. No fill — overlapping filled areas would occlude each other once
+  // several processes share a graph.
+  private void AddProcessSeries(MonitoredProcessViewModel monitor) {
+    if (_processSeries.ContainsKey(monitor)) return;
+
+    var histories = new[] {
+        monitor.CpuHistory, monitor.GpuHistory, monitor.MemoryHistory,
+        monitor.DiskHistory, monitor.NetHistory,
+    };
+    var series = new DataSeries[Graphs.Length];
+    for (int i = 0; i < Graphs.Length; i++) {
+      series[i] = new DataSeries {
+        LineBrush = monitor.Color, LineThickness = 1.4, ValuesSource = histories[i],
+      };
+      Graphs[i].Series.Add(series[i]);
+    }
+    _processSeries[monitor] = series;
+  }
+
+  private void RemoveProcessSeries(MonitoredProcessViewModel monitor) {
+    if (!_processSeries.Remove(monitor, out var series)) return;
+    for (int i = 0; i < Graphs.Length; i++) Graphs[i].Series.Remove(series[i]);
+  }
+
+  private void RemoveAllProcessSeries() {
+    foreach (var monitor in _processSeries.Keys.ToList()) RemoveProcessSeries(monitor);
   }
 
   /// <summary>
