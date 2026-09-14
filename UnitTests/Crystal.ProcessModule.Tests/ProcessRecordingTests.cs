@@ -6,9 +6,10 @@ using Xunit;
 
 namespace Crystal.ProcessModule.Tests;
 
-// Covers the record-to-CSV orchestration on the view model: that starting follows the selected PID,
-// each poll appends only that PID's sample, the recording auto-stops when the process exits, and the
-// IsRecording / label / CanStartRecording state tracks correctly. The file IO itself is faked.
+// Covers the record-to-CSV orchestration on the view model: that starting captures the monitored
+// PIDs, each poll appends a row per still-running tracked process, the recording auto-stops once the
+// last of them exits, and the IsRecording / label / CanStartRecording state tracks correctly. The
+// file IO itself is faked.
 public class ProcessRecordingTests {
   private static SystemStatsMonitor InertStats() =>
       new(TimeSpan.FromHours(1), new TestScheduler());
@@ -119,6 +120,47 @@ public class ProcessRecordingTests {
       // Next poll: PID 200 is gone.
       model.Samples.OnNext([Sample(100, "alpha")]);
 
+      Assert.False(vm.IsRecording);
+      Assert.Equal(1, recorder.StopCallCount);
+      Assert.Contains("exited", vm.ActionStatus);
+    });
+  }
+
+  [Fact]
+  public void Start_recording_captures_every_monitored_process() {
+    StaRunner.Run(() => {
+      var vm = CreateVm(out var model, out var recorder);
+      model.Samples.OnNext([Sample(100, "alpha"), Sample(200, "beta"), Sample(300, "gamma")]);
+      vm.Rows.Single(r => r.ProcessId == 100).IsSelected = true;
+      vm.Rows.Single(r => r.ProcessId == 300).IsSelected = true;
+      vm.StartRecording(@"C:\temp\rec.csv");
+
+      model.Samples.OnNext([Sample(100, "alpha", cpu: 5), Sample(200, "beta", cpu: 7), Sample(300, "gamma", cpu: 9)]);
+
+      // One row each for the two monitored PIDs; the unmonitored 200 is skipped.
+      Assert.Equal(2, recorder.Written.Count);
+      Assert.Contains(recorder.Written, w => w.Sample.ProcessId == 100);
+      Assert.Contains(recorder.Written, w => w.Sample.ProcessId == 300);
+      Assert.DoesNotContain(recorder.Written, w => w.Sample.ProcessId == 200);
+    });
+  }
+
+  [Fact]
+  public void Recording_continues_until_the_last_monitored_process_exits() {
+    StaRunner.Run(() => {
+      var vm = CreateVm(out var model, out var recorder);
+      model.Samples.OnNext([Sample(100, "alpha"), Sample(200, "beta")]);
+      vm.Rows.Single(r => r.ProcessId == 100).IsSelected = true;
+      vm.Rows.Single(r => r.ProcessId == 200).IsSelected = true;
+      vm.StartRecording(@"C:\temp\rec.csv");
+
+      // 100 exits: the recording keeps running for the surviving 200.
+      model.Samples.OnNext([Sample(200, "beta", cpu: 4)]);
+      Assert.True(vm.IsRecording);
+      Assert.Equal(0, recorder.StopCallCount);
+
+      // 200 exits too: now every recorded process is gone, so it auto-stops.
+      model.Samples.OnNext([]);
       Assert.False(vm.IsRecording);
       Assert.Equal(1, recorder.StopCallCount);
       Assert.Contains("exited", vm.ActionStatus);

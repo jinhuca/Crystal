@@ -5,6 +5,7 @@ using Crystal.Service.Process;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Data;
+using System.Windows.Media;
 
 namespace Crystal.ProcessModule.ViewModels;
 
@@ -49,12 +50,13 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
   private readonly IProcessController _controller;
   private string? _actionStatus;
 
-  // Records the tracked process's per-poll readings to a CSV. Defaults to the real file-backed
+  // Records the monitored processes' per-poll readings to a CSV. Defaults to the real file-backed
   // recorder; tests inject a fake to assert on the writes without touching disk.
   private readonly IProcessRecorder _recorder;
-  // PID being recorded, captured when recording starts so it keeps following that process even if
-  // the selection moves to another row. Null when not recording.
-  private uint? _recordingPid;
+  // PIDs being recorded, captured when recording starts so the recording keeps following those
+  // processes even if the selection later changes. Empty when not recording. A PID is dropped as it
+  // exits; recording auto-stops once the set empties.
+  private readonly HashSet<uint> _recordingPids = [];
   private bool _isRecording;
 
   // clock, iconProvider, controller and recorder are optional so Unity's default registration works
@@ -93,6 +95,37 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
   }
 
   public ObservableCollection<ProcessRowViewModel> Rows { get; } = [];
+
+  /// <summary>Most processes that can be monitored (and plotted) at once.</summary>
+  public const int MaxMonitored = 5;
+
+  /// <summary>The processes currently selected for monitoring (1–<see cref="MaxMonitored"/>), each with
+  /// its own color and rolling per-metric histories. Drives the detail-panel legend and the per-process
+  /// line on every utilization graph. Selecting past the cap drops the oldest (FIFO).</summary>
+  public ObservableCollection<MonitoredProcessViewModel> MonitoredProcesses { get; } = [];
+
+  // Fixed line colors, one assigned per monitored process. Chosen to stay distinct from the amber
+  // "Total" line (#E0B84C) and the green integrated-GPU line (#6FCF97). Frozen so they bind from any
+  // thread; the palette size equals MaxMonitored so a free color always exists.
+  private static readonly Brush[] Palette = [
+      FrozenBrush("#4EA3F0"), FrozenBrush("#C77DFF"), FrozenBrush("#FF6FB5"),
+      FrozenBrush("#35D0C0"), FrozenBrush("#9AA0FF"),
+  ];
+
+  private static Brush FrozenBrush(string hex) {
+    var brush = new SolidColorBrush((Color)ColorConverter.ConvertFromString(hex));
+    brush.Freeze();
+    return brush;
+  }
+
+  // First palette color not currently used by a monitored process. The FIFO drop in Select frees the
+  // oldest color before this runs, so with cap == palette size one is always available.
+  private Brush NextColor() {
+    foreach (var brush in Palette)
+      if (!MonitoredProcesses.Any(m => ReferenceEquals(m.Color, brush)))
+        return brush;
+    return Palette[0];
+  }
 
   /// <summary>Number of running processes system-wide, shown in the summary header.</summary>
   public int ProcessCount { get => _processCount; private set => SetProperty(ref _processCount, value); }
@@ -144,30 +177,17 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
   // The `> 0` guard below means an unknown total yields 0%, so the line stays flat until the real
   // total arrives.
   private double _systemMemoryTotalMb;
-  private double _selectedCpuPercent;
-  private double _selectedGpuPercent;
-  private double _selectedMemoryPercent;
   // Storage/network are throughput rates (MB/s), not a fixed 0–100%, so each graph carries its own
   // dynamic upper bound tracking the windowed peak total. Seeded at 1 so an all-idle window still
   // gives the axis a sane, non-zero scale.
   private double _systemDiskMBps;
-  private double _selectedDiskMBps;
   private double _systemNetMBps;
-  private double _selectedNetMBps;
   private double _diskMaxMBps = 1;
   private double _netMaxMBps = 1;
-
-  /// <summary>Selected process CPU% over the last <see cref="HistoryCapacity"/> polls (newest last).
-  /// Feeds the "Process" line of the CPU graph; cleared when the selection changes.</summary>
-  public ObservableCollection<double> SelectedCpuHistory { get; } = [];
 
   /// <summary>Machine-wide CPU% (GetSystemTimes busy fraction) over the last polls. Feeds the "Total"
   /// line of the CPU graph.</summary>
   public ObservableCollection<double> TotalCpuHistory { get; } = [];
-
-  /// <summary>Selected process GPU% history. Feeds the "Process" line of the GPU graph (ETW
-  /// DMA-packet timing — the only per-process GPU signal available).</summary>
-  public ObservableCollection<double> SelectedGpuHistory { get; } = [];
 
   /// <summary>Dedicated (discrete) GPU core-load% history, from the GPU sensor stream. Feeds the
   /// "Dedicated" GPU line; only appended (and shown) when a discrete adapter is present.</summary>
@@ -176,10 +196,6 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
   /// <summary>Integrated GPU core-load% history, from the GPU sensor stream. Feeds the "Integrated"
   /// GPU line; only appended (and shown) when an integrated adapter is present.</summary>
   public ObservableCollection<double> IntegratedGpuHistory { get; } = [];
-
-  /// <summary>Selected process memory as a percentage of total physical memory. Feeds the "Process"
-  /// line of the memory graph.</summary>
-  public ObservableCollection<double> SelectedMemoryHistory { get; } = [];
 
   /// <summary>Machine-wide memory load percentage (GlobalMemoryStatusEx). Feeds the "Total" memory
   /// line.</summary>
@@ -205,24 +221,8 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
   /// <summary>Latest machine-wide memory utilization (%), shown live in the memory graph header's "Total".</summary>
   public double SystemMemoryPercent { get => _systemMemoryPercent; private set => SetProperty(ref _systemMemoryPercent, value); }
 
-  /// <summary>Latest selected-process CPU utilization (%), shown live in the CPU graph header's "Process".</summary>
-  public double SelectedCpuPercent { get => _selectedCpuPercent; private set => SetProperty(ref _selectedCpuPercent, value); }
-
-  /// <summary>Latest selected-process GPU utilization (%), shown live in the GPU graph header's "Process".</summary>
-  public double SelectedGpuPercent { get => _selectedGpuPercent; private set => SetProperty(ref _selectedGpuPercent, value); }
-
-  /// <summary>Latest selected-process memory as a percentage of total physical memory, shown live in
-  /// the memory graph header's "Process".</summary>
-  public double SelectedMemoryPercent { get => _selectedMemoryPercent; private set => SetProperty(ref _selectedMemoryPercent, value); }
-
-  /// <summary>Selected process disk throughput (MB/s) history. Feeds the "Process" line of the storage graph.</summary>
-  public ObservableCollection<double> SelectedDiskHistory { get; } = [];
-
   /// <summary>Total disk throughput (MB/s, summed across every process) history. Feeds the "Total" storage line.</summary>
   public ObservableCollection<double> TotalDiskHistory { get; } = [];
-
-  /// <summary>Selected process network throughput (MB/s) history. Feeds the "Process" line of the network graph.</summary>
-  public ObservableCollection<double> SelectedNetHistory { get; } = [];
 
   /// <summary>Total network throughput (MB/s, summed across every process) history. Feeds the "Total" network line.</summary>
   public ObservableCollection<double> TotalNetHistory { get; } = [];
@@ -230,14 +230,8 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
   /// <summary>Latest total disk throughput (MB/s), shown live in the storage graph header's "Total".</summary>
   public double SystemDiskMBps { get => _systemDiskMBps; private set => SetProperty(ref _systemDiskMBps, value); }
 
-  /// <summary>Latest selected-process disk throughput (MB/s), shown live in the storage graph header's "Process".</summary>
-  public double SelectedDiskMBps { get => _selectedDiskMBps; private set => SetProperty(ref _selectedDiskMBps, value); }
-
   /// <summary>Latest total network throughput (MB/s), shown live in the network graph header's "Total".</summary>
   public double SystemNetMBps { get => _systemNetMBps; private set => SetProperty(ref _systemNetMBps, value); }
-
-  /// <summary>Latest selected-process network throughput (MB/s), shown live in the network graph header's "Process".</summary>
-  public double SelectedNetMBps { get => _selectedNetMBps; private set => SetProperty(ref _selectedNetMBps, value); }
 
   /// <summary>Upper bound (MB/s) for the storage graph, tracking the windowed peak total with ~10%
   /// headroom (never below 1) so the small per-process line and the larger total stay on-scale.
@@ -250,37 +244,69 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
   public string SortProperty => _sortProperty;
   public ListSortDirection SortDirection => _sortDirection;
 
+  /// <summary>
+  /// The primary (most-recently-selected) monitored process — the one <see cref="EndSelectedTask"/> and
+  /// recording target, and null exactly when nothing is monitored. Getting returns the primary; setting
+  /// is an <em>exclusive</em> select (used by the default-selection logic and tests): it deselects every
+  /// other monitored row and selects the given one (null clears all). Multi-select from the list toggles
+  /// individual rows' <see cref="ProcessRowViewModel.IsSelected"/>, which routes through
+  /// <see cref="Select"/>/<see cref="Deselect"/> below without going through this setter.
+  /// </summary>
   public ProcessRowViewModel? SelectedRow {
     get => _selectedRow;
     set {
-      var previous = _selectedRow;
-      if (SetProperty(ref _selectedRow, value)) {
-        // Keep the per-row IsSelected flags (bound to each ListViewItem.IsSelected) in sync so
-        // exactly one row is flagged. This clears a virtualized-out previous selection too, which
-        // the ListView can't do on its own once that container has been recycled.
-        if (previous is not null) previous.IsSelected = false;
-        if (value is not null) value.IsSelected = true;
-        // Restart the per-process graph lines for the newly selected process — the prior history
-        // belonged to a different process and would otherwise read as this one's past. The total
-        // lines are process-independent and keep rolling.
-        SelectedCpuHistory.Clear();
-        SelectedGpuHistory.Clear();
-        SelectedMemoryHistory.Clear();
-        SelectedDiskHistory.Clear();
-        SelectedNetHistory.Clear();
-        RaisePropertyChanged(nameof(CanEndSelectedTask));
-        RaisePropertyChanged(nameof(CanStartRecording));
-      }
+      // Snapshot before mutating: Deselect edits MonitoredProcesses as each row is turned off.
+      foreach (var monitor in MonitoredProcesses.ToList())
+        if (!ReferenceEquals(monitor.Row, value)) monitor.Row.IsSelected = false;
+      if (value is not null) value.IsSelected = true;
+      else SetPrimary(null);
     }
   }
 
-  // A row's IsSelected turned on (user clicked it, or WPF selected it on right-press): make it the
-  // selection. The SelectedRow setter clears the previously-selected row's flag.
-  private void OnRowPropertyChanged(object? sender, PropertyChangedEventArgs e) {
-    if (e.PropertyName == nameof(ProcessRowViewModel.IsSelected)
-        && sender is ProcessRowViewModel row && row.IsSelected) {
-      SelectedRow = row;
+  // Update the primary and the commands/state that key off it. Split out so Select/Deselect can set it
+  // without re-entering the exclusive-select SelectedRow setter.
+  private void SetPrimary(ProcessRowViewModel? row) {
+    // Pass the name explicitly: SetProperty's CallerMemberName would otherwise resolve to "SetPrimary",
+    // so the SelectedRow binding (detail-panel visibility, empty-state hint) would never be notified.
+    if (SetProperty(ref _selectedRow, row, nameof(SelectedRow))) {
+      RaisePropertyChanged(nameof(CanEndSelectedTask));
+      RaisePropertyChanged(nameof(CanStartRecording));
     }
+  }
+
+  // A row's IsSelected flag changed (bound to each ListViewItem.IsSelected): add or remove it from the
+  // monitored set accordingly.
+  private void OnRowPropertyChanged(object? sender, PropertyChangedEventArgs e) {
+    if (e.PropertyName != nameof(ProcessRowViewModel.IsSelected) || sender is not ProcessRowViewModel row)
+      return;
+    if (row.IsSelected) Select(row);
+    else Deselect(row);
+  }
+
+  // Begin monitoring a row. Already-monitored just becomes primary. At the cap, the oldest is dropped
+  // FIFO (turning its IsSelected off routes back through Deselect, freeing its slot and color first).
+  private void Select(ProcessRowViewModel row) {
+    if (MonitoredProcesses.Any(m => ReferenceEquals(m.Row, row))) {
+      SetPrimary(row);
+      return;
+    }
+
+    while (MonitoredProcesses.Count >= MaxMonitored)
+      MonitoredProcesses[0].Row.IsSelected = false;
+
+    MonitoredProcesses.Add(new MonitoredProcessViewModel(row, NextColor()));
+    SetPrimary(row);
+  }
+
+  // Stop monitoring a row: drop its monitor entry (freeing its color) and, if it was primary, hand the
+  // primary role to the newest remaining monitor, or null when none are left.
+  private void Deselect(ProcessRowViewModel row) {
+    var monitor = MonitoredProcesses.FirstOrDefault(m => ReferenceEquals(m.Row, row));
+    if (monitor is null) return;
+
+    MonitoredProcesses.Remove(monitor);
+    if (ReferenceEquals(_selectedRow, row))
+      SetPrimary(MonitoredProcesses.Count > 0 ? MonitoredProcesses[^1].Row : null);
   }
 
   /// <summary>True when a row is selected and so eligible to be terminated. Bound to the End task
@@ -335,13 +361,14 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
   }
 
   /// <summary>
-  /// Begins recording the selected process's per-poll readings to <paramref name="filePath"/>. The
-  /// recording follows the PID selected now, even if the selection later moves. No-op when nothing is
-  /// selected or a recording is already running. On failure to open the file the reason is surfaced
-  /// through <see cref="ActionStatus"/>.
+  /// Begins recording every monitored process's per-poll readings to <paramref name="filePath"/>. The
+  /// recording follows the PIDs monitored now, even if the selection later changes; each poll appends
+  /// one CSV row per still-running process (tagged by PID/Name). No-op when nothing is monitored or a
+  /// recording is already running. On failure to open the file the reason is surfaced through
+  /// <see cref="ActionStatus"/>.
   /// </summary>
   public void StartRecording(string filePath) {
-    if (_isRecording || _selectedRow is not { } row) return;
+    if (_isRecording || MonitoredProcesses.Count == 0) return;
 
     var result = _recorder.Start(filePath, MetricsStatusError);
     if (!result.Succeeded) {
@@ -349,9 +376,12 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
       return;
     }
 
-    _recordingPid = row.ProcessId;
+    _recordingPids.Clear();
+    foreach (var monitor in MonitoredProcesses) _recordingPids.Add(monitor.ProcessId);
     IsRecording = true;
-    ActionStatus = $"Recording {row.Name} (PID {row.ProcessId}) → {System.IO.Path.GetFileName(filePath)}";
+    ActionStatus = _recordingPids.Count == 1
+        ? $"Recording {MonitoredProcesses[0].Row.Name} (PID {MonitoredProcesses[0].ProcessId}) → {System.IO.Path.GetFileName(filePath)}"
+        : $"Recording {_recordingPids.Count} processes → {System.IO.Path.GetFileName(filePath)}";
   }
 
   /// <summary>Stops the current recording and reports where it was saved and how many samples it
@@ -362,25 +392,24 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
     int samples = _recorder.SampleCount;
     string? file = _recorder.FilePath is { } p ? System.IO.Path.GetFileName(p) : null;
     _recorder.Stop();
-    _recordingPid = null;
+    _recordingPids.Clear();
     IsRecording = false;
     ActionStatus = file is null
         ? $"Recording stopped ({samples} sample(s))"
         : $"Recording saved to {file} ({samples} sample(s))";
   }
 
-  // The recorded process exited: close the file and report it, distinct from a user-initiated stop so
-  // the user understands why recording ended on its own.
+  // Every recorded process has exited: close the file and report it, distinct from a user-initiated
+  // stop so the user understands why recording ended on its own.
   private void StopRecordingOnExit() {
     int samples = _recorder.SampleCount;
-    uint pid = _recordingPid ?? 0;
     string? file = _recorder.FilePath is { } p ? System.IO.Path.GetFileName(p) : null;
     _recorder.Stop();
-    _recordingPid = null;
+    _recordingPids.Clear();
     IsRecording = false;
     ActionStatus = file is null
-        ? $"Recording ended: PID {pid} exited ({samples} sample(s))"
-        : $"Recording ended: PID {pid} exited — saved to {file} ({samples} sample(s))";
+        ? $"Recording ended: all recorded processes exited ({samples} sample(s))"
+        : $"Recording ended: all recorded processes exited — saved to {file} ({samples} sample(s))";
   }
 
   /// <summary>Opens Explorer at the given process image, file selected. On failure (unknown path,
@@ -501,21 +530,26 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
         Rows.Add(created);
       }
 
-      // Append this poll's reading for the process being recorded, from the same sample stream the
-      // rows update from — no extra sensor work.
-      if (_isRecording && s.ProcessId == _recordingPid) _recorder.WriteSample(s, _clock());
+      // Append this poll's reading for each recorded process, from the same sample stream the rows
+      // update from — no extra sensor work.
+      if (_isRecording && _recordingPids.Contains(s.ProcessId)) _recorder.WriteSample(s, _clock());
     }
 
-    // The recorded process exited (its PID is absent this poll): end the recording cleanly rather
-    // than leave it running against a gone process.
-    if (_isRecording && _recordingPid is { } pid && !live.Contains(pid)) StopRecordingOnExit();
+    // Drop any recorded PIDs that are gone this poll; once they've all exited, end the recording
+    // cleanly rather than leave it running against no live process.
+    if (_isRecording) {
+      _recordingPids.RemoveWhere(pid => !live.Contains(pid));
+      if (_recordingPids.Count == 0) StopRecordingOnExit();
+    }
 
-    // Drop rows for processes that are gone. Clear the selection if it was one of them.
+    // Drop rows for processes that are gone. Stop monitoring any that were selected (Deselect frees
+    // its line/legend/color and reassigns the primary), then unhook and remove the row.
     for (int i = Rows.Count - 1; i >= 0; i--) {
-      if (!live.Contains(Rows[i].ProcessId)) {
-        if (ReferenceEquals(SelectedRow, Rows[i])) SelectedRow = null;
-        Rows[i].PropertyChanged -= OnRowPropertyChanged;
-        _rowsByPid.Remove(Rows[i].ProcessId);
+      var row = Rows[i];
+      if (!live.Contains(row.ProcessId)) {
+        Deselect(row);
+        row.PropertyChanged -= OnRowPropertyChanged;
+        _rowsByPid.Remove(row.ProcessId);
         Rows.RemoveAt(i);
       }
     }
@@ -570,43 +604,39 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
     Append(TotalDiskHistory, totalDisk);
     Append(TotalNetHistory, totalNet);
 
-    var selected = _selectedRow;
-    double selCpu = selected?.CpuPercent ?? 0;
-    double selGpu = selected?.GpuPercent ?? 0;
-    double selMem = _systemMemoryTotalMb > 0
-        ? Math.Min(100, (selected?.WorkingSetMb ?? 0) / _systemMemoryTotalMb * 100)
-        : 0;
-    double selDisk = (selected?.DiskBytesPerSec ?? 0) / bytesPerMb;
-    double selNet = (selected?.NetBytesPerSec ?? 0) / bytesPerMb;
+    // One reading appended per monitored process to its own five histories, so each graph plots a
+    // line per selected process against the shared Total. The row's live metrics are read straight
+    // off its ProcessRowViewModel (the same values the list and legend show).
+    foreach (var monitor in MonitoredProcesses) {
+      var row = monitor.Row;
+      double mem = _systemMemoryTotalMb > 0
+          ? Math.Min(100, row.WorkingSetMb / _systemMemoryTotalMb * 100)
+          : 0;
+      Append(monitor.CpuHistory, row.CpuPercent);
+      Append(monitor.GpuHistory, row.GpuPercent ?? 0);
+      Append(monitor.MemoryHistory, mem);
+      Append(monitor.DiskHistory, (row.DiskBytesPerSec ?? 0) / bytesPerMb);
+      Append(monitor.NetHistory, (row.NetBytesPerSec ?? 0) / bytesPerMb);
+    }
 
-    Append(SelectedCpuHistory, selCpu);
-    Append(SelectedGpuHistory, selGpu);
-    Append(SelectedMemoryHistory, selMem);
-    Append(SelectedDiskHistory, selDisk);
-    Append(SelectedNetHistory, selNet);
-
-    SelectedCpuPercent = selCpu;
-    SelectedGpuPercent = selGpu;
-    SelectedMemoryPercent = selMem;
-    SelectedDiskMBps = selDisk;
-    SelectedNetMBps = selNet;
     SystemDiskMBps = totalDisk;
     SystemNetMBps = totalNet;
 
     // Rescale each throughput axis to the current window's peak (+10% headroom, floor 1 MB/s) so the
-    // small per-process line and the larger total both stay readable as traffic rises and falls.
-    DiskMaxMBps = AxisMax(TotalDiskHistory, SelectedDiskHistory);
-    NetMaxMBps = AxisMax(TotalNetHistory, SelectedNetHistory);
+    // small per-process lines and the larger total all stay readable as traffic rises and falls.
+    DiskMaxMBps = AxisMax(TotalDiskHistory, MonitoredProcesses.Select(m => m.DiskHistory));
+    NetMaxMBps = AxisMax(TotalNetHistory, MonitoredProcesses.Select(m => m.NetHistory));
   }
 
-  // Dynamic upper bound for a throughput graph: the largest value across both series' windows, with
-  // ~10% headroom so the peak doesn't touch the ceiling, never below 1 MB/s so an idle window still
-  // has a sane scale.
+  // Dynamic upper bound for a throughput graph: the largest value across the total window and every
+  // per-process window, with ~10% headroom so the peak doesn't touch the ceiling, never below 1 MB/s
+  // so an idle window still has a sane scale.
   private static double AxisMax(
-      ObservableCollection<double> a, ObservableCollection<double> b) {
+      ObservableCollection<double> total, IEnumerable<ObservableCollection<double>> perProcess) {
     double peak = 0;
-    foreach (var v in a) if (v > peak) peak = v;
-    foreach (var v in b) if (v > peak) peak = v;
+    foreach (var v in total) if (v > peak) peak = v;
+    foreach (var history in perProcess)
+      foreach (var v in history) if (v > peak) peak = v;
     return Math.Max(1, peak * 1.1);
   }
 

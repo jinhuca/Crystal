@@ -8,11 +8,8 @@
 
   <!-- Vertical "glow" fills for the detail-panel utilization graphs, mirroring the dashboard line
        tiles (GraphThemes.CreateVerticalGlow): full-ish accent at the trace, fading down toward the
-       baseline. Blue = selected process, amber = machine-wide total. -->
-  <LinearGradientBrush x:Key="ProcessSeriesFill" StartPoint="0,0" EndPoint="0,1">
-    <GradientStop Color="#C03E9BE8" Offset="0"/>
-    <GradientStop Color="#503E9BE8" Offset="1"/>
-  </LinearGradientBrush>
+       baseline. Amber = machine-wide total; the per-process lines draw unfilled (several share a
+       graph, so overlapping fills would occlude each other). -->
   <LinearGradientBrush x:Key="TotalSeriesFill" StartPoint="0,0" EndPoint="0,1">
     <GradientStop Color="#C0E0B84C" Offset="0"/>
     <GradientStop Color="#50E0B84C" Offset="1"/>
