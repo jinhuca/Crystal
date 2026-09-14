@@ -9,7 +9,7 @@ namespace Crystal.GpuModule.Views.SummaryViews;
 //}
 
 internal static class GpuSummaryViewConstants {
-  public const double GraphWidth = 210d;
+  public const double GraphWidth = 200d;
   public const double UtilizationGraphWidth = 260d;
 
   // The full-width Utilization graph spans the metric row, so it must be pinned to the exact width of

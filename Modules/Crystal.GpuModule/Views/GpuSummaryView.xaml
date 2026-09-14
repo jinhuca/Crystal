@@ -32,7 +32,7 @@
               Padding="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ContentPresenter}, Converter={StaticResource TileChrome}}"
               BorderBrush="{StaticResource DividerBrush}"
               BorderThickness="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ContentPresenter}, Converter={StaticResource TileChrome}, ConverterParameter=border}">
-        <Grid VerticalAlignment="Stretch" ShowGridLines="False">
+        <Grid VerticalAlignment="Stretch" ShowGridLines="True">
           <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="70"/>
@@ -80,11 +80,11 @@
               BorderThickness="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ContentPresenter}, Converter={StaticResource TileChrome}, ConverterParameter=border}">
         <!-- The tile sizes to content; each metric view carries its own fixed width (see
              GpuSummaryViewConstants) so nothing can balloon in the infinite-width strip. -->
-        <Grid VerticalAlignment="Stretch" ShowGridLines="False">
+        <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" ShowGridLines="False">
           <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="0.9*"/>
+            <RowDefinition Height="1.1*"/>
           </Grid.RowDefinitions>
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -114,15 +114,15 @@
             </StackPanel>
           </Border>
 
-          <sv:GpuPowerView       Grid.Row="1" Grid.Column="0" Margin="0,0,8,8"/>
-          <sv:GpuTemperatureView Grid.Row="1" Grid.Column="1" Margin="0,0,8,8"/>
-          <sv:GpuHotSpotView     Grid.Row="1" Grid.Column="2" Margin="0,0,8,8"/>
-          <sv:GpuMemoryView      Grid.Row="1" Grid.Column="3" Margin="0,0,8,8"/>
-          <sv:GpuClockView       Grid.Row="1" Grid.Column="4" Margin="0,0,8,8"/>
-          <sv:Gpu3DView          Grid.Row="1" Grid.Column="5" Margin="0,0,8,8"/>
-          <sv:GpuPcieRxView      Grid.Row="1" Grid.Column="6" Margin="0,0,8,8"/>
-          <sv:GpuPcieTxView      Grid.Row="1" Grid.Column="7" Margin="0,0,8,8"/>
-          <sv:GpuFanView         Grid.Row="1" Grid.Column="8" Margin="0,0,0,8"/>
+          <sv:GpuPowerView       Grid.Row="1" Grid.Column="0" Margin="0,0,8,0"/>
+          <sv:GpuTemperatureView Grid.Row="1" Grid.Column="1" Margin="0,0,8,0"/>
+          <sv:GpuHotSpotView     Grid.Row="1" Grid.Column="2" Margin="0,0,8,0"/>
+          <sv:GpuMemoryView      Grid.Row="1" Grid.Column="3" Margin="0,0,8,0"/>
+          <sv:GpuClockView       Grid.Row="1" Grid.Column="4" Margin="0,0,8,0"/>
+          <sv:Gpu3DView          Grid.Row="1" Grid.Column="5" Margin="0,0,8,0"/>
+          <sv:GpuPcieRxView      Grid.Row="1" Grid.Column="6" Margin="0,0,8,0"/>
+          <sv:GpuPcieTxView      Grid.Row="1" Grid.Column="7" Margin="0,0,8,0"/>
+          <sv:GpuFanView         Grid.Row="1" Grid.Column="8" Margin="0,0,0,0"/>
           <sv:GpuUtilizationView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="9" Margin="0,0,0,0"
                                  Capacity="180" Width="{x:Static sv:GpuSummaryViewConstants.DedicatedUtilizationWidth}"
                                  HorizontalAlignment="Left" VerticalAlignment="Stretch"/>

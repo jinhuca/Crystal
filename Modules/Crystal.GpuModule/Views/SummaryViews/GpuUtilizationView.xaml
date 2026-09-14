@@ -20,10 +20,10 @@
        CpuUtilizationView: the full-height core-load history graph fills the left; the live readout on
        the right is a bordered tile matching the other summary tiles, carrying the value, its trend,
        and the session min/avg/max. Self-registers so the view model feeds it on each poll. -->
-  <Grid VerticalAlignment="Stretch" Background="Transparent">
+  <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="Transparent">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="*"/>
-      <ColumnDefinition Width="180"/>
+      <ColumnDefinition Width="220"/>
     </Grid.ColumnDefinitions>
     <graphs:AdaptiveGraph
       Grid.Column="0"
@@ -36,8 +36,8 @@
       CellPitch="{StaticResource DashboardDotPitch}"/>
 
     <Border Grid.Column="1" Style="{StaticResource SummaryTileBorderStyle}"
-            VerticalAlignment="Center" Margin="10,0,0,0">
-      <Grid MinHeight="60" ShowGridLines="False">
+            VerticalAlignment="Center" Margin="20,0,0,0">
+      <Grid MinHeight="60" VerticalAlignment="Stretch" ShowGridLines="False">
         <Grid.RowDefinitions>
           <RowDefinition Height="18"/>
           <RowDefinition Height="48"/>
