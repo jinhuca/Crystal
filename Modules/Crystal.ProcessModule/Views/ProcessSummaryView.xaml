@@ -343,6 +343,56 @@
           </Setter.Value>
         </Setter>
       </Style>
+
+      <!-- Chrome for the detail-panel legend list. Flat and transparent so it sits on the panel's
+           #101010 surface; reuses the GridView scroll-viewer key so its GridView header (and its
+           resize grippers) render. Vertical scroll is off — the legend holds at most 5 rows and
+           lives inside the panel's own scroll viewer. -->
+      <Style x:Key="LegendListViewStyle" TargetType="ListView">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="ListView">
+              <Border BorderBrush="{TemplateBinding BorderBrush}"
+                      BorderThickness="{TemplateBinding BorderThickness}"
+                      Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                <ScrollViewer Padding="{TemplateBinding Padding}"
+                              Style="{DynamicResource {x:Static GridView.GridViewScrollViewerStyleKey}}">
+                  <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                </ScrollViewer>
+              </Border>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style>
+
+      <!-- Static (non-selectable) legend row: no hover/selection fills, since the legend just mirrors
+           the monitored set — selection is driven from the left list, not here. -->
+      <Style x:Key="LegendRowStyle" TargetType="ListViewItem">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Height" Value="20"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="ListViewItem">
+              <Border Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                <GridViewRowPresenter VerticalAlignment="Center"
+                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+              </Border>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style>
     </ResourceDictionary>
   </UserControl.Resources>
 
@@ -681,44 +731,78 @@
             </ScrollViewer.Resources>
           <StackPanel Margin="12,10">
             <!-- Legend: one row per monitored process (up to 5), each carrying its line color (the
-                 same color used for that process across every graph), name, PID, and live CPU /
-                 memory / GPU. Replaces the old single-process metric block now that several
-                 processes can be monitored at once. -->
-            <ItemsControl ItemsSource="{Binding MonitoredProcesses}">
-              <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                  <Grid Margin="0,2">
-                    <Grid.ColumnDefinitions>
-                      <ColumnDefinition Width="Auto"/>
-                      <ColumnDefinition Width="*"/>
-                      <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <Border Grid.Column="0" Width="8" Height="8" Background="{Binding Color}"
-                            VerticalAlignment="Center"/>
-                    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="6,0,0,0">
-                      <TextBlock Text="{Binding Row.Name}" Foreground="{StaticResource ValueBrush}"
-                                 FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}"
-                                 FontWeight="SemiBold" VerticalAlignment="Center"
-                                 TextTrimming="CharacterEllipsis"/>
-                      <TextBlock Text="{Binding ProcessId, StringFormat=PID {0}}" Foreground="{StaticResource LabelBrush}"
-                                 FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}"
-                                 VerticalAlignment="Center" Margin="6,0,0,0"/>
-                    </StackPanel>
-                    <StackPanel Grid.Column="2" Orientation="Horizontal">
-                      <TextBlock Text="{Binding Row.CpuPercent, StringFormat={}{0:0.0}%}" Width="52"
-                                 Foreground="{Binding Row.CpuPercent, Converter={StaticResource LoadToBrush}}"
-                                 FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}" TextAlignment="Right"/>
-                      <TextBlock Text="{Binding Row.WorkingSetMb, StringFormat={}{0:0} MB}" Width="72"
-                                 Foreground="{StaticResource TextPrimaryBrush}"
-                                 FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}" TextAlignment="Right"/>
-                      <TextBlock Text="{Binding Row.GpuPercent, Converter={StaticResource NullablePercent}}" Width="52"
-                                 Foreground="{StaticResource TextMutedBrush}"
-                                 FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}" TextAlignment="Right"/>
-                    </StackPanel>
-                  </Grid>
-                </DataTemplate>
-              </ItemsControl.ItemTemplate>
-            </ItemsControl>
+                 same color used for that process across every graph), name, PID, and live CPU / GPU /
+                 memory / disk / network. A GridView so its column headers get drag-to-resize grippers
+                 (reusing HeaderStyle), matching the left process list — handy across screen sizes. -->
+            <ListView ItemsSource="{Binding MonitoredProcesses}"
+                      Style="{StaticResource LegendListViewStyle}"
+                      ItemContainerStyle="{StaticResource LegendRowStyle}">
+              <ListView.View>
+                <GridView ColumnHeaderContainerStyle="{StaticResource HeaderStyle}">
+                  <GridViewColumn Header="Process" Width="150">
+                    <GridViewColumn.CellTemplate>
+                      <DataTemplate>
+                        <StackPanel Orientation="Horizontal" Margin="8,0">
+                          <Border Width="8" Height="8" Background="{Binding Color}" VerticalAlignment="Center"/>
+                          <TextBlock Text="{Binding Row.Name}" Foreground="{StaticResource ValueBrush}"
+                                     FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}"
+                                     FontWeight="SemiBold" VerticalAlignment="Center" Margin="6,0,0,0"
+                                     TextTrimming="CharacterEllipsis"/>
+                          <TextBlock Text="{Binding ProcessId, StringFormat=PID {0}}" Foreground="{StaticResource LabelBrush}"
+                                     FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}"
+                                     VerticalAlignment="Center" Margin="6,0,0,0"/>
+                        </StackPanel>
+                      </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                  </GridViewColumn>
+                  <GridViewColumn Header="CPU" Width="60">
+                    <GridViewColumn.CellTemplate>
+                      <DataTemplate>
+                        <TextBlock Text="{Binding Row.CpuPercent, StringFormat={}{0:0.0}%}" Margin="8,0" TextAlignment="Right"
+                                   Foreground="{Binding Row.CpuPercent, Converter={StaticResource LoadToBrush}}"
+                                   FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}"/>
+                      </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                  </GridViewColumn>
+                  <GridViewColumn Header="GPU" Width="60">
+                    <GridViewColumn.CellTemplate>
+                      <DataTemplate>
+                        <TextBlock Text="{Binding Row.GpuPercent, Converter={StaticResource NullablePercent}}" Margin="8,0" TextAlignment="Right"
+                                   Foreground="{StaticResource TextMutedBrush}"
+                                   FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}"/>
+                      </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                  </GridViewColumn>
+                  <GridViewColumn Header="Memory" Width="80">
+                    <GridViewColumn.CellTemplate>
+                      <DataTemplate>
+                        <TextBlock Text="{Binding Row.WorkingSetMb, StringFormat={}{0:0} MB}" Margin="8,0" TextAlignment="Right"
+                                   Foreground="{StaticResource TextPrimaryBrush}"
+                                   FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}"/>
+                      </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                  </GridViewColumn>
+                  <GridViewColumn Header="Disk" Width="85">
+                    <GridViewColumn.CellTemplate>
+                      <DataTemplate>
+                        <TextBlock Text="{Binding Row.DiskBytesPerSec, Converter={StaticResource ByteRate}}" Margin="8,0" TextAlignment="Right"
+                                   Foreground="{StaticResource TextMutedBrush}"
+                                   FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}"/>
+                      </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                  </GridViewColumn>
+                  <GridViewColumn Header="Network" Width="85">
+                    <GridViewColumn.CellTemplate>
+                      <DataTemplate>
+                        <TextBlock Text="{Binding Row.NetBytesPerSec, Converter={StaticResource ByteRate}}" Margin="8,0" TextAlignment="Right"
+                                   Foreground="{StaticResource TextMutedBrush}"
+                                   FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}"/>
+                      </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                  </GridViewColumn>
+                </GridView>
+              </ListView.View>
+            </ListView>
 
             <Border BorderBrush="{StaticResource DividerBrush}" BorderThickness="0,1,0,0" Margin="0,8,0,0"/>
 
