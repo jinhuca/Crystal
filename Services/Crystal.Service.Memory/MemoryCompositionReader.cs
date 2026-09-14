@@ -20,11 +20,51 @@ internal sealed class MemoryCompositionReader : IDisposable {
   private bool _disposed;
 
   public MemoryCompositionReader() {
-    _modified = Create("Modified Page List Bytes");
-    _standbyReserve = Create("Standby Cache Reserve Bytes");
-    _standbyNormal = Create("Standby Cache Normal Priority Bytes");
-    _standbyCore = Create("Standby Cache Core Bytes");
-    _free = Create("Free & Zero Page List Bytes");
+    try {
+      // 1. Validate that the entire category exists first
+      if (!PerformanceCounterCategory.Exists("Memory")) {
+        throw new InvalidOperationException("The 'Memory' performance counter category does not exist on this system.");
+      }
+
+      PerformanceCounterCategory category = new("Memory");
+
+      // 2. Validate all required counters exist
+      if (!category.CounterExists("Modified Page List Bytes") ||
+          !category.CounterExists("Standby Cache Reserve Bytes") ||
+          !category.CounterExists("Standby Cache Normal Priority Bytes") ||
+          !category.CounterExists("Standby Cache Core Bytes") ||
+          !category.CounterExists("Free & Zero Page List Bytes")) {
+        throw new InvalidOperationException("Missing one or more required Memory page list counters.");
+      }
+
+      // 3. Keep the counter creation INSIDE the try block to safely catch instantiation failures
+      _modified = Create("Modified Page List Bytes");
+      _standbyReserve = Create("Standby Cache Reserve Bytes");
+      _standbyNormal = Create("Standby Cache Normal Priority Bytes");
+      _standbyCore = Create("Standby Cache Core Bytes");
+      _free = Create("Free & Zero Page List Bytes");
+    }
+    catch (InvalidOperationException ex) {
+      // Gracefully handle missing counters, corrupted registry, or missing permissions
+      Console.WriteLine($"Initialization failed: {ex.Message}");
+
+      // Fallback: Ensure fields are explicitly set to null if initialization fails
+      ReleaseCounters();
+    }
+    catch (Exception ex) {
+      // Catch generic/unexpected exceptions (like security or localized OS issues)
+      Console.WriteLine($"Unexpected error initializing counters: {ex.Message}");
+      ReleaseCounters();
+    }
+  }
+
+  // Helper to safely clean up if partial initialization occurs
+  private void ReleaseCounters() {
+    _modified?.Dispose();
+    _standbyReserve?.Dispose();
+    _standbyNormal?.Dispose();
+    _standbyCore?.Dispose();
+    _free?.Dispose();
   }
 
   public readonly record struct Reading(double? ModifiedGB, double? StandbyGB, double? FreeGB);
