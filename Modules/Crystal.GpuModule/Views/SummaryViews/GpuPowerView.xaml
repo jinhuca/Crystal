@@ -19,11 +19,11 @@
     </ResourceDictionary>
   </UserControl.Resources>
   <Border Style="{StaticResource SummaryTileBorderStyle}" Width="{x:Static local:GpuSummaryViewConstants.GraphWidth}">
-    <Grid MinHeight="60" ShowGridLines="False">
+    <Grid MinHeight="60" ShowGridLines="True">
       <Grid.RowDefinitions>
         <RowDefinition Height="20"/>
         <RowDefinition Height="40"/>
-        <RowDefinition Height="24"/>
+        <RowDefinition Height="26"/>
       </Grid.RowDefinitions>
       <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="4,0,0,4">
         <TextBlock Text="Power" Style="{StaticResource SummaryTileTitleTextBlockStyle}"/>
