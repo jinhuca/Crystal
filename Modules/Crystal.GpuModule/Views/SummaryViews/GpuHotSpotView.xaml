@@ -22,12 +22,20 @@
     <Grid MinHeight="60" ShowGridLines="False">
       <Grid.RowDefinitions>
         <RowDefinition Height="20"/>
-        <RowDefinition Height="1.6*"/>
-        <RowDefinition Height=".7*"/>
+        <RowDefinition Height="40"/>
+        <RowDefinition Height="24"/>
       </Grid.RowDefinitions>
 
       <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="4,0,0,4">
         <TextBlock Text="Hot Spot" Style="{StaticResource SummaryTileTitleTextBlockStyle}"/>
+        <TextBlock Style="{StaticResource MetricStatLine}" Margin="20,0,0,0">
+          <Run FontFamily="Segoe Fluent Icons" Text="&#xE70D; " Foreground="LightGreen"/>
+          <Run Text="{Binding HotSpotRow.Min, StringFormat={}{0:0}}"/>
+          <Run FontFamily="Segoe Fluent Icons" Text=" &#xE738; " Foreground="{StaticResource AccentBrush}"/>
+          <Run Text="{Binding HotSpotRow.Avg, StringFormat={}{0:0}}"/>
+          <Run FontFamily="Segoe Fluent Icons" Text=" &#xE70E; " Foreground="Crimson"/>
+          <Run Text="{Binding HotSpotRow.Max, StringFormat={}{0:0}}"/>
+        </TextBlock>
       </StackPanel>
 
       <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -40,13 +48,14 @@
                    Style="{StaticResource MetricUnit}" Margin="4,0,0,2"/>
       </StackPanel>
 
-      <StackPanel Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <TextBlock Style="{StaticResource MetricStatLine}">
-          <Run Text="min " Foreground="{StaticResource AccentBrush}"/><Run Text="{Binding HotSpotRow.Min, StringFormat={}{0:0}}"/>
-          <Run Text="   avg " Foreground="{StaticResource AccentBrush}"/><Run Text="{Binding HotSpotRow.Avg, StringFormat={}{0:0}}"/>
-          <Run Text="   max " Foreground="{StaticResource AccentBrush}"/><Run Text="{Binding HotSpotRow.Max, StringFormat={}{0:0}}"/>
-        </TextBlock>
-      </StackPanel>
+      <!-- Dot-style hot-spot history strip; self-registers under "Gpu.HotSpot". -->
+      <graphs:PerformanceGraphLite
+        Grid.Row="2" GraphBackground="Transparent"
+        Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Gpu.HotSpot"
+        HorizontalAlignment="Stretch" VerticalAlignment="Top"
+        Height="24" Rows="8" Capacity="120"
+        MinValue="30" MaxValue="120" CornerRadius="1"
+        Style="{StaticResource TemperatureBandedSquareDotGraphLiteStyle}"/>
     </Grid>
   </Border>
 </UserControl>

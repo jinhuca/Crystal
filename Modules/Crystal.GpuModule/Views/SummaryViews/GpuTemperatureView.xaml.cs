@@ -1,3 +1,4 @@
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Crystal.GpuModule.Views.SummaryViews;
@@ -14,4 +15,6 @@ public partial class GpuTemperatureView : UserControl {
   public GpuTemperatureView() {
     InitializeComponent();
   }
+
+  private void OnGraphLoaded(object sender, RoutedEventArgs e) => GpuGraphAttach.Attach(sender);
 }
