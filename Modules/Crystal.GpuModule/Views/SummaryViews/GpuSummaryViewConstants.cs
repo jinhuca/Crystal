@@ -18,5 +18,5 @@ internal static class GpuSummaryViewConstants {
   // (8px inter-column gaps): 3 graphs / 2 gaps for the integrated tile, 5 graphs / 4 gaps for the
   // dedicated tile.
   public const double IntegratedUtilizationWidth = (3 * GraphWidth) + (2 * 8d);
-  public const double DedicatedUtilizationWidth = (5 * GraphWidth) + (4 * 8d);
+  public const double DedicatedUtilizationWidth = (9 * GraphWidth) + (8 * 8d);
 }

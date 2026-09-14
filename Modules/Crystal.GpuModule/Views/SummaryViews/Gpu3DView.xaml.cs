@@ -1,3 +1,4 @@
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Crystal.GpuModule.Views.SummaryViews;
@@ -14,4 +15,6 @@ public partial class Gpu3DView : UserControl {
   public Gpu3DView() {
     InitializeComponent();
   }
+
+  private void OnGraphLoaded(object sender, RoutedEventArgs e) => GpuGraphAttach.Attach(sender);
 }

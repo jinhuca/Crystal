@@ -1,4 +1,4 @@
-<UserControl x:Class="Crystal.GpuModule.Views.SummaryViews.GpuMemoryView"
+<UserControl x:Class="Crystal.GpuModule.Views.SummaryViews.GpuFanView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Crystal.GpuModule.Views.SummaryViews"
@@ -8,9 +8,8 @@
              mc:Ignorable="d"
              d:DesignHeight="120" d:DesignWidth="210">
   <!-- DataContext is a GpuAdapterViewModel, inherited from the per-adapter block. Boxed sensor tile
-       matching the CpuSummaryView pattern: accent title, "used / total GB" value + unit + trend glyph,
-       and a session min/avg/max stat line. The trend and stats track used-percent, so they reflect
-       pressure even as the GB figure ticks. -->
+       matching the CpuSummaryView pattern: accent title, live fan-speed value + unit + trend glyph,
+       a session min/avg/max stat line, and a dot history strip. -->
   <UserControl.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
@@ -27,38 +26,32 @@
         <RowDefinition Height="24"/>
       </Grid.RowDefinitions>
       <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0,0,0,0">
-        <TextBlock Text="Memory" Style="{StaticResource SummaryTileTitleTextBlockStyle}"/>
+        <TextBlock Text="GPU Fan" Style="{StaticResource SummaryTileTitleTextBlockStyle}"/>
         <TextBlock Style="{StaticResource MetricStatLine}" Margin="20,0,0,0">
           <Run FontFamily="Segoe Fluent Icons" Text="&#xE70D; " Foreground="LightGreen"/>
-          <Run Text="{Binding MemoryRow.Min, StringFormat={}{0:0}}"/><Run Text="%"/>
+          <Run Text="{Binding FanRow.Min, StringFormat={}{0:0}}"/>
           <Run FontFamily="Segoe Fluent Icons" Text=" &#xE738; " Foreground="{StaticResource AccentBrush}"/>
-          <Run Text="{Binding MemoryRow.Avg, StringFormat={}{0:0}}"/><Run Text="%"/>
+          <Run Text="{Binding FanRow.Avg, StringFormat={}{0:0}}"/>
           <Run FontFamily="Segoe Fluent Icons" Text=" &#xE70E; " Foreground="Crimson"/>
-          <Run Text="{Binding MemoryRow.Max, StringFormat={}{0:0}}"/><Run Text="%"/>
+          <Run Text="{Binding FanRow.Max, StringFormat={}{0:0}}"/>
         </TextBlock>
       </StackPanel>
       <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <TextBlock Style="{StaticResource TileMetricValue}">
-          <TextBlock.Text>
-            <MultiBinding StringFormat="{}{0:0.0} / {1:0.0}">
-              <Binding Path="MemoryUsedGB" TargetNullValue="0.0"/>
-              <Binding Path="MemoryTotalGB" TargetNullValue="0.0"/>
-            </MultiBinding>
-          </TextBlock.Text>
-        </TextBlock>
-        <TextBlock Text="GB" Style="{StaticResource MetricUnit}"/>
-        <TextBlock Text="{Binding MemoryRow.Trend, Converter={StaticResource TrendToGlyph}}"
-                   Foreground="{Binding MemoryRow.Trend, Converter={StaticResource TrendToBrush}}"
+        <TextBlock Text="{Binding FanRpm, StringFormat={}{0:0}, TargetNullValue=—}" Style="{StaticResource TileMetricValue}"/>
+        <TextBlock Text="RPM" Style="{StaticResource MetricUnit}"/>
+        <TextBlock Text="{Binding FanRow.Trend, Converter={StaticResource TrendToGlyph}}"
+                   Foreground="{Binding FanRow.Trend, Converter={StaticResource TrendToBrush}}"
                    Style="{StaticResource MetricUnit}" Margin="4,0,0,2"/>
       </StackPanel>
 
-      <!-- Dot-style memory-pressure history strip (used-percent); self-registers under "Gpu.Memory". -->
+      <!-- Dot-style fan-speed history strip; self-registers under "Gpu.Fan". Ceiling ratchets over
+           the running RPM peak so a slow case fan and a spun-up card each plot on a sensible axis. -->
       <graphs:PerformanceGraphLite
         Grid.Row="2" GraphBackground="Transparent"
-        Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Gpu.Memory"
+        Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Gpu.Fan"
         HorizontalAlignment="Stretch" VerticalAlignment="Top"
         Height="24" Rows="8" Capacity="120"
-        MinValue="0" MaxValue="100" CornerRadius="1"
+        MinValue="0" MaxValue="{Binding FanScaleMax}" CornerRadius="1"
         Style="{StaticResource BandedSquareDotGraphLiteStyle}"/>
     </Grid>
   </Border>

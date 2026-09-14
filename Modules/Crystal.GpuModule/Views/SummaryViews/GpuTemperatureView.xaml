@@ -23,6 +23,7 @@
       <Grid.RowDefinitions>
         <RowDefinition Height="20"/>
         <RowDefinition Height="40"/>
+        <RowDefinition Height="24"/>
       </Grid.RowDefinitions>
       <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0,0,0,0">
         <TextBlock Text="Temperature" Style="{StaticResource SummaryTileTitleTextBlockStyle}"/>
@@ -44,6 +45,15 @@
                    Foreground="{Binding TemperatureRow.Trend, Converter={StaticResource TrendToBrush}}"
                    Style="{StaticResource MetricUnit}" Margin="4,0,0,2"/>
       </StackPanel>
+
+      <!-- Dot-style temperature history strip; self-registers under "Gpu.Temperature". -->
+      <graphs:PerformanceGraphLite
+        Grid.Row="2" GraphBackground="Transparent"
+        Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Gpu.Temperature"
+        HorizontalAlignment="Stretch" VerticalAlignment="Top"
+        Height="24" Rows="8" Capacity="120"
+        MinValue="30" MaxValue="120" CornerRadius="1"
+        Style="{StaticResource TemperatureBandedSquareDotGraphLiteStyle}"/>
     </Grid>
   </Border>
 </UserControl>

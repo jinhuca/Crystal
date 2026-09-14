@@ -59,14 +59,17 @@ public sealed class GpuAdapterViewModel : BindableBase {
   private const double MinClockScale = 500;
   private const double MinPowerScale = 50;
   private const double MinPcieScale = 10;
+  private const double MinFanScale = 1000;
   private double _clockScaleMax = MinClockScale;
   private double _powerScaleMax = MinPowerScale;
   private double _pcieRxScaleMax = MinPcieScale;
   private double _pcieTxScaleMax = MinPcieScale;
+  private double _fanScaleMax = MinFanScale;
   private double _clockPeak;
   private double _powerPeak;
   private double _pcieRxPeak;
   private double _pcieTxPeak;
+  private double _fanPeak;
 
   // History graphs are registered by their GraphIdentity.Id as each metric sub-view loads (the
   // detail view registers with the same ids explicitly), then fed by that same id in UpdateLoad.
@@ -138,6 +141,10 @@ public sealed class GpuAdapterViewModel : BindableBase {
   public MetricRowViewModel TemperatureRow { get; } = new("Temperature");
   public MetricRowViewModel HotSpotRow { get; } = new("Hot Spot");
   public MetricRowViewModel MemoryRow { get; } = new("Memory");
+  public MetricRowViewModel LoadRow { get; } = new("Utilization");
+  public MetricRowViewModel FanRow { get; } = new("Fan");
+  public MetricRowViewModel PcieRxRow { get; } = new("PCIe Rx");
+  public MetricRowViewModel PcieTxRow { get; } = new("PCIe Tx");
 
   /// <summary>
   /// Upper bound of the core-clock history graph, ratcheted to a round value above the
@@ -162,6 +169,12 @@ public sealed class GpuAdapterViewModel : BindableBase {
   /// independently of <see cref="PcieRxScaleMax"/>.
   /// </summary>
   public double PcieTxScaleMax { get => _pcieTxScaleMax; private set => SetProperty(ref _pcieTxScaleMax, value); }
+
+  /// <summary>
+  /// Upper bound of the fan-speed history graph, ratcheted over the running RPM peak like the
+  /// clock/power ceilings so the trace scales sensibly for a slow case fan or a spun-up card.
+  /// </summary>
+  public double FanScaleMax { get => _fanScaleMax; private set => SetProperty(ref _fanScaleMax, value); }
 
   /// <summary>
   /// Per-engine utilization breakdown, reconciled in place across polls so the rows stay
@@ -205,6 +218,7 @@ public sealed class GpuAdapterViewModel : BindableBase {
   public void UpdateLoad(GpuLoadReading reading) {
     Load = reading.CoreLoadPercent;
     FeedGraph("Gpu.Utilization", reading.CoreLoadPercent);
+    LoadRow.Update(reading.CoreLoadPercent);
 
     TemperatureC = reading.TemperatureC;
     TemperatureMinC = reading.TemperatureMinC;
@@ -247,6 +261,12 @@ public sealed class GpuAdapterViewModel : BindableBase {
     MemoryClockMinMhz = reading.MemoryClockMinMhz;
     MemoryClockMaxMhz = reading.MemoryClockMaxMhz;
     FanRpm = reading.FanRpm;
+    if (reading.FanRpm is { } fan) {
+      FeedGraph("Gpu.Fan", fan);
+      FanRow.Update(fan);
+      _fanPeak = Math.Max(fan, _fanPeak * PeakDecay);
+      FanScaleMax = NiceScale(_fanPeak, MinFanScale);
+    }
     CoreVoltageV = reading.CoreVoltageV;
     CoreVoltageMinV = reading.CoreVoltageMinV;
     CoreVoltageMaxV = reading.CoreVoltageMaxV;
@@ -263,8 +283,14 @@ public sealed class GpuAdapterViewModel : BindableBase {
 
     PcieRxMBps = reading.PcieRxMBps;
     PcieTxMBps = reading.PcieTxMBps;
-    if (reading.PcieRxMBps is { } rx) FeedGraph("Gpu.PcieRx", rx);
-    if (reading.PcieTxMBps is { } tx) FeedGraph("Gpu.PcieTx", tx);
+    if (reading.PcieRxMBps is { } rx) {
+      FeedGraph("Gpu.PcieRx", rx);
+      PcieRxRow.Update(rx);
+    }
+    if (reading.PcieTxMBps is { } tx) {
+      FeedGraph("Gpu.PcieTx", tx);
+      PcieTxRow.Update(tx);
+    }
     _pcieRxPeak = Math.Max(reading.PcieRxMBps ?? 0, _pcieRxPeak * PeakDecay);
     PcieRxScaleMax = NiceScale(_pcieRxPeak, MinPcieScale);
     _pcieTxPeak = Math.Max(reading.PcieTxMBps ?? 0, _pcieTxPeak * PeakDecay);

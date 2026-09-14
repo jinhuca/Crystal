@@ -1,5 +1,9 @@
 using Crystal.GpuModule.ViewModels;
+using System.Collections;
+using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace Crystal.GpuModule.Views;
@@ -46,5 +50,22 @@ public partial class GpuSummaryView : UserControl {
       scroller.ScrollToHorizontalOffset(scroller.HorizontalOffset - e.Delta);
       e.Handled = true;
     }
+  }
+
+  /// <summary>
+  /// Hides the integrated adapter from the summary strip while leaving the shared adapter list (and
+  /// so the detail view, which shows every adapter) untouched. Wraps the bound collection in a
+  /// private <see cref="CollectionViewSource"/> view so the filter is local to this ItemsControl
+  /// rather than applied to the default view. The integrated tile is disabled for now.
+  /// </summary>
+  private void OnStripLoaded(object sender, RoutedEventArgs e) {
+    if (sender is not ItemsControl strip) return;
+    // Already wrapped on a prior Loaded (the strip can be re-added to the tree): leave it be.
+    if (strip.ItemsSource is ICollectionView) return;
+    if (strip.ItemsSource is not IEnumerable adapters) return;
+
+    var view = new CollectionViewSource { Source = adapters }.View;
+    view.Filter = o => o is GpuAdapterViewModel { IsIntegrated: false };
+    strip.ItemsSource = view;
   }
 }
