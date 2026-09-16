@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:prism="http://prismlibrary.com/"
              prism:ViewModelLocator.AutoWireViewModel="True"
+						 xmlns:sv="clr-namespace:Crystal.OSModule.Views.SummaryViews"
              mc:Ignorable="d"
              d:DesignHeight="240" d:DesignWidth="380"
              Background="Transparent" Foreground="{StaticResource TextBrush}"
@@ -34,18 +35,9 @@
       </Grid.RowDefinitions>
 
       <!-- Dense header bar: accent tick + title + inline OS name, thin divider rule below. -->
-      <Border Grid.Row="0" BorderBrush="{StaticResource DividerBrush}" BorderThickness="0,0,0,1"
-              Padding="0,0,0,4" Margin="0,0,0,8">
-        <StackPanel Orientation="Horizontal">
-          <Border Width="3" Background="{StaticResource AccentBrush}" Margin="0,1,8,1"/>
-          <TextBlock Text="OPERATING SYSTEM" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource BodyFontSize}" FontWeight="SemiBold"
-                     VerticalAlignment="Center" Margin="0,0,16,0"/>
-          <TextBlock Text="{Binding OsName}" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}"
-                     VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
-        </StackPanel>
-      </Border>
+			<sv:OsHeaderView Grid.Row="0"/>
 
-      <StackPanel Grid.Row="1" VerticalAlignment="Top">
+			<StackPanel Grid.Row="1" VerticalAlignment="Top">
         <!-- Version / build / architecture triplet -->
         <Grid>
           <Grid.ColumnDefinitions>
