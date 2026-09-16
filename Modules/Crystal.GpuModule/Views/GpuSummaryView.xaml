@@ -85,6 +85,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="0.9*"/>
             <RowDefinition Height="1.1*"/>
+            <RowDefinition Height="Auto"/>
           </Grid.RowDefinitions>
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -123,9 +124,46 @@
           <sv:GpuPcieRxView      Grid.Row="1" Grid.Column="6" Margin="0,0,8,0"/>
           <sv:GpuPcieTxView      Grid.Row="1" Grid.Column="7" Margin="0,0,8,0"/>
           <sv:GpuFanView         Grid.Row="1" Grid.Column="8" Margin="0,0,0,0"/>
-          <sv:GpuUtilizationView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="9" Margin="0,0,0,0"
+          <!-- Utilization graph + readout spans cols 0-7 (one column narrower than the metric row) so the
+               readout tile lands under PCIe Tx (col 7) and the Voltage tile lands under GPU Fan (col 8). -->
+          <sv:GpuUtilizationView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="8" Margin="0,8,0,0"
                                  Capacity="180" Width="{x:Static sv:GpuSummaryViewConstants.DedicatedUtilizationWidth}"
                                  HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
+
+          <!-- Core-voltage tile under the GPU Fan tile, to the right of the Utilization readout. -->
+          <sv:GpuVoltageView     Grid.Row="2" Grid.Column="8" Margin="0,8,0,0"
+                                 VerticalAlignment="Stretch"/>
+
+          <!-- Engine Load: a compact single-line strip across the bottom (mirrors the CPU instruction-set
+               row). Each engine shows its name in accent + live load %. Hidden when the adapter exposes
+               no engine sensors so the label never sits over an empty row. -->
+          <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="9" Orientation="Horizontal"
+                      Margin="0,8,0,0" VerticalAlignment="Center"
+                      Visibility="{Binding HasEngineLoads, Converter={StaticResource BoolToVisibility}}">
+            <TextBlock Text="Engine Load" Foreground="{StaticResource LabelBrush}"
+                       FontSize="{StaticResource CaptionFontSize}" FontWeight="SemiBold"
+                       VerticalAlignment="Center" Margin="0,0,16,0"/>
+            <ItemsControl ItemsSource="{Binding EngineLoads}">
+              <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                  <WrapPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+              </ItemsControl.ItemsPanel>
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <StackPanel Orientation="Horizontal" Margin="0,0,16,0">
+                    <TextBlock Text="{Binding Name}" Foreground="{StaticResource AccentBrush}"
+                               FontSize="{StaticResource CaptionFontSize}" FontWeight="SemiBold"
+                               VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding LoadPercent, StringFormat={}{0:0.0} %}"
+                               Foreground="{StaticResource TextBrush}"
+                               FontSize="{StaticResource CaptionFontSize}"
+                               VerticalAlignment="Center" Margin="6,0,0,0"/>
+                  </StackPanel>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
         </Grid>
       </Border>
     </DataTemplate>

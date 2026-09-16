@@ -143,6 +143,7 @@ public sealed class GpuAdapterViewModel : BindableBase {
   public MetricRowViewModel MemoryRow { get; } = new("Memory");
   public MetricRowViewModel LoadRow { get; } = new("Utilization");
   public MetricRowViewModel FanRow { get; } = new("Fan");
+  public MetricRowViewModel VoltageRow { get; } = new("Voltage");
   public MetricRowViewModel PcieRxRow { get; } = new("PCIe Rx");
   public MetricRowViewModel PcieTxRow { get; } = new("PCIe Tx");
 
@@ -270,6 +271,10 @@ public sealed class GpuAdapterViewModel : BindableBase {
     CoreVoltageV = reading.CoreVoltageV;
     CoreVoltageMinV = reading.CoreVoltageMinV;
     CoreVoltageMaxV = reading.CoreVoltageMaxV;
+    if (reading.CoreVoltageV is { } volt) {
+      FeedGraph("Gpu.Voltage", volt);
+      VoltageRow.Update(volt, reading.CoreVoltageMinV, reading.CoreVoltageMaxV);
+    }
     HotSpotTemperatureC = reading.HotSpotTemperatureC;
     HotSpotTemperatureMinC = reading.HotSpotTemperatureMinC;
     HotSpotTemperatureMaxC = reading.HotSpotTemperatureMaxC;

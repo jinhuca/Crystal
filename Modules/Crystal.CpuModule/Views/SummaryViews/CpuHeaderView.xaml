@@ -10,16 +10,16 @@
        binds SpecsViewModel; the throttle badge reaches SensorsViewModel via the UserControl ancestor. -->
   <Border BorderBrush="{StaticResource DividerBrush}" BorderThickness="0,0,0,1" Padding="0,0,0,4">
     <Grid DataContext="{Binding SpecsViewModel}">
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="*"/>
-        <ColumnDefinition Width="Auto"/>
-      </Grid.ColumnDefinitions>
-      <!-- Full identity row: accent tick + "CPU", slot, brand, then the static specs (core counts,
-           cache, base speed) inline — all the info that previously sat around the utilization graph. -->
-      <StackPanel Grid.Column="0" Orientation="Horizontal">
+      <!-- "CPU" accent label pinned to the far left, overlaying the row like the "GPU" title in
+           GpuSummaryView, so the identity/specs read centered across the header. -->
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
         <Border Width="3" Background="{StaticResource AccentBrush}" Margin="0,1,8,1"/>
         <TextBlock Text="CPU" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource BodyFontSize}" FontWeight="SemiBold"
-                   VerticalAlignment="Center" Margin="0,0,16,0"/>
+                   VerticalAlignment="Center"/>
+      </StackPanel>
+      <!-- Centered identity + specs: slot, brand, then the static specs (core counts, cache, base
+           speed) inline — all the info that previously sat around the utilization graph. -->
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
         <TextBlock Text="{Binding Socket, StringFormat=Slot# {0}}"
                    Style="{StaticResource TileTitleCaption}" Margin="0,0,12,0"/>
         <TextBlock Text="{Binding Brand}" Style="{StaticResource TileTitleBrand}" Margin="0,0,16,0"
@@ -33,7 +33,7 @@
       </StackPanel>
       <!-- Throttle badge on the far right: shown only while the package is throttling.
            IsThrottling/ThrottleStatus live on SensorsViewModel, so bind up to the root tile DataContext. -->
-      <Border Grid.Column="1" Margin="0,0,12,0" Padding="8,0" CornerRadius="3" VerticalAlignment="Center"
+      <Border HorizontalAlignment="Right" Margin="0,0,12,0" Padding="8,0" CornerRadius="3" VerticalAlignment="Center"
               Background="#5A1A1A" BorderBrush="#E04A3A" BorderThickness="1">
         <Border.Style>
           <Style TargetType="Border">

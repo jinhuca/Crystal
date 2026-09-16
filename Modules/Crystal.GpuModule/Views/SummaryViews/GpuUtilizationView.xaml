@@ -8,24 +8,24 @@
              mc:Ignorable="d"
              d:DesignHeight="120" d:DesignWidth="500"
              FontFamily="{StaticResource UiFontFamily}">
-  <UserControl.Resources>
-    <ResourceDictionary>
-      <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/Crystal.Controls;component/Metrics/MetricEnrichmentResources.xaml"/>
-        <ResourceDictionary Source="/Crystal.Resources;component/Styles/BorderStyles.xaml"/>
-      </ResourceDictionary.MergedDictionaries>
-    </ResourceDictionary>
-  </UserControl.Resources>
-  <!-- DataContext is a GpuAdapterViewModel, inherited from the per-adapter block. Mirrors
+	<UserControl.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="/Crystal.Controls;component/Metrics/MetricEnrichmentResources.xaml"/>
+				<ResourceDictionary Source="/Crystal.Resources;component/Styles/BorderStyles.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</UserControl.Resources>
+	<!-- DataContext is a GpuAdapterViewModel, inherited from the per-adapter block. Mirrors
        CpuUtilizationView: the full-height core-load history graph fills the left; the live readout on
        the right is a bordered tile matching the other summary tiles, carrying the value, its trend,
        and the session min/avg/max. Self-registers so the view model feeds it on each poll. -->
-  <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="Transparent">
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="*"/>
-      <ColumnDefinition Width="220"/>
-    </Grid.ColumnDefinitions>
-    <graphs:AdaptiveGraph
+	<Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="Transparent">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="Auto"/>
+		</Grid.ColumnDefinitions>
+		<graphs:AdaptiveGraph
       Grid.Column="0"
       x:Name="UtilizationGraph"
       graphs:GraphIdentity.Id="Gpu.Utilization"
@@ -35,45 +35,41 @@
       BandedLine="True" ShowChrome="True" MinHeight="40"
       CellPitch="{StaticResource DashboardDotPitch}"/>
 
-    <Border Grid.Column="1" Style="{StaticResource SummaryTileBorderStyle}"
-            VerticalAlignment="Center" Margin="20,0,0,0">
-      <Grid MinHeight="60" VerticalAlignment="Stretch" ShowGridLines="False">
-        <Grid.RowDefinitions>
-          <RowDefinition Height="18"/>
-          <RowDefinition Height="48"/>
-          <RowDefinition Height="26"/>
-        </Grid.RowDefinitions>
+		<!-- Readout tile: same width and row structure as the other summary tiles (GpuFanView/GpuVoltageView),
+         with the session min/avg/max on the title row rather than beneath the value. -->
+		<Border Grid.Column="1" Style="{StaticResource SummaryTileBorderStyle}"
+            Width="{x:Static local:GpuSummaryViewConstants.GraphWidth}"
+            VerticalAlignment="Stretch" Margin="10,0,0,0">
+			<Grid MinHeight="60" ShowGridLines="False">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="20"/>
+					<RowDefinition Height="40"/>
+					<RowDefinition Height="24"/>
+				</Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom">
-          <TextBlock Text="Utilization" Style="{StaticResource SummaryTileTitleTextBlockStyle}"/>
-        </StackPanel>
+				<StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+					<TextBlock Text="Utilization" Style="{StaticResource SummaryTileTitleTextBlockStyle}"/>
+				</StackPanel>
 
-        <Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" ShowGridLines="False">
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
-          </Grid.ColumnDefinitions>
-          <TextBlock Grid.Column="0"
-                     Text="{Binding Load, StringFormat={}{0:0.00}, TargetNullValue=0.00}" Style="{StaticResource TileMetricValue}"/>
-          <TextBlock Grid.Column="1" Text="%" Style="{StaticResource MetricUnit}"/>
-          <TextBlock Grid.Column="2"
-                     Text="{Binding LoadRow.Trend, Converter={StaticResource TrendToGlyph}}"
+				<StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+					<TextBlock Text="{Binding Load, StringFormat={}{0:0.00}, TargetNullValue=0.00}" Style="{StaticResource TileMetricValue}"/>
+					<TextBlock Text="%" Style="{StaticResource MetricUnit}"/>
+					<TextBlock Text="{Binding LoadRow.Trend, Converter={StaticResource TrendToGlyph}}"
                      Foreground="{Binding LoadRow.Trend, Converter={StaticResource TrendToBrush}}"
-                     Style="{StaticResource MetricUnit}" Margin="4,0,0,0"/>
-        </Grid>
+                     Style="{StaticResource MetricUnit}" Margin="4,0,0,2"/>
+				</StackPanel>
 
-        <StackPanel Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2,0,0,0">
-          <TextBlock Style="{StaticResource MetricStatLine}" Margin="12,0,0,0" VerticalAlignment="Center">
+				<StackPanel Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2,0,0,0">
+					<TextBlock Style="{StaticResource MetricStatLine}" Margin="12,0,0,0" VerticalAlignment="Center">
             <Run FontFamily="Segoe Fluent Icons" Text="&#xE70D; " Foreground="LightGreen"/>
             <Run Text="{Binding LoadRow.Min, StringFormat={}{0:0.#}%}"/>
             <Run FontFamily="Segoe Fluent Icons" Text=" &#xE738; " Foreground="{StaticResource AccentBrush}"/>
             <Run Text="{Binding LoadRow.Avg, StringFormat={}{0:0.#}%}"/>
             <Run FontFamily="Segoe Fluent Icons" Text=" &#xE70E; " Foreground="Crimson"/>
             <Run Text="{Binding LoadRow.Max, StringFormat={}{0:0.#}%}"/>
-          </TextBlock>
-        </StackPanel>
-      </Grid>
-    </Border>
-  </Grid>
+					</TextBlock>
+				</StackPanel>
+			</Grid>
+		</Border>
+	</Grid>
 </UserControl>
