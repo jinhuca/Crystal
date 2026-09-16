@@ -121,6 +121,11 @@ public class PerformanceGraph : FrameworkElement, ISingleSeriesGraph {
       DependencyProperty.Register(nameof(CellPitch), typeof(double), typeof(PerformanceGraph),
           new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender));
 
+  /// <summary>Identifies the <see cref="BandColors"/> dependency property.</summary>
+  public static readonly DependencyProperty BandColorsProperty =
+      DependencyProperty.Register(nameof(BandColors), typeof(Brush[]), typeof(PerformanceGraph),
+          new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender));
+
   private readonly BackgroundRenderer _backgroundRender = new();
   private GridRenderer _gridRender;
   private readonly BorderRenderer _borderRender = new();
@@ -138,22 +143,45 @@ public class PerformanceGraph : FrameworkElement, ISingleSeriesGraph {
   private MarkerRenderer? _markerRender;
 
   // Solid band pens for BandedLine mode, one per gauge band at the current LineThickness. Built
-  // lazily and rebuilt only when the thickness changes, so a banded graph pays the pen allocation
-  // once, not per frame. The band fill brushes are the shared frozen GaugeBandPalette.Fill array,
-  // so they need no per-instance caching.
+  // lazily and rebuilt when the thickness changes or the source palette changes (a per-instance
+  // BandColors override versus the shared default ramp), so a banded graph pays the pen allocation
+  // once per such change, not per frame.
   private Pen[]? _bandLinePens;
   private double _bandPenThickness = double.NaN;
+  private Brush[]? _bandPenSource;
+
+  // The solid band brushes this graph paints with: a per-instance BandColors override when it
+  // supplies the full BandCount of brushes, otherwise the shared default green→red ramp.
+  private Brush[] BandSolids() =>
+      BandColors is { Length: GaugeBandPalette.BandCount } custom ? custom : GaugeBandPalette.Solid;
 
   private Pen[] BandLinePens() {
     double thickness = LineThickness;
-    if (_bandLinePens == null || _bandPenThickness != thickness) {
-      var solids = GaugeBandPalette.Solid;
+    Brush[] solids = BandSolids();
+    if (_bandLinePens == null || _bandPenThickness != thickness || !ReferenceEquals(_bandPenSource, solids)) {
       var pens = new Pen[solids.Length];
       for (int i = 0; i < solids.Length; i++) pens[i] = Helpers.CreateFrozenPen(solids[i], thickness);
       _bandLinePens = pens;
       _bandPenThickness = thickness;
+      _bandPenSource = solids;
     }
     return _bandLinePens;
+  }
+
+  // The translucent area-fill brushes matching BandSolids(): the shared frozen array for the default
+  // ramp (no per-instance caching needed), or a derived-and-cached array for a BandColors override,
+  // rebuilt only when that override changes.
+  private Brush[]? _bandFills;
+  private Brush[]? _bandFillSource;
+
+  private Brush[] BandFills() {
+    Brush[] solids = BandSolids();
+    if (ReferenceEquals(solids, GaugeBandPalette.Solid)) return GaugeBandPalette.Fill;
+    if (_bandFills == null || !ReferenceEquals(_bandFillSource, solids)) {
+      _bandFills = GaugeBandPalette.DeriveFill(solids);
+      _bandFillSource = solids;
+    }
+    return _bandFills;
   }
 
   // Right-aligned sample buffer for the primary series (index 0): index 0 is oldest, [Count-1] is
@@ -413,6 +441,18 @@ public class PerformanceGraph : FrameworkElement, ISingleSeriesGraph {
   public bool BandedLine {
     get => (bool)GetValue(BandedLineProperty);
     set => SetValue(BandedLineProperty, value);
+  }
+
+  /// <summary>Per-instance override for the <see cref="BandedLine"/> gauge ramp. When set to an
+  /// array of exactly <see cref="GaugeBandPalette.BandCount"/> solid brushes (band 0 lowest), the
+  /// banded line stroke and its area fill use these colors instead of the shared green→red ramp;
+  /// the fill is derived from them at the same reduced alpha the default fill uses. Null (the
+  /// default) or a wrong-length array falls back to the shared ramp, so existing banded graphs are
+  /// unchanged. Only consulted while <see cref="BandedLine"/> is true and the graph has no overlay
+  /// series.</summary>
+  public Brush[]? BandColors {
+    get => (Brush[]?)GetValue(BandColorsProperty);
+    set => SetValue(BandColorsProperty, value);
   }
 
   /// <summary>When greater than 0, the <see cref="GraphKind.Line"/> series plot samples at this
@@ -719,7 +759,7 @@ public class PerformanceGraph : FrameworkElement, ISingleSeriesGraph {
         double cellPitch = CellPitch;
         (_filledLineRender ??= new FilledLineRenderer()).Draw(dc, bounds, _values, _historyLength, minValue, maxValue,
             _graphStyle.LinePen, _graphStyle.FillBrush,
-            banded ? BandLinePens() : null, banded ? GaugeBandPalette.Fill : null, cellPitch);
+            banded ? BandLinePens() : null, banded ? BandFills() : null, cellPitch);
         foreach (var s in _extraSeries)
           s.Renderer.Draw(dc, bounds, s.Values, _historyLength, minValue, maxValue,
               s.LinePen, s.FillBrush, cellPitch: cellPitch);

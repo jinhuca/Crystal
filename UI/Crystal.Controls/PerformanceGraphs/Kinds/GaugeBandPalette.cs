@@ -1,3 +1,4 @@
+using System;
 using System.Windows.Media;
 
 namespace Crystal.Controls.PerformanceGraphs.Kinds;
@@ -51,4 +52,35 @@ internal static class GaugeBandPalette {
     }
     return brushes;
   }
+
+  // A BandCount-length solid ramp linearly interpolated (in RGB) between two endpoint colors, so a
+  // caller that only knows "low color → high color" (e.g. DodgerBlue → Red) gets the same nine-band
+  // structure the built-in green→red ramp uses, per-instance, without hand-picking nine colors. Band
+  // 0 is start, band BandCount-1 is end. Frozen, so the result is safe to share and cache.
+  public static Brush[] BuildSolidRamp(Color start, Color end) {
+    var brushes = new Brush[BandCount];
+    for (int i = 0; i < BandCount; i++) {
+      double t = BandCount == 1 ? 0 : i / (double)(BandCount - 1);
+      var brush = new SolidColorBrush(Color.FromRgb(Lerp(start.R, end.R, t), Lerp(start.G, end.G, t), Lerp(start.B, end.B, t)));
+      brush.Freeze();
+      brushes[i] = brush;
+    }
+    return brushes;
+  }
+
+  // The translucent area-fill counterpart of a custom solid ramp: each solid band's color re-emitted
+  // at FillAlpha, matching how Fill relates to Solid for the built-in ramp. Non-solid brushes fall
+  // back to fully transparent (this control's bands are always solid colors in practice). Frozen.
+  public static Brush[] DeriveFill(Brush[] solids) {
+    var brushes = new Brush[solids.Length];
+    for (int i = 0; i < solids.Length; i++) {
+      Color c = solids[i] is SolidColorBrush s ? s.Color : Colors.Transparent;
+      var brush = new SolidColorBrush(Color.FromArgb(FillAlpha, c.R, c.G, c.B));
+      brush.Freeze();
+      brushes[i] = brush;
+    }
+    return brushes;
+  }
+
+  private static byte Lerp(byte a, byte b, double t) => (byte)Math.Round(a + (b - a) * t);
 }

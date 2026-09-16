@@ -103,6 +103,23 @@ public sealed class AdaptiveGraph : Decorator, ISingleSeriesGraph {
       DependencyProperty.Register(nameof(CellPitch), typeof(double), typeof(AdaptiveGraph),
           new FrameworkPropertyMetadata(0.0));
 
+  /// <summary>Identifies the <see cref="BandStartColor"/> dependency property.</summary>
+  public static readonly DependencyProperty BandStartColorProperty =
+      DependencyProperty.Register(nameof(BandStartColor), typeof(Color?), typeof(AdaptiveGraph),
+          new FrameworkPropertyMetadata(null, OnBandRampChanged));
+
+  /// <summary>Identifies the <see cref="BandEndColor"/> dependency property.</summary>
+  public static readonly DependencyProperty BandEndColorProperty =
+      DependencyProperty.Register(nameof(BandEndColor), typeof(Color?), typeof(AdaptiveGraph),
+          new FrameworkPropertyMetadata(null, OnBandRampChanged));
+
+  private static void OnBandRampChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+    // The band ramp is baked into the inner control at build time (Lite's Color1..9 / PerformanceGraph's
+    // BandColors), so a runtime change rebuilds the child the same way a Line/Dot mode toggle does —
+    // ReplayHistory then restores the existing trace, so the graph re-tints without restarting.
+    if (((AdaptiveGraph)d)._inner != null) ((AdaptiveGraph)d).Rebuild();
+  }
+
   /// <summary>Value mapped to the bottom edge of the plot (forwarded to the inner control).</summary>
   public double MinValue {
     get => (double)GetValue(MinValueProperty);
@@ -165,6 +182,30 @@ public sealed class AdaptiveGraph : Decorator, ISingleSeriesGraph {
     set => SetValue(CellPitchProperty, value);
   }
 
+  /// <summary>With <see cref="BandEndColor"/>, overrides the built-in green→red gauge ramp used when
+  /// <see cref="BandedLine"/> is true: the plotted range is banded as a linear interpolation from
+  /// this color (lowest values) to <see cref="BandEndColor"/> (highest), applied identically in both
+  /// Line and Dot modes. Both endpoints must be set for the override to take effect; leave either
+  /// null (the default) to keep the shared green→red ramp. No effect when <see cref="BandedLine"/>
+  /// is false (the flat <see cref="Accent"/> is used then).</summary>
+  public Color? BandStartColor {
+    get => (Color?)GetValue(BandStartColorProperty);
+    set => SetValue(BandStartColorProperty, value);
+  }
+
+  /// <summary>The high-value endpoint of the custom gauge ramp; see <see cref="BandStartColor"/>.</summary>
+  public Color? BandEndColor {
+    get => (Color?)GetValue(BandEndColorProperty);
+    set => SetValue(BandEndColorProperty, value);
+  }
+
+  // The custom band ramp for this graph, or null to use the shared green→red ramp. Only meaningful
+  // while BandedLine is true; both endpoints must be set for a custom ramp to apply.
+  private Brush[]? BuildBandRamp() =>
+      BandedLine && BandStartColor is { } start && BandEndColor is { } end
+          ? GaugeBandPalette.BuildSolidRamp(start, end)
+          : null;
+
   private void OnLoaded(object sender, RoutedEventArgs e) {
     GraphAppearance.Current.PropertyChanged += OnModeChanged;
     Rebuild();
@@ -212,6 +253,9 @@ public sealed class AdaptiveGraph : Decorator, ISingleSeriesGraph {
     // ignores those for the primary series and paints the value-banded ramp instead. Applying it
     // regardless keeps the accent as the fallback if banding is turned off at runtime.
     graph.ApplyTheme(GraphThemes.FromAccent(Accent, GraphKind.Line));
+    // Per-instance banded ramp override (null falls back to the shared green→red ramp inside
+    // PerformanceGraph), so a custom BandStartColor→BandEndColor tints just this graph's banded line.
+    graph.BandColors = BuildBandRamp();
     // Dashboard tiles read cleaner with a thinner trace than the theme's default; scoped here so the
     // larger detail-view graphs (PerformanceGraphView) keep the full-weight line.
     graph.LineThickness = 1.0;
@@ -274,6 +318,18 @@ public sealed class AdaptiveGraph : Decorator, ISingleSeriesGraph {
     if (!BandedLine) {
       lite.ColorMode = DotColorMode.SingleColor;
       lite.DotColor = new SolidColorBrush(Accent);
+    } else if (BuildBandRamp() is { } ramp) {
+      // Custom banded ramp: map the interpolated BandCount brushes onto Lite's Color1..Color9 so its
+      // dot gauge matches the Line mode's custom banded stroke, band for band.
+      lite.Color1 = ramp[0];
+      lite.Color2 = ramp[1];
+      lite.Color3 = ramp[2];
+      lite.Color4 = ramp[3];
+      lite.Color5 = ramp[4];
+      lite.Color6 = ramp[5];
+      lite.Color7 = ramp[6];
+      lite.Color8 = ramp[7];
+      lite.Color9 = ramp[8];
     }
 
     if (CellPitch > 0) {
