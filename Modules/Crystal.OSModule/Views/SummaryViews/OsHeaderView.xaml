@@ -1,0 +1,25 @@
+﻿<UserControl x:Class="Crystal.OSModule.Views.SummaryViews.OsHeaderView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Crystal.OSModule.Views.SummaryViews"
+             mc:Ignorable="d" 
+             d:DesignWidth="1100" Background="Transparent" Foreground="{StaticResource TextBrush}"
+						 FontFamily="{StaticResource UiFontFamily}">
+	<Border BorderBrush="{StaticResource DividerBrush}" BorderThickness="0,0,0,1"
+              Padding="0,0,0,4" Margin="0,0,0,8">
+		<StackPanel Orientation="Horizontal">
+			<Border Width="3" Background="{StaticResource AccentBrush}" Margin="0,1,8,1"/>
+			<TextBlock Text="OPERATING SYSTEM" 
+								 Foreground="{StaticResource ValueBrush}" 
+								 FontSize="{StaticResource BodyFontSize}" 
+								 FontWeight="SemiBold"
+								 VerticalAlignment="Center" 
+								 Margin="0,0,16,0"/>
+			<TextBlock Text="{Binding OsName}" 
+								 Style="{StaticResource HeaderSpec}"
+								 TextTrimming="CharacterEllipsis"/>
+		</StackPanel>
+	</Border>
+</UserControl>

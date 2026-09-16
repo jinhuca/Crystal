@@ -14,7 +14,9 @@
            GpuSummaryView, so the identity/specs read centered across the header. -->
       <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
         <Border Width="3" Background="{StaticResource AccentBrush}" Margin="0,1,8,1"/>
-        <TextBlock Text="CPU" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource BodyFontSize}" FontWeight="SemiBold"
+        <TextBlock Text="CPU" Foreground="{StaticResource ValueBrush}" 
+									 FontSize="{StaticResource BodyFontSize}" 
+									 FontWeight="SemiBold"
                    VerticalAlignment="Center"/>
       </StackPanel>
       <!-- Centered identity + specs: slot, brand, then the static specs (core counts, cache, base

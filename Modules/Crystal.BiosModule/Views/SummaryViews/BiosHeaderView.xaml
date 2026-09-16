@@ -13,9 +13,13 @@
           Padding="0,0,0,4" Margin="0,0,0,8">
     <StackPanel Orientation="Horizontal">
       <Border Width="3" Background="{StaticResource AccentBrush}" Margin="0,1,8,1"/>
-      <TextBlock Text="BIOS" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource BodyFontSize}" FontWeight="SemiBold"
+      <TextBlock Text="BIOS" 
+								 Foreground="{StaticResource ValueBrush}" 
+								 FontSize="{StaticResource BodyFontSize}" 
+								 FontWeight="SemiBold"
                  VerticalAlignment="Center" Margin="0,0,16,0"/>
-      <TextBlock Text="{Binding Manufacturer}" Style="{StaticResource HeaderSpec}"
+      <TextBlock Text="{Binding Manufacturer}" 
+								 Style="{StaticResource HeaderSpec}"
                  TextTrimming="CharacterEllipsis"/>
       <TextBlock Text="{Binding Version, StringFormat=Version {0}}" Style="{StaticResource HeaderSpec}"/>
     </StackPanel>
