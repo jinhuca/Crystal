@@ -33,7 +33,7 @@
       CellPitch="{StaticResource DashboardDotPitch}"/>
 
     <Border Grid.Column="1" Style="{StaticResource SummaryTileBorderStyle}"
-            VerticalAlignment="Center" Margin="10,0,0,0">
+            VerticalAlignment="Stretch" Margin="10,0,0,0">
       <Grid MinHeight="60" ShowGridLines="False">
         <Grid.RowDefinitions>
           <RowDefinition Height="18"/>

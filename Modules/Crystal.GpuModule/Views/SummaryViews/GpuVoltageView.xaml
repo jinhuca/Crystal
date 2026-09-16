@@ -1,4 +1,4 @@
-<UserControl x:Class="Crystal.GpuModule.Views.SummaryViews.GpuFanView"
+<UserControl x:Class="Crystal.GpuModule.Views.SummaryViews.GpuVoltageView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Crystal.GpuModule.Views.SummaryViews"
@@ -8,7 +8,7 @@
              mc:Ignorable="d"
              d:DesignHeight="120" d:DesignWidth="210">
   <!-- DataContext is a GpuAdapterViewModel, inherited from the per-adapter block. Boxed sensor tile
-       matching the CpuSummaryView pattern: accent title, live fan-speed value + unit + trend glyph,
+       matching the CpuSummaryView pattern: accent title, live core-voltage value + unit + trend glyph,
        a session min/avg/max stat line, and a dot history strip. -->
   <UserControl.Resources>
     <ResourceDictionary>
@@ -26,33 +26,33 @@
         <RowDefinition Height="24"/>
       </Grid.RowDefinitions>
       <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0,0,0,0">
-        <TextBlock Text="Fan" Style="{StaticResource SummaryTileTitleTextBlockStyle}"/>
+        <TextBlock Text="Volt" Style="{StaticResource SummaryTileTitleTextBlockStyle}"/>
         <TextBlock Style="{StaticResource MetricStatLine}" Margin="20,0,0,0">
           <Run FontFamily="Segoe Fluent Icons" Text="&#xE70D; " Foreground="LightGreen"/>
-          <Run Text="{Binding FanRow.Min, StringFormat={}{0:0}}"/>
+          <Run Text="{Binding VoltageRow.Min, StringFormat={}{0:0.000}}"/>
           <Run FontFamily="Segoe Fluent Icons" Text=" &#xE738; " Foreground="{StaticResource AccentBrush}"/>
-          <Run Text="{Binding FanRow.Avg, StringFormat={}{0:0}}"/>
+          <Run Text="{Binding VoltageRow.Avg, StringFormat={}{0:0.000}}"/>
           <Run FontFamily="Segoe Fluent Icons" Text=" &#xE70E; " Foreground="Crimson"/>
-          <Run Text="{Binding FanRow.Max, StringFormat={}{0:0}}"/>
+          <Run Text="{Binding VoltageRow.Max, StringFormat={}{0:0.000}}"/>
         </TextBlock>
       </StackPanel>
       <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <TextBlock Text="{Binding FanRpm, StringFormat={}{0:0}, TargetNullValue=—}" Style="{StaticResource TileMetricValue}"/>
-        <TextBlock Text="RPM" Style="{StaticResource MetricUnit}"/>
-        <TextBlock Text="{Binding FanRow.Trend, Converter={StaticResource TrendToGlyph}}"
-                   Foreground="{Binding FanRow.Trend, Converter={StaticResource TrendToBrush}}"
+        <TextBlock Text="{Binding CoreVoltageV, StringFormat={}{0:0.000}, TargetNullValue=—}" Style="{StaticResource TileMetricValue}"/>
+        <TextBlock Text="V" Style="{StaticResource MetricUnit}"/>
+        <TextBlock Text="{Binding VoltageRow.Trend, Converter={StaticResource TrendToGlyph}}"
+                   Foreground="{Binding VoltageRow.Trend, Converter={StaticResource TrendToBrush}}"
                    Style="{StaticResource MetricUnit}" Margin="4,0,0,2"/>
       </StackPanel>
 
-      <!-- Dot-style fan-speed history strip; self-registers under "Gpu.Fan". Ceiling ratchets over
-           the running RPM peak so a slow case fan and a spun-up card each plot on a sensible axis. -->
+      <!-- Dot-style voltage history strip; self-registers under "Gpu.Voltage", so the adapter VM feeds
+           it each poll. Fixed 0-2 V scale matching the CPU voltage tile. -->
       <graphs:PerformanceGraphLite
         Grid.Row="2" GraphBackground="Transparent"
-        Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Gpu.Fan"
+        Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Gpu.Voltage"
         HorizontalAlignment="Stretch" VerticalAlignment="Top"
-        Height="24" Rows="8" Capacity="120"
-        MinValue="0" MaxValue="{Binding FanScaleMax}" CornerRadius="1"
-        Style="{StaticResource BandedSquareDotGraphLiteStyle}"/>
+        Height="24" Rows="10" Capacity="120"
+        MinValue="0" MaxValue="2" CornerRadius="1"
+        Style="{StaticResource VoltageBandedSquareDotGraphLiteStyle}"/>
     </Grid>
   </Border>
 </UserControl>
