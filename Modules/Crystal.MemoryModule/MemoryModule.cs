@@ -11,8 +11,8 @@ namespace Crystal.MemoryModule;
 
 /// <summary>
 /// Prism module for Memory (static inventory only). Registers the provider→builder→model→
-/// view-model chain and injects the <see cref="MemorySummaryView"/> into the dashboard's
-/// memory tile region.
+/// view-model chain, injects the compact <see cref="MemorySummaryView"/> into the dashboard's
+/// memory tile region, and registers the full-scale <see cref="MemoryDetailView"/> for navigation.
 /// </summary>
 public class MemoryModule(IRegionManager regionManager) : IModule {
   private readonly IRegionManager _regionManager = regionManager;
@@ -34,7 +34,11 @@ public class MemoryModule(IRegionManager regionManager) : IModule {
 
     containerRegistry.Register<IMemoryViewModel, MemoryViewModel>();
 
+    containerRegistry.RegisterForNavigation<MemoryDetailView>(DetailViewNames.Memory);
+
     ViewModelLocationProvider.Register<MemorySummaryView>(
+        () => ContainerLocator.Container.Resolve<IMemoryViewModel>());
+    ViewModelLocationProvider.Register<MemoryDetailView>(
         () => ContainerLocator.Container.Resolve<IMemoryViewModel>());
   }
 

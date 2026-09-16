@@ -70,6 +70,8 @@
     </Style>
     </ResourceDictionary>
   </UserControl.Resources>
+  <Border Background="Transparent" Cursor="Hand" MouseLeftButtonDown="OnTileClick"
+          ToolTip="Double-click to open the full storage view">
   <Grid Margin="8">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
@@ -382,4 +384,5 @@
       </ContentControl.ContentTemplate>
     </ContentControl>
   </Grid>
+  </Border>
 </UserControl>

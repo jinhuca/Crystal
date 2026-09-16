@@ -14,7 +14,7 @@ public static class DetailViewNames {
   public const string Network = "NetworkDetailView";
   public const string Os = "OsDetailView";
 
-  // The process list has no dedicated detail view — the summary list is the full surface — so this
-  // opens ProcessSummaryView itself in a detail window. The value doubles as the window title.
+  // Opens the full process list (ProcessDetailView) in a detail window, raised by the compact
+  // Processes tile's double-click. The value doubles as the window title.
   public const string Process = "Processes";
 }

@@ -1,6 +1,5 @@
 using Crystal.OSModule.Models;
 using Crystal.OSModule.ViewModels;
-using Crystal.Service.Process;
 using Prism.Events;
 using System.Reactive.Subjects;
 using Xunit;
@@ -17,9 +16,7 @@ public class OsViewModelTests {
 
   private static OsViewModel CreateVm(out FakeOsModel model) {
     model = new FakeOsModel();
-    // Poll interval an hour out so the monitor never samples the real process table during a test.
-    var stats = new SystemStatsMonitor(pollInterval: TimeSpan.FromHours(1));
-    return new OsViewModel(model, new EventAggregator(), stats);
+    return new OsViewModel(model, new EventAggregator());
   }
 
   private static OsSnapshot Info(

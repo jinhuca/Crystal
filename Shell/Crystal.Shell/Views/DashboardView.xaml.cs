@@ -6,8 +6,8 @@ namespace Crystal.Shell.Views;
 
 /// <summary>
 /// The dashboard: a grid of module summary tiles laid out per the reference design
-/// (CPU and GPU full-width rows, Memory/Storage on the components row, and
-/// BIOS/Network/OS on the bottom row). Each tile is its own region so a
+/// (CPU and GPU full-width rows, Memory/Storage/Network on the components row, and
+/// BIOS/Operating System/Processes on the bottom row). Each tile is its own region so a
 /// module can inject its summary view.
 /// The content rows are user-resizable via GridSplitters; <see cref="ResetLayout"/>
 /// restores their default star proportions.
@@ -35,14 +35,26 @@ public partial class DashboardView : UserControl {
 
 
   /// <summary>
-  /// Default width for each components-row tile column (Memory/Storage): equal star shares.
+  /// Default width for the equal components-row tile columns (Memory/Storage): full star shares.
   /// </summary>
   public GridLength ComponentColumnDefault { get; } = new(1, GridUnitType.Star);
 
   /// <summary>
-  /// Default width for each bottom-row tile column (BIOS/Network/OS): equal star shares.
+  /// Default width for the narrower Network column on the components row (0.3 star vs. the
+  /// full-star Memory/Storage pair).
+  /// </summary>
+  public GridLength NetworkColumnDefault { get; } = new(0.4, GridUnitType.Star);
+
+  /// <summary>
+  /// Default width for the equal bottom-row tile columns (BIOS/Operating System): full star shares.
   /// </summary>
   public GridLength BottomColumnDefault { get; } = new(1, GridUnitType.Star);
+
+  /// <summary>
+  /// Default width for the narrower Processes column on the bottom row (0.3 star vs. the
+  /// full-star BIOS/Operating System pair).
+  /// </summary>
+  public GridLength ProcessColumnDefault { get; } = new(0.4, GridUnitType.Star);
 
   /// <summary>
   /// Initializes a new instance of the <see cref="DashboardView"/> class.
@@ -58,8 +70,9 @@ public partial class DashboardView : UserControl {
   }
 
   /// <summary>
-  /// Restores the resizable rows and the Row #3 tile columns to their default star proportions, 
-  /// undoing any splitter drags. The MinHeight/MinWidth floors defined in XAML are unaffected.
+  /// Restores the resizable rows and the components-/bottom-row tile columns to their default star
+  /// proportions, undoing any splitter drags. The MinHeight/MinWidth floors defined in XAML are
+  /// unaffected.
   /// </summary>
   public void ResetLayout() {
     CpuRow.Height = CpuDefault;
@@ -69,9 +82,10 @@ public partial class DashboardView : UserControl {
 
     MemoryCol.Width = ComponentColumnDefault;
     StorageCol.Width = ComponentColumnDefault;
+    NetworkCol.Width = NetworkColumnDefault;
 
     BiosCol.Width = BottomColumnDefault;
-    NetworkCol.Width = BottomColumnDefault;
     OsCol.Width = BottomColumnDefault;
+    ProcessCol.Width = ProcessColumnDefault;
   }
 }

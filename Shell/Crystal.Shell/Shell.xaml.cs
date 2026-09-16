@@ -86,12 +86,13 @@ public partial class Shell : Window {
     _graphSettings.Save(current);
   }
 
-  // Reset the dashboard's resizable rows to their default proportions, and the Processes tile's
-  // column widths / master-detail split along with it. Both views are injected into the content
-  // region by Prism, so we locate them in the visual tree rather than hold refs.
+  // Reset the dashboard's resizable rows to their default proportions, and the Processes detail
+  // view's column widths / master-detail split along with it (a no-op unless that view is currently
+  // hosted in the content region). Both views are injected by Prism, so we locate them in the visual
+  // tree rather than hold refs.
   private void OnResetLayoutClick(object sender, RoutedEventArgs e) {
     FindDescendant<DashboardView>(MainContent)?.ResetLayout();
-    FindDescendant<Crystal.ProcessModule.Views.ProcessSummaryView>(MainContent)?.ResetLayout();
+    FindDescendant<Crystal.ProcessModule.Views.ProcessDetailView>(MainContent)?.ResetLayout();
   }
 
   private static T? FindDescendant<T>(DependencyObject root) where T : DependencyObject {
