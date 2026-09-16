@@ -109,15 +109,16 @@
       <TextBlock Grid.Row="3" Grid.Column="3" Text="{Binding TemperatureRows[2].Min, StringFormat={}{0:0.00}}"   Style="{StaticResource MetricTableValue}" Margin="4,2,0,2"/>
       <TextBlock Grid.Row="3" Grid.Column="4" Text="{Binding TemperatureRows[2].Max, StringFormat={}{0:0.00}}"   Style="{StaticResource MetricTableValue}" Margin="4,2,0,2"/>
 
-      <!-- Dot-style temperature history strip; self-registers under "Cpu.Temperature" (shared feed
-           key with the detail-view history graph). SingleColor + accent blue. -->
-      <graphs:PerformanceGraphLite 
-        Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="5" GraphBackground="Transparent"
+      <!-- Adaptive (Line/Dot) temperature history strip; self-registers under "Cpu.Temperature"
+           (shared feed key with the detail-view history graph). Follows the title-bar Line/Dot
+           toggle; banded whitesmoke→red temperature ramp. -->
+      <graphs:AdaptiveGraph
+        Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="5"
         Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Cpu.Temperature"
         HorizontalAlignment="Stretch" VerticalAlignment="Top"
         Height="24" Rows="10" Capacity="120"
-        MinValue="30" MaxValue="120" CornerRadius="1"
-        Style="{StaticResource TemperatureBandedSquareDotGraphLiteStyle}"
+        MinValue="30" MaxValue="120"
+        BandedLine="True" BandStartColor="WhiteSmoke" BandEndColor="#FF3217"
         Margin="0,0,0,0"/>
     </Grid>
   </Border>

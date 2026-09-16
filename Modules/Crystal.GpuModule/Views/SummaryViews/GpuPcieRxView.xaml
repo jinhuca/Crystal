@@ -44,14 +44,15 @@
                    Style="{StaticResource MetricUnit}" Margin="4,0,0,2"/>
       </StackPanel>
 
-      <!-- Dot-style PCIe Rx throughput history strip; self-registers under "Gpu.PcieRx". -->
-      <graphs:PerformanceGraphLite
-        Grid.Row="2" GraphBackground="Transparent"
+      <!-- Adaptive (Line/Dot) PCIe Rx throughput history strip; self-registers under "Gpu.PcieRx".
+           Follows the title-bar Line/Dot toggle; default green→red gauge ramp. -->
+      <graphs:AdaptiveGraph
+        Grid.Row="2"
         Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Gpu.PcieRx"
         HorizontalAlignment="Stretch" VerticalAlignment="Top"
         Height="24" Rows="8" Capacity="120"
-        MinValue="0" MaxValue="{Binding PcieRxScaleMax}" CornerRadius="1"
-        Style="{StaticResource BandedSquareDotGraphLiteStyle}"/>
+        MinValue="0" MaxValue="{Binding PcieRxScaleMax}"
+        BandedLine="True"/>
     </Grid>
   </Border>
 </UserControl>
