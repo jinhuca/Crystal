@@ -51,6 +51,7 @@
   </Folder>
   <Folder Name="/UI/">
     <Project Path="UI/Crystal.Resources/Crystal.Resources.csproj" />
+    <Project Path="UI/ControlDemos/ControlDemos.csproj" Id="7df862f4-2463-4b66-b28a-84eac124b879" />
     <Project Path="UI/Crystal.Controls/Crystal.Controls.csproj" />
     <Project Path="UI/Crystal.WpfConverters/Crystal.WpfConverters.csproj" />
     <Project Path="UI/RangeBarDemo/RangeBarDemo.csproj" />

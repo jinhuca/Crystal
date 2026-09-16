@@ -1,0 +1,72 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xmlns:borders="clr-namespace:Crystal.Controls.Borders"
+                    xmlns:converters="clr-namespace:Crystal.Controls.Converters">
+  <converters:DoubleToThicknessConverter x:Key="DoubleToThickness"/>
+  <Style TargetType="{x:Type borders:InnerShadowBorder}">
+    <Setter Property="Padding" Value="0"/>
+    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+    <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type borders:InnerShadowBorder}">
+          <Grid>
+            <!-- Background fill + crisp 1px rim -->
+            <Border CornerRadius="{TemplateBinding CornerRadius}"
+          Background="{TemplateBinding PanelBackground}"
+          BorderBrush="{TemplateBinding PanelBorderBrush}"
+          BorderThickness="1"/>
+
+            <!-- Inner shadow: a thick blurred rim. The control clips PART_ShadowClip to the rounded
+       bounds in code, so the outward half of the blur is cut and only the inward shadow
+       remains. -->
+            <Grid x:Name="PART_ShadowClip">
+              <Border x:Name="PART_ShadowBorder"
+            CornerRadius="{TemplateBinding CornerRadius}"
+            Background="Transparent"
+            BorderBrush="{TemplateBinding ShadowBrush}"
+            BorderThickness="{Binding ShadowSpread, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource DoubleToThickness}}">
+                <!-- Cache the post-blur result to a GPU bitmap. The rim is static, so this makes
+           re-composites free; it re-rasterizes only when the panel resizes or a shadow
+           property actually changes. -->
+                <Border.CacheMode>
+                  <BitmapCache EnableClearType="False" SnapsToDevicePixels="False"/>
+                </Border.CacheMode>
+                <Border.Effect>
+                  <BlurEffect Radius="{Binding ShadowBlurRadius, RelativeSource={RelativeSource TemplatedParent}}"
+                    KernelType="Gaussian" RenderingBias="Quality"/>
+                </Border.Effect>
+              </Border>
+            </Grid>
+
+            <!-- Consumer content sits above the shadow. -->
+            <ContentPresenter Margin="{TemplateBinding Padding}"
+                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+          </Grid>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+  
+  <Style x:Key="InnerShadowBorderStyle"
+    TargetType="{x:Type borders:InnerShadowBorder}">
+    <Setter Property="CornerRadius" Value="0"/>
+    <Setter Property="Margin" Value="20"/>
+    <Setter Property="ShadowBrush" Value="#B0000000"/>
+    <Setter Property="ShadowSpread" Value="10"/>
+    <Setter Property="ShadowBlurRadius" Value="18"/>
+    <Setter Property="PanelBorderBrush" Value="#3A3D44"/>
+		<Setter Property="ShadowSpread" Value="5"/>
+		<Setter Property="ShadowBlurRadius" Value="5"/>
+		<Setter Property="PanelBackground">
+      <Setter.Value>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+          <GradientStop Color="#FF2A2D34" Offset="0"/>
+          <GradientStop Color="#991E2025" Offset="1"/>
+        </LinearGradientBrush>
+      </Setter.Value>
+    </Setter>
+  </Style>
+</ResourceDictionary>
