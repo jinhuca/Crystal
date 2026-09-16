@@ -11,7 +11,7 @@
         mc:Ignorable="d"
         Title="Crystal"
         Icon="Crystal.ico"
-        Background="Transparent"
+        Background="Transparent" d:Width="1920" d:Height="1080"
         BorderBrush="{StaticResource AccentBrush}" BorderThickness="1">
   <!-- Strip the OS-drawn frame and its native caption buttons (GlassFrameThickness=0,
        UseAeroCaptionButtons=False) so the window's own 1dip BorderBrush is the only visible
