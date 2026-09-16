@@ -1,4 +1,3 @@
-using Crystal.Controls.Loading;
 using Crystal.Infrastructure.Constants;
 using Crystal.ProcessModule.Models;
 using Crystal.ProcessModule.ViewModels;
@@ -12,8 +11,9 @@ namespace Crystal.ProcessModule;
 
 /// <summary>
 /// Prism module for the process list. Registers the provider→monitor→model→view-model chain and
-/// injects the Task Manager-style <see cref="ProcessSummaryView"/> into the dashboard's Processes
-/// region. Unlike the sensor tiles there is no detail view — the list is the full surface.
+/// injects the compact <see cref="ProcessSummaryView"/> (live process/thread/handle totals) into the
+/// dashboard's Processes region; double-clicking that tile opens the Task Manager-style
+/// <see cref="ProcessDetailView"/> in its own window.
 /// </summary>
 public class ProcessModule(IRegionManager regionManager) : IModule {
   private readonly IRegionManager _regionManager = regionManager;
@@ -61,27 +61,30 @@ public class ProcessModule(IRegionManager regionManager) : IModule {
     // recording is active; one recording at a time, so a singleton (one live file) is correct.
     containerRegistry.RegisterSingleton<IProcessRecorder, ProcessRecorder>();
 
-    // One VM instance per view; the tile is the only consumer today. Built via a factory because
-    // its optional Func<DateTimeOffset>? clock param isn't injected by Unity (it defaults to the
-    // system clock for the live export timestamp).
+    // One VM instance per view; the detail window is the only consumer today. Built via a factory
+    // because its optional Func<DateTimeOffset>? clock param isn't injected by Unity (it defaults to
+    // the system clock for the live export timestamp).
     containerRegistry.Register<ProcessListViewModel>(
         cp => new ProcessListViewModel(cp.Resolve<IProcessModel>(), cp.Resolve<SystemStatsMonitor>(),
             cp.Resolve<ProcessIconProvider>(), controller: cp.Resolve<IProcessController>(),
             recorder: cp.Resolve<IProcessRecorder>(), gpuMonitor: cp.Resolve<GpuMonitor>()));
 
+    // Lightweight VM for the compact dashboard tile: process/thread/handle totals only, no list.
+    containerRegistry.Register<ProcessSummaryViewModel>();
+
+    // The compact tile shows the totals; the full master-detail list is the detail-window surface.
     ViewModelLocationProvider.Register<ProcessSummaryView>(
+        () => ContainerLocator.Container.Resolve<ProcessSummaryViewModel>());
+    ViewModelLocationProvider.Register<ProcessDetailView>(
         () => ContainerLocator.Container.Resolve<ProcessListViewModel>());
   }
 
   public void OnInitialized(IContainerProvider containerProvider) {
-    // Self-warming loading tile: spinner now, warm the model singleton off the UI thread, swap in
-    // the real view when ready. See CpuModule for the rationale.
-    _regionManager.RegisterViewWithRegion(RegionNames.ProcessesRegionName, () => {
-      var host = new LoadingHost { Label = "Processes" };
-      host.Begin(
-          () => containerProvider.Resolve<IProcessModel>(),
-          () => new ProcessSummaryView());
-      return host;
-    });
+    // The compact tile only reads the lightweight system-stats totals, so it renders immediately —
+    // no loading spinner and, unlike the sensor tiles, no eager warm-up. The heavy process list
+    // (ETW session, per-process enumeration) stays on-demand: it spins up only when the detail
+    // window is opened from a double-click on this tile.
+    _regionManager.RegisterViewWithRegion(
+        RegionNames.ProcessesRegionName, typeof(ProcessSummaryView));
   }
 }
