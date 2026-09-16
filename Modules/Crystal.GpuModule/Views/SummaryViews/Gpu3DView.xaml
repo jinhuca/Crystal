@@ -45,14 +45,15 @@
                    Style="{StaticResource MetricUnit}" Margin="4,0,0,2"/>
       </StackPanel>
 
-      <!-- Dot-style 3D-engine utilization history strip; self-registers under "Gpu.3D". -->
-      <graphs:PerformanceGraphLite
-        Grid.Row="2" GraphBackground="Transparent"
+      <!-- Adaptive (Line/Dot) 3D-engine utilization history strip; self-registers under "Gpu.3D".
+           Follows the title-bar Line/Dot toggle; default green→red gauge ramp. -->
+      <graphs:AdaptiveGraph
+        Grid.Row="2"
         Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Gpu.3D"
         HorizontalAlignment="Stretch" VerticalAlignment="Top"
         Height="24" Rows="8" Capacity="120"
-        MinValue="0" MaxValue="100" CornerRadius="1"
-        Style="{StaticResource BandedSquareDotGraphLiteStyle}"/>
+        MinValue="0" MaxValue="100"
+        BandedLine="True"/>
     </Grid>
   </Border>
 </UserControl>

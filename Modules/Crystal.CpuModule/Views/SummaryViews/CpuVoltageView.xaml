@@ -85,15 +85,16 @@
       <TextBlock Grid.Row="2" Grid.Column="3" Text="{Binding VoltageRows[1].Min, StringFormat={}{0:0.000}}"   Style="{StaticResource MetricTableValue}" Margin="4,2,0,2"/>
       <TextBlock Grid.Row="2" Grid.Column="4" Text="{Binding VoltageRows[1].Max, StringFormat={}{0:0.000}}"   Style="{StaticResource MetricTableValue}" Margin="4,2,0,2"/>
 
-      <!-- Dot-style voltage history strip; self-registers under "Cpu.Voltage" (shared feed key with
-           the detail-view history graph). SingleColor + accent blue. -->
-      <graphs:PerformanceGraphLite 
-        Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="5" GraphBackground="Transparent"
+      <!-- Adaptive (Line/Dot) voltage history strip; self-registers under "Cpu.Voltage" (shared feed
+           key with the detail-view history graph). Follows the title-bar Line/Dot toggle; banded
+           whitesmoke→indigo voltage ramp. -->
+      <graphs:AdaptiveGraph
+        Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="5"
         Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Cpu.Voltage"
         HorizontalAlignment="Stretch" VerticalAlignment="Top"
         Height="24" Rows="10" Capacity="120"
-        MinValue="0" MaxValue="2" CornerRadius="1"
-        Style="{StaticResource VoltageBandedSquareDotGraphLiteStyle}"
+        MinValue="0" MaxValue="2"
+        BandedLine="True" BandStartColor="WhiteSmoke" BandEndColor="#33349A"
         Margin="0,0,0,0"/>
     </Grid>
   </Border>

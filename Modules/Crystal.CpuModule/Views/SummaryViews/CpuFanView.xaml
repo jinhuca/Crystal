@@ -54,15 +54,16 @@
                    Style="{StaticResource MetricUnit}" Margin="4,0,0,0"/>
       </Grid>
 
-      <!-- Dot-style fan history strip; self-registers under "Cpu.Fan" (shared feed key with the
-           detail-view history graph). Upper bound tracks FanGraphMax (100% or 4000 RPM). -->
-      <graphs:PerformanceGraphLite
-        Grid.Row="2" GraphBackground="Transparent"
+      <!-- Adaptive (Line/Dot) fan history strip; self-registers under "Cpu.Fan" (shared feed key with
+           the detail-view history graph). Follows the title-bar Line/Dot toggle; default green→red
+           gauge ramp. Upper bound tracks FanGraphMax (100% or 4000 RPM). -->
+      <graphs:AdaptiveGraph
+        Grid.Row="2"
         Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Cpu.Fan"
         HorizontalAlignment="Stretch" VerticalAlignment="Top"
         Height="24" Rows="10" Capacity="120"
-        MinValue="0" MaxValue="{Binding FanGraphMax}" CornerRadius="1"
-        Style="{StaticResource SquareDotGraphLiteStyle}"
+        MinValue="0" MaxValue="{Binding FanGraphMax}"
+        BandedLine="True"
         Margin="0,0,0,0"/>
     </Grid>
   </Border>

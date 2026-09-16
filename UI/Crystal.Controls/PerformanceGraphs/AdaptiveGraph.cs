@@ -103,6 +103,16 @@ public sealed class AdaptiveGraph : Decorator, ISingleSeriesGraph {
       DependencyProperty.Register(nameof(CellPitch), typeof(double), typeof(AdaptiveGraph),
           new FrameworkPropertyMetadata(0.0));
 
+  /// <summary>Identifies the <see cref="Rows"/> dependency property.</summary>
+  // Defaulted to 10 to match PerformanceGraphLite.RowsProperty's own default.
+  public static readonly DependencyProperty RowsProperty =
+      DependencyProperty.Register(nameof(Rows), typeof(int), typeof(AdaptiveGraph),
+          new FrameworkPropertyMetadata(10, OnRowsChanged), v => v is int r && r > 0);
+
+  private static void OnRowsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+    if (((AdaptiveGraph)d)._inner is PerformanceGraphLite lite) lite.Rows = (int)e.NewValue;
+  }
+
   /// <summary>Identifies the <see cref="BandStartColor"/> dependency property.</summary>
   public static readonly DependencyProperty BandStartColorProperty =
       DependencyProperty.Register(nameof(BandStartColor), typeof(Color?), typeof(AdaptiveGraph),
@@ -180,6 +190,15 @@ public sealed class AdaptiveGraph : Decorator, ISingleSeriesGraph {
   public double CellPitch {
     get => (double)GetValue(CellPitchProperty);
     set => SetValue(CellPitchProperty, value);
+  }
+
+  /// <summary>Rows in the Dot-mode dot matrix, forwarded to <see cref="PerformanceGraphLite.Rows"/>
+  /// only in the stretch-to-fill regime (no <see cref="CellPitch"/> and no <see cref="DotStyle"/>);
+  /// with a pitch the rows follow from it, and a <see cref="DotStyle"/> carries its own. No effect in
+  /// Line mode, which has no dots. Defaults to 10, matching PerformanceGraphLite.</summary>
+  public int Rows {
+    get => (int)GetValue(RowsProperty);
+    set => SetValue(RowsProperty, value);
   }
 
   /// <summary>With <see cref="BandEndColor"/>, overrides the built-in green→red gauge ramp used when
@@ -344,6 +363,9 @@ public sealed class AdaptiveGraph : Decorator, ISingleSeriesGraph {
       lite.HorizontalAlignment = HorizontalAlignment.Left;
       lite.VerticalAlignment = VerticalAlignment.Center;
     } else {
+      // Stretch-to-fill with a fixed host height: the dot matrix fills the tile and Rows sets its
+      // vertical density (a pitch/DotStyle would dictate that instead, so Rows is only read here).
+      lite.Rows = Rows;
       lite.CornerRadius = 1;
       lite.HorizontalAlignment = HorizontalAlignment.Stretch;
       lite.VerticalAlignment = VerticalAlignment.Stretch;

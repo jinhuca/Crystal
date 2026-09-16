@@ -46,15 +46,16 @@
                    Style="{StaticResource MetricUnit}" Margin="4,0,0,2"/>
       </StackPanel>
 
-      <!-- Dot-style core-clock history strip; self-registers under "Gpu.Clock". Ceiling ratchets to
-           the adapter's running peak so an iGPU and a dGPU each plot on a sensible axis. -->
-      <graphs:PerformanceGraphLite
-        Grid.Row="2" GraphBackground="Transparent"
+      <!-- Adaptive (Line/Dot) core-clock history strip; self-registers under "Gpu.Clock". Follows the
+           title-bar Line/Dot toggle; banded whitesmoke→green clock ramp. Ceiling ratchets to the
+           adapter's running peak so an iGPU and a dGPU each plot on a sensible axis. -->
+      <graphs:AdaptiveGraph
+        Grid.Row="2"
         Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Gpu.Clock"
         HorizontalAlignment="Stretch" VerticalAlignment="Top"
         Height="24" Rows="8" Capacity="120"
-        MinValue="0" MaxValue="{Binding ClockScaleMax}" CornerRadius="1"
-        Style="{StaticResource ClockBandedSquareDotGraphLiteStyle}"/>
+        MinValue="0" MaxValue="{Binding ClockScaleMax}"
+        BandedLine="True" BandStartColor="WhiteSmoke" BandEndColor="#90EE90"/>
     </Grid>
   </Border>
 </UserControl>

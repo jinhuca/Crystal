@@ -44,15 +44,16 @@
                    Style="{StaticResource MetricUnit}" Margin="4,0,0,2"/>
       </StackPanel>
 
-      <!-- Dot-style power history strip; self-registers under "Gpu.Power" (shared feed key with the
-           detail-view history graph), so the adapter VM feeds it each poll. -->
-      <graphs:PerformanceGraphLite
-        Grid.Row="2" GraphBackground="Transparent"
+      <!-- Adaptive (Line/Dot) power history strip; self-registers under "Gpu.Power" (shared feed key
+           with the detail-view history graph), so the adapter VM feeds it each poll. Follows the
+           title-bar Line/Dot toggle; banded whitesmoke→orange power ramp. -->
+      <graphs:AdaptiveGraph
+        Grid.Row="2"
         Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Gpu.Power"
         HorizontalAlignment="Stretch" VerticalAlignment="Top"
         Height="24" Rows="8" Capacity="120"
-        MinValue="0" MaxValue="{Binding PowerScaleMax}" CornerRadius="1"
-        Style="{StaticResource PowerBandedSquareDotGraphLiteStyle}"/>
+        MinValue="0" MaxValue="{Binding PowerScaleMax}"
+        BandedLine="True" BandStartColor="WhiteSmoke" BandEndColor="#F09B59"/>
     </Grid>
   </Border>
 </UserControl>
