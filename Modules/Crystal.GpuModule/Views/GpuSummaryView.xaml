@@ -136,17 +136,26 @@
 
           <!-- Engine Load: a compact single-line strip across the bottom (mirrors the CPU instruction-set
                row). Each engine shows its name in accent + live load %. Hidden when the adapter exposes
-               no engine sensors so the label never sits over an empty row. -->
-          <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="9" Orientation="Horizontal"
-                      Margin="0,8,0,0" VerticalAlignment="Center"
-                      Visibility="{Binding HasEngineLoads, Converter={StaticResource BoolToVisibility}}">
-            <TextBlock Text="Engine Load" Foreground="{StaticResource LabelBrush}"
+               no engine sensors so the label never sits over an empty row. The label stays pinned on the
+               left; only the engine list scrolls horizontally (scrollbar hidden, wheel scrolls sideways,
+               same pattern as the adapter strip) so a wide list never overflows the tile. -->
+          <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="9"
+                Margin="0,8,0,0" VerticalAlignment="Center"
+                Visibility="{Binding HasEngineLoads, Converter={StaticResource BoolToVisibility}}">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="Engine Load" Foreground="{StaticResource LabelBrush}"
                        FontSize="{StaticResource CaptionFontSize}" FontWeight="SemiBold"
                        VerticalAlignment="Center" Margin="0,0,16,0"/>
+            <ScrollViewer Grid.Column="1"
+                          HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled"
+                          PreviewMouseWheel="OnScrollHorizontally">
             <ItemsControl ItemsSource="{Binding EngineLoads}">
               <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                  <WrapPanel Orientation="Horizontal"/>
+                  <StackPanel Orientation="Horizontal"/>
                 </ItemsPanelTemplate>
               </ItemsControl.ItemsPanel>
               <ItemsControl.ItemTemplate>
@@ -155,20 +164,24 @@
                     <TextBlock Text="{Binding Name}" Foreground="{StaticResource AccentBrush}"
                                FontSize="{StaticResource CaptionFontSize}" FontWeight="SemiBold"
                                VerticalAlignment="Center"/>
+                    <!-- Fixed-width, right-aligned so a changing load value (e.g. "5.0 %" → "100.0 %")
+                         never changes this item's width and bumps the engines that follow it. -->
                     <TextBlock Text="{Binding LoadPercent, StringFormat={}{0:0.0} %}"
                                Foreground="{StaticResource TextBrush}"
                                FontSize="{StaticResource CaptionFontSize}"
+                               Width="46" TextAlignment="Right"
                                VerticalAlignment="Center" Margin="6,0,0,0"/>
                   </StackPanel>
                 </DataTemplate>
               </ItemsControl.ItemTemplate>
             </ItemsControl>
-          </StackPanel>
+            </ScrollViewer>
+          </Grid>
         </Grid>
       </Border>
     </DataTemplate>
 
-    <local:GpuAdapterTileTemplateSelector 
+    <local:GpuAdapterTileTemplateSelector
       x:Key="TileSelector"
       IntegratedTemplate="{StaticResource IntegratedTile}"
       DedicatedTemplate="{StaticResource DedicatedTile}"/>

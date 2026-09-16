@@ -14,20 +14,28 @@
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </UserControl.Resources>
-  <!-- DataContext is the CPU SensorsViewModel, inherited from the host tile. Fan history graph,
-       titled in the utilization pattern: metric label (left), live readout — RPM, or PWM percentage
-       on tachometer-less laptops (right). Self-registers under "Cpu.Fan" so the view model feeds it
-       on each poll; its upper bound tracks FanGraphMax (100% or 4000 RPM). -->
+  <!-- DataContext is the CPU SensorsViewModel, inherited from the host tile. Follows the sibling
+       tile pattern (Clock/Temperature/Power): (row 0) title + inline min/avg/max stat glyphs;
+       (row 1) the live readout — RPM, or PWM percentage on tachometer-less laptops — with unit and
+       trend; (row 2) the dot-style history strip, self-registered under "Cpu.Fan" so the view model
+       feeds it each poll. Its upper bound tracks FanGraphMax (100% or 4000 RPM). -->
   <Border Style="{StaticResource SummaryTileBorderStyle}">
     <Grid MinHeight="60" ShowGridLines="False">
       <Grid.RowDefinitions>
         <RowDefinition Height="18"/>
-        <RowDefinition Height="48"/>
+        <RowDefinition Height="*"/>
         <RowDefinition Height="26"/>
       </Grid.RowDefinitions>
-      
-      <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+
+      <!-- Title + inline min/avg/max stat glyphs. ClipToBounds keeps a wide RPM stat line from
+           overdrawing outside the tile. -->
+      <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center" ClipToBounds="True">
         <TextBlock Text="Fan" Style="{StaticResource SummaryTileTitleTextBlockStyle}"/>
+        <TextBlock Style="{StaticResource MetricStatLine}" Margin="12,0,0,0" VerticalAlignment="Center">
+          <Run FontFamily="Segoe Fluent Icons" Text="&#xE70D; " Foreground="LightGreen"/><Run Text="{Binding FanRow.Min, StringFormat={}{0:0}}"/>
+          <Run FontFamily="Segoe Fluent Icons" Text=" &#xE738; " Foreground="{StaticResource AccentBrush}"/><Run Text="{Binding FanRow.Avg, StringFormat={}{0:0}}"/>
+          <Run FontFamily="Segoe Fluent Icons" Text=" &#xE70E; " Foreground="Crimson"/><Run Text="{Binding FanRow.Max, StringFormat={}{0:0}}"/>
+        </TextBlock>
       </StackPanel>
 
       <Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" ShowGridLines="False">
@@ -38,23 +46,24 @@
         </Grid.ColumnDefinitions>
         <TextBlock Grid.Column="0" HorizontalAlignment="Right"
                    Text="{Binding FanReadoutText}" Style="{StaticResource TileMetricValue}"/>
-        <TextBlock Grid.Column="1" 
+        <TextBlock Grid.Column="1"
                    Text="{Binding FanReadoutUnit}" Style="{StaticResource MetricUnit}"/>
-        <TextBlock Grid.Column="2" 
+        <TextBlock Grid.Column="2"
                    Text="{Binding FanRow.Trend, Converter={StaticResource TrendToGlyph}}"
                    Foreground="{Binding FanRow.Trend, Converter={StaticResource TrendToBrush}}"
                    Style="{StaticResource MetricUnit}" Margin="4,0,0,0"/>
       </Grid>
-      <StackPanel Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2,0,0,0">
-        <TextBlock Style="{StaticResource MetricStatLine}" Margin="12,0,0,0" VerticalAlignment="Center">
-          <Run FontFamily="Segoe Fluent Icons" Text="&#xE70D; " Foreground="LightGreen"/>
-          <Run Text="{Binding FanRow.Min, StringFormat={}{0:0}}"/>
-          <Run FontFamily="Segoe Fluent Icons" Text=" &#xE738; " Foreground="{StaticResource AccentBrush}"/>
-          <Run Text="{Binding FanRow.Avg, StringFormat={}{0:0}}"/>
-          <Run FontFamily="Segoe Fluent Icons" Text=" &#xE70E; " Foreground="Crimson"/>
-          <Run Text="{Binding FanRow.Max, StringFormat={}{0:0}}"/>
-        </TextBlock>
-      </StackPanel>
+
+      <!-- Dot-style fan history strip; self-registers under "Cpu.Fan" (shared feed key with the
+           detail-view history graph). Upper bound tracks FanGraphMax (100% or 4000 RPM). -->
+      <graphs:PerformanceGraphLite
+        Grid.Row="2" GraphBackground="Transparent"
+        Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Cpu.Fan"
+        HorizontalAlignment="Stretch" VerticalAlignment="Top"
+        Height="24" Rows="10" Capacity="120"
+        MinValue="0" MaxValue="{Binding FanGraphMax}" CornerRadius="1"
+        Style="{StaticResource SquareDotGraphLiteStyle}"
+        Margin="0,0,0,0"/>
     </Grid>
   </Border>
 </UserControl>
