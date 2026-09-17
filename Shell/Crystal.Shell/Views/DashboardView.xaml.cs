@@ -16,22 +16,22 @@ public partial class DashboardView : UserControl {
   /// <summary>
   /// Default row heights, kept in one place so ResetLayout and the XAML stay in sync.
   /// </summary>
-  public GridLength CpuDefault {  get; } = new(1, GridUnitType.Star);
+  public GridLength CpuGpuSummaryViewDefaultHeight {  get; } = new(1, GridUnitType.Star);
 
   /// <summary>
   /// Default row heights, kept in one place so ResetLayout and the XAML stay in sync.
   /// </summary>
-  public GridLength GpuDefault {  get; } = new(1, GridUnitType.Star);
+  public GridLength GpuSummaryViewDefaultHeight {  get; } = new(1, GridUnitType.Star);
 
   /// <summary>
   /// Default row heights, kept in one place so ResetLayout and the XAML stay in sync.
   /// </summary>
-  public GridLength ComponentsDefault {  get; } = new(1, GridUnitType.Star);
+  public GridLength SummaryViewDefaultHeight {  get; } = new(1.2, GridUnitType.Star);
 
   /// <summary>
   /// Default height of the bottom row (BIOS/Network/OS).
   /// </summary>
-  public GridLength BottomDefault {  get; } = new(0.4, GridUnitType.Star);
+  public GridLength BiosSummaryViewDefaultHeight {  get; } = new(0.4, GridUnitType.Star);
 
 
   /// <summary>
@@ -40,32 +40,34 @@ public partial class DashboardView : UserControl {
   public GridLength ComponentColumnDefault { get; } = new(1, GridUnitType.Star);
 
   /// <summary>
-  /// Default width for the narrower Network column on the components row (0.3 star vs. the
-  /// full-star Memory/Storage pair).
-  /// </summary>
-  public GridLength NetworkColumnDefault { get; } = new(0.4, GridUnitType.Star);
-
-  /// <summary>
   /// Default width for the equal bottom-row tile columns (BIOS/Operating System): full star shares.
   /// </summary>
   public GridLength BottomColumnDefault { get; } = new(1, GridUnitType.Star);
+
+
+  public GridLength MemorySummaryViewDefaultColumnWidth { get; } = new(.4, GridUnitType.Star);
+
+  public GridLength StorageSummaryViewDefaultColumnWidth { get; } = new(.4, GridUnitType.Star);
+
+  public GridLength NetworkSummaryViewDefaultColumnWidth { get; } = new(0.2, GridUnitType.Star);
 
   /// <summary>
   /// Default width for the narrower BIOS column on the bottom row (0.3 star vs. the
   /// full-star BIOS/Operating System pair).
   /// </summary>
-  public GridLength BiosColumnDefault { get; } = new(0.8, GridUnitType.Star);
+  public GridLength BiosSummaryViewDefaultColumnWidth { get; } = new(.4, GridUnitType.Star);
 
   /// <summary>
   /// Default width for the equal bottom-row tile columns (BIOS/Operating System): full star shares.
   /// </summary>
-  public GridLength OsColumnDefault { get; } = new(1.2, GridUnitType.Star);
+  public GridLength OsSummaryViewColumnDefaultWidth { get; } = new(.4, GridUnitType.Star);
 
   /// <summary>
   /// Default width for the narrower Processes column on the bottom row (0.3 star vs. the
   /// full-star BIOS/Operating System pair).
   /// </summary>
-  public GridLength ProcessColumnDefault { get; } = new(0.4, GridUnitType.Star);
+  public GridLength ProcessSummaryViewColumnDefaultWidth { get; } = new(0.2, GridUnitType.Star);
+
 
   /// <summary>
   /// Initializes a new instance of the <see cref="DashboardView"/> class.
@@ -86,17 +88,17 @@ public partial class DashboardView : UserControl {
   /// unaffected.
   /// </summary>
   public void ResetLayout() {
-    CpuRow.Height = CpuDefault;
-    GpuRow.Height = GpuDefault;
-    ComponentsRow.Height = ComponentsDefault;
-    BottomRow.Height = BottomDefault;
+    CpuRow.Height = CpuGpuSummaryViewDefaultHeight;
+    GpuRow.Height = GpuSummaryViewDefaultHeight;
+    ComponentsRow.Height = SummaryViewDefaultHeight;
+    BottomRow.Height = BiosSummaryViewDefaultHeight;
 
-    MemoryCol.Width = ComponentColumnDefault;
-    StorageCol.Width = ComponentColumnDefault;
-    NetworkCol.Width = NetworkColumnDefault;
+    MemoryCol.Width = MemorySummaryViewDefaultColumnWidth;
+    StorageCol.Width = StorageSummaryViewDefaultColumnWidth;
+    NetworkCol.Width = NetworkSummaryViewDefaultColumnWidth;
 
-    BiosCol.Width = BiosColumnDefault;
-    OsCol.Width = OsColumnDefault;
-    ProcessCol.Width = ProcessColumnDefault;
+    BiosCol.Width = BiosSummaryViewDefaultColumnWidth;
+    OsCol.Width = OsSummaryViewColumnDefaultWidth;
+    ProcessCol.Width = ProcessSummaryViewColumnDefaultWidth;
   }
 }

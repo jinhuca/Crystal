@@ -7,29 +7,44 @@
              mc:Ignorable="d"
              d:DesignHeight="160" d:DesignWidth="160"
              Foreground="{StaticResource TextBrush}" FontFamily="{StaticResource UiFontFamily}">
-  <!-- DataContext is the root INetworkViewModel, inherited from the host tile. Live throughput:
+	<!-- DataContext is the root INetworkViewModel, inherited from the host tile. Live throughput:
        download over upload, each with a sparkline this view self-registers with the VM. -->
-  <StackPanel VerticalAlignment="Top">
-    <TextBlock Text="download" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource BodyFontSize}" FontFamily="{StaticResource MonoFontFamily}"
-               Margin="0,0,0,2"/>
-    <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
-      <TextBlock Text="&#x25BC;" Foreground="{StaticResource OkBrush}" FontSize="16"
+	<Grid VerticalAlignment="Top" HorizontalAlignment="Stretch" Background="Transparent" ShowGridLines="False">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+		<Grid Grid.Column="0" ShowGridLines="False">
+			<Grid.RowDefinitions>
+				<RowDefinition/>
+				<RowDefinition/>
+				<RowDefinition/>
+			</Grid.RowDefinitions>
+			<TextBlock Grid.Row="0" Text="Download" Style="{StaticResource SummaryTileTitleTextBlockStyle}" Margin="0,0,0,2"/>
+			<StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,2">
+				<TextBlock Text="&#x25BC;" Foreground="{StaticResource OkBrush}" FontSize="13"
                  VerticalAlignment="Center" Margin="0,0,8,0"/>
-      <TextBlock Text="{Binding DownloadLabel}" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource SectionFontSize}"
+				<TextBlock Text="{Binding DownloadLabel}" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource SectionFontSize}"
                  FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Center"/>
-    </StackPanel>
-    <!-- Sparkline removed (test/minimal-graphs); the session peak recovers its range cue. -->
-    <TextBlock Text="{Binding DownloadPeakLabel, StringFormat=peak {0}}" Foreground="{StaticResource LabelBrush}"
+			</StackPanel>
+			<TextBlock Grid.Row="2" Text="{Binding DownloadPeakLabel, StringFormat=peak {0}}" Foreground="{StaticResource LabelBrush}"
                FontSize="{StaticResource BodyFontSize}" FontFamily="{StaticResource MonoFontFamily}" Margin="24,0,0,0"/>
-    <StackPanel Orientation="Horizontal" Margin="0,10,0,2">
-      <TextBlock Text="&#x25B2;" Foreground="#E89B2A" FontSize="16"
+		</Grid>
+		<Grid Grid.Column="1" ShowGridLines="False">
+			<Grid.RowDefinitions>
+				<RowDefinition/>
+				<RowDefinition/>
+				<RowDefinition/>
+			</Grid.RowDefinitions>
+			<TextBlock Grid.Row="0" Text="Upload" Style="{StaticResource SummaryTileTitleTextBlockStyle}"/>
+			<StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,2">
+				<TextBlock Text="&#x25B2;" Foreground="#E89B2A" FontSize="13"
                  VerticalAlignment="Center" Margin="0,0,8,0"/>
-      <TextBlock Text="{Binding UploadLabel}" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource SectionFontSize}"
+				<TextBlock Text="{Binding UploadLabel}" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource SectionFontSize}"
                  FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Center"/>
-    </StackPanel>
-    <TextBlock Text="upload" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource BodyFontSize}" FontFamily="{StaticResource MonoFontFamily}"/>
-    <!-- Sparkline removed (test/minimal-graphs); the session peak recovers its range cue. -->
-    <TextBlock Text="{Binding UploadPeakLabel, StringFormat=peak {0}}" Foreground="{StaticResource LabelBrush}"
+			</StackPanel>
+			<TextBlock Grid.Row="2" Text="{Binding UploadPeakLabel, StringFormat=peak {0}}" Foreground="{StaticResource LabelBrush}"
                FontSize="{StaticResource BodyFontSize}" FontFamily="{StaticResource MonoFontFamily}" Margin="24,2,0,0"/>
-  </StackPanel>
+		</Grid>
+	</Grid>
 </UserControl>
