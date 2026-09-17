@@ -81,18 +81,6 @@
         </Setter.Value>
       </Setter>
     </Style>
-
-    <!--<Style x:Key="LiveIndicatorStyle" TargetType="{x:Type ctrls:LivenessIndicatorLite}">
-			<Setter Property="DashCount" Value="1"/>
-			<Setter Property="DashThickness" Value="1.2"/>
-			<Setter Property="DashLength" Value="14"/>
-			<Setter Property="TailLength" Value="36"/>
-			<Setter Property="PixelsPerSecond" Value="60"/>
-			<Setter Property="Glow" Value="False"/>
-			<Setter Property="ShowTrack" Value="True"/>
-			<Setter Property="Symmetric" Value="True"/>
-			<Setter Property="Color" Value="#FF4DD81F"/>
-		</Style>-->
   </UserControl.Resources>
 
   <!-- Four content rows separated by draggable splitters. Every content row is star-sized with a
@@ -103,13 +91,13 @@
        full width. -->
   <Grid Margin="3" ShowGridLines="False">
     <Grid.RowDefinitions>
-      <RowDefinition x:Name="CpuRow" Height="{Binding ElementName=Root, Path=CpuDefault}"/>
+      <RowDefinition x:Name="CpuRow" Height="{Binding ElementName=Root, Path=CpuGpuSummaryViewDefaultHeight}"/>
       <RowDefinition Height="Auto"/>
-      <RowDefinition x:Name="GpuRow" Height="{Binding ElementName=Root, Path=GpuDefault}"/>
+      <RowDefinition x:Name="GpuRow" Height="{Binding ElementName=Root, Path=GpuSummaryViewDefaultHeight}"/>
       <RowDefinition Height="Auto"/>
-      <RowDefinition x:Name="ComponentsRow" Height="{Binding ElementName=Root, Path=ComponentsDefault}"/>
+      <RowDefinition x:Name="ComponentsRow" Height="{Binding ElementName=Root, Path=SummaryViewDefaultHeight}"/>
       <RowDefinition Height="Auto"/>
-      <RowDefinition x:Name="BottomRow" Height="{Binding ElementName=Root, Path=BottomDefault}"/>
+      <RowDefinition x:Name="BottomRow" Height="{Binding ElementName=Root, Path=BiosSummaryViewDefaultHeight}"/>
     </Grid.RowDefinitions>
 
     <!-- Row 1: CPU, full width -->
@@ -132,13 +120,12 @@
          Network is a narrower column (0.3 star) than the equal Memory/Storage pair. -->
     <Grid Grid.Row="4">
       <Grid.ColumnDefinitions>
-        <ColumnDefinition x:Name="MemoryCol" Width="{Binding ElementName=Root, Path=ComponentColumnDefault}" MinWidth="80"/>
+				<ColumnDefinition x:Name="MemoryCol" Width="{Binding ElementName=Root, Path=MemorySummaryViewDefaultColumnWidth}" MinWidth="80"/>
         <ColumnDefinition Width="Auto"/>
-        <ColumnDefinition x:Name="StorageCol" Width="{Binding ElementName=Root, Path=ComponentColumnDefault}" MinWidth="80"/>
+				<ColumnDefinition x:Name="StorageCol" Width="{Binding ElementName=Root, Path=StorageSummaryViewDefaultColumnWidth}" MinWidth="80"/>
         <ColumnDefinition Width="Auto"/>
-        <ColumnDefinition x:Name="NetworkCol" Width="{Binding ElementName=Root, Path=NetworkColumnDefault}" MinWidth="80"/>
+        <ColumnDefinition x:Name="NetworkCol" Width="{Binding ElementName=Root, Path=NetworkSummaryViewDefaultColumnWidth}" MinWidth="80"/>
       </Grid.ColumnDefinitions>
-
       <Border Grid.Column="0" Style="{StaticResource Tile}" Margin="3,1,1,1">
         <ContentControl prism:RegionManager.RegionName="{x:Static const:RegionNames.MemoryRegionName}"/>
       </Border>
@@ -160,13 +147,12 @@
          (0.3 star) than the equal BIOS/Operating System pair. -->
     <Grid Grid.Row="6">
       <Grid.ColumnDefinitions>
-				<ColumnDefinition x:Name="BiosCol" Width="{Binding ElementName=Root, Path=BiosColumnDefault}" MinWidth="100"/>
+				<ColumnDefinition x:Name="BiosCol" Width="{Binding ElementName=Root, Path=BiosSummaryViewDefaultColumnWidth}" MinWidth="80"/>
         <ColumnDefinition Width="Auto"/>
-				<ColumnDefinition x:Name="OsCol" Width="{Binding ElementName=Root, Path=OsColumnDefault}" MinWidth="100"/>
+				<ColumnDefinition x:Name="OsCol" Width="{Binding ElementName=Root, Path=OsSummaryViewColumnDefaultWidth}" MinWidth="80"/>
         <ColumnDefinition Width="Auto"/>
-        <ColumnDefinition x:Name="ProcessCol" Width="{Binding ElementName=Root, Path=ProcessColumnDefault}" MinWidth="100"/>
+        <ColumnDefinition x:Name="ProcessCol" Width="{Binding ElementName=Root, Path=ProcessSummaryViewColumnDefaultWidth}" MinWidth="80"/>
       </Grid.ColumnDefinitions>
-
       <Border Grid.Column="0" Style="{StaticResource Tile}" Margin="3,1,1,5">
         <ContentControl prism:RegionManager.RegionName="{x:Static const:RegionNames.BiosRegionName}"/>
       </Border>
