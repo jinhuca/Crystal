@@ -21,6 +21,9 @@
       </StackPanel>
       <TextBlock Text="{Binding WifiLinkRate, StringFormat=Link: {0}}" Foreground="{StaticResource LabelBrush}"
                  FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}" Margin="22,3,0,0"/>
+      <TextBlock Text="{Binding WifiBandChannel, StringFormat=Band: {0}}" Foreground="{StaticResource LabelBrush}"
+                 FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}" Margin="22,1,0,0"
+                 TextTrimming="CharacterEllipsis"/>
       <TextBlock Text="{Binding WifiSecurity, StringFormat=Security: {0}}" Foreground="{StaticResource LabelBrush}"
                  FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}" Margin="22,1,0,0"
                  TextTrimming="CharacterEllipsis"/>
@@ -29,14 +32,26 @@
                  TextTrimming="CharacterEllipsis"/>
     </StackPanel>
 
-    <!-- Present-but-not-connected radio: muted status in place of the connected block. Hidden
-         entirely on machines with no wireless adapter. -->
-    <StackPanel Orientation="Horizontal"
-                Visibility="{Binding HasWifiStatus, Converter={StaticResource BoolToVisibility}}">
-      <TextBlock Text="&#x1F4F6;" Foreground="#5A6470" FontSize="{StaticResource SubHeadingFontSize}"
-                 VerticalAlignment="Center" Margin="0,0,8,0"/>
-      <TextBlock Text="{Binding WifiStatusLabel}" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource SpecFontSize}"
-                 FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Center"/>
+    <!-- No connected Wi-Fi block: name the connection actually carrying traffic (e.g. Ethernet) so
+         the throughput readout has a visible owner, with the Wi-Fi radio state as a muted sub-row.
+         Both stand down while a Wi-Fi adapter is connected (the block above takes over). -->
+    <StackPanel>
+      <StackPanel Orientation="Horizontal" Margin="0,0,0,3"
+                  Visibility="{Binding HasActiveConnection, Converter={StaticResource BoolToVisibility}}">
+        <TextBlock Text="&#x1F50C;" Foreground="{StaticResource AccentBrush}" FontSize="{StaticResource SubHeadingFontSize}"
+                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+        <TextBlock Text="{Binding ActiveConnectionLabel}" 
+									 Foreground="{StaticResource ValueBrush}" 
+									 FontSize="{StaticResource SpecFontSize}"
+                   FontFamily="{StaticResource UiFontFamily}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+      </StackPanel>
+      <StackPanel Orientation="Horizontal" Margin="0,6,0,0"
+                  Visibility="{Binding HasWifiStatus, Converter={StaticResource BoolToVisibility}}">
+        <TextBlock Text="&#x1F4F6;" Foreground="#5A6470" FontSize="{StaticResource SubHeadingFontSize}"
+                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+        <TextBlock Text="{Binding WifiStatusLabel}" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource SpecFontSize}"
+                   FontFamily="{StaticResource UiFontFamily}" VerticalAlignment="Center"/>
+      </StackPanel>
     </StackPanel>
   </StackPanel>
 </UserControl>

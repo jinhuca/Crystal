@@ -122,6 +122,7 @@ public class NetworkViewModelTests {
     model.Subject.OnNext(new NetworkSnapshot([Wifi("Wi-Fi", "HomeNet", 72)]));
 
     Assert.Equal("866 Mbps", vm.WifiLinkRate);
+    Assert.Equal("5 GHz (ch 36)", vm.WifiBandChannel);
     Assert.Equal("WPA2-Personal / CCMP", vm.WifiSecurity);
     Assert.Equal("AA:BB:CC:DD:EE:FF", vm.WifiBssid);
   }
@@ -134,8 +135,35 @@ public class NetworkViewModelTests {
     model.Subject.OnNext(new NetworkSnapshot([Wired()]));
 
     Assert.Equal("—", vm.WifiLinkRate);
+    Assert.Equal("—", vm.WifiBandChannel);
     Assert.Equal("—", vm.WifiSecurity);
     Assert.Equal("—", vm.WifiBssid);
+  }
+
+  [Fact]
+  public void Wifi_disabled_names_the_active_wired_connection() {
+    var vm = CreateVm(out var model);
+
+    // Wi-Fi off but a wired interface is moving traffic: the tile names it so the throughput has an
+    // obvious owner instead of only reading "Wi-Fi disabled".
+    model.Subject.OnNext(new NetworkSnapshot([Wired("Ethernet")], WifiStatus.Disabled));
+
+    Assert.False(vm.HasWifi);
+    Assert.True(vm.HasActiveConnection);
+    Assert.Equal("Ethernet", vm.ActiveConnectionLabel);
+    Assert.True(vm.HasWifiStatus);
+    Assert.Equal("Wi-Fi disabled", vm.WifiStatusLabel);
+  }
+
+  [Fact]
+  public void Active_connection_row_stands_down_when_wifi_is_connected() {
+    var vm = CreateVm(out var model);
+
+    model.Subject.OnNext(new NetworkSnapshot([Wifi("Wi-Fi", "HomeNet", 72)], WifiStatus.Connected));
+
+    Assert.True(vm.HasWifi);
+    Assert.False(vm.HasActiveConnection);
+    Assert.Equal("—", vm.ActiveConnectionLabel);
   }
 
   [Fact]
