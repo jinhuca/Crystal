@@ -20,6 +20,15 @@
       <Setter Property="FontFamily" Value="{StaticResource MonoFontFamily}"/>
       <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
     </Style>
+    <!-- Live-indicator dot: green pip flagging a value refreshed on the poll timer. -->
+    <Style x:Key="LiveDot" TargetType="Border">
+      <Setter Property="Width" Value="6"/>
+      <Setter Property="Height" Value="6"/>
+      <Setter Property="CornerRadius" Value="3"/>
+      <Setter Property="Background" Value="{StaticResource OkBrush}"/>
+      <Setter Property="VerticalAlignment" Value="Center"/>
+      <Setter Property="Margin" Value="0,0,8,0"/>
+    </Style>
   </UserControl.Resources>
 
   <!-- Whole tile is the double-click target: opens the full process list in its own window. -->
@@ -48,15 +57,24 @@
           <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0">
-          <TextBlock Text="Processes" Style="{StaticResource FieldLabel}"/>
+          <StackPanel Orientation="Horizontal">
+            <Border Style="{StaticResource LiveDot}"/>
+            <TextBlock Text="Processes" Style="{StaticResource FieldLabel}"/>
+          </StackPanel>
           <TextBlock Text="{Binding ProcessCountLabel}" Style="{StaticResource FieldValue}"/>
         </StackPanel>
         <StackPanel Grid.Column="1">
-          <TextBlock Text="Threads" Style="{StaticResource FieldLabel}"/>
+          <StackPanel Orientation="Horizontal">
+            <Border Style="{StaticResource LiveDot}"/>
+            <TextBlock Text="Threads" Style="{StaticResource FieldLabel}"/>
+          </StackPanel>
           <TextBlock Text="{Binding ThreadCountLabel}" Style="{StaticResource FieldValue}"/>
         </StackPanel>
         <StackPanel Grid.Column="2">
-          <TextBlock Text="Handles" Style="{StaticResource FieldLabel}"/>
+          <StackPanel Orientation="Horizontal">
+            <Border Style="{StaticResource LiveDot}"/>
+            <TextBlock Text="Handles" Style="{StaticResource FieldLabel}"/>
+          </StackPanel>
           <TextBlock Text="{Binding HandleCountLabel}" Style="{StaticResource FieldValue}"/>
         </StackPanel>
       </Grid>

@@ -5,93 +5,102 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:prism="http://prismlibrary.com/"
              prism:ViewModelLocator.AutoWireViewModel="True"
-						 xmlns:sv="clr-namespace:Crystal.OSModule.Views.SummaryViews"
              mc:Ignorable="d"
-             d:DesignHeight="240" d:DesignWidth="380"
+             d:DesignHeight="120" d:DesignWidth="1400"
              Background="Transparent" Foreground="{StaticResource TextBrush}"
              FontFamily="{StaticResource UiFontFamily}">
   <UserControl.Resources>
+    <!-- Field caption (e.g. "Version", "Last boot"): muted, caption-scale, centred on its row. -->
     <Style x:Key="FieldLabel" TargetType="TextBlock">
       <Setter Property="Foreground" Value="{StaticResource LabelBrush}"/>
       <Setter Property="FontSize" Value="{StaticResource CaptionFontSize}"/>
+      <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
+    <!-- Field value (e.g. "22H2", "X64"): bright mono, caption-scale, a small gap after its label. -->
     <Style x:Key="FieldValue" TargetType="TextBlock">
       <Setter Property="Foreground" Value="{StaticResource ValueBrush}"/>
       <Setter Property="FontSize" Value="{StaticResource SpecFontSize}"/>
       <Setter Property="FontFamily" Value="{StaticResource MonoFontFamily}"/>
-      <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
-      <Setter Property="Margin" Value="0,0,16,0"/>
+      <Setter Property="VerticalAlignment" Value="Center"/>
+      <Setter Property="Margin" Value="6,0,0,0"/>
     </Style>
-    <Style x:Key="FieldCell" TargetType="StackPanel">
-      <Setter Property="Margin" Value="0,0,0,10"/>
+    <!-- Readout value (e.g. uptime, clock): prominent mono figure stacked under its caption. -->
+    <Style x:Key="ReadoutValue" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="{StaticResource ValueBrush}"/>
+      <Setter Property="FontSize" Value="{StaticResource SectionFontSize}"/>
+      <Setter Property="FontFamily" Value="{StaticResource MonoFontFamily}"/>
+      <Setter Property="Margin" Value="0,3,0,0"/>
+    </Style>
+    <!-- Live-indicator dot: green pip that flags a value refreshed on the poll timer. -->
+    <Style x:Key="LiveDot" TargetType="Border">
+      <Setter Property="Width" Value="6"/>
+      <Setter Property="Height" Value="6"/>
+      <Setter Property="CornerRadius" Value="3"/>
+      <Setter Property="Background" Value="{StaticResource OkBrush}"/>
+      <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
   </UserControl.Resources>
 
-  <Border Background="Transparent" MouseLeftButtonDown="OnTileClick">
-    <Grid Margin="10">
-      <Grid.RowDefinitions>
-        <RowDefinition Height="Auto"/>
-        <RowDefinition Height="*"/>
-      </Grid.RowDefinitions>
-
-      <!-- Dense header bar: accent tick + title + inline OS name, thin divider rule below. -->
-			<sv:OsHeaderView Grid.Row="0"/>
-
-			<StackPanel Grid.Row="1" VerticalAlignment="Top">
-        <!-- Version / build / architecture triplet -->
-        <Grid>
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-          </Grid.ColumnDefinitions>
-          <StackPanel Grid.Column="0" Style="{StaticResource FieldCell}">
-            <TextBlock Text="Version" Style="{StaticResource FieldLabel}"/>
-            <TextBlock Text="{Binding DisplayVersion}" Style="{StaticResource FieldValue}"/>
-          </StackPanel>
-          <StackPanel Grid.Column="1" Style="{StaticResource FieldCell}">
-            <TextBlock Text="Build" Style="{StaticResource FieldLabel}"/>
-            <TextBlock Text="{Binding BuildLabel}" Style="{StaticResource FieldValue}"/>
-          </StackPanel>
-          <StackPanel Grid.Column="2" Style="{StaticResource FieldCell}">
-            <TextBlock Text="Architecture" Style="{StaticResource FieldLabel}"/>
-            <TextBlock Text="{Binding Architecture}" Style="{StaticResource FieldValue}"/>
-          </StackPanel>
-        </Grid>
-
-        <!-- Uptime section rule + header. Uptime is the live value (green tick); last boot and
-             install date are the fixed timestamps that frame it. -->
-        <Border BorderBrush="{StaticResource DividerBrush}" BorderThickness="0,1,0,0" Margin="0,2,0,8" Padding="0,8,0,0">
-          <StackPanel Orientation="Horizontal">
-            <Border Width="6" Height="6" CornerRadius="3" Background="{StaticResource OkBrush}"
-                    VerticalAlignment="Center" Margin="0,0,6,0"/>
-            <TextBlock Text="UPTIME" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource MicroFontSize}" FontWeight="SemiBold"
+  <!-- Whole tile is a double-click target. A Viewbox (scale-down only) keeps the two dense lines from
+       clipping on the right when the OS column is narrower than the fields' natural width. -->
+  <Border Background="Transparent" Cursor="Hand" MouseLeftButtonDown="OnTileClick">
+    <Viewbox StretchDirection="DownOnly" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10">
+      <StackPanel>
+        <!-- Header bar: accent tick + title + inline OS name, then the identity fields (version,
+             build, OS version, architecture) on the same line. Thin divider rule below. -->
+        <Border BorderBrush="{StaticResource DividerBrush}" BorderThickness="0,0,0,1"
+                Padding="0,0,0,6" Margin="0,0,0,8">
+          <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <Border Width="3" Background="{StaticResource AccentBrush}" Margin="0,1,10,1"/>
+            <TextBlock Text="OPERATING SYSTEM" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource BodyFontSize}" FontWeight="SemiBold"
                        VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding OsName}" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource BodyFontSize}"
+                       VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="20,0,0,0"/>
+
+            <TextBlock Text="Version" Style="{StaticResource FieldLabel}" Margin="28,0,0,0"/>
+            <TextBlock Text="{Binding DisplayVersion}" Style="{StaticResource FieldValue}"/>
+
+            <TextBlock Text="Build" Style="{StaticResource FieldLabel}" Margin="28,0,0,0"/>
+            <TextBlock Text="{Binding BuildLabel}" Style="{StaticResource FieldValue}"/>
+
+            <TextBlock Text="OS version:" Style="{StaticResource FieldLabel}" Margin="28,0,0,0"/>
+            <TextBlock Text="{Binding VersionLabel}" Style="{StaticResource FieldValue}"/>
+
+            <TextBlock Text="Architecture" Style="{StaticResource FieldLabel}" Margin="28,0,0,0"/>
+            <TextBlock Text="{Binding Architecture}" Style="{StaticResource FieldValue}"/>
           </StackPanel>
         </Border>
 
-        <!-- Live uptime, prominent across the width. -->
-        <StackPanel Style="{StaticResource FieldCell}">
-          <TextBlock Text="Uptime" Style="{StaticResource FieldLabel}"/>
-          <TextBlock Text="{Binding UptimeLabel}" Style="{StaticResource FieldValue}" FontSize="{StaticResource SectionFontSize}"/>
-        </StackPanel>
+        <!-- Readout row: each field is a caption stacked over a prominent mono value. Uptime and the
+             system clock carry a green live dot; last boot and install date are static. -->
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+          <StackPanel>
+            <StackPanel Orientation="Horizontal">
+              <Border Style="{StaticResource LiveDot}" Margin="0,0,8,0"/>
+              <TextBlock Text="Uptime" Style="{StaticResource FieldLabel}"/>
+            </StackPanel>
+            <TextBlock Text="{Binding UptimeLabel}" Style="{StaticResource ReadoutValue}"/>
+          </StackPanel>
 
-        <!-- Fixed timestamps: last boot + install date. -->
-        <Grid>
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-          </Grid.ColumnDefinitions>
-          <StackPanel Grid.Column="0" Style="{StaticResource FieldCell}">
+          <StackPanel Margin="48,0,0,0">
+            <StackPanel Orientation="Horizontal">
+              <Border Style="{StaticResource LiveDot}" Margin="0,0,8,0"/>
+              <TextBlock Text="System time" Style="{StaticResource FieldLabel}"/>
+            </StackPanel>
+            <TextBlock Text="{Binding CurrentTimeLabel}" Style="{StaticResource ReadoutValue}"/>
+          </StackPanel>
+
+          <StackPanel Margin="48,0,0,0">
             <TextBlock Text="Last boot" Style="{StaticResource FieldLabel}"/>
-            <TextBlock Text="{Binding LastBootTimeLabel}" Style="{StaticResource FieldValue}"/>
+            <TextBlock Text="{Binding LastBootTimeLabel}" Style="{StaticResource ReadoutValue}"/>
           </StackPanel>
-          <StackPanel Grid.Column="1" Style="{StaticResource FieldCell}">
+
+          <StackPanel Margin="48,0,0,0">
             <TextBlock Text="Installed" Style="{StaticResource FieldLabel}"/>
-            <TextBlock Text="{Binding InstallDateLabel}" Style="{StaticResource FieldValue}"/>
+            <TextBlock Text="{Binding InstallDateLabel}" Style="{StaticResource ReadoutValue}"/>
           </StackPanel>
-        </Grid>
+        </StackPanel>
       </StackPanel>
-    </Grid>
+    </Viewbox>
   </Border>
 </UserControl>

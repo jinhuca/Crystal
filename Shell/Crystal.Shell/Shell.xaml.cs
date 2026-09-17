@@ -5,7 +5,6 @@ using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Media;
-using System.Windows.Threading;
 
 namespace Crystal.Shell;
 /// <summary>
@@ -25,7 +24,6 @@ public partial class Shell : Window {
 
   private readonly WindowLayoutStore _layouts;
   private readonly Settings.GraphSettingsStore _graphSettings;
-  private readonly DispatcherTimer _clock;
 
   // Guards the title-bar graph-shape radios while their initial checked state is being seeded, so
   // reflecting the current selection doesn't itself write the settings back.
@@ -40,14 +38,7 @@ public partial class Shell : Window {
     Closing += OnClosing;
     UpdateMaximizeButton();
     InitGraphKindToggle();
-
-    _clock = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
-    _clock.Tick += (_, _) => UpdateClock();
-    _clock.Start();
-    UpdateClock();
   }
-
-  private void UpdateClock() => DateTimeText.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
   private void OnMinimizeClick(object sender, RoutedEventArgs e) => WindowState = WindowState.Minimized;
 

@@ -160,9 +160,9 @@
          (0.3 star) than the equal BIOS/Operating System pair. -->
     <Grid Grid.Row="6">
       <Grid.ColumnDefinitions>
-        <ColumnDefinition x:Name="BiosCol" Width="{Binding ElementName=Root, Path=BottomColumnDefault}" MinWidth="100"/>
+				<ColumnDefinition x:Name="BiosCol" Width="{Binding ElementName=Root, Path=BiosColumnDefault}" MinWidth="100"/>
         <ColumnDefinition Width="Auto"/>
-        <ColumnDefinition x:Name="OsCol" Width="{Binding ElementName=Root, Path=BottomColumnDefault}" MinWidth="100"/>
+				<ColumnDefinition x:Name="OsCol" Width="{Binding ElementName=Root, Path=OsColumnDefault}" MinWidth="100"/>
         <ColumnDefinition Width="Auto"/>
         <ColumnDefinition x:Name="ProcessCol" Width="{Binding ElementName=Root, Path=ProcessColumnDefault}" MinWidth="100"/>
       </Grid.ColumnDefinitions>

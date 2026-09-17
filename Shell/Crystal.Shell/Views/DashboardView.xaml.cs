@@ -51,6 +51,17 @@ public partial class DashboardView : UserControl {
   public GridLength BottomColumnDefault { get; } = new(1, GridUnitType.Star);
 
   /// <summary>
+  /// Default width for the narrower BIOS column on the bottom row (0.3 star vs. the
+  /// full-star BIOS/Operating System pair).
+  /// </summary>
+  public GridLength BiosColumnDefault { get; } = new(0.8, GridUnitType.Star);
+
+  /// <summary>
+  /// Default width for the equal bottom-row tile columns (BIOS/Operating System): full star shares.
+  /// </summary>
+  public GridLength OsColumnDefault { get; } = new(1.2, GridUnitType.Star);
+
+  /// <summary>
   /// Default width for the narrower Processes column on the bottom row (0.3 star vs. the
   /// full-star BIOS/Operating System pair).
   /// </summary>
@@ -84,8 +95,8 @@ public partial class DashboardView : UserControl {
     StorageCol.Width = ComponentColumnDefault;
     NetworkCol.Width = NetworkColumnDefault;
 
-    BiosCol.Width = BottomColumnDefault;
-    OsCol.Width = BottomColumnDefault;
+    BiosCol.Width = BiosColumnDefault;
+    OsCol.Width = OsColumnDefault;
     ProcessCol.Width = ProcessColumnDefault;
   }
 }
