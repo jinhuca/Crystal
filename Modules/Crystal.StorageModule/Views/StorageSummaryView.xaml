@@ -16,6 +16,7 @@
     <ResourceDictionary>
     <ResourceDictionary.MergedDictionaries>
       <ResourceDictionary Source="/Crystal.Controls;component/Metrics/MetricEnrichmentResources.xaml"/>
+      <ResourceDictionary Source="/Crystal.Resources;component/Styles/BorderStyles.xaml"/>
     </ResourceDictionary.MergedDictionaries>
     <conv:FractionToStarConverter x:Key="FractionToStar"/>
 
@@ -70,8 +71,7 @@
     </Style>
     </ResourceDictionary>
   </UserControl.Resources>
-  <Border Background="Transparent" Cursor="Hand" MouseLeftButtonDown="OnTileClick"
-          ToolTip="Double-click to open the full storage view">
+  <Border Background="Transparent" Cursor="Hand" MouseLeftButtonDown="OnTileClick">
   <Grid Margin="8">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
@@ -139,15 +139,14 @@
       <ContentControl.ContentTemplate>
         <DataTemplate>
           <Grid ShowGridLines="False">
-            <!-- Row order mirrors the Memory tile so the graphs and the capacity/composition bars
-                 line up across both tiles: identity + spec header (fixed 50 total), then the graphs
-                 (fixed 105), then the capacity bar, then endurance. -->
+            <!-- Row order mirrors the Memory tile so the graphs and the capacity bars line up across
+                 both tiles: the two graph cards (stretch), then the relocated stat groups, then the
+                 capacity bar, then endurance. Disk identity/specs live in the detail view. -->
             <Grid.RowDefinitions>
-              <RowDefinition Height="18"/>
-              <RowDefinition Height="16"/>
-              <RowDefinition Height="108"/>
-              <RowDefinition Height="40"/>
-              <RowDefinition Height="24"/>
+              <RowDefinition Height="*"/>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="240"/>
@@ -155,164 +154,137 @@
               <ColumnDefinition/>
               <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <!-- Identity strip: model (brand) + live activity/capacity at left, serial at right. -->
-            <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" VerticalAlignment="Center" Margin="2,0,0,0">
-              <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
-                <TextBlock Text="{Binding Model}"
-                             Foreground="{StaticResource ValueBrush}"
-                             FontSize="{StaticResource CaptionFontSize}" 
-                           FontWeight="SemiBold"
-                             VerticalAlignment="Top"/>
-                <TextBlock Text="{Binding ActivityLabel}"
-                             Foreground="{StaticResource AccentBrush}"
-                             FontSize="{StaticResource CaptionFontSize}"
-                             FontFamily="{StaticResource MonoFontFamily}"
-                             VerticalAlignment="Center"
-                             Margin="24,0,0,0"/>
-                <TextBlock Text="{Binding CapacityLabel}"
-                             Foreground="{StaticResource LabelBrush}"
-                             FontSize="{StaticResource CaptionFontSize}"
-                             FontFamily="{StaticResource MonoFontFamily}"
-                             VerticalAlignment="Center" Margin="12,0,0,0"/>
-              </StackPanel>
-              <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                <TextBlock Text="Serial:" Style="{StaticResource IdSpecCaption}"/>
-                <TextBlock Text="{Binding SerialNumber}" Style="{StaticResource IdSpecValue}" TextTrimming="CharacterEllipsis"/>
-              </StackPanel>
-            </Grid>
-
-            <!-- Specs -->
-            <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" Margin="2,0,0,3">
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1.2*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="0.5*"/>
-                <ColumnDefinition Width="1.2*"/>
-                <ColumnDefinition Width="1.5*"/>
-              </Grid.ColumnDefinitions>
-              <StackPanel Grid.Column="0" Orientation="Horizontal">
-                <TextBlock Text="Type:" Style="{StaticResource IdSpecCaption}"/>
-                <TextBlock Text="{Binding MediaType}" Style="{StaticResource IdSpecValue}"/>
-              </StackPanel>
-              <StackPanel Grid.Column="1" Orientation="Horizontal">
-                <TextBlock Text="Interface:" Style="{StaticResource IdSpecCaption}"/>
-                <TextBlock Text="{Binding InterfaceType}" Style="{StaticResource IdSpecValue}"/>
-              </StackPanel>
-              <StackPanel Grid.Column="2" Orientation="Horizontal">
-                <TextBlock Text="Partitions:" Style="{StaticResource IdSpecCaption}"/>
-                <TextBlock Text="{Binding PartitionsLabel}" Style="{StaticResource IdSpecValue}"/>
-              </StackPanel>
-              <StackPanel Grid.Column="3" Orientation="Horizontal">
-                <TextBlock Text="Firmware:" Style="{StaticResource IdSpecCaption}"/>
-                <TextBlock Text="{Binding FirmwareRevision}" Style="{StaticResource IdSpecValue}"/>
-              </StackPanel>
-              <StackPanel Grid.Column="4" Orientation="Horizontal">
-                <TextBlock Text="Manufacturer:" Style="{StaticResource IdSpecCaption}"/>
-                <TextBlock Text="{Binding Manufacturer}" Style="{StaticResource IdSpecValue}"
-                 TextTrimming="CharacterEllipsis"/>
-              </StackPanel>
-            </Grid>
-
-            <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" ShowGridLines="False">
+            <!-- Two graph cards (Active time / Transfer rate) mirroring the CPU/Memory summary card:
+                 blue section title + session min/avg/max on the top line, the live value with its
+                 trend glyph, and a self-registering per-disk history sparkline filling the rest. Each
+                 graph self-registers on load against the selected disk's view model (the handler
+                 re-fires with a fresh graph whenever the disk selection swaps the template). -->
+            <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" MinHeight="120" ShowGridLines="False">
               <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
               </Grid.ColumnDefinitions>
-              <!-- Active time -->
-              <Grid Grid.Column="0" Margin="2,2,2,2">
-                <Grid.RowDefinitions>
-                  <RowDefinition Height="Auto"/>
-                  <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Grid Grid.Row="0">
-                  <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom">
-                    <TextBlock Text="Active time" Style="{StaticResource MetricCaption}" Foreground="{StaticResource TextBrush}"/>
-                  </StackPanel>
-                  <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-                    <TextBlock Text="{Binding ActivityLabel}" Style="{StaticResource TileLegendCaption}"/>
-                  </StackPanel>
-                </Grid>
-                <!-- Graph replaced with a value readout + trend glyph (test/minimal-graphs). -->
-                <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                  <TextBlock Text="{Binding ActivityLabel}" Style="{StaticResource TileMetricValue}"/>
-                  <TextBlock Text="{Binding ActivityRow.Trend, Converter={StaticResource TrendToGlyph}}"
-                             Foreground="{Binding ActivityRow.Trend, Converter={StaticResource TrendToBrush}}"
-                             Style="{StaticResource MetricUnit}" Margin="4,0,0,0"/>
-                </StackPanel>
-              </Grid>
-              <!-- Disk transfer rate -->
-              <Grid Grid.Column="1" Margin="2,2,2,2">
-                <Grid.RowDefinitions>
-                  <RowDefinition Height="Auto"/>
-                  <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Grid Grid.Row="0">
-                  <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom">
-                    <TextBlock Text="Transfer rate" Style="{StaticResource MetricCaption}" Foreground="{StaticResource TextBrush}"/>
-                  </StackPanel>
-                  <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-                    <TextBlock Style="{StaticResource TileLegendCaption}">
-                    <Run Text="Peak"/><Run Text=" "/><Run Text="{Binding PeakTransferLabel, Mode=OneWay}"/>
+
+              <Border Grid.Column="0" Style="{StaticResource SummaryTileBorderStyle}" Margin="2,2,4,2">
+                <Grid Margin="10,4,10,6">
+                  <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                  </Grid.RowDefinitions>
+                  <Grid Grid.Row="0">
+                    <TextBlock Text="Active time" Style="{StaticResource SummaryTileTitleTextBlockStyle}"
+                               HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                    <TextBlock Style="{StaticResource MetricStatLine}" HorizontalAlignment="Right" VerticalAlignment="Center">
+                      <Run FontFamily="Segoe Fluent Icons" Text="&#xE70D; " Foreground="LightGreen"/>
+                      <Run Text="{Binding ActivityRow.Min, StringFormat={}{0:0.#}%}"/>
+                      <Run FontFamily="Segoe Fluent Icons" Text=" &#xE738; " Foreground="{StaticResource AccentBrush}"/>
+                      <Run Text="{Binding ActivityRow.Avg, StringFormat={}{0:0.#}%}"/>
+                      <Run FontFamily="Segoe Fluent Icons" Text=" &#xE70E; " Foreground="Crimson"/>
+                      <Run Text="{Binding ActivityRow.Max, StringFormat={}{0:0.#}%}"/>
                     </TextBlock>
+                  </Grid>
+                  <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,2,0,4">
+                    <TextBlock Text="{Binding ActivityLabel}" Style="{StaticResource TileMetricValue}"/>
+                    <TextBlock Text="{Binding ActivityRow.Trend, Converter={StaticResource TrendToGlyph}}"
+                               Foreground="{Binding ActivityRow.Trend, Converter={StaticResource TrendToBrush}}"
+                               Style="{StaticResource MetricUnit}" Margin="4,0,0,0"/>
                   </StackPanel>
+                  <graphs:AdaptiveGraph Grid.Row="2" Loaded="OnActivityGraphLoaded"
+                      Capacity="180" MinValue="0" MaxValue="100"
+                      Accent="{StaticResource GraphAccentStorage}"
+                      BandedLine="True" ShowChrome="True" MinHeight="40"
+                      CellPitch="{StaticResource DashboardDotPitch}"/>
                 </Grid>
-                <!-- Graph replaced with the live rate + trend glyph (test/minimal-graphs); the session
-                     peak is in the caption above, so the value area shows the current rate. -->
-                <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                  <TextBlock Text="{Binding CurrentTransferLabel}" Style="{StaticResource TileMetricValue}"/>
-                  <TextBlock Text="{Binding TransferRow.Trend, Converter={StaticResource TrendToGlyph}}"
-                             Foreground="{Binding TransferRow.Trend, Converter={StaticResource TrendToBrush}}"
-                             Style="{StaticResource MetricUnit}" Margin="4,0,0,0"/>
-                </StackPanel>
-              </Grid>
+              </Border>
 
-              <Grid Grid.Column="2" Margin="12,2,2,2">
+              <Border Grid.Column="1" Style="{StaticResource SummaryTileBorderStyle}" Margin="4,2,2,2">
+                <Grid Margin="10,4,10,6">
+                  <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                  </Grid.RowDefinitions>
+                  <Grid Grid.Row="0">
+                    <TextBlock Text="Transfer rate" Style="{StaticResource SummaryTileTitleTextBlockStyle}"
+                               HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                    <TextBlock Style="{StaticResource MetricStatLine}" HorizontalAlignment="Right" VerticalAlignment="Center">
+                      <Run FontFamily="Segoe Fluent Icons" Text="&#xE70D; " Foreground="LightGreen"/>
+                      <Run Text="{Binding TransferRow.Min, StringFormat={}{0:0.#}}"/>
+                      <Run FontFamily="Segoe Fluent Icons" Text=" &#xE738; " Foreground="{StaticResource AccentBrush}"/>
+                      <Run Text="{Binding TransferRow.Avg, StringFormat={}{0:0.#}}"/>
+                      <Run FontFamily="Segoe Fluent Icons" Text=" &#xE70E; " Foreground="Crimson"/>
+                      <Run Text="{Binding TransferRow.Max, StringFormat={}{0:0.#}}"/>
+                    </TextBlock>
+                  </Grid>
+                  <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,2,0,4">
+                    <TextBlock Text="{Binding CurrentTransferLabel}" Style="{StaticResource TileMetricValue}"/>
+                    <TextBlock Text="{Binding TransferRow.Trend, Converter={StaticResource TrendToGlyph}}"
+                               Foreground="{Binding TransferRow.Trend, Converter={StaticResource TrendToBrush}}"
+                               Style="{StaticResource MetricUnit}" Margin="4,0,0,0"/>
+                  </StackPanel>
+                  <graphs:AdaptiveGraph Grid.Row="2" Loaded="OnTransferGraphLoaded"
+                      Capacity="180" MinValue="0" MaxValue="{Binding TransferMaxMBps}"
+                      Accent="{StaticResource GraphAccentStorage}"
+                      BandedLine="False" ShowChrome="True" MinHeight="40"
+                      CellPitch="{StaticResource DashboardDotPitch}"/>
+                </Grid>
+              </Border>
+            </Grid>
+
+            <!-- Per-disk stats moved below the cards: two 4-column caption-over-value groups, one
+                 under each card (activity/response under Active time, media/health under Transfer). -->
+            <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" Margin="2,8,2,8">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+              </Grid.ColumnDefinitions>
+
+              <Grid Grid.Column="0" Margin="8,0,4,0">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*"/>
+                  <ColumnDefinition Width="*"/>
+                  <ColumnDefinition Width="*"/>
+                  <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                   <RowDefinition Height="Auto"/>
-                  <RowDefinition Height="*"/>
                   <RowDefinition Height="Auto"/>
-                  <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                  <ColumnDefinition/>
-                  <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Grid.Row="0" Grid.Column="0" Text="Active time" Style="{StaticResource TileStatCaption}"/>
-                <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding ActivityLabel}" Style="{StaticResource TileStatValue}"/>
-                <TextBlock Grid.Row="0" Grid.Column="1" Text="Response time" Style="{StaticResource TileStatCaption}"/>
-                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding ResponseLabel}" Style="{StaticResource TileStatValue}"/>
-                <TextBlock Grid.Row="2" Grid.Column="0" Text="Read speed" Style="{StaticResource TileStatCaption}"/>
-                <TextBlock Grid.Row="3" Grid.Column="0" Text="{Binding ReadSpeedLabel}" Style="{StaticResource TileStatValue}"/>
-                <TextBlock Grid.Row="2" Grid.Column="1" Text="Write speed" Style="{StaticResource TileStatCaption}"/>
-                <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding WriteSpeedLabel}" Style="{StaticResource TileStatValue}"/>
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Response time" Style="{StaticResource TileStatCaption}"/>
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding ResponseLabel}" Style="{StaticResource TileStatValue}"/>
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="Read speed" Style="{StaticResource TileStatCaption}"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding ReadSpeedLabel}" Style="{StaticResource TileStatValue}"/>
+                <TextBlock Grid.Row="0" Grid.Column="2" Text="Read activity" Style="{StaticResource TileStatCaption}"/>
+                <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding ReadActivityLabel}" Style="{StaticResource TileStatValue}"/>
+                <TextBlock Grid.Row="0" Grid.Column="3" Text="Write speed" Style="{StaticResource TileStatCaption}"/>
+                <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding WriteSpeedLabel}" Style="{StaticResource TileStatValue}"/>
               </Grid>
 
-              <Grid Grid.Column="3" Margin="12,2,2,2">
+              <Grid Grid.Column="1" Margin="8,0,4,0">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*"/>
+                  <ColumnDefinition Width="*"/>
+                  <ColumnDefinition Width="*"/>
+                  <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                   <RowDefinition Height="Auto"/>
-                  <RowDefinition Height="*"/>
                   <RowDefinition Height="Auto"/>
-                  <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                  <ColumnDefinition/>
-                  <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Grid.Row="0" Grid.Column="0" Text="Temperature" Style="{StaticResource TileStatCaption}"/>
-                <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding TemperatureLabel}" Style="{StaticResource TileStatValue}"/>
-                <TextBlock Grid.Row="0" Grid.Column="1" Text="Health (Life)" Style="{StaticResource TileStatCaption}"/>
-                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding HealthLabel}" Style="{StaticResource TileStatValue}"/>
-                <TextBlock Grid.Row="2" Grid.Column="0" Text="Read activity" Style="{StaticResource TileStatCaption}"/>
-                <TextBlock Grid.Row="3" Grid.Column="0" Text="{Binding ReadActivityLabel}" Style="{StaticResource TileStatValue}"/>
-                <TextBlock Grid.Row="2" Grid.Column="1" Text="Write activity" Style="{StaticResource TileStatCaption}"/>
-                <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding WriteActivityLabel}" Style="{StaticResource TileStatValue}"/>
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Write activity" Style="{StaticResource TileStatCaption}"/>
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding WriteActivityLabel}" Style="{StaticResource TileStatValue}"/>
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="Temperature" Style="{StaticResource TileStatCaption}"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding TemperatureLabel}" Style="{StaticResource TileStatValue}"/>
+                <TextBlock Grid.Row="0" Grid.Column="2" Text="Health (Life)" Style="{StaticResource TileStatCaption}"/>
+                <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding HealthLabel}" Style="{StaticResource TileStatValue}"/>
+                <TextBlock Grid.Row="0" Grid.Column="3" Text="Peak" Style="{StaticResource TileStatCaption}"/>
+                <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding PeakTransferLabel}" Style="{StaticResource TileStatValue}"/>
               </Grid>
             </Grid>
 
             <!-- Capacity: used vs free of the disk's mounted volumes -->
-            <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" Margin="2,0,0,0">
+            <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Margin="2,0,0,0">
               <Grid.RowDefinitions>
                 <RowDefinition Height="24"/>
                 <RowDefinition Height="Auto"/>
@@ -355,7 +327,7 @@
 
             <!-- Lifetime host writes/reads and power-on history (SMART), as spec pairs matching the
                  Memory tile's bottom hardware-spec row. -->
-            <Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" VerticalAlignment="Center" Margin="2,0,0,0">
+            <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" VerticalAlignment="Center" Margin="2,8,0,0">
               <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>

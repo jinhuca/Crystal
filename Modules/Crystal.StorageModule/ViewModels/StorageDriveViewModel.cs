@@ -48,6 +48,7 @@ public sealed class StorageDriveViewModel : BindableBase {
 
   public StorageDriveViewModel(StorageDriveInfo info) {
     DriveIndex = info.DriveIndex;
+    IsSystemDisk = info.IsSystemDisk;
     DiskLabel = info.DriveIndex is { } i ? $"Disk {i}" : "Disk";
     Model = info.Model;
     CapacityLabel = info.CapacityGB is { } gb ? $"{gb:0.#} GB" : "—";
@@ -73,6 +74,8 @@ public sealed class StorageDriveViewModel : BindableBase {
   }
 
   public int? DriveIndex { get; }
+  /// <summary>True for the disk hosting the Windows/OS volume — the tile's default selection.</summary>
+  public bool IsSystemDisk { get; }
   public string DiskLabel { get; }
   public string HeaderLabel { get; }
   public string Model { get; }

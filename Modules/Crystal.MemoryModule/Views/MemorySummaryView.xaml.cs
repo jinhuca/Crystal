@@ -1,4 +1,5 @@
 using Crystal.MemoryModule.ViewModels;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -10,6 +11,16 @@ namespace Crystal.MemoryModule.Views;
 public partial class MemorySummaryView : UserControl {
   public MemorySummaryView() {
     InitializeComponent();
+    Loaded += OnLoaded;
+  }
+
+  // The usage and commit-charge sparklines self-register with the view model so it feeds each on
+  // every poll (usage plotted 0–100, commit against the current commit limit).
+  private void OnLoaded(object sender, RoutedEventArgs e) {
+    if (DataContext is IMemoryViewModel vm) {
+      vm.AttachUsageGraph(MemoryUsageGraph);
+      vm.AttachCommitGraph(CommitChargeGraph);
+    }
   }
 
   private void OnTileClick(object sender, MouseButtonEventArgs e) {

@@ -122,8 +122,10 @@ public sealed class StorageViewModel : BindableBase, IStorageViewModel, IDisposa
       if (Drives.All(d => d.DriveIndex != drive.DriveIndex))
         Drives.Add(new StorageDriveViewModel(drive));
 
+    // Default to the OS/system disk (the one hosting the Windows volume) so the tile opens on the
+    // drive the user cares about most; fall back to the first disk when it can't be identified.
     if (SelectedDisk is null || !Drives.Contains(SelectedDisk))
-      SelectedDisk = Drives.FirstOrDefault();
+      SelectedDisk = Drives.FirstOrDefault(d => d.IsSystemDisk) ?? Drives.FirstOrDefault();
     RaisePropertyChanged(nameof(ShowBusiestDrive));
   }
 

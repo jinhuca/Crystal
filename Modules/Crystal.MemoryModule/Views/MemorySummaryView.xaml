@@ -16,6 +16,7 @@
     <ResourceDictionary>
     <ResourceDictionary.MergedDictionaries>
       <ResourceDictionary Source="/Crystal.Controls;component/Metrics/MetricEnrichmentResources.xaml"/>
+      <ResourceDictionary Source="/Crystal.Resources;component/Styles/BorderStyles.xaml"/>
     </ResourceDictionary.MergedDictionaries>
     <conv:FractionToStarConverter x:Key="FractionToStar"/>
 
@@ -54,8 +55,7 @@
     </Style>
     </ResourceDictionary>
   </UserControl.Resources>
-  <Border Background="Transparent" Cursor="Hand" MouseLeftButtonDown="OnTileClick"
-          ToolTip="Double-click to open the full memory view">
+  <Border Background="Transparent" Cursor="Hand" MouseLeftButtonDown="OnTileClick">
   <Grid Margin="8">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
@@ -64,106 +64,142 @@
     <sv:MemoryHeaderView Grid.Row="0" Margin="0,0,0,0"/>
     <Grid Grid.Row="1" ShowGridLines="False">
       <Grid.RowDefinitions>
-        <RowDefinition Height="108"/>
-        <RowDefinition Height="40"/>
-        <RowDefinition Height="24"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
       </Grid.RowDefinitions>
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="240"/>
-        <ColumnDefinition Width="240"/>
-        <ColumnDefinition/>
-        <ColumnDefinition/>
-      </Grid.ColumnDefinitions>
 
-      <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" ShowGridLines="False">
+      <!-- Two graph cards (Memory Usage / Commit charge), each mirroring the CPU/GPU summary card:
+           blue section title + session min/avg/max on the top line, the live value with its trend
+           glyph, and a self-registering history sparkline filling the rest. -->
+      <Grid Grid.Row="0" MinHeight="120">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="*"/>
           <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0" Style="{StaticResource SummaryTileBorderStyle}" Margin="2,2,4,2">
+          <Grid Margin="10,4,10,6">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+              <TextBlock Text="Memory Usage" Style="{StaticResource SummaryTileTitleTextBlockStyle}"
+                         HorizontalAlignment="Left" VerticalAlignment="Center"/>
+              <TextBlock Style="{StaticResource MetricStatLine}" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <Run FontFamily="Segoe Fluent Icons" Text="&#xE70D; " Foreground="LightGreen"/>
+                <Run Text="{Binding UsageRow.Min, StringFormat={}{0:0.#}}"/>
+                <Run FontFamily="Segoe Fluent Icons" Text=" &#xE738; " Foreground="{StaticResource AccentBrush}"/>
+                <Run Text="{Binding UsageRow.Avg, StringFormat={}{0:0.#}}"/>
+                <Run FontFamily="Segoe Fluent Icons" Text=" &#xE70E; " Foreground="Crimson"/>
+                <Run Text="{Binding UsageRow.Max, StringFormat={}{0:0.#}}"/>
+              </TextBlock>
+            </Grid>
+            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,2,0,4">
+              <TextBlock Text="{Binding UsageLabel}" Style="{StaticResource TileMetricValue}"/>
+              <TextBlock Text="{Binding UsageRow.Trend, Converter={StaticResource TrendToGlyph}}"
+                         Foreground="{Binding UsageRow.Trend, Converter={StaticResource TrendToBrush}}"
+                         Style="{StaticResource MetricUnit}" Margin="4,0,0,0"/>
+            </StackPanel>
+            <graphs:AdaptiveGraph Grid.Row="2" x:Name="MemoryUsageGraph"
+                Capacity="180" MinValue="0" MaxValue="100"
+                Accent="{StaticResource GraphAccentUtilization}"
+                BandedLine="True" ShowChrome="True" MinHeight="40"
+                CellPitch="{StaticResource DashboardDotPitch}"/>
+          </Grid>
+        </Border>
+
+        <Border Grid.Column="1" Style="{StaticResource SummaryTileBorderStyle}" Margin="4,2,2,2">
+          <Grid Margin="10,4,10,6">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+              <TextBlock Text="Commit charge" Style="{StaticResource SummaryTileTitleTextBlockStyle}"
+                         HorizontalAlignment="Left" VerticalAlignment="Center"/>
+              <TextBlock Style="{StaticResource MetricStatLine}" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <Run FontFamily="Segoe Fluent Icons" Text="&#xE70D; " Foreground="LightGreen"/>
+                <Run Text="{Binding CommitRow.Min, StringFormat={}{0:0.#}}"/>
+                <Run FontFamily="Segoe Fluent Icons" Text=" &#xE738; " Foreground="{StaticResource AccentBrush}"/>
+                <Run Text="{Binding CommitRow.Avg, StringFormat={}{0:0.#}}"/>
+                <Run FontFamily="Segoe Fluent Icons" Text=" &#xE70E; " Foreground="Crimson"/>
+                <Run Text="{Binding CommitRow.Max, StringFormat={}{0:0.#}}"/>
+              </TextBlock>
+            </Grid>
+            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,2,0,4">
+              <TextBlock Text="{Binding CommitUsageLabel}" Style="{StaticResource TileMetricValue}"/>
+              <TextBlock Text="{Binding CommitRow.Trend, Converter={StaticResource TrendToGlyph}}"
+                         Foreground="{Binding CommitRow.Trend, Converter={StaticResource TrendToBrush}}"
+                         Style="{StaticResource MetricUnit}" Margin="4,0,0,0"/>
+            </StackPanel>
+            <graphs:AdaptiveGraph Grid.Row="2" x:Name="CommitChargeGraph"
+                Capacity="180" MinValue="0"
+                MaxValue="{Binding CommitLimitGB, FallbackValue=64, TargetNullValue=64}"
+                Accent="{StaticResource GraphAccentUtilization}"
+                BandedLine="True" ShowChrome="True" MinHeight="40"
+                CellPitch="{StaticResource DashboardDotPitch}"/>
+          </Grid>
+        </Border>
+      </Grid>
+
+      <!-- Kernel/pool stats moved below the cards: two 4-column caption-over-value groups, one under
+           each card (physical-memory figures under Usage, commit/pool figures under Commit charge). -->
+      <Grid Grid.Row="1" Margin="2,8,2,8">
+        <Grid.ColumnDefinitions>
           <ColumnDefinition Width="*"/>
           <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <!-- Memory usage — graph replaced with a value readout (test/minimal-graphs). -->
-        <Grid Grid.Column="0" Margin="2,2,2,2">
-          <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-          </Grid.RowDefinitions>
-          <Grid Grid.Row="0">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom">
-              <TextBlock Text="Memory usage" Style="{StaticResource MetricCaption}" Foreground="{StaticResource TextBrush}"/>
-            </StackPanel>
-          </Grid>
-          <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBlock Text="{Binding UsageLabel}" Style="{StaticResource TileMetricValue}"/>
-            <TextBlock Text="{Binding UsageRow.Trend, Converter={StaticResource TrendToGlyph}}"
-                       Foreground="{Binding UsageRow.Trend, Converter={StaticResource TrendToBrush}}"
-                       Style="{StaticResource MetricUnit}" Margin="4,0,0,0"/>
-          </StackPanel>
-        </Grid>
-        <!-- Commit charge — graph replaced with a value readout (test/minimal-graphs). -->
-        <Grid Grid.Column="1" Margin="2,2,2,2">
-          <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-          </Grid.RowDefinitions>
-          <Grid Grid.Row="0">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom">
-              <TextBlock Text="Commit charge" Style="{StaticResource MetricCaption}" Foreground="{StaticResource TextBrush}"/>
-            </StackPanel>
-          </Grid>
-          <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBlock Text="{Binding CommitUsageLabel}" Style="{StaticResource TileMetricValue}"/>
-            <TextBlock Text="{Binding CommitRow.Trend, Converter={StaticResource TrendToGlyph}}"
-                       Foreground="{Binding CommitRow.Trend, Converter={StaticResource TrendToBrush}}"
-                       Style="{StaticResource MetricUnit}" Margin="4,0,0,0"/>
-          </StackPanel>
-        </Grid>
 
-        <Grid Grid.Column="2" Margin="12,2,2,2">
+        <Grid Grid.Column="0" Margin="8,0,4,0">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+          </Grid.ColumnDefinitions>
           <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
           </Grid.RowDefinitions>
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-          </Grid.ColumnDefinitions>
           <TextBlock Grid.Row="0" Grid.Column="0" Text="In use (Compressed)" Style="{StaticResource TileStatCaption}"/>
           <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding InUseLabel}" Style="{StaticResource TileStatValue}"/>
           <TextBlock Grid.Row="0" Grid.Column="1" Text="Committed" Style="{StaticResource TileStatCaption}"/>
           <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding CommittedLabel}" Style="{StaticResource TileStatValue}"/>
-          <TextBlock Grid.Row="2" Grid.Column="0" Text="Commit peak" Style="{StaticResource TileStatCaption}"/>
-          <TextBlock Grid.Row="3" Grid.Column="0" Text="{Binding CommitPeakLabel}" Style="{StaticResource TileStatValue}"/>
-          <TextBlock Grid.Row="2" Grid.Column="1" Text="Paged pool" Style="{StaticResource TileStatCaption}"/>
-          <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding PagedPoolLabel}" Style="{StaticResource TileStatValue}"/>
+          <TextBlock Grid.Row="0" Grid.Column="2" Text="Available" Style="{StaticResource TileStatCaption}"/>
+          <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding AvailableLabel}" Style="{StaticResource TileStatValue}"/>
+          <TextBlock Grid.Row="0" Grid.Column="3" Text="Cached" Style="{StaticResource TileStatCaption}"/>
+          <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding CachedLabel}" Style="{StaticResource TileStatValue}"/>
         </Grid>
 
-        <Grid Grid.Column="3" Margin="12,2,2,2" Background="Transparent">
+        <Grid Grid.Column="1" Margin="8,0,4,0">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+          </Grid.ColumnDefinitions>
           <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
           </Grid.RowDefinitions>
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-          </Grid.ColumnDefinitions>
-          <TextBlock Grid.Row="0" Grid.Column="0" Text="Available" Style="{StaticResource TileStatCaption}"/>
-          <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding AvailableLabel}" Style="{StaticResource TileStatValue}"/>
-          <TextBlock Grid.Row="0" Grid.Column="1" Text="Cached" Style="{StaticResource TileStatCaption}"/>
-          <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding CachedLabel}" Style="{StaticResource TileStatValue}"/>
-          <TextBlock Grid.Row="2" Grid.Column="0" Text="Non-paged pool" Style="{StaticResource TileStatCaption}"/>
-          <TextBlock Grid.Row="3" Grid.Column="0" Text="{Binding NonPagedPoolLabel}" Style="{StaticResource TileStatValue}"/>
-          <TextBlock Grid.Row="2" Grid.Column="1" Text="Pagefile (used/size)" Style="{StaticResource TileStatCaption}"/>
-          <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding PageFileLabel}" Style="{StaticResource TileStatValue}"/>
+          <TextBlock Grid.Row="0" Grid.Column="0" Text="Commit peak" Style="{StaticResource TileStatCaption}"/>
+          <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding CommitPeakLabel}" Style="{StaticResource TileStatValue}"/>
+          <TextBlock Grid.Row="0" Grid.Column="1" Text="Paged pool" Style="{StaticResource TileStatCaption}"/>
+          <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding PagedPoolLabel}" Style="{StaticResource TileStatValue}"/>
+          <TextBlock Grid.Row="0" Grid.Column="2" Text="Non-paged pool" Style="{StaticResource TileStatCaption}"/>
+          <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding NonPagedPoolLabel}" Style="{StaticResource TileStatValue}"/>
+          <TextBlock Grid.Row="0" Grid.Column="3" Text="Pagefile (used/size)" Style="{StaticResource TileStatCaption}"/>
+          <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding PageFileLabel}" Style="{StaticResource TileStatValue}"/>
         </Grid>
       </Grid>
 
       <!-- Memory composition title + the segment legend on one line: title left, legend right. -->
-      <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" Margin="2,0,0,0">
+      <Grid Grid.Row="2" Margin="2,0,0,0">
         <Grid.RowDefinitions>
           <RowDefinition Height="24"/>
           <RowDefinition Height="Auto"/>
@@ -215,7 +251,7 @@
       </Grid>
 
       <!-- Hardware spec pairs -->
-      <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" VerticalAlignment="Center" Margin="2,0,0,0">
+      <Grid Grid.Row="3" VerticalAlignment="Center" Margin="2,8,0,0">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="*"/>
           <ColumnDefinition Width="*"/>
