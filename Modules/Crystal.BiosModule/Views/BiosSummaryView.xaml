@@ -4,29 +4,86 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:prism="http://prismlibrary.com/"
-             xmlns:sv="clr-namespace:Crystal.BiosModule.Views.SummaryViews"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
-             d:DesignHeight="240" d:DesignWidth="1100"
+             d:DesignHeight="120" d:DesignWidth="1400"
              Background="Transparent" Foreground="{StaticResource TextBrush}"
              FontFamily="{StaticResource UiFontFamily}">
-  <!-- Layout only: the header and each section live in Views/SummaryViews. Every sub-view inherits
-       the root IBiosViewModel; the board-readings view self-registers its sparklines on load. -->
-  <Border Background="Transparent" MouseLeftButtonDown="OnTileClick">
-    <Grid Margin="10">
-      <Grid.RowDefinitions>
-        <RowDefinition Height="Auto"/>
-        <RowDefinition Height="*"/>
-      </Grid.RowDefinitions>
+  <UserControl.Resources>
+    <!-- Field caption (e.g. "Version", "TPM"): muted, caption-scale, centred on its row. -->
+    <Style x:Key="FieldLabel" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="{StaticResource LabelBrush}"/>
+      <Setter Property="FontSize" Value="{StaticResource CaptionFontSize}"/>
+      <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <!-- Inline header value (e.g. "UEFI", "On"): bright mono, caption-scale, gap after its label. -->
+    <Style x:Key="FieldValue" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="{StaticResource ValueBrush}"/>
+      <Setter Property="FontSize" Value="{StaticResource SpecFontSize}"/>
+      <Setter Property="FontFamily" Value="{StaticResource MonoFontFamily}"/>
+      <Setter Property="VerticalAlignment" Value="Center"/>
+      <Setter Property="Margin" Value="6,0,0,0"/>
+    </Style>
+    <!-- Readout value stacked under its caption: prominent mono figure. -->
+    <Style x:Key="ReadoutValue" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="{StaticResource ValueBrush}"/>
+      <Setter Property="FontSize" Value="{StaticResource SectionFontSize}"/>
+      <Setter Property="FontFamily" Value="{StaticResource MonoFontFamily}"/>
+      <Setter Property="Margin" Value="0,3,0,0"/>
+    </Style>
+  </UserControl.Resources>
 
-      <sv:BiosHeaderView Grid.Row="0"/>
+  <!-- Compact identity tile: firmware basics up top, key firmware specs below. Double-clicking opens
+       the full BIOS detail view (board sensors, rail trends, health events). A Viewbox (scale-down
+       only) keeps the two dense lines from clipping on the right when the BIOS column is narrow. -->
+  <Border Background="Transparent" Cursor="Hand" MouseLeftButtonDown="OnTileClick">
+    <Viewbox StretchDirection="DownOnly" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10">
+      <StackPanel>
+        <!-- Header bar: accent tick + title + manufacturer, then the firmware identity fields
+             (version, interface, secure boot) on the same line. Thin divider rule below. -->
+        <Border BorderBrush="{StaticResource DividerBrush}" BorderThickness="0,0,0,1"
+                Padding="0,0,0,6" Margin="0,0,0,8">
+          <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <Border Width="3" Background="{StaticResource AccentBrush}" Margin="0,1,10,1"/>
+            <TextBlock Text="BIOS" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource BodyFontSize}" FontWeight="SemiBold"
+                       VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding Manufacturer}" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource BodyFontSize}"
+                       VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="20,0,0,0"/>
 
-      <!-- Essential static identity (top) + live board telemetry (bottom). -->
-      <StackPanel Grid.Row="1" VerticalAlignment="Top">
-        <sv:BiosFirmwareView/>
-        <sv:BiosBoardStatusView/>
-        <sv:BiosBoardReadingsView/>
+            <TextBlock Text="Version" Style="{StaticResource FieldLabel}" Margin="28,0,0,0"/>
+            <TextBlock Text="{Binding Version}" Style="{StaticResource FieldValue}"/>
+
+            <TextBlock Text="Interface" Style="{StaticResource FieldLabel}" Margin="28,0,0,0"/>
+            <TextBlock Text="{Binding FirmwareInterface}" Style="{StaticResource FieldValue}"/>
+
+            <TextBlock Text="Secure Boot" Style="{StaticResource FieldLabel}" Margin="28,0,0,0"/>
+            <TextBlock Text="{Binding SecureBoot}" Style="{StaticResource FieldValue}"/>
+          </StackPanel>
+        </Border>
+
+        <!-- Readout row: each firmware spec is a caption stacked over a prominent mono value. -->
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+          <StackPanel>
+            <TextBlock Text="Release date" Style="{StaticResource FieldLabel}"/>
+            <TextBlock Text="{Binding ReleaseDate}" Style="{StaticResource ReadoutValue}"/>
+          </StackPanel>
+
+          <StackPanel Margin="48,0,0,0">
+            <TextBlock Text="ROM size" Style="{StaticResource FieldLabel}"/>
+            <TextBlock Text="{Binding RomSize}" Style="{StaticResource ReadoutValue}"/>
+          </StackPanel>
+
+          <StackPanel Margin="48,0,0,0">
+            <TextBlock Text="SMBIOS" Style="{StaticResource FieldLabel}"/>
+            <TextBlock Text="{Binding SmbiosSpecVersion}" Style="{StaticResource ReadoutValue}"/>
+          </StackPanel>
+
+          <StackPanel Margin="48,0,0,0">
+            <TextBlock Text="TPM" Style="{StaticResource FieldLabel}"/>
+            <TextBlock Text="{Binding Tpm}" Style="{StaticResource ReadoutValue}"/>
+          </StackPanel>
+        </StackPanel>
       </StackPanel>
-    </Grid>
+    </Viewbox>
   </Border>
 </UserControl>

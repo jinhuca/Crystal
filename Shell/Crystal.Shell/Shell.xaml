@@ -105,10 +105,6 @@
                      FontSize="14" VerticalAlignment="Center" Margin="14,0,0,0"
                      WindowChrome.IsHitTestVisibleInChrome="True" Checked="OnGraphDotChecked"/>
       </StackPanel>
-      <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <TextBlock x:Name="DateTimeText" Foreground="{StaticResource SpecValueBrush}" 
-                   FontFamily="{StaticResource UiFontFamily}" FontSize="16" VerticalAlignment="Center"/>
-      </StackPanel>
       <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
         <Button x:Name="ResetLayoutButton" Style="{StaticResource CaptionButtonStyle}"
                 Click="OnResetLayoutClick" Content="&#xE72C;" ToolTip="Reset dashboard layout"/>
