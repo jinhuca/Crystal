@@ -66,6 +66,14 @@ public interface INetworkViewModel {
   /// muted status row shown in place of the connected Wi-Fi block.</summary>
   bool HasWifiStatus { get; }
 
+  /// <summary>True when no Wi-Fi is connected yet a wired/other interface is carrying traffic; drives
+  /// a row naming that connection so the throughput readout has a visible owner.</summary>
+  bool HasActiveConnection { get; }
+
+  /// <summary>Name of the interface currently moving the most traffic when Wi-Fi isn't the
+  /// connection (e.g. "Ethernet"). "—" while Wi-Fi is connected or nothing is active.</summary>
+  string ActiveConnectionLabel { get; }
+
   /// <summary>Muted status text for a present-but-not-connected radio ("Wi-Fi disabled" /
   /// "Wi-Fi disconnected"). Empty when a radio is connected or none exists.</summary>
   string WifiStatusLabel { get; }
@@ -75,6 +83,9 @@ public interface INetworkViewModel {
 
   /// <summary>Negotiated Rx/Tx link rate of the summary Wi-Fi adapter (e.g. "866 / 866 Mbps").</summary>
   string WifiLinkRate { get; }
+
+  /// <summary>Radio band and channel of the summary Wi-Fi adapter (e.g. "5 GHz (ch 44)").</summary>
+  string WifiBandChannel { get; }
 
   /// <summary>Security suite of the summary Wi-Fi adapter (e.g. "WPA2-Personal / CCMP").</summary>
   string WifiSecurity { get; }
