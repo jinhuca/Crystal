@@ -383,6 +383,18 @@ public sealed class AdaptiveGraph : Decorator, ISingleSeriesGraph {
     return _series.Count;
   }
 
+  /// <summary>Clears every series and its buffered history, returning the graph to an empty
+  /// primary-only state. Used when the host re-points one graph instance at a different data source
+  /// (e.g. the Storage tile's disk selection swaps the bound disk on the reused template) so the new
+  /// source's trace starts clean instead of continuing the previous one's. Overlay series must be
+  /// re-registered via <see cref="AddSeries"/> afterwards.</summary>
+  public void Reset() {
+    _series.Clear();
+    _history.Clear();
+    _history.Add([]);
+    if (_inner != null) Rebuild();
+  }
+
   /// <summary>Appends a sample to the primary series (index 0).</summary>
   public void AddValue(double value) => AddValue(0, value);
 

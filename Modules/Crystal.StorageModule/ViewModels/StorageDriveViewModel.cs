@@ -153,11 +153,26 @@ public sealed class StorageDriveViewModel : BindableBase {
   public void AttachActivityGraph(ISingleSeriesGraph graph) => _activityGraph = graph;
 
   public void AttachTransferGraph(AdaptiveGraph graph) {
-    // Loaded re-fires with a fresh graph when the disk selection swaps the template. Registering
-    // the write overlay once per graph is idempotent: re-attaching the same instance is a no-op.
+    // Re-attaching the same instance is idempotent: registering the write overlay once per graph is
+    // enough, so a repeated attach (the graph reloads without a disk change) is a no-op.
     if (ReferenceEquals(_transferGraph, graph)) return;
     _transferGraph = graph;
     _transferWriteSeries = graph.AddSeries(WriteSeriesBrush, fillBrush: null, thickness: 1.5);
+  }
+
+  // One AdaptiveGraph instance is shared across disks: the tile's disk selector swaps the bound disk
+  // on a reused template rather than building a fresh graph. Detach on the way out so the previously
+  // selected disk stops feeding a graph the newly selected disk now owns — otherwise every disk's
+  // per-poll Update would push into the same graph, interleaving unrelated traces.
+  public void DetachActivityGraph(ISingleSeriesGraph graph) {
+    if (ReferenceEquals(_activityGraph, graph)) _activityGraph = null;
+  }
+
+  public void DetachTransferGraph(AdaptiveGraph graph) {
+    if (ReferenceEquals(_transferGraph, graph)) {
+      _transferGraph = null;
+      _transferWriteSeries = 0;
+    }
   }
 
   /// <summary>Feeds this disk's newest live sample in, pushing the graphs and refreshing labels.</summary>
