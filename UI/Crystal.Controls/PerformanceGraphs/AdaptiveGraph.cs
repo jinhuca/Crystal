@@ -402,6 +402,11 @@ public sealed class AdaptiveGraph : Decorator, ISingleSeriesGraph {
   /// <see cref="AddSeries"/>. In Dot mode only the primary series is plotted, so overlay samples are
   /// dropped from the live control — but still buffered, so switching back to Line restores them.</summary>
   public void AddValue(int series, double value) {
+    // A non-finite sample (NaN/Infinity from a momentarily bad sensor) normalizes to NaN in the plot,
+    // which the fill geometry renders as a full-height band — the "graph pinned at 100%" symptom. Drop
+    // it here, the common sink for both registry-fed and directly-fed graphs, so it neither reaches the
+    // inner control nor gets buffered into the replay history (where a mode toggle would resurrect it).
+    if (!double.IsFinite(value)) return;
     Record(series, value);
     switch (_inner) {
       case PerformanceGraph graph:

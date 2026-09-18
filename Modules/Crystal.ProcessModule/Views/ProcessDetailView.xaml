@@ -491,6 +491,9 @@
           <Button Content="Run new task" Margin="16,0,0,0" Style="{StaticResource ToolbarButtonStyle}"
                   ToolTip="Launch a new process (optionally as administrator)"
                   Click="OnRunNewTask"/>
+          <Button Content="Benchmark" Margin="6,0,0,0" Style="{StaticResource ToolbarButtonStyle}"
+                  ToolTip="Open the benchmark suite in its own window"
+                  Command="{Binding OpenBenchmarkCommand}"/>
           <!-- Toggle: records the selected process's per-poll readings to a CSV; enabled once a row
                is selected, then stays enabled (as "Stop rec") until stopped or the process exits. -->
           <Button Content="{Binding RecordButtonLabel}" Margin="6,0,0,0" Style="{StaticResource RecordButtonStyle}"

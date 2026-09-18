@@ -67,6 +67,14 @@ public sealed class MetricRowViewModel : INotifyPropertyChanged {
   /// judged against it.
   /// </summary>
   public void Update(double value, double? min = null, double? max = null) {
+    // A non-finite reading (NaN/Infinity from a momentarily bad sensor) would poison the row for the
+    // rest of the session: _sum += NaN pins Avg at NaN forever, and Math.Min/Max with NaN pin Min/Max
+    // at NaN too. Drop the sample and keep the last good state. Guard supplied extremes the same way,
+    // falling back to self-tracked min/max when the provider's own extreme is non-finite.
+    if (!double.IsFinite(value)) return;
+    if (min is { } suppliedMin && !double.IsFinite(suppliedMin)) min = null;
+    if (max is { } suppliedMax && !double.IsFinite(suppliedMax)) max = null;
+
     if (_seeded) {
       double band = Math.Abs(_ema) * TrendBand;
       Trend = value > _ema + band ? MetricTrend.Rising

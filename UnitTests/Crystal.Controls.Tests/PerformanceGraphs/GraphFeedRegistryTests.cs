@@ -44,4 +44,21 @@ public class GraphFeedRegistryTests {
 
     registry.Feed("Nope", 1);
   }
+
+  [Theory]
+  [InlineData(double.NaN)]
+  [InlineData(double.PositiveInfinity)]
+  [InlineData(double.NegativeInfinity)]
+  public void Feed_DropsNonFiniteSamples(double bad) {
+    // A momentarily bad sensor reading would otherwise normalize to NaN and render as a full-height
+    // fill (the "graph pinned at 100%" bug); it must never reach the graph.
+    var registry = new GraphFeedRegistry();
+    var graph = new FakeGraph();
+    registry.Attach("Cpu.Utilization", graph);
+
+    registry.Feed("Cpu.Utilization", 17.68);
+    registry.Feed("Cpu.Utilization", bad);
+
+    Assert.Equal([17.68], graph.Fed);
+  }
 }
