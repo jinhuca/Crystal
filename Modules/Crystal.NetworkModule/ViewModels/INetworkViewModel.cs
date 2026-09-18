@@ -1,3 +1,4 @@
+using Crystal.Controls.Metrics;
 using Crystal.Controls.PerformanceGraphs;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -51,6 +52,12 @@ public interface INetworkViewModel {
   /// <summary>Shared upper bound (bytes/sec) for the summary download/upload sparklines, tracking the
   /// recent busiest sample across both so the two graphs stay on a common, comparable scale.</summary>
   double ThroughputMaxBytesPerSecond { get; }
+
+  /// <summary>Session min/avg/max and trend of the total download rate (KiB/s), for the tile's caret stat line.</summary>
+  MetricRowViewModel DownloadRow { get; }
+
+  /// <summary>Session min/avg/max and trend of the total upload rate (KiB/s), for the tile's caret stat line.</summary>
+  MetricRowViewModel UploadRow { get; }
 
   /// <summary>
   /// Registers a history graph to be fed on each update, keyed by its <c>GraphIdentity.Id</c>
