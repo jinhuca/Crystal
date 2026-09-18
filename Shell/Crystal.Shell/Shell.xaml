@@ -106,6 +106,8 @@
                      WindowChrome.IsHitTestVisibleInChrome="True" Checked="OnGraphDotChecked"/>
       </StackPanel>
       <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+        <Button x:Name="BenchmarkButton" Style="{StaticResource CaptionButtonStyle}"
+                Click="OnBenchmarkClick" Content="&#xEC4A;" ToolTip="Run benchmarks"/>
         <Button x:Name="ResetLayoutButton" Style="{StaticResource CaptionButtonStyle}"
                 Click="OnResetLayoutClick" Content="&#xE72C;" ToolTip="Reset dashboard layout"/>
         <Button x:Name="MinimizeButton" Style="{StaticResource CaptionButtonStyle}"

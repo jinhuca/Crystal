@@ -67,7 +67,8 @@ public class ProcessModule(IRegionManager regionManager) : IModule {
     containerRegistry.Register<ProcessListViewModel>(
         cp => new ProcessListViewModel(cp.Resolve<IProcessModel>(), cp.Resolve<SystemStatsMonitor>(),
             cp.Resolve<ProcessIconProvider>(), controller: cp.Resolve<IProcessController>(),
-            recorder: cp.Resolve<IProcessRecorder>(), gpuMonitor: cp.Resolve<GpuMonitor>()));
+            recorder: cp.Resolve<IProcessRecorder>(), gpuMonitor: cp.Resolve<GpuMonitor>(),
+            events: cp.Resolve<IEventAggregator>()));
 
     // Lightweight VM for the compact dashboard tile: process/thread/handle totals only, no list.
     containerRegistry.Register<ProcessSummaryViewModel>();

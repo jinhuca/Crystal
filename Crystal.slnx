@@ -19,6 +19,7 @@
     <Project Path="Modules/Crystal.NetworkModule/Crystal.NetworkModule.csproj" />
     <Project Path="Modules/Crystal.ProcessModule/Crystal.ProcessModule.csproj" />
     <Project Path="Modules/Crystal.OSModule/Crystal.OSModule.csproj" />
+    <Project Path="Modules/Crystal.BenchmarkModule/Crystal.BenchmarkModule.csproj" />
   </Folder>
   <Folder Name="/Providers/">
     <Project Path="Providers/Crystal.Provider.CpuId/Crystal.Provider.CpuId.csproj" />
@@ -41,6 +42,7 @@
     <Project Path="Services/Crystal.Service.Storage/Crystal.Service.Storage.csproj" />
     <Project Path="Services/Crystal.Service.Process/Crystal.Service.Process.csproj" />
     <Project Path="Services/Crystal.Service.Sensors/Crystal.Service.Sensors.csproj" />
+    <Project Path="Services/Crystal.Service.Benchmark/Crystal.Service.Benchmark.csproj" />
   </Folder>
   <Folder Name="/Shell/">
     <Project Path="Shell/Crystal.Shell/Crystal.Shell.csproj" Id="34c04727-c18d-49e7-bdb5-9bb18e95078b" />
@@ -167,6 +169,11 @@
       <Platform Solution="*|x86" Project="x86" />
     </Project>
     <Project Path="UnitTests/Crystal.Service.Network.Tests/Crystal.Service.Network.Tests.csproj">
+      <Platform Solution="*|Any CPU" Project="x64" />
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
+    <Project Path="UnitTests/Crystal.Service.Benchmark.Tests/Crystal.Service.Benchmark.Tests.csproj">
       <Platform Solution="*|Any CPU" Project="x64" />
       <Platform Solution="*|x64" Project="x64" />
       <Platform Solution="*|x86" Project="x86" />

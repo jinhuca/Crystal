@@ -1,6 +1,8 @@
+using Crystal.Infrastructure.Constants.Navigation;
 using Crystal.Shell.Navigation;
 using Crystal.Shell.Settings;
 using Crystal.Shell.Views;
+using Prism.Events;
 using System;
 using System.ComponentModel;
 using System.Windows;
@@ -24,14 +26,16 @@ public partial class Shell : Window {
 
   private readonly WindowLayoutStore _layouts;
   private readonly Settings.GraphSettingsStore _graphSettings;
+  private readonly IEventAggregator _events;
 
   // Guards the title-bar graph-shape radios while their initial checked state is being seeded, so
   // reflecting the current selection doesn't itself write the settings back.
   private bool _suppressKindApply;
 
-  public Shell(WindowLayoutStore layouts, Settings.GraphSettingsStore graphSettings) {
+  public Shell(WindowLayoutStore layouts, Settings.GraphSettingsStore graphSettings, IEventAggregator events) {
     _layouts = layouts;
     _graphSettings = graphSettings;
+    _events = events;
     InitializeComponent();
     RestorePlacement();
     StateChanged += (_, _) => UpdateMaximizeButton();
@@ -47,6 +51,10 @@ public partial class Shell : Window {
     : WindowState.Maximized;
 
   private void OnCloseClick(object sender, RoutedEventArgs e) => Close();
+
+  // Opens the benchmark suite in its own detail window (DetailWindowService handles create/focus).
+  private void OnBenchmarkClick(object sender, RoutedEventArgs e) =>
+      _events.GetEvent<ShowDetailEvent>().Publish(DetailViewNames.Benchmark);
 
   // Reflect the persisted render mode in the title-bar radios and push it onto the global graph
   // appearance so every AdaptiveGraph builds in the right shape from first paint. Seeding is

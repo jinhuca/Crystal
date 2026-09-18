@@ -1,10 +1,14 @@
 using Crystal.Controls.Threading;
+using Crystal.Infrastructure.Constants.Navigation;
 using Crystal.ProcessModule.Models;
 using Crystal.Service.Gpu;
 using Crystal.Service.Process;
+using Prism.Commands;
+using Prism.Events;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace Crystal.ProcessModule.ViewModels;
@@ -59,17 +63,22 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
   private readonly HashSet<uint> _recordingPids = [];
   private bool _isRecording;
 
+  // Publishes the ShowDetailEvent that opens the benchmark window; null in tests (command disabled).
+  private readonly IEventAggregator? _events;
+
   // clock, iconProvider, controller and recorder are optional so Unity's default registration works
   // (optional ctor params aren't injected); tests pass a fixed clock for a deterministic timestamp,
   // skip icons, and inject fakes.
   public ProcessListViewModel(IProcessModel model, SystemStatsMonitor systemStats,
                               ProcessIconProvider? iconProvider = null, Func<DateTimeOffset>? clock = null,
                               IProcessController? controller = null, IProcessRecorder? recorder = null,
-                              GpuMonitor? gpuMonitor = null) {
+                              GpuMonitor? gpuMonitor = null, IEventAggregator? events = null) {
     _clock = clock ?? (() => DateTimeOffset.Now);
     _iconProvider = iconProvider;
     _controller = controller ?? new ProcessController();
     _recorder = recorder ?? new ProcessRecorder();
+    _events = events;
+    OpenBenchmarkCommand = new DelegateCommand(OpenBenchmark, () => _events is not null);
     MetricsStatusError = model.MetricsStatusError;
 
     RowsView = new ListCollectionView(Rows);
@@ -95,6 +104,12 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
   }
 
   public ObservableCollection<ProcessRowViewModel> Rows { get; } = [];
+
+  /// <summary>Opens the benchmark suite in its own detail window (via the shell's DetailWindowService).</summary>
+  public ICommand OpenBenchmarkCommand { get; }
+
+  private void OpenBenchmark() =>
+      _events?.GetEvent<ShowDetailEvent>().Publish(DetailViewNames.Benchmark);
 
   /// <summary>Most processes that can be monitored (and plotted) at once.</summary>
   public const int MaxMonitored = 5;

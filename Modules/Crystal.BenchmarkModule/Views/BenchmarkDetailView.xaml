@@ -1,0 +1,150 @@
+<UserControl x:Class="Crystal.BenchmarkModule.Views.BenchmarkDetailView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:prism="http://prismlibrary.com/"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             mc:Ignorable="d"
+             d:DesignHeight="560" d:DesignWidth="820"
+             Background="{StaticResource PanelBackgroundBrush}"
+             Foreground="{StaticResource TextBrush}"
+             FontFamily="{StaticResource UiFontFamily}">
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Crystal.Controls;component/Themes/ScrollBarStyles.xaml"/>
+      </ResourceDictionary.MergedDictionaries>
+
+      <!-- Slim flat progress bar matching the dark palette. -->
+      <Style x:Key="SuiteProgressBarStyle" TargetType="ProgressBar">
+        <Setter Property="Height" Value="6"/>
+        <Setter Property="Minimum" Value="0"/>
+        <Setter Property="Maximum" Value="1"/>
+        <Setter Property="Foreground" Value="{StaticResource AccentBrush}"/>
+        <Setter Property="Background" Value="#12233A"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="ProgressBar">
+              <Border Background="{TemplateBinding Background}" CornerRadius="3" SnapsToDevicePixels="True">
+                <Grid>
+                  <Border x:Name="PART_Track"/>
+                  <Border x:Name="PART_Indicator" HorizontalAlignment="Left"
+                          Background="{TemplateBinding Foreground}" CornerRadius="3"/>
+                </Grid>
+              </Border>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style>
+    </ResourceDictionary>
+  </UserControl.Resources>
+
+  <Grid Margin="16">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+
+    <!-- Header -->
+    <StackPanel Grid.Row="0" Margin="0,0,0,12">
+      <TextBlock Text="Benchmark Suite" FontSize="{StaticResource SectionFontSize}"
+                 FontWeight="SemiBold" Foreground="{StaticResource TextBrush}"/>
+      <TextBlock Text="Select the suites to run, then start the benchmark. Suites run one at a time."
+                 Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource CaptionFontSize}"
+                 Margin="0,2,0,0"/>
+    </StackPanel>
+
+    <!-- Toolbar -->
+    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,10">
+      <Button Content="Run selected" Style="{StaticResource DetailBackButtonStyle}"
+              Command="{Binding RunSelectedCommand}" Margin="0,0,8,0"/>
+      <Button Content="Run all" Style="{StaticResource DetailBackButtonStyle}"
+              Command="{Binding RunAllCommand}" Margin="0,0,8,0"/>
+      <Button Content="Cancel" Style="{StaticResource DetailBackButtonStyle}"
+              Command="{Binding CancelCommand}" Margin="0,0,16,0"/>
+      <Button Content="Select all" Style="{StaticResource DetailBackButtonStyle}"
+              Command="{Binding SelectAllCommand}" Margin="0,0,8,0"/>
+      <Button Content="Clear" Style="{StaticResource DetailBackButtonStyle}"
+              Command="{Binding ClearSelectionCommand}" Margin="0,0,16,0"/>
+      <Button Content="Save report…" Style="{StaticResource DetailBackButtonStyle}"
+              ToolTip="Save the last run's results to a CSV file"
+              IsEnabled="{Binding CanExportReport}" Click="OnSaveReport"/>
+    </StackPanel>
+
+    <!-- Overall progress + status -->
+    <Grid Grid.Row="2" Margin="0,0,0,12">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="Auto"/>
+      </Grid.ColumnDefinitions>
+      <ProgressBar Grid.Column="0" Style="{StaticResource SuiteProgressBarStyle}"
+                   Height="8" VerticalAlignment="Center" Value="{Binding OverallProgress, Mode=OneWay}"/>
+      <TextBlock Grid.Column="1" Text="{Binding OverallStatus}" Margin="12,0,0,0"
+                 VerticalAlignment="Center" Foreground="{StaticResource LabelBrush}"
+                 FontSize="{StaticResource CaptionFontSize}"/>
+    </Grid>
+
+    <!-- Suite list, grouped by category -->
+    <ScrollViewer Grid.Row="3" VerticalScrollBarVisibility="Auto">
+      <ItemsControl ItemsSource="{Binding Items}">
+        <ItemsControl.GroupStyle>
+          <GroupStyle>
+            <GroupStyle.HeaderTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding Name}" FontSize="{StaticResource BodyFontSize}"
+                           FontWeight="SemiBold" Foreground="{StaticResource AccentBrush}"
+                           Margin="0,10,0,6"/>
+              </DataTemplate>
+            </GroupStyle.HeaderTemplate>
+          </GroupStyle>
+        </ItemsControl.GroupStyle>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <Border Background="{StaticResource SurfaceBackgroundBrush}"
+                    BorderBrush="{StaticResource DividerBrush}" BorderThickness="1"
+                    CornerRadius="4" Padding="12,10" Margin="0,0,0,6">
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="Auto"/>
+                  <ColumnDefinition Width="*"/>
+                  <ColumnDefinition Width="180"/>
+                </Grid.ColumnDefinitions>
+
+                <CheckBox Grid.Column="0" IsChecked="{Binding IsSelected}"
+                          VerticalAlignment="Center" Margin="0,0,12,0"
+                          Foreground="{StaticResource TextBrush}"/>
+
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                  <TextBlock Text="{Binding Name}" Foreground="{StaticResource ValueBrush}"
+                             FontSize="{StaticResource BodyFontSize}" FontWeight="SemiBold"/>
+                  <TextBlock Text="{Binding Description}" Foreground="{StaticResource LabelBrush}"
+                             FontSize="{StaticResource CaptionFontSize}" TextWrapping="Wrap"
+                             Margin="0,1,12,0"/>
+                  <ProgressBar Style="{StaticResource SuiteProgressBarStyle}"
+                               Value="{Binding Progress, Mode=OneWay}" Margin="0,6,12,0"
+                               Visibility="{Binding IsRunning, Converter={StaticResource BoolToVisibility}}"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right">
+                  <TextBlock Text="{Binding ScoreLabel}" Foreground="{StaticResource TextBrush}"
+                             FontFamily="{StaticResource MonoFontFamily}"
+                             FontSize="{StaticResource BodyFontSize}" HorizontalAlignment="Right"/>
+                  <TextBlock Text="{Binding StatusText}" Foreground="{StaticResource LabelBrush}"
+                             FontSize="{StaticResource CaptionFontSize}" HorizontalAlignment="Right"
+                             Margin="0,2,0,0"/>
+                  <TextBlock Text="{Binding Detail}" Foreground="{StaticResource LabelBrush}"
+                             FontSize="{StaticResource CaptionFontSize}" HorizontalAlignment="Right"
+                             TextWrapping="Wrap" TextAlignment="Right" Margin="0,2,0,0"/>
+                </StackPanel>
+              </Grid>
+            </Border>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </ScrollViewer>
+  </Grid>
+</UserControl>

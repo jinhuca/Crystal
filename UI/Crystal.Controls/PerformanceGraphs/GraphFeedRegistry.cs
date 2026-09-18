@@ -25,6 +25,10 @@ public sealed class GraphFeedRegistry {
 
   /// <summary>Appends a sample to every live graph registered under the id, pruning collected ones.</summary>
   public void Feed(string id, double value) {
+    // A non-finite sample (NaN/Infinity from a momentarily bad sensor) normalizes to NaN in the plot,
+    // which the fill geometry renders as a full-height band — the "graph pinned at 100%" symptom. Drop
+    // it so the trace holds its last good shape rather than corrupting until the view reloads.
+    if (!double.IsFinite(value)) return;
     if (!_byId.TryGetValue(id, out var list)) return;
     for (var i = list.Count - 1; i >= 0; i--) {
       if (list[i].TryGetTarget(out var graph)) graph.AddValue(value);

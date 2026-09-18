@@ -36,6 +36,7 @@ public sealed class DetailWindowService {
         [DetailViewNames.Network] = typeof(Crystal.NetworkModule.Views.NetworkDetailView),
         [DetailViewNames.Os] = typeof(Crystal.OSModule.Views.OsDetailView),
         [DetailViewNames.Process] = typeof(Crystal.ProcessModule.Views.ProcessDetailView),
+        [DetailViewNames.Benchmark] = typeof(Crystal.BenchmarkModule.Views.BenchmarkDetailView),
       };
 
   private const double DefaultWidth = 1280;

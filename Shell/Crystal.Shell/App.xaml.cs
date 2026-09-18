@@ -109,6 +109,7 @@ public partial class App : PrismApplication {
     moduleCatalog.AddModule<Crystal.NetworkModule.NetworkModule>();
     moduleCatalog.AddModule<Crystal.ProcessModule.ProcessModule>();
     moduleCatalog.AddModule<Crystal.OSModule.OSModule>();
+    moduleCatalog.AddModule<Crystal.BenchmarkModule.BenchmarkModule>();
   }
 
   protected override void OnInitialized() {
