@@ -1,3 +1,4 @@
+using Crystal.Controls.Metrics;
 using Crystal.Controls.PerformanceGraphs;
 using Crystal.Controls.Threading;
 using Crystal.Infrastructure.Constants.Navigation;
@@ -17,10 +18,6 @@ public sealed class NetworkViewModel : BindableBase, INetworkViewModel, IDisposa
   private readonly Dictionary<uint, ProcessNetworkRowViewModel> _talkersByPid = new();
   private string _downloadLabel = "—";
   private string _uploadLabel = "—";
-  private string _downloadPeakLabel = "—";
-  private string _uploadPeakLabel = "—";
-  private double _downloadPeak;
-  private double _uploadPeak;
   // History graphs are registered by their GraphIdentity.Id as the throughput sub-view loads, then
   // fed by that same id in Apply(). A consumer that realizes only some graphs feeds only those.
   private readonly GraphFeedRegistry _graphs = new();
@@ -80,11 +77,11 @@ public sealed class NetworkViewModel : BindableBase, INetworkViewModel, IDisposa
   public string TopTalkersStatusLabel { get => _topTalkersStatusLabel; private set => SetProperty(ref _topTalkersStatusLabel, value); }
   public string DownloadLabel { get => _downloadLabel; private set => SetProperty(ref _downloadLabel, value); }
   public string UploadLabel { get => _uploadLabel; private set => SetProperty(ref _uploadLabel, value); }
-  /// <summary>Session peak download throughput — the range cue recovered from the removed sparkline.</summary>
-  public string DownloadPeakLabel { get => _downloadPeakLabel; private set => SetProperty(ref _downloadPeakLabel, value); }
-  /// <summary>Session peak upload throughput — the range cue recovered from the removed sparkline.</summary>
-  public string UploadPeakLabel { get => _uploadPeakLabel; private set => SetProperty(ref _uploadPeakLabel, value); }
   public double ThroughputMaxBytesPerSecond { get => _throughputMax; private set => SetProperty(ref _throughputMax, value); }
+  /// <summary>Session min/avg/max and trend of the total download rate (in KiB/s), for the tile's stat line.</summary>
+  public MetricRowViewModel DownloadRow { get; } = new("Download");
+  /// <summary>Session min/avg/max and trend of the total upload rate (in KiB/s), for the tile's stat line.</summary>
+  public MetricRowViewModel UploadRow { get; } = new("Upload");
   public bool HasWifi { get => _hasWifi; private set => SetProperty(ref _hasWifi, value); }
   public string WifiLabel { get => _wifiLabel; private set => SetProperty(ref _wifiLabel, value); }
   public string WifiLinkRate { get => _wifiLinkRate; private set => SetProperty(ref _wifiLinkRate, value); }
@@ -129,14 +126,10 @@ public sealed class NetworkViewModel : BindableBase, INetworkViewModel, IDisposa
 
     DownloadLabel = FormatSpeed(totalDownload);
     UploadLabel = FormatSpeed(totalUpload);
-    if (totalDownload > _downloadPeak) {
-      _downloadPeak = totalDownload;
-      DownloadPeakLabel = FormatSpeed(totalDownload);
-    }
-    if (totalUpload > _uploadPeak) {
-      _uploadPeak = totalUpload;
-      UploadPeakLabel = FormatSpeed(totalUpload);
-    }
+    // Feed the stat-line rows in KiB/s so the min/avg/max carets read in a single, stable unit
+    // (the big value auto-scales its unit; the caret line stays comparable across polls).
+    DownloadRow.Update(totalDownload / 1024d);
+    UploadRow.Update(totalUpload / 1024d);
 
     FeedGraph("Network.Download", totalDownload);
     FeedGraph("Network.Upload", totalUpload);
