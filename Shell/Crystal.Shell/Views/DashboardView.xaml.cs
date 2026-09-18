@@ -45,11 +45,11 @@ public partial class DashboardView : UserControl {
   public GridLength BottomColumnDefault { get; } = new(1, GridUnitType.Star);
 
 
-  public GridLength MemorySummaryViewDefaultColumnWidth { get; } = new(.4, GridUnitType.Star);
+  public GridLength MemorySummaryViewDefaultColumnWidth { get; } = new(.33, GridUnitType.Star);
 
-  public GridLength StorageSummaryViewDefaultColumnWidth { get; } = new(.4, GridUnitType.Star);
+  public GridLength StorageSummaryViewDefaultColumnWidth { get; } = new(.33, GridUnitType.Star);
 
-  public GridLength NetworkSummaryViewDefaultColumnWidth { get; } = new(0.2, GridUnitType.Star);
+  public GridLength NetworkSummaryViewDefaultColumnWidth { get; } = new(0.33, GridUnitType.Star);
 
   /// <summary>
   /// Default width for the narrower BIOS column on the bottom row (0.3 star vs. the

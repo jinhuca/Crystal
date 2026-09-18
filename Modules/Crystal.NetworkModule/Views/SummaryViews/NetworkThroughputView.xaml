@@ -5,46 +5,91 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs;assembly=Crystal.Controls"
              mc:Ignorable="d"
-             d:DesignHeight="160" d:DesignWidth="160"
+             d:DesignHeight="200" d:DesignWidth="360"
              Foreground="{StaticResource TextBrush}" FontFamily="{StaticResource UiFontFamily}">
 	<!-- DataContext is the root INetworkViewModel, inherited from the host tile. Live throughput:
-       download over upload, each with a sparkline this view self-registers with the VM. -->
+       download beside upload, each with its indicator icon and a history sparkline this view
+       self-registers with the VM. Both sparklines share ThroughputMaxBytesPerSecond so they stay
+       on a common, comparable vertical scale. Indicator icons mirror Icons/download.svg (arrow
+       flipped for upload). -->
+	<UserControl.Resources>
+		<DrawingImage x:Key="DownloadIndicatorIcon">
+			<DrawingImage.Drawing>
+				<DrawingGroup>
+					<GeometryDrawing Brush="#86C440">
+						<GeometryDrawing.Pen>
+							<Pen Brush="White" Thickness="2.5"/>
+						</GeometryDrawing.Pen>
+					</GeometryDrawing>
+					<GeometryDrawing Brush="#86C440" Geometry="M20,13 H28 V22 H33 L24,32 L15,22 H20 Z"/>
+					<GeometryDrawing Brush="White" Geometry="M13,29 H17 V33 H31 V29 H35 V37 H13 Z"/>
+				</DrawingGroup>
+			</DrawingImage.Drawing>
+		</DrawingImage>
+		<DrawingImage x:Key="UploadIndicatorIcon">
+			<DrawingImage.Drawing>
+				<DrawingGroup>
+					<GeometryDrawing Brush="#E89B2A">
+						<GeometryDrawing.Pen>
+							<Pen Brush="White" Thickness="2.5"/>
+						</GeometryDrawing.Pen>
+					</GeometryDrawing>
+					<GeometryDrawing Brush="#E89B2A" Geometry="M24,13 L33,23 H28 V32 H20 V23 H15 Z"/>
+					<GeometryDrawing Brush="White" Geometry="M13,29 H17 V33 H31 V29 H35 V37 H13 Z"/>
+				</DrawingGroup>
+			</DrawingImage.Drawing>
+		</DrawingImage>
+	</UserControl.Resources>
 	<Grid VerticalAlignment="Top" HorizontalAlignment="Stretch" Background="Transparent" ShowGridLines="False">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*"/>
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
-		<Grid Grid.Column="0" ShowGridLines="False">
+		<Grid Grid.Column="0" Margin="0,0,6,0" ShowGridLines="False">
 			<Grid.RowDefinitions>
-				<RowDefinition/>
-				<RowDefinition/>
-				<RowDefinition/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
 			</Grid.RowDefinitions>
 			<TextBlock Grid.Row="0" Text="Download" Style="{StaticResource SummaryTileTitleTextBlockStyle}" Margin="0,0,0,2"/>
 			<StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,2">
-				<TextBlock Text="&#x25BC;" Foreground="{StaticResource OkBrush}" FontSize="13"
-                 VerticalAlignment="Center" Margin="0,0,8,0"/>
+				<Image Source="{StaticResource DownloadIndicatorIcon}" Width="18" Height="18"
+               VerticalAlignment="Center" Margin="0,0,8,0"/>
 				<TextBlock Text="{Binding DownloadLabel}" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource SectionFontSize}"
                  FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Center"/>
 			</StackPanel>
 			<TextBlock Grid.Row="2" Text="{Binding DownloadPeakLabel, StringFormat=peak {0}}" Foreground="{StaticResource LabelBrush}"
-               FontSize="{StaticResource BodyFontSize}" FontFamily="{StaticResource MonoFontFamily}" Margin="24,0,0,0"/>
+               FontSize="{StaticResource BodyFontSize}" FontFamily="{StaticResource MonoFontFamily}" Margin="26,0,0,4"/>
+			<graphs:AdaptiveGraph Grid.Row="3" x:Name="DownloadGraph"
+                            graphs:GraphIdentity.Id="Network.Download"
+                            Capacity="180" MinValue="0" MaxValue="{Binding ThroughputMaxBytesPerSecond}"
+                            Accent="{StaticResource GraphAccentUtilization}"
+                            BandedLine="True" ShowChrome="True" MinHeight="40"
+                            CellPitch="{StaticResource DashboardDotPitch}"/>
 		</Grid>
-		<Grid Grid.Column="1" ShowGridLines="False">
+		<Grid Grid.Column="1" Margin="6,0,0,0" ShowGridLines="False">
 			<Grid.RowDefinitions>
-				<RowDefinition/>
-				<RowDefinition/>
-				<RowDefinition/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
 			</Grid.RowDefinitions>
-			<TextBlock Grid.Row="0" Text="Upload" Style="{StaticResource SummaryTileTitleTextBlockStyle}"/>
+			<TextBlock Grid.Row="0" Text="Upload" Style="{StaticResource SummaryTileTitleTextBlockStyle}" Margin="0,0,0,2"/>
 			<StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,2">
-				<TextBlock Text="&#x25B2;" Foreground="#E89B2A" FontSize="13"
-                 VerticalAlignment="Center" Margin="0,0,8,0"/>
+				<Image Source="{StaticResource UploadIndicatorIcon}" Width="18" Height="18"
+               VerticalAlignment="Center" Margin="0,0,8,0"/>
 				<TextBlock Text="{Binding UploadLabel}" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource SectionFontSize}"
                  FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Center"/>
 			</StackPanel>
 			<TextBlock Grid.Row="2" Text="{Binding UploadPeakLabel, StringFormat=peak {0}}" Foreground="{StaticResource LabelBrush}"
-               FontSize="{StaticResource BodyFontSize}" FontFamily="{StaticResource MonoFontFamily}" Margin="24,2,0,0"/>
+               FontSize="{StaticResource BodyFontSize}" FontFamily="{StaticResource MonoFontFamily}" Margin="26,0,0,4"/>
+			<graphs:AdaptiveGraph Grid.Row="3" x:Name="UploadGraph"
+                            graphs:GraphIdentity.Id="Network.Upload"
+                            Capacity="180" MinValue="0" MaxValue="{Binding ThroughputMaxBytesPerSecond}"
+                            Accent="{StaticResource GraphAccentPower}"
+                            BandedLine="True" ShowChrome="True" MinHeight="40"
+                            CellPitch="{StaticResource DashboardDotPitch}"/>
 		</Grid>
 	</Grid>
 </UserControl>
