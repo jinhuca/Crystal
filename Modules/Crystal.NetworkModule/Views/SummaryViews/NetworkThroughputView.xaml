@@ -58,17 +58,15 @@
 			<ColumnDefinition Width="*"/>
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
-
-		<Border Grid.Column="0" Style="{StaticResource SummaryTileBorderStyle}" Margin="2,2,4,2">
-			<Grid Margin="10,4,10,6">
+		<Border Grid.Column="0" Style="{StaticResource SummaryTileBorderStyle}" Margin="4,4,4,2">
+			<Grid Margin="10,4,10,6" ShowGridLines="False">
 				<Grid.RowDefinitions>
 					<RowDefinition Height="Auto"/>
 					<RowDefinition Height="Auto"/>
 					<RowDefinition Height="*"/>
 				</Grid.RowDefinitions>
 				<Grid Grid.Row="0">
-					<TextBlock Text="Download" Style="{StaticResource SummaryTileTitleTextBlockStyle}"
-                             HorizontalAlignment="Left" VerticalAlignment="Center"/>
+					<TextBlock Text="Download" Style="{StaticResource SummaryTileTitleTextBlockStyle}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 					<TextBlock Style="{StaticResource MetricStatLine}" HorizontalAlignment="Right" VerticalAlignment="Center">
 						<Run FontFamily="Segoe Fluent Icons" Text="&#xE70D; " Foreground="LightGreen"/>
 						<Run Text="{Binding DownloadRow.Min, StringFormat={}{0:0.#}}"/>
@@ -78,9 +76,9 @@
 						<Run Text="{Binding DownloadRow.Max, StringFormat={}{0:0.#}}"/>
 					</TextBlock>
 				</Grid>
-				<StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,2,0,4" VerticalAlignment="Center">
-					<Image Source="{StaticResource DownloadIndicatorIcon}" Width="18" Height="18"
-                         VerticalAlignment="Center" Margin="0,0,8,0"/>
+				<StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,2,0,2" VerticalAlignment="Center">
+					<!--<Image Source="{StaticResource DownloadIndicatorIcon}" Width="18" Height="18"
+                         VerticalAlignment="Center" Margin="0,0,8,0"/>-->
 					<TextBlock Text="{Binding DownloadLabel}" Style="{StaticResource TileMetricValue}"/>
 					<TextBlock Text="{Binding DownloadRow.Trend, Converter={StaticResource TrendToGlyph}}"
                              Foreground="{Binding DownloadRow.Trend, Converter={StaticResource TrendToBrush}}"
@@ -95,7 +93,7 @@
 			</Grid>
 		</Border>
 
-		<Border Grid.Column="1" Style="{StaticResource SummaryTileBorderStyle}" Margin="4,2,2,2">
+		<Border Grid.Column="1" Style="{StaticResource SummaryTileBorderStyle}" Margin="4,4,2,2">
 			<Grid Margin="10,4,10,6">
 				<Grid.RowDefinitions>
 					<RowDefinition Height="Auto"/>
@@ -115,8 +113,8 @@
 					</TextBlock>
 				</Grid>
 				<StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,2,0,4" VerticalAlignment="Center">
-					<Image Source="{StaticResource UploadIndicatorIcon}" Width="18" Height="18"
-                         VerticalAlignment="Center" Margin="0,0,8,0"/>
+					<!--<Image Source="{StaticResource UploadIndicatorIcon}" Width="18" Height="18"
+                         VerticalAlignment="Center" Margin="0,0,8,0"/>-->
 					<TextBlock Text="{Binding UploadLabel}" Style="{StaticResource TileMetricValue}"/>
 					<TextBlock Text="{Binding UploadRow.Trend, Converter={StaticResource TrendToGlyph}}"
                              Foreground="{Binding UploadRow.Trend, Converter={StaticResource TrendToBrush}}"
