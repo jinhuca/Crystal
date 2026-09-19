@@ -13,8 +13,7 @@
   <UserControl.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/Crystal.Controls;component/Metrics/MetricEnrichmentResources.xaml"/>
-        <ResourceDictionary Source="/Crystal.Resources;component/Styles/BorderStyles.xaml"/>
+        <ResourceDictionary Source="/Crystal.GpuModule;component/Views/GpuViewResources.xaml"/>
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </UserControl.Resources>
@@ -51,9 +50,12 @@
         Grid.Row="2"
         Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Gpu.Voltage"
         HorizontalAlignment="Stretch" VerticalAlignment="Top"
-        Height="24" Rows="10" Capacity="120"
+        Height="24" Rows="10" 
+				Capacity="{StaticResource GpuSensorGraphCapacity}"
         MinValue="0" MaxValue="2"
-        BandedLine="True" BandStartColor="WhiteSmoke" BandEndColor="#33349A"/>
+        BandedLine="True" 
+				BandStartColor="{StaticResource GpuVoltBandedColor1}" 
+				BandEndColor="{StaticResource GpuVoltBandedColor9}"/>
     </Grid>
   </Border>
 </UserControl>

@@ -9,7 +9,7 @@
   <UserControl.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary Source="/Crystal.CpuModule;component/Views/ViewResources.xaml"/>
+				<ResourceDictionary Source="/Crystal.CpuModule;component/Views/CpuViewResources.xaml"/>
 			</ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </UserControl.Resources>

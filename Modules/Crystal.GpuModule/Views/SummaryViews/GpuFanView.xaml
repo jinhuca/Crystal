@@ -13,8 +13,7 @@
   <UserControl.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/Crystal.Controls;component/Metrics/MetricEnrichmentResources.xaml"/>
-        <ResourceDictionary Source="/Crystal.Resources;component/Styles/BorderStyles.xaml"/>
+        <ResourceDictionary Source="/Crystal.GpuModule;component/Views/GpuViewResources.xaml"/>
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </UserControl.Resources>
@@ -51,9 +50,12 @@
         Grid.Row="2"
         Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Gpu.Fan"
         HorizontalAlignment="Stretch" VerticalAlignment="Top"
-        Height="24" Rows="8" Capacity="30"
+        Height="24" Rows="8" 
+				Capacity="{StaticResource GpuSensorGraphCapacity}"
         MinValue="0" MaxValue="{Binding FanScaleMax}"
-        BandedLine="True"/>
+        BandedLine="True"
+				BandStartColor="{StaticResource GpuFanBandedColor1}"
+				BandEndColor="{StaticResource GpuFanBandedColor9}"/>
     </Grid>
   </Border>
 </UserControl>
