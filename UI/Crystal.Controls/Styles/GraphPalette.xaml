@@ -62,4 +62,11 @@
   <SolidColorBrush x:Key="GraphGreyFill" Color="#409AA0A6"/>
 
   <SolidColorBrush x:Key="GraphPurpleBrush" Color="#9B5AE8"/>
+
+	<SolidColorBrush x:Key="DividerBrush" Color="#2A2A2A"/>
+	<SolidColorBrush x:Key="BorderBrush" Color="#333333"/>
+	<SolidColorBrush x:Key="AccentBrush" Color="#3E9BE8"/>
+	<SolidColorBrush x:Key="ValueBrush" Color="#EAEAEA"/>
+	<SolidColorBrush x:Key="LabelBrush" Color="#AAAAAA"/>
+	<SolidColorBrush x:Key="TextMutedBrush" Color="#8A8A8A"/>
 </ResourceDictionary>

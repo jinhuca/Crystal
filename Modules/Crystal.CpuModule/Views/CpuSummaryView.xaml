@@ -10,13 +10,20 @@
              d:DesignHeight="240" d:DesignWidth="1000"
              Background="Transparent" Foreground="{StaticResource TextBrush}"
              FontFamily="{StaticResource UiFontFamily}">
-  <!-- Layout only: the header and each metric tile live in Views/SummaryViews.
+	<UserControl.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="/Crystal.CpuModule;component/Views/ViewResources.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</UserControl.Resources>
+	<!-- Layout only: the header and each metric tile live in Views/SummaryViews.
        The body grid sets DataContext to SensorsViewModel so every metric tile inherits it;
        the header inherits the root ICpuViewModel (it needs both SpecsViewModel and SensorsViewModel).
        Three columns per CpuSV.png: (1/4) fixed-size value-banded metric tiles aligned left,
        (1/2) the full CPU-utilization graph in the middle, (1/4) the live per-core strip aligned
        right. History graphs for clock/voltage/temperature/power/fan now live in the detail view. -->
-  <Border Background="Transparent" MouseLeftButtonDown="OnTileClick">
+  <Border Background="{StaticResource SurfaceBackgroundBrush}" MouseLeftButtonDown="OnTileClick">
     <Grid Margin="5" ShowGridLines="False">
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>

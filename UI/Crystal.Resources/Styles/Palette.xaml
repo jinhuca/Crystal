@@ -56,7 +56,7 @@
   <SolidColorBrush x:Key="VoltageAccentBandedBrush8" Color="#FF4B4CA5"/>
   <SolidColorBrush x:Key="VoltageAccentBandedBrush9" Color="#FF33349A"/>
 
-  <!-- Temperature sensor banded colors -->
+  <!-- Temperature sensor banded brushes -->
   <SolidColorBrush x:Key="TemperatureAccentBandedBrush1" Color="#FFF5F5F5"/>
   <SolidColorBrush x:Key="TemperatureAccentBandedBrush2" Color="#FFF6DDD9"/>
   <SolidColorBrush x:Key="TemperatureAccentBandedBrush3" Color="#FFF8C4BE"/>
@@ -67,7 +67,7 @@
   <SolidColorBrush x:Key="TemperatureAccentBandedBrush8" Color="#FFFE4A33"/>
   <SolidColorBrush x:Key="TemperatureAccentBandedBrush9" Color="#FFFF3217"/>
   
-  <!-- Power sensor banded colors -->
+  <!-- Power sensor banded brushes -->
   <SolidColorBrush x:Key="PowerAccentBandedBrush1" Color="#FFF5F5F5"/>
   <SolidColorBrush x:Key="PowerAccentBandedBrush2" Color="#FFF4EAE2"/>
   <SolidColorBrush x:Key="PowerAccentBandedBrush3" Color="#FFF4DECE"/>
@@ -77,5 +77,21 @@
   <SolidColorBrush x:Key="PowerAccentBandedBrush7" Color="#FFF1B280"/>
   <SolidColorBrush x:Key="PowerAccentBandedBrush8" Color="#FFF1A66C"/>
   <SolidColorBrush x:Key="PowerAccentBandedBrush9" Color="#FFF09B59"/>
-  
+	
+	<!-- Power sensor banded colors -->
+	<Color x:Key="PowerAccentBandedColor1">#FFF09B59</Color>
+	<Color x:Key="PowerAccentBandedColor9">#FFF55555</Color>
+	
+	<!-- Temperature sensor banded colors -->
+	<Color x:Key="TemperatureAccentBandedColor1">#FF9494C8</Color>
+	<Color x:Key="TemperatureAccentBandedColor9">#FFFF3217</Color>
+	
+	<!-- Clock sensor banded colors -->
+	<Color x:Key="ClockAccentBandedColor1">#FF90EE90</Color>
+	<Color x:Key="ClockAccentBandedColor9">#FFF5F5F5</Color>
+
+	<!-- Fan sensor banded colors -->
+	<Color x:Key="FanAccentBandedColor1">#FFFA9486</Color>
+	<Color x:Key="FanAccentBandedColor9">#FF90EE90</Color>
+
 </ResourceDictionary>

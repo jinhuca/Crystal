@@ -9,16 +9,15 @@
   <UserControl.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/Crystal.Controls;component/Metrics/MetricEnrichmentResources.xaml"/>
-        <ResourceDictionary Source="/Crystal.Resources;component/Styles/BorderStyles.xaml"/>
-      </ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="/Crystal.CpuModule;component/Views/ViewResources.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </UserControl.Resources>
   <!-- DataContext is the CPU SensorsViewModel, inherited from the host tile. The full-height
        CPU-utilization history graph (self-registers so the view model feeds it on each poll) fills
        the left; the live readout on the right is a bordered tile matching the other summary tiles,
        carrying the value, its trend, and the session min/avg/max. -->
-  <Grid VerticalAlignment="Stretch" Background="Transparent" Margin="0,0,0,0">
+  <Grid VerticalAlignment="Stretch" Background="{StaticResource PanelBackgroundBrush}" Margin="0,0,0,0">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="*"/>
       <ColumnDefinition Width="180"/>
