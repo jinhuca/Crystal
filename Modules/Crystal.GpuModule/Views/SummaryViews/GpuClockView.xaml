@@ -15,9 +15,8 @@
   <UserControl.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/Crystal.Controls;component/Metrics/MetricEnrichmentResources.xaml"/>
-        <ResourceDictionary Source="/Crystal.Resources;component/Styles/BorderStyles.xaml"/>
-      </ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="/Crystal.GpuModule;component/Views/GpuViewResources.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </UserControl.Resources>
   <Border Style="{StaticResource SummaryTileBorderStyle}" Width="{x:Static local:GpuSummaryViewConstants.GraphWidth}">
@@ -53,9 +52,12 @@
         Grid.Row="2"
         Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Gpu.Clock"
         HorizontalAlignment="Stretch" VerticalAlignment="Top"
-        Height="24" Rows="8" Capacity="120"
+        Height="24" Rows="8" 
+				Capacity="{StaticResource GpuSensorGraphCapacity}"
         MinValue="0" MaxValue="{Binding ClockScaleMax}"
-        BandedLine="True" BandStartColor="WhiteSmoke" BandEndColor="#90EE90"/>
+        BandedLine="True" 
+				BandStartColor="{StaticResource GpuClockBandedColor1}" 
+				BandEndColor="{StaticResource GpuClockBandedColor9}"/>
     </Grid>
   </Border>
 </UserControl>

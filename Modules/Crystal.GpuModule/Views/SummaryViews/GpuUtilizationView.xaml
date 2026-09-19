@@ -11,8 +11,7 @@
 	<UserControl.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary Source="/Crystal.Controls;component/Metrics/MetricEnrichmentResources.xaml"/>
-				<ResourceDictionary Source="/Crystal.Resources;component/Styles/BorderStyles.xaml"/>
+				<ResourceDictionary Source="/Crystal.GpuModule;component/Views/GpuViewResources.xaml"/>
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
 	</UserControl.Resources>
@@ -20,7 +19,7 @@
        CpuUtilizationView: the full-height core-load history graph fills the left; the live readout on
        the right is a bordered tile matching the other summary tiles, carrying the value, its trend,
        and the session min/avg/max. Self-registers so the view model feeds it on each poll. -->
-	<Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="Transparent">
+	<Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="{StaticResource PanelBackgroundBrush}">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*"/>
 			<ColumnDefinition Width="Auto"/>
@@ -32,7 +31,9 @@
       Capacity="{Binding Capacity, RelativeSource={RelativeSource AncestorType=UserControl}}"
       MinValue="0" MaxValue="100"
       Accent="{StaticResource GraphAccentUtilization}"
-      BandedLine="True" BandStartColor="DodgerBlue" BandEndColor="Red"
+      BandedLine="True" 
+			BandStartColor="{StaticResource GpuUtilizationBandedColor1}" 
+			BandEndColor="{StaticResource GpuUtilizationBandedColor9}"
       ShowChrome="True" MinHeight="40"
       CellPitch="{StaticResource DashboardDotPitch}"/>
 

@@ -32,7 +32,7 @@
               Padding="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ContentPresenter}, Converter={StaticResource TileChrome}}"
               BorderBrush="{StaticResource DividerBrush}"
               BorderThickness="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ContentPresenter}, Converter={StaticResource TileChrome}, ConverterParameter=border}">
-        <Grid VerticalAlignment="Stretch" ShowGridLines="True">
+        <Grid VerticalAlignment="Stretch" ShowGridLines="False">
           <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="70"/>
@@ -85,7 +85,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="0.9*"/>
             <RowDefinition Height="1.1*"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="18"/>
           </Grid.RowDefinitions>
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -126,12 +126,12 @@
           <sv:GpuFanView         Grid.Row="1" Grid.Column="8" Margin="0,0,0,0"/>
           <!-- Utilization graph + readout spans cols 0-7 (one column narrower than the metric row) so the
                readout tile lands under PCIe Tx (col 7) and the Voltage tile lands under GPU Fan (col 8). -->
-          <sv:GpuUtilizationView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="8" Margin="0,8,0,0"
+          <sv:GpuUtilizationView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="8" Margin="0,12,0,6"
                                  Capacity="180" Width="{x:Static sv:GpuSummaryViewConstants.DedicatedUtilizationWidth}"
                                  HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
 
           <!-- Core-voltage tile under the GPU Fan tile, to the right of the Utilization readout. -->
-          <sv:GpuVoltageView     Grid.Row="2" Grid.Column="8" Margin="0,8,0,0"
+          <sv:GpuVoltageView     Grid.Row="2" Grid.Column="8" Margin="0,12,0,6"
                                  VerticalAlignment="Stretch"/>
 
           <!-- Engine Load: a compact single-line strip across the bottom (mirrors the CPU instruction-set
@@ -140,7 +140,7 @@
                left; only the engine list scrolls horizontally (scrollbar hidden, wheel scrolls sideways,
                same pattern as the adapter strip) so a wide list never overflows the tile. -->
           <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="9"
-                Margin="0,8,0,0" VerticalAlignment="Center"
+                Margin="0,0,0,0" VerticalAlignment="Center"
                 Visibility="{Binding HasEngineLoads, Converter={StaticResource BoolToVisibility}}">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="Auto"/>

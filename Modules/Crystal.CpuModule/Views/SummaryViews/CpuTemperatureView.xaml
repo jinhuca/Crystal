@@ -9,7 +9,7 @@
   <UserControl.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary Source="/Crystal.CpuModule;component/Views/ViewResources.xaml"/>
+				<ResourceDictionary Source="/Crystal.CpuModule;component/Views/CpuViewResources.xaml"/>
 			</ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </UserControl.Resources>
@@ -115,12 +115,11 @@
         Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="5"
         Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Cpu.Temperature"
         HorizontalAlignment="Stretch" VerticalAlignment="Top"
-        Height="24" Rows="10" Capacity="{StaticResource SensorGraphCapacity}"
+        Height="24" Rows="10" Capacity="{StaticResource CpuSensorGraphCapacity}"
         MinValue="0" MaxValue="100"
         BandedLine="True" 
-				BandStartColor="{StaticResource TemperatureAccentBandedColor1}" 
-				BandEndColor="{StaticResource FanAccentBandedColor9}"
-        Margin="0,0,0,0"/>
+				BandStartColor="{StaticResource CpuTemperatureAccentBandedColor1}" 
+				BandEndColor="{StaticResource CpuTemperatureAccentBandedColor9}"/>
     </Grid>
   </Border>
 </UserControl>

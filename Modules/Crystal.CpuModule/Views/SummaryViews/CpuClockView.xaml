@@ -9,7 +9,7 @@
   <UserControl.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary Source="/Crystal.CpuModule;component/Views/ViewResources.xaml"/>
+				<ResourceDictionary Source="/Crystal.CpuModule;component/Views/CpuViewResources.xaml"/>
 			</ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </UserControl.Resources>
@@ -95,12 +95,12 @@
         Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Cpu.Clock"
         HorizontalAlignment="Stretch" VerticalAlignment="Top"
         Height="24" Rows="10" 
-				Capacity="{StaticResource SensorGraphCapacity}"
+				Capacity="{StaticResource CpuSensorGraphCapacity}"
         MinValue="0" MaxValue="6"
         BandedLine="True" 
 				ShowChrome="False"
-				BandStartColor="{StaticResource ClockAccentBandedColor1}" 
-				BandEndColor="{StaticResource ClockAccentBandedColor9}"
+				BandStartColor="{StaticResource CpuClockAccentBandedColor1}" 
+				BandEndColor="{StaticResource CpuClockAccentBandedColor9}"
         Margin="0,0,0,0"/>
     </Grid>
   </Border>
