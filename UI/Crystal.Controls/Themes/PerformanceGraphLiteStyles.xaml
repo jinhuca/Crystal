@@ -132,4 +132,9 @@
     </Setter>
   </Style>
 
+	<Style x:Key="SampleStyle" TargetType="{x:Type graphs:AdaptiveGraph}">
+		<Setter Property="BandedLine" Value="True"/>
+		<Setter Property="BandStartColor" Value="WhiteSmoke"/>
+		<Setter Property="BandEndColor" Value="Red"/>
+	</Style>
 </ResourceDictionary>
