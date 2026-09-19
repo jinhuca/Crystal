@@ -28,7 +28,7 @@
          is comfortable but reads as a hairline, brightening to the accent on hover. Matches the
          master/detail splitter styling in the Processes view. -->
     <Style x:Key="RowSplitter" TargetType="GridSplitter">
-      <Setter Property="Height" Value="2"/>
+      <Setter Property="Height" Value="5"/>
       <Setter Property="HorizontalAlignment" Value="Stretch"/>
       <Setter Property="VerticalAlignment" Value="Center"/>
       <Setter Property="Background" Value="Transparent"/>
@@ -57,7 +57,7 @@
          twin of RowSplitter, so the user can widen one tile at the expense of its neighbour. A thin
          rule centered in a wider hit area, brightening to the accent on hover. -->
     <Style x:Key="ColumnSplitter" TargetType="GridSplitter">
-      <Setter Property="Width" Value="2"/>
+      <Setter Property="Width" Value="5"/>
       <Setter Property="HorizontalAlignment" Value="Center"/>
       <Setter Property="VerticalAlignment" Value="Stretch"/>
       <Setter Property="Background" Value="Transparent"/>

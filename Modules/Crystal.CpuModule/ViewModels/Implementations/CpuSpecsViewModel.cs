@@ -181,16 +181,16 @@ public sealed class CpuSpecsViewModel : BindableBase, ICpuSpecsViewModel {
     Vendor = s.VendorName;
     Brand = s?.BrandName?.Replace("(R)","");
     Socket = socket.SocketIndex + 1;
-    PhysicalCores = s.PhysicalCoreNum;
-    LogicalCores = s.LogicalCoreNum;
-    Family = s.FamilyId;
-    Model = s.ModelId;
-    Stepping = s.SteppingId;
-    BaseSpeedMHz = s.BaseSpeed;
-    BusSpeedMHz = s.BusSpeed;
-    Virtualization = s.VirtualizationEnabled ?? s.VirtualizationSupported;
+    PhysicalCores = s?.PhysicalCoreNum;
+    LogicalCores = s?.LogicalCoreNum;
+    Family = s?.FamilyId;
+    Model = s?.ModelId;
+    Stepping = s?.SteppingId;
+    BaseSpeedMHz = s?.BaseSpeed;
+    BusSpeedMHz = s?.BusSpeed;
+    Virtualization = s?.VirtualizationEnabled ?? s?.VirtualizationSupported;
 
-    if (s.CacheInfo is { } cache) {
+    if (s?.CacheInfo is { } cache) {
       // CpuCacheInfo stores totals in bytes; convert to KB for display. The SMBIOS
       // "Line Size" field is per-cache, so surface the L1 line size as the representative value.
       L1CacheKb = cache.L1_cache_size / 1024.0;

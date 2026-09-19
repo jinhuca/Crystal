@@ -9,9 +9,8 @@
   <UserControl.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/Crystal.Controls;component/Metrics/MetricEnrichmentResources.xaml"/>
-        <ResourceDictionary Source="/Crystal.Resources;component/Styles/BorderStyles.xaml"/>
-      </ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="/Crystal.CpuModule;component/Views/ViewResources.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </UserControl.Resources>
   <!-- DataContext is the CPU SensorsViewModel, inherited from the host tile. Same three-row layout
@@ -92,7 +91,7 @@
         Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="5"
         Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Cpu.Voltage"
         HorizontalAlignment="Stretch" VerticalAlignment="Top"
-        Height="24" Rows="10" Capacity="120"
+        Height="24" Rows="10" Capacity="{StaticResource SensorGraphCapacity}"
         MinValue="0" MaxValue="2"
         BandedLine="True" BandStartColor="WhiteSmoke" BandEndColor="#33349A"
         Margin="0,0,0,0"/>

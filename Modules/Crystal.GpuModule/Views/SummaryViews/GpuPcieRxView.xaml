@@ -50,7 +50,7 @@
         Grid.Row="2"
         Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Gpu.PcieRx"
         HorizontalAlignment="Stretch" VerticalAlignment="Top"
-        Height="24" Rows="8" Capacity="120"
+        Height="24" Rows="8" Capacity="30"
         MinValue="0" MaxValue="{Binding PcieRxScaleMax}"
         BandedLine="True"/>
     </Grid>
