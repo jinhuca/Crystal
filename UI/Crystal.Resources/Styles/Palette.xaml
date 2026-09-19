@@ -95,7 +95,7 @@
 	<Color x:Key="CpuFanAccentBandedColor9">#FFFF4556</Color>
 
 	<!-- Gpu sensor colors -->
-	<Color x:Key="GpuPowerBandedColor1">LightBlue</Color>
+	<Color x:Key="GpuPowerBandedColor1">#FF2E7DD1</Color>
 	<Color x:Key="GpuPowerBandedColor9">#FFFF2D2D</Color>
 
 	<Color x:Key="GpuTemperatureBandedColor1">#FF2E7DD1</Color>

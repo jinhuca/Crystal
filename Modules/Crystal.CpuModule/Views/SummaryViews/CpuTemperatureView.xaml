@@ -117,9 +117,8 @@
         HorizontalAlignment="Stretch" VerticalAlignment="Top"
         Height="24" Rows="10" Capacity="{StaticResource CpuSensorGraphCapacity}"
         MinValue="0" MaxValue="100"
-        BandedLine="True" 
-				BandStartColor="{StaticResource CpuTemperatureAccentBandedColor1}" 
-				BandEndColor="{StaticResource CpuTemperatureAccentBandedColor9}"/>
+				Style="{StaticResource SampleStyle}"
+        BandedLine="True"/>
     </Grid>
   </Border>
 </UserControl>

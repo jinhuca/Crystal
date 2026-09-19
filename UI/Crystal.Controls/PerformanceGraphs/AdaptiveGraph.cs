@@ -63,20 +63,32 @@ public sealed class AdaptiveGraph : Decorator, ISingleSeriesGraph {
     Unloaded += OnUnloaded;
   }
 
-  /// <summary>Identifies the <see cref="MinValue"/> dependency property.</summary>
-  public static readonly DependencyProperty MinValueProperty =
-      DependencyProperty.Register(nameof(MinValue), typeof(double), typeof(AdaptiveGraph),
-          new FrameworkPropertyMetadata(0.0, OnRangeChanged));
+  /// <summary>
+  /// Identifies the <see cref="MinValue"/> dependency property.
+  /// </summary>
+  public static readonly DependencyProperty MinValueProperty = DependencyProperty.Register(
+    nameof(MinValue),
+    typeof(double),
+    typeof(AdaptiveGraph),
+    new FrameworkPropertyMetadata(0.0, OnRangeChanged));
 
-  /// <summary>Identifies the <see cref="MaxValue"/> dependency property.</summary>
-  public static readonly DependencyProperty MaxValueProperty =
-      DependencyProperty.Register(nameof(MaxValue), typeof(double), typeof(AdaptiveGraph),
-          new FrameworkPropertyMetadata(100.0, OnRangeChanged));
+  /// <summary>
+  /// Identifies the <see cref="MaxValue"/> dependency property.
+  /// </summary>
+  public static readonly DependencyProperty MaxValueProperty = DependencyProperty.Register(
+    nameof(MaxValue),
+    typeof(double),
+    typeof(AdaptiveGraph),
+    new FrameworkPropertyMetadata(100.0, OnRangeChanged));
 
-  /// <summary>Identifies the <see cref="Capacity"/> dependency property.</summary>
-  public static readonly DependencyProperty CapacityProperty =
-      DependencyProperty.Register(nameof(Capacity), typeof(int), typeof(AdaptiveGraph),
-          new FrameworkPropertyMetadata(60), v => v is int c && c > 0);
+  /// <summary>
+  /// Identifies the <see cref="Capacity"/> dependency property.
+  /// </summary>
+  public static readonly DependencyProperty CapacityProperty = DependencyProperty.Register(
+    nameof(Capacity),
+    typeof(int),
+    typeof(AdaptiveGraph),
+    new FrameworkPropertyMetadata(60), v => v is int c && c > 0);
 
   /// <summary>Identifies the <see cref="Accent"/> dependency property.</summary>
   public static readonly DependencyProperty AccentProperty =
@@ -337,7 +349,8 @@ public sealed class AdaptiveGraph : Decorator, ISingleSeriesGraph {
     if (!BandedLine) {
       lite.ColorMode = DotColorMode.SingleColor;
       lite.DotColor = new SolidColorBrush(Accent);
-    } else if (BuildBandRamp() is { } ramp) {
+    }
+    else if (BuildBandRamp() is { } ramp) {
       // Custom banded ramp: map the interpolated BandCount brushes onto Lite's Color1..Color9 so its
       // dot gauge matches the Line mode's custom banded stroke, band for band.
       lite.Color1 = ramp[0];
@@ -358,11 +371,13 @@ public sealed class AdaptiveGraph : Decorator, ISingleSeriesGraph {
       lite.CornerRadius = 1;
       lite.HorizontalAlignment = HorizontalAlignment.Stretch;
       lite.VerticalAlignment = VerticalAlignment.Stretch;
-    } else if (DotStyle is { } style) {
+    }
+    else if (DotStyle is { } style) {
       lite.Style = style;
       lite.HorizontalAlignment = HorizontalAlignment.Left;
       lite.VerticalAlignment = VerticalAlignment.Center;
-    } else {
+    }
+    else {
       // Stretch-to-fill with a fixed host height: the dot matrix fills the tile and Rows sets its
       // vertical density (a pitch/DotStyle would dictate that instead, so Rows is only read here).
       lite.Rows = Rows;
