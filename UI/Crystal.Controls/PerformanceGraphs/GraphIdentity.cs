@@ -12,9 +12,8 @@ namespace Crystal.Controls.PerformanceGraphs;
 /// tile-by-tile way dashboard views are realized: a graph tagged in XAML announces itself the moment
 /// its id is set, and the consumer can also sweep <see cref="LiveGraphs"/> for anything already up.
 /// <para>
-/// Typed to the <see cref="IPerformanceGraph"/> interface rather than a concrete control, so any of
-/// the graph controls (<see cref="PerformanceGraph"/>, <see cref="PerformanceGraphLite"/>,
-/// <see cref="PerformanceGraphMultipleDS"/>) can opt in the same way.
+/// Typed to the <see cref="IPerformanceGraph"/> interface rather than a concrete control, so any
+/// graph control implementing it (<see cref="PerformanceGraph"/>) can opt in the same way.
 /// </para>
 /// </summary>
 public static class GraphIdentity {

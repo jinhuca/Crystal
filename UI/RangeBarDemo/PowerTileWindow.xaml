@@ -117,11 +117,12 @@
                     </StackPanel>
 
                     <!-- Sparkline: trend shape beside the hero (identity blue, single color) -->
-                    <graphs:PerformanceGraphLite x:Name="Spark" Height="26" Width="400"
-                                                 HorizontalAlignment="Left" Margin="0,2,0,10"
-                                                 Rows="6" Capacity="48"
-                                                 MinValue="0" MaxValue="60"
-                                                 ColorMode="SingleColor" DotColor="#3E9BE8" CornerRadius="1"/>
+                    <graphs:PerformanceGraph x:Name="Spark" Height="26" Width="400"
+                                             DisplayMode="Dot"
+                                             HorizontalAlignment="Left" Margin="0,2,0,10"
+                                             Rows="6" HistoryLength="48"
+                                             MinValue="0" MaxValue="60"
+                                             ColorMode="SingleColor" DotColor="#3E9BE8" CornerRadius="1"/>
 
                     <!-- Meter: 0..PL2 scale, accent-gradient fill. Peak/PL1/PL2 are first-class
                          RangeBar markers now — the control maps each Value to a pixel itself and

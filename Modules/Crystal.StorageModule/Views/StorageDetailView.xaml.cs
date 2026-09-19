@@ -18,21 +18,21 @@ public partial class StorageDetailView : UserControl {
   // rebuilding) and the disk can still be null on first render, so Loaded alone misses the attach.
   // Attach on Loaded for the disk already present, and on DataContextChanged for every later swap.
   private void OnActivityGraphLoaded(object sender, RoutedEventArgs e) {
-    if (sender is not AdaptiveGraph graph) return;
+    if (sender is not PerformanceGraph graph) return;
     graph.DataContextChanged -= OnActivityDataContextChanged;
     graph.DataContextChanged += OnActivityDataContextChanged;
     (graph.DataContext as StorageDriveViewModel)?.AttachActivityGraph(graph);
   }
 
   private void OnTransferGraphLoaded(object sender, RoutedEventArgs e) {
-    if (sender is not AdaptiveGraph graph) return;
+    if (sender is not PerformanceGraph graph) return;
     graph.DataContextChanged -= OnTransferDataContextChanged;
     graph.DataContextChanged += OnTransferDataContextChanged;
     (graph.DataContext as StorageDriveViewModel)?.AttachTransferGraph(graph);
   }
 
   private static void OnActivityDataContextChanged(object sender, DependencyPropertyChangedEventArgs e) {
-    if (sender is not AdaptiveGraph graph) return;
+    if (sender is not PerformanceGraph graph) return;
     if (e.OldValue is StorageDriveViewModel previous) {
       previous.DetachActivityGraph(graph);
       graph.Reset();
@@ -41,7 +41,7 @@ public partial class StorageDetailView : UserControl {
   }
 
   private static void OnTransferDataContextChanged(object sender, DependencyPropertyChangedEventArgs e) {
-    if (sender is not AdaptiveGraph graph) return;
+    if (sender is not PerformanceGraph graph) return;
     if (e.OldValue is StorageDriveViewModel previous) {
       previous.DetachTransferGraph(graph);
       graph.Reset();

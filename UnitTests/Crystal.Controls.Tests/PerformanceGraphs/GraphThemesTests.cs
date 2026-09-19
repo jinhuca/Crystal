@@ -1,4 +1,3 @@
-using Crystal.Controls.PerformanceGraphs.Kinds;
 using Crystal.Controls.PerformanceGraphs.Themes;
 using System.Windows.Media;
 using Xunit;
@@ -17,17 +16,15 @@ public class GraphThemesTests {
   }
 
   [Fact]
-  public void FromAccent_LineKind_UsesGradientFill() {
-    GraphTheme theme = GraphThemes.FromAccent(Color.FromRgb(1, 2, 3), GraphKind.Line);
+  public void FromAccent_Default_UsesGradientFill() {
+    GraphTheme theme = GraphThemes.FromAccent(Color.FromRgb(1, 2, 3), flatFill: false);
 
     Assert.IsType<LinearGradientBrush>(theme.FillBrush);
   }
 
-  [Theory]
-  [InlineData(GraphKind.Bar)]
-  [InlineData(GraphKind.SegmentedBar)]
-  public void FromAccent_DiscreteKinds_UseFlatSolidFill(GraphKind kind) {
-    GraphTheme theme = GraphThemes.FromAccent(Color.FromRgb(1, 2, 3), kind);
+  [Fact]
+  public void FromAccent_FlatFill_UsesFlatSolidFill() {
+    GraphTheme theme = GraphThemes.FromAccent(Color.FromRgb(1, 2, 3), flatFill: true);
 
     Assert.IsType<SolidColorBrush>(theme.FillBrush);
   }

@@ -122,9 +122,10 @@
                 <TextBlock Text="Active time" Foreground="{StaticResource SpecValueBrush}" FontSize="{StaticResource SpecFontSize}" HorizontalAlignment="Left"/>
                 <TextBlock Text="{Binding ActivityLabel}" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource SpecFontSize}" HorizontalAlignment="Right"/>
               </Grid>
-              <graphs:AdaptiveGraph Grid.Row="2" Margin="0,0,0,12"
+              <graphs:PerformanceGraph Grid.Row="2" Margin="0,0,0,12"
+                                    Style="{StaticResource AdaptiveGraphStyle}"
                                     Loaded="OnActivityGraphLoaded"
-                                    MinValue="0" MaxValue="100" Accent="{StaticResource GraphAccentStorage}" BandedLine="False" ShowChrome="True"/>
+                                    MinValue="0" MaxValue="100" Accent="{StaticResource GraphAccentStorage}" BandedLine="False"/>
 
               <!-- Disk transfer rate -->
               <Grid Grid.Row="3" Margin="0,0,0,2">
@@ -141,10 +142,11 @@
                   <Run Text="Peak"/><Run Text=" "/><Run Text="{Binding PeakTransferLabel, Mode=OneWay}"/>
                 </TextBlock>
               </Grid>
-              <graphs:AdaptiveGraph Grid.Row="4" Margin="0,0,0,14"
+              <graphs:PerformanceGraph Grid.Row="4" Margin="0,0,0,14"
+                                    Style="{StaticResource AdaptiveGraphStyle}"
                                     Loaded="OnTransferGraphLoaded"
                                     MinValue="0" MaxValue="{Binding TransferMaxMBps}"
-                                    Accent="#3E9BE8" ShowChrome="True"/>
+                                    Accent="#3E9BE8"/>
 
               <!-- Capacity: used vs free of the disk's mounted volumes -->
               <StackPanel Grid.Row="5" Margin="0,0,0,16">

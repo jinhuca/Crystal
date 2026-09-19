@@ -1,5 +1,4 @@
 using Crystal.Controls.PerformanceGraphs;
-using Crystal.Controls.PerformanceGraphs.Kinds;
 using Crystal.Controls.PerformanceGraphs.Themes;
 using System.Windows.Media;
 using Xunit;
@@ -13,7 +12,7 @@ public class PerformanceGraphTests {
 
     Assert.Equal(60, graph.Capacity);
     Assert.Equal(60, graph.GridColumns);
-    Assert.Equal(GraphKind.Line, graph.Kind);
+    Assert.Equal(DisplayMode.Line, graph.DisplayMode);
     Assert.Equal(0.0, graph.MinValue);
     Assert.Equal(100.0, graph.MaxValue);
   });
@@ -81,13 +80,13 @@ public class PerformanceGraphTests {
   });
 
   [Fact]
-  public void AddValue_DoesNotThrow_AndKindStaysConfigurable() => StaRunner.Run(() => {
-    var graph = new PerformanceGraph { Kind = GraphKind.Bar };
+  public void AddValue_DoesNotThrow_AndDisplayModeStaysConfigurable() => StaRunner.Run(() => {
+    var graph = new PerformanceGraph { DisplayMode = DisplayMode.MultipleLine };
 
     graph.AddValue(42);
     graph.AddValue(43);
 
-    Assert.Equal(GraphKind.Bar, graph.Kind);
+    Assert.Equal(DisplayMode.MultipleLine, graph.DisplayMode);
   });
 
   [Fact]
@@ -141,7 +140,7 @@ public class PerformanceGraphTests {
   [Fact]
   public void ApplyTheme_UpdatesVisualProperties() => StaRunner.Run(() => {
     var graph = new PerformanceGraph();
-    GraphTheme theme = GraphThemes.Emerald(GraphKind.Line);
+    GraphTheme theme = GraphThemes.Emerald();
 
     graph.ApplyTheme(theme);
 

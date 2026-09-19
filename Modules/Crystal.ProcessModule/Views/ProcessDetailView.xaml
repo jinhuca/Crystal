@@ -830,13 +830,13 @@
                     </TextBlock>
                   </StackPanel>
                 </Grid>
-                <graphs:PerformanceGraphMultipleDS x:Name="CpuGraph" Height="70" MinValue="0" MaxValue="100"
+                <graphs:PerformanceGraph x:Name="CpuGraph" DisplayMode="MultipleLine" Height="70" MinValue="0" MaxValue="100"
                                                    GraphBackground="#0A0A0A" GridBrush="#1B1B1B" GridThickness="0.6"
                                                    BorderBrush="{StaticResource DividerBrush}">
-                  <graphs:PerformanceGraphMultipleDS.Series>
+                  <graphs:PerformanceGraph.Series>
                     <graphs:DataSeries x:Name="CpuTotalSeries" Name="Total" LineBrush="#E0B84C" LineThickness="1.2" FillBrush="{StaticResource TotalSeriesFill}"/>
-                  </graphs:PerformanceGraphMultipleDS.Series>
-                </graphs:PerformanceGraphMultipleDS>
+                  </graphs:PerformanceGraph.Series>
+                </graphs:PerformanceGraph>
               </StackPanel>
             </Border>
 
@@ -870,14 +870,14 @@
                     </StackPanel>
                   </StackPanel>
                 </Grid>
-                <graphs:PerformanceGraphMultipleDS x:Name="GpuGraph" Height="70" MinValue="0" MaxValue="100"
+                <graphs:PerformanceGraph x:Name="GpuGraph" DisplayMode="MultipleLine" Height="70" MinValue="0" MaxValue="100"
                                                    GraphBackground="#0A0A0A" GridBrush="#1B1B1B" GridThickness="0.6"
                                                    BorderBrush="{StaticResource DividerBrush}">
-                  <graphs:PerformanceGraphMultipleDS.Series>
+                  <graphs:PerformanceGraph.Series>
                     <graphs:DataSeries x:Name="GpuDedicatedSeries" Name="Dedicated" LineBrush="#E0B84C" LineThickness="1.2" FillBrush="{StaticResource TotalSeriesFill}"/>
                     <graphs:DataSeries x:Name="GpuIntegratedSeries" Name="Integrated" LineBrush="#6FCF97" LineThickness="1.2" FillBrush="{StaticResource IntegratedSeriesFill}"/>
-                  </graphs:PerformanceGraphMultipleDS.Series>
-                </graphs:PerformanceGraphMultipleDS>
+                  </graphs:PerformanceGraph.Series>
+                </graphs:PerformanceGraph>
               </StackPanel>
             </Border>
 
@@ -900,13 +900,13 @@
                 </Grid>
                 <!-- Both the total and per-process series are percentages of total physical memory
                      (machine load and each process's share), so the axis is a fixed 0–100 like CPU/GPU. -->
-                <graphs:PerformanceGraphMultipleDS x:Name="MemoryGraph" Height="70" MinValue="0" MaxValue="100"
+                <graphs:PerformanceGraph x:Name="MemoryGraph" DisplayMode="MultipleLine" Height="70" MinValue="0" MaxValue="100"
                                                    GraphBackground="#0A0A0A" GridBrush="#1B1B1B" GridThickness="0.6"
                                                    BorderBrush="{StaticResource DividerBrush}">
-                  <graphs:PerformanceGraphMultipleDS.Series>
+                  <graphs:PerformanceGraph.Series>
                     <graphs:DataSeries x:Name="MemoryTotalSeries" Name="Total" LineBrush="#E0B84C" LineThickness="1.2" FillBrush="{StaticResource TotalSeriesFill}"/>
-                  </graphs:PerformanceGraphMultipleDS.Series>
-                </graphs:PerformanceGraphMultipleDS>
+                  </graphs:PerformanceGraph.Series>
+                </graphs:PerformanceGraph>
               </StackPanel>
             </Border>
 
@@ -929,14 +929,14 @@
                 </Grid>
                 <!-- Throughput, not a percentage: the axis auto-scales to the windowed peak (DiskMaxMBps)
                      so the small per-process lines and the larger total all stay on-scale. -->
-                <graphs:PerformanceGraphMultipleDS x:Name="DiskGraph" Height="70" MinValue="0"
+                <graphs:PerformanceGraph x:Name="DiskGraph" DisplayMode="MultipleLine" Height="70" MinValue="0"
                                                    MaxValue="{Binding DataContext.DiskMaxMBps, ElementName=Root, Mode=OneWay}"
                                                    GraphBackground="#0A0A0A" GridBrush="#1B1B1B" GridThickness="0.6"
                                                    BorderBrush="{StaticResource DividerBrush}">
-                  <graphs:PerformanceGraphMultipleDS.Series>
+                  <graphs:PerformanceGraph.Series>
                     <graphs:DataSeries x:Name="DiskTotalSeries" Name="Total" LineBrush="#E0B84C" LineThickness="1.2" FillBrush="{StaticResource TotalSeriesFill}"/>
-                  </graphs:PerformanceGraphMultipleDS.Series>
-                </graphs:PerformanceGraphMultipleDS>
+                  </graphs:PerformanceGraph.Series>
+                </graphs:PerformanceGraph>
               </StackPanel>
             </Border>
 
@@ -957,14 +957,14 @@
                     </TextBlock>
                   </StackPanel>
                 </Grid>
-                <graphs:PerformanceGraphMultipleDS x:Name="NetGraph" Height="70" MinValue="0"
+                <graphs:PerformanceGraph x:Name="NetGraph" DisplayMode="MultipleLine" Height="70" MinValue="0"
                                                    MaxValue="{Binding DataContext.NetMaxMBps, ElementName=Root, Mode=OneWay}"
                                                    GraphBackground="#0A0A0A" GridBrush="#1B1B1B" GridThickness="0.6"
                                                    BorderBrush="{StaticResource DividerBrush}">
-                  <graphs:PerformanceGraphMultipleDS.Series>
+                  <graphs:PerformanceGraph.Series>
                     <graphs:DataSeries x:Name="NetTotalSeries" Name="Total" LineBrush="#E0B84C" LineThickness="1.2" FillBrush="{StaticResource TotalSeriesFill}"/>
-                  </graphs:PerformanceGraphMultipleDS.Series>
-                </graphs:PerformanceGraphMultipleDS>
+                  </graphs:PerformanceGraph.Series>
+                </graphs:PerformanceGraph>
               </StackPanel>
             </Border>
           </StackPanel>

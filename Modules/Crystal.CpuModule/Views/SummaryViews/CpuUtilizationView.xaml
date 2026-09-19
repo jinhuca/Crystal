@@ -22,13 +22,14 @@
       <ColumnDefinition Width="*"/>
       <ColumnDefinition Width="180"/>
     </Grid.ColumnDefinitions>
-    <graphs:AdaptiveGraph
+    <graphs:PerformanceGraph
       Grid.Column="0"
       x:Name="CpuUtilizationGraph"
+      Style="{StaticResource AdaptiveGraphStyle}"
       graphs:GraphIdentity.Id="Cpu.Utilization"
-      Capacity="180" MinValue="0" MaxValue="100"
+      HistoryLength="180" MinValue="0" MaxValue="100"
       Accent="{StaticResource GraphAccentUtilization}"
-      BandedLine="True" ShowChrome="True" MinHeight="40"
+      BandedLine="True"
       CellPitch="{StaticResource DashboardDotPitch}"/>
 
     <Border Grid.Column="1" Style="{StaticResource SummaryTileBorderStyle}"

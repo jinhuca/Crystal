@@ -8,6 +8,9 @@ namespace Crystal.Controls.Tests.Meters;
 public class SegmentedBarTests {
   private static readonly Color Fill = Colors.Red;
 
+  // SegmentedBar is deprecated in favor of RangeBar(Segmented="True"), but still ships and is
+  // exercised here to guard its behavior until it's removed — so the obsolete warning is expected.
+#pragma warning disable CS0618
   private static SegmentedBar NewBar(bool segmented, double value) => new() {
     Minimum = 0,
     Maximum = 100,
@@ -18,6 +21,7 @@ public class SegmentedBarTests {
     TrackBrush = null,
     Stroke = null,
   };
+#pragma warning restore CS0618
 
   [Fact]
   public void Solid_bar_fills_proportionally_to_value() => StaRunner.Run(() => {

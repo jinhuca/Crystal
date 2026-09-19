@@ -3,26 +3,27 @@ using System.Runtime.CompilerServices;
 
 namespace Crystal.Controls.PerformanceGraphs;
 
-/// <summary>How every dashboard history graph draws its samples: a continuous filled line
-/// (a real <see cref="PerformanceGraph"/>) or a dot-matrix gauge (a real
-/// <see cref="PerformanceGraphLite"/>).</summary>
+/// <summary>How every dashboard history graph draws its samples: a continuous filled line or a
+/// dot-matrix gauge. Maps to a <see cref="PerformanceGraph"/>'s <see cref="DisplayMode"/>
+/// (<see cref="DisplayMode.Line"/> / <see cref="DisplayMode.Dot"/>).</summary>
 public enum GraphRenderMode {
-  /// <summary>Filled line — <see cref="PerformanceGraph"/> with <see cref="Kinds.GraphKind.Line"/>.</summary>
+  /// <summary>Filled line — <see cref="PerformanceGraph"/> with <see cref="DisplayMode.Line"/>.</summary>
   Line,
 
-  /// <summary>Dot-matrix gauge — <see cref="PerformanceGraphLite"/>.</summary>
+  /// <summary>Dot-matrix gauge — <see cref="PerformanceGraph"/> with <see cref="DisplayMode.Dot"/>.</summary>
   Dot,
 }
 
 /// <summary>
-/// The global render mode shared by every <see cref="AdaptiveGraph"/> on the dashboard, shared
+/// The global render mode shared by every dashboard <see cref="PerformanceGraph"/>, shared
 /// across the shell/module assembly boundary the same way <see cref="Meters.CoreBarAppearance"/>
-/// is: each tile's graph binds to this singleton, and the shell's title-bar Line/Dot toggle writes
-/// the user's choice here so a change takes effect on every graph immediately and is reproduced on
-/// the next launch. Kept in the shared control library because modules cannot reference the shell.
+/// is: each tile's graph binds its <see cref="PerformanceGraph.DisplayMode"/> to this singleton, and
+/// the shell's title-bar Line/Dot toggle writes the user's choice here so a change takes effect on
+/// every graph immediately and is reproduced on the next launch. Kept in the shared control library
+/// because modules cannot reference the shell.
 /// </summary>
 public sealed class GraphAppearance : INotifyPropertyChanged {
-  /// <summary>The single instance every <see cref="AdaptiveGraph"/> binds to and the shell writes.</summary>
+  /// <summary>The single instance every dashboard <see cref="PerformanceGraph"/> binds to and the shell writes.</summary>
   public static GraphAppearance Current { get; } = new();
 
   private GraphRenderMode _mode = GraphRenderMode.Line;

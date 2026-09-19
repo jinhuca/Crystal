@@ -56,17 +56,17 @@
 
   <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="NoFillLineStyle"
          BasedOn="{StaticResource NoFillStyle}">
-    <Setter Property="Kind" Value="Line"/>
+    <Setter Property="DisplayMode" Value="Line"/>
   </Style>
 
   <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="NoFillBarStyle"
          BasedOn="{StaticResource NoFillStyle}">
-    <Setter Property="Kind" Value="Bar"/>
+    <Setter Property="DisplayMode" Value="Line"/>
   </Style>
 
   <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="NoFillSegStyle"
          BasedOn="{StaticResource NoFillStyle}">
-    <Setter Property="Kind" Value="SegmentedBar"/>
+    <Setter Property="DisplayMode" Value="Line"/>
   </Style>
 
   <!-- Load Graph Styles -->
@@ -79,12 +79,12 @@
 
   <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="SegLoadGraph30Style"
          BasedOn="{StaticResource LoadGraph30BaseStyle}">
-    <Setter Property="Kind" Value="SegmentedBar"/>
+    <Setter Property="DisplayMode" Value="Line"/>
   </Style>
 
   <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="LineLoadGraph30Style"
          BasedOn="{StaticResource LoadGraph30BaseStyle}">
-    <Setter Property="Kind" Value="Line"/>
+    <Setter Property="DisplayMode" Value="Line"/>
   </Style>
 
   <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="SegBarLoadGraphGreyStyle030"
@@ -162,12 +162,12 @@
   
   <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="SegTemperatureGraph30Style"
          BasedOn="{StaticResource TemperatureGraph30Style}">
-    <Setter Property="Kind" Value="SegmentedBar"/>
+    <Setter Property="DisplayMode" Value="Line"/>
   </Style>
   
   <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="LineTemperatureGraph30Style"
          BasedOn="{StaticResource TemperatureGraph30Style}">
-    <Setter Property="Kind" Value="Line"/>
+    <Setter Property="DisplayMode" Value="Line"/>
   </Style>
 
   <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="SegBarTemperatureGraphGreyStyle030"
@@ -218,7 +218,7 @@
 
 
   <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="RoseLineGraphStyle">
-    <Setter Property="Kind" Value="Line"/>
+    <Setter Property="DisplayMode" Value="Line"/>
     <Setter Property="GraphBackground" Value="{StaticResource GraphPlotBackgroundBrush}"/>
     <Setter Property="GridBrush" Value="{StaticResource GraphGridBrush}"/>
     <Setter Property="GridThickness" Value="0.6"/>
@@ -230,7 +230,7 @@
   </Style>
 
   <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="EmeraldLineGraphStyle">
-    <Setter Property="Kind" Value="Line"/>
+    <Setter Property="DisplayMode" Value="Line"/>
     <Setter Property="GraphBackground" Value="{StaticResource GraphPlotBackgroundBrush}"/>
     <Setter Property="GridBrush" Value="{StaticResource GraphGridBrush}"/>
     <Setter Property="GridThickness" Value="0.6"/>
@@ -242,7 +242,7 @@
   </Style>
 
   <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="SkyLineGraphStyle">
-    <Setter Property="Kind" Value="Line"/>
+    <Setter Property="DisplayMode" Value="Line"/>
     <Setter Property="GraphBackground" Value="{StaticResource GraphPlotBackgroundBrush}"/>
     <Setter Property="GridBrush" Value="{StaticResource GraphGridBrush}"/>
     <Setter Property="GridThickness" Value="0.6"/>
@@ -254,7 +254,7 @@
   </Style>
 
   <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="AmberLineGraphStyle">
-    <Setter Property="Kind" Value="Line"/>
+    <Setter Property="DisplayMode" Value="Line"/>
     <Setter Property="GraphBackground" Value="{StaticResource GraphPlotBackgroundBrush}"/>
     <Setter Property="GridBrush" Value="{StaticResource GraphGridBrush}"/>
     <Setter Property="GridThickness" Value="0.6"/>
@@ -266,7 +266,7 @@
   </Style>
 
   <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="AmberBarGraphStyle">
-    <Setter Property="Kind" Value="Bar"/>
+    <Setter Property="DisplayMode" Value="Line"/>
     <Setter Property="GraphBackground" Value="{StaticResource GraphPlotBackgroundBrush}"/>
     <Setter Property="GridBrush" Value="{StaticResource GraphGridBrush}"/>
     <Setter Property="GridThickness" Value="0.6"/>
@@ -279,7 +279,7 @@
 
   <Style TargetType="{x:Type graphs:PerformanceGraph}" x:Key="PurpleSegmentedBarGraphStyle">
     <Setter Property="HistoryLength" Value="30"/>
-    <Setter Property="Kind" Value="SegmentedBar"/>
+    <Setter Property="DisplayMode" Value="Line"/>
     <Setter Property="GraphBackground" Value="Transparent"/>
     <Setter Property="GridBrush" Value="Transparent"/>
     <Setter Property="GridThickness" Value="0"/>

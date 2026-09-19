@@ -24,17 +24,18 @@
 			<ColumnDefinition Width="*"/>
 			<ColumnDefinition Width="Auto"/>
 		</Grid.ColumnDefinitions>
-		<graphs:AdaptiveGraph
+		<graphs:PerformanceGraph
+      Style="{StaticResource AdaptiveGraphStyle}"
       Grid.Column="0"
       x:Name="UtilizationGraph"
       graphs:GraphIdentity.Id="Gpu.Utilization"
-      Capacity="{Binding Capacity, RelativeSource={RelativeSource AncestorType=UserControl}}"
+      HistoryLength="{Binding Capacity, RelativeSource={RelativeSource AncestorType=UserControl}}"
       MinValue="0" MaxValue="100"
       Accent="{StaticResource GraphAccentUtilization}"
       BandedLine="True" 
 			BandStartColor="{StaticResource GpuUtilizationBandedColor1}" 
 			BandEndColor="{StaticResource GpuUtilizationBandedColor9}"
-      ShowChrome="True" MinHeight="40"
+      MinHeight="40"
       CellPitch="{StaticResource DashboardDotPitch}"/>
 
 		<!-- Readout tile: same width and row structure as the other summary tiles (GpuFanView/GpuVoltageView),

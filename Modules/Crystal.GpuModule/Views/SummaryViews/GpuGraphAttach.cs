@@ -6,7 +6,7 @@ namespace Crystal.GpuModule.Views.SummaryViews;
 
 /// <summary>
 /// Shared self-registration for the per-tile history graphs: on Loaded, an
-/// <see cref="ISingleSeriesGraph"/> (each tile's <see cref="AdaptiveGraph"/>) hands itself to the
+/// <see cref="ISingleSeriesGraph"/> (each tile's <see cref="PerformanceGraph"/>) hands itself to the
 /// inherited <see cref="GpuAdapterViewModel"/> under its <c>GraphIdentity.Id</c> so the VM feeds it
 /// each poll (mirrors the CPU summary tiles).
 /// </summary>

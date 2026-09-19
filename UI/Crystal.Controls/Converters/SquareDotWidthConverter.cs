@@ -6,8 +6,8 @@ using Crystal.Controls.PerformanceGraphs;
 namespace Crystal.Controls.Converters;
 
 /// <summary>
-/// Computes the Width a <see cref="PerformanceGraphLite"/> needs so its dots render perfectly
-/// square, given a fixed Height plus its own Capacity/Rows - the exact inverse of
+/// Computes the Width a <see cref="PerformanceGraph"/> in <see cref="DisplayMode.Dot"/> mode needs
+/// so its dots render perfectly square, given a fixed Height plus its own Capacity/Rows - the exact inverse of
 /// <see cref="CapacityToRatioConverter"/> (which derives Height from Width instead).
 /// </summary>
 /// <remarks>
@@ -29,7 +29,7 @@ public class SquareDotWidthConverter : IMultiValueConverter {
     }
 
     // SquareDotAspectRatio is Height/Width for square dots, so Width = Height / ratio.
-    double ratio = PerformanceGraphLite.SquareDotAspectRatio(rows, capacity);
+    double ratio = PerformanceGraph.SquareDotAspectRatio(rows, capacity);
     return Math.Max(20.0, height / ratio);
   }
 

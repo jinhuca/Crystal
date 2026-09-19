@@ -10,25 +10,25 @@ using System.Windows.Media;
 namespace Crystal.Controls.PerformanceGraphs;
 
 /// <summary>
-/// One named line on a <see cref="PerformanceGraphMultipleDS"/> - its own color, thickness, and
-/// optional fill, plotting its own buffered data against the parent graph's shared
-/// MinValue/MaxValue/Capacity axes. Declare these under
-/// <see cref="PerformanceGraphMultipleDS.Series"/> directly in XAML, or build the collection in a
-/// view-model and assign/bind it to <see cref="PerformanceGraphMultipleDS.Series"/> itself.
+/// One named line on a <see cref="PerformanceGraph"/> in <see cref="DisplayMode.MultipleLine"/> mode -
+/// its own color, thickness, and optional fill, plotting its own buffered data against the parent
+/// graph's shared MinValue/MaxValue/HistoryLength axes. Declare these under
+/// <see cref="PerformanceGraph.Series"/> directly in XAML, or build the collection in a
+/// view-model and assign/bind it to <see cref="PerformanceGraph.Series"/> itself.
 /// </summary>
 /// <remarks>
 /// A <see cref="DataSeries"/> only has buffered data - and only reacts to
 /// <see cref="ValuesSource"/> - once it's actually attached to a graph (added to that graph's
-/// <see cref="PerformanceGraphMultipleDS.Series"/> collection), since <see cref="Capacity"/>
+/// <see cref="PerformanceGraph.Series"/> collection), since the capacity
 /// (needed to size its buffer) belongs to the graph, not the series. Setting properties on an
 /// unattached instance is fine - they just take effect once it's attached, and <see cref="AddValue"/>/
 /// <see cref="ClearValues"/> are safe no-ops on an unattached instance rather than throwing.
 /// <para>
 /// <b><see cref="ValuesSource"/> and XAML <c>{Binding}</c>.</b> <see cref="DataSeries"/> derives
 /// from plain <see cref="DependencyObject"/>, not <see cref="FrameworkElement"/> - unlike
-/// <see cref="PerformanceGraphLite"/>, it has no <c>DataContext</c> of its own and doesn't
+/// <see cref="PerformanceGraph"/>, it has no <c>DataContext</c> of its own and doesn't
 /// automatically inherit one through a plain <see cref="ObservableCollection{T}"/> assigned to
-/// <see cref="PerformanceGraphMultipleDS.Series"/> (that inheritance-context propagation is a
+/// <see cref="PerformanceGraph.Series"/> (that inheritance-context propagation is a
 /// <see cref="Freezable"/>/<c>FreezableCollection</c>-specific mechanism this class doesn't use,
 /// to avoid the added complexity of <see cref="Freezable"/>'s clone/instantiation ceremony for a
 /// first version of this control). A XAML <c>ValuesSource="{Binding SomeCollection}"</c> on a
@@ -95,7 +95,7 @@ public sealed class DataSeries : DependencyObject {
 
   /// <summary>
   /// Binds this series' data to an <see cref="ObservableCollection{T}"/> of <see cref="double"/>,
-  /// mirroring <see cref="PerformanceGraphLite.ValuesSource"/>'s own behavior exactly: assigning it
+  /// mirroring <see cref="PerformanceGraph.ValuesSource"/>'s own behavior exactly: assigning it
   /// clears this series' buffer and seeds it with the collection's current contents (once this
   /// series is attached to a graph - see the class remarks), then every subsequent
   /// <see cref="System.Collections.Specialized.INotifyCollectionChanged.CollectionChanged"/> that
@@ -121,7 +121,7 @@ public sealed class DataSeries : DependencyObject {
   internal CircularBuffer<double>? Buffer;
   internal readonly FilledLineRenderer Renderer = new();
   internal Pen ResolvedLinePen = Helpers.CreateFrozenPen(Brushes.DeepSkyBlue, 1.5);
-  internal PerformanceGraphMultipleDS? Owner;
+  internal PerformanceGraph? Owner;
 
   private static void OnLineBrushChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
     var series = (DataSeries)d;
@@ -167,7 +167,7 @@ public sealed class DataSeries : DependencyObject {
     } else if (e.NewItems != null) {
       // Add, Replace, and Move all surface their new elements via NewItems - appending them
       // covers the live-append scenario this property exists for. A bare Remove carries no
-      // NewItems and is a no-op here, same choice PerformanceGraphLite.ValuesSource makes.
+      // NewItems and is a no-op here, same choice PerformanceGraph.ValuesSource makes.
       foreach (double value in e.NewItems) Buffer.Add(value);
     }
 
@@ -175,7 +175,7 @@ public sealed class DataSeries : DependencyObject {
   }
 
   /// <summary>Appends a new sample, dropping the oldest once the owning graph's
-  /// <see cref="PerformanceGraphMultipleDS.Capacity"/> is exceeded. A safe no-op if this series
+  /// <see cref="PerformanceGraph.HistoryLength"/> is exceeded. A safe no-op if this series
   /// isn't currently attached to a graph. O(1).</summary>
   public void AddValue(double value) {
     if (!CheckAccess()) {
@@ -196,11 +196,11 @@ public sealed class DataSeries : DependencyObject {
     Owner?.RequestRender();
   }
 
-  // Called by PerformanceGraphMultipleDS when this series is added to its Series collection (or
+  // Called by PerformanceGraph when this series is added to its Series collection (or
   // when the whole collection is replaced and this series is part of the new one). Reads
   // ValuesSource (and every other property) as they stand right now, so it doesn't matter whether
   // those were set before or after this series was added to a Series collection.
-  internal void Attach(PerformanceGraphMultipleDS owner, int capacity) {
+  internal void Attach(PerformanceGraph owner, int capacity) {
     Owner = owner;
     Buffer = new CircularBuffer<double>(capacity);
     if (ValuesSource is { } source) {

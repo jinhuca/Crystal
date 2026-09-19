@@ -51,11 +51,12 @@
                     </StackPanel>
 
                     <!-- Sparkline: identity blue, single color -->
-                    <graphs:PerformanceGraphLite x:Name="Spark" Height="26" Width="400"
-                                                 HorizontalAlignment="Left" Margin="0,2,0,10"
-                                                 Rows="6" Capacity="48"
-                                                 MinValue="0" MaxValue="90"
-                                                 ColorMode="SingleColor" DotColor="#3E9BE8" CornerRadius="1"/>
+                    <graphs:PerformanceGraph x:Name="Spark" Height="26" Width="400"
+                                             DisplayMode="Dot"
+                                             HorizontalAlignment="Left" Margin="0,2,0,10"
+                                             Rows="6" HistoryLength="48"
+                                             MinValue="0" MaxValue="90"
+                                             ColorMode="SingleColor" DotColor="#3E9BE8" CornerRadius="1"/>
 
                     <!-- Meter: 0..Tjmax scale, accent-gradient fill. peak and the Tjmax throttle
                          limit are first-class RangeBar markers. A single limit needs no LabelLine

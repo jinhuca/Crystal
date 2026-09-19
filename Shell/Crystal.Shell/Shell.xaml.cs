@@ -57,8 +57,9 @@ public partial class Shell : Window {
       _events.GetEvent<ShowDetailEvent>().Publish(DetailViewNames.Benchmark);
 
   // Reflect the persisted render mode in the title-bar radios and push it onto the global graph
-  // appearance so every AdaptiveGraph builds in the right shape from first paint. Seeding is
-  // suppressed so reflecting the current selection doesn't itself re-save it.
+  // appearance so every dashboard PerformanceGraph renders in the right mode from first paint (each
+  // binds its DisplayMode to GraphAppearance.Current.Mode). Seeding is suppressed so reflecting the
+  // current selection doesn't itself re-save it.
   private void InitGraphKindToggle() {
     var mode = _graphSettings.Current.RenderMode;
     Crystal.Controls.PerformanceGraphs.GraphAppearance.Current.Mode = mode;
@@ -76,8 +77,9 @@ public partial class Shell : Window {
     if (!_suppressKindApply) ApplyRenderMode(Crystal.Controls.PerformanceGraphs.GraphRenderMode.Dot);
   }
 
-  // Push the chosen render mode onto the global graph appearance (every live AdaptiveGraph rebuilds
-  // its inner control immediately) and persist it so the choice is restored on the next launch.
+  // Push the chosen render mode onto the global graph appearance (every live dashboard
+  // PerformanceGraph re-renders in place immediately via its DisplayMode binding) and persist it so
+  // the choice is restored on the next launch.
   private void ApplyRenderMode(Crystal.Controls.PerformanceGraphs.GraphRenderMode mode) {
     Crystal.Controls.PerformanceGraphs.GraphAppearance.Current.Mode = mode;
     var current = _graphSettings.Current;

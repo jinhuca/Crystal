@@ -5,8 +5,10 @@ namespace Crystal.Resources.Tests;
 
 /// <summary>
 /// Locks the semantic-palette contract: every brush key views depend on must exist, be a
-/// SolidColorBrush, and carry its documented color. A rename or dropped key fails here loudly
-/// instead of silently blanking a view at runtime.
+/// SolidColorBrush, and carry its documented color; the per-sensor banded gauge endpoints must
+/// likewise exist as Color resources of their documented value (they feed PerformanceGraph's
+/// BandStartColor/BandEndColor, which are Color, not Brush). A rename or dropped key fails here
+/// loudly instead of silently blanking a view at runtime.
 /// </summary>
 public class PaletteTests {
   // Key -> expected hex, mirroring Palette.xaml. Kept explicit so a color change is a deliberate
@@ -77,10 +79,58 @@ public class PaletteTests {
     ("PowerAccentBandedBrush9", "#FFF09B59"),
   };
 
+  // Per-sensor banded gauge endpoints, exposed as Color (not Brush) resources because they feed
+  // PerformanceGraph.BandStartColor / BandEndColor (Color-typed DPs). Band 1 = lowest reading, band
+  // 9 = highest; the CPU family ramps green→red and the GPU family blue→red. Kept explicit for the
+  // same reason as the brushes above: a color change is a deliberate test edit, not silent drift.
+  public static readonly (string Key, string Hex)[] ExpectedColors = {
+    ("CpuPowerAccentBandedColor1", "#FF90EE90"),
+    ("CpuPowerAccentBandedColor9", "#FFFF4556"),
+    ("CpuTemperatureAccentBandedColor1", "#FF90EE90"),
+    ("CpuTemperatureAccentBandedColor9", "#FFFF4556"),
+    ("CpuClockAccentBandedColor1", "#FF90EE90"),
+    ("CpuClockAccentBandedColor9", "#FFFF4556"),
+    ("CpuVoltAccentBandedColor1", "#FF90EE90"),
+    ("CpuVoltAccentBandedColor9", "#FFFF4556"),
+    ("CpuFanAccentBandedColor1", "#FF90EE90"),
+    ("CpuFanAccentBandedColor9", "#FFFF4556"),
+
+    ("GpuPowerBandedColor1", "#FF2E7DD1"),
+    ("GpuPowerBandedColor9", "#FFFF2D2D"),
+    ("GpuTemperatureBandedColor1", "#FF2E7DD1"),
+    ("GpuTemperatureBandedColor9", "#FFFF2D2D"),
+    ("GpuHotspotBandedColor1", "#FF2E7DD1"),
+    ("GpuHotspotBandedColor9", "#FFFF2D2D"),
+    ("GpuMemoryBandedColor1", "#FF2E7DD1"),
+    ("GpuMemoryBandedColor9", "#FFFF2D2D"),
+    ("GpuClockBandedColor1", "#FF2E7DD1"),
+    ("GpuClockBandedColor9", "#FFFF2D2D"),
+    ("Gpu3DBandedColor1", "#FF2E7DD1"),
+    ("Gpu3DBandedColor9", "#FFFF2D2D"),
+    ("GpuPCIeRxBandedColor1", "#FF2E7DD1"),
+    ("GpuPCIeRxBandedColor9", "#FFFF2D2D"),
+    ("GpuPCIeTxBandedColor1", "#FF2E7DD1"),
+    ("GpuPCIeTxBandedColor9", "#FFFF2D2D"),
+    ("GpuFanBandedColor1", "#FF2E7DD1"),
+    ("GpuFanBandedColor9", "#FFFF2D2D"),
+    ("GpuVoltBandedColor1", "#FF2E7DD1"),
+    ("GpuVoltBandedColor9", "#FFFF2D2D"),
+    ("GpuUtilizationBandedColor1", "#FF2E7DD1"),
+    ("GpuUtilizationBandedColor9", "#FFFF2D2D"),
+  };
+
   public static TheoryData<string, string> ExpectedData {
     get {
       var data = new TheoryData<string, string>();
       foreach (var (key, hex) in Expected) data.Add(key, hex);
+      return data;
+    }
+  }
+
+  public static TheoryData<string, string> ExpectedColorData {
+    get {
+      var data = new TheoryData<string, string>();
+      foreach (var (key, hex) in ExpectedColors) data.Add(key, hex);
       return data;
     }
   }
@@ -96,11 +146,24 @@ public class PaletteTests {
       Assert.Equal((Color)ColorConverter.ConvertFromString(hex)!, brush.Color);
     });
 
+  [Theory]
+  [MemberData(nameof(ExpectedColorData))]
+  public void Palette_ColorKey_IsColorOfExpectedValue(string key, string hex) =>
+    StaRunner.Run(() => {
+      var palette = ResourceLoader.LoadPalette();
+
+      Assert.True(palette.Contains(key), $"Palette is missing key '{key}'.");
+      var color = Assert.IsType<Color>(palette[key]);
+      Assert.Equal((Color)ColorConverter.ConvertFromString(hex)!, color);
+    });
+
   [Fact]
   public void Palette_ContainsNoUnexpectedExtraKeys() =>
     StaRunner.Run(() => {
       var palette = ResourceLoader.LoadPalette();
-      var expectedKeys = Expected.Select(e => e.Key).ToHashSet();
+      var expectedKeys = Expected.Select(e => e.Key)
+          .Concat(ExpectedColors.Select(e => e.Key))
+          .ToHashSet();
 
       var actualKeys = palette.Keys.Cast<object>().Select(k => k.ToString()!).ToHashSet();
 

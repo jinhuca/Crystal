@@ -53,12 +53,13 @@
 
       <!-- Adaptive (Line/Dot) memory-pressure history strip (used-percent); self-registers under
            "Gpu.Memory". Follows the title-bar Line/Dot toggle; default green→red gauge ramp. -->
-      <graphs:AdaptiveGraph
+      <graphs:PerformanceGraph
+        Style="{StaticResource AdaptiveGraphNoChromeStyle}"
         Grid.Row="2"
         Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Gpu.Memory"
         HorizontalAlignment="Stretch" VerticalAlignment="Top"
         Height="24" Rows="8" 
-				Capacity="{StaticResource GpuSensorGraphCapacity}"
+				HistoryLength="{StaticResource GpuSensorGraphCapacity}"
         MinValue="0" MaxValue="100"
         BandedLine="True"
 				BandStartColor="{StaticResource GpuMemoryBandedColor1}"

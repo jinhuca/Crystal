@@ -90,16 +90,16 @@
       <!-- Adaptive (Line/Dot) clock history strip; self-registers under "Cpu.Clock" (shared feed key
            with the detail-view history graph). Follows the title-bar Line/Dot toggle; banded
            whitesmoke→green ramp matching the clock accent in either mode. -->
-      <graphs:AdaptiveGraph
+      <graphs:PerformanceGraph
         Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="5"
+        Style="{StaticResource AdaptiveGraphNoChromeStyle}"
         Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Cpu.Clock"
         HorizontalAlignment="Stretch" VerticalAlignment="Top"
-        Height="24" Rows="10" 
-				Capacity="{StaticResource CpuSensorGraphCapacity}"
+        Height="24" Rows="10"
+				HistoryLength="{StaticResource CpuSensorGraphCapacity}"
         MinValue="0" MaxValue="6"
-        BandedLine="True" 
-				ShowChrome="False"
-				BandStartColor="{StaticResource CpuClockAccentBandedColor1}" 
+        BandedLine="True"
+				BandStartColor="{StaticResource CpuClockAccentBandedColor1}"
 				BandEndColor="{StaticResource CpuClockAccentBandedColor9}"
         Margin="0,0,0,0"/>
     </Grid>

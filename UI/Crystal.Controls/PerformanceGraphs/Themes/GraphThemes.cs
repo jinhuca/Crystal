@@ -1,5 +1,4 @@
-﻿using Crystal.Controls.PerformanceGraphs.Kinds;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Media;
 
 namespace Crystal.Controls.PerformanceGraphs.Themes;
@@ -15,54 +14,51 @@ public static class GraphThemes {
   /// <summary>
   /// Rose/magenta accent — matches a typical "% Utilization" graph.
   /// </summary>
-  public static GraphTheme Rose(GraphKind kind = GraphKind.Line) => FromAccent(Color.FromRgb(0xE8, 0x2A, 0x7A), kind);
+  public static GraphTheme Rose(bool flatFill = false) => FromAccent(Color.FromRgb(0xE8, 0x2A, 0x7A), flatFill);
 
   /// <summary>
   /// Emerald/green accent — matches a typical "Voltage" or "healthy" graph.
   /// </summary>
-  public static GraphTheme Emerald(GraphKind kind = GraphKind.Line) => FromAccent(Color.FromRgb(0x3B, 0xD1, 0x5A), kind);
+  public static GraphTheme Emerald(bool flatFill = false) => FromAccent(Color.FromRgb(0x3B, 0xD1, 0x5A), flatFill);
 
   /// <summary>
   /// Amber accent — a common "warning" color.
   /// </summary>
-  public static GraphTheme Amber(GraphKind kind = GraphKind.Line) => FromAccent(Color.FromRgb(0xE8, 0x9B, 0x2A), kind);
+  public static GraphTheme Amber(bool flatFill = false) => FromAccent(Color.FromRgb(0xE8, 0x9B, 0x2A), flatFill);
 
   /// <summary>
   /// Sky-blue accent.
   /// </summary>
-  public static GraphTheme Sky(GraphKind kind = GraphKind.Line) => FromAccent(Color.FromRgb(0x3E, 0x9B, 0xE8), kind);
+  public static GraphTheme Sky(bool flatFill = false) => FromAccent(Color.FromRgb(0x3E, 0x9B, 0xE8), flatFill);
 
   /// <summary>
   /// Purple accent.
   /// </summary>
-  public static GraphTheme Purple(GraphKind kind = GraphKind.Line) => FromAccent(Color.FromRgb(0x9B, 0x5A, 0xE8), kind);
+  public static GraphTheme Purple(bool flatFill = false) => FromAccent(Color.FromRgb(0x9B, 0x5A, 0xE8), flatFill);
 
   /// <summary>
   /// Builds a theme from a single accent color: the line and fill both derive from it, over a
   /// shared dark background/grid/border.
   ///
-  /// The fill differs by <paramref name="kind"/>, and this is the important part, not just a
-  /// detail: for <see cref="GraphKind.Line"/> the fill is a vertical gradient (solid-ish at the
-  /// line, fading to transparent at the baseline) because FilledLineRenderer draws one
-  /// continuous shape, so the gradient reads as a single smooth glow. For
-  /// <see cref="GraphKind.Bar"/> and <see cref="GraphKind.SegmentedBar"/> the fill is a flat
-  /// SolidColorBrush instead — BarRenderer/SegmentedBarRenderer draw many separate rectangles,
-  /// and WPF's default relative gradient mapping restarts within each one it's used on, so the
-  /// same "glow" gradient would instead repeat per bar (or per segment, which looks especially
-  /// broken — every little block fading independently rather than one continuous fade up the
-  /// stack). A flat fill is what actually reads correctly once the data is drawn as discrete
-  /// pieces.
+  /// The fill differs by <paramref name="flatFill"/>, and this is the important part, not just a
+  /// detail: with <paramref name="flatFill"/> false (the default) the fill is a vertical gradient
+  /// (solid-ish at the line, fading to transparent at the baseline) because
+  /// <c>FilledLineRenderer</c> draws one continuous shape, so the gradient reads as a single smooth
+  /// glow. With <paramref name="flatFill"/> true the fill is a flat SolidColorBrush instead — for a
+  /// graph that draws many separate shapes, WPF's default relative gradient mapping restarts within
+  /// each one it's used on, so the same "glow" gradient would instead repeat per shape. A flat fill
+  /// is what actually reads correctly once the data is drawn as discrete pieces.
   /// </summary>
-  public static GraphTheme FromAccent(Color accent, GraphKind kind = GraphKind.Line) {
+  public static GraphTheme FromAccent(Color accent, bool flatFill = false) {
     return new GraphTheme {
       GraphBackground = DefaultBackground,
       GridBrush = DefaultGrid,
       BorderBrush = DefaultBorder,
       LineBrush = Freeze(new SolidColorBrush(accent)),
       LineThickness = 1.5,
-      // Only the continuous Line kind gets the vertical glow gradient; the discrete kinds
-      // (Bar/SegmentedBar/Dot) draw many separate shapes, so a gradient would restart in each.
-      FillBrush = kind == GraphKind.Line ? CreateVerticalGlow(accent) : Freeze(new SolidColorBrush(accent))
+      // Only the continuous Line trace gets the vertical glow gradient; a flat fill is requested
+      // for graphs that draw many separate shapes, where a gradient would restart in each.
+      FillBrush = flatFill ? Freeze(new SolidColorBrush(accent)) : CreateVerticalGlow(accent)
     };
   }
 

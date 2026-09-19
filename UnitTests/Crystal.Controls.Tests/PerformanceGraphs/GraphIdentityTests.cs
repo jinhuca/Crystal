@@ -27,7 +27,7 @@ public class GraphIdentityTests {
     void Handler(IPerformanceGraph g) => raised.Add(g);
     GraphIdentity.GraphRegistered += Handler;
     try {
-      var graph = new PerformanceGraphLite();
+      var graph = new PerformanceGraph();
       GraphIdentity.SetId(graph, "Cpu.Utilization");
 
       Assert.Contains(graph, raised);

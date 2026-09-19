@@ -56,14 +56,15 @@
       <!-- Adaptive (Line/Dot) fan history strip; self-registers under "Cpu.Fan" (shared feed key with
            the detail-view history graph). Follows the title-bar Line/Dot toggle; default green→red
            gauge ramp. Upper bound tracks FanGraphMax (100% or 4000 RPM). -->
-      <graphs:AdaptiveGraph
+      <graphs:PerformanceGraph
         Grid.Row="2"
+        Style="{StaticResource AdaptiveGraphNoChromeStyle}"
         Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Cpu.Fan"
         HorizontalAlignment="Stretch" VerticalAlignment="Top"
-        Height="24" Rows="10" Capacity="{StaticResource FanSensorGraphCapacity}"
+        Height="24" Rows="10" HistoryLength="{StaticResource FanSensorGraphCapacity}"
         MinValue="0" MaxValue="{Binding FanGraphMax}"
-        BandedLine="True" 
-				BandStartColor="{StaticResource CpuFanAccentBandedColor1}" 
+        BandedLine="True"
+				BandStartColor="{StaticResource CpuFanAccentBandedColor1}"
 				BandEndColor="{StaticResource CpuFanAccentBandedColor9}"
         Margin="0,0,0,0"/>
     </Grid>

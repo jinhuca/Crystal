@@ -24,41 +24,41 @@
 
       <StackPanel Grid.Column="0" Margin="0,0,10,0">
         <TextBlock Text="Clock (GHz)" Style="{StaticResource MetricCaption}" Margin="0,0,0,4"/>
-        <graphs:PerformanceGraphLite Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Cpu.Clock"
+        <graphs:PerformanceGraph Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Cpu.Clock"
                                      Style="{StaticResource SquareDotGraphLiteStyle}"
-                                     Capacity="120" MinValue="0" MaxValue="6"
+                                     HistoryLength="120" MinValue="0" MaxValue="6"
                                      MinHeight="{StaticResource SummaryGraphMinHeight}"/>
       </StackPanel>
 
       <StackPanel Grid.Column="1" Margin="0,0,10,0">
         <TextBlock Text="Voltage (V)" Style="{StaticResource MetricCaption}" Margin="0,0,0,4"/>
-        <graphs:PerformanceGraphLite Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Cpu.Voltage"
+        <graphs:PerformanceGraph Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Cpu.Voltage"
                                      Style="{StaticResource SquareDotGraphLiteStyle}"
-                                     Capacity="120" MinValue="0" MaxValue="2"
+                                     HistoryLength="120" MinValue="0" MaxValue="2"
                                      MinHeight="{StaticResource SummaryGraphMinHeight}"/>
       </StackPanel>
 
       <StackPanel Grid.Column="2" Margin="0,0,10,0">
         <TextBlock Text="Temperature (℃)" Style="{StaticResource MetricCaption}" Margin="0,0,0,4"/>
-        <graphs:PerformanceGraphLite Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Cpu.Temperature"
+        <graphs:PerformanceGraph Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Cpu.Temperature"
                                      Style="{StaticResource SquareDotGraphLiteStyle}"
-                                     Capacity="120" MinValue="30" MaxValue="120"
+                                     HistoryLength="120" MinValue="30" MaxValue="120"
                                      MinHeight="{StaticResource SummaryGraphMinHeight}"/>
       </StackPanel>
 
       <StackPanel Grid.Column="3" Margin="0,0,10,0">
         <TextBlock Text="Power (W)" Style="{StaticResource MetricCaption}" Margin="0,0,0,4"/>
-        <graphs:PerformanceGraphLite Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Cpu.Power"
+        <graphs:PerformanceGraph Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Cpu.Power"
                                      Style="{StaticResource SquareDotGraphLiteStyle}"
-                                     Capacity="120" MinValue="0" MaxValue="100"
+                                     HistoryLength="120" MinValue="0" MaxValue="100"
                                      MinHeight="{StaticResource SummaryGraphMinHeight}"/>
       </StackPanel>
 
       <StackPanel Grid.Column="4">
         <TextBlock Text="Fan" Style="{StaticResource MetricCaption}" Margin="0,0,0,4"/>
-        <graphs:PerformanceGraphLite Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Cpu.Fan"
+        <graphs:PerformanceGraph Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Cpu.Fan"
                                      Style="{StaticResource SquareDotGraphLiteStyle}"
-                                     Capacity="120" MinValue="0" MaxValue="{Binding FanGraphMax}"
+                                     HistoryLength="120" MinValue="0" MaxValue="{Binding FanGraphMax}"
                                      MinHeight="{StaticResource SummaryGraphMinHeight}"/>
       </StackPanel>
     </Grid>

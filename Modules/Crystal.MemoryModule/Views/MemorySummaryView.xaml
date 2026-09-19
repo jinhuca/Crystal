@@ -99,10 +99,11 @@
                          Foreground="{Binding UsageRow.Trend, Converter={StaticResource TrendToBrush}}"
                          Style="{StaticResource MetricUnit}" Margin="4,0,0,0"/>
 							</StackPanel>
-							<graphs:AdaptiveGraph Grid.Row="2" x:Name="MemoryUsageGraph"
-                Capacity="180" MinValue="0" MaxValue="100"
+							<graphs:PerformanceGraph Grid.Row="2" x:Name="MemoryUsageGraph"
+                Style="{StaticResource AdaptiveGraphStyle}"
+                HistoryLength="180" MinValue="0" MaxValue="100"
                 Accent="{StaticResource GraphAccentUtilization}"
-                BandedLine="True" ShowChrome="True" MinHeight="40"
+                BandedLine="True" MinHeight="40"
                 CellPitch="{StaticResource DashboardDotPitch}"/>
 						</Grid>
 					</Border>
@@ -132,11 +133,12 @@
                          Foreground="{Binding CommitRow.Trend, Converter={StaticResource TrendToBrush}}"
                          Style="{StaticResource MetricUnit}" Margin="4,0,0,0"/>
 							</StackPanel>
-							<graphs:AdaptiveGraph Grid.Row="2" x:Name="CommitChargeGraph"
-                Capacity="180" MinValue="0"
+							<graphs:PerformanceGraph Grid.Row="2" x:Name="CommitChargeGraph"
+                Style="{StaticResource AdaptiveGraphStyle}"
+                HistoryLength="180" MinValue="0"
                 MaxValue="{Binding CommitLimitGB, FallbackValue=64, TargetNullValue=64}"
                 Accent="{StaticResource GraphAccentUtilization}"
-                BandedLine="True" ShowChrome="True" MinHeight="40"
+                BandedLine="True" MinHeight="40"
                 CellPitch="{StaticResource DashboardDotPitch}"/>
 						</Grid>
 					</Border>

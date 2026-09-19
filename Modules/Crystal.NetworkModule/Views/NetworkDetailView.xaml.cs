@@ -29,7 +29,7 @@ public partial class NetworkDetailView : UserControl {
     if (sender is not PerformanceGraphView view) return;
     if (view.Graph is not { } graph) return;
     if (view.DataContext is not NetworkAdapterViewModel adapter) return;
-    graph.ApplyTheme(GraphThemes.Emerald(GraphKind.SegmentedBar));
+    graph.ApplyTheme(GraphThemes.Emerald(flatFill: true));
     adapter.AttachDownloadGraph(graph);
   }
 
@@ -37,7 +37,7 @@ public partial class NetworkDetailView : UserControl {
     if (sender is not PerformanceGraphView view) return;
     if (view.Graph is not { } graph) return;
     if (view.DataContext is not NetworkAdapterViewModel adapter) return;
-    graph.ApplyTheme(GraphThemes.Amber(GraphKind.SegmentedBar));
+    graph.ApplyTheme(GraphThemes.Amber(flatFill: true));
     adapter.AttachUploadGraph(graph);
   }
 
@@ -45,7 +45,7 @@ public partial class NetworkDetailView : UserControl {
     if (sender is not PerformanceGraphView view) return;
     if (view.Graph is not { } graph) return;
     if (view.DataContext is not NetworkAdapterViewModel adapter) return;
-    graph.ApplyTheme(GraphThemes.Sky(GraphKind.Line));
+    graph.ApplyTheme(GraphThemes.Sky(flatFill: false));
     adapter.AttachSignalGraph(graph);
   }
 }

@@ -33,7 +33,7 @@ public sealed class StorageDriveViewModel : BindableBase {
   private double _transferMaxMBps = TransferFloorMBps;
   private double _peakTransferMBps;
   private ISingleSeriesGraph? _activityGraph;
-  private AdaptiveGraph? _transferGraph;
+  private PerformanceGraph? _transferGraph;
   private int _transferWriteSeries;
 
   // Write plots as an amber overlay line against the themed (sky) read series. Line-only, so it
@@ -152,7 +152,7 @@ public sealed class StorageDriveViewModel : BindableBase {
 
   public void AttachActivityGraph(ISingleSeriesGraph graph) => _activityGraph = graph;
 
-  public void AttachTransferGraph(AdaptiveGraph graph) {
+  public void AttachTransferGraph(PerformanceGraph graph) {
     // Re-attaching the same instance is idempotent: registering the write overlay once per graph is
     // enough, so a repeated attach (the graph reloads without a disk change) is a no-op.
     if (ReferenceEquals(_transferGraph, graph)) return;
@@ -168,7 +168,7 @@ public sealed class StorageDriveViewModel : BindableBase {
     if (ReferenceEquals(_activityGraph, graph)) _activityGraph = null;
   }
 
-  public void DetachTransferGraph(AdaptiveGraph graph) {
+  public void DetachTransferGraph(PerformanceGraph graph) {
     if (ReferenceEquals(_transferGraph, graph)) {
       _transferGraph = null;
       _transferWriteSeries = 0;

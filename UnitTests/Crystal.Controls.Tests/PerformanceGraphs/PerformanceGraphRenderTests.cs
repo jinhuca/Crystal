@@ -7,9 +7,9 @@ namespace Crystal.Controls.Tests.PerformanceGraphs;
 
 /// <summary>
 /// End-to-end render tests: they push the control through its OnRender pipeline and the internal
-/// line/bar/segmented-bar renderers, then assert on the pixels actually produced. The data is
-/// painted in <see cref="Plot"/> (a vivid color that no other layer uses) so counting those pixels
-/// isolates the data layer from the background, grid, and border.
+/// renderers, then assert on the pixels actually produced. The data is painted in <see cref="Plot"/>
+/// (a vivid color that no other layer uses) so counting those pixels isolates the data layer from
+/// the background, grid, and border.
 /// </summary>
 public class PerformanceGraphRenderTests {
   private static readonly Color Plot = Color.FromRgb(0xFF, 0x20, 0x20);
@@ -18,7 +18,7 @@ public class PerformanceGraphRenderTests {
 
   [Fact]
   public void OverlaySeries_PaintsAlongsideThePrimary() => StaRunner.Run(() => {
-    var graph = NewGraph(GraphKind.Line);
+    var graph = NewGraph(DisplayMode.Line);
     int write = graph.AddSeries(new SolidColorBrush(Overlay), fillBrush: null, thickness: 3);
     // Feed the two series to clearly different heights so each owns its own rows.
     for (int i = 0; i < 10; i++) { graph.AddValue(30); graph.AddValue(write, 80); }
@@ -28,44 +28,31 @@ public class PerformanceGraphRenderTests {
     Assert.True(px.CountColor(Overlay) > 0, "overlay series should paint too");
   });
 
-  [Fact]
-  public void OverlaySeries_IsLineOnly_NotDrawnForBars() => StaRunner.Run(() => {
-    var graph = NewGraph(GraphKind.Bar);
-    int extra = graph.AddSeries(new SolidColorBrush(Overlay), fillBrush: null, thickness: 3);
-    for (int i = 0; i < 10; i++) { graph.AddValue(30); graph.AddValue(extra, 80); }
-
-    // Bars draw the primary series alone; the overlay must not appear.
-    Assert.Equal(0, new PixelRenderer(graph, 240, 120).CountColor(Overlay));
-  });
-
   [Theory]
-  [InlineData(GraphKind.Line)]
-  [InlineData(GraphKind.Bar)]
-  [InlineData(GraphKind.SegmentedBar)]
-  public void AddingValues_DrawsDataPixels(GraphKind kind) => StaRunner.Run(() => {
-    var graph = NewGraph(kind);
+  [InlineData(DisplayMode.Line)]
+  [InlineData(DisplayMode.Dot)]
+  public void AddingValues_DrawsDataPixels(DisplayMode mode) => StaRunner.Run(() => {
+    var graph = NewGraph(mode);
     for (int i = 0; i < 10; i++) graph.AddValue(60);
 
     Assert.True(new PixelRenderer(graph, 240, 120).CountColor(Plot) > 0,
-        $"{kind} should paint data pixels once values are added");
+        $"{mode} should paint data pixels once values are added");
   });
 
   [Theory]
-  [InlineData(GraphKind.Line)]
-  [InlineData(GraphKind.Bar)]
-  [InlineData(GraphKind.SegmentedBar)]
-  public void EmptyBuffer_DrawsNoDataPixels(GraphKind kind) => StaRunner.Run(() => {
-    var graph = NewGraph(kind);
+  [InlineData(DisplayMode.Line)]
+  [InlineData(DisplayMode.Dot)]
+  public void EmptyBuffer_DrawsNoDataPixels(DisplayMode mode) => StaRunner.Run(() => {
+    var graph = NewGraph(mode);
 
     Assert.Equal(0, new PixelRenderer(graph, 240, 120).CountColor(Plot));
   });
 
   [Theory]
-  [InlineData(GraphKind.Line)]
-  [InlineData(GraphKind.Bar)]
-  [InlineData(GraphKind.SegmentedBar)]
-  public void ClearValues_RemovesDataPixels(GraphKind kind) => StaRunner.Run(() => {
-    var graph = NewGraph(kind);
+  [InlineData(DisplayMode.Line)]
+  [InlineData(DisplayMode.Dot)]
+  public void ClearValues_RemovesDataPixels(DisplayMode mode) => StaRunner.Run(() => {
+    var graph = NewGraph(mode);
     for (int i = 0; i < 10; i++) graph.AddValue(60);
     Assert.True(new PixelRenderer(graph, 240, 120).CountColor(Plot) > 0);
 
@@ -74,24 +61,21 @@ public class PerformanceGraphRenderTests {
     Assert.Equal(0, new PixelRenderer(graph, 240, 120).CountColor(Plot));
   });
 
-  [Theory]
-  [InlineData(GraphKind.Line)]
-  [InlineData(GraphKind.Bar)]
-  [InlineData(GraphKind.SegmentedBar)]
-  public void HigherValues_ReachHigherUpThePlot(GraphKind kind) => StaRunner.Run(() => {
+  [Fact]
+  public void HigherValues_ReachHigherUpThePlot() => StaRunner.Run(() => {
     // Row 0 is the top edge, so a higher value should produce a data pixel on a *lower*-numbered row.
-    int lowTop = TopDataRow(kind, 20);
-    int highTop = TopDataRow(kind, 95);
+    int lowTop = TopDataRow(DisplayMode.Line, 20);
+    int highTop = TopDataRow(DisplayMode.Line, 95);
 
     Assert.True(highTop >= 0 && lowTop >= 0, "both readings should draw data");
     Assert.True(highTop < lowTop,
-        $"{kind}: a higher value should reach nearer the top, got low@{lowTop} high@{highTop}");
+        $"a higher value should reach nearer the top, got low@{lowTop} high@{highTop}");
   });
 
   [Fact]
   public void ValueAboveMax_IsClampedToTopEdge() => StaRunner.Run(() => {
-    int atMax = TopDataRow(GraphKind.Bar, 100);
-    int overMax = TopDataRow(GraphKind.Bar, 500);
+    int atMax = TopDataRow(DisplayMode.Line, 100);
+    int overMax = TopDataRow(DisplayMode.Line, 500);
 
     Assert.True(overMax >= atMax - 3,
         $"over-range value should not climb above a full-scale reading, got max@{atMax} over@{overMax}");
@@ -117,26 +101,29 @@ public class PerformanceGraphRenderTests {
     Assert.True(new PixelRenderer(graph, 400, 80).CountColor(grid) > 0, "resized grid should repaint");
   });
 
-  private static int TopDataRow(GraphKind kind, double value) {
-    var graph = NewGraph(kind);
+  private static int TopDataRow(DisplayMode mode, double value) {
+    var graph = NewGraph(mode);
     for (int i = 0; i < 10; i++) graph.AddValue(value);
     return new PixelRenderer(graph, 240, 120).TopMostRowWithColor(Plot);
   }
 
-  private static PerformanceGraph NewGraph(GraphKind kind) {
+  private static PerformanceGraph NewGraph(DisplayMode mode) {
     var graph = new PerformanceGraph {
-      Kind = kind,
+      DisplayMode = mode,
       MinValue = 0,
       MaxValue = 100,
       // Neutral background/grid/border so the only Plot-colored pixels come from the data layer.
       GraphBackground = Brushes.Black,
       GridBrush = Brushes.Black,
       BorderBrush = Brushes.Black,
-      // Paint the data layer Plot for every kind: Line draws its stroke from LineBrush, while the
-      // discrete Bar/SegmentedBar renderers draw their solid block from FillBrush, so both brushes
-      // must be Plot for pixel-counting to isolate the data layer regardless of GraphKind.
+      // Paint the data layer Plot for every mode: Line draws its stroke from LineBrush and its area
+      // from FillBrush, so both must be Plot. The Dot gauge colors dots by value band (green→red) by
+      // default, so switch it to a single flat DotColor of Plot instead — harmless in Line mode,
+      // which ignores ColorMode/DotColor.
       FillBrush = new SolidColorBrush(Plot),
       LineBrush = new SolidColorBrush(Plot),
+      ColorMode = DotColorMode.SingleColor,
+      DotColor = new SolidColorBrush(Plot),
       // Must be a value other than the LineThickness metadata default (2.0): assigning a DP its
       // existing/default value is a no-op that never fires OnLineThicknessChanged, so the internal
       // pen would keep the control's default width. A 3px line also guarantees at least one fully

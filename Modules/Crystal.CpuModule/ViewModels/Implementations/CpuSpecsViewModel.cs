@@ -199,7 +199,7 @@ public sealed class CpuSpecsViewModel : BindableBase, ICpuSpecsViewModel {
       LineSizeBytes = cache.L1_cache_line_size;
     }
 
-    PopulateInstructionSet(s.InstructionSet);
+    PopulateInstructionSet(s?.InstructionSet);
   }
 
   /// <summary>

@@ -111,14 +111,15 @@
       <!-- Adaptive (Line/Dot) temperature history strip; self-registers under "Cpu.Temperature"
            (shared feed key with the detail-view history graph). Follows the title-bar Line/Dot
            toggle; banded whitesmoke→red temperature ramp. -->
-      <graphs:AdaptiveGraph
+      <graphs:PerformanceGraph
         Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="5"
+        Style="{StaticResource AdaptiveGraphNoChromeStyle}"
         Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Cpu.Temperature"
         HorizontalAlignment="Stretch" VerticalAlignment="Top"
-        Height="24" Rows="10" Capacity="{StaticResource CpuSensorGraphCapacity}"
+        Height="24" Rows="10" HistoryLength="{StaticResource CpuSensorGraphCapacity}"
         MinValue="0" MaxValue="100"
-				Style="{StaticResource SampleStyle}"
-        BandedLine="True"/>
+        BandedLine="True"
+				BandStartColor="WhiteSmoke" BandEndColor="Red"/>
     </Grid>
   </Border>
 </UserControl>

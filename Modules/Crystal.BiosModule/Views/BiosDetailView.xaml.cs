@@ -1,6 +1,5 @@
 using Crystal.BiosModule.ViewModels;
 using Crystal.Controls.PerformanceGraphs;
-using Crystal.Controls.PerformanceGraphs.Kinds;
 using Crystal.Controls.PerformanceGraphs.Themes;
 using System.ComponentModel;
 using System.Windows;
@@ -20,21 +19,21 @@ public partial class BiosDetailView : UserControl {
   // BiosModule namespace/class name in WPF's generated code. The VM attach is idempotent.
   private void OnGraphLoaded(object sender, RoutedEventArgs e) {
     if (sender is PerformanceGraph graph)
-      graph.ApplyTheme(GraphThemes.Sky(GraphKind.Line));
+      graph.ApplyTheme(GraphThemes.Sky());
     if (DataContext is IBiosViewModel vm)
       vm.AttachRailGraphs(Rail3V3Graph, Rail5VGraph, Rail12VGraph);
   }
 
   private void OnFanGraphLoaded(object sender, RoutedEventArgs e) {
     if (sender is PerformanceGraph graph)
-      graph.ApplyTheme(GraphThemes.Sky(GraphKind.Line));
+      graph.ApplyTheme(GraphThemes.Sky());
     if (DataContext is IBiosViewModel vm)
       vm.AttachFanGraph(FanGraph);
   }
 
   private void OnBoardTempGraphLoaded(object sender, RoutedEventArgs e) {
     if (sender is PerformanceGraph graph)
-      graph.ApplyTheme(GraphThemes.Sky(GraphKind.Line));
+      graph.ApplyTheme(GraphThemes.Sky());
     if (DataContext is IBiosViewModel vm)
       vm.AttachBoardTempGraph(BoardTempGraph);
   }
