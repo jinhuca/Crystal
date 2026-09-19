@@ -1,12 +1,12 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <!--
     PLACEHOLDER PALETTE - see Palette.xaml's header comment.
 
     Themes/PerformanceGraphSampleStyles.xaml merges
-    "/Crystal.Controls;component/Styles/GraphPalette.xaml" and uses every key below across its
+    "/Crystal.Controls;component/Styles/GraphPalette.xaml" and uses every color key below across its
     keyed graph styles (RoseLineGraphStyle, SegBarLoadGraphEmeraldStyle030, FullGraphStyle, etc.).
+    The SummaryGraphMinHeight dimension token lives in Crystal.Resources' Styles/Dimensions.xaml.
     Accent colors here deliberately match the hardcoded accents GraphThemes.cs already uses for
     its code-first Rose/Emerald/Amber/Sky/Purple presets (see Crystal.Controls's own
     PerformanceGraphs/Themes/GraphThemes.cs), so a graph styled through either route reads as the
@@ -17,6 +17,34 @@
   <SolidColorBrush x:Key="GraphPlotBackgroundBrush" Color="#0A0A0A"/>
   <SolidColorBrush x:Key="GraphGridBrush" Color="#2A2A2A"/>
   <SolidColorBrush x:Key="GraphAxisBorderBrush" Color="#3E7BC4"/>
+
+  <!--
+    SENSOR-CATEGORY ACCENT COLORS - the single source of truth for per-category graph accents.
+
+    Each dashboard graph identifies its sensor category by colour. AdaptiveGraph.Accent is a Color
+    (not a Brush), so these are <Color> resources referenced as Accent="{StaticResource GraphAccentX}".
+    The line is drawn at full accent (alpha FF); the fill is a vertical gradient from the accent down
+    toward the baseline (see GraphThemes.CreateVerticalGlow). Category accents only show when the graph
+    sets BandedLine="False" — with banding on, the trace is painted by the green->red gauge ramp and
+    the accent is ignored.
+
+    Change a category's colour here and every graph of that category follows.
+  -->
+  <Color x:Key="GraphAccentUtilization">#90EE90</Color>  <!-- LightGreen  -->
+  <Color x:Key="GraphAccentClock">#1E90FF</Color>        <!-- DodgerBlue  -->
+  <Color x:Key="GraphAccentTemperature">#F5F5F5</Color>  <!-- WhiteSmoke  -->
+  <Color x:Key="GraphAccentPower">#FFA500</Color>        <!-- Orange      -->
+  <Color x:Key="GraphAccentVoltage">#FFD700</Color>      <!-- Gold        -->
+  <Color x:Key="GraphAccentMemory">#DA70D6</Color>       <!-- Orchid      -->
+  <Color x:Key="GraphAccentStorage">#40E0D0</Color>      <!-- Turquoise   -->
+
+  <!--
+    Secondary accents for tiles that plot two graphs of the same category and need the pair kept
+    visually distinct (e.g. Memory: Usage + Commit). Same hue family as the category's primary
+    accent above so the category still reads at a glance, just a distinguishable shade.
+  -->
+  <Color x:Key="GraphAccentMemorySecondary">#9370DB</Color>  <!-- MediumPurple -->
+
 
   <SolidColorBrush x:Key="GraphRoseBrush" Color="#E82A7A"/>
   <SolidColorBrush x:Key="GraphRoseFill" Color="#40E82A7A"/>
@@ -35,6 +63,10 @@
 
   <SolidColorBrush x:Key="GraphPurpleBrush" Color="#9B5AE8"/>
 
-  <!-- Minimum height for a "summary" (small, chrome-light) graph tile. -->
-  <sys:Double x:Key="SummaryGraphMinHeight">48</sys:Double>
+	<SolidColorBrush x:Key="DividerBrush" Color="#2A2A2A"/>
+	<SolidColorBrush x:Key="BorderBrush" Color="#333333"/>
+	<SolidColorBrush x:Key="AccentBrush" Color="#3E9BE8"/>
+	<SolidColorBrush x:Key="ValueBrush" Color="#EAEAEA"/>
+	<SolidColorBrush x:Key="LabelBrush" Color="#AAAAAA"/>
+	<SolidColorBrush x:Key="TextMutedBrush" Color="#8A8A8A"/>
 </ResourceDictionary>

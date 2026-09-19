@@ -15,7 +15,8 @@ public class ProcessMonitorTests {
       TestScheduler scheduler,
       FakeEtwSource? etw = null) {
     var broadcaster = etw is null ? null : new EtwRateBroadcaster(etw, Interval, scheduler);
-    return new ProcessMonitor(new FakeWmiHardwareProvider(rows), broadcaster, Interval, scheduler);
+    return new ProcessMonitor(new FakeWmiHardwareProvider(rows), broadcaster,
+        pollInterval: Interval, scheduler: scheduler);
   }
 
   // The first sample fires synchronously on subscription; each scheduler interval yields another.

@@ -2,7 +2,8 @@ namespace Crystal.Service.Storage;
 
 /// <summary>One physical disk drive. <see cref="DriveIndex"/> is the Windows physical-disk number
 /// (<c>Win32_DiskDrive.Index</c>, "Disk 0"/"Disk 1"/…) — the key that joins this static inventory
-/// to the live per-disk telemetry readings.</summary>
+/// to the live per-disk telemetry readings. <see cref="IsSystemDisk"/> flags the disk hosting the
+/// Windows/OS volume, which the UI selects by default.</summary>
 public record StorageDriveInfo(
     string Model,
     double? CapacityGB,
@@ -12,7 +13,8 @@ public record StorageDriveInfo(
     string? SerialNumber,
     string? FirmwareRevision,
     uint? Partitions,
-    int? DriveIndex);
+    int? DriveIndex,
+    bool IsSystemDisk = false);
 
 /// <summary>The system's physical storage: the drives plus rolled-up totals.</summary>
 public record StorageSnapshot(

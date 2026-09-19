@@ -80,23 +80,24 @@ public partial class App : PrismApplication {
     // window service.
     containerRegistry.RegisterSingleton<WindowLayoutStore>();
 
-    // Persists the dashboard graph-appearance selection (category + per-graph kind/accent) across
-    // sessions; shared by the graph-settings popup and the dashboard graphs.
+    // Persists the dashboard graph-appearance selection (render mode + CPU core-strip look) across
+    // sessions; shared by the title-bar Line/Dot toggle and the core-strip appearance service.
     containerRegistry.RegisterSingleton<Settings.GraphSettingsStore>();
 
-    // Applies the persisted selection to live dashboard graphs (on registration and on Save). Resolved
-    // eagerly in OnInitialized so it subscribes before any tile's graphs are realized.
+    // Mirrors the persisted core-strip look onto CoreBarAppearance (on construction and on Save).
+    // Resolved eagerly in OnInitialized so it applies before the CPU tile is realized.
     containerRegistry.RegisterSingleton<Settings.GraphAppearanceService>();
 
     // Long-lived: subscribes to weakly-referenced navigation events (ShowDetail/ShowDashboard),
     // so it must not be collected. Resolved eagerly in OnInitialized.
     containerRegistry.RegisterSingleton<DetailWindowService>();
 
-    // System-wide sensor stream shared by every module that subscribes. SensorMonitor owns the
-    // polling lifetime and the hardware session, so it must be a singleton. Built via a factory:
-    // its ctor's optional TimeSpan?/IScheduler? params can't be resolved by the container, and we
-    // want the default 1-second poll cadence.
-    containerRegistry.RegisterSingleton<SensorMonitor>(_ => new SensorMonitor());
+    // System-wide board sensor stream shared by the BIOS tile and the CPU-fan readout. SensorMonitor
+    // owns the polling lifetime and the hardware session, so it must be a singleton. Polled every 2s
+    // rather than the 1s of the per-source sessions: board temps/voltages/fan RPM change slowly, and
+    // this is the only session that reads the ACPI embedded controller — halving its cadence halves
+    // how often that read can overlap out-of-band EC access (the "race condition possible" trace).
+    containerRegistry.RegisterSingleton<SensorMonitor>(_ => new SensorMonitor(TimeSpan.FromSeconds(2)));
   }
 
   protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog) {
@@ -108,13 +109,14 @@ public partial class App : PrismApplication {
     moduleCatalog.AddModule<Crystal.NetworkModule.NetworkModule>();
     moduleCatalog.AddModule<Crystal.ProcessModule.ProcessModule>();
     moduleCatalog.AddModule<Crystal.OSModule.OSModule>();
+    moduleCatalog.AddModule<Crystal.BenchmarkModule.BenchmarkModule>();
   }
 
   protected override void OnInitialized() {
     base.OnInitialized();
 
-    // Start listening for graph registrations before the dashboard's tiles (and their graphs) are
-    // realized, so each graph picks up the saved appearance the moment it is tagged.
+    // Apply the saved CPU core-strip look before the dashboard's tiles are realized, so the strip
+    // paints in the right shape/colour from first render.
     Container.Resolve<Settings.GraphAppearanceService>();
 
     // Navigate to the dashboard immediately: each tile is a self-warming LoadingHost (see the

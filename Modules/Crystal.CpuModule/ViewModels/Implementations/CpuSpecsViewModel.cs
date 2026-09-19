@@ -93,7 +93,10 @@ public sealed class CpuSpecsViewModel : BindableBase, ICpuSpecsViewModel {
   /// <summary>
   /// The CPU brand name.
   /// </summary>
-  public string? Brand { get => _brand; private set => SetProperty(ref _brand, value); }
+  public string? Brand {
+    get => _brand;
+    private set => SetProperty(ref _brand, value);
+  }
 
   /// <summary>
   /// The CPU socket number, e.g. 0 for a single-socket system, 1 for the second socket in a dual-socket system, etc.
@@ -176,18 +179,18 @@ public sealed class CpuSpecsViewModel : BindableBase, ICpuSpecsViewModel {
 
     var s = socket.Specs;
     Vendor = s.VendorName;
-    Brand = s.BrandName;
+    Brand = s?.BrandName?.Replace("(R)","");
     Socket = socket.SocketIndex + 1;
-    PhysicalCores = s.PhysicalCoreNum;
-    LogicalCores = s.LogicalCoreNum;
-    Family = s.FamilyId;
-    Model = s.ModelId;
-    Stepping = s.SteppingId;
-    BaseSpeedMHz = s.BaseSpeed;
-    BusSpeedMHz = s.BusSpeed;
-    Virtualization = s.VirtualizationEnabled ?? s.VirtualizationSupported;
+    PhysicalCores = s?.PhysicalCoreNum;
+    LogicalCores = s?.LogicalCoreNum;
+    Family = s?.FamilyId;
+    Model = s?.ModelId;
+    Stepping = s?.SteppingId;
+    BaseSpeedMHz = s?.BaseSpeed;
+    BusSpeedMHz = s?.BusSpeed;
+    Virtualization = s?.VirtualizationEnabled ?? s?.VirtualizationSupported;
 
-    if (s.CacheInfo is { } cache) {
+    if (s?.CacheInfo is { } cache) {
       // CpuCacheInfo stores totals in bytes; convert to KB for display. The SMBIOS
       // "Line Size" field is per-cache, so surface the L1 line size as the representative value.
       L1CacheKb = cache.L1_cache_size / 1024.0;

@@ -13,4 +13,12 @@ public static class DetailViewNames {
   public const string Bios = "BiosDetailView";
   public const string Network = "NetworkDetailView";
   public const string Os = "OsDetailView";
+
+  // Opens the full process list (ProcessDetailView) in a detail window, raised by the compact
+  // Processes tile's double-click. The value doubles as the window title.
+  public const string Process = "Processes";
+
+  // Opens the benchmark suite (BenchmarkDetailView) in a detail window, raised by the shell
+  // title-bar and Processes-toolbar Benchmark buttons. The value doubles as the window title.
+  public const string Benchmark = "Benchmark";
 }

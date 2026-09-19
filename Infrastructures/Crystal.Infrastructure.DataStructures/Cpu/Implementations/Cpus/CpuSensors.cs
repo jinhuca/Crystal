@@ -16,6 +16,7 @@ public class CpuSensors : ICpuSensors {
   public SensorReading PackagePower { get; set; } = Empty;
   public SensorReading MemoryPower { get; set; } = Empty;
   public SensorReading CoresPower { get; set; } = Empty;
+  public SensorReading GraphicsPower { get; set; } = Empty;
   public SensorReading PackageTemperature { get; set; } = Empty;
   public SensorReading CoreMaxTemperature { get; set; } = Empty;
   public SensorReading CoreAvgTemperature { get; set; } = Empty;

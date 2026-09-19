@@ -1,0 +1,61 @@
+<UserControl x:Class="Crystal.GpuModule.Views.SummaryViews.GpuVoltageView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Crystal.GpuModule.Views.SummaryViews"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs;assembly=Crystal.Controls"
+             mc:Ignorable="d"
+             d:DesignHeight="120" d:DesignWidth="210">
+  <!-- DataContext is a GpuAdapterViewModel, inherited from the per-adapter block. Boxed sensor tile
+       matching the CpuSummaryView pattern: accent title, live core-voltage value + unit + trend glyph,
+       a session min/avg/max stat line, and a dot history strip. -->
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Crystal.GpuModule;component/Views/GpuViewResources.xaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </UserControl.Resources>
+  <Border Style="{StaticResource SummaryTileBorderStyle}" Width="{x:Static local:GpuSummaryViewConstants.GraphWidth}">
+    <Grid MinHeight="60" ShowGridLines="False">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="20"/>
+        <RowDefinition Height="40"/>
+        <RowDefinition Height="24"/>
+      </Grid.RowDefinitions>
+      <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0,0,0,0">
+        <TextBlock Text="Volt" Style="{StaticResource SummaryTileTitleTextBlockStyle}"/>
+        <TextBlock Style="{StaticResource MetricStatLine}" Margin="20,0,0,0">
+          <Run FontFamily="Segoe Fluent Icons" Text="&#xE70D; " Foreground="LightGreen"/>
+          <Run Text="{Binding VoltageRow.Min, StringFormat={}{0:0.000}}"/>
+          <Run FontFamily="Segoe Fluent Icons" Text=" &#xE738; " Foreground="{StaticResource AccentBrush}"/>
+          <Run Text="{Binding VoltageRow.Avg, StringFormat={}{0:0.000}}"/>
+          <Run FontFamily="Segoe Fluent Icons" Text=" &#xE70E; " Foreground="Crimson"/>
+          <Run Text="{Binding VoltageRow.Max, StringFormat={}{0:0.000}}"/>
+        </TextBlock>
+      </StackPanel>
+      <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <TextBlock Text="{Binding CoreVoltageV, StringFormat={}{0:0.000}, TargetNullValue=—}" Style="{StaticResource TileMetricValue}"/>
+        <TextBlock Text="V" Style="{StaticResource MetricUnit}"/>
+        <TextBlock Text="{Binding VoltageRow.Trend, Converter={StaticResource TrendToGlyph}}"
+                   Foreground="{Binding VoltageRow.Trend, Converter={StaticResource TrendToBrush}}"
+                   Style="{StaticResource MetricUnit}" Margin="4,0,0,2"/>
+      </StackPanel>
+
+      <!-- Adaptive (Line/Dot) voltage history strip; self-registers under "Gpu.Voltage", so the
+           adapter VM feeds it each poll. Follows the title-bar Line/Dot toggle; banded
+           whitesmoke→indigo voltage ramp. Fixed 0-2 V scale matching the CPU voltage tile. -->
+      <graphs:AdaptiveGraph
+        Grid.Row="2"
+        Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Gpu.Voltage"
+        HorizontalAlignment="Stretch" VerticalAlignment="Top"
+        Height="24" Rows="10" 
+				Capacity="{StaticResource GpuSensorGraphCapacity}"
+        MinValue="0" MaxValue="2"
+        BandedLine="True" 
+				BandStartColor="{StaticResource GpuVoltBandedColor1}" 
+				BandEndColor="{StaticResource GpuVoltBandedColor9}"/>
+    </Grid>
+  </Border>
+</UserControl>

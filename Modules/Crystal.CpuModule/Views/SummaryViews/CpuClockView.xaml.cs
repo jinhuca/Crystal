@@ -6,24 +6,23 @@ using System.Windows.Controls;
 namespace Crystal.CpuModule.Views.SummaryViews;
 
 /// <summary>
-/// Clock metric tile for the CPU summary: the clock history graph plus the live package clock, 
-/// effective clock and bus speed. Binds to the CPU SensorsViewModel inherited from the host tile 
-/// and self-registers its graph so the view model feeds it on each poll.
+/// Clock metric tile for the CPU summary: the live package clock, effective clock and bus speed.
+/// Binds to the CPU SensorsViewModel inherited from the host tile.
 /// </summary>
 public partial class CpuClockView : UserControl {
   public CpuClockView() {
     InitializeComponent();
-    Loaded += OnLoaded;
   }
 
   /// <summary>
-  /// Registers the graph with the view model so it can feed it on each poll.
+  /// Self-registers the bottom history strip with the inherited SensorsViewModel so it is fed on
+  /// every poll, keyed by its <c>GraphIdentity.Id</c> ("Cpu.Clock"). Mirrors the Power tile.
   /// </summary>
-  /// <param name="sender">The sender of the event.</param>
-  /// <param name="e">The event arguments.</param>
-  private void OnLoaded(object sender, RoutedEventArgs e) {
-    if (DataContext is ICpuSensorViewModel vm && GraphIdentity.GetId(CpuClockGraph) is { } id) {
-      vm.AttachGraph(id, CpuClockGraph);
+  private void OnGraphLoaded(object sender, RoutedEventArgs e) {
+    if (sender is ISingleSeriesGraph graph
+        && sender is FrameworkElement { DataContext: ICpuSensorViewModel vm } fe
+        && GraphIdentity.GetId(fe) is { } id) {
+      vm.AttachGraph(id, graph);
     }
   }
 }

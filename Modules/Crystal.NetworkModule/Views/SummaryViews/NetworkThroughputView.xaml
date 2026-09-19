@@ -5,31 +5,128 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs;assembly=Crystal.Controls"
              mc:Ignorable="d"
-             d:DesignHeight="160" d:DesignWidth="160"
+             d:DesignHeight="200" d:DesignWidth="360"
              Foreground="{StaticResource TextBrush}" FontFamily="{StaticResource UiFontFamily}">
-  <!-- DataContext is the root INetworkViewModel, inherited from the host tile. Live throughput:
-       download over upload, each with a sparkline this view self-registers with the VM. -->
-  <StackPanel VerticalAlignment="Top">
-    <TextBlock Text="download" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource BodyFontSize}" FontFamily="{StaticResource MonoFontFamily}"
-               Margin="0,0,0,2"/>
-    <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
-      <TextBlock Text="&#x25BC;" Foreground="{StaticResource OkBrush}" FontSize="16"
-                 VerticalAlignment="Center" Margin="0,0,8,0"/>
-      <TextBlock Text="{Binding DownloadLabel}" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource SectionFontSize}"
-                 FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Center"/>
-    </StackPanel>
-    <graphs:PerformanceGraph x:Name="NetworkDownloadGraph" graphs:GraphIdentity.Id="Network.Download"
-                             Height="22" Margin="0,0,0,10"
-                             MinValue="0" MaxValue="{Binding ThroughputMaxBytesPerSecond}"/>
-    <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
-      <TextBlock Text="&#x25B2;" Foreground="#E89B2A" FontSize="16"
-                 VerticalAlignment="Center" Margin="0,0,8,0"/>
-      <TextBlock Text="{Binding UploadLabel}" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource SectionFontSize}"
-                 FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Center"/>
-    </StackPanel>
-    <TextBlock Text="upload" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource BodyFontSize}" FontFamily="{StaticResource MonoFontFamily}"/>
-    <graphs:PerformanceGraph x:Name="NetworkUploadGraph" graphs:GraphIdentity.Id="Network.Upload"
-                             Height="22" Margin="0,4,0,0"
-                             MinValue="0" MaxValue="{Binding ThroughputMaxBytesPerSecond}"/>
-  </StackPanel>
+	<!-- DataContext is the root INetworkViewModel, inherited from the host tile. Two graph cards
+       (Download / Upload) mirroring the Storage/CPU summary card: a blue section title with the
+       session min/avg/max caret line on the top row, the live value carrying its indicator icon and
+       trend glyph, and a self-registering history sparkline filling the rest. Both sparklines share
+       ThroughputMaxBytesPerSecond so they stay on a common, comparable vertical scale. Indicator
+       icons mirror Icons/download.svg (arrow flipped for upload). -->
+	<UserControl.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="/Crystal.Controls;component/Metrics/MetricEnrichmentResources.xaml"/>
+				<ResourceDictionary Source="/Crystal.Resources;component/Styles/BorderStyles.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+			<DrawingImage x:Key="DownloadIndicatorIcon">
+				<DrawingImage.Drawing>
+					<DrawingGroup>
+						<GeometryDrawing Brush="#86C440">
+							<GeometryDrawing.Pen>
+								<Pen Brush="White" Thickness="2.5"/>
+							</GeometryDrawing.Pen>
+							<GeometryDrawing.Geometry>
+								<EllipseGeometry Center="24,24" RadiusX="22" RadiusY="22"/>
+							</GeometryDrawing.Geometry>
+						</GeometryDrawing>
+						<GeometryDrawing Brush="White" Geometry="M20,13 H28 V22 H33 L24,32 L15,22 H20 Z"/>
+						<GeometryDrawing Brush="White" Geometry="M13,29 H17 V33 H31 V29 H35 V37 H13 Z"/>
+					</DrawingGroup>
+				</DrawingImage.Drawing>
+			</DrawingImage>
+			<DrawingImage x:Key="UploadIndicatorIcon">
+				<DrawingImage.Drawing>
+					<DrawingGroup>
+						<GeometryDrawing Brush="#E89B2A">
+							<GeometryDrawing.Pen>
+								<Pen Brush="White" Thickness="2.5"/>
+							</GeometryDrawing.Pen>
+							<GeometryDrawing.Geometry>
+								<EllipseGeometry Center="24,24" RadiusX="22" RadiusY="22"/>
+							</GeometryDrawing.Geometry>
+						</GeometryDrawing>
+						<GeometryDrawing Brush="White" Geometry="M24,13 L33,23 H28 V32 H20 V23 H15 Z"/>
+						<GeometryDrawing Brush="White" Geometry="M13,29 H17 V33 H31 V29 H35 V37 H13 Z"/>
+					</DrawingGroup>
+				</DrawingImage.Drawing>
+			</DrawingImage>
+		</ResourceDictionary>
+	</UserControl.Resources>
+	<Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="Transparent" MinHeight="120" ShowGridLines="False">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+		<Border Grid.Column="0" Style="{StaticResource SummaryTileBorderStyle}" Margin="4,4,4,2">
+			<Grid Margin="10,4,10,6" ShowGridLines="False">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="*"/>
+				</Grid.RowDefinitions>
+				<Grid Grid.Row="0">
+					<TextBlock Text="Download" Style="{StaticResource SummaryTileTitleTextBlockStyle}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+					<TextBlock Style="{StaticResource MetricStatLine}" HorizontalAlignment="Right" VerticalAlignment="Center">
+						<Run FontFamily="Segoe Fluent Icons" Text="&#xE70D; " Foreground="LightGreen"/>
+						<Run Text="{Binding DownloadRow.Min, StringFormat={}{0:0.#}}"/>
+						<Run FontFamily="Segoe Fluent Icons" Text=" &#xE738; " Foreground="{StaticResource AccentBrush}"/>
+						<Run Text="{Binding DownloadRow.Avg, StringFormat={}{0:0.#}}"/>
+						<Run FontFamily="Segoe Fluent Icons" Text=" &#xE70E; " Foreground="Crimson"/>
+						<Run Text="{Binding DownloadRow.Max, StringFormat={}{0:0.#}}"/>
+					</TextBlock>
+				</Grid>
+				<StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,2,0,2" VerticalAlignment="Center">
+					<!--<Image Source="{StaticResource DownloadIndicatorIcon}" Width="18" Height="18"
+                         VerticalAlignment="Center" Margin="0,0,8,0"/>-->
+					<TextBlock Text="{Binding DownloadLabel}" Style="{StaticResource TileMetricValue}"/>
+					<TextBlock Text="{Binding DownloadRow.Trend, Converter={StaticResource TrendToGlyph}}"
+                             Foreground="{Binding DownloadRow.Trend, Converter={StaticResource TrendToBrush}}"
+                             Style="{StaticResource MetricUnit}" Margin="4,0,0,0"/>
+				</StackPanel>
+				<graphs:AdaptiveGraph Grid.Row="2" x:Name="DownloadGraph"
+                                    graphs:GraphIdentity.Id="Network.Download"
+                                    Capacity="180" MinValue="0" MaxValue="{Binding ThroughputMaxBytesPerSecond}"
+                                    Accent="{StaticResource GraphAccentUtilization}"
+                                    BandedLine="True" ShowChrome="True" MinHeight="40"
+                                    CellPitch="{StaticResource DashboardDotPitch}"/>
+			</Grid>
+		</Border>
+
+		<Border Grid.Column="1" Style="{StaticResource SummaryTileBorderStyle}" Margin="4,4,2,2">
+			<Grid Margin="10,4,10,6">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="*"/>
+				</Grid.RowDefinitions>
+				<Grid Grid.Row="0">
+					<TextBlock Text="Upload" Style="{StaticResource SummaryTileTitleTextBlockStyle}"
+                             HorizontalAlignment="Left" VerticalAlignment="Center"/>
+					<TextBlock Style="{StaticResource MetricStatLine}" HorizontalAlignment="Right" VerticalAlignment="Center">
+						<Run FontFamily="Segoe Fluent Icons" Text="&#xE70D; " Foreground="LightGreen"/>
+						<Run Text="{Binding UploadRow.Min, StringFormat={}{0:0.#}}"/>
+						<Run FontFamily="Segoe Fluent Icons" Text=" &#xE738; " Foreground="{StaticResource AccentBrush}"/>
+						<Run Text="{Binding UploadRow.Avg, StringFormat={}{0:0.#}}"/>
+						<Run FontFamily="Segoe Fluent Icons" Text=" &#xE70E; " Foreground="Crimson"/>
+						<Run Text="{Binding UploadRow.Max, StringFormat={}{0:0.#}}"/>
+					</TextBlock>
+				</Grid>
+				<StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,2,0,4" VerticalAlignment="Center">
+					<!--<Image Source="{StaticResource UploadIndicatorIcon}" Width="18" Height="18"
+                         VerticalAlignment="Center" Margin="0,0,8,0"/>-->
+					<TextBlock Text="{Binding UploadLabel}" Style="{StaticResource TileMetricValue}"/>
+					<TextBlock Text="{Binding UploadRow.Trend, Converter={StaticResource TrendToGlyph}}"
+                             Foreground="{Binding UploadRow.Trend, Converter={StaticResource TrendToBrush}}"
+                             Style="{StaticResource MetricUnit}" Margin="4,0,0,0"/>
+				</StackPanel>
+				<graphs:AdaptiveGraph Grid.Row="2" x:Name="UploadGraph"
+                                    graphs:GraphIdentity.Id="Network.Upload"
+                                    Capacity="180" MinValue="0" MaxValue="{Binding ThroughputMaxBytesPerSecond}"
+                                    Accent="{StaticResource GraphAccentPower}"
+                                    BandedLine="True" ShowChrome="True" MinHeight="40"
+                                    CellPitch="{StaticResource DashboardDotPitch}"/>
+			</Grid>
+		</Border>
+	</Grid>
 </UserControl>

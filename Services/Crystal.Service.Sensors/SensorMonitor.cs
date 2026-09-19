@@ -23,6 +23,15 @@ public sealed class SensorMonitor : IDisposable {
   /// </summary>
   public SensorMonitor() : this(new TelemetrySensorSource()) { }
 
+  /// <summary>
+  /// Creates a monitor over the real hardware Telemetry source at a caller-chosen cadence. The
+  /// shared board monitor uses this to poll slower than the 1-second per-source sessions: its only
+  /// data (board temps/voltages/fan RPM) changes slowly, and each poll performs the sole
+  /// embedded-controller read in the process, so a slower cadence proportionally shrinks the window
+  /// in which that read can collide with out-of-band ACPI EC access.
+  /// </summary>
+  public SensorMonitor(TimeSpan pollInterval) : this(new TelemetrySensorSource(), pollInterval) { }
+
   /// <param name="source">Sensor source to poll. The monitor takes ownership and disposes it.</param>
   /// <param name="pollInterval">Sampling cadence; defaults to one second.</param>
   /// <param name="scheduler">Scheduler driving the poll timer; defaults to the shared default scheduler.</param>

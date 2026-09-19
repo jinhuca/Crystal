@@ -4,101 +4,245 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:prism="http://prismlibrary.com/"
+             xmlns:local="clr-namespace:Crystal.GpuModule.Views"
              xmlns:sv="clr-namespace:Crystal.GpuModule.Views.SummaryViews"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
-             d:DesignHeight="240" d:DesignWidth="760"
+             d:DesignHeight="200" d:DesignWidth="1000"
              Background="Transparent" Foreground="{StaticResource TextBrush}"
              FontFamily="{StaticResource UiFontFamily}">
-  <!-- MetricValue/MetricUnit/MetricCaption now shared via Crystal.Resources -->
+  <!-- One tile per detected adapter. Each adapter's identity (kind + name + physical location) is
+       centered on the shared header line; the "GPU" section title overlays the top-left corner of that
+       line (rather than reserving a column) so the tiles run flush left with no wasted gutter.
+       The integrated GPU shows Temperature/Memory Used/3D over Utilization; each dedicated GPU shows
+       Temperature/Memory Used/Clock/3D/Power over Utilization, with PCIe Rx/Tx throughput docked to the
+       right of its identity. Power (iGPU), the Hot Spot tile (dGPU), the static-specs Info tile, and
+       the Clock/Power value/min/max tables all live in GpuDetailView instead. A single adapter renders
+       as one tile with no border and no ScrollViewer; several adapters render as a horizontally
+       scrollable strip (wheel scrolls sideways, scrollbars hidden) where tiles after the first get a
+       left divider. The per-metric tiles live in Views/SummaryViews. -->
+  <UserControl.Resources>
+    <local:AdapterTileChromeConverter x:Key="TileChrome"/>
 
-  <Border Background="Transparent" MouseLeftButtonDown="OnTileClick">
-    <Grid Margin="5">
-      <Grid.RowDefinitions>
-        <RowDefinition Height="Auto"/>
-        <RowDefinition Height="Auto"/>
-        <RowDefinition Height="*"/>
-      </Grid.RowDefinitions>
+    <!-- Integrated adapter tile: an identity header over a metric row (Temperature/Memory Used/3D)
+         with the full-width Utilization graph beneath it. Power and the static-specs Info tile now
+         live in GpuDetailView. -->
+    <DataTemplate x:Key="IntegratedTile">
+      <Border Margin="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ContentPresenter}, Converter={StaticResource TileChrome}}"
+              Padding="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ContentPresenter}, Converter={StaticResource TileChrome}}"
+              BorderBrush="{StaticResource DividerBrush}"
+              BorderThickness="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ContentPresenter}, Converter={StaticResource TileChrome}, ConverterParameter=border}">
+        <Grid VerticalAlignment="Stretch" ShowGridLines="False">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="70"/>
+            <RowDefinition Height="80"/>
+          </Grid.RowDefinitions>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
 
-      <!-- Section title: accent tick + "GPU". -->
-      <Border Grid.Row="0" BorderBrush="{StaticResource DividerBrush}" BorderThickness="0,0,0,1"
-              Padding="0,0,0,4" Margin="0,0,0,2">
-        <StackPanel Orientation="Horizontal">
-          <Border Width="3" Background="{StaticResource AccentBrush}" Margin="0,1,8,1"/>
-          <TextBlock Text="GPU" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource BodyFontSize}" FontWeight="SemiBold"
-                     VerticalAlignment="Center"/>
-        </StackPanel>
+          <!-- Header line: adapter identity — "Integrated GPU" accent label + product name + physical
+               location — centered over the tile, with a bottom divider that lines up with the "GPU"
+               section rule to the left so the whole header reads as one ruled row. -->
+          <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
+                  BorderBrush="{StaticResource DividerBrush}" BorderThickness="0,0,0,1"
+                  Padding="0,0,0,4" Margin="0,0,0,6">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+              <TextBlock Text="{Binding KindLabel}" Style="{StaticResource TileTitleCaption}"/>
+              <TextBlock Text="{Binding Name}" Style="{StaticResource TileTitleBrand}" Margin="8,0,0,0"
+                         TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}"/>
+              <TextBlock Text="{Binding PhysicalLocation, TargetNullValue=—}" Foreground="{StaticResource LabelBrush}"
+                         FontSize="{StaticResource CaptionFontSize}" VerticalAlignment="Center" Margin="12,0,0,0"/>
+            </StackPanel>
+          </Border>
+
+          <sv:GpuTemperatureView Grid.Row="1" Grid.Column="0" Margin="0,0,8,8"/>
+          <sv:GpuMemoryView      Grid.Row="1" Grid.Column="1" Margin="0,0,8,8"/>
+          <sv:Gpu3DView          Grid.Row="1" Grid.Column="2" Margin="0,0,0,8"/>
+          <sv:GpuUtilizationView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,0,0,0"
+                                 Capacity="120" Width="{x:Static sv:GpuSummaryViewConstants.IntegratedUtilizationWidth}"
+                                 HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
+        </Grid>
       </Border>
+    </DataTemplate>
 
-      <!-- Per-adapter caption row, column-aligned with the graph row below: same UniformGrid +
-           same Margin/Border/Padding per item, so the two rows' column boundaries match exactly.
-           Caption is centered within its column, directly above the graphs it labels. -->
-      <ItemsControl Grid.Row="0" ItemsSource="{Binding Adapters}" Margin="0,0,0,6" VerticalAlignment="Center">
-        <ItemsControl.ItemsPanel>
-          <ItemsPanelTemplate>
-            <UniformGrid Rows="1"/>
-          </ItemsPanelTemplate>
-        </ItemsControl.ItemsPanel>
-        <ItemsControl.ItemTemplate>
-          <DataTemplate>
-            <Border Margin="0,0,16,0" BorderBrush="{StaticResource DividerBrush}" BorderThickness="1,0,0,0"
-                    Padding="8,0,0,0">
-              <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                <TextBlock Width="33"/>
-                <TextBlock Text="{Binding KindLabel}" Foreground="{StaticResource AccentBrush}" FontSize="{StaticResource CaptionFontSize}"
-                           FontWeight="SemiBold" VerticalAlignment="Center"/>
-                <TextBlock Text="{Binding Name}" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}"
-                           VerticalAlignment="Center" Margin="8,0,0,0" MaxWidth="120" TextTrimming="None"
-                           ToolTip="{Binding Name}"/>
-              </StackPanel>
-            </Border>
-          </DataTemplate>
-        </ItemsControl.ItemTemplate>
-      </ItemsControl>
+    <!-- Dedicated adapter tile: a centered identity header over a metric row
+         (Power/Temperature/Hot Spot/Memory/Clock/3D/PCIe Rx/PCIe Tx/GPU Fan) with the full-width
+         Utilization graph beneath it. The static-specs Info tile and the Clock/Power value/min/max
+         tables live in GpuDetailView. -->
+    <DataTemplate x:Key="DedicatedTile">
+      <Border Margin="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ContentPresenter}, Converter={StaticResource TileChrome}}"
+              Padding="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ContentPresenter}, Converter={StaticResource TileChrome}}"
+              BorderBrush="{StaticResource DividerBrush}"
+              BorderThickness="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ContentPresenter}, Converter={StaticResource TileChrome}, ConverterParameter=border}">
+        <!-- The tile sizes to content; each metric view carries its own fixed width (see
+             GpuSummaryViewConstants) so nothing can balloon in the infinite-width strip. -->
+        <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" ShowGridLines="False">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="0.9*"/>
+            <RowDefinition Height="1.1*"/>
+            <RowDefinition Height="18"/>
+          </Grid.RowDefinitions>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
 
-      <!-- One block per adapter: two graph columns (Utilization + Temperature | Clock + Power)
-           spanning the adapter's full width. Same left-border decoration and Margin as the
-           caption row above, so the vertical divider runs continuously through both rows. -->
-      <ItemsControl Grid.Row="2" ItemsSource="{Binding Adapters}">
-        <ItemsControl.ItemsPanel>
-          <ItemsPanelTemplate>
-            <UniformGrid Rows="1"/>
-          </ItemsPanelTemplate>
-        </ItemsControl.ItemsPanel>
-        <ItemsControl.ItemTemplate>
-          <DataTemplate>
-            <Border Margin="0,0,16,0" BorderBrush="{StaticResource DividerBrush}" BorderThickness="1,0,0,0"
-                    Padding="8,0,0,0" VerticalAlignment="Top">
-              <Grid VerticalAlignment="Top">
-                <Grid.ColumnDefinitions>
-                  <ColumnDefinition Width="*"/>
-                  <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+          <!-- Header line: adapter identity — "Dedicated GPU" accent label + product name + physical
+               location — centered over the tile. A bottom divider lines up with the "GPU" section
+               rule to the left so the whole header reads as one ruled row. PCIe Rx/Tx are now their
+               own tiles on the metric row rather than docked here. -->
+          <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="9"
+                  BorderBrush="{StaticResource DividerBrush}" BorderThickness="0,0,0,1"
+                  Padding="0,0,0,4" Margin="0,0,0,6">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+              <TextBlock Text="{Binding KindLabel}" Style="{StaticResource TileTitleCaption}"/>
+              <TextBlock Text="{Binding Name}" Style="{StaticResource TileTitleBrand}" Margin="8,0,0,0"
+                         TextTrimming="CharacterEllipsis"/>
+              <TextBlock Text="{Binding PhysicalLocation, TargetNullValue=—}" Foreground="{StaticResource LabelBrush}"
+                         FontSize="{StaticResource CaptionFontSize}" VerticalAlignment="Center" Margin="12,0,0,0"/>
+            </StackPanel>
+          </Border>
 
-                <!-- Left: Utilization (top) + Temperature (bottom) stacked graphs. -->
-                <Grid Grid.Column="0" VerticalAlignment="Top" Margin="0,0,16,0">
-                  <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                  </Grid.RowDefinitions>
-                  <sv:GpuUtilizationView Grid.Row="0" Margin="0,0,0,6"/>
-                  <sv:GpuTemperatureView Grid.Row="1"/>
-                </Grid>
+          <sv:GpuPowerView       Grid.Row="1" Grid.Column="0" Margin="0,0,8,0"/>
+          <sv:GpuTemperatureView Grid.Row="1" Grid.Column="1" Margin="0,0,8,0"/>
+          <sv:GpuHotSpotView     Grid.Row="1" Grid.Column="2" Margin="0,0,8,0"/>
+          <sv:GpuMemoryView      Grid.Row="1" Grid.Column="3" Margin="0,0,8,0"/>
+          <sv:GpuClockView       Grid.Row="1" Grid.Column="4" Margin="0,0,8,0"/>
+          <sv:Gpu3DView          Grid.Row="1" Grid.Column="5" Margin="0,0,8,0"/>
+          <sv:GpuPcieRxView      Grid.Row="1" Grid.Column="6" Margin="0,0,8,0"/>
+          <sv:GpuPcieTxView      Grid.Row="1" Grid.Column="7" Margin="0,0,8,0"/>
+          <sv:GpuFanView         Grid.Row="1" Grid.Column="8" Margin="0,0,0,0"/>
+          <!-- Utilization graph + readout spans cols 0-7 (one column narrower than the metric row) so the
+               readout tile lands under PCIe Tx (col 7) and the Voltage tile lands under GPU Fan (col 8). -->
+          <sv:GpuUtilizationView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="8" Margin="0,12,0,6"
+                                 Capacity="180" Width="{x:Static sv:GpuSummaryViewConstants.DedicatedUtilizationWidth}"
+                                 HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
 
-                <!-- Right: Clock (top) + Power (bottom) stacked graphs. -->
-                <Grid Grid.Column="1" VerticalAlignment="Top">
-                  <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                  </Grid.RowDefinitions>
-                  <sv:GpuClockView Grid.Row="0" Margin="0,0,0,6"/>
-                  <sv:GpuPowerView Grid.Row="1"/>
-                </Grid>
-              </Grid>
-            </Border>
-          </DataTemplate>
-        </ItemsControl.ItemTemplate>
-      </ItemsControl>
+          <!-- Core-voltage tile under the GPU Fan tile, to the right of the Utilization readout. -->
+          <sv:GpuVoltageView     Grid.Row="2" Grid.Column="8" Margin="0,12,0,6"
+                                 VerticalAlignment="Stretch"/>
+
+          <!-- Engine Load: a compact single-line strip across the bottom (mirrors the CPU instruction-set
+               row). Each engine shows its name in accent + live load %. Hidden when the adapter exposes
+               no engine sensors so the label never sits over an empty row. The label stays pinned on the
+               left; only the engine list scrolls horizontally (scrollbar hidden, wheel scrolls sideways,
+               same pattern as the adapter strip) so a wide list never overflows the tile. -->
+          <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="9"
+                Margin="0,0,0,0" VerticalAlignment="Center"
+                Visibility="{Binding HasEngineLoads, Converter={StaticResource BoolToVisibility}}">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="Engine Load" Foreground="{StaticResource LabelBrush}"
+                       FontSize="{StaticResource CaptionFontSize}" FontWeight="SemiBold"
+                       VerticalAlignment="Center" Margin="0,0,16,0"/>
+            <ScrollViewer Grid.Column="1"
+                          HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled"
+                          PreviewMouseWheel="OnScrollHorizontally">
+            <ItemsControl ItemsSource="{Binding EngineLoads}">
+              <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                  <StackPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+              </ItemsControl.ItemsPanel>
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <StackPanel Orientation="Horizontal" Margin="0,0,16,0">
+                    <TextBlock Text="{Binding Name}" Foreground="{StaticResource AccentBrush}"
+                               FontSize="{StaticResource CaptionFontSize}" FontWeight="SemiBold"
+                               VerticalAlignment="Center"/>
+                    <!-- Fixed-width, right-aligned so a changing load value (e.g. "5.0 %" → "100.0 %")
+                         never changes this item's width and bumps the engines that follow it. -->
+                    <TextBlock Text="{Binding LoadPercent, StringFormat={}{0:0.0} %}"
+                               Foreground="{StaticResource TextBrush}"
+                               FontSize="{StaticResource CaptionFontSize}"
+                               Width="46" TextAlignment="Right"
+                               VerticalAlignment="Center" Margin="6,0,0,0"/>
+                  </StackPanel>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            </ScrollViewer>
+          </Grid>
+        </Grid>
+      </Border>
+    </DataTemplate>
+
+    <local:GpuAdapterTileTemplateSelector
+      x:Key="TileSelector"
+      IntegratedTemplate="{StaticResource IntegratedTile}"
+      DedicatedTemplate="{StaticResource DedicatedTile}"/>
+
+    <!-- One adapter: render the dedicated tile directly with no ScrollViewer, so none of the scroll
+         machinery is built. Bound to DedicatedAdapter (not Adapters[0]) so an integrated-only machine
+         renders nothing — the integrated tile is disabled for now. The 10px left inset matches
+         CpuSummaryView so the GPU tiles line up with the CPU tiles. -->
+    <DataTemplate x:Key="SingleAdapterTemplate">
+      <ContentControl Margin="10,0,0,0" Content="{Binding DedicatedAdapter}"
+                      ContentTemplateSelector="{StaticResource TileSelector}"
+                      VerticalAlignment="Stretch" VerticalContentAlignment="Stretch"/>
+    </DataTemplate>
+
+    <!-- Several adapters: a horizontally scrollable strip (scrollbars hidden, wheel scrolls sideways),
+         same 10px inset as above. The integrated adapter is filtered out of the strip (OnStripLoaded)
+         so only dedicated cards render; the detail view keeps the unfiltered list. -->
+    <DataTemplate x:Key="AdapterStripTemplate">
+      <ScrollViewer Margin="10,0,0,0"
+                    HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled"
+                    PreviewMouseWheel="OnScrollHorizontally">
+        <ItemsControl ItemsSource="{Binding Adapters}" AlternationCount="99"
+                      Loaded="OnStripLoaded"
+                      ItemTemplateSelector="{StaticResource TileSelector}" VerticalAlignment="Stretch">
+          <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+              <StackPanel Orientation="Horizontal"/>
+            </ItemsPanelTemplate>
+          </ItemsControl.ItemsPanel>
+        </ItemsControl>
+      </ScrollViewer>
+    </DataTemplate>
+  </UserControl.Resources>
+
+  <Border Background="Transparent">
+    <!-- The "GPU" section title overlays the top-left corner on the header line rather than docking as a
+         column, so the tile strip runs flush to the left edge (no reserved full-height gutter) while
+         "GPU" still shares the header line with each adapter's centered identity. -->
+    <Grid Margin="5">
+      <!-- A lone adapter renders as a single tile with no ScrollViewer (SingleAdapterTemplate); several
+           adapters render as a horizontally scrollable strip (AdapterStripTemplate). Swapping the
+           ContentTemplate means only the active branch is instantiated, so the single-adapter case
+           builds none of the scroll machinery. -->
+      <ContentControl Content="{Binding}" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch">
+        <ContentControl.Style>
+          <Style TargetType="ContentControl">
+            <Setter Property="ContentTemplate" Value="{StaticResource AdapterStripTemplate}"/>
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding Adapters.Count}" Value="1">
+                <Setter Property="ContentTemplate" Value="{StaticResource SingleAdapterTemplate}"/>
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </ContentControl.Style>
+      </ContentControl>
+
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
+        <Border Width="3" Background="{StaticResource AccentBrush}" Margin="0,1,8,1"/>
+        <TextBlock Text="GPU" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource BodyFontSize}" FontWeight="SemiBold"
+                   VerticalAlignment="Center"/>
+      </StackPanel>
     </Grid>
   </Border>
 </UserControl>

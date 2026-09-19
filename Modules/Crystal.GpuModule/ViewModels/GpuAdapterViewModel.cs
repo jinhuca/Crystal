@@ -1,6 +1,8 @@
+using Crystal.Controls.Metrics;
 using Crystal.Controls.PerformanceGraphs;
 using Crystal.Service.Gpu;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace Crystal.GpuModule.ViewModels;
 
@@ -20,6 +22,9 @@ public sealed class GpuAdapterViewModel : BindableBase {
   private string? _physicalLocation;
   private uint? _refreshRateHz;
   private double _load;
+  private double _load3D;
+  private bool _isIntegrated;
+  private bool _isDedicated;
   private double? _temperatureC;
   private double? _clockMhz;
   private double? _powerW;
@@ -33,6 +38,20 @@ public sealed class GpuAdapterViewModel : BindableBase {
   private double? _memoryTemperatureC;
   private double? _pcieRxMBps;
   private double? _pcieTxMBps;
+  private double? _temperatureMinC;
+  private double? _temperatureMaxC;
+  private double? _hotSpotTemperatureMinC;
+  private double? _hotSpotTemperatureMaxC;
+  private double? _memoryTemperatureMinC;
+  private double? _memoryTemperatureMaxC;
+  private double? _clockMinMhz;
+  private double? _clockMaxMhz;
+  private double? _memoryClockMinMhz;
+  private double? _memoryClockMaxMhz;
+  private double? _powerMinW;
+  private double? _powerMaxW;
+  private double? _coreVoltageMinV;
+  private double? _coreVoltageMaxV;
 
   // Core temperature uses a fixed 0-100 °C scale (like Load's 0-100 %); clock and power span wildly
   // different ranges per adapter (iGPU vs dGPU), so their graph ceilings ratchet to a "nice" value
@@ -40,18 +59,30 @@ public sealed class GpuAdapterViewModel : BindableBase {
   private const double PeakDecay = 0.95;
   private const double MinClockScale = 500;
   private const double MinPowerScale = 50;
+  private const double MinPcieScale = 10;
+  private const double MinFanScale = 1000;
   private double _clockScaleMax = MinClockScale;
   private double _powerScaleMax = MinPowerScale;
+  private double _pcieRxScaleMax = MinPcieScale;
+  private double _pcieTxScaleMax = MinPcieScale;
+  private double _fanScaleMax = MinFanScale;
   private double _clockPeak;
   private double _powerPeak;
+  private double _pcieRxPeak;
+  private double _pcieTxPeak;
+  private double _fanPeak;
 
   // History graphs are registered by their GraphIdentity.Id as each metric sub-view loads (the
   // detail view registers with the same ids explicitly), then fed by that same id in UpdateLoad.
   // One graph per id per adapter; last registration for an id wins, matching the previous
   // single-field behaviour when the summary and detail views attach to the same adapter VM.
-  private readonly Dictionary<string, PerformanceGraph> _graphs = [];
+  private readonly GraphFeedRegistry _graphs = new();
 
-  public string Name { get => _name; private set => SetProperty(ref _name, value); }
+  public string Name { 
+    get => _name; 
+    private set => SetProperty(ref _name, value); 
+  }
+
   public string KindLabel { get => _kindLabel; private set => SetProperty(ref _kindLabel, value); }
   public double? VideoRamGB { get => _videoRamGB; private set => SetProperty(ref _videoRamGB, value); }
   public string DisplayMode { get => _displayMode; private set => SetProperty(ref _displayMode, value); }
@@ -61,6 +92,17 @@ public sealed class GpuAdapterViewModel : BindableBase {
   public string? PhysicalLocation { get => _physicalLocation; private set => SetProperty(ref _physicalLocation, value); }
   public uint? RefreshRateHz { get => _refreshRateHz; private set => SetProperty(ref _refreshRateHz, value); }
   public double Load { get => _load; private set => SetProperty(ref _load, value); }
+
+  /// <summary>Utilization of the 3D engine (0-100%), the headline "3D" tile in the reference
+  /// design. Falls back to the aggregate core load when the adapter exposes no distinct 3D engine.</summary>
+  public double Load3D { get => _load3D; private set => SetProperty(ref _load3D, value); }
+
+  /// <summary>True when this adapter is the CPU's integrated graphics (left column of the design).</summary>
+  public bool IsIntegrated { get => _isIntegrated; private set => SetProperty(ref _isIntegrated, value); }
+
+  /// <summary>True when this adapter is a discrete card (right column of the design).</summary>
+  public bool IsDedicated { get => _isDedicated; private set => SetProperty(ref _isDedicated, value); }
+
   public double? TemperatureC { get => _temperatureC; private set => SetProperty(ref _temperatureC, value); }
   public double? ClockMhz { get => _clockMhz; private set => SetProperty(ref _clockMhz, value); }
   public double? PowerW { get => _powerW; private set => SetProperty(ref _powerW, value); }
@@ -75,6 +117,37 @@ public sealed class GpuAdapterViewModel : BindableBase {
   public double? PcieRxMBps { get => _pcieRxMBps; private set => SetProperty(ref _pcieRxMBps, value); }
   public double? PcieTxMBps { get => _pcieTxMBps; private set => SetProperty(ref _pcieTxMBps, value); }
 
+  // Session Min/Max for the single-sensor metrics, backing the CPU-style value/min/max tables under
+  // each graph. Null until the provider records an extreme (or when the metric itself is absent).
+  public double? TemperatureMinC { get => _temperatureMinC; private set => SetProperty(ref _temperatureMinC, value); }
+  public double? TemperatureMaxC { get => _temperatureMaxC; private set => SetProperty(ref _temperatureMaxC, value); }
+  public double? HotSpotTemperatureMinC { get => _hotSpotTemperatureMinC; private set => SetProperty(ref _hotSpotTemperatureMinC, value); }
+  public double? HotSpotTemperatureMaxC { get => _hotSpotTemperatureMaxC; private set => SetProperty(ref _hotSpotTemperatureMaxC, value); }
+  public double? MemoryTemperatureMinC { get => _memoryTemperatureMinC; private set => SetProperty(ref _memoryTemperatureMinC, value); }
+  public double? MemoryTemperatureMaxC { get => _memoryTemperatureMaxC; private set => SetProperty(ref _memoryTemperatureMaxC, value); }
+  public double? ClockMinMhz { get => _clockMinMhz; private set => SetProperty(ref _clockMinMhz, value); }
+  public double? ClockMaxMhz { get => _clockMaxMhz; private set => SetProperty(ref _clockMaxMhz, value); }
+  public double? MemoryClockMinMhz { get => _memoryClockMinMhz; private set => SetProperty(ref _memoryClockMinMhz, value); }
+  public double? MemoryClockMaxMhz { get => _memoryClockMaxMhz; private set => SetProperty(ref _memoryClockMaxMhz, value); }
+  public double? PowerMinW { get => _powerMinW; private set => SetProperty(ref _powerMinW, value); }
+  public double? PowerMaxW { get => _powerMaxW; private set => SetProperty(ref _powerMaxW, value); }
+  public double? CoreVoltageMinV { get => _coreVoltageMinV; private set => SetProperty(ref _coreVoltageMinV, value); }
+  public double? CoreVoltageMaxV { get => _coreVoltageMaxV; private set => SetProperty(ref _coreVoltageMaxV, value); }
+
+  // Trend backing for the de-graphed summary tiles: each carries the session min/avg/max and an
+  // EMA-based rise/fall/flat glyph, fed alongside the live values in UpdateLoad. No render cost.
+  public MetricRowViewModel Load3DRow { get; } = new("3D");
+  public MetricRowViewModel ClockRow { get; } = new("Clock");
+  public MetricRowViewModel PowerRow { get; } = new("Power");
+  public MetricRowViewModel TemperatureRow { get; } = new("Temperature");
+  public MetricRowViewModel HotSpotRow { get; } = new("Hot Spot");
+  public MetricRowViewModel MemoryRow { get; } = new("Memory");
+  public MetricRowViewModel LoadRow { get; } = new("Utilization");
+  public MetricRowViewModel FanRow { get; } = new("Fan");
+  public MetricRowViewModel VoltageRow { get; } = new("Voltage");
+  public MetricRowViewModel PcieRxRow { get; } = new("PCIe Rx");
+  public MetricRowViewModel PcieTxRow { get; } = new("PCIe Tx");
+
   /// <summary>
   /// Upper bound of the core-clock history graph, ratcheted to a round value above the
   /// running peak so a 1.3 GHz iGPU and a 2.6 GHz dGPU each plot on a sensibly-scaled axis.
@@ -85,6 +158,25 @@ public sealed class GpuAdapterViewModel : BindableBase {
   /// Upper bound of the power history graph, ratcheted like <see cref="ClockScaleMax"/>.
   /// </summary>
   public double PowerScaleMax { get => _powerScaleMax; private set => SetProperty(ref _powerScaleMax, value); }
+
+  /// <summary>
+  /// Upper bound of the PCIe Rx throughput graph, ratcheted over that direction's running peak.
+  /// Scaled independently of <see cref="PcieTxScaleMax"/> so a busy Rx direction can't flatten a
+  /// low-but-live Tx trace (Rx/Tx routinely differ by an order of magnitude).
+  /// </summary>
+  public double PcieRxScaleMax { get => _pcieRxScaleMax; private set => SetProperty(ref _pcieRxScaleMax, value); }
+
+  /// <summary>
+  /// Upper bound of the PCIe Tx throughput graph, ratcheted over that direction's running peak,
+  /// independently of <see cref="PcieRxScaleMax"/>.
+  /// </summary>
+  public double PcieTxScaleMax { get => _pcieTxScaleMax; private set => SetProperty(ref _pcieTxScaleMax, value); }
+
+  /// <summary>
+  /// Upper bound of the fan-speed history graph, ratcheted over the running RPM peak like the
+  /// clock/power ceilings so the trace scales sensibly for a slow case fan or a spun-up card.
+  /// </summary>
+  public double FanScaleMax { get => _fanScaleMax; private set => SetProperty(ref _fanScaleMax, value); }
 
   /// <summary>
   /// Per-engine utilization breakdown, reconciled in place across polls so the rows stay
@@ -101,17 +193,17 @@ public sealed class GpuAdapterViewModel : BindableBase {
 
   public bool HasPowerRails => PowerRails.Count > 0;
 
-  public void AttachGraph(string id, PerformanceGraph graph) => _graphs[id] = graph;
+  public void AttachGraph(string id, ISingleSeriesGraph graph) => _graphs.Attach(id, graph);
 
-  private void FeedGraph(string id, double value) {
-    if (_graphs.TryGetValue(id, out var graph)) graph.AddValue(value);
-  }
+  private void FeedGraph(string id, double value) => _graphs.Feed(id, value);
 
   /// <summary>
   /// Refreshes the static identity from the inventory row.
   /// </summary>
   public void UpdateSpecs(GpuAdapterInfo info) {
-    Name = info.Name;
+    Name = info.Name.Replace("(R)","");
+    IsIntegrated = info.Kind == GpuKind.Integrated;
+    IsDedicated = info.Kind == GpuKind.Dedicated;
     KindLabel = info.Kind == GpuKind.Integrated ? "Integrated GPU" : "Dedicated GPU";
     VideoRamGB = info.VideoRamGB;
     DisplayMode = info.DisplayMode;
@@ -128,20 +220,32 @@ public sealed class GpuAdapterViewModel : BindableBase {
   public void UpdateLoad(GpuLoadReading reading) {
     Load = reading.CoreLoadPercent;
     FeedGraph("Gpu.Utilization", reading.CoreLoadPercent);
+    LoadRow.Update(reading.CoreLoadPercent);
 
     TemperatureC = reading.TemperatureC;
-    if (reading.TemperatureC is { } t) FeedGraph("Gpu.Temperature", t);
+    TemperatureMinC = reading.TemperatureMinC;
+    TemperatureMaxC = reading.TemperatureMaxC;
+    if (reading.TemperatureC is { } t) {
+      FeedGraph("Gpu.Temperature", t);
+      TemperatureRow.Update(t, reading.TemperatureMinC, reading.TemperatureMaxC);
+    }
 
     ClockMhz = reading.ClockMhz;
+    ClockMinMhz = reading.ClockMinMhz;
+    ClockMaxMhz = reading.ClockMaxMhz;
     if (reading.ClockMhz is { } c) {
       FeedGraph("Gpu.Clock", c);
+      ClockRow.Update(c, reading.ClockMinMhz, reading.ClockMaxMhz);
       _clockPeak = Math.Max(c, _clockPeak * PeakDecay);
       ClockScaleMax = NiceScale(_clockPeak, MinClockScale);
     }
 
     PowerW = reading.PowerW;
+    PowerMinW = reading.PowerMinW;
+    PowerMaxW = reading.PowerMaxW;
     if (reading.PowerW is { } p) {
       FeedGraph("Gpu.Power", p);
+      PowerRow.Update(p, reading.PowerMinW, reading.PowerMaxW);
       _powerPeak = Math.Max(p, _powerPeak * PeakDecay);
       PowerScaleMax = NiceScale(_powerPeak, MinPowerScale);
     }
@@ -151,16 +255,63 @@ public sealed class GpuAdapterViewModel : BindableBase {
     MemoryUsedPercent = reading is { MemoryUsedGB: { } used, MemoryTotalGB: { } total } && total > 0
         ? used / total * 100
         : null;
+    if (MemoryUsedPercent is { } mem) {
+      FeedGraph("Gpu.Memory", mem);
+      MemoryRow.Update(mem);
+    }
     MemoryClockMhz = reading.MemoryClockMhz;
+    MemoryClockMinMhz = reading.MemoryClockMinMhz;
+    MemoryClockMaxMhz = reading.MemoryClockMaxMhz;
     FanRpm = reading.FanRpm;
+    if (reading.FanRpm is { } fan) {
+      FeedGraph("Gpu.Fan", fan);
+      FanRow.Update(fan);
+      _fanPeak = Math.Max(fan, _fanPeak * PeakDecay);
+      FanScaleMax = NiceScale(_fanPeak, MinFanScale);
+    }
     CoreVoltageV = reading.CoreVoltageV;
+    CoreVoltageMinV = reading.CoreVoltageMinV;
+    CoreVoltageMaxV = reading.CoreVoltageMaxV;
+    if (reading.CoreVoltageV is { } volt) {
+      FeedGraph("Gpu.Voltage", volt);
+      VoltageRow.Update(volt, reading.CoreVoltageMinV, reading.CoreVoltageMaxV);
+    }
     HotSpotTemperatureC = reading.HotSpotTemperatureC;
+    HotSpotTemperatureMinC = reading.HotSpotTemperatureMinC;
+    HotSpotTemperatureMaxC = reading.HotSpotTemperatureMaxC;
+    if (reading.HotSpotTemperatureC is { } hot) {
+      FeedGraph("Gpu.HotSpot", hot);
+      HotSpotRow.Update(hot, reading.HotSpotTemperatureMinC, reading.HotSpotTemperatureMaxC);
+    }
     MemoryTemperatureC = reading.MemoryTemperatureC;
+    MemoryTemperatureMinC = reading.MemoryTemperatureMinC;
+    MemoryTemperatureMaxC = reading.MemoryTemperatureMaxC;
+
     PcieRxMBps = reading.PcieRxMBps;
     PcieTxMBps = reading.PcieTxMBps;
+    if (reading.PcieRxMBps is { } rx) {
+      FeedGraph("Gpu.PcieRx", rx);
+      PcieRxRow.Update(rx);
+    }
+    if (reading.PcieTxMBps is { } tx) {
+      FeedGraph("Gpu.PcieTx", tx);
+      PcieTxRow.Update(tx);
+    }
+    _pcieRxPeak = Math.Max(reading.PcieRxMBps ?? 0, _pcieRxPeak * PeakDecay);
+    PcieRxScaleMax = NiceScale(_pcieRxPeak, MinPcieScale);
+    _pcieTxPeak = Math.Max(reading.PcieTxMBps ?? 0, _pcieTxPeak * PeakDecay);
+    PcieTxScaleMax = NiceScale(_pcieTxPeak, MinPcieScale);
 
-    ReconcileEngineLoads(reading.EngineLoads ?? []);
+    var engines = reading.EngineLoads ?? [];
+    ReconcileEngineLoads(engines);
     ReconcilePowerRails(reading.PowerRails ?? []);
+
+    // "3D" is the headline engine in the design; fall back to aggregate core load when the adapter
+    // exposes no distinct 3D engine, so the tile always shows a live value.
+    var threeD = engines.FirstOrDefault(e => e.Name.Contains("3D", StringComparison.OrdinalIgnoreCase));
+    Load3D = threeD?.LoadPercent ?? reading.CoreLoadPercent;
+    FeedGraph("Gpu.3D", Load3D);
+    Load3DRow.Update(Load3D);
   }
 
   /// <summary>
@@ -207,10 +358,12 @@ public sealed class GpuAdapterViewModel : BindableBase {
     foreach (var rail in rails) {
       var existing = PowerRails.FirstOrDefault(vm => vm.Name == rail.Name);
       if (existing is null) {
-        PowerRails.Add(new GpuPowerRailViewModel(rail.Name) { PowerW = rail.PowerW });
+        PowerRails.Add(new GpuPowerRailViewModel(rail.Name) { PowerW = rail.PowerW, MinW = rail.MinW, MaxW = rail.MaxW });
       }
       else {
         existing.PowerW = rail.PowerW;
+        existing.MinW = rail.MinW;
+        existing.MaxW = rail.MaxW;
       }
     }
 

@@ -50,15 +50,15 @@ public interface IMemoryViewModel {
   double? CommitLimitGB { get; }
 
   /// <summary>Hands the detail view's "Memory usage" history graph to the VM so it can push samples.</summary>
-  void AttachUsageGraph(PerformanceGraph graph);
+  void AttachUsageGraph(ISingleSeriesGraph graph);
 
   /// <summary>Hands the detail view's "Commit charge" history graph to the VM so it can push samples.</summary>
-  void AttachCommitGraph(PerformanceGraph graph);
+  void AttachCommitGraph(ISingleSeriesGraph graph);
 
   /// <summary>Registers a summary-tile history graph to be fed on each load update, keyed by its
   /// <c>GraphIdentity.Id</c> (e.g. "Memory.Utilization", "Memory.Used"). Each metric sub-view
   /// self-registers its own graph on load.</summary>
-  void AttachGraph(string id, PerformanceGraph graph);
+  void AttachGraph(string id, ISingleSeriesGraph graph);
 
   ICommand ShowDetailCommand { get; }
   ICommand ShowDashboardCommand { get; }

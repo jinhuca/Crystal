@@ -1,13 +1,27 @@
 using Crystal.MemoryModule.ViewModels;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace Crystal.MemoryModule.Views;
 
-/// <summary>Compact Memory tile on the dashboard: composes the header and the utilization / used
-/// metric tiles (each defined in Views/SummaryViews). Double-clicking opens the full detail view.</summary>
+/// <summary>Memory dashboard tile, laid out like Windows Task Manager's Memory page: the usage and
+/// commit-charge readouts plus composition bar on the left, the kernel-memory stats and hardware
+/// specs on the right. Double-clicking opens the full detail view (which adds the per-slot list).</summary>
 public partial class MemorySummaryView : UserControl {
-  public MemorySummaryView() => InitializeComponent();
+  public MemorySummaryView() {
+    InitializeComponent();
+    Loaded += OnLoaded;
+  }
+
+  // The usage and commit-charge sparklines self-register with the view model so it feeds each on
+  // every poll (usage plotted 0–100, commit against the current commit limit).
+  private void OnLoaded(object sender, RoutedEventArgs e) {
+    if (DataContext is IMemoryViewModel vm) {
+      vm.AttachUsageGraph(MemoryUsageGraph);
+      vm.AttachCommitGraph(CommitChargeGraph);
+    }
+  }
 
   private void OnTileClick(object sender, MouseButtonEventArgs e) {
     if (e.ClickCount >= 2 && DataContext is IMemoryViewModel vm && vm.ShowDetailCommand.CanExecute(null))

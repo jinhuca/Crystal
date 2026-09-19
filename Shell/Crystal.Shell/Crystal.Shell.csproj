@@ -61,6 +61,8 @@
     <ProjectReference Include="..\..\Modules\Crystal.NetworkModule\Crystal.NetworkModule.csproj" />
     <ProjectReference Include="..\..\Modules\Crystal.ProcessModule\Crystal.ProcessModule.csproj" />
     <ProjectReference Include="..\..\Modules\Crystal.OSModule\Crystal.OSModule.csproj" />
+    <ProjectReference Include="..\..\Modules\Crystal.BenchmarkModule\Crystal.BenchmarkModule.csproj" />
+    <ProjectReference Include="..\..\UI\Crystal.Controls\Crystal.Controls.csproj" />
     <ProjectReference Include="..\..\UI\Crystal.Resources\Crystal.Resources.csproj" />
     <ProjectReference Include="..\..\Infrastructures\Crystal.Infrastructure.Constants\Crystal.Infrastructure.Constants.csproj" />
     <ProjectReference Include="..\..\Services\Crystal.Service.Sensors\Crystal.Service.Sensors.csproj" />

@@ -1,3 +1,4 @@
+using Crystal.Controls.Metrics;
 using Crystal.Controls.PerformanceGraphs;
 using Crystal.CpuModule.Models;
 using Crystal.CpuModule.ViewModels;
@@ -48,6 +49,42 @@ public interface ICpuSensorViewModel {
   /// Current package power in W. Zero when not exposed.
   /// </summary>
   double Power { get; }
+
+  /// <summary>
+  /// Per-rail power breakdown (Package / Cores / GT / DRAM), each with its current value and
+  /// session min/max in W. Fixed four-row set, updated in place on every sensor emission.
+  /// </summary>
+  ObservableCollection<MetricRowViewModel> PowerRails { get; }
+
+  /// <summary>
+  /// Clock-domain breakdown (Core / Effective) in GHz, each with its current value and session
+  /// min/max. Fixed two-row set, updated in place on every sensor emission.
+  /// </summary>
+  ObservableCollection<MetricRowViewModel> ClockRows { get; }
+
+  /// <summary>
+  /// Temperature-sensor breakdown (Package / Core Max / Core Avg) in °C, each with its current
+  /// value and session min/max. Fixed three-row set, updated in place on every sensor emission.
+  /// </summary>
+  ObservableCollection<MetricRowViewModel> TemperatureRows { get; }
+
+  /// <summary>
+  /// Voltage-rail breakdown (Core / SoC) in V, each with its current value and session min/max.
+  /// Fixed two-row set, updated in place on every sensor emission.
+  /// </summary>
+  ObservableCollection<MetricRowViewModel> VoltageRows { get; }
+
+  /// <summary>
+  /// Session min/max/avg + trend for the fan readout (RPM, or PWM% on tachometer-less laptops),
+  /// self-tracked from the sample stream since the fan has no provider-side session extremes.
+  /// </summary>
+  MetricRowViewModel FanRow { get; }
+
+  /// <summary>
+  /// Session min/max/avg + trend for the CPU utilization readout (%), self-tracked from the same
+  /// sample stream that feeds the utilization history graph.
+  /// </summary>
+  MetricRowViewModel LoadRow { get; }
 
   /// <summary>
   /// Configured sustained package power limit (PL1) in W. Intel-only; zero when not exposed.
@@ -151,7 +188,7 @@ public interface ICpuSensorViewModel {
   /// (e.g. "Cpu.Utilization"). Each metric sub-view self-registers its own graph on load, so the
   /// view model feeds only the graphs a given consumer chose to realize.
   /// </summary>
-  void AttachGraph(string id, PerformanceGraph graph);
+  void AttachGraph(string id, ISingleSeriesGraph graph);
 
   /// <summary>
   /// Reads the socket's live sensors and pushes samples into the attached graphs.

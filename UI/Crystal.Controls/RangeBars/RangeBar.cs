@@ -1,6 +1,7 @@
 using Crystal.Controls.RangeBars.Renders;
 using Crystal.Controls.RangeBars.Styles;
 using Crystal.Controls.RangeBars.Themes;
+using System;
 using System.Windows;
 using System.Windows.Media;
 
@@ -17,17 +18,27 @@ namespace Crystal.Controls.RangeBars;
 /// </para>
 /// </summary>
 public class RangeBar : FrameworkElement {
-  /// <summary>Identifies the <see cref="Value"/> dependency property.</summary>
-  public static readonly DependencyProperty ValueProperty =
-      DependencyProperty.Register(nameof(Value), typeof(double), typeof(RangeBar),
-          new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender));
+  /// <summary>
+  /// Identifies the <see cref="Value"/> dependency property.
+  /// </summary>
+  public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
+    nameof(Value),
+    typeof(double),
+    typeof(RangeBar),
+    new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender));
 
-  /// <summary>Identifies the <see cref="MinValue"/> dependency property.</summary>
-  public static readonly DependencyProperty MinValueProperty =
-      DependencyProperty.Register(nameof(MinValue), typeof(double), typeof(RangeBar),
-          new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender));
+  /// <summary>
+  /// Identifies the <see cref="MinValue"/> dependency property.
+  /// </summary>
+  public static readonly DependencyProperty MinValueProperty = DependencyProperty.Register(
+    nameof(MinValue), 
+    typeof(double),
+    typeof(RangeBar),
+    new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender));
 
-  /// <summary>Identifies the <see cref="MaxValue"/> dependency property.</summary>
+  /// <summary>
+  /// Identifies the <see cref="MaxValue"/> dependency property.
+  /// </summary>
   public static readonly DependencyProperty MaxValueProperty =
       DependencyProperty.Register(nameof(MaxValue), typeof(double), typeof(RangeBar),
           new FrameworkPropertyMetadata(100.0, FrameworkPropertyMetadataOptions.AffectsRender));
@@ -62,14 +73,93 @@ public class RangeBar : FrameworkElement {
       DependencyProperty.Register(nameof(BorderThickness), typeof(double), typeof(RangeBar),
           new FrameworkPropertyMetadata(3.0, FrameworkPropertyMetadataOptions.AffectsRender, OnBorderThicknessChanged));
 
+  /// <summary>Identifies the <see cref="Segmented"/> dependency property.</summary>
+  public static readonly DependencyProperty SegmentedProperty =
+      DependencyProperty.Register(nameof(Segmented), typeof(bool), typeof(RangeBar),
+          new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsRender, OnSegmentedChanged));
+
+  /// <summary>Identifies the <see cref="SegmentWidth"/> dependency property.</summary>
+  public static readonly DependencyProperty SegmentWidthProperty =
+      DependencyProperty.Register(nameof(SegmentWidth), typeof(double), typeof(RangeBar),
+          new FrameworkPropertyMetadata(4.0, FrameworkPropertyMetadataOptions.AffectsRender, OnSegmentWidthChanged));
+
+  /// <summary>Identifies the <see cref="SegmentGap"/> dependency property.</summary>
+  public static readonly DependencyProperty SegmentGapProperty =
+      DependencyProperty.Register(nameof(SegmentGap), typeof(double), typeof(RangeBar),
+          new FrameworkPropertyMetadata(2.0, FrameworkPropertyMetadataOptions.AffectsRender, OnSegmentGapChanged));
+
+  /// <summary>Identifies the <see cref="SegmentCount"/> dependency property.</summary>
+  public static readonly DependencyProperty SegmentCountProperty =
+      DependencyProperty.Register(nameof(SegmentCount), typeof(int), typeof(RangeBar),
+          new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.AffectsRender, OnSegmentCountChanged));
+
+  /// <summary>Identifies the <see cref="AccentColor"/> dependency property.</summary>
+  public static readonly DependencyProperty AccentColorProperty =
+      DependencyProperty.Register(nameof(AccentColor), typeof(Color?), typeof(RangeBar),
+          new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender, OnAccentColorChanged));
+
+  /// <summary>Identifies the <see cref="Direction"/> dependency property.</summary>
+  public static readonly DependencyProperty DirectionProperty =
+      DependencyProperty.Register(nameof(Direction), typeof(RangeBarGradientDirection), typeof(RangeBar),
+          new FrameworkPropertyMetadata(RangeBarGradientDirection.Ascending,
+              FrameworkPropertyMetadataOptions.AffectsRender, OnDirectionChanged));
+
+  /// <summary>Identifies the <see cref="LowestAlpha"/> dependency property.</summary>
+  public static readonly DependencyProperty LowestAlphaProperty =
+      DependencyProperty.Register(nameof(LowestAlpha), typeof(byte), typeof(RangeBar),
+          new FrameworkPropertyMetadata((byte)0x55, FrameworkPropertyMetadataOptions.AffectsRender, OnLowestAlphaChanged));
+
+  /// <summary>Identifies the <see cref="HighestAlpha"/> dependency property.</summary>
+  public static readonly DependencyProperty HighestAlphaProperty =
+      DependencyProperty.Register(nameof(HighestAlpha), typeof(byte), typeof(RangeBar),
+          new FrameworkPropertyMetadata((byte)0xFF, FrameworkPropertyMetadataOptions.AffectsRender, OnHighestAlphaChanged));
+
+  /// <summary>Identifies the <see cref="LabelHeight"/> dependency property.</summary>
+  public static readonly DependencyProperty LabelHeightProperty =
+      DependencyProperty.Register(nameof(LabelHeight), typeof(double), typeof(RangeBar),
+          new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender));
+
+  /// <summary>Identifies the <see cref="MarkerLabelFontSize"/> dependency property.</summary>
+  public static readonly DependencyProperty MarkerLabelFontSizeProperty =
+      DependencyProperty.Register(nameof(MarkerLabelFontSize), typeof(double), typeof(RangeBar),
+          new FrameworkPropertyMetadata(11.0, FrameworkPropertyMetadataOptions.AffectsRender));
+
+  /// <summary>Identifies the <see cref="Markers"/> dependency property.</summary>
+  public static readonly DependencyProperty MarkersProperty =
+      DependencyProperty.Register(nameof(Markers), typeof(RangeBarMarkerCollection), typeof(RangeBar),
+          new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender));
+
   private readonly BackgroundRenderer _backgroundRender = new();
   private readonly FillRenderer _fillRender = new();
   private readonly BorderRenderer _borderRender = new();
+  private readonly MarkerRenderer _markerRender = new();
   private readonly RangeBarStyle _style = new();
 
   public RangeBar() {
     SnapsToDevicePixels = true;
     UseLayoutRounding = true;
+    SetCurrentValue(MarkersProperty, new RangeBarMarkerCollection());
+  }
+
+  /// <summary>Height (px) of the band below the track reserved for <see cref="Markers"/> captions.
+  /// 0 (the default) reserves none; the track fills the full height. Set it (and give the control
+  /// extra height) when markers carry <see cref="RangeBarMarker.Label"/>s.</summary>
+  public double LabelHeight {
+    get => (double)GetValue(LabelHeightProperty);
+    set => SetValue(LabelHeightProperty, value);
+  }
+
+  /// <summary>Font size for <see cref="Markers"/> captions (default 11).</summary>
+  public double MarkerLabelFontSize {
+    get => (double)GetValue(MarkerLabelFontSizeProperty);
+    set => SetValue(MarkerLabelFontSizeProperty, value);
+  }
+
+  /// <summary>Reference markers (limit lines, session peak, targets) drawn on the value scale.
+  /// The bar maps each <see cref="RangeBarMarker.Value"/> to a pixel position itself.</summary>
+  public RangeBarMarkerCollection Markers {
+    get => (RangeBarMarkerCollection)GetValue(MarkersProperty);
+    set => SetValue(MarkersProperty, value);
   }
 
   /// <summary>Current reading; clamped to <see cref="MinValue"/>..<see cref="MaxValue"/> when drawn.</summary>
@@ -120,6 +210,64 @@ public class RangeBar : FrameworkElement {
     set => SetValue(BorderThicknessProperty, value);
   }
 
+  /// <summary>When true, the filled portion is drawn as a row of discrete LED-meter blocks
+  /// (each <see cref="SegmentWidth"/> wide, separated by <see cref="SegmentGap"/>) rather than a
+  /// solid fill; the block straddling the fill edge is clipped so the meter reads as a partial
+  /// value instead of snapping to the next whole block. The unfilled remainder still shows
+  /// <see cref="TrackBrush"/> behind the blocks.</summary>
+  public bool Segmented {
+    get => (bool)GetValue(SegmentedProperty);
+    set => SetValue(SegmentedProperty, value);
+  }
+
+  /// <summary>Width (device-independent px) of each lit LED block when <see cref="Segmented"/> is true.</summary>
+  public double SegmentWidth {
+    get => (double)GetValue(SegmentWidthProperty);
+    set => SetValue(SegmentWidthProperty, value);
+  }
+
+  /// <summary>Gap (device-independent px) between LED blocks when <see cref="Segmented"/> is true.</summary>
+  public double SegmentGap {
+    get => (double)GetValue(SegmentGapProperty);
+    set => SetValue(SegmentGapProperty, value);
+  }
+
+  /// <summary>When &gt; 0 and <see cref="Segmented"/> is true, the bar draws exactly this many
+  /// equally spaced squares (side = bar height) across the full scale instead of pixel-sized LED
+  /// blocks, overriding <see cref="SegmentWidth"/>/<see cref="SegmentGap"/>. The meter fills per
+  /// square, so a value of 55 on a 0..100 bar with 10 squares shows 5½ squares.</summary>
+  public int SegmentCount {
+    get => (int)GetValue(SegmentCountProperty);
+    set => SetValue(SegmentCountProperty, value);
+  }
+
+  /// <summary>When set, the fill is painted with a linear gradient generated from this color by
+  /// varying only its alpha channel across the full <see cref="MinValue"/>..<see cref="MaxValue"/>
+  /// scale (see <see cref="Direction"/>, <see cref="LowestAlpha"/>, <see cref="HighestAlpha"/>).
+  /// Leave null to keep the solid <see cref="FillBrush"/>.</summary>
+  public Color? AccentColor {
+    get => (Color?)GetValue(AccentColorProperty);
+    set => SetValue(AccentColorProperty, value);
+  }
+
+  /// <summary>Whether the accent alpha gradient rises (min→max) or falls across the scale.</summary>
+  public RangeBarGradientDirection Direction {
+    get => (RangeBarGradientDirection)GetValue(DirectionProperty);
+    set => SetValue(DirectionProperty, value);
+  }
+
+  /// <summary>Alpha at the low end of the accent gradient (default 0x55).</summary>
+  public byte LowestAlpha {
+    get => (byte)GetValue(LowestAlphaProperty);
+    set => SetValue(LowestAlphaProperty, value);
+  }
+
+  /// <summary>Alpha at the high end of the accent gradient (default 0xFF).</summary>
+  public byte HighestAlpha {
+    get => (byte)GetValue(HighestAlphaProperty);
+    set => SetValue(HighestAlphaProperty, value);
+  }
+
   /// <summary>Applies every property the given theme sets, leaving anything it leaves null untouched.</summary>
   public void ApplyTheme(RangeBarTheme theme) {
     if (theme == null) return;
@@ -151,6 +299,30 @@ public class RangeBar : FrameworkElement {
     bar._style.BorderThickness = thickness;
   }
 
+  private static void OnSegmentedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) =>
+      ((RangeBar)d)._style.Segmented = (bool)e.NewValue;
+
+  private static void OnSegmentWidthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) =>
+      ((RangeBar)d)._style.SegmentWidth = (double)e.NewValue;
+
+  private static void OnSegmentGapChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) =>
+      ((RangeBar)d)._style.SegmentGap = (double)e.NewValue;
+
+  private static void OnSegmentCountChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) =>
+      ((RangeBar)d)._style.SegmentCount = (int)e.NewValue;
+
+  private static void OnAccentColorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) =>
+      ((RangeBar)d)._style.AccentColor = (Color?)e.NewValue;
+
+  private static void OnDirectionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) =>
+      ((RangeBar)d)._style.Direction = (RangeBarGradientDirection)e.NewValue;
+
+  private static void OnLowestAlphaChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) =>
+      ((RangeBar)d)._style.LowestAlpha = (byte)e.NewValue;
+
+  private static void OnHighestAlphaChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) =>
+      ((RangeBar)d)._style.HighestAlpha = (byte)e.NewValue;
+
   protected override Size MeasureOverride(Size availableSize) {
     double width = double.IsInfinity(availableSize.Width) ? 200 : availableSize.Width;
     double height = double.IsInfinity(availableSize.Height) ? 40 : availableSize.Height;
@@ -164,14 +336,22 @@ public class RangeBar : FrameworkElement {
 
     Rect bounds = new(RenderSize);
 
-    _backgroundRender.Draw(dc, bounds, _style);
+    // Reserve a band at the bottom for marker captions; the track/fill/border occupy the rest.
+    Rect barBounds = LabelHeight > 0
+        ? new Rect(bounds.X, bounds.Y, bounds.Width, Math.Max(0, bounds.Height - LabelHeight))
+        : bounds;
+
+    _backgroundRender.Draw(dc, barBounds, _style);
 
     double range = MaxValue - MinValue;
     double fraction = range > 0 ? (Value - MinValue) / range : 0;
 
-    _fillRender.Draw(dc, bounds, _style, fraction);
+    _fillRender.Draw(dc, barBounds, _style, fraction);
 
     // Border drawn last so its edge stays crisp over the fill instead of being covered.
-    _borderRender.Draw(dc, bounds, _style);
+    _borderRender.Draw(dc, barBounds, _style);
+
+    _markerRender.Draw(dc, barBounds, bounds, _style, Markers, MinValue, MaxValue,
+        MarkerLabelFontSize, VisualTreeHelper.GetDpi(this).PixelsPerDip);
   }
 }

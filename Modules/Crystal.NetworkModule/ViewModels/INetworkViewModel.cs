@@ -1,3 +1,4 @@
+using Crystal.Controls.Metrics;
 using Crystal.Controls.PerformanceGraphs;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -52,12 +53,18 @@ public interface INetworkViewModel {
   /// recent busiest sample across both so the two graphs stay on a common, comparable scale.</summary>
   double ThroughputMaxBytesPerSecond { get; }
 
+  /// <summary>Session min/avg/max and trend of the total download rate (KiB/s), for the tile's caret stat line.</summary>
+  MetricRowViewModel DownloadRow { get; }
+
+  /// <summary>Session min/avg/max and trend of the total upload rate (KiB/s), for the tile's caret stat line.</summary>
+  MetricRowViewModel UploadRow { get; }
+
   /// <summary>
   /// Registers a history graph to be fed on each update, keyed by its <c>GraphIdentity.Id</c>
   /// (e.g. "Network.Download" / "Network.Upload"). The throughput sub-view self-registers its
   /// sparklines on load, so the view model feeds only the graphs a consumer chose to realize.
   /// </summary>
-  void AttachGraph(string id, PerformanceGraph graph);
+  void AttachGraph(string id, ISingleSeriesGraph graph);
 
   /// <summary>True when a Wi-Fi adapter is connected; drives the summary tile's Wi-Fi row.</summary>
   bool HasWifi { get; }
@@ -65,6 +72,14 @@ public interface INetworkViewModel {
   /// <summary>True when a wireless radio exists but isn't connected (off or unassociated); drives a
   /// muted status row shown in place of the connected Wi-Fi block.</summary>
   bool HasWifiStatus { get; }
+
+  /// <summary>True when no Wi-Fi is connected yet a wired/other interface is carrying traffic; drives
+  /// a row naming that connection so the throughput readout has a visible owner.</summary>
+  bool HasActiveConnection { get; }
+
+  /// <summary>Name of the interface currently moving the most traffic when Wi-Fi isn't the
+  /// connection (e.g. "Ethernet"). "—" while Wi-Fi is connected or nothing is active.</summary>
+  string ActiveConnectionLabel { get; }
 
   /// <summary>Muted status text for a present-but-not-connected radio ("Wi-Fi disabled" /
   /// "Wi-Fi disconnected"). Empty when a radio is connected or none exists.</summary>
@@ -75,6 +90,9 @@ public interface INetworkViewModel {
 
   /// <summary>Negotiated Rx/Tx link rate of the summary Wi-Fi adapter (e.g. "866 / 866 Mbps").</summary>
   string WifiLinkRate { get; }
+
+  /// <summary>Radio band and channel of the summary Wi-Fi adapter (e.g. "5 GHz (ch 44)").</summary>
+  string WifiBandChannel { get; }
 
   /// <summary>Security suite of the summary Wi-Fi adapter (e.g. "WPA2-Personal / CCMP").</summary>
   string WifiSecurity { get; }

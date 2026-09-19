@@ -96,7 +96,7 @@ public class GpuPipelineIntegrationTests {
     // Specs are eager + Replay(1); the VM's subscription (in its ctor) receives the built snapshot.
     // The VM orders integrated first so it lands in the left column.
     Assert.Equal(2, vm.Adapters.Count);
-    Assert.Equal("Intel(R) UHD Graphics 770", vm.Adapters[0].Name);
+    Assert.Equal("Intel UHD Graphics 770", vm.Adapters[0].Name);
     Assert.Equal("Integrated GPU", vm.Adapters[0].KindLabel);
     Assert.Equal("NVIDIA GeForce RTX 4070", vm.Adapters[1].Name);
     Assert.Equal("Dedicated GPU", vm.Adapters[1].KindLabel);
@@ -108,9 +108,9 @@ public class GpuPipelineIntegrationTests {
   }
 
   [Theory]
-  [InlineData("Intel(R) UHD Graphics 770", "Integrated GPU")]
-  [InlineData("Intel(R) Iris(R) Xe Graphics", "Integrated GPU")]
-  [InlineData("AMD Radeon(TM) Graphics", "Integrated GPU")]
+  [InlineData("Intel UHD Graphics 770", "Integrated GPU")]
+  [InlineData("Intel Iris Xe Graphics", "Integrated GPU")]
+  [InlineData("AMD Radeon Graphics", "Integrated GPU")]
   [InlineData("AMD Radeon RX 7900 XTX", "Dedicated GPU")]
   [InlineData("NVIDIA GeForce RTX 4070", "Dedicated GPU")]
   public void The_integrated_marker_heuristic_classifies_each_adapter(string name, string expectedKind) {
@@ -145,7 +145,7 @@ public class GpuPipelineIntegrationTests {
     Assert.Equal(180, dedicated.PowerW);
 
     // The integrated adapter had no matching load reading, so its load stays at the default.
-    Assert.Equal(0, vm.Adapters.Single(a => a.Name == "Intel(R) UHD Graphics 770").Load);
+    Assert.Equal(0, vm.Adapters.Single(a => a.Name == "Intel UHD Graphics 770").Load);
   }
 
   [Fact]

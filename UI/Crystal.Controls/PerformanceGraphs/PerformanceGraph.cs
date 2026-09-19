@@ -5,15 +5,23 @@ using Crystal.Controls.PerformanceGraphs.Styles;
 using Crystal.Controls.PerformanceGraphs.Themes;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Media;
 
 namespace Crystal.Controls.PerformanceGraphs;
 
-public class PerformanceGraph : FrameworkElement {
+public class PerformanceGraph : FrameworkElement, ISingleSeriesGraph {
   private const int DefaultHistoryLength = 60;
   private const int DefaultGridColumns = 60;
+  private const int DefaultGridRows = 12;
   private const int Rows = 12;
+
+  /// <summary>Identifies the <see cref="ValuesSource"/> dependency property.</summary>
+  public static readonly DependencyProperty ValuesSourceProperty =
+      DependencyProperty.Register(nameof(ValuesSource), typeof(ObservableCollection<double>), typeof(PerformanceGraph),
+          new FrameworkPropertyMetadata(null, OnValuesSourceChanged));
 
   /// <summary>Identifies the <see cref="Kind"/> dependency property.</summary>
   public static readonly DependencyProperty KindProperty =
@@ -103,8 +111,23 @@ public class PerformanceGraph : FrameworkElement {
       DependencyProperty.Register(nameof(MarkerFormat), typeof(string), typeof(PerformanceGraph),
           new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender));
 
+  /// <summary>Identifies the <see cref="BandedLine"/> dependency property.</summary>
+  public static readonly DependencyProperty BandedLineProperty =
+      DependencyProperty.Register(nameof(BandedLine), typeof(bool), typeof(PerformanceGraph),
+          new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsRender));
+
+  /// <summary>Identifies the <see cref="CellPitch"/> dependency property.</summary>
+  public static readonly DependencyProperty CellPitchProperty =
+      DependencyProperty.Register(nameof(CellPitch), typeof(double), typeof(PerformanceGraph),
+          new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender));
+
+  /// <summary>Identifies the <see cref="BandColors"/> dependency property.</summary>
+  public static readonly DependencyProperty BandColorsProperty =
+      DependencyProperty.Register(nameof(BandColors), typeof(Brush[]), typeof(PerformanceGraph),
+          new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender));
+
   private readonly BackgroundRenderer _backgroundRender = new();
-  private readonly GridRenderer _gridRender;
+  private GridRenderer _gridRender;
   private readonly BorderRenderer _borderRender = new();
   private readonly GraphStyle _graphStyle = new();
 
@@ -118,6 +141,48 @@ public class PerformanceGraph : FrameworkElement {
   private SegmentedBarRenderer? _segmentedBarRender;
   private DotRenderer? _dotRender;
   private MarkerRenderer? _markerRender;
+
+  // Solid band pens for BandedLine mode, one per gauge band at the current LineThickness. Built
+  // lazily and rebuilt when the thickness changes or the source palette changes (a per-instance
+  // BandColors override versus the shared default ramp), so a banded graph pays the pen allocation
+  // once per such change, not per frame.
+  private Pen[]? _bandLinePens;
+  private double _bandPenThickness = double.NaN;
+  private Brush[]? _bandPenSource;
+
+  // The solid band brushes this graph paints with: a per-instance BandColors override when it
+  // supplies the full BandCount of brushes, otherwise the shared default green→red ramp.
+  private Brush[] BandSolids() =>
+      BandColors is { Length: GaugeBandPalette.BandCount } custom ? custom : GaugeBandPalette.Solid;
+
+  private Pen[] BandLinePens() {
+    double thickness = LineThickness;
+    Brush[] solids = BandSolids();
+    if (_bandLinePens == null || _bandPenThickness != thickness || !ReferenceEquals(_bandPenSource, solids)) {
+      var pens = new Pen[solids.Length];
+      for (int i = 0; i < solids.Length; i++) pens[i] = Helpers.CreateFrozenPen(solids[i], thickness);
+      _bandLinePens = pens;
+      _bandPenThickness = thickness;
+      _bandPenSource = solids;
+    }
+    return _bandLinePens;
+  }
+
+  // The translucent area-fill brushes matching BandSolids(): the shared frozen array for the default
+  // ramp (no per-instance caching needed), or a derived-and-cached array for a BandColors override,
+  // rebuilt only when that override changes.
+  private Brush[]? _bandFills;
+  private Brush[]? _bandFillSource;
+
+  private Brush[] BandFills() {
+    Brush[] solids = BandSolids();
+    if (ReferenceEquals(solids, GaugeBandPalette.Solid)) return GaugeBandPalette.Fill;
+    if (_bandFills == null || !ReferenceEquals(_bandFillSource, solids)) {
+      _bandFills = GaugeBandPalette.DeriveFill(solids);
+      _bandFillSource = solids;
+    }
+    return _bandFills;
+  }
 
   // Right-aligned sample buffer for the primary series (index 0): index 0 is oldest, [Count-1] is
   // the most recent value. The primary series' line/fill live in _graphStyle and are driven by the
@@ -176,14 +241,19 @@ public class PerformanceGraph : FrameworkElement {
 
     _historyLength = historyLength;
     _values = new CircularBuffer<double>(historyLength);
-    _gridRender = new GridRenderer(Rows, gridColumns);
-    GridColumns = gridColumns;
 
-    // Keep the HistoryLength DP in step with the constructor argument (the DP defaults to
-    // DefaultHistoryLength, so a non-default programmatic size would otherwise disagree with it).
-    // SetCurrentValue leaves a later Style/binding free to override; OnHistoryLengthChanged no-ops
-    // here because _values is already this size.
+    // Keep the HistoryLength/GridColumns DPs in step with the constructor arguments (both DPs
+    // default to DefaultHistoryLength/DefaultGridColumns, so non-default programmatic sizes would
+    // otherwise disagree with them). SetCurrentValue leaves a later Style/binding free to
+    // override; OnHistoryLengthChanged/OnGridChanged no-op or harmlessly rebuild here since
+    // _values/_gridRender are already sized to match.
     SetCurrentValue(HistoryLengthProperty, historyLength);
+    SetCurrentValue(GridColumnsProperty, gridColumns);
+
+    // Built after the DP syncs above so it reads the actual GridRows/GridColumns values (GridRows
+    // is already at its DefaultGridRows metadata default at this point - no ctor parameter for it,
+    // since grid row count wasn't split out from Rows until GridRows itself was introduced).
+    _gridRender = new GridRenderer(GridRows, GridColumns);
 
     SnapsToDevicePixels = true;
     UseLayoutRounding = true;
@@ -226,13 +296,174 @@ public class PerformanceGraph : FrameworkElement {
   /// <summary>Number of samples retained/plotted — independent of <see cref="GridColumns"/>.</summary>
   public int Capacity => _historyLength;
 
-  /// <summary>Number of vertical grid lines drawn — a purely cosmetic density, independent of <see cref="Capacity"/>.</summary>
-  public int GridColumns { get; }
+  /// <summary>Identifies the <see cref="GridColumns"/> dependency property.</summary>
+  public static readonly DependencyProperty GridColumnsProperty =
+      DependencyProperty.Register(nameof(GridColumns), typeof(int), typeof(PerformanceGraph),
+          new FrameworkPropertyMetadata(DefaultGridColumns, FrameworkPropertyMetadataOptions.AffectsRender, OnGridChanged),
+          value => value is int c && c > 0);
+
+  /// <summary>Number of vertical grid lines drawn — a purely cosmetic density, independent of
+  /// <see cref="Capacity"/>. Settable at any time (not just at construction) since this is a real
+  /// dependency property, e.g. bindable to <see cref="Capacity"/> itself for a grid whose columns
+  /// always match the sample count — see <see cref="SquareGridAspectRatio"/> for pairing that with
+  /// a computed Height that keeps the resulting cells square.</summary>
+  public int GridColumns {
+    get => (int)GetValue(GridColumnsProperty);
+    set => SetValue(GridColumnsProperty, value);
+  }
+
+  /// <summary>Identifies the <see cref="GridRows"/> dependency property.</summary>
+  public static readonly DependencyProperty GridRowsProperty =
+      DependencyProperty.Register(nameof(GridRows), typeof(int), typeof(PerformanceGraph),
+          new FrameworkPropertyMetadata(DefaultGridRows, FrameworkPropertyMetadataOptions.AffectsRender, OnGridChanged),
+          value => value is int r && r > 0);
+
+  /// <summary>Number of horizontal grid lines drawn — purely cosmetic, and independent of the
+  /// private <c>Rows</c> constant <see cref="Kinds.SegmentedBarRenderer"/> uses for its own
+  /// segment count; changing this does not affect SegmentedBar rendering.</summary>
+  public int GridRows {
+    get => (int)GetValue(GridRowsProperty);
+    set => SetValue(GridRowsProperty, value);
+  }
+
+  private static void OnGridChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+    // GridRenderer's row/column count is constructor-only, so a change to either DP just builds a
+    // fresh instance rather than mutating one in place - cheap, since GridRenderer itself only
+    // holds a lazily-rebuilt cached geometry, not per-frame state worth preserving across the swap.
+    var graph = (PerformanceGraph)d;
+    graph._gridRender = new GridRenderer(graph.GridRows, graph.GridColumns);
+  }
+
+  /// <summary>
+  /// The Height/Width ratio that makes every grid cell come out a perfect square for a graph with
+  /// the given <paramref name="gridRows"/>/<paramref name="gridColumns"/> - matching exactly what
+  /// <see cref="GridRenderer"/> itself computes internally
+  /// (<c>cellWidth = bounds.Width / columns</c>, <c>cellHeight = bounds.Height / rows</c>), so
+  /// there's a single source of truth for this math rather than a XAML binding/converter
+  /// duplicating or guessing it. Multiply this by an actual pixel width to get the exact height
+  /// that squares every cell at that width, whatever the width turns out to be.
+  /// </summary>
+  public static double SquareGridAspectRatio(int gridRows, int gridColumns) {
+    if (gridRows <= 0) throw new ArgumentOutOfRangeException(nameof(gridRows), "Grid row count must be positive.");
+    if (gridColumns <= 0) throw new ArgumentOutOfRangeException(nameof(gridColumns), "Grid column count must be positive.");
+    return gridRows / (double)gridColumns;
+  }
+
+  /// <summary>
+  /// Binds the primary series' (index 0) data to an <see cref="ObservableCollection{T}"/> of
+  /// <see cref="double"/> instead of driving it imperatively via <see cref="AddValue(double)"/>
+  /// from code-behind - e.g. <c>ValuesSource="{Binding UtilizationSamples}"</c> in XAML. Setting
+  /// this property (assignment or binding alike) clears the primary series and seeds it with the
+  /// collection's current contents, then every subsequent
+  /// <see cref="INotifyCollectionChanged.CollectionChanged"/> notification that carries new items
+  /// appends them through the same <see cref="AddValue(double)"/> path used by the code-behind
+  /// API - same O(1) ring-buffer append, same off-screen render-suspension behavior. Only the
+  /// primary series is bindable this way; overlay series added via <see cref="AddSeries"/> are
+  /// unaffected and keep taking data through <see cref="AddValue(int, double)"/>.
+  /// A <see cref="NotifyCollectionChangedAction.Reset"/> (e.g. <c>Collection.Clear()</c>) clears
+  /// the primary series and re-seeds it from the collection's post-reset contents; Remove/Replace/
+  /// Move aren't translated into buffer edits beyond appending any NewItems they carry - there's
+  /// no buffer operation that corresponds to "un-plot a sample already drawn," so aging out old
+  /// samples is left entirely to the ring buffer's own capacity-driven eviction, not to source
+  /// removals.
+  /// <para>
+  /// <b>Threading:</b> unlike <see cref="AddValue(double)"/>, which accepts calls from a
+  /// background thread and hops onto the UI thread itself, <see cref="ObservableCollection{T}"/>
+  /// is not safe to mutate from a background thread - only the thread that owns the collection
+  /// may call Add/Clear on it. Keep using <see cref="AddValue(double)"/> directly for a
+  /// sensor-polling thread; use <see cref="ValuesSource"/> when the data both originates on and
+  /// is mutated from the UI thread (e.g. a view-model collection updated from a DispatcherTimer),
+  /// or when the feed already marshals its own collection edits onto it.
+  /// </para>
+  /// </summary>
+  public ObservableCollection<double>? ValuesSource {
+    get => (ObservableCollection<double>?)GetValue(ValuesSourceProperty);
+    set => SetValue(ValuesSourceProperty, value);
+  }
+
+  private static void OnValuesSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+    var graph = (PerformanceGraph)d;
+
+    if (e.OldValue is ObservableCollection<double> oldSource)
+      oldSource.CollectionChanged -= graph.OnValuesSourceCollectionChanged;
+
+    graph.ClearPrimarySeries();
+
+    if (e.NewValue is ObservableCollection<double> newSource) {
+      foreach (double value in newSource) graph.AddValue(value);
+      newSource.CollectionChanged += graph.OnValuesSourceCollectionChanged;
+    }
+  }
+
+  private void OnValuesSourceCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e) {
+    if (e.Action == NotifyCollectionChangedAction.Reset) {
+      ClearPrimarySeries();
+      if (sender is ObservableCollection<double> source)
+        foreach (double value in source) AddValue(value);
+      return;
+    }
+
+    // Add, Replace, and Move all surface their new elements via NewItems - appending them covers
+    // the live-append scenario this property exists for. There's no corresponding "remove the
+    // matching sample" for a plain Remove, so a bare Remove is a no-op here by design.
+    if (e.NewItems == null) return;
+    foreach (double value in e.NewItems) AddValue(value);
+  }
+
+  // Clears only the primary series (index 0), unlike the public ClearValues() which clears every
+  // series - used when a bound ValuesSource is attached/reset/reassigned, so that doesn't also
+  // wipe out unrelated AddSeries overlays the caller never touched.
+  private void ClearPrimarySeries() {
+    if (!CheckAccess()) {
+      Dispatcher.BeginInvoke(ClearPrimarySeries);
+      return;
+    }
+    _values.Clear();
+    RequestRender();
+  }
 
   /// <summary>Selects whether buffered samples are drawn as a continuous filled line/area or as discrete bars.</summary>
   public GraphKind Kind {
     get => (GraphKind)GetValue(KindProperty);
     set => SetValue(KindProperty, value);
+  }
+
+  /// <summary>
+  /// When true, the <see cref="GraphKind.Line"/> primary series is colored by value: the plotted
+  /// range is split into a green→red gauge ramp and both the line stroke and the area beneath it
+  /// take each point's band color, so the trace reads green while low and red where it spikes
+  /// (the same ramp <see cref="PerformanceGraphLite"/>'s dot gauge uses). Ignores
+  /// <see cref="LineBrush"/>/<see cref="FillBrush"/> for the primary series while set. Applies only
+  /// to a single-series Line graph — a graph carrying overlay series (see <see cref="AddSeries"/>)
+  /// keeps its per-series colors and is drawn unbanded, since banding a read/write pair would lose
+  /// the distinction between them. Defaults to false, so existing single-color graphs are unchanged.
+  /// </summary>
+  public bool BandedLine {
+    get => (bool)GetValue(BandedLineProperty);
+    set => SetValue(BandedLineProperty, value);
+  }
+
+  /// <summary>Per-instance override for the <see cref="BandedLine"/> gauge ramp. When set to an
+  /// array of exactly <see cref="GaugeBandPalette.BandCount"/> solid brushes (band 0 lowest), the
+  /// banded line stroke and its area fill use these colors instead of the shared green→red ramp;
+  /// the fill is derived from them at the same reduced alpha the default fill uses. Null (the
+  /// default) or a wrong-length array falls back to the shared ramp, so existing banded graphs are
+  /// unchanged. Only consulted while <see cref="BandedLine"/> is true and the graph has no overlay
+  /// series.</summary>
+  public Brush[]? BandColors {
+    get => (Brush[]?)GetValue(BandColorsProperty);
+    set => SetValue(BandColorsProperty, value);
+  }
+
+  /// <summary>When greater than 0, the <see cref="GraphKind.Line"/> series plot samples at this
+  /// fixed pixel pitch and draw only the most recent that fit the width, matching how
+  /// <see cref="PerformanceGraphLite.CellPitch"/> windows its dots. A Line graph and a Dot graph
+  /// sharing one pitch then show the same time window, so an <see cref="AdaptiveGraph"/> toggle
+  /// between them doesn't change how much history is visible. 0 (the default) spreads all
+  /// <see cref="HistoryLength"/> samples across the full width.</summary>
+  public double CellPitch {
+    get => (double)GetValue(CellPitchProperty);
+    set => SetValue(CellPitchProperty, value);
   }
 
   /// <summary>When true, a <see cref="GraphKind.SegmentedBar"/> is drawn mirrored (180°): its
@@ -473,9 +704,14 @@ public class PerformanceGraph : FrameworkElement {
   }
 
   protected override Size MeasureOverride(Size availableSize) {
-    // Provide a default desired size if constraints are infinite
-    double width = double.IsInfinity(availableSize.Width) ? 200 : availableSize.Width;
-    double height = double.IsInfinity(availableSize.Height) ? 100 : availableSize.Height;
+    // Same reasoning as PerformanceGraphLite's own MeasureOverride: an infinite dimension falls
+    // back to a size derived from this instance's own configuration (Capacity columns / the fixed
+    // Rows grid used by SegmentedBar) rather than a flat magic number oblivious to Capacity. Same
+    // PixelsPerUnit=12 pitch already established for PerformanceGraphLite elsewhere.
+    const double PixelsPerUnit = 12;
+
+    double width = double.IsInfinity(availableSize.Width) ? Capacity * PixelsPerUnit : availableSize.Width;
+    double height = double.IsInfinity(availableSize.Height) ? Rows * PixelsPerUnit : availableSize.Height;
     return new Size(width, height);
   }
 
@@ -494,29 +730,39 @@ public class PerformanceGraph : FrameworkElement {
     // Grid on top of the background — GridColumns purely cosmetic, unrelated to history length.
     _gridRender.Draw(dc, bounds, _graphStyle);
 
+    // Read once, not once per renderer/series/marker call below - none of these change mid-frame,
+    // and each DependencyProperty read is a property-store lookup, not a free field access.
+    double minValue = MinValue;
+    double maxValue = MaxValue;
+
     // Data on top of the grid — a continuous filled line, plain bars, or segmented bars.
     // _historyLength (not GridColumns) is what "capacity" means here: it's how many slots
     // the data's own horizontal layout is divided into, so a full buffer spans the width
     // regardless of how many grid lines happen to be drawn across it.
     switch (Kind) {
       case GraphKind.Bar:
-        (_barRender ??= new BarRenderer()).Draw(dc, bounds, _graphStyle, _values, _historyLength, MinValue, MaxValue);
+        (_barRender ??= new BarRenderer()).Draw(dc, bounds, _graphStyle, _values, _historyLength, minValue, maxValue);
         break;
       case GraphKind.SegmentedBar:
-        (_segmentedBarRender ??= new SegmentedBarRenderer()).Draw(dc, bounds, _graphStyle, _values, _historyLength, MinValue, MaxValue, Rows, Flip);
+        (_segmentedBarRender ??= new SegmentedBarRenderer()).Draw(dc, bounds, _graphStyle, _values, _historyLength, minValue, maxValue, Rows, Flip);
         break;
       case GraphKind.Dot:
-        (_dotRender ??= new DotRenderer()).Draw(dc, bounds, _graphStyle, _values, _historyLength, MinValue, MaxValue, Rows);
+        (_dotRender ??= new DotRenderer()).Draw(dc, bounds, _graphStyle, _values, _historyLength, minValue, maxValue, Rows);
         break;
       default:
         // Primary series first (so its fill sits underneath), then each overlay on top. Each series
         // draws through its own renderer so the reused-across-frames StreamGeometry of one isn't
         // re-Opened by another within this same pass (which would render both with the last geometry).
-        (_filledLineRender ??= new FilledLineRenderer()).Draw(dc, bounds, _values, _historyLength, MinValue, MaxValue,
-            _graphStyle.LinePen, _graphStyle.FillBrush);
+        // Banding is a single-series look: a graph with overlays keeps its per-series colors so a
+        // read/write pair stays distinguishable, so gate it on there being no overlay series.
+        bool banded = BandedLine && _extraSeries.Count == 0;
+        double cellPitch = CellPitch;
+        (_filledLineRender ??= new FilledLineRenderer()).Draw(dc, bounds, _values, _historyLength, minValue, maxValue,
+            _graphStyle.LinePen, _graphStyle.FillBrush,
+            banded ? BandLinePens() : null, banded ? BandFills() : null, cellPitch);
         foreach (var s in _extraSeries)
-          s.Renderer.Draw(dc, bounds, s.Values, _historyLength, MinValue, MaxValue,
-              s.LinePen, s.FillBrush);
+          s.Renderer.Draw(dc, bounds, s.Values, _historyLength, minValue, maxValue,
+              s.LinePen, s.FillBrush, cellPitch: cellPitch);
         break;
     }
 
@@ -527,11 +773,14 @@ public class PerformanceGraph : FrameworkElement {
     // line, the low label lifts above its, so neither is clipped at the plot edge.
     if (_graphStyle.MarkerPen != null) {
       double dpi = VisualTreeHelper.GetDpi(this).PixelsPerDip;
+      string? markerFormat = MarkerFormat;
+      double lowMarker = LowMarker;
+      double highMarker = HighMarker;
       var marker = _markerRender ??= new MarkerRenderer();
-      marker.Draw(dc, bounds, _graphStyle, LowMarker, MinValue, MaxValue,
-          FormatMarker(LowMarker), topBiased: false, dpi);
-      marker.Draw(dc, bounds, _graphStyle, HighMarker, MinValue, MaxValue,
-          FormatMarker(HighMarker), topBiased: true, dpi);
+      marker.Draw(dc, bounds, _graphStyle, lowMarker, minValue, maxValue,
+          FormatMarker(lowMarker, markerFormat), topBiased: false, dpi);
+      marker.Draw(dc, bounds, _graphStyle, highMarker, minValue, maxValue,
+          FormatMarker(highMarker, markerFormat), topBiased: true, dpi);
     }
 
     // Border drawn last so its edge stays crisp over the fill/grid instead of being covered.
@@ -539,9 +788,11 @@ public class PerformanceGraph : FrameworkElement {
   }
 
   // The label for a marker value, or null to draw the line unlabeled — when no format is set, or the
-  // value is NaN (the marker itself is a no-op then anyway).
-  private string? FormatMarker(double value) =>
-      MarkerFormat is { } format && !double.IsNaN(value)
-          ? value.ToString(format, System.Globalization.CultureInfo.InvariantCulture)
+  // value is NaN (the marker itself is a no-op then anyway). Static and parameterized on format
+  // rather than reading the MarkerFormat property itself, so OnRender's one read of it (already
+  // needed twice, for the low and high marker) doesn't become two separate DP reads here too.
+  private static string? FormatMarker(double value, string? format) =>
+      format is { } f && !double.IsNaN(value)
+          ? value.ToString(f, System.Globalization.CultureInfo.InvariantCulture)
           : null;
 }

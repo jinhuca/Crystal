@@ -15,6 +15,12 @@ public interface IGpuViewModel {
   /// </summary>
   ObservableCollection<GpuAdapterViewModel> Adapters { get; }
 
+  /// <summary>The integrated adapter bound to the left block of the summary design, or null.</summary>
+  GpuAdapterViewModel? IntegratedAdapter { get; }
+
+  /// <summary>The dedicated adapter bound to the right block of the summary design, or null.</summary>
+  GpuAdapterViewModel? DedicatedAdapter { get; }
+
   /// <summary>
   /// Raises <c>ShowDetailEvent</c> so the shell swaps in the GPU detail view.
   /// </summary>

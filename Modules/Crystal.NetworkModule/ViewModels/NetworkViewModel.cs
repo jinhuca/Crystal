@@ -1,3 +1,4 @@
+using Crystal.Controls.Metrics;
 using Crystal.Controls.PerformanceGraphs;
 using Crystal.Controls.Threading;
 using Crystal.Infrastructure.Constants.Navigation;
@@ -19,15 +20,18 @@ public sealed class NetworkViewModel : BindableBase, INetworkViewModel, IDisposa
   private string _uploadLabel = "—";
   // History graphs are registered by their GraphIdentity.Id as the throughput sub-view loads, then
   // fed by that same id in Apply(). A consumer that realizes only some graphs feeds only those.
-  private readonly Dictionary<string, PerformanceGraph> _graphs = [];
+  private readonly GraphFeedRegistry _graphs = new();
   private double _throughputMax = ThroughputFloorBytesPerSecond;
   private bool _hasWifi;
   private string _wifiLabel = "—";
   private string _wifiLinkRate = "—";
+  private string _wifiBandChannel = "—";
   private string _wifiSecurity = "—";
   private string _wifiBssid = "—";
   private bool _hasWifiStatus;
   private string _wifiStatusLabel = "";
+  private bool _hasActiveConnection;
+  private string _activeConnectionLabel = "—";
   private bool _hasTopTalkersStatus;
   private string _topTalkersStatusLabel = "";
   private string _topTalkersSortProperty = nameof(ProcessNetworkRowViewModel.RateBytesPerSecond);
@@ -74,21 +78,26 @@ public sealed class NetworkViewModel : BindableBase, INetworkViewModel, IDisposa
   public string DownloadLabel { get => _downloadLabel; private set => SetProperty(ref _downloadLabel, value); }
   public string UploadLabel { get => _uploadLabel; private set => SetProperty(ref _uploadLabel, value); }
   public double ThroughputMaxBytesPerSecond { get => _throughputMax; private set => SetProperty(ref _throughputMax, value); }
+  /// <summary>Session min/avg/max and trend of the total download rate (in KiB/s), for the tile's stat line.</summary>
+  public MetricRowViewModel DownloadRow { get; } = new("Download");
+  /// <summary>Session min/avg/max and trend of the total upload rate (in KiB/s), for the tile's stat line.</summary>
+  public MetricRowViewModel UploadRow { get; } = new("Upload");
   public bool HasWifi { get => _hasWifi; private set => SetProperty(ref _hasWifi, value); }
   public string WifiLabel { get => _wifiLabel; private set => SetProperty(ref _wifiLabel, value); }
   public string WifiLinkRate { get => _wifiLinkRate; private set => SetProperty(ref _wifiLinkRate, value); }
+  public string WifiBandChannel { get => _wifiBandChannel; private set => SetProperty(ref _wifiBandChannel, value); }
   public string WifiSecurity { get => _wifiSecurity; private set => SetProperty(ref _wifiSecurity, value); }
   public string WifiBssid { get => _wifiBssid; private set => SetProperty(ref _wifiBssid, value); }
   public bool HasWifiStatus { get => _hasWifiStatus; private set => SetProperty(ref _hasWifiStatus, value); }
   public string WifiStatusLabel { get => _wifiStatusLabel; private set => SetProperty(ref _wifiStatusLabel, value); }
+  public bool HasActiveConnection { get => _hasActiveConnection; private set => SetProperty(ref _hasActiveConnection, value); }
+  public string ActiveConnectionLabel { get => _activeConnectionLabel; private set => SetProperty(ref _activeConnectionLabel, value); }
   public ICommand ShowDetailCommand { get; }
   public ICommand ShowDashboardCommand { get; }
 
-  public void AttachGraph(string id, PerformanceGraph graph) => _graphs[id] = graph;
+  public void AttachGraph(string id, ISingleSeriesGraph graph) => _graphs.Attach(id, graph);
 
-  private void FeedGraph(string id, double value) {
-    if (_graphs.TryGetValue(id, out var graph)) graph.AddValue(value);
-  }
+  private void FeedGraph(string id, double value) => _graphs.Feed(id, value);
 
   private void Apply(NetworkSnapshot snapshot) {
     // Reconcile the adapter list against the current interfaces (they can come and go as NICs
@@ -97,16 +106,30 @@ public sealed class NetworkViewModel : BindableBase, INetworkViewModel, IDisposa
 
     var totalDownload = 0.0;
     var totalUpload = 0.0;
+    string? busiestName = null;
+    var busiestRate = -1.0;
     foreach (var reading in snapshot.Interfaces) {
       var adapter = Adapters.FirstOrDefault(a =>
           string.Equals(a.Name, reading.Name, StringComparison.OrdinalIgnoreCase));
       adapter?.Update(reading);
       totalDownload += reading.DownloadBytesPerSecond;
       totalUpload += reading.UploadBytesPerSecond;
+
+      // Track the interface moving the most traffic this poll. Strict > keeps the first interface
+      // when everything is idle (all zero), giving a stable fallback for a single-NIC machine.
+      var rate = reading.DownloadBytesPerSecond + reading.UploadBytesPerSecond;
+      if (rate > busiestRate) {
+        busiestRate = rate;
+        busiestName = reading.Name;
+      }
     }
 
     DownloadLabel = FormatSpeed(totalDownload);
     UploadLabel = FormatSpeed(totalUpload);
+    // Feed the stat-line rows in KiB/s so the min/avg/max carets read in a single, stable unit
+    // (the big value auto-scales its unit; the caret line stays comparable across polls).
+    DownloadRow.Update(totalDownload / 1024d);
+    UploadRow.Update(totalUpload / 1024d);
 
     FeedGraph("Network.Download", totalDownload);
     FeedGraph("Network.Upload", totalUpload);
@@ -115,6 +138,17 @@ public sealed class NetworkViewModel : BindableBase, INetworkViewModel, IDisposa
     ThroughputMaxBytesPerSecond = NiceCeiling(Math.Max(ThroughputFloorBytesPerSecond, _throughputSamples.Max()));
 
     ApplyWifiSummary(snapshot.Interfaces, snapshot.WifiStatus);
+    ApplyActiveConnection(busiestName);
+  }
+
+  // When no Wi-Fi is connected, the throughput readout still needs an owner: name the interface
+  // currently moving the most traffic (e.g. "Ethernet") so a user who sees downloads/uploads with
+  // Wi-Fi off can tell which connection is carrying them. Suppressed while Wi-Fi is connected, since
+  // the connected block already identifies the link. Must run after ApplyWifiSummary sets HasWifi.
+  private void ApplyActiveConnection(string? busiestName) {
+    var show = !HasWifi && busiestName is not null;
+    HasActiveConnection = show;
+    ActiveConnectionLabel = show ? busiestName! : "—";
   }
 
   // Reconcile the ranked top-talkers into a PID-keyed collection: update surviving rows in place,
@@ -212,6 +246,7 @@ public sealed class NetworkViewModel : BindableBase, INetworkViewModel, IDisposa
     if (best is null) {
       WifiLabel = "—";
       WifiLinkRate = "—";
+      WifiBandChannel = "—";
       WifiSecurity = "—";
       WifiBssid = "—";
       ApplyWifiStatus(status);
@@ -224,8 +259,18 @@ public sealed class NetworkViewModel : BindableBase, INetworkViewModel, IDisposa
     var ssid = best.WifiSsid ?? "Wi-Fi";
     WifiLabel = best.WifiSignalPercent is { } pct ? $"{ssid}  {pct}%" : ssid;
     WifiLinkRate = FormatLinkRate(best.WifiRxRateKbps, best.WifiTxRateKbps);
+    WifiBandChannel = FormatBandChannel(best.WifiBand, best.WifiChannel);
     WifiSecurity = best.WifiSecurity ?? "—";
     WifiBssid = best.WifiBssid ?? "—";
+  }
+
+  // The radio band and channel as one line, mirroring the detail view's "5 GHz (ch 44)". Collapses
+  // gracefully when only one half is known, and to "—" when the driver reports neither.
+  private static string FormatBandChannel(string? band, int? channel) {
+    var hasBand = !string.IsNullOrWhiteSpace(band);
+    if (!hasBand && channel is null) return "—";
+    if (channel is { } ch) return hasBand ? $"{band} (ch {ch})" : $"ch {ch}";
+    return band!;
   }
 
   // wlanapi reports link rates in Kbps; show whole Mbps as "Rx / Tx". When both sides match (the

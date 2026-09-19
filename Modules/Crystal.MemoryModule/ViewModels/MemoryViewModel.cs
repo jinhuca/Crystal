@@ -1,3 +1,4 @@
+using Crystal.Controls.Metrics;
 using Crystal.Controls.PerformanceGraphs;
 using Crystal.Controls.Threading;
 using Crystal.Infrastructure.Constants.Navigation;
@@ -21,9 +22,9 @@ public sealed class MemoryViewModel : BindableBase, IMemoryViewModel, IDisposabl
   // Summary-tile history graphs, registered by their GraphIdentity.Id as each metric sub-view
   // loads, then fed by that same id in ApplyLoad. The detail view's usage/commit graphs use a
   // different wrapper control with no id and stay on their own attach methods below.
-  private readonly Dictionary<string, PerformanceGraph> _graphs = [];
-  private PerformanceGraph? _usageGraph;
-  private PerformanceGraph? _commitGraph;
+  private readonly GraphFeedRegistry _graphs = new();
+  private ISingleSeriesGraph? _usageGraph;
+  private ISingleSeriesGraph? _commitGraph;
 
   // Task Manager-style header + stats grid.
   private string _headerSpecLabel = "—";
@@ -102,19 +103,22 @@ public sealed class MemoryViewModel : BindableBase, IMemoryViewModel, IDisposabl
   public double? CompositionTotalGB { get => _compositionTotalGB; private set => SetProperty(ref _compositionTotalGB, value); }
   public double? CommitLimitGB { get => _commitLimitGB; private set => SetProperty(ref _commitLimitGB, value); }
 
+  // Trend backing for the de-graphed Memory usage / Commit charge cells: rise/fall/flat glyphs fed
+  // alongside the labels in ApplyLoad, recovering the removed sparklines' direction cue at no render cost.
+  public MetricRowViewModel UsageRow { get; } = new("Usage");
+  public MetricRowViewModel CommitRow { get; } = new("Commit");
+
   /// <summary>Every populated slot — bound by the detail view.</summary>
   public ObservableCollection<MemoryModuleViewModel> Modules { get; } = [];
 
   public ICommand ShowDetailCommand { get; }
   public ICommand ShowDashboardCommand { get; }
 
-  public void AttachGraph(string id, PerformanceGraph graph) => _graphs[id] = graph;
-  public void AttachUsageGraph(PerformanceGraph graph) => _usageGraph = graph;
-  public void AttachCommitGraph(PerformanceGraph graph) => _commitGraph = graph;
+  public void AttachGraph(string id, ISingleSeriesGraph graph) => _graphs.Attach(id, graph);
+  public void AttachUsageGraph(ISingleSeriesGraph graph) => _usageGraph = graph;
+  public void AttachCommitGraph(ISingleSeriesGraph graph) => _commitGraph = graph;
 
-  private void FeedGraph(string id, double value) {
-    if (_graphs.TryGetValue(id, out var graph)) graph.AddValue(value);
-  }
+  private void FeedGraph(string id, double value) => _graphs.Feed(id, value);
 
   private void ApplySpecs(MemorySnapshot snapshot) {
     TotalCapacityLabel = snapshot.TotalCapacityGB is { } gb ? $"{gb:0.#} GB" : "—";
@@ -142,20 +146,25 @@ public sealed class MemoryViewModel : BindableBase, IMemoryViewModel, IDisposabl
   private void ApplyLoad(MemoryLoadReading reading) {
     Load = reading.LoadPercent;
     FeedGraph("Memory.Utilization", reading.LoadPercent);
+    // The tile's usage graph is scaled 0–100, so plot the utilization percent (not the GB figure,
+    // which the graph's MaxValue would have to track against a specs total the sensor can meet).
+    _usageGraph?.AddValue(reading.LoadPercent);
 
     UsedGB = reading.UsedGB;
     if (reading.UsedGB is { } used) {
       FeedGraph("Memory.Used", used);
-      _usageGraph?.AddValue(used);
       UsageLabel = $"{used:0.#} GB";
       InUseLabel = $"{used:0.#} GB";
+      UsageRow.Update(used);
     }
     ApplyComposition(reading);
 
     AvailableLabel = Gb(reading.AvailableGB);
     CommitLimitGB = reading.CommitLimitGB;
-    if (reading.CommittedGB is { } committed)
+    if (reading.CommittedGB is { } committed) {
       _commitGraph?.AddValue(committed);
+      CommitRow.Update(committed);
+    }
     CommittedLabel = reading is { CommittedGB: { } c, CommitLimitGB: { } limit }
         ? $"{c:0.#}/{limit:0.#} GB"
         : Gb(reading.CommittedGB);

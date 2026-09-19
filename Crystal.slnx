@@ -19,6 +19,7 @@
     <Project Path="Modules/Crystal.NetworkModule/Crystal.NetworkModule.csproj" />
     <Project Path="Modules/Crystal.ProcessModule/Crystal.ProcessModule.csproj" />
     <Project Path="Modules/Crystal.OSModule/Crystal.OSModule.csproj" />
+    <Project Path="Modules/Crystal.BenchmarkModule/Crystal.BenchmarkModule.csproj" />
   </Folder>
   <Folder Name="/Providers/">
     <Project Path="Providers/Crystal.Provider.CpuId/Crystal.Provider.CpuId.csproj" />
@@ -41,33 +42,25 @@
     <Project Path="Services/Crystal.Service.Storage/Crystal.Service.Storage.csproj" />
     <Project Path="Services/Crystal.Service.Process/Crystal.Service.Process.csproj" />
     <Project Path="Services/Crystal.Service.Sensors/Crystal.Service.Sensors.csproj" />
+    <Project Path="Services/Crystal.Service.Benchmark/Crystal.Service.Benchmark.csproj" />
   </Folder>
   <Folder Name="/Shell/">
     <Project Path="Shell/Crystal.Shell/Crystal.Shell.csproj" Id="34c04727-c18d-49e7-bdb5-9bb18e95078b" />
-  </Folder>
-  <Folder Name="/SmokeTests/">
-    <Project Path="SmokeTests/Crystal.Controls.Demo/Crystal.Controls.Demo.csproj" />
-    <Project Path="SmokeTests/Crystal.Provider.Mmi.Cli/Crystal.Provider.Mmi.Cli.csproj" />
-    <Project Path="SmokeTests/Crystal.Provider.Smbios.Cli/Crystal.Provider.Smbios.Cli.csproj" />
-    <Project Path="SmokeTests/Crystal.Service.Cpu.Cli/Crystal.Service.Cpu.Cli.csproj" />
   </Folder>
   <Folder Name="/Solution Items/">
     <File Path="Directory.Build.props" />
     <File Path="nuget.config" />
   </Folder>
-  <Folder Name="/TryIt/">
-    <Project Path="TryIt/TryIt01_PInvoke/TryIt01_PInvoke.csproj" Id="f4f46e8b-a092-464c-a99d-c8374c69fe1b" />
-  </Folder>
   <Folder Name="/UI/">
     <Project Path="UI/Crystal.Resources/Crystal.Resources.csproj" />
+    <Project Path="UI/ControlDemos/ControlDemos.csproj" Id="7df862f4-2463-4b66-b28a-84eac124b879" />
     <Project Path="UI/Crystal.Controls/Crystal.Controls.csproj" />
     <Project Path="UI/Crystal.WpfConverters/Crystal.WpfConverters.csproj" />
+    <Project Path="UI/RangeBarDemo/RangeBarDemo.csproj" />
   </Folder>
   <Folder Name="/UnitTests/">
     <Project Path="UnitTests/Crystal.Shell.Tests/Crystal.Shell.Tests.csproj">
-      <Platform Solution="*|Any CPU" Project="x64" />
-      <Platform Solution="*|x64" Project="x64" />
-      <Platform Solution="*|x86" Project="x64" />
+      <Platform Project="x64" />
     </Project>
     <Project Path="UnitTests/Crystal.Controls.Tests/Crystal.Controls.Tests.csproj" />
     <Project Path="UnitTests/Crystal.Resources.Tests/Crystal.Resources.Tests.csproj" />
@@ -176,6 +169,11 @@
       <Platform Solution="*|x86" Project="x86" />
     </Project>
     <Project Path="UnitTests/Crystal.Service.Network.Tests/Crystal.Service.Network.Tests.csproj">
+      <Platform Solution="*|Any CPU" Project="x64" />
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
+    <Project Path="UnitTests/Crystal.Service.Benchmark.Tests/Crystal.Service.Benchmark.Tests.csproj">
       <Platform Solution="*|Any CPU" Project="x64" />
       <Platform Solution="*|x64" Project="x64" />
       <Platform Solution="*|x86" Project="x86" />

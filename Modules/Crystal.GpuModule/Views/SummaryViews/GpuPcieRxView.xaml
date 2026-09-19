@@ -1,0 +1,60 @@
+<UserControl x:Class="Crystal.GpuModule.Views.SummaryViews.GpuPcieRxView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Crystal.GpuModule.Views.SummaryViews"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs;assembly=Crystal.Controls"
+             mc:Ignorable="d"
+             d:DesignHeight="120" d:DesignWidth="210">
+  <!-- DataContext is a GpuAdapterViewModel, inherited from the per-adapter block. Boxed sensor tile
+       matching the CpuSummaryView pattern: accent title, live PCIe Rx throughput value + unit + trend
+       glyph, a session min/avg/max stat line, and a dot history strip. -->
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Crystal.GpuModule;component/Views/GpuViewResources.xaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </UserControl.Resources>
+  <Border Style="{StaticResource SummaryTileBorderStyle}" Width="{x:Static local:GpuSummaryViewConstants.GraphWidth}">
+    <Grid MinHeight="60" ShowGridLines="False">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="20"/>
+        <RowDefinition Height="40"/>
+        <RowDefinition Height="24"/>
+      </Grid.RowDefinitions>
+      <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0,0,0,0">
+        <TextBlock Text="PCIe Rx" Style="{StaticResource SummaryTileTitleTextBlockStyle}"/>
+        <TextBlock Style="{StaticResource MetricStatLine}" Margin="20,0,0,0">
+          <Run FontFamily="Segoe Fluent Icons" Text="&#xE70D; " Foreground="LightGreen"/>
+          <Run Text="{Binding PcieRxRow.Min, StringFormat={}{0:0.0}}"/>
+          <Run FontFamily="Segoe Fluent Icons" Text=" &#xE738; " Foreground="{StaticResource AccentBrush}"/>
+          <Run Text="{Binding PcieRxRow.Avg, StringFormat={}{0:0.0}}"/>
+          <Run FontFamily="Segoe Fluent Icons" Text=" &#xE70E; " Foreground="Crimson"/>
+          <Run Text="{Binding PcieRxRow.Max, StringFormat={}{0:0.0}}"/>
+        </TextBlock>
+      </StackPanel>
+      <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <TextBlock Text="{Binding PcieRxMBps, StringFormat={}{0:0.0}, TargetNullValue=0.0}" Style="{StaticResource TileMetricValue}"/>
+        <TextBlock Text="MB/s" Style="{StaticResource MetricUnit}"/>
+        <TextBlock Text="{Binding PcieRxRow.Trend, Converter={StaticResource TrendToGlyph}}"
+                   Foreground="{Binding PcieRxRow.Trend, Converter={StaticResource TrendToBrush}}"
+                   Style="{StaticResource MetricUnit}" Margin="4,0,0,2"/>
+      </StackPanel>
+
+      <!-- Adaptive (Line/Dot) PCIe Rx throughput history strip; self-registers under "Gpu.PcieRx".
+           Follows the title-bar Line/Dot toggle; default green→red gauge ramp. -->
+      <graphs:AdaptiveGraph
+        Grid.Row="2"
+        Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Gpu.PcieRx"
+        HorizontalAlignment="Stretch" VerticalAlignment="Top"
+        Height="24" Rows="8" 
+				Capacity="{StaticResource GpuSensorGraphCapacity}"
+        MinValue="0" MaxValue="{Binding PcieRxScaleMax}"
+        BandedLine="True"
+				BandStartColor="{StaticResource GpuPCIeRxBandedColor1}"
+				BandEndColor="{StaticResource GpuPCIeRxBandedColor9}"/>
+    </Grid>
+  </Border>
+</UserControl>

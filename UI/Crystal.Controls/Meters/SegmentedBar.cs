@@ -1,3 +1,4 @@
+using System;
 using System.Windows;
 using System.Windows.Media;
 
@@ -5,13 +6,25 @@ namespace Crystal.Controls.Meters;
 
 /// <summary>
 /// A single-value horizontal meter bar. Renders <see cref="Value"/> (clamped to
-/// <see cref="Minimum"/>..<see cref="Maximum"/>) either as a solid fill or, 
-/// when <see cref="Segmented"/> is set, as a row of discrete LED-meter blocks — matching 
-/// the look of the PerformanceGraph SegmentedBar kind but for a horizontal, one-shot reading 
-/// rather than a time series. Used by the CPU core strip in place of a plain <c>ProgressBar</c> 
-/// so the load/clock/temp bars can adopt the meter aesthetic and follow the shared 
+/// <see cref="Minimum"/>..<see cref="Maximum"/>) either as a solid fill or,
+/// when <see cref="Segmented"/> is set, as a row of discrete LED-meter blocks — matching
+/// the look of the PerformanceGraph SegmentedBar kind but for a horizontal, one-shot reading
+/// rather than a time series. Used by the CPU core strip in place of a plain <c>ProgressBar</c>
+/// so the load/clock/temp bars can adopt the meter aesthetic and follow the shared
 /// <see cref="CoreBarAppearance"/> selection.
+/// <para>
+/// <b>Deprecated.</b> This control is functionally a subset of
+/// <see cref="Crystal.Controls.RangeBars.RangeBar"/>, which now offers the same LED-meter look via
+/// its own <c>Segmented</c>/<c>SegmentWidth</c>/<c>SegmentGap</c> properties (plus a configurable
+/// border, a themeable appearance, and the labeled <c>RangeBarView</c> chrome). Prefer
+/// <c>RangeBar</c> for new code; the property names map as
+/// <c>Minimum→MinValue</c>, <c>Maximum→MaxValue</c>, <c>Fill→FillBrush</c>, <c>Stroke→BorderBrush</c>
+/// (<c>Value</c>, <c>TrackBrush</c>, and <c>Segmented</c> keep their names). Still bindable to the
+/// shared <see cref="CoreBarAppearance"/> singleton exactly as before.
+/// </para>
 /// </summary>
+[Obsolete("Meters.SegmentedBar is deprecated; use Crystal.Controls.RangeBars.RangeBar with " +
+    "Segmented=\"True\" instead (Minimum→MinValue, Maximum→MaxValue, Fill→FillBrush, Stroke→BorderBrush).")]
 public sealed class SegmentedBar : FrameworkElement {
   /// <summary>
   /// LED-block geometry (device-independent px): each lit block plus the gap to the next. 

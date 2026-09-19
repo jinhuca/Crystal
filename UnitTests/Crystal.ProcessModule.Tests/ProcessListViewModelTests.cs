@@ -124,6 +124,83 @@ public class ProcessListViewModelTests {
   }
 
   [Fact]
+  public void Selecting_rows_adds_them_to_the_monitored_set_with_distinct_colors() {
+    StaRunner.Run(() => {
+      var vm = CreateVm(out var model);
+      model.Samples.OnNext([Sample(1, "a"), Sample(2, "b"), Sample(3, "c")]);
+
+      foreach (var pid in new uint[] { 1, 2, 3 })
+        vm.Rows.Single(r => r.ProcessId == pid).IsSelected = true;
+
+      Assert.Equal([1u, 2u, 3u], vm.MonitoredProcesses.Select(m => m.ProcessId));
+      Assert.Equal(3, vm.MonitoredProcesses.Select(m => m.Color).Distinct().Count());
+    });
+  }
+
+  [Fact]
+  public void Selecting_past_the_cap_drops_the_oldest_monitored_process() {
+    StaRunner.Run(() => {
+      var vm = CreateVm(out var model);
+      model.Samples.OnNext([
+          Sample(1, "a"), Sample(2, "b"), Sample(3, "c"),
+          Sample(4, "d"), Sample(5, "e"), Sample(6, "f"),
+      ]);
+
+      foreach (var pid in new uint[] { 1, 2, 3, 4, 5, 6 })
+        vm.Rows.Single(r => r.ProcessId == pid).IsSelected = true;
+
+      Assert.Equal(ProcessListViewModel.MaxMonitored, vm.MonitoredProcesses.Count);
+      Assert.Equal([2u, 3u, 4u, 5u, 6u], vm.MonitoredProcesses.Select(m => m.ProcessId));
+      // The dropped process is deselected too, so the list row reflects it.
+      Assert.False(vm.Rows.Single(r => r.ProcessId == 1).IsSelected);
+    });
+  }
+
+  [Fact]
+  public void Deselecting_a_row_removes_it_from_the_monitored_set() {
+    StaRunner.Run(() => {
+      var vm = CreateVm(out var model);
+      model.Samples.OnNext([Sample(1, "a"), Sample(2, "b")]);
+      var row1 = vm.Rows.Single(r => r.ProcessId == 1);
+      row1.IsSelected = true;
+      vm.Rows.Single(r => r.ProcessId == 2).IsSelected = true;
+
+      row1.IsSelected = false;
+
+      Assert.Equal([2u], vm.MonitoredProcesses.Select(m => m.ProcessId));
+    });
+  }
+
+  [Fact]
+  public void An_exited_monitored_process_is_removed_from_the_set() {
+    StaRunner.Run(() => {
+      var vm = CreateVm(out var model);
+      model.Samples.OnNext([Sample(1, "a"), Sample(2, "b")]);
+      vm.Rows.Single(r => r.ProcessId == 1).IsSelected = true;
+      vm.Rows.Single(r => r.ProcessId == 2).IsSelected = true;
+
+      model.Samples.OnNext([Sample(2, "b")]);   // pid 1 exits
+
+      Assert.Equal([2u], vm.MonitoredProcesses.Select(m => m.ProcessId));
+    });
+  }
+
+  [Fact]
+  public void Each_monitored_process_history_grows_one_sample_per_poll() {
+    StaRunner.Run(() => {
+      var vm = CreateVm(out var model);
+      model.Samples.OnNext([Sample(1, "a", cpu: 10)]);
+      vm.Rows.Single(r => r.ProcessId == 1).IsSelected = true;
+      var monitor = vm.MonitoredProcesses.Single();
+
+      model.Samples.OnNext([Sample(1, "a", cpu: 20)]);
+      model.Samples.OnNext([Sample(1, "a", cpu: 30)]);
+
+      Assert.Equal([20d, 30d], monitor.CpuHistory);   // one append per poll after selection
+    });
+  }
+
+  [Fact]
   public void Name_ascending_is_the_default_sort() {
     StaRunner.Run(() => {
       var vm = CreateVm(out _);

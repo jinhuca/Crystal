@@ -47,6 +47,27 @@ public sealed class GpuViewModel : BindableBase, IGpuViewModel, IDisposable {
   /// </summary>
   public ObservableCollection<GpuAdapterViewModel> Adapters { get; } = [];
 
+  private GpuAdapterViewModel? _integratedAdapter;
+  private GpuAdapterViewModel? _dedicatedAdapter;
+
+  /// <summary>
+  /// The integrated adapter, bound to the left block of the summary design (null when the machine
+  /// has no integrated graphics, in which case the block is collapsed).
+  /// </summary>
+  public GpuAdapterViewModel? IntegratedAdapter {
+    get => _integratedAdapter;
+    private set => SetProperty(ref _integratedAdapter, value);
+  }
+
+  /// <summary>
+  /// The dedicated adapter, bound to the right block of the summary design (null when the machine
+  /// has no discrete card, in which case the block is collapsed).
+  /// </summary>
+  public GpuAdapterViewModel? DedicatedAdapter {
+    get => _dedicatedAdapter;
+    private set => SetProperty(ref _dedicatedAdapter, value);
+  }
+
   /// <summary>
   /// Raises <c>ShowDetailEvent</c> so the shell swaps in the GPU detail view.
   /// </summary>
@@ -70,6 +91,10 @@ public sealed class GpuViewModel : BindableBase, IGpuViewModel, IDisposable {
       vm.UpdateSpecs(info);
       Adapters.Add(vm);
     }
+
+    IntegratedAdapter = Adapters.FirstOrDefault(a => a.IsIntegrated);
+    DedicatedAdapter = Adapters.FirstOrDefault(a => a.IsDedicated);
+
     ApplyLoads(snapshot);
   }
 
@@ -80,12 +105,24 @@ public sealed class GpuViewModel : BindableBase, IGpuViewModel, IDisposable {
   private void ApplyLoads(GpuSnapshot snapshot) {
     foreach (var adapter in Adapters) {
       var reading = snapshot.Loads.FirstOrDefault(l =>
-          string.Equals(l.AdapterName, adapter.Name, StringComparison.OrdinalIgnoreCase));
+          string.Equals(NormalizeAdapterName(l.AdapterName), NormalizeAdapterName(adapter.Name),
+              StringComparison.OrdinalIgnoreCase));
       if (reading is not null) {
         adapter.UpdateLoad(reading);
       }
     }
   }
+
+  // WMI and the LibreHardwareMonitor provider report the same adapter with cosmetically different
+  // names: the WMI inventory name is cleaned for display (e.g. the "(R)"/"(TM)" trademark marks are
+  // stripped) while the provider's reading keeps them, so an exact-string join drops the pairing and
+  // the adapter reads all-zero. Strip those marks and surrounding whitespace on both sides so the
+  // join keys on the substantive name.
+  private static string NormalizeAdapterName(string? name) =>
+      (name ?? string.Empty)
+        .Replace("(R)", string.Empty, StringComparison.OrdinalIgnoreCase)
+        .Replace("(TM)", string.Empty, StringComparison.OrdinalIgnoreCase)
+        .Trim();
 
   /// <summary>
   /// Marshals the specified action to the UI thread.

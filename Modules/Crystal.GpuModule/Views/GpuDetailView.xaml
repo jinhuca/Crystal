@@ -49,6 +49,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
               </Grid.RowDefinitions>
 
               <TextBlock Grid.Row="0" Text="{Binding KindLabel}" Foreground="{StaticResource AccentBrush}"
@@ -92,15 +93,14 @@
               </Grid>
 
               <!-- Live sensor readouts (dense HWiNFO-style): VRAM, memory clock, fan, core voltage.
-                   Each shows "—" when the adapter exposes no matching sensor (common on the iGPU). -->
+                   Each shows "—" when the adapter exposes no matching sensor (common on the iGPU).
+                   PCIe Rx/Tx are not listed here — they have their own history graphs below. -->
               <Grid Grid.Row="3" Margin="0,0,0,16">
                 <Grid.ColumnDefinitions>
                   <ColumnDefinition Width="Auto"/>
                   <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                  <RowDefinition Height="Auto"/>
-                  <RowDefinition Height="Auto"/>
                   <RowDefinition Height="Auto"/>
                   <RowDefinition Height="Auto"/>
                   <RowDefinition Height="Auto"/>
@@ -142,14 +142,6 @@
                 <TextBlock Grid.Row="5" Grid.Column="0" Text="Memory Temp" Foreground="{StaticResource LabelBrush}" Margin="0,2,16,2"/>
                 <TextBlock Grid.Row="5" Grid.Column="1" Foreground="{StaticResource TextBrush}" Margin="0,2"
                            Text="{Binding MemoryTemperatureC, StringFormat={}{0:0.0} °C, TargetNullValue=—}"/>
-
-                <TextBlock Grid.Row="6" Grid.Column="0" Text="PCIe Rx" Foreground="{StaticResource LabelBrush}" Margin="0,2,16,2"/>
-                <TextBlock Grid.Row="6" Grid.Column="1" Foreground="{StaticResource TextBrush}" Margin="0,2"
-                           Text="{Binding PcieRxMBps, StringFormat={}{0:0.0} MB/s, TargetNullValue=—}"/>
-
-                <TextBlock Grid.Row="7" Grid.Column="0" Text="PCIe Tx" Foreground="{StaticResource LabelBrush}" Margin="0,2,16,2"/>
-                <TextBlock Grid.Row="7" Grid.Column="1" Foreground="{StaticResource TextBrush}" Margin="0,2"
-                           Text="{Binding PcieTxMBps, StringFormat={}{0:0.0} MB/s, TargetNullValue=—}"/>
               </Grid>
 
               <!-- Per-engine utilization breakdown (D3D 3D / Video Decode / Copy / …). Hidden when the
@@ -174,22 +166,73 @@
                 </ItemsControl>
               </StackPanel>
 
-              <!-- Per-rail power breakdown (AMD PPT/SoC/Core, NVIDIA 12VHPWR connector + pins).
-                   Hidden when the adapter exposes only the aggregate package rail. -->
-              <StackPanel Grid.Row="5" Margin="0,0,0,16"
-                          Visibility="{Binding HasPowerRails, Converter={StaticResource BoolToVisibility}}">
-                <TextBlock Text="Power Rails" Foreground="{StaticResource LabelBrush}" Margin="0,0,0,4"/>
+              <!-- Clock value/min/max table (Core + Memory, MHz). Moved here from the dedicated summary
+                   tile. Memory row shows "—" on adapters that expose no memory clock. -->
+              <StackPanel Grid.Row="5" Margin="0,0,0,16">
+                <TextBlock Text="Clock (MHz)" Foreground="{StaticResource LabelBrush}" Margin="0,0,0,4"/>
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="140"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                  </Grid.ColumnDefinitions>
+                  <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                  </Grid.RowDefinitions>
+                  <TextBlock Grid.Row="0" Grid.Column="1" Text="Value" Style="{StaticResource MetricTableHeader}"/>
+                  <TextBlock Grid.Row="0" Grid.Column="2" Text="Min"   Style="{StaticResource MetricTableHeader}"/>
+                  <TextBlock Grid.Row="0" Grid.Column="3" Text="Max"   Style="{StaticResource MetricTableHeader}"/>
+                  <TextBlock Grid.Row="1" Grid.Column="0" Text="Core" Style="{StaticResource MetricTableLabel}"/>
+                  <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding ClockMhz, StringFormat={}{0:0}, TargetNullValue=—}"    Style="{StaticResource MetricTableValue}"/>
+                  <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding ClockMinMhz, StringFormat={}{0:0}, TargetNullValue=—}" Style="{StaticResource MetricTableValue}"/>
+                  <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding ClockMaxMhz, StringFormat={}{0:0}, TargetNullValue=—}" Style="{StaticResource MetricTableValue}"/>
+                  <TextBlock Grid.Row="2" Grid.Column="0" Text="Memory" Style="{StaticResource MetricTableLabel}"/>
+                  <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding MemoryClockMhz, StringFormat={}{0:0}, TargetNullValue=—}"    Style="{StaticResource MetricTableValue}"/>
+                  <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding MemoryClockMinMhz, StringFormat={}{0:0}, TargetNullValue=—}" Style="{StaticResource MetricTableValue}"/>
+                  <TextBlock Grid.Row="2" Grid.Column="3" Text="{Binding MemoryClockMaxMhz, StringFormat={}{0:0}, TargetNullValue=—}" Style="{StaticResource MetricTableValue}"/>
+                </Grid>
+              </StackPanel>
+
+              <!-- Power value/min/max table (Package aggregate + any per-rail breakdown, W). Moved here
+                   from the dedicated summary tile; per-rail rows appear only on adapters that expose them. -->
+              <StackPanel Grid.Row="6" Margin="0,0,0,16" Grid.IsSharedSizeScope="True">
+                <TextBlock Text="Power (W)" Foreground="{StaticResource LabelBrush}" Margin="0,0,0,4"/>
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="140"/>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="DPVal"/>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="DPMin"/>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="DPMax"/>
+                  </Grid.ColumnDefinitions>
+                  <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                  </Grid.RowDefinitions>
+                  <TextBlock Grid.Row="0" Grid.Column="1" Text="Value" Style="{StaticResource MetricTableHeader}"/>
+                  <TextBlock Grid.Row="0" Grid.Column="2" Text="Min"   Style="{StaticResource MetricTableHeader}"/>
+                  <TextBlock Grid.Row="0" Grid.Column="3" Text="Max"   Style="{StaticResource MetricTableHeader}"/>
+                  <TextBlock Grid.Row="1" Grid.Column="0" Text="Package" Style="{StaticResource MetricTableLabel}"/>
+                  <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding PowerW, StringFormat={}{0:0.0}, TargetNullValue=—}"    Style="{StaticResource MetricTableValue}"/>
+                  <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding PowerMinW, StringFormat={}{0:0.0}, TargetNullValue=—}" Style="{StaticResource MetricTableValue}"/>
+                  <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding PowerMaxW, StringFormat={}{0:0.0}, TargetNullValue=—}" Style="{StaticResource MetricTableValue}"/>
+                </Grid>
                 <ItemsControl ItemsSource="{Binding PowerRails}">
                   <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                      <Grid Margin="0,1">
+                      <Grid>
                         <Grid.ColumnDefinitions>
                           <ColumnDefinition Width="140"/>
-                          <ColumnDefinition Width="*"/>
+                          <ColumnDefinition Width="Auto" SharedSizeGroup="DPVal"/>
+                          <ColumnDefinition Width="Auto" SharedSizeGroup="DPMin"/>
+                          <ColumnDefinition Width="Auto" SharedSizeGroup="DPMax"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="{Binding Name}" Foreground="{StaticResource TextBrush}"/>
-                        <TextBlock Grid.Column="1" Foreground="{StaticResource TextBrush}"
-                                   Text="{Binding PowerW, StringFormat={}{0:0.0} W}"/>
+                        <TextBlock Grid.Column="0" Text="{Binding Name}" Style="{StaticResource MetricTableLabel}"/>
+                        <TextBlock Grid.Column="1" Text="{Binding PowerW, StringFormat={}{0:0.0}}"    Style="{StaticResource MetricTableValue}"/>
+                        <TextBlock Grid.Column="2" Text="{Binding MinW, StringFormat={}{0:0.0}, TargetNullValue=—}" Style="{StaticResource MetricTableValue}"/>
+                        <TextBlock Grid.Column="3" Text="{Binding MaxW, StringFormat={}{0:0.0}, TargetNullValue=—}" Style="{StaticResource MetricTableValue}"/>
                       </Grid>
                     </DataTemplate>
                   </ItemsControl.ItemTemplate>
@@ -199,8 +242,10 @@
               <!-- Live history: one readout + graph per core metric (load, temperature, clock, power).
                    Load and temperature use fixed 0-100 axes; clock and power ratchet to the VM's
                    running-peak scale so an iGPU and a dGPU each plot sensibly. -->
-              <Grid Grid.Row="6">
+              <Grid Grid.Row="7">
                 <Grid.RowDefinitions>
+                  <RowDefinition Height="120"/>
+                  <RowDefinition Height="120"/>
                   <RowDefinition Height="120"/>
                   <RowDefinition Height="120"/>
                   <RowDefinition Height="120"/>
@@ -259,7 +304,7 @@
                                                MaxTimeFormat="{}{0}s" MinTime="0"/>
                 </Grid>
 
-                <Grid Grid.Row="3">
+                <Grid Grid.Row="3" Margin="0,0,0,8">
                   <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="150"/>
                     <ColumnDefinition Width="*"/>
@@ -274,6 +319,42 @@
                                                Title="Power" MinValue="0"
                                                MaxValue="{Binding PowerScaleMax}"
                                                MaxValueFormat="{}{0} W" MaxTime="60"
+                                               MaxTimeFormat="{}{0}s" MinTime="0"/>
+                </Grid>
+
+                <Grid Grid.Row="4" Margin="0,0,0,8">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="*"/>
+                  </Grid.ColumnDefinitions>
+                  <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="8,0">
+                    <TextBlock Text="{Binding PcieRxMBps, StringFormat={}{0:0.0}, TargetNullValue=—}" Style="{StaticResource MetricValue}"/>
+                    <TextBlock Text="MB/s" Style="{StaticResource MetricUnit}"/>
+                    <TextBlock Text="PCIe Rx" Style="{StaticResource MetricCaption}"/>
+                  </StackPanel>
+                  <graphs:PerformanceGraphView Grid.Column="1" Margin="12,0"
+                                               Loaded="OnPcieRxGraphLoaded"
+                                               Title="PCIe Rx" MinValue="0"
+                                               MaxValue="{Binding PcieRxScaleMax}"
+                                               MaxValueFormat="{}{0} MB/s" MaxTime="60"
+                                               MaxTimeFormat="{}{0}s" MinTime="0"/>
+                </Grid>
+
+                <Grid Grid.Row="5">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="*"/>
+                  </Grid.ColumnDefinitions>
+                  <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="8,0">
+                    <TextBlock Text="{Binding PcieTxMBps, StringFormat={}{0:0.0}, TargetNullValue=—}" Style="{StaticResource MetricValue}"/>
+                    <TextBlock Text="MB/s" Style="{StaticResource MetricUnit}"/>
+                    <TextBlock Text="PCIe Tx" Style="{StaticResource MetricCaption}"/>
+                  </StackPanel>
+                  <graphs:PerformanceGraphView Grid.Column="1" Margin="12,0"
+                                               Loaded="OnPcieTxGraphLoaded"
+                                               Title="PCIe Tx" MinValue="0"
+                                               MaxValue="{Binding PcieTxScaleMax}"
+                                               MaxValueFormat="{}{0} MB/s" MaxTime="60"
                                                MaxTimeFormat="{}{0}s" MinTime="0"/>
                 </Grid>
               </Grid>

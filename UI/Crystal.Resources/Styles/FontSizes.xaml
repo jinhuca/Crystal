@@ -3,7 +3,7 @@
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
   <!-- Font-size scale shared across views. Names describe the role, not the number, so a
        density change is one edit here. Values match the literals already in use. -->
-  <sys:Double x:Key="MicroFontSize">10</sys:Double>
+  <sys:Double x:Key="MicroFontSize">9</sys:Double>
   <sys:Double x:Key="CaptionFontSize">11</sys:Double>
   <sys:Double x:Key="BodyFontSize">12</sys:Double>
   <sys:Double x:Key="SpecFontSize">13</sys:Double>
@@ -13,7 +13,12 @@
 
   <sys:Double x:Key="BigValueFontSize">18</sys:Double>
   <sys:Double x:Key="BigValueLineHeight">18</sys:Double>
+  <sys:Double x:Key="UtilizationValueSize">18</sys:Double>
   
   <sys:Double x:Key="TitleFontSize">28</sys:Double>
   <sys:Double x:Key="HeroFontSize">30</sys:Double>
+
+
+  <sys:Double x:Key="SummaryTileTitleFontSize">13</sys:Double>
+  <sys:Double x:Key="SummaryTileSubtitleFontSize">10</sys:Double>
 </ResourceDictionary>

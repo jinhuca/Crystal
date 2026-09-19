@@ -36,7 +36,7 @@ public sealed class StorageViewModel : BindableBase, IStorageViewModel, IDisposa
 
   // History graphs are registered by their GraphIdentity.Id as each metric sub-view loads, then
   // fed by that same id in ApplyLoad. A consumer that realizes only some tiles feeds only those.
-  private readonly Dictionary<string, PerformanceGraph> _graphs = [];
+  private readonly GraphFeedRegistry _graphs = new();
 
   public StorageViewModel(IStorageModel model, IEventAggregator events) {
     ShowDetailCommand = new DelegateCommand(
@@ -100,11 +100,9 @@ public sealed class StorageViewModel : BindableBase, IStorageViewModel, IDisposa
   public ICommand ShowDetailCommand { get; }
   public ICommand ShowDashboardCommand { get; }
 
-  public void AttachGraph(string id, PerformanceGraph graph) => _graphs[id] = graph;
+  public void AttachGraph(string id, ISingleSeriesGraph graph) => _graphs.Attach(id, graph);
 
-  private void FeedGraph(string id, double value) {
-    if (_graphs.TryGetValue(id, out var graph)) graph.AddValue(value);
-  }
+  private void FeedGraph(string id, double value) => _graphs.Feed(id, value);
 
   private void ApplySpecs(StorageSnapshot snapshot) {
     TotalCapacityLabel = snapshot.TotalCapacityGB is { } gb ? $"{gb:0.#} GB" : "—";
@@ -124,8 +122,10 @@ public sealed class StorageViewModel : BindableBase, IStorageViewModel, IDisposa
       if (Drives.All(d => d.DriveIndex != drive.DriveIndex))
         Drives.Add(new StorageDriveViewModel(drive));
 
+    // Default to the OS/system disk (the one hosting the Windows volume) so the tile opens on the
+    // drive the user cares about most; fall back to the first disk when it can't be identified.
     if (SelectedDisk is null || !Drives.Contains(SelectedDisk))
-      SelectedDisk = Drives.FirstOrDefault();
+      SelectedDisk = Drives.FirstOrDefault(d => d.IsSystemDisk) ?? Drives.FirstOrDefault();
     RaisePropertyChanged(nameof(ShowBusiestDrive));
   }
 

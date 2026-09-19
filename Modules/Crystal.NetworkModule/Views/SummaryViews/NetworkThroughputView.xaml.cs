@@ -5,9 +5,9 @@ using System.Windows.Controls;
 
 namespace Crystal.NetworkModule.Views.SummaryViews;
 
-/// <summary>Live throughput tile for the network summary: total download over upload, each with a
-/// sparkline. Binds to the root INetworkViewModel inherited from the host tile and self-registers
-/// both graphs (keyed by their GraphIdentity.Id) so the view model feeds them on each poll.</summary>
+/// <summary>Live throughput tile for the network summary: total download beside upload, each with a
+/// history sparkline. Binds to the root INetworkViewModel inherited from the host tile and
+/// self-registers both graphs so the view model feeds them on each update.</summary>
 public partial class NetworkThroughputView : UserControl {
   public NetworkThroughputView() {
     InitializeComponent();
@@ -16,11 +16,7 @@ public partial class NetworkThroughputView : UserControl {
 
   private void OnLoaded(object sender, RoutedEventArgs e) {
     if (DataContext is not INetworkViewModel vm) return;
-    Register(vm, NetworkDownloadGraph);
-    Register(vm, NetworkUploadGraph);
-  }
-
-  private static void Register(INetworkViewModel vm, PerformanceGraph graph) {
-    if (GraphIdentity.GetId(graph) is { } id) vm.AttachGraph(id, graph);
+    if (GraphIdentity.GetId(DownloadGraph) is { } downloadId) vm.AttachGraph(downloadId, DownloadGraph);
+    if (GraphIdentity.GetId(UploadGraph) is { } uploadId) vm.AttachGraph(uploadId, UploadGraph);
   }
 }

@@ -21,10 +21,11 @@ public class StorageViewModelTests {
   }
 
   private static StorageDriveInfo Drive(int index, string model = "Samsung 990 Pro",
-                                        double? capacityGB = 2000, string? media = "Fixed hard disk media") =>
+                                        double? capacityGB = 2000, string? media = "Fixed hard disk media",
+                                        bool isSystemDisk = false) =>
       new(Model: model, CapacityGB: capacityGB, InterfaceType: "SCSI", MediaType: media,
           Manufacturer: "Samsung", SerialNumber: "SN123", FirmwareRevision: "1B2QEXM7",
-          Partitions: 3, DriveIndex: index);
+          Partitions: 3, DriveIndex: index, IsSystemDisk: isSystemDisk);
 
   private static StorageSnapshot Snapshot(params StorageDriveInfo[] drives) =>
       new(drives, TotalCapacityGB: drives.Sum(d => d.CapacityGB ?? 0), DriveCount: drives.Length);
@@ -62,6 +63,18 @@ public class StorageViewModelTests {
 
     Assert.NotNull(vm.SelectedDisk);
     Assert.Equal(0, vm.SelectedDisk!.DriveIndex);
+  }
+
+  [Fact]
+  public void The_system_disk_is_selected_by_default_over_the_first_disk() {
+    var vm = CreateVm(out var model);
+
+    // Disk 1 hosts the OS volume; it must open selected even though disk 0 comes first.
+    model.SpecsSubject.OnNext(Snapshot(Drive(0), Drive(1, isSystemDisk: true)));
+
+    Assert.NotNull(vm.SelectedDisk);
+    Assert.Equal(1, vm.SelectedDisk!.DriveIndex);
+    Assert.True(vm.SelectedDisk.IsSystemDisk);
   }
 
   [Fact]

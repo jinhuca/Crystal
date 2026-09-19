@@ -1,3 +1,4 @@
+using Crystal.Controls.Metrics;
 using Crystal.Controls.PerformanceGraphs;
 using Crystal.Service.Storage;
 using System.Windows.Media;
@@ -31,8 +32,8 @@ public sealed class StorageDriveViewModel : BindableBase {
   private double? _powerOnCount;
   private double _transferMaxMBps = TransferFloorMBps;
   private double _peakTransferMBps;
-  private PerformanceGraph? _activityGraph;
-  private PerformanceGraph? _transferGraph;
+  private ISingleSeriesGraph? _activityGraph;
+  private AdaptiveGraph? _transferGraph;
   private int _transferWriteSeries;
 
   // Write plots as an amber overlay line against the themed (sky) read series. Line-only, so it
@@ -47,6 +48,7 @@ public sealed class StorageDriveViewModel : BindableBase {
 
   public StorageDriveViewModel(StorageDriveInfo info) {
     DriveIndex = info.DriveIndex;
+    IsSystemDisk = info.IsSystemDisk;
     DiskLabel = info.DriveIndex is { } i ? $"Disk {i}" : "Disk";
     Model = info.Model;
     CapacityLabel = info.CapacityGB is { } gb ? $"{gb:0.#} GB" : "—";
@@ -72,6 +74,8 @@ public sealed class StorageDriveViewModel : BindableBase {
   }
 
   public int? DriveIndex { get; }
+  /// <summary>True for the disk hosting the Windows/OS volume — the tile's default selection.</summary>
+  public bool IsSystemDisk { get; }
   public string DiskLabel { get; }
   public string HeaderLabel { get; }
   public string Model { get; }
@@ -91,7 +95,16 @@ public sealed class StorageDriveViewModel : BindableBase {
   public double WriteRateMBps { get => _writeRateMBps; private set => SetProperty(ref _writeRateMBps, value); }
   public double TransferMaxMBps { get => _transferMaxMBps; private set => SetProperty(ref _transferMaxMBps, value); }
 
+  // Trend backing for the two de-graphed cells: rise/fall/flat glyphs fed in Update, recovering the
+  // removed sparklines' direction cue at no render cost.
+  public MetricRowViewModel ActivityRow { get; } = new("Active");
+  public MetricRowViewModel TransferRow { get; } = new("Transfer");
+
   public string ActivityLabel => $"{ActivityPercent:0.0}%";
+  // Live combined read+write rate (the transfer tile's headline); GB/s once past 1000 MB/s. The
+  // session peak lives in the tile's caption, so the value area shows the current rate + its trend.
+  public string CurrentTransferLabel =>
+      ReadRateMBps + WriteRateMBps is var rate && rate >= 1000 ? $"{rate / 1000:0.0} GB/s" : $"{rate:0.0} MB/s";
   public string ReadActivityLabel => $"{ReadActivityPercent:0.0}%";
   public string WriteActivityLabel => $"{WriteActivityPercent:0.0}%";
   public string ReadSpeedLabel => $"{ReadRateMBps:0.0} MB/s";
@@ -120,6 +133,7 @@ public sealed class StorageDriveViewModel : BindableBase {
       UsedSpaceGB is { } used && _totalSpaceGB is { } total ? $"{used:0.#} / {total:0.#} GB" : "—";
   public string UsedSpaceLabel => UsedSpaceGB is { } used ? $"{used:0.#} GB" : "—";
   public string FreeSpaceLabel => _freeSpaceGB is { } free ? $"{free:0.#} GB" : "—";
+  public string TotalSpaceLabel => _totalSpaceGB is { } total ? $"{total:0.#} GB" : "—";
   public string UsedSpacePercentLabel => _totalSpaceGB is { } t and > 0 || _usedSpacePercent is not null
       ? $"{UsedSpaceFraction * 100:0}%" : "—";
 
@@ -136,14 +150,29 @@ public sealed class StorageDriveViewModel : BindableBase {
       : value >= 1024 ? $"{value / 1024:0.0} TB"
       : $"{value:0.#} GB";
 
-  public void AttachActivityGraph(PerformanceGraph graph) => _activityGraph = graph;
+  public void AttachActivityGraph(ISingleSeriesGraph graph) => _activityGraph = graph;
 
-  public void AttachTransferGraph(PerformanceGraph graph) {
-    // Loaded re-fires with a fresh graph when the disk selection swaps the template. Registering
-    // the write overlay once per graph is idempotent: re-attaching the same instance is a no-op.
+  public void AttachTransferGraph(AdaptiveGraph graph) {
+    // Re-attaching the same instance is idempotent: registering the write overlay once per graph is
+    // enough, so a repeated attach (the graph reloads without a disk change) is a no-op.
     if (ReferenceEquals(_transferGraph, graph)) return;
     _transferGraph = graph;
     _transferWriteSeries = graph.AddSeries(WriteSeriesBrush, fillBrush: null, thickness: 1.5);
+  }
+
+  // One AdaptiveGraph instance is shared across disks: the tile's disk selector swaps the bound disk
+  // on a reused template rather than building a fresh graph. Detach on the way out so the previously
+  // selected disk stops feeding a graph the newly selected disk now owns — otherwise every disk's
+  // per-poll Update would push into the same graph, interleaving unrelated traces.
+  public void DetachActivityGraph(ISingleSeriesGraph graph) {
+    if (ReferenceEquals(_activityGraph, graph)) _activityGraph = null;
+  }
+
+  public void DetachTransferGraph(AdaptiveGraph graph) {
+    if (ReferenceEquals(_transferGraph, graph)) {
+      _transferGraph = null;
+      _transferWriteSeries = 0;
+    }
   }
 
   /// <summary>Feeds this disk's newest live sample in, pushing the graphs and refreshing labels.</summary>
@@ -177,7 +206,11 @@ public sealed class StorageDriveViewModel : BindableBase {
     TransferMaxMBps = NiceCeiling(Math.Max(TransferFloorMBps, _transferSamples.Max()));
     _peakTransferMBps = Math.Max(_peakTransferMBps, load.ReadRateMBps + load.WriteRateMBps);
 
+    ActivityRow.Update(load.ActivityPercent);
+    TransferRow.Update(load.ReadRateMBps + load.WriteRateMBps);
+
     RaisePropertyChanged(nameof(ActivityLabel));
+    RaisePropertyChanged(nameof(CurrentTransferLabel));
     RaisePropertyChanged(nameof(PeakTransferLabel));
     RaisePropertyChanged(nameof(ReadActivityLabel));
     RaisePropertyChanged(nameof(WriteActivityLabel));
@@ -191,6 +224,7 @@ public sealed class StorageDriveViewModel : BindableBase {
     RaisePropertyChanged(nameof(CapacityUsageLabel));
     RaisePropertyChanged(nameof(UsedSpaceLabel));
     RaisePropertyChanged(nameof(FreeSpaceLabel));
+    RaisePropertyChanged(nameof(TotalSpaceLabel));
     RaisePropertyChanged(nameof(UsedSpacePercentLabel));
     RaisePropertyChanged(nameof(DataWrittenLabel));
     RaisePropertyChanged(nameof(DataReadLabel));

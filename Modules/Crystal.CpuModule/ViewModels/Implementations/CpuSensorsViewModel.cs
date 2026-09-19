@@ -1,3 +1,4 @@
+using Crystal.Controls.Metrics;
 using Crystal.Controls.PerformanceGraphs;
 using Crystal.CpuModule.Models;
 using Crystal.CpuModule.ViewModels;
@@ -137,7 +138,7 @@ public sealed class CpuSensorsViewModel : BindableBase, ICpuSensorViewModel {
   /// History graphs are registered by their GraphIdentity.Id as each metric sub-view loads, then
   /// fed by that same id in Update(). A consumer that realizes only some tiles feeds only those.
   /// </summary>
-  private readonly Dictionary<string, PerformanceGraph> _graphs = [];
+  private readonly GraphFeedRegistry _graphs = new();
 
   /// <summary>
   /// Current CPU load percentage, 0–100. Updated in place on every sensor emission.
@@ -173,6 +174,46 @@ public sealed class CpuSensorsViewModel : BindableBase, ICpuSensorViewModel {
   /// Current package power in W. Zero when not exposed.
   /// </summary>
   public double Power { get => _power; private set => SetProperty(ref _power, value); }
+
+  /// <summary>
+  /// Per-rail power breakdown (Package / Cores / GT / DRAM) in W. Rows are created once and updated in place.
+  /// </summary>
+  public ObservableCollection<MetricRowViewModel> PowerRails { get; } = [
+    new("Package"), new("Cores"), new("GT"), new("DRAM"),
+  ];
+
+  /// <summary>
+  /// Clock-domain breakdown (Core / Effective) in GHz. Rows are created once and updated in place.
+  /// </summary>
+  public ObservableCollection<MetricRowViewModel> ClockRows { get; } = [
+    new("Core"), new("Effective"),
+  ];
+
+  /// <summary>
+  /// Temperature-sensor breakdown (Package / Core Max / Core Avg) in °C. Rows are created once and updated in place.
+  /// </summary>
+  public ObservableCollection<MetricRowViewModel> TemperatureRows { get; } = [
+    new("Package"), new("Core Max"), new("Core Avg"),
+  ];
+
+  /// <summary>
+  /// Voltage-rail breakdown (Core / SoC) in V. Rows are created once and updated in place.
+  /// </summary>
+  public ObservableCollection<MetricRowViewModel> VoltageRows { get; } = [
+    new("Core"), new("SoC"),
+  ];
+
+  /// <summary>
+  /// Session min/max/avg + trend for the fan readout (RPM, or PWM% on tachometer-less laptops). The
+  /// fan has no provider-side session extremes, so this row self-tracks them from the fed values.
+  /// </summary>
+  public MetricRowViewModel FanRow { get; } = new("Fan");
+
+  /// <summary>
+  /// Session min/max/avg + trend for the CPU utilization readout (%), self-tracked from the same
+  /// per-poll <see cref="Load"/> stream that feeds the "Cpu.Utilization" history graph.
+  /// </summary>
+  public MetricRowViewModel LoadRow { get; } = new("Load");
 
   /// <summary>
   /// Configured sustained package power limit (PL1) in W. Intel-only; zero when not exposed.
@@ -364,17 +405,15 @@ public sealed class CpuSensorsViewModel : BindableBase, ICpuSensorViewModel {
   /// Attaches a performance graph to this view model, keyed by its identity. The graph will be fed
   /// </summary>
   /// <param name="id">string</param>
-  /// <param name="graph">PerformanceGraph</param>
-  public void AttachGraph(string id, PerformanceGraph graph) => _graphs[id] = graph;
+  /// <param name="graph">ISingleSeriesGraph</param>
+  public void AttachGraph(string id, ISingleSeriesGraph graph) => _graphs.Attach(id, graph);
 
   /// <summary>
   /// Feeds the performance graph identified by <paramref name="id"/> with the specified <paramref name="value"/>.
   /// </summary>
   /// <param name="id">string</param>
   /// <param name="value">double</param>
-  private void FeedGraph(string id, double value) {
-    if (_graphs.TryGetValue(id, out var graph)) graph.AddValue(value);
-  }
+  private void FeedGraph(string id, double value) => _graphs.Feed(id, value);
 
   /// <summary>
   /// Updates the view model with the latest CPU readings from the provided <paramref name="info"/>.
@@ -394,6 +433,7 @@ public sealed class CpuSensorsViewModel : BindableBase, ICpuSensorViewModel {
     EffectiveSpeedGhz = (sensors.CpuEffectiveSpeed.Value ?? 0) / 1000.0;
     BusSpeedMHz = sensors.BusSpeed.Value ?? 0;
     Power = sensors.PackagePower.Value ?? 0;
+    UpdateMetricRows(sensors);
     PowerLimitLongW = sensors.PowerLimitLong.Value ?? 0;
     PowerLimitShortW = sensors.PowerLimitShort.Value ?? 0;
     TdcAmps = sensors.Tdc.Value ?? 0;
@@ -420,6 +460,7 @@ public sealed class CpuSensorsViewModel : BindableBase, ICpuSensorViewModel {
     UpdateCoreLoads(socket.Cores);
 
     FeedGraph("Cpu.Utilization", Load);
+    LoadRow.Update(Load);
     FeedGraph("Cpu.Voltage", Voltage);
     FeedGraph("Cpu.Clock", SpeedGhz);
     FeedGraph("Cpu.Power", Power);
@@ -431,6 +472,7 @@ public sealed class CpuSensorsViewModel : BindableBase, ICpuSensorViewModel {
     // sync, and gating it on a fan being latched started it a tick late (a fixed ~1s lag). We sample
     // the latest latched fan value here — 0 until the first reading, matching the "0 RPM" readout.
     FeedGraph("Cpu.Fan", FanReadoutValue);
+    FanRow.Update(FanReadoutValue);
 
     // Composite readouts derive from several sensors above; refresh them once per poll.
     RaisePropertyChanged(nameof(ClockReadoutLabel));
@@ -488,6 +530,41 @@ public sealed class CpuSensorsViewModel : BindableBase, ICpuSensorViewModel {
       row.Temperature = s.Temperature.Value ?? 0;
       UpdateThreadLoads(row, s.ThreadLoads);
     }
+  }
+
+  /// <summary>
+  /// Refreshes the metric breakdown tables (power rails, clock domains, temperature sensors,
+  /// voltage rails) from the socket sensors — each row's current value plus the provider's running
+  /// session min/max. Readings the platform doesn't expose stay at zero. Clock rows are scaled from
+  /// the sensors' MHz to the GHz the table shows.
+  /// </summary>
+  /// <param name="sensors">The CPU sensors.</param>
+  private void UpdateMetricRows(Crystal.Infrastructure.DataStructures.Cpu.Interfaces.Cpus.ICpuSensors sensors) {
+    SetRow(PowerRails, 0, sensors.PackagePower);
+    SetRow(PowerRails, 1, sensors.CoresPower);
+    SetRow(PowerRails, 2, sensors.GraphicsPower);
+    SetRow(PowerRails, 3, sensors.MemoryPower);
+
+    SetRow(ClockRows, 0, sensors.CpuSpeed, 1 / 1000.0);
+    SetRow(ClockRows, 1, sensors.CpuEffectiveSpeed, 1 / 1000.0);
+
+    SetRow(TemperatureRows, 0, sensors.PackageTemperature);
+    SetRow(TemperatureRows, 1, sensors.CoreMaxTemperature);
+    SetRow(TemperatureRows, 2, sensors.CoreAvgTemperature);
+
+    SetRow(VoltageRows, 0, sensors.Voltage);
+    SetRow(VoltageRows, 1, sensors.SocVoltage);
+  }
+
+  /// <summary>
+  /// Copies a sensor reading's value/min/max into <paramref name="rows"/>[<paramref name="index"/>],
+  /// scaling each by <paramref name="scale"/> (e.g. MHz→GHz for clocks).
+  /// </summary>
+  private static void SetRow(ObservableCollection<MetricRowViewModel> rows, int index, SensorReading reading, double scale = 1.0) {
+    rows[index].Update(
+      (reading.Value ?? 0) * scale,
+      (reading.Min ?? 0) * scale,
+      (reading.Max ?? 0) * scale);
   }
 
   /// <summary>

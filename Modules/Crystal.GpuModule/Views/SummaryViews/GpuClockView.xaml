@@ -3,24 +3,61 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Crystal.GpuModule.Views.SummaryViews"
              xmlns:graphs="clr-namespace:Crystal.Controls.PerformanceGraphs;assembly=Crystal.Controls"
              mc:Ignorable="d"
-             d:DesignHeight="44" d:DesignWidth="300">
-  <!-- DataContext is a GpuAdapterViewModel, inherited from the per-adapter item. -->
-  <Grid>
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="*"/>
-      <ColumnDefinition Width="Auto"/>
-    </Grid.ColumnDefinitions>
-    <graphs:PerformanceGraph x:Name="ClockGraph" Grid.Column="0"
-                             graphs:GraphIdentity.Id="Gpu.Clock"
-                             MinHeight="40" MinValue="0" MaxValue="3000"/>
-    <StackPanel Grid.Column="1" Style="{StaticResource SummaryStackPanelStyle}">
-      <StackPanel Orientation="Horizontal">
-        <TextBlock Text="{Binding ClockMhz, StringFormat={}{0:0}, TargetNullValue=—}" Style="{StaticResource MetricValue}"/>
-        <TextBlock Text="MHz" Style="{StaticResource MetricUnit}"/>
+             d:DesignHeight="120" d:DesignWidth="210">
+  <!-- DataContext is a GpuAdapterViewModel, inherited from the per-adapter block. Boxed sensor tile
+       matching the CpuSummaryView pattern: accent title, big core-clock value + unit + trend glyph,
+       and a session min/avg/max stat line. A high clock is desirable, not a warning, so the value is
+       left un-banded (steady accent, not a green-to-red ramp). The clock-domain value/min/max table
+       lives in GpuDetailView. -->
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="/Crystal.GpuModule;component/Views/GpuViewResources.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </UserControl.Resources>
+  <Border Style="{StaticResource SummaryTileBorderStyle}" Width="{x:Static local:GpuSummaryViewConstants.GraphWidth}">
+    <Grid MinHeight="60" ShowGridLines="False">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="20"/>
+        <RowDefinition Height="40"/>
+        <RowDefinition Height="24"/>
+      </Grid.RowDefinitions>
+      <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+        <TextBlock Text="Clock" Style="{StaticResource SummaryTileTitleTextBlockStyle}"/>
+        <TextBlock Style="{StaticResource MetricStatLine}" Margin="20,0,0,0">
+          <Run FontFamily="Segoe Fluent Icons" Text="&#xE70D; " Foreground="LightGreen"/>
+          <Run Text="{Binding ClockRow.Min, StringFormat={}{0:0}}"/>
+          <Run FontFamily="Segoe Fluent Icons" Text=" &#xE738; " Foreground="{StaticResource AccentBrush}"/>
+          <Run Text="{Binding ClockRow.Avg, StringFormat={}{0:0}}"/>
+          <Run FontFamily="Segoe Fluent Icons" Text=" &#xE70E; " Foreground="Crimson"/>
+          <Run Text="{Binding ClockRow.Max, StringFormat={}{0:0}}"/>
+        </TextBlock>
       </StackPanel>
-      <TextBlock Text="Clock" Style="{StaticResource MetricCaption}"/>
-    </StackPanel>
-  </Grid>
+      <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <TextBlock Text="{Binding ClockMhz, StringFormat={}{0:0}, TargetNullValue=—}" Style="{StaticResource TileMetricValue}"/>
+        <TextBlock Text="MHz" Style="{StaticResource MetricUnit}"/>
+        <TextBlock Text="{Binding ClockRow.Trend, Converter={StaticResource TrendToGlyph}}"
+                   Foreground="{Binding ClockRow.Trend, Converter={StaticResource TrendToBrush}}"
+                   Style="{StaticResource MetricUnit}" Margin="4,0,0,2"/>
+      </StackPanel>
+
+      <!-- Adaptive (Line/Dot) core-clock history strip; self-registers under "Gpu.Clock". Follows the
+           title-bar Line/Dot toggle; banded whitesmoke→green clock ramp. Ceiling ratchets to the
+           adapter's running peak so an iGPU and a dGPU each plot on a sensible axis. -->
+      <graphs:AdaptiveGraph
+        Grid.Row="2"
+        Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Gpu.Clock"
+        HorizontalAlignment="Stretch" VerticalAlignment="Top"
+        Height="24" Rows="8" 
+				Capacity="{StaticResource GpuSensorGraphCapacity}"
+        MinValue="0" MaxValue="{Binding ClockScaleMax}"
+        BandedLine="True" 
+				BandStartColor="{StaticResource GpuClockBandedColor1}" 
+				BandEndColor="{StaticResource GpuClockBandedColor9}"/>
+    </Grid>
+  </Border>
 </UserControl>

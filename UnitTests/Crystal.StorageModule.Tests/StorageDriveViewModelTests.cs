@@ -1,3 +1,4 @@
+using Crystal.Controls.PerformanceGraphs;
 using Crystal.Service.Storage;
 using Crystal.StorageModule.ViewModels;
 using Xunit;
@@ -5,6 +6,13 @@ using Xunit;
 namespace Crystal.StorageModule.Tests;
 
 public class StorageDriveViewModelTests {
+  private sealed class FakeActivityGraph : ISingleSeriesGraph {
+    public double MinValue { get; set; }
+    public double MaxValue { get; set; }
+    public List<double> Values { get; } = [];
+    public void AddValue(double value) => Values.Add(value);
+  }
+
   private static StorageDriveInfo Info(int? index = 0, string model = "Samsung 990 Pro",
                                        double? capacityGB = 2000, string? media = "Fixed hard disk media",
                                        string? iface = "SCSI", uint? partitions = 3,
@@ -248,5 +256,45 @@ public class StorageDriveViewModelTests {
     vm.Update(new StorageDiskLoad(0, 1, ReadRateMBps: 2, WriteRateMBps: 3, ResponseMs: null));
 
     Assert.Equal(100, vm.TransferMaxMBps);
+  }
+
+  [Fact]
+  public void An_attached_activity_graph_is_fed_the_active_time_on_each_update() {
+    var vm = new StorageDriveViewModel(Info());
+    var graph = new FakeActivityGraph();
+    vm.AttachActivityGraph(graph);
+
+    vm.Update(new StorageDiskLoad(0, ActivityPercent: 12, ReadRateMBps: 5, WriteRateMBps: 5, ResponseMs: null));
+    vm.Update(new StorageDiskLoad(0, ActivityPercent: 34, ReadRateMBps: 5, WriteRateMBps: 5, ResponseMs: null));
+
+    Assert.Equal([12, 34], graph.Values);
+  }
+
+  [Fact]
+  public void A_detached_activity_graph_stops_receiving_samples() {
+    // The disk selector reuses one graph across disks, so a disk that loses the selection must stop
+    // feeding it — otherwise every disk's per-poll update would interleave into the same graph.
+    var vm = new StorageDriveViewModel(Info());
+    var graph = new FakeActivityGraph();
+    vm.AttachActivityGraph(graph);
+    vm.Update(new StorageDiskLoad(0, ActivityPercent: 12, ReadRateMBps: 5, WriteRateMBps: 5, ResponseMs: null));
+
+    vm.DetachActivityGraph(graph);
+    vm.Update(new StorageDiskLoad(0, ActivityPercent: 99, ReadRateMBps: 5, WriteRateMBps: 5, ResponseMs: null));
+
+    Assert.Equal([12], graph.Values); // the post-detach sample never lands
+  }
+
+  [Fact]
+  public void Detaching_a_graph_the_disk_does_not_own_leaves_the_active_attachment_intact() {
+    var vm = new StorageDriveViewModel(Info());
+    var attached = new FakeActivityGraph();
+    var other = new FakeActivityGraph();
+    vm.AttachActivityGraph(attached);
+
+    vm.DetachActivityGraph(other); // stale detach for a graph now owned by a different disk
+
+    vm.Update(new StorageDiskLoad(0, ActivityPercent: 20, ReadRateMBps: 5, WriteRateMBps: 5, ResponseMs: null));
+    Assert.Equal([20], attached.Values);
   }
 }
