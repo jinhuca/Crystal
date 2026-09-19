@@ -102,9 +102,9 @@ public partial class ProcessDetailView : UserControl {
   /// <summary>The five detail-panel graphs in a fixed order (CPU, GPU, Memory, Disk, Network). A
   /// monitored process's per-metric lines are added to these in this same order, matching the
   /// history each <see cref="MonitoredProcessViewModel"/> feeds.</summary>
-  private PerformanceGraphMultipleDS[] Graphs =>
+  private PerformanceGraph[] Graphs =>
       _graphs ??= [CpuGraph, GpuGraph, MemoryGraph, DiskGraph, NetGraph];
-  private PerformanceGraphMultipleDS[]? _graphs;
+  private PerformanceGraph[]? _graphs;
 
   /// <summary>The VM whose <see cref="ProcessListViewModel.MonitoredProcesses"/> we're subscribed to,
   /// so a DataContext change can detach the old subscription before wiring the new one.</summary>

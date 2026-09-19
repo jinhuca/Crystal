@@ -45,12 +45,13 @@
 
       <!-- Adaptive (Line/Dot) PCIe Rx throughput history strip; self-registers under "Gpu.PcieRx".
            Follows the title-bar Line/Dot toggle; default green→red gauge ramp. -->
-      <graphs:AdaptiveGraph
+      <graphs:PerformanceGraph
+        Style="{StaticResource AdaptiveGraphNoChromeStyle}"
         Grid.Row="2"
         Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Gpu.PcieRx"
         HorizontalAlignment="Stretch" VerticalAlignment="Top"
         Height="24" Rows="8" 
-				Capacity="{StaticResource GpuSensorGraphCapacity}"
+				HistoryLength="{StaticResource GpuSensorGraphCapacity}"
         MinValue="0" MaxValue="{Binding PcieRxScaleMax}"
         BandedLine="True"
 				BandStartColor="{StaticResource GpuPCIeRxBandedColor1}"

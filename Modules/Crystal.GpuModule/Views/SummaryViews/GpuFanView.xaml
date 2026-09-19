@@ -46,12 +46,13 @@
       <!-- Adaptive (Line/Dot) fan-speed history strip; self-registers under "Gpu.Fan". Follows the
            title-bar Line/Dot toggle; default green→red gauge ramp. Ceiling ratchets over the running
            RPM peak so a slow case fan and a spun-up card each plot on a sensible axis. -->
-      <graphs:AdaptiveGraph
+      <graphs:PerformanceGraph
+        Style="{StaticResource AdaptiveGraphNoChromeStyle}"
         Grid.Row="2"
         Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Gpu.Fan"
         HorizontalAlignment="Stretch" VerticalAlignment="Top"
         Height="24" Rows="8" 
-				Capacity="{StaticResource GpuSensorGraphCapacity}"
+				HistoryLength="{StaticResource GpuSensorGraphCapacity}"
         MinValue="0" MaxValue="{Binding FanScaleMax}"
         BandedLine="True"
 				BandStartColor="{StaticResource GpuFanBandedColor1}"

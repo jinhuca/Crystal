@@ -190,10 +190,11 @@
                                Foreground="{Binding ActivityRow.Trend, Converter={StaticResource TrendToBrush}}"
                                Style="{StaticResource MetricUnit}" Margin="4,0,0,0"/>
                   </StackPanel>
-                  <graphs:AdaptiveGraph Grid.Row="2" Loaded="OnActivityGraphLoaded"
-                      Capacity="180" MinValue="0" MaxValue="100"
+                  <graphs:PerformanceGraph Grid.Row="2" Loaded="OnActivityGraphLoaded"
+                      Style="{StaticResource AdaptiveGraphStyle}"
+                      HistoryLength="180" MinValue="0" MaxValue="100"
                       Accent="{StaticResource GraphAccentStorage}"
-                      BandedLine="True" ShowChrome="True" MinHeight="40"
+                      BandedLine="True" MinHeight="40"
                       CellPitch="{StaticResource DashboardDotPitch}"/>
                 </Grid>
               </Border>
@@ -223,10 +224,11 @@
                                Foreground="{Binding TransferRow.Trend, Converter={StaticResource TrendToBrush}}"
                                Style="{StaticResource MetricUnit}" Margin="4,0,0,0"/>
                   </StackPanel>
-                  <graphs:AdaptiveGraph Grid.Row="2" Loaded="OnTransferGraphLoaded"
-                      Capacity="180" MinValue="0" MaxValue="{Binding TransferMaxMBps}"
+                  <graphs:PerformanceGraph Grid.Row="2" Loaded="OnTransferGraphLoaded"
+                      Style="{StaticResource AdaptiveGraphStyle}"
+                      HistoryLength="180" MinValue="0" MaxValue="{Binding TransferMaxMBps}"
                       Accent="{StaticResource GraphAccentStorage}"
-                      BandedLine="False" ShowChrome="True" MinHeight="40"
+                      BandedLine="False" MinHeight="40"
                       CellPitch="{StaticResource DashboardDotPitch}"/>
                 </Grid>
               </Border>

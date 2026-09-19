@@ -87,14 +87,15 @@
       <!-- Adaptive (Line/Dot) voltage history strip; self-registers under "Cpu.Voltage" (shared feed
            key with the detail-view history graph). Follows the title-bar Line/Dot toggle; banded
            whitesmoke→indigo voltage ramp. -->
-      <graphs:AdaptiveGraph
+      <graphs:PerformanceGraph
         Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="5"
+        Style="{StaticResource AdaptiveGraphNoChromeStyle}"
         Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Cpu.Voltage"
         HorizontalAlignment="Stretch" VerticalAlignment="Top"
-        Height="24" Rows="10" Capacity="{StaticResource CpuSensorGraphCapacity}"
+        Height="24" Rows="10" HistoryLength="{StaticResource CpuSensorGraphCapacity}"
         MinValue="0" MaxValue="2"
-        BandedLine="True" 
-				BandStartColor="{StaticResource CpuVoltAccentBandedColor1}" 
+        BandedLine="True"
+				BandStartColor="{StaticResource CpuVoltAccentBandedColor1}"
 				BandEndColor="{StaticResource CpuVoltAccentBandedColor9}"/>
     </Grid>
   </Border>

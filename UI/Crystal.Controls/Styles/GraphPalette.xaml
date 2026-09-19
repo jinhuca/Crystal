@@ -21,7 +21,7 @@
   <!--
     SENSOR-CATEGORY ACCENT COLORS - the single source of truth for per-category graph accents.
 
-    Each dashboard graph identifies its sensor category by colour. AdaptiveGraph.Accent is a Color
+    Each dashboard graph identifies its sensor category by colour. PerformanceGraph.Accent is a Color
     (not a Brush), so these are <Color> resources referenced as Accent="{StaticResource GraphAccentX}".
     The line is drawn at full accent (alpha FF); the fill is a vertical gradient from the accent down
     toward the baseline (see GraphThemes.CreateVerticalGlow). Category accents only show when the graph

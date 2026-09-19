@@ -1,7 +1,6 @@
 using Crystal.BiosModule.Models;
 using Crystal.Controls.Metrics;
 using Crystal.Controls.PerformanceGraphs;
-using Crystal.Controls.PerformanceGraphs.Kinds;
 using Crystal.Controls.PerformanceGraphs.Themes;
 using Crystal.Controls.Threading;
 using Crystal.Infrastructure.Constants.Navigation;
@@ -979,9 +978,9 @@ public sealed class BiosViewModel : BindableBase, IBiosViewModel, IDisposable {
   }
 
   private static GraphTheme SeverityTheme(ReadingSeverity severity) => severity switch {
-    ReadingSeverity.Warning => GraphThemes.Amber(GraphKind.Line),
-    ReadingSeverity.Critical => GraphThemes.FromAccent(CriticalAccent, GraphKind.Line),
-    _ => GraphThemes.Sky(GraphKind.Line),
+    ReadingSeverity.Warning => GraphThemes.Amber(),
+    ReadingSeverity.Critical => GraphThemes.FromAccent(CriticalAccent),
+    _ => GraphThemes.Sky(),
   };
 
   /// <summary>

@@ -84,11 +84,12 @@
                              Foreground="{Binding DownloadRow.Trend, Converter={StaticResource TrendToBrush}}"
                              Style="{StaticResource MetricUnit}" Margin="4,0,0,0"/>
 				</StackPanel>
-				<graphs:AdaptiveGraph Grid.Row="2" x:Name="DownloadGraph"
+				<graphs:PerformanceGraph Grid.Row="2" x:Name="DownloadGraph"
+                                    Style="{StaticResource AdaptiveGraphStyle}"
                                     graphs:GraphIdentity.Id="Network.Download"
-                                    Capacity="180" MinValue="0" MaxValue="{Binding ThroughputMaxBytesPerSecond}"
+                                    HistoryLength="180" MinValue="0" MaxValue="{Binding ThroughputMaxBytesPerSecond}"
                                     Accent="{StaticResource GraphAccentUtilization}"
-                                    BandedLine="True" ShowChrome="True" MinHeight="40"
+                                    BandedLine="True" MinHeight="40"
                                     CellPitch="{StaticResource DashboardDotPitch}"/>
 			</Grid>
 		</Border>
@@ -120,11 +121,12 @@
                              Foreground="{Binding UploadRow.Trend, Converter={StaticResource TrendToBrush}}"
                              Style="{StaticResource MetricUnit}" Margin="4,0,0,0"/>
 				</StackPanel>
-				<graphs:AdaptiveGraph Grid.Row="2" x:Name="UploadGraph"
+				<graphs:PerformanceGraph Grid.Row="2" x:Name="UploadGraph"
+                                    Style="{StaticResource AdaptiveGraphStyle}"
                                     graphs:GraphIdentity.Id="Network.Upload"
-                                    Capacity="180" MinValue="0" MaxValue="{Binding ThroughputMaxBytesPerSecond}"
+                                    HistoryLength="180" MinValue="0" MaxValue="{Binding ThroughputMaxBytesPerSecond}"
                                     Accent="{StaticResource GraphAccentPower}"
-                                    BandedLine="True" ShowChrome="True" MinHeight="40"
+                                    BandedLine="True" MinHeight="40"
                                     CellPitch="{StaticResource DashboardDotPitch}"/>
 			</Grid>
 		</Border>

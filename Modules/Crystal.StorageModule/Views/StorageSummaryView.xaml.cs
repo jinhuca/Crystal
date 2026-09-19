@@ -42,7 +42,7 @@ public partial class StorageSummaryView : UserControl {
   /// </summary>
   /// <param name="sender">The graph control that triggered the event.</param>
   private void WireActivity(object sender) {
-    if (sender is not AdaptiveGraph graph) return;
+    if (sender is not PerformanceGraph graph) return;
     graph.DataContextChanged -= OnActivityDataContextChanged;
     graph.DataContextChanged += OnActivityDataContextChanged;
     (graph.DataContext as StorageDriveViewModel)?.AttachActivityGraph(graph);
@@ -53,7 +53,7 @@ public partial class StorageSummaryView : UserControl {
   /// </summary>
   /// <param name="sender">The graph control that triggered the event.</param>
   private void WireTransfer(object sender) {
-    if (sender is not AdaptiveGraph graph) return;
+    if (sender is not PerformanceGraph graph) return;
     graph.DataContextChanged -= OnTransferDataContextChanged;
     graph.DataContextChanged += OnTransferDataContextChanged;
     (graph.DataContext as StorageDriveViewModel)?.AttachTransferGraph(graph);
@@ -66,7 +66,7 @@ public partial class StorageSummaryView : UserControl {
   /// <param name="sender">The graph control that triggered the event.</param>
   /// <param name="e">The event arguments.</param>
   private static void OnActivityDataContextChanged(object sender, DependencyPropertyChangedEventArgs e) {
-    if (sender is not AdaptiveGraph graph) return;
+    if (sender is not PerformanceGraph graph) return;
     if (e.OldValue is StorageDriveViewModel previous) {
       previous.DetachActivityGraph(graph);
       graph.Reset(); // Clear the previous disk's trace so the new selection starts from empty.
@@ -80,7 +80,7 @@ public partial class StorageSummaryView : UserControl {
   /// <param name="sender">The graph control that triggered the event.</param>
   /// <param name="e">The event arguments.</param>
   private static void OnTransferDataContextChanged(object sender, DependencyPropertyChangedEventArgs e) {
-    if (sender is not AdaptiveGraph graph) return;
+    if (sender is not PerformanceGraph graph) return;
     if (e.OldValue is StorageDriveViewModel previous) {
       previous.DetachTransferGraph(graph);
       graph.Reset(); // Also drops the read/write overlay; AttachTransferGraph re-registers it below.

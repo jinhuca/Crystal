@@ -1,5 +1,4 @@
 using Crystal.Controls.PerformanceGraphs;
-using Crystal.Controls.PerformanceGraphs.Kinds;
 using System.Windows.Media;
 using Xunit;
 
@@ -72,7 +71,7 @@ public class PerformanceGraphMarkerTests {
 
   // Neutral background/grid/border/line so the only Mark-colored pixels come from the marker layer.
   private static PerformanceGraph NewGraph() => new() {
-    Kind = GraphKind.Line,
+    DisplayMode = DisplayMode.Line,
     MinValue = 0,
     MaxValue = 100,
     GraphBackground = Brushes.Black,

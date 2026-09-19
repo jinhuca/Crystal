@@ -46,12 +46,13 @@
 
       <!-- Adaptive (Line/Dot) 3D-engine utilization history strip; self-registers under "Gpu.3D".
            Follows the title-bar Line/Dot toggle; default green→red gauge ramp. -->
-      <graphs:AdaptiveGraph
+      <graphs:PerformanceGraph
+        Style="{StaticResource AdaptiveGraphNoChromeStyle}"
         Grid.Row="2"
         Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Gpu.3D"
         HorizontalAlignment="Stretch" VerticalAlignment="Top"
         Height="24" Rows="8" 
-				Capacity="{StaticResource GpuSensorGraphCapacity}"
+				HistoryLength="{StaticResource GpuSensorGraphCapacity}"
         MinValue="0" MaxValue="100"
         BandedLine="True"
 				BandStartColor="{StaticResource Gpu3DBandedColor1}"

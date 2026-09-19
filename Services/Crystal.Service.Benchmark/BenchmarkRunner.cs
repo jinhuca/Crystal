@@ -26,7 +26,7 @@ public sealed class BenchmarkRunner {
       ct.ThrowIfCancellationRequested();
       onSuiteStarted(suite);
 
-      var progress = new Progress<BenchmarkProgress>(p => onSuiteProgress(suite, p));
+      var progress = new SynchronousProgress(p => onSuiteProgress(suite, p));
       var start = System.Diagnostics.Stopwatch.GetTimestamp();
       BenchmarkResult result;
       try {
@@ -43,5 +43,14 @@ public sealed class BenchmarkRunner {
 
       onSuiteCompleted(suite, result);
     }
+  }
+
+  // Invokes the progress handler synchronously on the suite's thread, unlike System.Threading's
+  // Progress<T>, which posts to the captured SynchronizationContext asynchronously. Synchronous
+  // dispatch keeps progress ordered with the started/completed callbacks (all fire directly on the
+  // background thread; the caller marshals to the UI), and avoids dropping a final tick when a suite
+  // reports progress and then completes immediately.
+  private sealed class SynchronousProgress(Action<BenchmarkProgress> handler) : IProgress<BenchmarkProgress> {
+    public void Report(BenchmarkProgress value) => handler(value);
   }
 }

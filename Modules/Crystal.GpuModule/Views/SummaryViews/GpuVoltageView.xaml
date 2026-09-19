@@ -46,12 +46,13 @@
       <!-- Adaptive (Line/Dot) voltage history strip; self-registers under "Gpu.Voltage", so the
            adapter VM feeds it each poll. Follows the title-bar Line/Dot toggle; banded
            whitesmoke→indigo voltage ramp. Fixed 0-2 V scale matching the CPU voltage tile. -->
-      <graphs:AdaptiveGraph
+      <graphs:PerformanceGraph
+        Style="{StaticResource AdaptiveGraphNoChromeStyle}"
         Grid.Row="2"
         Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Gpu.Voltage"
         HorizontalAlignment="Stretch" VerticalAlignment="Top"
         Height="24" Rows="10" 
-				Capacity="{StaticResource GpuSensorGraphCapacity}"
+				HistoryLength="{StaticResource GpuSensorGraphCapacity}"
         MinValue="0" MaxValue="2"
         BandedLine="True" 
 				BandStartColor="{StaticResource GpuVoltBandedColor1}" 

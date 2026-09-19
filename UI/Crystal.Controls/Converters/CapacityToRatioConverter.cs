@@ -6,23 +6,23 @@ using Crystal.Controls.PerformanceGraphs;
 namespace Crystal.Controls.Converters;
 
 /// <summary>
-/// Computes the Height a <see cref="PerformanceGraphLite"/> needs so its dots render perfectly
-/// square, given its own ActualWidth/Capacity/Rows - via
-/// <see cref="PerformanceGraphLite.SquareDotAspectRatio"/>, the exact same math the control's own
+/// Computes the Height a <see cref="PerformanceGraph"/> in <see cref="DisplayMode.Dot"/> mode needs
+/// so its dots render perfectly square, given its own ActualWidth/Capacity/Rows - via
+/// <see cref="PerformanceGraph.SquareDotAspectRatio"/>, the exact same math the control's own
 /// rendering uses, not a separately-maintained approximation.
 /// </summary>
 /// <remarks>
 /// Bind all three inputs from the SAME element via a MultiBinding, e.g.:
 /// <code>
-/// &lt;graphs:PerformanceGraphLite x:Name="Lite1" Capacity="30" HorizontalAlignment="Stretch"&gt;
-///   &lt;graphs:PerformanceGraphLite.Height&gt;
+/// &lt;graphs:PerformanceGraph x:Name="Dot1" DisplayMode="Dot" HistoryLength="30" HorizontalAlignment="Stretch"&gt;
+///   &lt;graphs:PerformanceGraph.Height&gt;
 ///     &lt;MultiBinding Converter="{StaticResource CapToRatioConverter}"&gt;
 ///       &lt;Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}"/&gt;
 ///       &lt;Binding Path="Capacity" RelativeSource="{RelativeSource Self}"/&gt;
 ///       &lt;Binding Path="Rows" RelativeSource="{RelativeSource Self}"/&gt;
 ///     &lt;/MultiBinding&gt;
-///   &lt;/graphs:PerformanceGraphLite.Height&gt;
-/// &lt;/graphs:PerformanceGraphLite&gt;
+///   &lt;/graphs:PerformanceGraph.Height&gt;
+/// &lt;/graphs:PerformanceGraph&gt;
 /// </code>
 /// No ConverterParameter is used or needed - Capacity and Rows come from the graph's own real,
 /// live DP values (both are now full dependency properties), so the ratio can never drift out of
@@ -43,7 +43,7 @@ public class CapacityToRatioConverter : IMultiValueConverter {
       return 20.0;
     }
 
-    double ratio = PerformanceGraphLite.SquareDotAspectRatio(rows, capacity);
+    double ratio = PerformanceGraph.SquareDotAspectRatio(rows, capacity);
     return Math.Max(20.0, width * ratio);
   }
 

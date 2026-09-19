@@ -6,7 +6,7 @@
     xmlns:converters="clr-namespace:Crystal.Controls.Converters">
 
   <!--
-    This file lives in the SAME assembly as PerformanceGraphLite and CapacityToRatioConverter, so the
+    This file lives in the SAME assembly as PerformanceGraph and CapacityToRatioConverter, so the
     xmlns above deliberately omit ";assembly=Crystal.Controls" - including it mid-compile triggers
     MC3066 (the markup compiler tries to load the assembly currently being built). It's merged into
     app scope via this assembly's Themes/Generic.xaml, so the keyed style below resolves through
@@ -24,7 +24,8 @@
     ActualWidth to square against. Value range (MinValue/MaxValue), MinHeight floor, and any Flip
     are left to each consuming tile, exactly as the sibling PerformanceGraph tiles set them.
   -->
-  <Style x:Key="SquareDotGraphLiteStyle" TargetType="{x:Type graphs:PerformanceGraphLite}">
+  <Style x:Key="SquareDotGraphLiteStyle" TargetType="{x:Type graphs:PerformanceGraph}">
+    <Setter Property="DisplayMode" Value="Dot"/>
     <Setter Property="HorizontalAlignment" Value="Stretch"/>
     <Setter Property="CornerRadius" Value="1"/>
     <Setter Property="Height">
@@ -38,12 +39,12 @@
     </Setter>
   </Style>
 
-  <Style x:Key="BandedSquareDotGraphLiteStyle" TargetType="{x:Type graphs:PerformanceGraphLite}"
+  <Style x:Key="BandedSquareDotGraphLiteStyle" TargetType="{x:Type graphs:PerformanceGraph}"
          BasedOn="{StaticResource SquareDotGraphLiteStyle}">
     <Setter Property="ColorMode" Value="Banded"/>
   </Style>
 
-  <Style x:Key="ClockBandedSquareDotGraphLiteStyle" TargetType="{x:Type graphs:PerformanceGraphLite}"
+  <Style x:Key="ClockBandedSquareDotGraphLiteStyle" TargetType="{x:Type graphs:PerformanceGraph}"
          BasedOn="{StaticResource BandedSquareDotGraphLiteStyle}">
     <Setter Property="Color1" Value="{StaticResource ClockAccentBandedBrush1}"/>
     <Setter Property="Color2" Value="{StaticResource ClockAccentBandedBrush2}"/>
@@ -56,7 +57,7 @@
     <Setter Property="Color9" Value="{StaticResource ClockAccentBandedBrush9}"/>
   </Style>
 
-  <Style x:Key="VoltageBandedSquareDotGraphLiteStyle" TargetType="{x:Type graphs:PerformanceGraphLite}"
+  <Style x:Key="VoltageBandedSquareDotGraphLiteStyle" TargetType="{x:Type graphs:PerformanceGraph}"
          BasedOn="{StaticResource BandedSquareDotGraphLiteStyle}">
     <Setter Property="Color1" Value="{StaticResource VoltageAccentBandedBrush1}"/>
     <Setter Property="Color2" Value="{StaticResource VoltageAccentBandedBrush2}"/>
@@ -69,7 +70,7 @@
     <Setter Property="Color9" Value="{StaticResource VoltageAccentBandedBrush9}"/>
   </Style>
 
-  <Style x:Key="TemperatureBandedSquareDotGraphLiteStyle" TargetType="{x:Type graphs:PerformanceGraphLite}"
+  <Style x:Key="TemperatureBandedSquareDotGraphLiteStyle" TargetType="{x:Type graphs:PerformanceGraph}"
          BasedOn="{StaticResource BandedSquareDotGraphLiteStyle}">
     <Setter Property="Color1" Value="{StaticResource TemperatureAccentBandedBrush1}"/>
     <Setter Property="Color2" Value="{StaticResource TemperatureAccentBandedBrush2}"/>
@@ -82,7 +83,7 @@
     <Setter Property="Color9" Value="{StaticResource TemperatureAccentBandedBrush9}"/>
   </Style>
 
-  <Style x:Key="PowerBandedSquareDotGraphLiteStyle" TargetType="{x:Type graphs:PerformanceGraphLite}"
+  <Style x:Key="PowerBandedSquareDotGraphLiteStyle" TargetType="{x:Type graphs:PerformanceGraph}"
          BasedOn="{StaticResource BandedSquareDotGraphLiteStyle}">
     <Setter Property="Color1" Value="{StaticResource PowerAccentBandedBrush1}"/>
     <Setter Property="Color2" Value="{StaticResource PowerAccentBandedBrush2}"/>
@@ -118,7 +119,8 @@
     cells come out the same size across graphs of different Capacity - see SquareDotWidthConverter.
     Horizontal/vertical alignment and margins are left to each consuming tile.
   -->
-  <Style x:Key="UtilizationGraphLiteStyle" TargetType="{x:Type graphs:PerformanceGraphLite}">
+  <Style x:Key="UtilizationGraphLiteStyle" TargetType="{x:Type graphs:PerformanceGraph}">
+    <Setter Property="DisplayMode" Value="Dot"/>
     <Setter Property="CornerRadius" Value="1"/>
     <Setter Property="Height" Value="{StaticResource UtilizationGraphHeight}"/>
     <Setter Property="Width">
@@ -132,7 +134,7 @@
     </Setter>
   </Style>
 
-	<Style x:Key="SampleStyle" TargetType="{x:Type graphs:AdaptiveGraph}">
+	<Style x:Key="SampleStyle" TargetType="{x:Type graphs:PerformanceGraph}">
 		<Setter Property="BandedLine" Value="True"/>
 		<Setter Property="BandStartColor" Value="WhiteSmoke"/>
 		<Setter Property="BandEndColor" Value="Red"/>
