@@ -10,17 +10,26 @@ namespace Crystal.Controls.PerformanceGraphs;
 /// pruned on attach and on feed.
 /// </summary>
 public sealed class GraphFeedRegistry {
+  /// <summary>
+  /// Maps a string id to every live graph registered under it. Each graph is held weakly so a 
+  /// closed  detail window or replaced view does not keep it alive forever, and dead entries 
+  /// are pruned on attach and feed.
+  /// </summary>
   private readonly Dictionary<string, List<WeakReference<ISingleSeriesGraph>>> _byId = [];
 
-  /// <summary>Registers a graph under an id. Idempotent: re-attaching the same instance is a no-op,
-  /// so a repeated Loaded event does not double-feed the graph.</summary>
+  /// <summary>
+  /// Registers a graph under an id. Idempotent: re-attaching the same instance is a no-op,
+  /// so a repeated Loaded event does not double-feed the graph.
+  /// </summary>
   public void Attach(string id, ISingleSeriesGraph graph) {
     if (!_byId.TryGetValue(id, out var list)) _byId[id] = list = [];
     list.RemoveAll(w => !w.TryGetTarget(out var g) || ReferenceEquals(g, graph));
     list.Add(new WeakReference<ISingleSeriesGraph>(graph));
   }
 
-  /// <summary>Appends a sample to every live graph registered under the id, pruning collected ones.</summary>
+  /// <summary>
+  /// Appends a sample to every live graph registered under the id, pruning collected ones.
+  /// </summary>
   public void Feed(string id, double value) {
     // A non-finite sample (NaN/Infinity from a momentarily bad sensor) normalizes to NaN in the plot,
     // which the fill geometry renders as a full-height band — the "graph pinned at 100%" symptom. Drop

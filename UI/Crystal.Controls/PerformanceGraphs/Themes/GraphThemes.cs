@@ -7,8 +7,19 @@ namespace Crystal.Controls.PerformanceGraphs.Themes;
 /// Built-in <see cref="GraphTheme"/> presets for <see cref="PerformanceGraph"/>.
 /// </summary>
 public static class GraphThemes {
+  /// <summary>
+  /// The default background brush for the graph, which is black.
+  /// </summary>
   private static readonly Brush DefaultBackground = Freeze(Brushes.Black);
+
+  /// <summary>
+  /// The default grid brush for the graph, which is a dark gray color.
+  /// </summary>
   private static readonly Brush DefaultGrid = Freeze(new SolidColorBrush(Color.FromRgb(0x30, 0x30, 0x30)));
+
+  /// <summary>
+  /// The default border brush for the graph, which is a blue color.
+  /// </summary>
   private static readonly Brush DefaultBorder = Freeze(new SolidColorBrush(Color.FromRgb(0x3E, 0x7B, 0xC4)));
 
   /// <summary>
@@ -62,6 +73,13 @@ public static class GraphThemes {
     };
   }
 
+  /// <summary>
+  /// Creates a vertical gradient brush that fades from a solid accent color at the top to a more 
+  /// transparent version of the same color at the bottom. This is used to create a "glow" effect 
+  /// for the fill area under the graph line.
+  /// </summary>
+  /// <param name="accent">the accent color to use for the gradient</param>
+  /// <returns>the vertical glow gradient brush</returns>
   private static Brush CreateVerticalGlow(Color accent) {
     // The gradient is mapped to the full plot height (bright near MaxValue, faint at the
     // baseline). A low reading only exposes the bottom of that gradient, so the fill must stay
@@ -76,6 +94,11 @@ public static class GraphThemes {
     return Freeze(brush);
   }
 
+  /// <summary>
+  /// Freezes the given brush if it can be frozen, making it immutable and improving performance.
+  /// </summary>
+  /// <param name="brush">the brush to freeze</param>
+  /// <returns>the frozen brush</returns>
   private static Brush Freeze(Brush brush) {
     if (brush.CanFreeze) brush.Freeze();
     return brush;

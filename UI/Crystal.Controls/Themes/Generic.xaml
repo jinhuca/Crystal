@@ -1,11 +1,8 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <ResourceDictionary.MergedDictionaries>
-    <!-- All PerformanceGraph styling (the PerformanceGraphView chrome template, the global-mode-bound
-         dashboard summary style, the square-dot tile styles, and the keyed line/category sample
-         styles) lives in one dictionary. Merging Generic.xaml into app scope via the Shell's App.xaml
-         makes every keyed style resolve through StaticResource, and lets the XAML tooling discover
-         them from any project that references Crystal.Controls. -->
+    <!-- Merging Generic.xaml into app scope via the Shell's App.xaml makes every keyed style resolve through StaticResource, 
+		     and lets the XAML tooling discover them from any project that references Crystal.Controls. -->
     <ResourceDictionary Source="/Crystal.Controls;component/Themes/PerformanceGraphStyles.xaml"/>
     <ResourceDictionary Source="/Crystal.Controls;component/Themes/RangeBarStyles.xaml"/>
     <ResourceDictionary Source="/Crystal.Controls;component/RangeBars/Styles/SummaryRangeBarStyle.xaml"/>

@@ -2,9 +2,11 @@ using System.Windows.Media;
 
 namespace Crystal.Controls.PerformanceGraphs.Kinds;
 
-// The one green→red gauge ramp shared by every value-banded renderer: PerformanceGraphLite's
-// dot matrix (row-by-value coloring) and PerformanceGraph's banded Line kind (segment-by-value
-// coloring). Kept in one place so the two render paths read as the same low-to-high palette.
+/// <summary>
+/// The one green→red gauge ramp shared by every value-banded renderer: PerformanceGraphLite's
+/// dot matrix (row-by-value coloring) and PerformanceGraph's banded Line kind (segment-by-value
+/// coloring). Kept in one place so the two render paths read as the same low-to-high palette.
+/// </summary>
 internal static class GaugeBandPalette {
   public const int BandCount = 9;
 
@@ -42,6 +44,10 @@ internal static class GaugeBandPalette {
     return brushes;
   }
 
+  /// <summary>
+  /// Creates the translucent area-fill variant of each solid band color, at FillAlpha. Frozen.
+  /// </summary>
+  /// <returns>An array of translucent brushes for each band.</returns>
   private static Brush[] CreateFill() {
     var brushes = new Brush[Ramp.Length];
     for (int i = 0; i < Ramp.Length; i++) {
@@ -52,10 +58,15 @@ internal static class GaugeBandPalette {
     return brushes;
   }
 
-  // A BandCount-length solid ramp linearly interpolated (in RGB) between two endpoint colors, so a
-  // caller that only knows "low color → high color" (e.g. DodgerBlue → Red) gets the same nine-band
-  // structure the built-in green→red ramp uses, per-instance, without hand-picking nine colors. Band
-  // 0 is start, band BandCount-1 is end. Frozen, so the result is safe to share and cache.
+  /// <summary>
+  /// A BandCount-length solid ramp linearly interpolated (in RGB) between two endpoint colors, so a
+  /// caller that only knows "low color → high color" (e.g. DodgerBlue → Red) gets the same nine-band
+  /// structure the built-in green→red ramp uses, per-instance, without hand-picking nine colors. Band
+  /// 0 is start, band BandCount-1 is end. Frozen, so the result is safe to share and cache.
+  /// </summary>
+  /// <param name="start">The starting color.</param>
+  /// <param name="end">The ending color.</param>
+  /// <returns>An array of brushes for each band.</returns>
   public static Brush[] BuildSolidRamp(Color start, Color end) {
     var brushes = new Brush[BandCount];
     for (int i = 0; i < BandCount; i++) {
@@ -67,9 +78,13 @@ internal static class GaugeBandPalette {
     return brushes;
   }
 
-  // The translucent area-fill counterpart of a custom solid ramp: each solid band's color re-emitted
-  // at FillAlpha, matching how Fill relates to Solid for the built-in ramp. Non-solid brushes fall
-  // back to fully transparent (this control's bands are always solid colors in practice). Frozen.
+  /// <summary>
+  /// The translucent area-fill counterpart of a custom solid ramp: each solid band's color re-emitted
+  /// at FillAlpha, matching how Fill relates to Solid for the built-in ramp. Non-solid brushes fall
+  /// back to fully transparent (this control's bands are always solid colors in practice). Frozen.
+  /// </summary>
+  /// <param name="solids">The array of solid brushes.</param>
+  /// <returns>An array of translucent brushes for each band.</returns>
   public static Brush[] DeriveFill(Brush[] solids) {
     var brushes = new Brush[solids.Length];
     for (int i = 0; i < solids.Length; i++) {
@@ -81,5 +96,13 @@ internal static class GaugeBandPalette {
     return brushes;
   }
 
+  /// <summary>
+  /// Linearly interpolates between two byte values, rounding to the nearest integer. 
+  /// Used to compute the RGB components of a color ramp.
+  /// </summary>
+  /// <param name="a">The first byte value.</param>
+  /// <param name="b">The second byte value.</param>
+  /// <param name="t">The interpolation factor.</param>
+  /// <returns>The interpolated byte value.</returns>
   private static byte Lerp(byte a, byte b, double t) => (byte)Math.Round(a + (b - a) * t);
 }

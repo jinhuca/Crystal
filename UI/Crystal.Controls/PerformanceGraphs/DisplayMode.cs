@@ -7,15 +7,21 @@ namespace Crystal.Controls.PerformanceGraphs;
 /// sample buffer is kept and simply re-drawn).
 /// </summary>
 public enum DisplayMode {
-  /// <summary>A single continuous filled line/area for the primary series, plus any overlay series
-  /// added via <see cref="PerformanceGraph.AddSeries"/>.</summary>
+  /// <summary>
+  /// A single continuous filled line/area for the primary series, plus any overlay series
+  /// added via <see cref="PerformanceGraph.AddSeries"/>.
+  /// </summary>
   Line,
 
-  /// <summary>A dot-matrix gauge: each column of samples drawn as a stack of dots, value-banded
-  /// (green→red) or a single flat color.</summary>
+  /// <summary>
+  /// A dot-matrix gauge: each column of samples drawn as a stack of dots, value-banded
+  /// (green→red) or a single flat color.
+  /// </summary>
   Dot,
 
-  /// <summary>Multiple independent lines, one per <see cref="DataSeries"/> in
-  /// <see cref="PerformanceGraph.Series"/>, sharing one set of axes.</summary>
+  /// <summary>
+  /// Multiple independent lines, one per <see cref="DataSeries"/> in
+  /// <see cref="PerformanceGraph.Series"/>, sharing one set of axes.
+  /// </summary>
   MultipleLine,
 }

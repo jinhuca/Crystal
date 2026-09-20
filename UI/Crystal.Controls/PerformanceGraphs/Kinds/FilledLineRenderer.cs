@@ -4,25 +4,60 @@ using System.Windows.Media;
 
 namespace Crystal.Controls.PerformanceGraphs.Kinds;
 
+/// <summary>
+/// Renders a filled line graph (the primary series in <see cref="DisplayMode.Line"/> mode) with optional value-banded coloring. 
+/// The fill geometry is built first, then the line geometry is built on top of it. The fill is drawn first, then the line on top, 
+/// so the line is always visible even if the fill is opaque. The geometries are reused every frame by re-opening them 
+/// — never frozen. See <see cref="PerformanceGraph"/>'s <c>OnRender</c> ordering comment for why: <see cref="StreamGeometry"/> 
+/// can be re-<c>Open()</c>'d indefinitely as long as it isn't frozen, so this is the whole allocation for this renderer's lifetime.
+/// </summary>
 internal sealed class FilledLineRenderer {
-  // Reused every frame by re-opening them — never frozen. See PerformanceGraph's OnRender
-  // ordering comment for why: StreamGeometry can be re-Open()'d indefinitely as long as it
-  // isn't frozen, so this is the whole allocation for this renderer's lifetime.
+  /// <summary>
+  /// Reused every frame by re-opening them — never frozen. See PerformanceGraph's OnRender
+  /// ordering comment for why: StreamGeometry can be re-Open()'d indefinitely as long as it
+  /// isn't frozen, so this is the whole allocation for this renderer's lifetime.
+  /// </summary>
   private readonly StreamGeometry _fillGeometry = new();
+
+  /// <summary>
+  /// Reused every frame by re-opening them — never frozen. See PerformanceGraph's OnRender
+  /// ordering comment for why: StreamGeometry can be re-Open()'d indefinitely as long as it
+  /// isn't frozen, so this is the whole allocation for this renderer's lifetime.
+  /// </summary>
   private readonly StreamGeometry _lineGeometry = new();
 
+  /// <summary>
+  /// Draws a filled line graph (the primary series in DisplayMode.Line mode) with optional value-banded coloring. 
+  /// The fill geometry is built first, then the line geometry is built on top of it. The fill is drawn first, 
+  /// then the line on top, so the line is always visible even if the fill is opaque. The geometries are reused 
+  /// every frame by re-opening them — never frozen. See PerformanceGraph's OnRender ordering comment for why: 
+  /// StreamGeometry can be re-Open()'d indefinitely as long as it isn't frozen, so this is the whole allocation 
+  /// for this renderer's lifetime.
+  /// </summary>
+  /// <param name="dc">The drawing context.</param>
+  /// <param name="bounds">The bounds of the graph.</param>
+  /// <param name="values">The values to plot.</param>
+  /// <param name="capacity">The capacity of the value buffer.</param>
+  /// <param name="minValue">The minimum value.</param>
+  /// <param name="maxValue">The maximum value.</param>
+  /// <param name="linePen">The pen for drawing the line.</param>
+  /// <param name="fillBrush">The brush for filling the area under the line.</param>
+  /// <param name="bandPens">The pens for drawing the banded segments.</param>
+  /// <param name="bandFills">The brushes for filling the banded segments.</param>
+  /// <param name="cellPitch">The pitch of each cell.</param>
   public void Draw(
-      DrawingContext dc,
-      Rect bounds,
-      CircularBuffer<double> values,
-      int capacity,
-      double minValue,
-      double maxValue,
-      Pen? linePen,
-      Brush? fillBrush,
-      Pen[]? bandPens = null,
-      Brush[]? bandFills = null,
-      double cellPitch = 0) {
+    DrawingContext dc,
+    Rect bounds,
+    CircularBuffer<double> values,
+    int capacity,
+    double minValue,
+    double maxValue,
+    Pen? linePen,
+    Brush? fillBrush,
+    Pen[]? bandPens = null,
+    Brush[]? bandFills = null,
+    double cellPitch = 0) {
+
     int count = values.Count;
     if (count < 2) return;
     if (bounds.Width <= 0 || bounds.Height <= 0) return;
@@ -47,7 +82,8 @@ internal sealed class FilledLineRenderer {
       int cols = Math.Max(1, (int)Math.Round(bounds.Width / cellPitch));
       slotWidth = bounds.Width / cols;
       if (count > cols) start = count - cols;
-    } else {
+    }
+    else {
       int effectiveCapacity = capacity > count ? capacity : count;
       slotWidth = bounds.Width / effectiveCapacity;
     }
@@ -103,7 +139,8 @@ internal sealed class FilledLineRenderer {
         }
         lineCtx.LineTo(capEnd, isStroked: true, isSmoothJoin: true);
       }
-    } finally {
+    }
+    finally {
       fillCtx?.Close();
     }
 
@@ -133,12 +170,20 @@ internal sealed class FilledLineRenderer {
     }
   }
 
-  // Value-banded paint: the plotted range is split into bandFills.Length equal-height horizontal
-  // strips (band 0 lowest). The fill under the curve is painted band-by-band by clipping to the
-  // area geometry and drawing each band's strip in its translucent color, so it stacks green→red
-  // from the baseline up to the curve. The line is then drawn once per band, each pass clipped to
-  // that band's strip and stroked in the band's solid color, so the line changes color as it rises
-  // and falls through the scale. Both reuse the geometries already built above.
+  /// <summary>
+  /// Value-banded paint: the plotted range is split into bandFills.Length equal-height horizontal
+  /// strips (band 0 lowest). The fill under the curve is painted band-by-band by clipping to the
+  /// area geometry and drawing each band's strip in its translucent color, so it stacks green→red
+  /// from the baseline up to the curve. The line is then drawn once per band, each pass clipped to
+  /// that band's strip and stroked in the band's solid color, so the line changes color as it rises
+  /// and falls through the scale. Both reuse the geometries already built above.
+  /// </summary>
+  /// <param name="dc">The drawing context.</param>
+  /// <param name="bounds">The bounding rectangle for the plot area.</param>
+  /// <param name="minValue">The minimum value in the plotted range.</param>
+  /// <param name="range">The range of values in the plotted data.</param>
+  /// <param name="bandPens">An array of pens for drawing the line in each band.</param>
+  /// <param name="bandFills">An array of brushes for filling each band.</param>
   private void PaintBanded(DrawingContext dc, Rect bounds, double minValue, double range, Pen[] bandPens, Brush[] bandFills) {
     int bands = bandFills.Length;
 
@@ -161,8 +206,16 @@ internal sealed class FilledLineRenderer {
     }
   }
 
-  // The pixel rectangle spanning the full plot width and the vertical extent of value-band `band`
-  // (of `bands` equal-value bands across [minValue, minValue+range]).
+  /// <summary>
+  /// The pixel rectangle spanning the full plot width and the vertical extent of value-band `band`
+  /// (of `bands` equal-value bands across [minValue, minValue+range]).
+  /// </summary>
+  /// <param name="band">The band index.</param>
+  /// <param name="bands">The total number of bands.</param>
+  /// <param name="bounds">The bounding rectangle for the plot area.</param>
+  /// <param name="minValue">The minimum value in the plotted range.</param>
+  /// <param name="range">The range of values in the plotted data.</param>
+  /// <returns>The pixel rectangle for the band.</returns>
   private static Rect BandStrip(int band, int bands, Rect bounds, double minValue, double range) {
     double lowValue = minValue + band / (double)bands * range;
     double highValue = minValue + (band + 1) / (double)bands * range;
@@ -171,6 +224,14 @@ internal sealed class FilledLineRenderer {
     return new Rect(bounds.Left, yTop, bounds.Width, yBottom - yTop);
   }
 
+  /// <summary>
+  /// Computes the Y-coordinate for a given value within the plot area.
+  /// </summary>
+  /// <param name="value">The value for which to compute the Y-coordinate.</param>
+  /// <param name="minValue">The minimum value in the plotted range.</param>
+  /// <param name="range">The range of values in the plotted data.</param>
+  /// <param name="bounds">The bounding rectangle for the plot area.</param>
+  /// <returns>The Y-coordinate for the given value.</returns>
   private static double ComputeY(double value, double minValue, double range, Rect bounds) {
     double t = (value - minValue) / range;
     t = t < 0 ? 0 : (t > 1 ? 1 : t);

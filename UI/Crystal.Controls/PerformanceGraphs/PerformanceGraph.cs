@@ -18,10 +18,30 @@ namespace Crystal.Controls.PerformanceGraphs;
 /// the framing chrome is drawn.
 /// </summary>
 public class PerformanceGraph : FrameworkElement, ISingleSeriesGraph {
+  /// <summary>
+  /// The default number of samples retained/plotted — independent of <see cref="GridColumns"/>.
+  /// </summary>
   private const int DefaultHistoryLength = 60;
+
+  /// <summary>
+  /// The default number of vertical grid lines drawn — a purely cosmetic density, independent of <see cref="Capacity"/>.
+  /// </summary>
   private const int DefaultGridColumns = 60;
+
+  /// <summary>
+  /// The default number of horizontal grid lines drawn — purely cosmetic.
+  /// </summary>
   private const int DefaultGridRows = 12;
+
+  /// <summary>
+  /// The default number of rows in Dot mode, purely cosmetic.
+  /// </summary>
   private const int DefaultRows = 10;
+
+  /// <summary>
+  /// The number of color bands in the default green→red gauge ramp (band 0 green … band 8 red) for Dot-mode banding, 
+  /// single-sourced from GaugeBandPalette so the dot matrix and the banded Line share the exact same colors.
+  /// </summary>
   private const int BandCount = GaugeBandPalette.BandCount;
 
   /// <summary>

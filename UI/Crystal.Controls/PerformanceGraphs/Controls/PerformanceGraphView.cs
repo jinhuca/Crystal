@@ -22,107 +22,182 @@ namespace Crystal.Controls.PerformanceGraphs.Controls;
 /// </summary>
 [TemplatePart(Name = PartGraph, Type = typeof(PerformanceGraph))]
 public class PerformanceGraphView : Control {
+  /// <summary>
+  /// Name of the <see cref="PerformanceGraph"/> part in the control template.
+  /// </summary>
   private const string PartGraph = "PART_Graph";
 
+  /// <summary>
+  /// Initializes the <see cref="PerformanceGraphView"/> class, overriding the default style key.
+  /// </summary>
   static PerformanceGraphView() {
     DefaultStyleKeyProperty.OverrideMetadata(
-        typeof(PerformanceGraphView),
-        new FrameworkPropertyMetadata(typeof(PerformanceGraphView)));
+      typeof(PerformanceGraphView),
+      new FrameworkPropertyMetadata(typeof(PerformanceGraphView)));
   }
 
-  /// <summary>Header title, e.g. "% Utilization" or "Voltage".</summary>
-  public static readonly DependencyProperty TitleProperty =
-      DependencyProperty.Register(nameof(Title), typeof(string), typeof(PerformanceGraphView),
-          new FrameworkPropertyMetadata(string.Empty));
+  /// <summary>
+  /// Header title, e.g. "% Utilization" or "Voltage".
+  /// </summary>
+  public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
+    nameof(Title),
+    typeof(string),
+    typeof(PerformanceGraphView),
+    new FrameworkPropertyMetadata(string.Empty));
 
+  /// <summary>
+  /// Header title, e.g. "% Utilization" or "Voltage".
+  /// </summary>
   public string Title {
     get => (string)GetValue(TitleProperty);
     set => SetValue(TitleProperty, value);
   }
 
-  /// <summary>Top of the graph's value scale; shown in the header. Drives <see cref="PerformanceGraph.MaxValue"/>.</summary>
-  public static readonly DependencyProperty MaxValueProperty =
-      DependencyProperty.Register(nameof(MaxValue), typeof(double), typeof(PerformanceGraphView),
-          new FrameworkPropertyMetadata(100.0, OnMaxValueChanged));
+  /// <summary>
+  /// Top of the graph's value scale; shown in the header. Drives <see cref="PerformanceGraph.MaxValue"/>.
+  /// </summary>
+  public static readonly DependencyProperty MaxValueProperty = DependencyProperty.Register(
+    nameof(MaxValue),
+    typeof(double),
+    typeof(PerformanceGraphView),
+    new FrameworkPropertyMetadata(100.0, OnMaxValueChanged));
 
+  /// <summary>
+  /// Top of the graph's value scale; shown in the header. Drives <see cref="PerformanceGraph.MaxValue"/>.
+  /// </summary>
   public double MaxValue {
     get => (double)GetValue(MaxValueProperty);
     set => SetValue(MaxValueProperty, value);
   }
 
-  /// <summary>Composite format applied to <see cref="MaxValue"/> for the header label, e.g. "{0}%" or "{0}V".</summary>
-  public static readonly DependencyProperty MaxValueFormatProperty =
-      DependencyProperty.Register(nameof(MaxValueFormat), typeof(string), typeof(PerformanceGraphView),
-          new FrameworkPropertyMetadata("{0}"));
+  /// <summary>
+  /// Composite format applied to <see cref="MaxValue"/> for the header label, e.g. "{0}%" or "{0}V".
+  /// </summary>
+  public static readonly DependencyProperty MaxValueFormatProperty = DependencyProperty.Register(
+    nameof(MaxValueFormat),
+    typeof(string),
+    typeof(PerformanceGraphView),
+    new FrameworkPropertyMetadata("{0}"));
 
+  /// <summary>
+  /// Composite format applied to <see cref="MaxValue"/> for the header label, e.g. "{0}%" or "{0}V".
+  /// </summary>
   public string MaxValueFormat {
     get => (string)GetValue(MaxValueFormatProperty);
     set => SetValue(MaxValueFormatProperty, value);
   }
 
-  /// <summary>When true, a segmented-bar graph is drawn mirrored (180°). Drives <see cref="PerformanceGraph.Flip"/>.</summary>
-  public static readonly DependencyProperty FlipProperty =
-      DependencyProperty.Register(nameof(Flip), typeof(bool), typeof(PerformanceGraphView),
-          new FrameworkPropertyMetadata(false, OnFlipChanged));
+  /// <summary>
+  /// When true, a segmented-bar graph is drawn mirrored (180°). Drives <see cref="PerformanceGraph.Flip"/>.
+  /// </summary>
+  public static readonly DependencyProperty FlipProperty = DependencyProperty.Register(
+    nameof(Flip),
+    typeof(bool),
+    typeof(PerformanceGraphView),
+    new FrameworkPropertyMetadata(false, OnFlipChanged));
 
+  /// <summary>
+  /// When true, a segmented-bar graph is drawn mirrored (180°). Drives <see cref="PerformanceGraph.Flip"/>.
+  /// </summary>
   public bool Flip {
     get => (bool)GetValue(FlipProperty);
     set => SetValue(FlipProperty, value);
   }
 
-  /// <summary>Bottom of the graph's value scale. Drives <see cref="PerformanceGraph.MinValue"/>.</summary>
-  public static readonly DependencyProperty MinValueProperty =
-      DependencyProperty.Register(nameof(MinValue), typeof(double), typeof(PerformanceGraphView),
-          new FrameworkPropertyMetadata(0.0, OnMinValueChanged));
+  /// <summary>
+  /// Bottom of the graph's value scale. Drives <see cref="PerformanceGraph.MinValue"/>.
+  /// </summary>
+  public static readonly DependencyProperty MinValueProperty = DependencyProperty.Register(
+    nameof(MinValue),
+    typeof(double),
+    typeof(PerformanceGraphView),
+    new FrameworkPropertyMetadata(0.0, OnMinValueChanged));
 
+  /// <summary>
+  /// Bottom of the graph's value scale. Drives <see cref="PerformanceGraph.MinValue"/>.
+  /// </summary>
   public double MinValue {
     get => (double)GetValue(MinValueProperty);
     set => SetValue(MinValueProperty, value);
   }
 
-  /// <summary>Footer max-time value (oldest sample edge), e.g. 60; shown at the footer's left.</summary>
-  public static readonly DependencyProperty MaxTimeProperty =
-      DependencyProperty.Register(nameof(MaxTime), typeof(double), typeof(PerformanceGraphView),
-          new FrameworkPropertyMetadata(60.0));
+  /// <summary>
+  /// Footer max-time value (oldest sample edge), e.g. 60; shown at the footer's left.
+  /// </summary>
+  public static readonly DependencyProperty MaxTimeProperty = DependencyProperty.Register(
+    nameof(MaxTime),
+    typeof(double),
+    typeof(PerformanceGraphView),
+    new FrameworkPropertyMetadata(60.0));
 
+  /// <summary>
+  /// Footer max-time value (oldest sample edge), e.g. 60; shown at the footer's left.
+  /// </summary>
   public double MaxTime {
     get => (double)GetValue(MaxTimeProperty);
     set => SetValue(MaxTimeProperty, value);
   }
 
-  /// <summary>Composite format applied to <see cref="MaxTime"/>, e.g. "{0} seconds".</summary>
-  public static readonly DependencyProperty MaxTimeFormatProperty =
-      DependencyProperty.Register(nameof(MaxTimeFormat), typeof(string), typeof(PerformanceGraphView),
-          new FrameworkPropertyMetadata("{0}"));
+  /// <summary>
+  /// Composite format applied to <see cref="MaxTime"/>, e.g. "{0} seconds".
+  /// </summary>
+  public static readonly DependencyProperty MaxTimeFormatProperty = DependencyProperty.Register(
+    nameof(MaxTimeFormat),
+    typeof(string),
+    typeof(PerformanceGraphView),
+    new FrameworkPropertyMetadata("{0}"));
 
+  /// <summary>
+  /// Composite format applied to <see cref="MaxTime"/>, e.g. "{0} seconds".
+  /// </summary>
   public string MaxTimeFormat {
     get => (string)GetValue(MaxTimeFormatProperty);
     set => SetValue(MaxTimeFormatProperty, value);
   }
 
-  /// <summary>Footer min-time value (newest sample edge), e.g. 0; shown at the footer's right.</summary>
-  public static readonly DependencyProperty MinTimeProperty =
-      DependencyProperty.Register(nameof(MinTime), typeof(double), typeof(PerformanceGraphView),
-          new FrameworkPropertyMetadata(0.0));
+  /// <summary>
+  /// Footer min-time value (newest sample edge), e.g. 0; shown at the footer's right.
+  /// </summary>
+  public static readonly DependencyProperty MinTimeProperty = DependencyProperty.Register(
+    nameof(MinTime),
+    typeof(double),
+    typeof(PerformanceGraphView),
+    new FrameworkPropertyMetadata(0.0));
 
+  /// <summary>
+  /// Footer min-time value (newest sample edge), e.g. 0; shown at the footer's right.
+  /// </summary>
   public double MinTime {
     get => (double)GetValue(MinTimeProperty);
     set => SetValue(MinTimeProperty, value);
   }
 
-  /// <summary>Composite format applied to <see cref="MinTime"/>, e.g. "{0}" or "{0} s".</summary>
-  public static readonly DependencyProperty MinTimeFormatProperty =
-      DependencyProperty.Register(nameof(MinTimeFormat), typeof(string), typeof(PerformanceGraphView),
-          new FrameworkPropertyMetadata("{0}"));
+  /// <summary>
+  /// Composite format applied to <see cref="MinTime"/>, e.g. "{0}" or "{0} s".
+  /// </summary>
+  public static readonly DependencyProperty MinTimeFormatProperty = DependencyProperty.Register(
+    nameof(MinTimeFormat),
+    typeof(string),
+    typeof(PerformanceGraphView),
+    new FrameworkPropertyMetadata("{0}"));
 
+  /// <summary>
+  /// Composite format applied to <see cref="MinTime"/>, e.g. "{0}" or "{0} s".
+  /// </summary>
   public string MinTimeFormat {
     get => (string)GetValue(MinTimeFormatProperty);
     set => SetValue(MinTimeFormatProperty, value);
   }
 
-  /// <summary>The wrapped graph, available once the template is applied.</summary>
+  /// <summary>
+  /// The wrapped graph, available once the template is applied.
+  /// </summary>
   public PerformanceGraph? Graph { get; private set; }
 
+  /// <summary>
+  /// Called when the control template is applied, to find the <see cref="PerformanceGraph"/> part 
+  /// and push the current scale values onto it.
+  /// </summary>
   public override void OnApplyTemplate() {
     base.OnApplyTemplate();
     Graph = GetTemplateChild(PartGraph) as PerformanceGraph;
@@ -135,14 +210,29 @@ public class PerformanceGraphView : Control {
     }
   }
 
+  /// <summary>
+  /// Called when <see cref="MaxValue"/> changes, to push the new value onto the wrapped graph.
+  /// </summary>
+  /// <param name="d">d</param>
+  /// <param name="e">e</param>
   private static void OnMaxValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
     if (((PerformanceGraphView)d).Graph is { } graph) graph.MaxValue = (double)e.NewValue;
   }
 
+  /// <summary>
+  /// Called when <see cref="MinValue"/> changes, to push the new value onto the wrapped graph.
+  /// </summary>
+  /// <param name="d">d</param>
+  /// <param name="e">e</param>
   private static void OnMinValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
     if (((PerformanceGraphView)d).Graph is { } graph) graph.MinValue = (double)e.NewValue;
   }
 
+  /// <summary>
+  /// Called when <see cref="Flip"/> changes, to push the new value onto the wrapped graph.
+  /// </summary>
+  /// <param name="d">d</param>
+  /// <param name="e">e</param>
   private static void OnFlipChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
     if (((PerformanceGraphView)d).Graph is { } graph) graph.Flip = (bool)e.NewValue;
   }

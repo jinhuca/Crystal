@@ -15,22 +15,50 @@ namespace Crystal.Controls.PerformanceGraphs;
 /// </para>
 /// </summary>
 public static class GraphIdentity {
-  /// <summary>Identifies the attached <c>Id</c> property.</summary>
-  public static readonly DependencyProperty IdProperty =
-      DependencyProperty.RegisterAttached("Id", typeof(string), typeof(GraphIdentity),
-          new PropertyMetadata(null, OnIdChanged));
+  /// <summary>
+  /// Identifies the attached <c>Id</c> property.
+  /// </summary>
+  public static readonly DependencyProperty IdProperty = DependencyProperty.RegisterAttached(
+    "Id", 
+    typeof(string), 
+    typeof(GraphIdentity),
+    new PropertyMetadata(null, OnIdChanged));
 
+  /// <summary>
+  /// Gets the string id attached to a graph. Returns null if none is set.
+  /// </summary>
+  /// <param name="obj">The graph for which to get the id.</param>
+  /// <returns>The id, or null if none is set.</returns>
   public static string? GetId(DependencyObject obj) => (string?)obj.GetValue(IdProperty);
+
+  /// <summary>
+  /// Sets the string id attached to a graph. Setting a non-empty id registers the graph in the live registry 
+  /// and raises <see cref="GraphRegistered"/> on the thread that set the id (the UI dispatcher during view load). 
+  /// Setting null or empty unregisters it.
+  /// </summary>
+  /// <param name="obj">The graph for which to set the id.</param>
+  /// <param name="value">The id to set, or null to unregister.</param>
   public static void SetId(DependencyObject obj, string? value) => obj.SetValue(IdProperty, value);
 
-  // Tagged graphs held weakly, so a graph in a closed detail window (or a replaced dashboard view)
-  // can still be collected. Dead entries are pruned on each registration and enumeration.
+  /// <summary>
+  /// Tagged graphs held weakly, so a graph in a closed detail window (or a replaced dashboard view)
+  /// can still be collected. Dead entries are pruned on each registration and enumeration.
+  /// </summary>
   private static readonly List<WeakReference<IPerformanceGraph>> Registered = new();
 
-  /// <summary>Raised when a graph is tagged with a non-empty id (on the thread that set the id — the
-  /// UI dispatcher during view load).</summary>
+  /// <summary>
+  /// Raised when a graph is tagged with a non-empty id (on the thread that set the id — the
+  /// UI dispatcher during view load).
+  /// </summary>
   public static event Action<IPerformanceGraph>? GraphRegistered;
 
+  /// <summary>
+  /// Called when the attached <c>Id</c> property changes. If the new value is a non-empty string, 
+  /// registers the graph in the live registry and raises <see cref="GraphRegistered"/>. 
+  /// If the new value is null or empty, unregisters it.
+  /// </summary>
+  /// <param name="d">d</param>
+  /// <param name="e">e</param>
   private static void OnIdChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
     if (d is not IPerformanceGraph graph) return;
     if (e.NewValue is not string id || string.IsNullOrEmpty(id)) return;
@@ -40,7 +68,9 @@ public static class GraphIdentity {
     GraphRegistered?.Invoke(graph);
   }
 
-  /// <summary>A snapshot of the currently-live tagged graphs.</summary>
+  /// <summary>
+  /// A snapshot of the currently-live tagged graphs.
+  /// </summary>
   public static IReadOnlyList<IPerformanceGraph> LiveGraphs() {
     Prune();
     var live = new List<IPerformanceGraph>(Registered.Count);
@@ -49,5 +79,9 @@ public static class GraphIdentity {
     return live;
   }
 
+  /// <summary>
+  /// Removes any dead entries from the <see cref="Registered"/> list. 
+  /// Called on each registration and enumeration.
+  /// </summary>
   private static void Prune() => Registered.RemoveAll(w => !w.TryGetTarget(out _));
 }

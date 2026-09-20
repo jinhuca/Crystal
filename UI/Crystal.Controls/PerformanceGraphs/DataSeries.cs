@@ -39,58 +39,86 @@ namespace Crystal.Controls.PerformanceGraphs;
 /// </para>
 /// </remarks>
 public sealed class DataSeries : DependencyObject {
-  /// <summary>Identifies the <see cref="Name"/> dependency property.</summary>
-  public static readonly DependencyProperty NameProperty =
-      DependencyProperty.Register(nameof(Name), typeof(string), typeof(DataSeries));
+  /// <summary>
+  /// Identifies the <see cref="Name"/> dependency property.
+  /// </summary>
+  public static readonly DependencyProperty NameProperty = DependencyProperty.Register(
+    nameof(Name),
+    typeof(string),
+    typeof(DataSeries));
 
-  /// <summary>A label for this series - not rendered by the graph itself (there is no built-in
-  /// legend), but useful for a legend or tooltip built alongside it.</summary>
+  /// <summary>
+  /// A label for this series - not rendered by the graph itself (there is no built-in
+  /// legend), but useful for a legend or tooltip built alongside it.
+  /// </summary>
   public string? Name {
     get => (string?)GetValue(NameProperty);
     set => SetValue(NameProperty, value);
   }
 
-  /// <summary>Identifies the <see cref="LineBrush"/> dependency property.</summary>
-  public static readonly DependencyProperty LineBrushProperty =
-      DependencyProperty.Register(nameof(LineBrush), typeof(Brush), typeof(DataSeries),
-          new PropertyMetadata(Brushes.DeepSkyBlue, OnLineBrushChanged));
+  /// <summary>
+  /// Identifies the <see cref="LineBrush"/> dependency property.
+  /// </summary>
+  public static readonly DependencyProperty LineBrushProperty = DependencyProperty.Register(
+    nameof(LineBrush),
+    typeof(Brush),
+    typeof(DataSeries),
+    new PropertyMetadata(Brushes.DeepSkyBlue, OnLineBrushChanged));
 
-  /// <summary>Stroke color of this series' line. Defaults to DeepSkyBlue - set a distinct color
-  /// per series so multiple lines on the same graph stay visually distinguishable.</summary>
+  /// <summary>
+  /// Stroke color of this series' line. Defaults to DeepSkyBlue - set a distinct color
+  /// per series so multiple lines on the same graph stay visually distinguishable.
+  /// </summary>
   public Brush LineBrush {
     get => (Brush)GetValue(LineBrushProperty);
     set => SetValue(LineBrushProperty, value);
   }
 
-  /// <summary>Identifies the <see cref="LineThickness"/> dependency property.</summary>
-  public static readonly DependencyProperty LineThicknessProperty =
-      DependencyProperty.Register(nameof(LineThickness), typeof(double), typeof(DataSeries),
-          new PropertyMetadata(1.5, OnLineThicknessChanged));
+  /// <summary>
+  /// Identifies the <see cref="LineThickness"/> dependency property.
+  /// </summary>
+  public static readonly DependencyProperty LineThicknessProperty = DependencyProperty.Register(
+    nameof(LineThickness),
+    typeof(double),
+    typeof(DataSeries),
+    new PropertyMetadata(1.5, OnLineThicknessChanged));
 
-  /// <summary>Stroke thickness of this series' line, in pixels.</summary>
+  /// <summary>
+  /// Stroke thickness of this series' line, in pixels.
+  /// </summary>
   public double LineThickness {
     get => (double)GetValue(LineThicknessProperty);
     set => SetValue(LineThicknessProperty, value);
   }
 
-  /// <summary>Identifies the <see cref="FillBrush"/> dependency property.</summary>
-  public static readonly DependencyProperty FillBrushProperty =
-      DependencyProperty.Register(nameof(FillBrush), typeof(Brush), typeof(DataSeries),
-          new PropertyMetadata(null, OnFillBrushChanged));
+  /// <summary>
+  /// Identifies the <see cref="FillBrush"/> dependency property.
+  /// </summary>
+  public static readonly DependencyProperty FillBrushProperty = DependencyProperty.Register(
+    nameof(FillBrush),
+    typeof(Brush),
+    typeof(DataSeries),
+    new PropertyMetadata(null, OnFillBrushChanged));
 
-  /// <summary>Fill brush painted under this series' line. Null (the default) draws a plain line -
+  /// <summary>
+  /// Fill brush painted under this series' line. Null (the default) draws a plain line -
   /// the usual choice once more than one or two series share a graph, since overlapping filled
   /// areas occlude each other (the same reasoning <see cref="PerformanceGraph.AddSeries"/>'s own
-  /// optional fillBrush parameter documents).</summary>
+  /// optional fillBrush parameter documents).
+  /// </summary>
   public Brush? FillBrush {
     get => (Brush?)GetValue(FillBrushProperty);
     set => SetValue(FillBrushProperty, value);
   }
 
-  /// <summary>Identifies the <see cref="ValuesSource"/> dependency property.</summary>
-  public static readonly DependencyProperty ValuesSourceProperty =
-      DependencyProperty.Register(nameof(ValuesSource), typeof(ObservableCollection<double>), typeof(DataSeries),
-          new PropertyMetadata(null, OnValuesSourceChanged));
+  /// <summary>
+  /// Identifies the <see cref="ValuesSource"/> dependency property.
+  /// </summary>
+  public static readonly DependencyProperty ValuesSourceProperty = DependencyProperty.Register(
+    nameof(ValuesSource),
+    typeof(ObservableCollection<double>),
+    typeof(DataSeries),
+    new PropertyMetadata(null, OnValuesSourceChanged));
 
   /// <summary>
   /// Binds this series' data to an <see cref="ObservableCollection{T}"/> of <see cref="double"/>,
@@ -114,29 +142,66 @@ public sealed class DataSeries : DependencyObject {
     set => SetValue(ValuesSourceProperty, value);
   }
 
-  // Owned by whichever PerformanceGraphMultipleDS this series is currently attached to. Null until
-  // Attach runs - lets the property-changed callbacks below tell "not attached yet" (defer to
-  // Attach, which reads the then-current property values itself) from "attached, react now".
+  /// <summary>
+  /// Owned by whichever PerformanceGraphMultipleDS this series is currently attached to. Null until
+  /// Attach runs - lets the property-changed callbacks below tell "not attached yet" (defer to
+  /// Attach, which reads the then-current property values itself) from "attached, react now".
+  /// </summary>
   internal CircularBuffer<double>? Buffer;
+
+  /// <summary>
+  /// The renderer that draws this series' line and optional fill.
+  /// </summary>
   internal readonly FilledLineRenderer Renderer = new();
+
+  /// <summary>
+  /// The pen used to draw this series' line, derived from <see cref="LineBrush"/> and
+  /// <see cref="LineThickness"/>.
+  /// </summary>
   internal Pen ResolvedLinePen = Helpers.CreateFrozenPen(Brushes.DeepSkyBlue, 1.5);
+
+  /// <summary>
+  /// The <see cref="PerformanceGraph"/> that owns this series, or null if it's not currently attached to a graph. 
+  /// Used to request a re-render when this series' properties change.
+  /// </summary>
   internal PerformanceGraph? Owner;
 
+  /// <summary>
+  /// Called when <see cref="LineBrush"/> changes - updates <see cref="ResolvedLinePen"/> and requests a re-render from the owning graph.
+  /// </summary>
+  /// <param name="d"></param>
+  /// <param name="e"></param>
   private static void OnLineBrushChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
     var series = (DataSeries)d;
     series.ResolvedLinePen = Helpers.CreateFrozenPen((Brush)e.NewValue, series.LineThickness);
     series.Owner?.RequestRender();
   }
 
+  /// <summary>
+  /// Called when <see cref="LineThickness"/> changes - updates <see cref="ResolvedLinePen"/> and requests a re-render from the owning graph.
+  /// </summary>
+  /// <param name="d">d</param>
+  /// <param name="e">e</param>
   private static void OnLineThicknessChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
     var series = (DataSeries)d;
     series.ResolvedLinePen = Helpers.CreateFrozenPen(series.LineBrush, (double)e.NewValue);
     series.Owner?.RequestRender();
   }
 
+  /// <summary>
+  /// Called when <see cref="FillBrush"/> changes - requests a re-render from the owning graph.
+  /// </summary>
+  /// <param name="d">d</param>
+  /// <param name="e">e</param>
   private static void OnFillBrushChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) =>
-      ((DataSeries)d).Owner?.RequestRender();
+    ((DataSeries)d).Owner?.RequestRender();
 
+  /// <summary>
+  /// Called when <see cref="ValuesSource"/> changes - clears the buffer and seeds it with the new collection's contents 
+  /// (if attached to a graph), and subscribes to its CollectionChanged events. Requests a re-render from the owning graph.
+  /// </summary>
+  /// <param name="d">d</param>
+  /// <param name="e">e</param>
   private static void OnValuesSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
     var series = (DataSeries)d;
 
@@ -156,6 +221,12 @@ public sealed class DataSeries : DependencyObject {
     series.Owner?.RequestRender();
   }
 
+  /// <summary>
+  /// Called when the <see cref="ValuesSource"/> collection changes - appends new items to the buffer 
+  /// and requests a re-render from the owning graph.
+  /// </summary>
+  /// <param name="sender">sender</param>
+  /// <param name="e">e</param>
   private void OnValuesSourceCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e) {
     if (Buffer == null) return; // Detached mid-flight (e.g. removed from Series) - ignore stale events.
 
@@ -163,7 +234,8 @@ public sealed class DataSeries : DependencyObject {
       Buffer.Clear();
       if (sender is ObservableCollection<double> source)
         foreach (double value in source) Buffer.Add(value);
-    } else if (e.NewItems != null) {
+    }
+    else if (e.NewItems != null) {
       // Add, Replace, and Move all surface their new elements via NewItems - appending them
       // covers the live-append scenario this property exists for. A bare Remove carries no
       // NewItems and is a no-op here, same choice PerformanceGraph.ValuesSource makes.
@@ -173,9 +245,11 @@ public sealed class DataSeries : DependencyObject {
     Owner?.RequestRender();
   }
 
-  /// <summary>Appends a new sample, dropping the oldest once the owning graph's
+  /// <summary>
+  /// Appends a new sample, dropping the oldest once the owning graph's
   /// <see cref="PerformanceGraph.HistoryLength"/> is exceeded. A safe no-op if this series
-  /// isn't currently attached to a graph. O(1).</summary>
+  /// isn't currently attached to a graph. O(1).
+  /// </summary>
   public void AddValue(double value) {
     if (!CheckAccess()) {
       Dispatcher.BeginInvoke(() => AddValue(value));
@@ -185,7 +259,9 @@ public sealed class DataSeries : DependencyObject {
     Owner?.RequestRender();
   }
 
-  /// <summary>Discards this series' buffered samples. A safe no-op if not currently attached.</summary>
+  /// <summary>
+  /// Discards this series' buffered samples. A safe no-op if not currently attached.
+  /// </summary>
   public void ClearValues() {
     if (!CheckAccess()) {
       Dispatcher.BeginInvoke(ClearValues);
@@ -195,10 +271,14 @@ public sealed class DataSeries : DependencyObject {
     Owner?.RequestRender();
   }
 
-  // Called by PerformanceGraph when this series is added to its Series collection (or
-  // when the whole collection is replaced and this series is part of the new one). Reads
-  // ValuesSource (and every other property) as they stand right now, so it doesn't matter whether
-  // those were set before or after this series was added to a Series collection.
+  /// <summary>
+  /// Called by PerformanceGraph when this series is added to its Series collection (or
+  /// when the whole collection is replaced and this series is part of the new one). Reads
+  /// ValuesSource (and every other property) as they stand right now, so it doesn't matter whether
+  /// those were set before or after this series was added to a Series collection.
+  /// </summary>
+  /// <param name="owner">The performance graph to which this series is attached.</param>
+  /// <param name="capacity">The maximum number of samples to retain.</param>
   internal void Attach(PerformanceGraph owner, int capacity) {
     Owner = owner;
     Buffer = new CircularBuffer<double>(capacity);
@@ -208,18 +288,24 @@ public sealed class DataSeries : DependencyObject {
     }
   }
 
-  // Called when this series is removed from a graph's Series collection (or the whole collection
-  // is replaced), so a stray ValuesSource subscription doesn't keep this series reacting to a
-  // collection it no longer plots anywhere.
+  /// <summary>
+  /// Called when this series is removed from a graph's Series collection (or the whole collection
+  /// is replaced), so a stray ValuesSource subscription doesn't keep this series reacting to a
+  /// collection it no longer plots anywhere.
+  /// </summary>
+  /// <param name="owner">The performance graph from which this series is detached.</param>
   internal void Detach() {
     if (ValuesSource is { } source) source.CollectionChanged -= OnValuesSourceCollectionChanged;
     Buffer = null;
     Owner = null;
   }
 
-  // Rebuilds this series' buffer at a new capacity, carrying over the most recent samples that
-  // still fit - mirrors PerformanceGraph's own CopyMostRecent exactly. Called by the owning graph
-  // when its Capacity changes. A no-op if this series isn't currently attached.
+  /// <summary>
+  /// Rebuilds this series' buffer at a new capacity, carrying over the most recent samples that
+  /// still fit - mirrors PerformanceGraph's own CopyMostRecent exactly. Called by the owning graph
+  /// when its Capacity changes. A no-op if this series isn't currently attached.
+  /// </summary>
+  /// <param name="newCapacity">The new maximum number of samples to retain.</param>
   internal void Resize(int newCapacity) {
     if (Buffer == null) return;
     var next = new CircularBuffer<double>(newCapacity);
