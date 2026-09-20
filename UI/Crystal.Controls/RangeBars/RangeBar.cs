@@ -1,7 +1,6 @@
 using Crystal.Controls.RangeBars.Renders;
 using Crystal.Controls.RangeBars.Styles;
 using Crystal.Controls.RangeBars.Themes;
-using System;
 using System.Windows;
 using System.Windows.Media;
 

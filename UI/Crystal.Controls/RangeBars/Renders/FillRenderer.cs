@@ -1,5 +1,4 @@
 using Crystal.Controls.RangeBars.Styles;
-using System;
 using System.Windows;
 using System.Windows.Media;
 
