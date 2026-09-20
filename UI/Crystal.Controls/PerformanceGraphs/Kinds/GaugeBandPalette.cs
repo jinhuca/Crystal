@@ -1,4 +1,3 @@
-using System;
 using System.Windows.Media;
 
 namespace Crystal.Controls.PerformanceGraphs.Kinds;

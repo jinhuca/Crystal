@@ -1,4 +1,3 @@
-using System;
 using System.Windows.Threading;
 
 namespace Crystal.Controls.Threading;

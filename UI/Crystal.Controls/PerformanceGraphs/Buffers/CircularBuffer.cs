@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Crystal.Controls.PerformanceGraphs.Buffers;
+﻿namespace Crystal.Controls.PerformanceGraphs.Buffers;
 
 /// <summary>
 /// A fixed-capacity, oldest-first sample buffer: <see cref="Add"/> appends a new value,

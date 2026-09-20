@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 namespace Crystal.Controls.PerformanceGraphs;
 
 /// <summary>
