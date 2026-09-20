@@ -114,17 +114,17 @@
   </Style>
 
   <!-- ============================================================================================
-       Dashboard summary graph (formerly AdaptiveGraph). DisplayMode is bound to the global
+       Dashboard summary graph. DisplayMode is bound to the global
        GraphAppearance.Current.Mode (the shell's title-bar Line/Dot toggle) through the converter, so
        flipping the toggle re-renders every tile's graph in place. Chrome (opaque plot background,
        grid, axis border) shows in Line mode; in Dot mode the grid and border are hidden so the
        scatter reads clean (Grid/Border bind to the same global mode through the chrome converter).
-       The brush / thickness values reproduce what AdaptiveGraph applied via GraphThemes.FromAccent,
+       The brush / thickness values reproduce what applied via GraphThemes.FromAccent,
        so an accent-driven tile reads identically after migration. Accent itself now also drives the
        line, dot, and a vertical glow fill on the control, so tiles need only set Accent (+ any band
        colors).
        ============================================================================================ -->
-  <Style x:Key="AdaptiveGraphStyle" TargetType="graphs:PerformanceGraph">
+  <Style x:Key="SummaryTileGraphStyle" TargetType="graphs:PerformanceGraph">
     <Setter Property="BandedLine" Value="False"/>
     <Setter Property="MinHeight" Value="40"/>
     <Setter Property="LineThickness" Value="1.0"/>
@@ -159,7 +159,7 @@
     (e.g. the CPU clock strip).
   -->
   <Style x:Key="AdaptiveGraphNoChromeStyle" TargetType="graphs:PerformanceGraph"
-         BasedOn="{StaticResource AdaptiveGraphStyle}">
+         BasedOn="{StaticResource SummaryTileGraphStyle}">
     <Setter Property="GraphBackground" Value="Transparent"/>
     <Setter Property="Grid" Value="False"/>
     <Setter Property="Border" Value="False"/>
