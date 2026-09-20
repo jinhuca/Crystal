@@ -1440,7 +1440,7 @@ public class PerformanceGraph : FrameworkElement, ISingleSeriesGraph {
         foreach (var series in Series) {
           if (series.Buffer == null) continue;
           series.Renderer.Draw(dc, bounds, series.Buffer, _historyLength, minValue, maxValue,
-              series.ResolvedLinePen, series.FillBrush, cellPitch: seriesPitch);
+              series.ResolvedLinePen, series.EffectiveFillBrush, cellPitch: seriesPitch);
         }
         break;
       default:

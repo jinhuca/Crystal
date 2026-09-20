@@ -161,6 +161,20 @@ public sealed class DataSeries : DependencyObject {
   internal Pen ResolvedLinePen = Helpers.CreateFrozenPen(Brushes.DeepSkyBlue, 1.5);
 
   /// <summary>
+  /// A faint area fill derived from <see cref="LineBrush"/>, rebuilt whenever that brush changes.
+  /// Used by <see cref="EffectiveFillBrush"/> only when no explicit <see cref="FillBrush"/> is set,
+  /// so every line gets a fill in its own accent color without a per-series brush.
+  /// </summary>
+  private Brush _autoFillBrush = Helpers.CreateVerticalGlow(Helpers.ToColor(Brushes.DeepSkyBlue));
+
+  /// <summary>
+  /// The fill actually painted under this series: the explicit <see cref="FillBrush"/> when set,
+  /// otherwise a faint glow auto-derived from <see cref="LineBrush"/>. Set <see cref="FillBrush"/>
+  /// to a transparent brush to suppress the fill entirely.
+  /// </summary>
+  internal Brush EffectiveFillBrush => FillBrush ?? _autoFillBrush;
+
+  /// <summary>
   /// The <see cref="PerformanceGraph"/> that owns this series, or null if it's not currently attached to a graph. 
   /// Used to request a re-render when this series' properties change.
   /// </summary>
@@ -173,7 +187,9 @@ public sealed class DataSeries : DependencyObject {
   /// <param name="e"></param>
   private static void OnLineBrushChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
     var series = (DataSeries)d;
-    series.ResolvedLinePen = Helpers.CreateFrozenPen((Brush)e.NewValue, series.LineThickness);
+    var brush = (Brush)e.NewValue;
+    series.ResolvedLinePen = Helpers.CreateFrozenPen(brush, series.LineThickness);
+    series._autoFillBrush = Helpers.CreateVerticalGlow(Helpers.ToColor(brush));
     series.Owner?.RequestRender();
   }
 
