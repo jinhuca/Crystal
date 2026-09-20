@@ -3,7 +3,9 @@ using System.Windows.Controls;
 
 namespace Crystal.Controls.Loading;
 
-/// <summary>Lifecycle of a <see cref="LoadingHost"/>: spinning while its content warms, then either the live content or a failure marker.</summary>
+/// <summary>
+/// Lifecycle of a <see cref="LoadingHost"/>: spinning while its content warms, then either the live content or a failure marker.
+/// </summary>
 public enum LoadingState {
   Loading,
   Ready,
@@ -22,40 +24,57 @@ public enum LoadingState {
 /// </summary>
 public sealed class LoadingHost : ContentControl {
   static LoadingHost() {
-    DefaultStyleKeyProperty.OverrideMetadata(typeof(LoadingHost),
-        new FrameworkPropertyMetadata(typeof(LoadingHost)));
+    DefaultStyleKeyProperty.OverrideMetadata(typeof(LoadingHost), new FrameworkPropertyMetadata(typeof(LoadingHost)));
   }
 
-  /// <summary>Identifies the <see cref="Label"/> dependency property.</summary>
-  public static readonly DependencyProperty LabelProperty =
-      DependencyProperty.Register(nameof(Label), typeof(string), typeof(LoadingHost),
-          new FrameworkPropertyMetadata(string.Empty));
+  /// <summary>
+  /// Identifies the <see cref="Label"/> dependency property.
+  /// </summary>
+  public static readonly DependencyProperty LabelProperty = DependencyProperty.Register(
+    nameof(Label),
+    typeof(string),
+    typeof(LoadingHost),
+    new FrameworkPropertyMetadata(string.Empty));
 
-  /// <summary>Identifies the <see cref="State"/> dependency property.</summary>
-  public static readonly DependencyProperty StateProperty =
-      DependencyProperty.Register(nameof(State), typeof(LoadingState), typeof(LoadingHost),
-          new FrameworkPropertyMetadata(LoadingState.Loading));
+  /// <summary>
+  /// Identifies the <see cref="State"/> dependency property.
+  /// </summary>
+  public static readonly DependencyProperty StateProperty = DependencyProperty.Register(
+    nameof(State),
+    typeof(LoadingState),
+    typeof(LoadingHost),
+    new FrameworkPropertyMetadata(LoadingState.Loading));
 
-  /// <summary>Bubbling event raised once the tile reaches a terminal state (Ready or Failed),
+  /// <summary>
+  /// Bubbling event raised once the tile reaches a terminal state (Ready or Failed),
   /// i.e. its spinner has been replaced by real content or a failure marker. The dashboard listens
-  /// for this to re-apply its default layout after the async-loaded tiles have settled.</summary>
-  public static readonly RoutedEvent SettledEvent =
-      EventManager.RegisterRoutedEvent(nameof(Settled), RoutingStrategy.Bubble,
-          typeof(RoutedEventHandler), typeof(LoadingHost));
+  /// for this to re-apply its default layout after the async-loaded tiles have settled.
+  /// </summary>
+  public static readonly RoutedEvent SettledEvent = EventManager.RegisterRoutedEvent(
+    nameof(Settled),
+    RoutingStrategy.Bubble,
+    typeof(RoutedEventHandler),
+    typeof(LoadingHost));
 
-  /// <summary>Raised once the tile finishes warming (successfully or not). See <see cref="SettledEvent"/>.</summary>
+  /// <summary>
+  /// Raised once the tile finishes warming (successfully or not). See <see cref="SettledEvent"/>.
+  /// </summary>
   public event RoutedEventHandler Settled {
     add => AddHandler(SettledEvent, value);
     remove => RemoveHandler(SettledEvent, value);
   }
 
-  /// <summary>Component name shown next to the spinner (e.g. "CPU", "Storage").</summary>
+  /// <summary>
+  /// Component name shown next to the spinner (e.g. "CPU", "Storage").
+  /// </summary>
   public string Label {
     get => (string)GetValue(LabelProperty);
     set => SetValue(LabelProperty, value);
   }
 
-  /// <summary>Current lifecycle state; drives which visual the template shows.</summary>
+  /// <summary>
+  /// Current lifecycle state; drives which visual the template shows.
+  /// </summary>
   public LoadingState State {
     get => (LoadingState)GetValue(StateProperty);
     set => SetValue(StateProperty, value);
@@ -93,12 +112,15 @@ public sealed class LoadingHost : ContentControl {
     });
   }
 
-  // Move to a terminal state and notify listeners the tile has settled. Deferred to Loaded (Input
-  // priority) rather than raised inline so it fires after the swapped-in content has run a layout
-  // pass — the dashboard's reset then acts on tiles at their real size, not mid-transition.
+  /// <summary>
+  /// Move to a terminal state and notify listeners the tile has settled. Deferred to Loaded (Input
+  /// priority) rather than raised inline so it fires after the swapped-in content has run a layout
+  /// pass — the dashboard's reset then acts on tiles at their real size, not mid-transition.
+  /// </summary>
+  /// <param name="state">The terminal state to move to.</param>
   private void Settle(LoadingState state) {
     State = state;
     Dispatcher.BeginInvoke(new Action(() => RaiseEvent(new RoutedEventArgs(SettledEvent, this))),
-        System.Windows.Threading.DispatcherPriority.Loaded);
+      System.Windows.Threading.DispatcherPriority.Loaded);
   }
 }

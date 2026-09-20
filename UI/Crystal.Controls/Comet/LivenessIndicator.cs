@@ -19,36 +19,63 @@ namespace Crystal.Controls.Comet;
 /// variant. Shared properties and geometry live in <see cref="LivenessIndicatorBase"/>.
 /// </summary>
 public class LivenessIndicator : LivenessIndicatorBase {
+  /// <summary>
+  /// The root grid that holds the animated paths. This grid is used to layer multiple paths for the comet effect.
+  /// </summary>
   private readonly Grid _root = new();
 
+  /// <summary>
+  /// Initializes a new instance of the <see cref="LivenessIndicator"/> class. 
+  /// This constructor sets up the root grid and assigns it as the content of the control.
+  /// </summary>
   public LivenessIndicator() {
     Content = _root;
   }
 
+  /// <summary>
+  /// Stops the animations for all child shapes in the root grid. This method is called when the control 
+  /// is unloaded or when the animations need to be stopped.
+  /// </summary>
   protected override void Stop() {
     foreach (var child in _root.Children) {
-      if (child is Shape s) s.BeginAnimation(Shape.StrokeDashOffsetProperty, null);
+      if (child is Shape s) {
+        s.BeginAnimation(Shape.StrokeDashOffsetProperty, null);
+      }
     }
   }
 
+  /// <summary>
+  /// Rebuilds the comet paths based on the current properties of the control. This method clears the 
+  /// existing children in the root grid and creates new paths for the comet effect, taking into account 
+  /// the current size, corner radius, dash count, and other properties. The paths are animated to create 
+  /// the appearance of a moving comet around the perimeter of a rounded rectangle.
+  /// </summary>
   protected override void Rebuild() {
     _root.Children.Clear();
-    if (!IsLoaded) return;
+    if (!IsLoaded) {
+      return;
+    }
 
     double w = ActualWidth, h = ActualHeight;
     double t = Math.Max(0.5, DashThickness);
     double inset = t / 2 + Inset;
     double innerW = w - 2 * inset, innerH = h - 2 * inset;
-    if (innerW <= 0 || innerH <= 0) return;
+    if (innerW <= 0 || innerH <= 0) {
+      return;
+    }
 
     var (tl, tr, br, bl) = ClampRadii(ResolveCornerRadius(), innerW, innerH);
     Geometry geo = BuildRoundedRect(inset, inset, innerW, innerH, tl, tr, br, bl);
     double perimeter = Perimeter(innerW, innerH, tl, tr, br, bl);
-    if (perimeter <= 0) return;
+    if (perimeter <= 0) {
+      return;
+    }
 
     int dashCount = Math.Max(1, DashCount);
     double patternLen = perimeter / dashCount;
-    if (DashLength >= patternLen) return; // dash bigger than its slot; nothing sensible to draw
+    if (DashLength >= patternLen) {
+      return; // dash bigger than its slot; nothing sensible to draw
+    }
 
     Color c = Color;
 
@@ -62,7 +89,9 @@ public class LivenessIndicator : LivenessIndicatorBase {
       });
     }
 
-    if (!IsActive) return;
+    if (!IsActive) {
+      return;
+    }
 
     int n = Math.Max(0, TailSegments);
     double stepArc = n > 0 ? TailLength / n : 0;
@@ -111,9 +140,13 @@ public class LivenessIndicator : LivenessIndicatorBase {
             Duration = duration,
             RepeatBehavior = RepeatBehavior.Forever,
           };
-          if (FrameRate > 0) Timeline.SetDesiredFrameRate(anim, FrameRate);
+          if (FrameRate > 0) {
+            Timeline.SetDesiredFrameRate(anim, FrameRate);
+          }
+
           path.BeginAnimation(Shape.StrokeDashOffsetProperty, anim);
-        } else {
+        }
+        else {
           path.StrokeDashOffset = from; // reduced motion: static comet at rest
         }
         _root.Children.Add(path);
@@ -121,24 +154,44 @@ public class LivenessIndicator : LivenessIndicatorBase {
     }
   }
 
+  /// <summary>
+  /// Builds a rounded rectangle geometry with specified corner radii. This method creates a StreamGeometry 
+  /// that represents a rectangle with rounded corners, where each corner can have a different radius. The 
+  /// geometry is constructed by defining the path of the rectangle and adding arcs for the rounded corners.
+  /// </summary>
+  /// <param name="x">x</param>
+  /// <param name="y">y</param>
+  /// <param name="w">w</param>
+  /// <param name="h">h</param>
+  /// <param name="tl">tl</param>
+  /// <param name="tr">tr</param>
+  /// <param name="br">br</param>
+  /// <param name="bl">bl</param>
+  /// <returns></returns>
   private static Geometry BuildRoundedRect(
-      double x, double y, double w, double h,
-      double tl, double tr, double br, double bl) {
+    double x, double y, double w, double h, double tl, double tr, double br, double bl) {
     var g = new StreamGeometry();
     using (var ctx = g.Open()) {
       ctx.BeginFigure(new Point(x + tl, y), isFilled: false, isClosed: true);
       ctx.LineTo(new Point(x + w - tr, y), true, true);
-      if (tr > 0)
+      if (tr > 0) {
         ctx.ArcTo(new Point(x + w, y + tr), new Size(tr, tr), 0, false, SweepDirection.Clockwise, true, true);
+      }
+
       ctx.LineTo(new Point(x + w, y + h - br), true, true);
-      if (br > 0)
+      if (br > 0) {
         ctx.ArcTo(new Point(x + w - br, y + h), new Size(br, br), 0, false, SweepDirection.Clockwise, true, true);
+      }
+
       ctx.LineTo(new Point(x + bl, y + h), true, true);
-      if (bl > 0)
+      if (bl > 0) {
         ctx.ArcTo(new Point(x, y + h - bl), new Size(bl, bl), 0, false, SweepDirection.Clockwise, true, true);
+      }
+
       ctx.LineTo(new Point(x, y + tl), true, true);
-      if (tl > 0)
+      if (tl > 0) {
         ctx.ArcTo(new Point(x + tl, y), new Size(tl, tl), 0, false, SweepDirection.Clockwise, true, true);
+      }
     }
     g.Freeze();
     return g;

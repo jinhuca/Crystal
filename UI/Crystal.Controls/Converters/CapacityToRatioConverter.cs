@@ -31,7 +31,16 @@ namespace Crystal.Controls.Converters;
 /// with no receiver, that calls the CONVERTER's own <c>ToString()</c>, not the parameter's, so it
 /// could never parse as a number and the capacity argument was silently ignored every time).
 /// </remarks>
+[ValueConversion(typeof(object[]), typeof(double))]
 public class CapacityToRatioConverter : IMultiValueConverter {
+  /// <summary>
+  /// Computes the Height a <see cref="PerformanceGraph"/> in <see cref="DisplayMode.Dot"/> mode needs
+  /// </summary>
+  /// <param name="values">values</param>
+  /// <param name="targetType">targetType</param>
+  /// <param name="parameter">parameter</param>
+  /// <param name="culture">culture</param>
+  /// <returns></returns>
   public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture) {
     // Safe placeholder while WPF is still resolving initial layout sizes, or if this converter
     // gets bound to something other than the 3-value (Width, Capacity, Rows) shape it expects.

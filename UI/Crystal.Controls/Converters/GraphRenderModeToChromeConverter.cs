@@ -12,10 +12,30 @@ namespace Crystal.Controls.Converters;
 /// to <see cref="GraphAppearance.Current"/>'s <see cref="GraphAppearance.Mode"/>, so flipping the
 /// toggle shows or hides the chrome in place.
 /// </summary>
+[ValueConversion(typeof(GraphRenderMode), typeof(bool))]
 public sealed class GraphRenderModeToChromeConverter : IValueConverter {
+  /// <summary>
+  /// Converts a <see cref="GraphRenderMode"/> value to a <see cref="bool"/> indicating whether the chrome should be shown.
+  /// </summary>
+  /// <param name="value">The GraphRenderMode value to convert.</param>
+  /// <param name="targetType">The type of the target.</param>
+  /// <param name="parameter">The converter parameter.</param>
+  /// <param name="culture">The culture to use.</param>
+  /// <returns>The converted bool value.</returns>
+  /// <returns></returns>
   public object Convert(object value, Type targetType, object parameter, CultureInfo culture) =>
-      value is not GraphRenderMode.Dot;
+    value is not GraphRenderMode.Dot;
 
+  /// <summary>
+  /// Not supported. This converter does not support converting back from a bool to a GraphRenderMode.
+  /// </summary>
+  /// <param name="value">The bool value to convert.</param>
+  /// <param name="targetType">The type of the target.</param>
+  /// <param name="parameter">The converter parameter.</param>
+  /// <param name="culture">The culture to use.</param>
+  /// <returns></returns>
+  /// <returns></returns>
+  /// <exception cref="NotSupportedException"></exception>
   public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
-      throw new NotSupportedException();
+    throw new NotSupportedException();
 }
