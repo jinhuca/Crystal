@@ -15,22 +15,44 @@
 /// branch-and-subtract per access (see its own remarks) and no heap allocation at all.
 /// </remarks>
 public sealed class CircularBuffer<T> {
+  /// <summary>
+  /// The backing array, which is always exactly <see cref="Capacity"/> long. The oldest element is 
+  /// at <c>_buffer[_head]</c>, the newest at <c>_buffer[(_head + Count - 1) % Capacity]</c>.
+  /// </summary>
   private readonly T[] _buffer;
-  private int _head; // index of the oldest element
 
+  /// <summary>
+  /// The index of the oldest element in <see cref="_buffer"/>. 
+  /// The next write lands at <c>_buffer[(_head + Count) % Capacity]</c>, which is either the next 
+  /// free slot or the oldest slot (which is about to be overwritten).
+  /// </summary>
+  private int _head;
+
+  /// <summary>
+  /// Initializes a new <see cref="CircularBuffer{T}"/> with the given capacity.
+  /// </summary>
+  /// <param name="capacity">The maximum number of values the buffer can hold.</param>
+  /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="capacity"/> is not positive.</exception>
   public CircularBuffer(int capacity) {
     if (capacity <= 0) throw new ArgumentOutOfRangeException(nameof(capacity), "Capacity must be positive.");
     Capacity = capacity;
     _buffer = new T[capacity];
   }
 
-  /// <summary>Maximum number of values retained.</summary>
+  /// <summary>
+  /// Maximum number of values retained.
+  /// </summary>
   public int Capacity { get; }
 
-  /// <summary>Number of values currently buffered (0..Capacity).</summary>
+  /// <summary>
+  /// Number of values currently buffered (0..Capacity).
+  /// </summary>
   public int Count { get; private set; }
 
-  /// <summary>Appends a value, dropping the oldest one first once the buffer is full. O(1).</summary>
+  /// <summary>
+  /// Appends a value, dropping the oldest one first once the buffer is full. O(1).
+  /// </summary>
+  /// <param name="value">The value to append.</param>
   public void Add(T value) {
     // When full this lands exactly on _head (the oldest slot, about to be overwritten);
     // when not full it's the next free slot. Same formula either way.
@@ -49,14 +71,18 @@ public sealed class CircularBuffer<T> {
     }
   }
 
-  /// <summary>Removes all buffered values.</summary>
+  /// <summary>
+  /// Removes all buffered values.
+  /// </summary>
   public void Clear() {
     Array.Clear(_buffer, 0, _buffer.Length);
     _head = 0;
     Count = 0;
   }
 
-  /// <summary>Gets the value at <paramref name="index"/> — 0 is the oldest, Count - 1 is the newest. O(1).</summary>
+  /// <summary>
+  /// Gets the value at <paramref name="index"/> — 0 is the oldest, Count - 1 is the newest. O(1).
+  /// </summary>
   /// <remarks>
   /// This is the hottest path in the whole buffer — every renderer (FilledLineRenderer,
   /// BarRenderer, SegmentedBarRenderer, DotRenderer, and PerformanceGraphLite's own render pass)

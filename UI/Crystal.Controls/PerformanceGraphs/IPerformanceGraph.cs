@@ -7,9 +7,13 @@ namespace Crystal.Controls.PerformanceGraphs;
 /// type. Implemented by <see cref="PerformanceGraph"/>.
 /// </summary>
 public interface IPerformanceGraph {
-  /// <summary>Value mapped to the bottom edge of the plot.</summary>
+  /// <summary>
+  /// Value mapped to the bottom edge of the plot.
+  /// </summary>
   double MinValue { get; set; }
 
-  /// <summary>Value mapped to the top edge of the plot.</summary>
+  /// <summary>
+  /// Value mapped to the top edge of the plot.
+  /// </summary>
   double MaxValue { get; set; }
 }
