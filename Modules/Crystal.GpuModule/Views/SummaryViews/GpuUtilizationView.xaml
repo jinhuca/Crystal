@@ -25,7 +25,7 @@
 			<ColumnDefinition Width="Auto"/>
 		</Grid.ColumnDefinitions>
 		<graphs:PerformanceGraph
-      Style="{StaticResource AdaptiveGraphStyle}"
+      Style="{StaticResource SummaryTileGraphStyle}"
       Grid.Column="0"
       x:Name="UtilizationGraph"
       graphs:GraphIdentity.Id="Gpu.Utilization"

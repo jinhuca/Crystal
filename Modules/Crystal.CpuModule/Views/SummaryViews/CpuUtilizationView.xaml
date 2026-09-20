@@ -25,7 +25,7 @@
     <graphs:PerformanceGraph
       Grid.Column="0"
       x:Name="CpuUtilizationGraph"
-      Style="{StaticResource AdaptiveGraphStyle}"
+      Style="{StaticResource SummaryTileGraphStyle}"
       graphs:GraphIdentity.Id="Cpu.Utilization"
       HistoryLength="180" MinValue="0" MaxValue="100"
       Accent="{StaticResource GraphAccentUtilization}"

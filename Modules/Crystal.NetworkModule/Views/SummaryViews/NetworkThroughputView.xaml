@@ -85,7 +85,7 @@
                              Style="{StaticResource MetricUnit}" Margin="4,0,0,0"/>
 				</StackPanel>
 				<graphs:PerformanceGraph Grid.Row="2" x:Name="DownloadGraph"
-                                    Style="{StaticResource AdaptiveGraphStyle}"
+                                    Style="{StaticResource SummaryTileGraphStyle}"
                                     graphs:GraphIdentity.Id="Network.Download"
                                     HistoryLength="180" MinValue="0" MaxValue="{Binding ThroughputMaxBytesPerSecond}"
                                     Accent="{StaticResource GraphAccentUtilization}"
@@ -122,7 +122,7 @@
                              Style="{StaticResource MetricUnit}" Margin="4,0,0,0"/>
 				</StackPanel>
 				<graphs:PerformanceGraph Grid.Row="2" x:Name="UploadGraph"
-                                    Style="{StaticResource AdaptiveGraphStyle}"
+                                    Style="{StaticResource SummaryTileGraphStyle}"
                                     graphs:GraphIdentity.Id="Network.Upload"
                                     HistoryLength="180" MinValue="0" MaxValue="{Binding ThroughputMaxBytesPerSecond}"
                                     Accent="{StaticResource GraphAccentPower}"

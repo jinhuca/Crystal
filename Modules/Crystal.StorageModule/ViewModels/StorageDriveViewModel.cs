@@ -160,10 +160,11 @@ public sealed class StorageDriveViewModel : BindableBase {
     _transferWriteSeries = graph.AddSeries(WriteSeriesBrush, fillBrush: null, thickness: 1.5);
   }
 
-  // One AdaptiveGraph instance is shared across disks: the tile's disk selector swaps the bound disk
-  // on a reused template rather than building a fresh graph. Detach on the way out so the previously
-  // selected disk stops feeding a graph the newly selected disk now owns — otherwise every disk's
-  // per-poll Update would push into the same graph, interleaving unrelated traces.
+  /// <summary>
+  /// Detaches the given graph from this disk if it is currently attached, 
+  /// so the disk stops feeding data into the graph.
+  /// </summary>
+  /// <param name="graph"></param>
   public void DetachActivityGraph(ISingleSeriesGraph graph) {
     if (ReferenceEquals(_activityGraph, graph)) _activityGraph = null;
   }
