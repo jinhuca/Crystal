@@ -3,9 +3,11 @@
 										xmlns:sys="clr-namespace:System;assembly=mscorlib">
 	<sys:Int32 x:Key="GpuSensorGraphCapacity">45</sys:Int32>
 	<ResourceDictionary.MergedDictionaries>
+		<!-- Graph styles first so the semantic brushes redefined by its GraphPalette merge (BorderBrush,
+		     ValueBrush, LabelBrush, TextMutedBrush) are overridden by Palette.xaml, merged after it. -->
+		<ResourceDictionary Source="/Crystal.Controls;component/Themes/PerformanceGraphStyles.xaml"/>
 		<ResourceDictionary Source="/Crystal.Resources;component/Styles/Palette.xaml"/>
 		<ResourceDictionary Source="/Crystal.Resources;component/Styles/BorderStyles.xaml"/>
 		<ResourceDictionary Source="/Crystal.Controls;component/Metrics/MetricEnrichmentResources.xaml"/>
-		<ResourceDictionary Source="/Crystal.Controls;component/Themes/PerformanceGraphLiteStyles.xaml"/>
 	</ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

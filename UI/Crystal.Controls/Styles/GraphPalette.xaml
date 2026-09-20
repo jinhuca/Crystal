@@ -3,7 +3,7 @@
   <!--
     PLACEHOLDER PALETTE - see Palette.xaml's header comment.
 
-    Themes/PerformanceGraphSampleStyles.xaml merges
+    Themes/PerformanceGraphStyles.xaml merges
     "/Crystal.Controls;component/Styles/GraphPalette.xaml" and uses every color key below across its
     keyed graph styles (RoseLineGraphStyle, SegBarLoadGraphEmeraldStyle030, FullGraphStyle, etc.).
     The SummaryGraphMinHeight dimension token lives in Crystal.Resources' Styles/Dimensions.xaml.
