@@ -831,6 +831,7 @@
                   </StackPanel>
                 </Grid>
                 <graphs:PerformanceGraph x:Name="CpuGraph" DisplayMode="MultipleLine" Height="70" MinValue="0" MaxValue="100"
+																				 BandedLine="True"
                                                    GraphBackground="#0A0A0A" GridBrush="#1B1B1B" GridThickness="0.6"
                                                    BorderBrush="{StaticResource DividerBrush}">
                   <graphs:PerformanceGraph.Series>
