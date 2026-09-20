@@ -16,7 +16,16 @@ namespace Crystal.Controls.Converters;
 /// Capacity (a 120-sample graph comes out exactly twice as wide as a 60-sample one, same cells).
 /// Bind all three inputs from the SAME element via a MultiBinding (Height, Capacity, Rows).
 /// </remarks>
+[ValueConversion(typeof(double), typeof(double), ParameterType = typeof(int))]
 public class SquareDotWidthConverter : IMultiValueConverter {
+  /// <summary>
+  /// Computes the Width a <see cref="PerformanceGraph"/> in <see cref="DisplayMode.Dot"/> mode needs
+  /// </summary>
+  /// <param name="values">The values to convert.</param>
+  /// <param name="targetType">The type of the target.</param>
+  /// <param name="parameter">The converter parameter.</param>
+  /// <param name="culture">The culture to use.</param>
+  /// <returns>The converted value.</returns>
   public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture) {
     // Safe placeholder while WPF is still resolving initial layout sizes, or if this converter
     // gets bound to something other than the 3-value (Height, Capacity, Rows) shape it expects.
@@ -32,6 +41,15 @@ public class SquareDotWidthConverter : IMultiValueConverter {
     return Math.Max(20.0, height / ratio);
   }
 
+  /// <summary>
+  /// Not supported. This converter does not support converting back from a Width to the original Height, Capacity, and Rows.
+  /// </summary>
+  /// <param name="value">The value to convert back.</param>
+  /// <param name="targetTypes">The types of the target values.</param>
+  /// <param name="parameter">The converter parameter.</param>
+  /// <param name="culture">The culture to use.</param>
+  /// <returns>The converted values.</returns>
+  /// <exception cref="NotSupportedException"></exception>
   public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) =>
-      throw new NotSupportedException();
+    throw new NotSupportedException();
 }

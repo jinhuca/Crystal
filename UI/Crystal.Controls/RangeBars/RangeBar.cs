@@ -30,7 +30,7 @@ public class RangeBar : FrameworkElement {
   /// Identifies the <see cref="MinValue"/> dependency property.
   /// </summary>
   public static readonly DependencyProperty MinValueProperty = DependencyProperty.Register(
-    nameof(MinValue), 
+    nameof(MinValue),
     typeof(double),
     typeof(RangeBar),
     new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender));
@@ -38,32 +38,47 @@ public class RangeBar : FrameworkElement {
   /// <summary>
   /// Identifies the <see cref="MaxValue"/> dependency property.
   /// </summary>
-  public static readonly DependencyProperty MaxValueProperty =
-      DependencyProperty.Register(nameof(MaxValue), typeof(double), typeof(RangeBar),
-          new FrameworkPropertyMetadata(100.0, FrameworkPropertyMetadataOptions.AffectsRender));
+  public static readonly DependencyProperty MaxValueProperty = DependencyProperty.Register(
+    nameof(MaxValue),
+    typeof(double),
+    typeof(RangeBar),
+    new FrameworkPropertyMetadata(100.0, FrameworkPropertyMetadataOptions.AffectsRender));
 
-  /// <summary>Identifies the <see cref="FillBrush"/> dependency property.</summary>
-  public static readonly DependencyProperty FillBrushProperty =
-      DependencyProperty.Register(nameof(FillBrush), typeof(Brush), typeof(RangeBar),
-          new FrameworkPropertyMetadata(
-              new SolidColorBrush(Color.FromRgb(0x3B, 0xD1, 0x5A)),
-              FrameworkPropertyMetadataOptions.AffectsRender, OnFillBrushChanged));
+  /// <summary>
+  /// Identifies the <see cref="FillBrush"/> dependency property.
+  /// </summary>
+  public static readonly DependencyProperty FillBrushProperty = DependencyProperty.Register(
+    nameof(FillBrush),
+    typeof(Brush),
+    typeof(RangeBar),
+    new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromRgb(0x3B, 0xD1, 0x5A)),
+      FrameworkPropertyMetadataOptions.AffectsRender, OnFillBrushChanged));
 
-  /// <summary>Identifies the <see cref="TrackBrush"/> dependency property.</summary>
-  public static readonly DependencyProperty TrackBrushProperty =
-      DependencyProperty.Register(nameof(TrackBrush), typeof(Brush), typeof(RangeBar),
-          new FrameworkPropertyMetadata(Brushes.Transparent,
-              FrameworkPropertyMetadataOptions.AffectsRender, OnTrackBrushChanged));
+  /// <summary>
+  /// Identifies the <see cref="TrackBrush"/> dependency property.
+  /// </summary>
+  public static readonly DependencyProperty TrackBrushProperty = DependencyProperty.Register(
+    nameof(TrackBrush),
+    typeof(Brush),
+    typeof(RangeBar),
+    new FrameworkPropertyMetadata(
+      Brushes.Transparent, FrameworkPropertyMetadataOptions.AffectsRender, OnTrackBrushChanged));
 
-  /// <summary>Identifies the <see cref="BarBackground"/> dependency property.</summary>
-  public static readonly DependencyProperty BarBackgroundProperty =
-      DependencyProperty.Register(nameof(BarBackground), typeof(Brush), typeof(RangeBar),
-          new FrameworkPropertyMetadata(Brushes.Black,
-              FrameworkPropertyMetadataOptions.AffectsRender, OnBarBackgroundChanged));
+  /// <summary>
+  /// Identifies the <see cref="BarBackground"/> dependency property.
+  /// </summary>
+  public static readonly DependencyProperty BarBackgroundProperty = DependencyProperty.Register(
+    nameof(BarBackground),
+    typeof(Brush),
+    typeof(RangeBar),
+    new FrameworkPropertyMetadata(Brushes.Black,
+      FrameworkPropertyMetadataOptions.AffectsRender, OnBarBackgroundChanged));
 
-  /// <summary>Identifies the <see cref="BorderBrush"/> dependency property.</summary>
-  public static readonly DependencyProperty BorderBrushProperty =
-      DependencyProperty.Register(nameof(BorderBrush), typeof(Brush), typeof(RangeBar),
+  /// <summary>
+  /// Identifies the <see cref="BorderBrush"/> dependency property.
+  /// </summary>
+  public static readonly DependencyProperty BorderBrushProperty = DependencyProperty.Register(
+    nameof(BorderBrush), typeof(Brush), typeof(RangeBar),
           new FrameworkPropertyMetadata(Brushes.Black,
               FrameworkPropertyMetadataOptions.AffectsRender, OnBorderBrushChanged));
 

@@ -30,7 +30,20 @@ namespace Crystal.Controls.Converters;
 /// Setter binding <c>GridColumns</c> to <c>Capacity</c>) if that's the policy you want; this
 /// converter will square whatever <c>GridRows</c>/<c>GridColumns</c> actually are at the time.
 /// </remarks>
+[ValueConversion(typeof(object[]), typeof(double))]
 public class GridSquareRatioConverter : IMultiValueConverter {
+  /// <summary>
+  /// Computes the Height a <see cref="PerformanceGraph"/> needs so its grid cells render as perfect squares, 
+  /// given its own ActualWidth/GridRows/GridColumns - via <see cref="PerformanceGraph.SquareGridAspectRatio"/>, 
+  /// the exact same <c>cellWidth = Width / GridColumns</c>, <c>cellHeight = Height / GridRows</c> math <c>GridRenderer</c> 
+  /// itself uses internally, not a separately-maintained approximation.
+  /// </summary>
+  /// <param name="values">The values to convert.</param>
+  /// <param name="targetType">The type of the target.</param>
+  /// <param name="parameter">The converter parameter.</param>
+  /// <param name="culture">The culture to use.</param>
+  /// <returns>The converted value.</returns>
+  /// <returns></returns>
   public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture) {
     // Safe placeholder while WPF is still resolving initial layout sizes, or if this converter
     // gets bound to something other than the 3-value (Width, GridRows, GridColumns) shape it expects.
@@ -45,6 +58,15 @@ public class GridSquareRatioConverter : IMultiValueConverter {
     return Math.Max(20.0, width * ratio);
   }
 
+  /// <summary>
+  /// Not supported. This converter does not support converting back from a formatted string to the original values.
+  /// </summary>
+  /// <param name="value">The value to convert back.</param>
+  /// <param name="targetTypes">The types of the target values.</param>
+  /// <param name="parameter">The converter parameter.</param>
+  /// <param name="culture">The culture to use.</param>
+  /// <returns>The converted values.</returns>
+  /// <exception cref="NotSupportedException"></exception>
   public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) =>
-      throw new NotSupportedException();
+    throw new NotSupportedException();
 }

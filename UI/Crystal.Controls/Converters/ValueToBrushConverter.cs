@@ -19,19 +19,38 @@ namespace Crystal.Controls.Converters;
 /// </para>
 /// </summary>
 [ContentProperty(nameof(Brushes))]
+[ValueConversion(typeof(double), typeof(Brush))]
 public sealed class ValueToBrushConverter : IValueConverter {
-  /// <summary>Lower edge of the first band. Values below this return <see cref="Fallback"/>.</summary>
+  /// <summary>
+  /// Lower edge of the first band. Values below this return <see cref="Fallback"/>.
+  /// </summary>
   public double Minimum { get; set; }
 
-  /// <summary>Width of each band (the "gate" between colours). Must be &gt; 0 or the converter falls back.</summary>
+  /// <summary>
+  /// Width of each band (the "gate" between colours). Must be &gt; 0 or the converter falls back.
+  /// </summary>
   public double Step { get; set; } = 20;
 
-  /// <summary>Band brushes, low to high. Index i covers [Minimum + i*Step, Minimum + (i+1)*Step).</summary>
+  /// <summary>
+  /// Band brushes, low to high. Index i covers [Minimum + i*Step, Minimum + (i+1)*Step).
+  /// </summary>
   public Collection<Brush> Brushes { get; } = [];
 
-  /// <summary>Returned when the value falls outside every band (below Minimum or past the top edge).</summary>
+  /// <summary>
+  /// Returned when the value falls outside every band (below Minimum or past the top edge).
+  /// </summary>
   public Brush Fallback { get; set; } = System.Windows.Media.Brushes.Gray;
 
+  /// <summary>
+  /// Converts a numeric value to a <see cref="Brush"/> based on which band it falls into. 
+  /// If the value is below <see cref="Minimum"/> or above the last band's upper edge, 
+  /// returns <see cref="Fallback"/>. If the value is not a valid number, also returns <see cref="Fallback"/>.
+  /// </summary>
+  /// <param name="value">The numeric value to convert.</param>
+  /// <param name="targetType">The type of the target.</param>
+  /// <param name="parameter">The converter parameter.</param>
+  /// <param name="culture">The culture to use.</param>
+  /// <returns>The converted value.</returns>
   public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
     if (Brushes.Count == 0 || Step <= 0) return Fallback;
     if (!TryToDouble(value, culture, out double v)) return Fallback;
@@ -44,9 +63,25 @@ public sealed class ValueToBrushConverter : IValueConverter {
     return Brushes[index] ?? Fallback;
   }
 
+  /// <summary>
+  /// Not supported. This converter does not support converting back from a <see cref="Brush"/> to a numeric value.
+  /// </summary>
+  /// <param name="value">The value to convert back.</param>
+  /// <param name="targetType">The type of the target.</param>
+  /// <param name="parameter">The converter parameter.</param>
+  /// <param name="culture">The culture to use.</param>
+  /// <returns>The converted values.</returns>
+  /// <exception cref="NotSupportedException"></exception>
   public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
-      throw new NotSupportedException();
+    throw new NotSupportedException();
 
+  /// <summary>
+  /// Attempts to convert an object to a double, using the specified culture for conversion.
+  /// </summary>
+  /// <param name="value">The object to convert.</param>
+  /// <param name="culture">The culture to use for conversion.</param>
+  /// <param name="result">When this method returns, contains the converted value if the conversion was successful; otherwise, zero.</param>
+  /// <returns>true if the conversion was successful; otherwise, false.</returns>
   private static bool TryToDouble(object value, CultureInfo culture, out double result) {
     switch (value) {
       case double d:

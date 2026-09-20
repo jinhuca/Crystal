@@ -20,8 +20,16 @@ namespace Crystal.Controls.Comet;
 /// <see cref="LivenessIndicatorBase"/>.
 /// </summary>
 public class LivenessIndicatorLite : LivenessIndicatorBase {
+  /// <summary>
+  /// The root canvas that holds the comet dots and track path. All children are added to this canvas, 
+  /// and it is the content of the control.
+  /// </summary>
   private readonly Canvas _root = new();
 
+  /// <summary>
+  /// Initializes a new instance of the <see cref="LivenessIndicatorLite"/> class. 
+  /// Sets the content of the control to the root canvas.
+  /// </summary>
   public LivenessIndicatorLite() {
     Content = _root;
   }
@@ -55,6 +63,12 @@ public class LivenessIndicatorLite : LivenessIndicatorBase {
 
   #endregion
 
+
+  /// <summary>
+  /// Stops any ongoing animations on the comet dots. This method is called when the control is unloaded 
+  /// or when the animations need to be stopped. It iterates through the children of the root canvas 
+  /// and stops any active animations on their render transforms.
+  /// </summary>
   protected override void Stop() {
     foreach (var child in _root.Children) {
       // Skip the frozen Transform.Identity that non-animated children (e.g. the
@@ -65,6 +79,13 @@ public class LivenessIndicatorLite : LivenessIndicatorBase {
     }
   }
 
+  /// <summary>
+  /// Rebuilds the visual representation of the liveness indicator. This method clears the existing children of 
+  /// the root canvas and constructs a new path for the comet based on the current properties of the control. 
+  /// It calculates the necessary dimensions, corner radii, and creates a path geometry for the rounded rectangle. 
+  /// It then adds the track path and comet dots to the root canvas, applying animations or static positioning 
+  /// based on the current settings.
+  /// </summary>
   protected override void Rebuild() {
     _root.Children.Clear();
     if (!IsLoaded) return;
@@ -192,13 +213,28 @@ public class LivenessIndicatorLite : LivenessIndicatorBase {
     }
   }
 
+  /// <summary>
+  /// Lightens a color by increasing its RGB components by the specified amount, clamping each component to 
+  /// a maximum of 255. The alpha component is set to 255 (fully opaque).
+  /// </summary>
+  /// <param name="c">c</param>
+  /// <param name="amount">amount</param>
+  /// <returns>colored</returns>
   private static Color Lighten(Color c, int amount) => Color.FromArgb(
     0xFF,
     (byte)Math.Min(255, c.R + amount),
     (byte)Math.Min(255, c.G + amount),
     (byte)Math.Min(255, c.B + amount));
 
-  // Brightness in [0,1] at arc distance d from the leading end of the comet.
+  /// <summary>
+  /// Gets the brightness in [0,1] at arc distance d from the leading end of the comet.
+  /// </summary>
+  /// <param name="d">d</param>
+  /// <param name="totalLen">totalLen</param>
+  /// <param name="core">core</param>
+  /// <param name="fade">fade</param>
+  /// <param name="symmetric">symmetric</param>
+  /// <returns>brightness</returns>
   private static double Brightness(double d, double totalLen, double core, double fade, bool symmetric) {
     double edge = symmetric
       ? Math.Abs(d - totalLen / 2) - core / 2 // distance outside the centered core
@@ -207,6 +243,19 @@ public class LivenessIndicatorLite : LivenessIndicatorBase {
     return Math.Pow(Math.Clamp(1 - edge / fade, 0, 1), 1.3);
   }
 
+  /// <summary>
+  /// Builds a PathGeometry representing a rounded rectangle with specified corner radii and direction.
+  /// </summary>
+  /// <param name="x">x</param>
+  /// <param name="y">y</param>
+  /// <param name="w">w</param>
+  /// <param name="h">h</param>
+  /// <param name="tl">tl</param>
+  /// <param name="tr">tr</param>
+  /// <param name="br">br</param>
+  /// <param name="bl">bl</param>
+  /// <param name="clockwise">clockwise</param>
+  /// <returns></returns>
   private static PathGeometry BuildRoundedRectPath(
       double x, double y, double w, double h,
       double tl, double tr, double br, double bl, bool clockwise) {
