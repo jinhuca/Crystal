@@ -17,9 +17,15 @@ namespace Crystal.Controls.Threading;
 /// </para>
 /// </summary>
 public sealed class UiThreadMarshaller {
+  /// <summary>
+  /// The dispatcher captured on the UI thread. All work posted to this marshaller is marshaled to 
+  /// this dispatcher, and dropped if it has begun shutting down.
+  /// </summary>
   private readonly Dispatcher _dispatcher;
 
-  /// <summary>Captures the current thread's dispatcher. Construct this on the UI thread.</summary>
+  /// <summary>
+  /// Captures the current thread's dispatcher. Construct this on the UI thread.
+  /// </summary>
   public UiThreadMarshaller() => _dispatcher = Dispatcher.CurrentDispatcher;
 
   /// <summary>

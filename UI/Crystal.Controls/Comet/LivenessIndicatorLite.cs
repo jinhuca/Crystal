@@ -36,28 +36,54 @@ public class LivenessIndicatorLite : LivenessIndicatorBase {
 
   #region Dependency properties (Lite-only)
 
+  /// <summary>
+  /// Identifies the <see cref="PixelsPerSecond"/> dependency property. This property controls the constant linear speed 
+  /// of the comet in pixels per second. When set to a value greater than 0, it overrides the <see cref="LapSeconds"/> property, 
+  /// ensuring that differently sized controls travel at the same visual speed.
+  /// </summary>
   public static readonly DependencyProperty PixelsPerSecondProperty = DependencyProperty.Register(
-    nameof(PixelsPerSecond), typeof(double), typeof(LivenessIndicatorLite),
+    nameof(PixelsPerSecond),
+    typeof(double),
+    typeof(LivenessIndicatorLite),
     new PropertyMetadata(0.0, OnLiteVisualChanged));
-  /// <summary>Constant linear speed in px/s. When &gt; 0 this overrides LapSeconds
-  /// (so differently sized controls travel at the same visual speed).</summary>
+
+  /// <summary>
+  /// Constant linear speed in px/s. When &gt; 0 this overrides LapSeconds 
+  /// (so differently sized controls travel at the same visual speed).
+  /// </summary>
   public double PixelsPerSecond {
     get => (double)GetValue(PixelsPerSecondProperty);
     set => SetValue(PixelsPerSecondProperty, value);
   }
 
+  /// <summary>
+  /// Identifies the <see cref="Symmetric"/> dependency property. When set to true, the comet is symmetric, meaning it has a 
+  /// bright core in the middle that fades equally toward both ends (head and tail). When false, the comet has a bright head 
+  /// with a trailing tail. The <see cref="DashLength"/> property defines the length of the bright core, while the 
+  /// <see cref="TailLength"/> property defines the fade on each side, resulting in a total span of DashLength + 2 * TailLength.
+  /// </summary>
   public static readonly DependencyProperty SymmetricProperty = DependencyProperty.Register(
-    nameof(Symmetric), typeof(bool), typeof(LivenessIndicatorLite),
+    nameof(Symmetric),
+    typeof(bool),
+    typeof(LivenessIndicatorLite),
     new PropertyMetadata(false, OnLiteVisualChanged));
-  /// <summary>When true the comet is symmetric: a bright core in the middle that
-  /// fades equally toward both ends (head == tail), instead of a bright head with
-  /// a trailing tail. DashLength is the bright core; TailLength is the fade on each
-  /// side, so the total span is DashLength + 2 * TailLength.</summary>
+
+  /// <summary>
+  /// When true the comet is symmetric: a bright core in the middle that fades equally toward both ends (head == tail), 
+  /// instead of a bright head with a trailing tail. DashLength is the bright core; TailLength is the fade on each side, 
+  /// so the total span is DashLength + 2 * TailLength.
+  /// </summary>
   public bool Symmetric {
     get => (bool)GetValue(SymmetricProperty);
     set => SetValue(SymmetricProperty, value);
   }
 
+  /// <summary>
+  /// Callback method that is invoked when either the <see cref="PixelsPerSecond"/> or <see cref="Symmetric"/> dependency
+  /// properties change.
+  /// </summary>
+  /// <param name="d">d</param>
+  /// <param name="e">e</param>
   private static void OnLiteVisualChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     => ((LivenessIndicatorLite)d).Rebuild();
 

@@ -15,6 +15,11 @@ namespace Crystal.BenchmarkModule;
 /// and the Processes detail toolbar, so <see cref="OnInitialized"/> registers no dashboard region.
 /// </summary>
 public class BenchmarkModule : IModule {
+  /// <summary>
+  /// Registers the benchmark engine and dashboard VM, and wires the <see cref="BenchmarkDetailView"/> to
+  /// the dashboard VM.
+  /// </summary>
+  /// <param name="containerRegistry"></param>
   public void RegisterTypes(IContainerRegistry containerRegistry) {
     // The catalog just constructs the fixed set of suites; the runner is stateless (per-run
     // cancellation lives on the VM). Singletons are fine — one of each for the app.
@@ -29,6 +34,11 @@ public class BenchmarkModule : IModule {
         () => ContainerLocator.Container.Resolve<BenchmarkDashboardViewModel>());
   }
 
+  /// <summary>
+  /// No dashboard tile to inject, so this is a no-op. The benchmark surface is detail-window only, 
+  /// opened on demand from the shell title bar and the Processes detail toolbar.
+  /// </summary>
+  /// <param name="containerProvider">The container provider.</param>
   public void OnInitialized(IContainerProvider containerProvider) {
     // Detail-window only — no dashboard tile to inject.
   }

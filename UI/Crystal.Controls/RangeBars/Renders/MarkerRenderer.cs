@@ -13,9 +13,25 @@ namespace Crystal.Controls.RangeBars.Renders;
 /// neighbors that would overlap can stack instead.
 /// </summary>
 internal sealed class MarkerRenderer {
+  /// <summary>
+  /// The typeface used for marker labels. The font is fixed to Segoe UI, normal style/weight/stretch, so
+  /// the labels are rendered consistently.
+  /// </summary>
   private static readonly Typeface LabelTypeface =
-      new(new FontFamily("Segoe UI"), FontStyles.Normal, FontWeights.Normal, FontStretches.Normal);
+    new(new FontFamily("Segoe UI"), FontStyles.Normal, FontWeights.Normal, FontStretches.Normal);
 
+  /// <summary>
+  /// Draws the range bar's markers.
+  /// </summary>
+  /// <param name="dc">The drawing context.</param>
+  /// <param name="barBounds">The bounds of the range bar.</param>
+  /// <param name="fullBounds">The bounds of the full control.</param>
+  /// <param name="style">The style to use for rendering.</param>
+  /// <param name="markers">The markers to draw.</param>
+  /// <param name="min">The minimum value of the range.</param>
+  /// <param name="max">The maximum value of the range.</param>
+  /// <param name="labelFontSize">The font size for marker labels.</param>
+  /// <param name="pixelsPerDip">The number of pixels per device-independent pixel.</param>
   public void Draw(DrawingContext dc, Rect barBounds, Rect fullBounds, RangeBarStyle style,
       IEnumerable<RangeBarMarker>? markers, double min, double max, double labelFontSize, double pixelsPerDip) {
     if (markers == null) return;

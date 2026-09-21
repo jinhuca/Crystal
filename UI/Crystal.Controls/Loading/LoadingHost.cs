@@ -7,9 +7,9 @@ namespace Crystal.Controls.Loading;
 /// Lifecycle of a <see cref="LoadingHost"/>: spinning while its content warms, then either the live content or a failure marker.
 /// </summary>
 public enum LoadingState {
-  Loading,
-  Ready,
-  Failed,
+  Loading,      // The tile is warming its backing singleton on a background thread; shows spinner and label.
+  Ready,        // The tile has finished warming and shows its live content.
+  Failed,       // The tile failed to warm its backing singleton; shows a failure marker instead of blocking the dashboard.
 }
 
 /// <summary>
@@ -23,6 +23,10 @@ public enum LoadingState {
 /// </para>
 /// </summary>
 public sealed class LoadingHost : ContentControl {
+  /// <summary>
+  /// Initializes the <see cref="LoadingHost"/> type and overrides its default style key so the 
+  /// lookless control can find its template in generic.xaml.
+  /// </summary>
   static LoadingHost() {
     DefaultStyleKeyProperty.OverrideMetadata(typeof(LoadingHost), new FrameworkPropertyMetadata(typeof(LoadingHost)));
   }

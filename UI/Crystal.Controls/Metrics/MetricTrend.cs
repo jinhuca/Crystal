@@ -6,12 +6,18 @@ namespace Crystal.Controls.Metrics;
 /// still show whether a value is climbing, falling, or holding steady.
 /// </summary>
 public enum MetricTrend {
-  /// <summary>Holding within the deadband of its smoothed baseline (no meaningful movement).</summary>
+  /// <summary>
+  /// Holding within the deadband of its smoothed baseline (no meaningful movement).
+  /// </summary>
   Flat,
 
-  /// <summary>Reading is above its smoothed baseline by more than the deadband.</summary>
+  /// <summary>
+  /// Reading is above its smoothed baseline by more than the deadband.
+  /// </summary>
   Rising,
 
-  /// <summary>Reading is below its smoothed baseline by more than the deadband.</summary>
+  /// <summary>
+  /// Reading is below its smoothed baseline by more than the deadband.
+  /// </summary>
   Falling,
 }

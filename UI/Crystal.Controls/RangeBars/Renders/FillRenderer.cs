@@ -11,6 +11,16 @@ namespace Crystal.Controls.RangeBars.Renders;
 /// border stroke rather than under it.
 /// </summary>
 internal sealed class FillRenderer {
+  /// <summary>
+  /// Draws the range bar's interior: the full-width track with the style's track brush, then the
+  /// filled portion — from the left edge up to <paramref name="fraction"/> of the width — with the
+  /// style's fill brush. The interior is inset by the border thickness so the fill sits inside the
+  /// border stroke rather than under it.
+  /// </summary>
+  /// <param name="dc">The drawing context.</param>
+  /// <param name="bounds">The bounds of the interior.</param>
+  /// <param name="style">The style to use for rendering.</param>
+  /// <param name="fraction">The fraction of the interior to fill.</param>
   public void Draw(DrawingContext dc, Rect bounds, RangeBarStyle style, double fraction) {
     fraction = Math.Clamp(fraction, 0, 1);
 
