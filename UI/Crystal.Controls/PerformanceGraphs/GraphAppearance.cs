@@ -3,23 +3,6 @@ using System.ComponentModel;
 namespace Crystal.Controls.PerformanceGraphs;
 
 /// <summary>
-/// How every dashboard history graph draws its samples: a continuous filled line or a
-/// dot-matrix gauge. Maps to a <see cref="PerformanceGraph"/>'s <see cref="DisplayMode"/>
-/// (<see cref="DisplayMode.Line"/> / <see cref="DisplayMode.Dot"/>).
-/// </summary>
-public enum GraphRenderMode {
-  /// <summary>
-  /// Filled line — <see cref="PerformanceGraph"/> with <see cref="DisplayMode.Line"/>.
-  /// </summary>
-  Line,
-
-  /// <summary>
-  /// Dot-matrix gauge — <see cref="PerformanceGraph"/> with <see cref="DisplayMode.Dot"/>.
-  /// </summary>
-  Dot,
-}
-
-/// <summary>
 /// The global render mode shared by every dashboard <see cref="PerformanceGraph"/>, shared
 /// across the shell/module assembly boundary the same way <see cref="Meters.CoreBarAppearance"/>
 /// is: each tile's graph binds its <see cref="PerformanceGraph.DisplayMode"/> to this singleton, and
