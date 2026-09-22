@@ -22,10 +22,30 @@ namespace Crystal.Service.Cpu;
 /// someone is subscribed.
 /// </summary>
 public sealed class CpuMonitor : IDisposable {
+  /// <summary>
+  /// The connectable specs stream. Wraps a single <see cref="CpuInfoBuilder.BuildAsync"/> call in a
+  /// <c>Replay(1)</c> so the one-time result is cached and handed to every subscriber, current or late.
+  /// </summary>
   private readonly IConnectableObservable<ISystemCpuInfo> _specs;
+
+  /// <summary>
+  /// The live sensor stream. Rebuilds the CPU tree on a fixed cadence; ref-counted so the polling timer
+  /// only runs while at least one subscriber is attached.
+  /// </summary>
   private readonly IObservable<ISystemCpuInfo> _sensors;
+
+  /// <summary>
+  /// The eager connection to <see cref="_specs"/>, kept so it can be torn down in <see cref="Dispose"/>.
+  /// </summary>
   private readonly IDisposable _specsConnection;
 
+  /// <summary>
+  /// Wires up the two streams over a shared <see cref="CpuInfoBuilder"/>. The specs stream is connected
+  /// immediately so the one-time build cost is paid up front; the sensor stream stays idle until subscribed.
+  /// </summary>
+  /// <param name="builder">Builds the neutral CPU tree from the provider snapshots on demand.</param>
+  /// <param name="pollInterval">How often the sensor stream re-samples; defaults to one second.</param>
+  /// <param name="scheduler">Scheduler driving the poll timer; defaults to <see cref="DefaultScheduler.Instance"/>.</param>
   public CpuMonitor(CpuInfoBuilder builder, TimeSpan? pollInterval = null, IScheduler? scheduler = null) {
     ArgumentNullException.ThrowIfNull(builder);
     var interval = pollInterval ?? TimeSpan.FromSeconds(1);
@@ -49,11 +69,19 @@ public sealed class CpuMonitor : IDisposable {
       .RefCount();
   }
 
-  /// <summary>Static CPU specs; emits once and replays to new subscribers.</summary>
+  /// <summary>
+  /// Static CPU specs; emits once and replays to new subscribers.
+  /// </summary>
   public IObservable<ISystemCpuInfo> Specs => _specs.AsObservable();
 
-  /// <summary>Live CPU/core sensors; emits a fresh snapshot on each poll.</summary>
+  /// <summary>
+  /// Live CPU/core sensors; emits a fresh snapshot on each poll.
+  /// </summary>
   public IObservable<ISystemCpuInfo> Sensors => _sensors;
 
+  /// <summary>
+  /// Tears down the eager specs subscription so its cached build is released. The ref-counted sensor
+  /// stream needs no explicit teardown; it stops polling once its last subscriber unsubscribes.
+  /// </summary>
   public void Dispose() => _specsConnection.Dispose();
 }

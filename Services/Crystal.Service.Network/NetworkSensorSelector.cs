@@ -10,24 +10,42 @@ namespace Crystal.Service.Network;
 /// Update()/enumeration and <see cref="System.Net.NetworkInformation"/> side effects.
 /// </summary>
 internal static class NetworkSensorSelector {
+  /// <summary>
+  /// Finds the first sensor matching both <paramref name="type"/> and <paramref name="name"/>
+  /// (case-insensitive) and returns its value, or 0 when the sensor is absent or unread. The name
+  /// match is needed because one interface exposes several sensors of the same <see cref="SensorType"/>.
+  /// </summary>
+  /// <param name="sensors">The interface's sensor array to search.</param>
+  /// <param name="type">The sensor type to match (e.g. <see cref="SensorType.Throughput"/>).</param>
+  /// <param name="name">The sensor's display name to match.</param>
+  /// <returns>The sensor's current value, or 0 if not found.</returns>
   public static double FindValue(ISensor[] sensors, SensorType type, string name) {
     var sensor = Array.Find(sensors,
         s => s.SensorType == type && string.Equals(s.Name, name, StringComparison.OrdinalIgnoreCase));
     return sensor?.Value ?? 0;
   }
 
-  // Utilization is a percentage; a down/virtual NIC can report NaN/Infinity (Speed 0 → divide),
-  // so clamp non-finite values to 0 and cap the range at 0-100.
+  /// <summary>
+  /// Coerces a utilization reading into a valid percentage. A down/virtual NIC can report
+  /// NaN/Infinity (Speed 0 → divide), so non-finite values become 0 and the result is capped to 0-100.
+  /// </summary>
   public static double Clamp(double value) =>
       double.IsFinite(value) ? Math.Min(Math.Max(value, 0), 100) : 0;
 
-  // Throughput/data counters must be finite and non-negative; anything else reads as 0.
+  /// <summary>
+  /// Coerces a throughput or cumulative-data reading to a usable number: finite and non-negative
+  /// values pass through, anything else (NaN, Infinity, negative) reads as 0.
+  /// </summary>
   public static double Sanitize(double value) =>
       double.IsFinite(value) && value >= 0 ? value : 0;
 
-  // Reduces every present radio's state to a single machine-level status, best-state-wins
-  // (Connected beats Disconnected beats Disabled). Callers decide the empty-list fallback
-  // (None vs Disabled) since that needs an OS adapter probe.
+  /// <summary>
+  /// Reduces every present radio's state to a single machine-level status, best-state-wins
+  /// (Connected beats Disconnected beats Disabled). Callers decide the empty-list fallback
+  /// (<see cref="WifiStatus.None"/> vs <see cref="WifiStatus.Disabled"/>) since that needs an OS adapter probe.
+  /// </summary>
+  /// <param name="states">Per-radio WLAN interface states to reduce.</param>
+  /// <returns>The best (highest) <see cref="WifiStatus"/> across the given radios.</returns>
   public static WifiStatus ReduceWifiStatus(IReadOnlyList<WlanInterfaceState> states) {
     var best = WifiStatus.Disabled;
     foreach (var state in states) {

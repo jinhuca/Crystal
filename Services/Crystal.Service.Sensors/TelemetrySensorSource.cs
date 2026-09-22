@@ -22,9 +22,21 @@ namespace Crystal.Service.Sensors;
 /// </para>
 /// </summary>
 public sealed class TelemetrySensorSource : ISensorTelemetrySource {
+  /// <summary>
+  /// The open hardware session; only the motherboard and controller trees are enabled.
+  /// </summary>
   private readonly Computer _computer;
+
+  /// <summary>
+  /// Guards against closing the hardware session more than once.
+  /// </summary>
   private bool _disposed;
 
+  /// <summary>
+  /// Opens the hardware session with only the motherboard (SuperIO + embedded controller) and
+  /// controller (cooler) trees enabled, keeping bus work per poll to the minimum this source's
+  /// consumers actually read. See the type remarks for why the tree is deliberately kept minimal.
+  /// </summary>
   public TelemetrySensorSource() {
     _computer = new Computer {
       IsMotherboardEnabled = true,
@@ -33,6 +45,12 @@ public sealed class TelemetrySensorSource : ISensorTelemetrySource {
     _computer.Open();
   }
 
+  /// <summary>
+  /// Refreshes every enabled hardware node (and its sub-hardware) and returns a flat snapshot of the
+  /// current sensor readings, projected onto the neutral <see cref="SensorReading"/>. Called once per
+  /// poll by the owning <see cref="SensorMonitor"/>.
+  /// </summary>
+  /// <returns>All readings collected this poll, ungrouped.</returns>
   public IReadOnlyList<SensorReading> Read() {
     var readings = new List<SensorReading>();
 
@@ -44,6 +62,13 @@ public sealed class TelemetrySensorSource : ISensorTelemetrySource {
     return readings;
   }
 
+  /// <summary>
+  /// Appends every sensor on <paramref name="hardware"/> to <paramref name="readings"/>, then recurses
+  /// into its sub-hardware (updating each first) so nested nodes — e.g. SuperIO chips hung off the
+  /// motherboard — are included. The caller must have already called <c>Update()</c> on the top node.
+  /// </summary>
+  /// <param name="hardware">The hardware node to harvest.</param>
+  /// <param name="readings">The accumulator the readings are appended to.</param>
   private static void Collect(IHardware hardware, List<SensorReading> readings) {
     foreach (var sensor in hardware.Sensors)
       readings.Add(TelemetryReadingMapper.ToReading(sensor, hardware.Name, hardware.HardwareType));
@@ -54,6 +79,9 @@ public sealed class TelemetrySensorSource : ISensorTelemetrySource {
     }
   }
 
+  /// <summary>
+  /// Closes the hardware session, releasing the ring-0 driver handle. Idempotent.
+  /// </summary>
   public void Dispose() {
     if (_disposed) return;
     _disposed = true;

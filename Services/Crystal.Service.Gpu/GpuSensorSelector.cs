@@ -19,11 +19,15 @@ internal static class GpuSensorSelector {
     public static readonly SensorRange None = default;
   }
 
-  /// <summary>Value/Min/Max of a sensor, or <see cref="SensorRange.None"/> when it has no value.</summary>
+  /// <summary>
+  /// Value/Min/Max of a sensor, or <see cref="SensorRange.None"/> when it has no value.
+  /// </summary>
   private static SensorRange Range(ISensor? sensor) =>
     sensor?.Value is { } v ? new SensorRange(v, sensor.Min, sensor.Max) : SensorRange.None;
 
-  /// <summary>As <see cref="Range"/>, but a non-positive value counts as absent (idle-clock guard).</summary>
+  /// <summary>
+  /// As <see cref="Range"/>, but a non-positive value counts as absent (idle-clock guard).
+  /// </summary>
   private static SensorRange PositiveRange(ISensor? sensor) =>
     sensor?.Value is { } v && v > 0 ? new SensorRange(v, sensor.Min, sensor.Max) : SensorRange.None;
 
@@ -74,7 +78,9 @@ internal static class GpuSensorSelector {
   /// <returns>The core clock frequency in MHz, or null if not available.</returns>
   public static double? SelectCoreClock(ISensor[] sensors) => SelectCoreClockRange(sensors).Value;
 
-  /// <summary>Core clock with its session Min/Max; see <see cref="SelectCoreClock"/> for value semantics.</summary>
+  /// <summary>
+  /// Core clock with its session Min/Max; see <see cref="SelectCoreClock"/> for value semantics.
+  /// </summary>
   public static SensorRange SelectCoreClockRange(ISensor[] sensors) => PositiveRange(Array.Find(
       array: sensors,
       match: s => s.SensorType == SensorType.Clock && string.Equals(s.Name, CoreSensorName, StringComparison.OrdinalIgnoreCase)));
@@ -119,7 +125,9 @@ internal static class GpuSensorSelector {
   /// <returns>The memory clock frequency in MHz, or null if not available.</returns>
   public static double? SelectMemoryClock(ISensor[] sensors) => SelectMemoryClockRange(sensors).Value;
 
-  /// <summary>Memory clock with its session Min/Max; see <see cref="SelectMemoryClock"/> for value semantics.</summary>
+  /// <summary>
+  /// Memory clock with its session Min/Max; see <see cref="SelectMemoryClock"/> for value semantics.
+  /// </summary>
   public static SensorRange SelectMemoryClockRange(ISensor[] sensors) => PositiveRange(Array.Find(sensors,
       s => s.SensorType == SensorType.Clock
            && string.Equals(s.Name, "GPU Memory", StringComparison.OrdinalIgnoreCase)));
@@ -146,7 +154,9 @@ internal static class GpuSensorSelector {
   /// <returns>The core voltage in volts, or null if not available.</returns>
   public static double? SelectCoreVoltage(ISensor[] sensors) => SelectCoreVoltageRange(sensors).Value;
 
-  /// <summary>Core voltage with its session Min/Max; see <see cref="SelectCoreVoltage"/>.</summary>
+  /// <summary>
+  /// Core voltage with its session Min/Max; see <see cref="SelectCoreVoltage"/>.
+  /// </summary>
   public static SensorRange SelectCoreVoltageRange(ISensor[] sensors) => Range(Array.Find(sensors,
       s => s.SensorType == SensorType.Voltage
            && (string.Equals(s.Name, "GPU Core", StringComparison.OrdinalIgnoreCase)
@@ -261,7 +271,9 @@ internal static class GpuSensorSelector {
   /// <returns>The package power, or null if not found.</returns>
   public static double? SelectPackagePower(ISensor[] sensors) => SelectPackagePowerRange(sensors).Value;
 
-  /// <summary>Package power with the chosen rail's session Min/Max; see <see cref="SelectPackagePower"/>.</summary>
+  /// <summary>
+  /// Package power with the chosen rail's session Min/Max; see <see cref="SelectPackagePower"/>.
+  /// </summary>
   public static SensorRange SelectPackagePowerRange(ISensor[] sensors) {
     foreach (var name in new[] { "GPU Package", "GPU Power", "GPU Total" }) {
       var power = Array.Find(array: sensors, match: s => s.SensorType == SensorType.Power
@@ -307,7 +319,9 @@ internal static class GpuSensorSelector {
   /// <returns>The core temperature, or null if not found.</returns>
   public static double? SelectCoreTemperature(ISensor[] sensors) => SelectCoreTemperatureRange(sensors).Value;
 
-  /// <summary>Core temperature with the chosen sensor's session Min/Max; see <see cref="SelectCoreTemperature"/>.</summary>
+  /// <summary>
+  /// Core temperature with the chosen sensor's session Min/Max; see <see cref="SelectCoreTemperature"/>.
+  /// </summary>
   public static SensorRange SelectCoreTemperatureRange(ISensor[] sensors) {
     var core = Array.Find(
       array: sensors,
@@ -329,17 +343,26 @@ internal static class GpuSensorSelector {
   /// <returns>The hot-spot temperature, or null if not found.</returns>
   public static double? SelectHotSpotTemperature(ISensor[] sensors) => SelectHotSpotTemperatureRange(sensors).Value;
 
-  /// <summary>Hot-spot temperature with its session Min/Max; see <see cref="SelectHotSpotTemperature"/>.</summary>
+  /// <summary>
+  /// Hot-spot temperature with its session Min/Max; see <see cref="SelectHotSpotTemperature"/>.
+  /// </summary>
   public static SensorRange SelectHotSpotTemperatureRange(ISensor[] sensors) => Range(Array.Find(
       array: sensors,
       match: s => s.SensorType == SensorType.Temperature
              && string.Equals(a: s.Name, b: "GPU Hot Spot", comparisonType: StringComparison.OrdinalIgnoreCase)));
 
-  // VRAM temperature — the memory-junction sensor on cards that expose it. Named "GPU Memory
-  // Junction" on NVIDIA and "GPU Memory" on AMD and Intel discrete.
+  /// <summary>
+  /// Selects the VRAM (memory-junction) temperature from the provided sensors.
+  /// The memory-junction sensor on cards that expose it, named "GPU Memory Junction" on NVIDIA and
+  /// "GPU Memory" on AMD and Intel discrete. Returns null when no such sensor is present.
+  /// </summary>
+  /// <param name="sensors">The array of sensors.</param>
+  /// <returns>The memory temperature in degrees Celsius, or null if not available.</returns>
   public static double? SelectMemoryTemperature(ISensor[] sensors) => SelectMemoryTemperatureRange(sensors).Value;
 
-  /// <summary>Memory temperature with the chosen sensor's session Min/Max; see <see cref="SelectMemoryTemperature"/>.</summary>
+  /// <summary>
+  /// Memory temperature with the chosen sensor's session Min/Max; see <see cref="SelectMemoryTemperature"/>.
+  /// </summary>
   public static SensorRange SelectMemoryTemperatureRange(ISensor[] sensors) {
     foreach (var name in new[] { "GPU Memory Junction", "GPU Memory" }) {
       var memory = Array.Find(
@@ -351,8 +374,13 @@ internal static class GpuSensorSelector {
     return SensorRange.None;
   }
 
-  // The CPU-package temperature used as the Intel iGPU proxy (the iGPU shares the CPU die and only
-  // exposes its own temp under IGCL). Matches the common package aliases HWiNFO reports.
+  /// <summary>
+  /// Selects the CPU-package temperature used as the Intel iGPU proxy (the iGPU shares the CPU die
+  /// and only exposes its own temp under IGCL). Matches the common package aliases HWiNFO reports
+  /// ("CPU Package", "CPU Cores", "Core Max"), taking the first that carries a value.
+  /// </summary>
+  /// <param name="sensors">The array of CPU sensors.</param>
+  /// <returns>The CPU package temperature in degrees Celsius, or null if not available.</returns>
   public static double? SelectCpuPackageTemperature(ISensor[] sensors) {
     var pkg = Array.Find(
       array: sensors,

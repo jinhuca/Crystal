@@ -4,14 +4,30 @@ using Crystal.Provider.Mmi.MmiEngine;
 
 namespace Crystal.Service.Memory;
 
-/// <summary>Builds the static memory inventory from WMI (<c>Win32_PhysicalMemory</c> for the
+/// <summary>
+/// Builds the static memory inventory from WMI (<c>Win32_PhysicalMemory</c> for the
 /// populated sticks and <c>Win32_PhysicalMemoryArray</c> for the board's total slot count),
-/// mapping each populated slot and rolling up the system totals.</summary>
+/// mapping each populated slot and rolling up the system totals.
+/// </summary>
 public sealed class MemoryInfoBuilder {
+  /// <summary>
+  /// The WMI provider used to query the physical-memory and memory-array classes.
+  /// </summary>
   private readonly IWmiHardwareProvider _wmi;
 
+  /// <summary>
+  /// Creates a builder over the given WMI provider (injected so it can be faked in tests).
+  /// </summary>
+  /// <param name="wmi">The WMI hardware provider.</param>
   public MemoryInfoBuilder(IWmiHardwareProvider wmi) => _wmi = wmi;
 
+  /// <summary>
+  /// Queries WMI for the populated sticks and the board's memory arrays, then rolls them up into a
+  /// single <see cref="MemorySnapshot"/>. This is the static inventory (built once at startup), not a
+  /// live load reading. Async because the WMI queries hit the management infrastructure off-thread.
+  /// </summary>
+  /// <param name="ct">The cancellation token.</param>
+  /// <returns>A task returning the assembled memory inventory snapshot.</returns>
   public async Task<MemorySnapshot> BuildAsync(CancellationToken ct) {
     var sticks = await _wmi.ToSafePhysicalMemoryMetricsAsync(ct);
     var arrays = await _wmi.ToSafePhysicalMemoryArrayMetricsAsync(ct);
@@ -35,6 +51,13 @@ public sealed class MemoryInfoBuilder {
         TotalSlots: totalSlots);
   }
 
+  /// <summary>
+  /// Projects one WMI <c>Win32_PhysicalMemory</c> row into a <see cref="MemoryModuleInfo"/>.
+  /// The slot label falls back from <c>DeviceLocator</c> to <c>BankLabel</c> to "Unknown slot" because
+  /// boards populate one, the other, or neither.
+  /// </summary>
+  /// <param name="m">The physical-memory metrics for one populated stick.</param>
+  /// <returns>The mapped module info.</returns>
   private static MemoryModuleInfo ToModule(PhysicalMemoryMetrics m) => new(
       SlotLabel: m.DeviceLocator ?? m.BankLabel ?? "Unknown slot",
       CapacityGB: m.CapacityInGB,

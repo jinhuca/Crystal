@@ -6,5 +6,11 @@ namespace Crystal.Service.Network;
 /// <see cref="NetworkLoadSource"/> opens hardware in its constructor).
 /// </summary>
 public interface INetworkLoadSource {
+  /// <summary>
+  /// Takes a fresh point-in-time reading of every connected interface (utilization, throughput,
+  /// cumulative counters, link speed, and per-adapter Wi-Fi radio state) plus the machine-level
+  /// Wi-Fi availability. Called once per poll by <see cref="NetworkMonitor"/>.
+  /// </summary>
+  /// <returns>A <see cref="NetworkSnapshot"/> describing the current network state.</returns>
   NetworkSnapshot Read();
 }

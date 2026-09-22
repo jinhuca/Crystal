@@ -18,14 +18,38 @@ namespace Crystal.Service.Process;
 /// </para>
 /// </summary>
 public sealed class ProcessMonitor {
+  /// <summary>
+  /// WMI source for the raw per-process metrics (name, CPU time, working set, session, path).
+  /// </summary>
   private readonly IWmiHardwareProvider _provider;
+
+  /// <summary>
+  /// Optional shared ETW rate broadcaster supplying per-PID GPU/Disk/Network rates; null when absent.
+  /// </summary>
   private readonly EtwRateBroadcaster? _etw;
+
+  /// <summary>
+  /// Optional GPU Engine performance-counter sampler; when present it overrides the ETW GPU estimate.
+  /// </summary>
   private readonly GpuProcessUsageSampler? _gpuUsage;
+
+  /// <summary>
+  /// Logical-core count used to scale per-process CPU time onto the whole-machine 0-100 scale.
+  /// </summary>
   private readonly int _logicalCores;
+
+  /// <summary>
+  /// The published, ref-counted stream of per-poll process lists (see <see cref="Samples"/>).
+  /// </summary>
   private readonly IObservable<IReadOnlyList<ProcessSample>> _samples;
 
   // Cumulative CPU time (100-ns units) per PID from the previous poll, so we can diff.
   private readonly Dictionary<uint, ulong> _lastCpuTime = new();
+
+  /// <summary>
+  /// Timestamp (in ticks) of the previous poll, used as the wall-clock denominator for CPU%.
+  /// Zero before the first poll, which yields 0% CPU for that first emission.
+  /// </summary>
   private long _lastTimestampTicks;
 
   // Latest per-PID ETW rates from the shared broadcaster. The broadcaster owns the single
@@ -33,6 +57,16 @@ public sealed class ProcessMonitor {
   // whatever it last published. Written from the broadcaster's scheduler, read on the poll thread.
   private volatile IReadOnlyDictionary<uint, ProcessEtwMetrics>? _latestRates;
 
+  /// <summary>
+  /// Wires up the poll pipeline without starting it (the stream is cold and ref-counted). GPU/Disk/Network
+  /// stay null unless an <paramref name="etw"/> source is supplied; a <paramref name="gpuUsage"/> sampler,
+  /// when given, takes precedence for the GPU column.
+  /// </summary>
+  /// <param name="provider">WMI source for the raw per-process metrics. Required.</param>
+  /// <param name="etw">Optional shared ETW rate broadcaster for GPU/Disk/Network rates.</param>
+  /// <param name="gpuUsage">Optional GPU Engine counter sampler that overrides the ETW GPU estimate.</param>
+  /// <param name="pollInterval">Poll cadence; defaults to 1 second.</param>
+  /// <param name="scheduler">Scheduler for the poll timer; defaults to <see cref="DefaultScheduler"/>.</param>
   public ProcessMonitor(IWmiHardwareProvider provider, EtwRateBroadcaster? etw = null,
                         GpuProcessUsageSampler? gpuUsage = null,
                         TimeSpan? pollInterval = null, IScheduler? scheduler = null) {
@@ -65,6 +99,10 @@ public sealed class ProcessMonitor {
         .RefCount();
   }
 
+  /// <summary>
+  /// Live stream of process snapshots; emits one list per poll. Cold and ref-counted, so the
+  /// poll timer (and the ETW subscription) only runs while at least one observer is subscribed.
+  /// </summary>
   public IObservable<IReadOnlyList<ProcessSample>> Samples => _samples;
 
   /// <summary>
@@ -74,6 +112,15 @@ public sealed class ProcessMonitor {
   /// </summary>
   public string? MetricsStatusError => _etw is { IsRunning: false } ? _etw.StartError : null;
 
+  /// <summary>
+  /// Runs one poll: pulls the WMI metrics, overlays the latest ETW rates and GPU-counter readings,
+  /// derives each process's CPU% from the rise in its cumulative CPU time since the previous poll,
+  /// classifies it (Windows/App/background), and builds the sample list. Only ever one call is in
+  /// flight (the stream serializes polls), so the mutable CPU baseline needs no locking. Updates that
+  /// baseline at the end, dropping exited PIDs so they don't skew the next diff.
+  /// </summary>
+  /// <param name="ct">Cancellation token for the WMI query.</param>
+  /// <returns>The per-process samples for this poll.</returns>
   private async Task<IReadOnlyList<ProcessSample>> SampleAsync(CancellationToken ct) {
     var metrics = await _provider.ToSafeProcessMetricsAsync(ct);
 

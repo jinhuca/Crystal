@@ -10,15 +10,44 @@ namespace Crystal.Service.Memory;
 /// in-use bar.
 /// </summary>
 internal sealed class MemoryCompositionReader : IDisposable {
+  /// <summary>
+  /// Divisor converting the counters' raw byte values to GB.
+  /// </summary>
   private const double BytesPerGB = 1024.0 * 1024.0 * 1024.0;
 
+  /// <summary>
+  /// "Modified Page List Bytes" counter (dirty pages awaiting write-back); null if unavailable.
+  /// </summary>
   private readonly PerformanceCounter? _modified;
+
+  /// <summary>
+  /// "Standby Cache Reserve Bytes" counter — one of the three standby priority buckets.
+  /// </summary>
   private readonly PerformanceCounter? _standbyReserve;
+
+  /// <summary>
+  /// "Standby Cache Normal Priority Bytes" counter — one of the three standby buckets.
+  /// </summary>
   private readonly PerformanceCounter? _standbyNormal;
+
+  /// <summary>
+  /// "Standby Cache Core Bytes" counter — one of the three standby buckets.
+  /// </summary>
   private readonly PerformanceCounter? _standbyCore;
+
+  /// <summary>
+  /// "Free &amp; Zero Page List Bytes" counter (unused, immediately allocatable pages).
+  /// </summary>
   private readonly PerformanceCounter? _free;
+
   private bool _disposed;
 
+  /// <summary>
+  /// Creates and validates the page-list counters up front so <see cref="Read"/> is a cheap
+  /// sample. If the "Memory" category or any required counter is missing (or access is denied), the
+  /// failure is swallowed, all counters are released, and every subsequent read returns null — the UI
+  /// then falls back to the plain in-use bar rather than the composition breakdown.
+  /// </summary>
   public MemoryCompositionReader() {
     try {
       // 1. Validate that the entire category exists first
@@ -58,7 +87,10 @@ internal sealed class MemoryCompositionReader : IDisposable {
     }
   }
 
-  // Helper to safely clean up if partial initialization occurs
+  /// <summary>
+  /// Disposes any counters that were created before initialization failed, so a partially
+  /// constructed reader leaks nothing and leaves all fields effectively null.
+  /// </summary>
   private void ReleaseCounters() {
     _modified?.Dispose();
     _standbyReserve?.Dispose();
@@ -67,10 +99,18 @@ internal sealed class MemoryCompositionReader : IDisposable {
     _free?.Dispose();
   }
 
+  /// <summary>
+  /// One composition sample, in GB, each nullable when its counter is unavailable.
+  /// </summary>
+  /// <param name="ModifiedGB">Modified (dirty) page-list size.</param>
+  /// <param name="StandbyGB">Standby page-list size (the three priority buckets summed).</param>
+  /// <param name="FreeGB">Free/zero page-list size.</param>
   public readonly record struct Reading(double? ModifiedGB, double? StandbyGB, double? FreeGB);
 
-  /// <summary>Samples the page-list counters. Returns null members when a counter is unavailable;
-  /// standby is the sum of its three priority buckets, matching Task Manager's single figure.</summary>
+  /// <summary>
+  /// Samples the page-list counters. Returns null members when a counter is unavailable;
+  /// standby is the sum of its three priority buckets, matching Task Manager's single figure.
+  /// </summary>
   public Reading Read() {
     double? modified = ReadGB(_modified);
     double? free = ReadGB(_free);
@@ -78,9 +118,19 @@ internal sealed class MemoryCompositionReader : IDisposable {
     return new Reading(modified, standby, free);
   }
 
+  /// <summary>
+  /// Adds the three standby buckets, treating null as zero — but returns null when all three
+  /// are null, so a wholly unavailable standby figure stays null rather than collapsing to 0.
+  /// </summary>
   private static double? Sum(double? a, double? b, double? c) =>
       a is null && b is null && c is null ? null : (a ?? 0) + (b ?? 0) + (c ?? 0);
 
+  /// <summary>
+  /// Samples one counter and converts bytes to GB. Returns null when the counter is absent
+  /// or the sample throws, so a single failing counter does not fail the whole read.
+  /// </summary>
+  /// <param name="counter">The counter to sample, or null.</param>
+  /// <returns>The value in GB, or null.</returns>
   private static double? ReadGB(PerformanceCounter? counter) {
     if (counter is null) return null;
     try {
@@ -91,6 +141,12 @@ internal sealed class MemoryCompositionReader : IDisposable {
     }
   }
 
+  /// <summary>
+  /// Creates a read-only counter in the "Memory" category, returning null instead of
+  /// throwing so construction can proceed with the remaining counters.
+  /// </summary>
+  /// <param name="counterName">The counter name within the "Memory" category.</param>
+  /// <returns>The counter, or null if it could not be created.</returns>
   private static PerformanceCounter? Create(string counterName) {
     try {
       return new PerformanceCounter("Memory", counterName, readOnly: true);
@@ -100,6 +156,9 @@ internal sealed class MemoryCompositionReader : IDisposable {
     }
   }
 
+  /// <summary>
+  /// Disposes all counters. Idempotent.
+  /// </summary>
   public void Dispose() {
     if (_disposed) return;
     _disposed = true;

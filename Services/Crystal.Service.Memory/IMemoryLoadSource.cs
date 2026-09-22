@@ -6,5 +6,11 @@ namespace Crystal.Service.Memory;
 /// concrete <see cref="MemoryLoadSource"/> opens hardware in its constructor).
 /// </summary>
 public interface IMemoryLoadSource {
+  /// <summary>
+  /// Takes a fresh sample of physical-memory load and returns it as a <see cref="MemoryLoadReading"/>.
+  /// Called once per poll tick by <see cref="MemoryMonitor"/>; implementations re-sample the hardware
+  /// on each call rather than returning a cached value.
+  /// </summary>
+  /// <returns>The current memory load reading.</returns>
   MemoryLoadReading Read();
 }

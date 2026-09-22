@@ -122,9 +122,10 @@ public sealed class GpuLoadSource : IGpuLoadSource, IDisposable {
   }
 
   /// <summary>
-  /// Enumerates all GPU adapters in the hardware tree, including NVIDIA, AMD, and Intel.
+  /// Enumerates all GPU adapters in the hardware tree, including NVIDIA, AMD, and Intel. The CPU
+  /// group (enabled only on Intel hosts for iGPU detection) is deliberately excluded.
   /// </summary>
-  /// <returns></returns>
+  /// <returns>The GPU hardware nodes; empty when the host exposes no supported GPU.</returns>
   private IEnumerable<IHardware> EnumerateGpus() =>
     _computer.Hardware.Where(h => h.HardwareType is HardwareType.GpuNvidia or HardwareType.GpuAmd or HardwareType.GpuIntel);
 

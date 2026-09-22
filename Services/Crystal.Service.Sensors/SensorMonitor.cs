@@ -14,8 +14,19 @@ namespace Crystal.Service.Sensors;
 /// </para>
 /// </summary>
 public sealed class SensorMonitor : IDisposable {
+  /// <summary>
+  /// The hardware sensor source polled each tick; owned and disposed by this monitor.
+  /// </summary>
   private readonly ISensorTelemetrySource _source;
+
+  /// <summary>
+  /// The published, ref-counted snapshot stream shared by all observers.
+  /// </summary>
   private readonly IObservable<SensorSnapshot> _snapshots;
+
+  /// <summary>
+  /// Guards against double disposal of the underlying source.
+  /// </summary>
   private bool _disposed;
 
   /// <summary>
@@ -48,9 +59,14 @@ public sealed class SensorMonitor : IDisposable {
         .RefCount();
   }
 
-  /// <summary>Emits a fresh grouped snapshot of all system sensors on each poll.</summary>
+  /// <summary>
+  /// Emits a fresh grouped snapshot of all system sensors on each poll.
+  /// </summary>
   public IObservable<SensorSnapshot> Snapshots => _snapshots;
 
+  /// <summary>
+  /// Disposes the underlying sensor source, closing its hardware session. Idempotent.
+  /// </summary>
   public void Dispose() {
     if (_disposed) return;
     _disposed = true;

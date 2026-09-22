@@ -42,31 +42,34 @@ public sealed class MemoryLatencyBenchmark : IBenchmark {
   public string Name => "Latency (pointer chase)";
 
   /// <summary>
-  /// Benchmark category - Memory
+  /// Gets the category of this benchmark suite, which is Memory.
   /// </summary>
   public BenchmarkCategory Category => BenchmarkCategory.Memory;
 
   /// <summary>
-  /// 
+  /// Gets a one-line description of what this benchmark suite measures.
   /// </summary>
   public string Description => "Dependent pointer-chase over a 64 MB buffer — DRAM load-to-use latency.";
 
   /// <summary>
-  /// 
+  /// Gets the unit of the headline score for this benchmark suite, which is ns (nanoseconds per hop).
   /// </summary>
   public string Unit => "ns";
 
   /// <summary>
-  /// 
+  /// Gets a value indicating whether a higher score is better. Latency is a lower-is-better metric,
+  /// so this returns false.
   /// </summary>
   public bool HigherIsBetter => false;
 
   /// <summary>
-  /// 
+  /// Runs the benchmark asynchronously, reporting progress and supporting cancellation. It builds a
+  /// randomly-permuted chase cycle over the working set, then times a long dependent pointer-chase
+  /// (split into segments for progress reporting) and reports the average per-hop latency.
   /// </summary>
-  /// <param name="progress"></param>
-  /// <param name="ct"></param>
-  /// <returns></returns>
+  /// <param name="progress">The progress reporter.</param>
+  /// <param name="ct">The cancellation token.</param>
+  /// <returns>A task returning the benchmark result.</returns>
   public Task<BenchmarkResult> RunAsync(IProgress<BenchmarkProgress> progress, CancellationToken ct) =>
     Task.Run(() => {
       progress.Report(BenchmarkProgress.At(0, "Building chase cycle"));
@@ -93,8 +96,15 @@ public sealed class MemoryLatencyBenchmark : IBenchmark {
       return BenchmarkResult.Success(Id, nsPerHop, Unit, detail, sw.Elapsed);
     }, ct);
 
-  // Fisher–Yates over [0, n) then link into one Hamiltonian cycle: next[perm[i]] = perm[i+1].
-  // A single cycle guarantees the chase visits the whole buffer without early repeats.
+  /// <summary>
+  /// Builds the pointer-chase table: a Fisher–Yates shuffle of <c>[0, n)</c> linked into one
+  /// Hamiltonian cycle (<c>next[perm[i]] = perm[i+1]</c>). A single cycle guarantees the chase visits
+  /// every slot exactly once per lap without early repeats, so the access pattern stays fully random
+  /// across the whole buffer.
+  /// </summary>
+  /// <param name="n">The number of elements in the cycle.</param>
+  /// <param name="ct">The cancellation token.</param>
+  /// <returns>The <c>next</c> table where <c>next[i]</c> is the index chased to after index <c>i</c>.</returns>
   private static int[] BuildCycle(int n, CancellationToken ct) {
     var perm = new int[n];
     for (int i = 0; i < n; i++) perm[i] = i;
@@ -109,6 +119,15 @@ public sealed class MemoryLatencyBenchmark : IBenchmark {
     return next;
   }
 
+  /// <summary>
+  /// Performs the dependent pointer-chase: each hop reads <c>next[idx]</c> and feeds it back as the
+  /// next index, so the loads serialize and can't be prefetched. The returned index is deliberately
+  /// consumed by the caller to stop the loop being optimized away.
+  /// </summary>
+  /// <param name="next">The chase table from <see cref="BuildCycle"/>.</param>
+  /// <param name="hops">The number of hops to perform.</param>
+  /// <param name="start">The index to start chasing from.</param>
+  /// <returns>The index reached after the last hop.</returns>
   private static int Chase(int[] next, long hops, int start) {
     int idx = start;
     for (long h = 0; h < hops; h++) idx = next[idx];

@@ -21,19 +21,43 @@ namespace Crystal.Service.Cpu;
 /// </para>
 /// </summary>
 public sealed class TelemetryCpuSensorSource : ICpuTelemetrySource {
+  /// <summary>
+  /// The open LibreHardwareMonitor session with only CPU hardware enabled. Owns the underlying ring-0
+  /// driver handle, so it must be closed on <see cref="Dispose"/>.
+  /// </summary>
   private readonly Computer _computer;
+
+  /// <summary>
+  /// Guards against closing the session twice on repeated <see cref="Dispose"/> calls.
+  /// </summary>
   private bool _disposed;
 
+  /// <summary>
+  /// Opens the hardware session with CPU monitoring enabled. Opening loads the ring-0 driver; MSR-backed
+  /// sensors (temperature, clock, voltage, power) only produce values when the process is elevated.
+  /// </summary>
   public TelemetryCpuSensorSource() {
     _computer = new Computer { IsCpuEnabled = true };
     _computer.Open();
   }
 
+  /// <summary>
+  /// Re-samples every CPU by calling <c>Update()</c> on each provider hardware node. Must be called
+  /// before <see cref="GetSensors"/>/<see cref="GetCores"/> to observe fresh values.
+  /// </summary>
   public void Refresh() {
     foreach (var cpu in EnumerateCpus())
       cpu.Update();
   }
 
+  /// <summary>
+  /// Reads package-level sensors for the socket at <paramref name="socketIndex"/> and maps them onto a
+  /// neutral <see cref="CpuSensors"/>. Sensor names differ between Intel and AMD, so each field probes a
+  /// vendor-specific list of candidate names; unmatched sensors yield empty readings. Returns
+  /// <see langword="null"/> when no provider CPU has that ordinal index.
+  /// </summary>
+  /// <param name="socketIndex">Ordinal socket index matching the provider's <see cref="GenericCpu.Index"/>.</param>
+  /// <returns>The package sensor snapshot, or <see langword="null"/> when the socket is not present.</returns>
   public ICpuSensors? GetSensors(int socketIndex) {
     var cpu = FindCpu(socketIndex);
     if (cpu is null) return null;
@@ -78,6 +102,15 @@ public sealed class TelemetryCpuSensorSource : ICpuTelemetrySource {
     };
   }
 
+  /// <summary>
+  /// Builds one <see cref="ICoreInfo"/> per physical core for the socket at <paramref name="socketIndex"/>,
+  /// pairing topology (APIC id, hybrid core type, thread count) with per-core sensor readings. The
+  /// provider's per-core sensor naming is quirky and vendor-dependent - generic "CPU Core #n" for
+  /// clock/load/temperature, AMD "Core #n" for effective clock/multiplier/power - so each field probes
+  /// the appropriate candidate names. Returns an empty list when the socket is not present.
+  /// </summary>
+  /// <param name="socketIndex">Ordinal socket index matching the provider's <see cref="GenericCpu.Index"/>.</param>
+  /// <returns>Per-core info rows, or an empty list when the socket is not present.</returns>
   public IReadOnlyList<ICoreInfo> GetCores(int socketIndex) {
     var cpu = FindCpu(socketIndex);
     if (cpu is null) return [];
@@ -125,12 +158,28 @@ public sealed class TelemetryCpuSensorSource : ICpuTelemetrySource {
     return cores;
   }
 
+  /// <summary>
+  /// Yields the CPU hardware nodes from the provider session, filtering out non-CPU hardware.
+  /// </summary>
   private IEnumerable<GenericCpu> EnumerateCpus() =>
       _computer.Hardware.OfType<GenericCpu>();
 
+  /// <summary>
+  /// Locates the provider CPU whose ordinal <see cref="GenericCpu.Index"/> matches, or null.
+  /// </summary>
   private GenericCpu? FindCpu(int socketIndex) =>
       EnumerateCpus().FirstOrDefault(c => c.Index == socketIndex);
 
+  /// <summary>
+  /// Finds the first sensor of <paramref name="type"/> whose name matches (case-insensitively) any of the
+  /// candidate <paramref name="names"/>, in order, and maps it to a neutral reading. The candidate list
+  /// absorbs Intel/AMD naming differences; an empty reading is returned when none match.
+  /// </summary>
+  /// <param name="sensors">The socket's sensor array to search.</param>
+  /// <param name="hardwareName">Owning hardware name stamped onto the reading.</param>
+  /// <param name="type">The sensor type to match.</param>
+  /// <param name="names">Candidate sensor names tried in priority order.</param>
+  /// <returns>The matched reading, or an empty reading when none matched.</returns>
   private static SensorReading Read(ISensor[] sensors, string hardwareName, SensorType type, params string[] names) {
     ISensor? match = null;
     foreach (var name in names) {
@@ -141,9 +190,11 @@ public sealed class TelemetryCpuSensorSource : ICpuTelemetrySource {
     return CpuTelemetryReadingMapper.ToReading(match, hardwareName, HardwareType.Cpu);
   }
 
-  // The current CPU clock: an AMD package-average clock if the part exposes one,
-  // else the fastest individual core clock. "Bus Speed" (the ~100 MHz reference)
-  // is excluded because it is not the operating frequency users expect to see.
+  /// <summary>
+  /// The current CPU clock: an AMD package-average clock if the part exposes one, else the fastest
+  /// individual core clock. "Bus Speed" (the ~100 MHz reference) is excluded because it is not the
+  /// operating frequency users expect to see.
+  /// </summary>
   private static SensorReading ReadCoreClock(ISensor[] sensors, string hardwareName) {
     var avg = sensors.FirstOrDefault(s => s.SensorType == SensorType.Clock
                                           && s.Name.Equals("Cores (Average)", StringComparison.OrdinalIgnoreCase));
@@ -159,9 +210,11 @@ public sealed class TelemetryCpuSensorSource : ICpuTelemetrySource {
     return CpuTelemetryReadingMapper.ToReading(best, hardwareName, HardwareType.Cpu);
   }
 
-  // The effective (C-state-weighted) core clock: an AMD package-average when
-  // present, else the fastest per-core "(Effective)" clock. Distinct from the
-  // requested clock in ReadCoreClock; empty on parts that don't expose it.
+  /// <summary>
+  /// The effective (C-state-weighted) core clock: an AMD package-average when present, else the fastest
+  /// per-core "(Effective)" clock. Distinct from the requested clock in <see cref="ReadCoreClock"/>;
+  /// empty on parts that don't expose it.
+  /// </summary>
   private static SensorReading ReadEffectiveClock(ISensor[] sensors, string hardwareName) {
     var avg = sensors.FirstOrDefault(s => s.SensorType == SensorType.Clock
                                           && s.Name.Equals("Cores (Average Effective)", StringComparison.OrdinalIgnoreCase));
@@ -177,8 +230,10 @@ public sealed class TelemetryCpuSensorSource : ICpuTelemetrySource {
     return CpuTelemetryReadingMapper.ToReading(best, hardwareName, HardwareType.Cpu);
   }
 
-  // The hottest core's thermal headroom: the smallest per-core "Distance to TjMax"
-  // reading. Intel-only; empty on parts that don't expose it.
+  /// <summary>
+  /// The hottest core's thermal headroom: the smallest per-core "Distance to TjMax" reading. Intel-only;
+  /// empty on parts that don't expose it.
+  /// </summary>
   private static SensorReading ReadMinDistanceToTjMax(ISensor[] sensors, string hardwareName) {
     ISensor? best = null;
     foreach (var s in sensors) {
@@ -190,9 +245,10 @@ public sealed class TelemetryCpuSensorSource : ICpuTelemetrySource {
     return CpuTelemetryReadingMapper.ToReading(best, hardwareName, HardwareType.Cpu);
   }
 
-  // Per-thread loads for one physical core. SMT threads are named
-  // "<core> Thread #<t>" (1-based); a single-threaded core has no suffix, so its
-  // lone entry is the core load sensor itself.
+  /// <summary>
+  /// Per-thread loads for one physical core. SMT threads are named "&lt;core&gt; Thread #&lt;t&gt;"
+  /// (1-based); a single-threaded core has no suffix, so its lone entry is the core load sensor itself.
+  /// </summary>
   private static IReadOnlyList<SensorReading> ReadThreadLoads(ISensor[] sensors, string hardwareName, string coreName, int threadCount) {
     if (threadCount <= 1)
       return [Read(sensors, hardwareName, SensorType.Load, coreName)];
@@ -203,6 +259,12 @@ public sealed class TelemetryCpuSensorSource : ICpuTelemetrySource {
     return loads;
   }
 
+  /// <summary>
+  /// The highest-valued sensor of <paramref name="type"/> whose name starts with
+  /// <paramref name="namePrefix"/>. Used to fold SMT per-thread rows into one core load by taking the
+  /// busiest thread. Guards against a prefix like "CPU Core #1" spuriously matching "CPU Core #10" by
+  /// rejecting a following digit.
+  /// </summary>
   private static SensorReading MaxByPrefix(ISensor[] sensors, string hardwareName, SensorType type, string namePrefix) {
     ISensor? best = null;
     foreach (var s in sensors) {
@@ -216,6 +278,10 @@ public sealed class TelemetryCpuSensorSource : ICpuTelemetrySource {
     return CpuTelemetryReadingMapper.ToReading(best, hardwareName, HardwareType.Cpu);
   }
 
+  /// <summary>
+  /// Closes the LibreHardwareMonitor session, releasing the ring-0 driver handle. Idempotent - guarded by
+  /// <see cref="_disposed"/> so repeated calls are safe.
+  /// </summary>
   public void Dispose() {
     if (_disposed) return;
     _disposed = true;

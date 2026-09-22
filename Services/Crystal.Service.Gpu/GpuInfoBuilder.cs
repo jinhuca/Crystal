@@ -18,7 +18,7 @@ public sealed class GpuInfoBuilder(IWmiHardwareProvider wmi, IGpuLoadSource load
   private readonly IWmiHardwareProvider _wmi = wmi;
 
   /// <summary>
-  /// The source of live GPU core-load readings, which are paired with the static adapter inventory
+  /// The source of live GPU core-load readings, which are paired with the static adapter inventory.
   /// </summary>
   private readonly IGpuLoadSource _loads = loads;
 

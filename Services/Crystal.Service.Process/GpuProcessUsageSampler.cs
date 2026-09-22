@@ -27,17 +27,42 @@ namespace Crystal.Service.Process;
 /// </para>
 /// </summary>
 public sealed class GpuProcessUsageSampler : IDisposable {
+  /// <summary>
+  /// Wildcard PDH counter path that matches every GPU Engine instance across all adapters.
+  /// </summary>
   private const string CounterPath = @"\GPU Engine(*)\Utilization Percentage";
 
+  /// <summary>
+  /// Handle to the open PDH query, or <see cref="nint.Zero"/> if it could not be opened.
+  /// </summary>
   private readonly nint _query;
+
+  /// <summary>
+  /// Handle to the wildcard GPU Engine counter added to <see cref="_query"/>.
+  /// </summary>
   private readonly nint _counter;
+
+  /// <summary>
+  /// True once the query and counter opened and the baseline collection ran (see <see cref="IsAvailable"/>).
+  /// </summary>
   private readonly bool _ready;
 
   // Reused across polls so a steady 1 Hz cadence doesn't churn the LOH with a fresh array buffer
   // each second; grown on demand when PDH reports it needs more room.
   private byte[] _buffer = new byte[16 * 1024];
+
+  /// <summary>
+  /// Set by <see cref="Dispose"/>; makes further <see cref="Sample"/> calls return the empty map.
+  /// </summary>
   private bool _disposed;
 
+  /// <summary>
+  /// Opens the PDH query and the wildcard GPU Engine counter, then primes a baseline collection so the
+  /// first <see cref="Sample"/> one interval later has a prior reading to compute the utilization rate
+  /// against. If either PDH call fails the sampler stays inert (<see cref="IsAvailable"/> is false) and
+  /// the caller falls back to its other GPU source. Uses the English counter name so the path resolves
+  /// on non-English machines.
+  /// </summary>
   public GpuProcessUsageSampler() {
     // English counter names so the path resolves regardless of the machine's display language.
     if (PdhOpenQuery(null, nint.Zero, out _query) != 0) {
@@ -125,6 +150,13 @@ public sealed class GpuProcessUsageSampler : IDisposable {
     return result;
   }
 
+  /// <summary>
+  /// Pins <see cref="_buffer"/> and asks PDH to format the whole counter array into it. Split out so the
+  /// caller can retry after growing the buffer when PDH returns <see cref="PdhMoreData"/>.
+  /// </summary>
+  /// <param name="bufferSize">In: the buffer's capacity in bytes. Out: the size PDH actually needs/used.</param>
+  /// <param name="itemCount">Out: the number of counter items PDH wrote.</param>
+  /// <returns>The PDH status code (0 on success, <see cref="PdhMoreData"/> when the buffer is too small).</returns>
   private uint ReadArray(ref uint bufferSize, ref uint itemCount) {
     var handle = GCHandle.Alloc(_buffer, GCHandleType.Pinned);
     try {
@@ -159,7 +191,14 @@ public sealed class GpuProcessUsageSampler : IDisposable {
     return true;
   }
 
-  // Reads the underscore-delimited token that follows <paramref name="key"/> in the instance name.
+  /// <summary>
+  /// Reads the underscore-delimited token that follows <paramref name="key"/> in the instance name —
+  /// e.g. with key <c>pid_</c> in <c>pid_1234_luid_...</c> it yields <c>1234</c>.
+  /// </summary>
+  /// <param name="instance">The full PDH instance name to scan.</param>
+  /// <param name="key">The token prefix to search for (including its trailing underscore).</param>
+  /// <param name="token">Out: the extracted token, or empty when the key is absent.</param>
+  /// <returns>True if a non-empty token was found after the key.</returns>
   private static bool TryReadToken(string instance, string key, out string token) {
     token = string.Empty;
     int start = instance.IndexOf(key, StringComparison.Ordinal);
@@ -171,18 +210,34 @@ public sealed class GpuProcessUsageSampler : IDisposable {
     return token.Length > 0;
   }
 
+  /// <summary>
+  /// Closes the underlying PDH query. Idempotent; safe to call more than once.
+  /// </summary>
   public void Dispose() {
     if (_disposed) return;
     _disposed = true;
     if (_query != nint.Zero) PdhCloseQuery(_query);
   }
 
+  /// <summary>
+  /// Shared empty result returned whenever there is no usable per-PID data to hand back.
+  /// </summary>
   private static readonly IReadOnlyDictionary<uint, double> EmptyMap =
       new Dictionary<uint, double>();
 
+  /// <summary>
+  /// PDH_FMT_DOUBLE: format flag asking PDH to return counter values as doubles.
+  /// </summary>
   private const uint PdhFmtDouble = 0x00000200;
+
+  /// <summary>
+  /// PDH_MORE_DATA: status meaning the supplied buffer was too small and must be grown.
+  /// </summary>
   private const uint PdhMoreData = 0x800007D2;
 
+  /// <summary>
+  /// Managed mirror of PDH_FMT_COUNTERVALUE for the double format: a status word plus the value.
+  /// </summary>
   [StructLayout(LayoutKind.Sequential)]
   private struct PdhFmtCounterValueDouble {
     public uint CStatus;
@@ -191,25 +246,46 @@ public sealed class GpuProcessUsageSampler : IDisposable {
     public double doubleValue;
   }
 
+  /// <summary>
+  /// Managed mirror of PDH_FMT_COUNTERVALUE_ITEM: one array entry pairing an instance name
+  /// pointer with its formatted value.
+  /// </summary>
   [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
   private struct PdhFmtCounterValueItem {
     public nint szName;
     public PdhFmtCounterValueDouble FmtValue;
   }
 
+  /// <summary>
+  /// Opens a new PDH query handle. Returns 0 on success.
+  /// </summary>
   [DllImport("pdh.dll", CharSet = CharSet.Unicode)]
   private static extern uint PdhOpenQuery(string? dataSource, nint userData, out nint query);
 
+  /// <summary>
+  /// Adds a counter to the query using its English (locale-independent) name. Returns 0 on success.
+  /// </summary>
   [DllImport("pdh.dll", CharSet = CharSet.Unicode)]
   private static extern uint PdhAddEnglishCounter(nint query, string counterPath, nint userData, out nint counter);
 
+  /// <summary>
+  /// Collects a fresh sample for every counter in the query; the rate is computed from
+  /// successive collections. Returns 0 on success.
+  /// </summary>
   [DllImport("pdh.dll")]
   private static extern uint PdhCollectQueryData(nint query);
 
+  /// <summary>
+  /// Formats every instance of a wildcard counter into the caller's buffer. Returns
+  /// <see cref="PdhMoreData"/> when the buffer is too small.
+  /// </summary>
   [DllImport("pdh.dll", CharSet = CharSet.Unicode)]
   private static extern uint PdhGetFormattedCounterArray(
       nint counter, uint format, ref uint bufferSize, out uint itemCount, nint itemBuffer);
 
+  /// <summary>
+  /// Closes a PDH query and frees its counters. Returns 0 on success.
+  /// </summary>
   [DllImport("pdh.dll")]
   private static extern uint PdhCloseQuery(nint query);
 }

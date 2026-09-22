@@ -11,28 +11,34 @@ namespace Crystal.Service.Gpu;
 /// </summary>
 public sealed class GpuMonitor : IDisposable {
   /// <summary>
-  /// Emits a single snapshot of the GPU adapter inventory, including static specs and the live
-  /// sensor readings.
+  /// The specs stream, built exactly once and cached via <c>Replay(1)</c> so every late subscriber
+  /// immediately receives the same snapshot without re-hitting WMI. Held as an
+  /// <see cref="IConnectableObservable{T}"/> so the build is triggered eagerly at construction (via
+  /// <see cref="_specsConnection"/>) rather than per subscription.
   /// </summary>
   private readonly IConnectableObservable<GpuSnapshot> _specs;
 
   /// <summary>
-  /// Emits a full snapshot of the GPU adapter inventory, including static specs and the live
-  /// sensor readings.
+  /// The sensor stream, re-sampled on the poll interval. <c>Publish().RefCount()</c> shares one
+  /// timer across subscribers and stops polling entirely once the last subscriber disposes, so no
+  /// background sampling runs while nothing is watching.
   /// </summary>
   private readonly IObservable<GpuSnapshot> _sensors;
 
   /// <summary>
-  /// Disposes the Specs replay cache connection when the monitor is disposed.
+  /// The live connection that keeps the <see cref="_specs"/> replay cache warm; disposed when the
+  /// monitor is disposed to release the underlying build subscription.
   /// </summary>
   private readonly IDisposable _specsConnection;
 
   /// <summary>
-  /// Initializes a new instance of the <see cref="GpuMonitor"/> class.
+  /// Initializes a new instance of the <see cref="GpuMonitor"/> class and eagerly connects the
+  /// specs replay cache so the one-time inventory build starts immediately.
   /// </summary>
-  /// <param name="builder">The GPU info builder.</param>
-  /// <param name="pollInterval">The polling interval.</param>
-  /// <param name="scheduler">The scheduler.</param>
+  /// <param name="builder">Builds each <see cref="GpuSnapshot"/> from WMI plus the live load source.</param>
+  /// <param name="pollInterval">How often the <see cref="Sensors"/> stream re-samples; defaults to one second.</param>
+  /// <param name="scheduler">Scheduler driving the poll timer; defaults to <see cref="DefaultScheduler.Instance"/>
+  /// (injectable so tests can drive time deterministically).</param>
   public GpuMonitor(
     GpuInfoBuilder builder,
     TimeSpan? pollInterval = null,
@@ -52,14 +58,14 @@ public sealed class GpuMonitor : IDisposable {
   }
 
   /// <summary>
-  /// Emits a single snapshot of the GPU adapter inventory, including static specs and the live
-  /// sensor readings.
+  /// The static GPU inventory: a single snapshot built once and replayed to every subscriber,
+  /// whenever they subscribe. Use this for the specs view that does not change between polls.
   /// </summary>
   public IObservable<GpuSnapshot> Specs => _specs.AsObservable();
 
   /// <summary>
-  /// Emits a full snapshot of the GPU adapter inventory, including static specs and the live
-  /// sensor readings.
+  /// The live sensor stream: a fresh <see cref="GpuSnapshot"/> emitted on each poll tick. Polling is
+  /// ref-counted, so it only runs while at least one subscriber is attached.
   /// </summary>
   public IObservable<GpuSnapshot> Sensors => _sensors;
 

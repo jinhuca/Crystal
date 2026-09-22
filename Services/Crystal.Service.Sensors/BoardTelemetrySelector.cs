@@ -5,14 +5,30 @@ using System.Linq;
 
 namespace Crystal.Service.Sensors;
 
-/// <summary>A voltage-rail reading with the running min/max the sensor has observed this session,
-/// so the tile can hint at rail stability alongside the current value.</summary>
+/// <summary>
+/// A voltage-rail reading with the running min/max the sensor has observed this session,
+/// so the tile can hint at rail stability alongside the current value.
+/// </summary>
+/// <param name="Value">The rail's current voltage, or null when no matching sensor is readable.</param>
+/// <param name="Min">The lowest voltage observed on this rail since the session began.</param>
+/// <param name="Max">The highest voltage observed on this rail since the session began.</param>
 public sealed record RailReading(float? Value, float? Min, float? Max) {
+  /// <summary>
+  /// The absent reading (all fields null), used when a board exposes no sensor for a rail.
+  /// </summary>
   public static RailReading None { get; } = new(null, null, null);
 }
 
-/// <summary>Board-level live telemetry the BIOS tile headlines, picked out of a
-/// <see cref="SensorSnapshot"/>'s <see cref="SensorCategory.Motherboard"/> readings.</summary>
+/// <summary>
+/// Board-level live telemetry the BIOS tile headlines, picked out of a
+/// <see cref="SensorSnapshot"/>'s <see cref="SensorCategory.Motherboard"/> readings.
+/// </summary>
+/// <param name="BoardTemperature">System/board temperature in °C, or null when no board temp sensor is present.</param>
+/// <param name="CmosVoltage">CMOS coin-cell (VBAT) voltage in volts, or null when the rail is not reported.</param>
+/// <param name="ChassisFanRpm">Chassis/system fan speed in RPM (fastest header, CPU header excluded), or null.</param>
+/// <param name="Rail3V3">The +3.3V ATX rail reading with its running min/max.</param>
+/// <param name="Rail5V">The +5V ATX rail reading with its running min/max.</param>
+/// <param name="Rail12V">The +12V ATX rail reading with its running min/max.</param>
 public sealed record BoardTelemetry(
     float? BoardTemperature,
     float? CmosVoltage,
@@ -20,6 +36,9 @@ public sealed record BoardTelemetry(
     RailReading Rail3V3,
     RailReading Rail5V,
     RailReading Rail12V) {
+  /// <summary>
+  /// The all-empty telemetry, returned when no snapshot or no board readings are available.
+  /// </summary>
   public static BoardTelemetry Empty { get; } =
       new(null, null, null, RailReading.None, RailReading.None, RailReading.None);
 }
@@ -31,6 +50,13 @@ public sealed record BoardTelemetry(
 /// <see cref="SensorType"/>. Any field is null when no matching sensor is present or readable.
 /// </summary>
 public static class BoardTelemetrySelector {
+  /// <summary>
+  /// Extracts the BIOS tile's board telemetry from <paramref name="snapshot"/>. Each field is found
+  /// by a name heuristic over the <see cref="SensorCategory.Motherboard"/> readings; missing sensors
+  /// leave the corresponding field null (or <see cref="RailReading.None"/> for rails).
+  /// </summary>
+  /// <param name="snapshot">The latest grouped sensor snapshot; may be null.</param>
+  /// <returns>The selected board telemetry, or <see cref="BoardTelemetry.Empty"/> when snapshot is null.</returns>
   public static BoardTelemetry Select(SensorSnapshot snapshot) {
     if (snapshot is null) return BoardTelemetry.Empty;
 
@@ -68,12 +94,14 @@ public static class BoardTelemetrySelector {
     return named ?? fans.Select(r => r.Value).DefaultIfEmpty(null).Max();
   }
 
-  /// <summary>The nominal rail voltage a sensor name denotes, or null when it names no fixed-voltage
+  /// <summary>
+  /// The nominal rail voltage a sensor name denotes, or null when it names no fixed-voltage
   /// rail we can grade. Covers the three main ATX rails and their standby/auxiliary siblings —
   /// +3.3V/+5V/+12V, the −12V rail, standby rails (3VSB/5VSB), and the SuperIO analog 3.3V supply
   /// (AVCC/3VCC) — all of which sit at a known voltage. Variable rails whose "nominal" depends on
   /// the platform (VCore, DRAM/VDIMM, VTT, VCCSA…) return null: there is no universal target to
-  /// judge them against, so callers leave them ungraded rather than flag a false fault.</summary>
+  /// judge them against, so callers leave them ungraded rather than flag a false fault.
+  /// </summary>
   public static float? RailNominal(string? name) {
     if (name is null) return null;
     // −12V first: its "12" would otherwise match the +12V query (the leading '-' reads as a rail
@@ -88,15 +116,19 @@ public static class BoardTelemetrySelector {
     return null;
   }
 
-  /// <summary>Whether a sensor name denotes the CMOS coin-cell rail (VBAT / CMOS / battery).</summary>
+  /// <summary>
+  /// Whether a sensor name denotes the CMOS coin-cell rail (VBAT / CMOS / battery).
+  /// </summary>
   public static bool IsCmosRail(string? name) =>
       Contains(name, "VBAT") || Contains(name, "CMOS") || Contains(name, "Battery");
 
-  /// <summary>Picks the chassis/system fan row to trend, keeping stalled (0 RPM) readings — unlike
+  /// <summary>
+  /// Picks the chassis/system fan row to trend, keeping stalled (0 RPM) readings — unlike
   /// <see cref="ChassisFan"/>, which drops zeros for the headline value. Selection is by running
   /// <see cref="SensorReading.Max"/> (the fan's observed capacity), so the same physical fan stays
   /// chosen across a stall rather than the pick jumping to whichever header is spinning this tick.
-  /// Prefers a Chassis/System-named header; excludes the CPU fan. Null when the board has none.</summary>
+  /// Prefers a Chassis/System-named header; excludes the CPU fan. Null when the board has none.
+  /// </summary>
   public static SensorReading? ChassisFanRow(IReadOnlyList<SensorReading> board) {
     var fans = board.Where(r => r.SensorType == SensorType.Fan && r.Value is not null &&
         !Contains(r.SensorName, "CPU")).ToList();

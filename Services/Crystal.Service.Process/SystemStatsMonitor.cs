@@ -20,14 +20,28 @@ namespace Crystal.Service.Process;
 /// </para>
 /// </summary>
 public sealed class SystemStatsMonitor {
+  /// <summary>
+  /// The published, ref-counted stream of system totals (see <see cref="Stats"/>).
+  /// </summary>
   private readonly IObservable<SystemStats> _stats;
 
   // Previous GetSystemTimes readings, so CPU% is the busy fraction over the interval between polls.
   // Guarded by _cpuGate because RefCount can resubscribe on a different scheduler thread.
   private readonly object _cpuGate = new();
   private ulong _prevIdle, _prevKernel, _prevUser;
+
+  /// <summary>
+  /// False until the first CPU reading is captured; the first sample reports 0% because it has
+  /// no prior reading to diff against.
+  /// </summary>
   private bool _hasPrevCpu;
 
+  /// <summary>
+  /// Wires up the poll pipeline without starting it. The stream is cold and ref-counted, so the timer
+  /// only ticks while something is subscribed.
+  /// </summary>
+  /// <param name="pollInterval">Poll cadence; defaults to 1 second.</param>
+  /// <param name="scheduler">Scheduler for the poll timer; defaults to <see cref="DefaultScheduler"/>.</param>
   public SystemStatsMonitor(TimeSpan? pollInterval = null, IScheduler? scheduler = null) {
     var interval = pollInterval ?? TimeSpan.FromSeconds(1);
     scheduler ??= DefaultScheduler.Instance;
@@ -39,9 +53,16 @@ public sealed class SystemStatsMonitor {
         .RefCount();
   }
 
-  /// <summary>Live system totals; emits a fresh snapshot on each poll.</summary>
+  /// <summary>
+  /// Live system totals; emits a fresh snapshot on each poll.
+  /// </summary>
   public IObservable<SystemStats> Stats => _stats;
 
+  /// <summary>
+  /// Takes one snapshot: enumerates every process to count processes/threads/handles (tolerating
+  /// processes that exit or deny access mid-scan), then adds the whole-machine CPU and memory figures.
+  /// </summary>
+  /// <returns>The system totals for this poll.</returns>
   private SystemStats Sample() {
     int processes = 0, threads = 0, handles = 0;
     foreach (var p in SysProcess.GetProcesses()) {
@@ -61,9 +82,13 @@ public sealed class SystemStatsMonitor {
     return new SystemStats(processes, threads, handles, SampleCpuPercent(), MemoryPercent, MemoryTotalMb: TotalPhysicalMb);
   }
 
-  // Whole-machine CPU busy fraction since the previous sample. Kernel time as reported already
-  // includes idle time, so busy = (kernel + user) - idle over the same window. Returns 0 on the
-  // first sample (no previous reading to diff against) or if the interval had no ticks.
+  /// <summary>
+  /// Whole-machine CPU busy fraction since the previous sample. Kernel time as reported already
+  /// includes idle time, so busy = (kernel + user) - idle over the same window. Returns 0 on the
+  /// first sample (no previous reading to diff against) or if the interval had no ticks. Locked on
+  /// <see cref="_cpuGate"/> because RefCount can resubscribe on a different scheduler thread.
+  /// </summary>
+  /// <returns>CPU utilization clamped to 0-100.</returns>
   private double SampleCpuPercent() {
     if (!GetSystemTimes(out var idleFt, out var kernelFt, out var userFt)) return 0;
 
@@ -85,6 +110,9 @@ public sealed class SystemStatsMonitor {
     }
   }
 
+  /// <summary>
+  /// Current OS memory load percentage (used physical / total), or 0 if the query fails.
+  /// </summary>
   private static double MemoryPercent {
     get {
       var status = MEMORYSTATUSEX.Create();
@@ -92,6 +120,9 @@ public sealed class SystemStatsMonitor {
     }
   }
 
+  /// <summary>
+  /// Total installed physical memory in megabytes, or 0 if the query fails.
+  /// </summary>
   private static double TotalPhysicalMb {
     get {
       var status = MEMORYSTATUSEX.Create();
@@ -99,13 +130,22 @@ public sealed class SystemStatsMonitor {
     }
   }
 
+  /// <summary>
+  /// Managed mirror of the Win32 FILETIME (a 64-bit tick count split into two 32-bit halves).
+  /// </summary>
   [StructLayout(LayoutKind.Sequential)]
   private struct FILETIME {
     public uint LowDateTime;
     public uint HighDateTime;
+    /// <summary>
+    /// Recombines the high and low halves into a single 64-bit tick count.
+    /// </summary>
     public readonly ulong ToUInt64() => ((ulong)HighDateTime << 32) | LowDateTime;
   }
 
+  /// <summary>
+  /// Managed mirror of the Win32 MEMORYSTATUSEX structure filled by <see cref="GlobalMemoryStatusEx"/>.
+  /// </summary>
   [StructLayout(LayoutKind.Sequential)]
   private struct MEMORYSTATUSEX {
     public uint dwLength;
@@ -118,14 +158,25 @@ public sealed class SystemStatsMonitor {
     public ulong ullAvailVirtual;
     public ulong ullAvailExtendedVirtual;
 
+    /// <summary>
+    /// Creates an instance with <c>dwLength</c> preset, as GlobalMemoryStatusEx requires.
+    /// </summary>
     public static MEMORYSTATUSEX Create() =>
         new() { dwLength = (uint)Marshal.SizeOf<MEMORYSTATUSEX>() };
   }
 
+  /// <summary>
+  /// Retrieves system-wide idle, kernel, and user times (kernel time includes idle). Returns
+  /// false on failure.
+  /// </summary>
   [DllImport("kernel32.dll", SetLastError = true)]
   [return: MarshalAs(UnmanagedType.Bool)]
   private static extern bool GetSystemTimes(out FILETIME idleTime, out FILETIME kernelTime, out FILETIME userTime);
 
+  /// <summary>
+  /// Fills <paramref name="lpBuffer"/> with current physical/virtual memory figures. Returns
+  /// false on failure.
+  /// </summary>
   [DllImport("kernel32.dll", SetLastError = true)]
   [return: MarshalAs(UnmanagedType.Bool)]
   private static extern bool GlobalMemoryStatusEx(ref MEMORYSTATUSEX lpBuffer);

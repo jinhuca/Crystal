@@ -66,11 +66,13 @@ public sealed class MemoryBandwidthBenchmark : IBenchmark {
   public bool HigherIsBetter => true;
 
   /// <summary>
-  /// Runs the memory bandwidth benchmark asynchronously, reporting progress and supporting cancellation.
+  /// Runs the memory bandwidth benchmark asynchronously, reporting progress and supporting
+  /// cancellation. It allocates the three working arrays, runs the STREAM triad once untimed to
+  /// page them in, then times repeated triad passes and reports aggregate DRAM throughput.
   /// </summary>
-  /// <param name="progress"></param>
-  /// <param name="ct"></param>
-  /// <returns></returns>
+  /// <param name="progress">The progress reporter.</param>
+  /// <param name="ct">The cancellation token.</param>
+  /// <returns>A task returning the benchmark result.</returns>
   public Task<BenchmarkResult> RunAsync(IProgress<BenchmarkProgress> progress, CancellationToken ct) =>
     Task.Run(() => {
       progress.Report(BenchmarkProgress.At(0, "Allocating arrays"));
@@ -99,14 +101,15 @@ public sealed class MemoryBandwidthBenchmark : IBenchmark {
     }, ct);
 
   /// <summary>
-  /// Range-partitioned so each thread runs a tight index loop, rather than paying a delegate call
-  /// per element (which would dominate the memory work at this element count).
+  /// Runs one STREAM triad pass (<c>a[i] = b[i] + q·c[i]</c>) in parallel. Range-partitioned so each
+  /// thread runs a tight index loop, rather than paying a delegate call per element (which would
+  /// dominate the memory work at this element count).
   /// </summary>
-  /// <param name="a">a</param>
-  /// <param name="b">b</param>
-  /// <param name="c">c</param>
-  /// <param name="q">q</param>
-  /// <param name="ct">ct</param>
+  /// <param name="a">The destination array (written).</param>
+  /// <param name="b">The first source array (read).</param>
+  /// <param name="c">The second source array (read, scaled by <paramref name="q"/>).</param>
+  /// <param name="q">The scalar multiplier applied to <paramref name="c"/>.</param>
+  /// <param name="ct">The cancellation token.</param>
   private static void Triad(double[] a, double[] b, double[] c, double q, CancellationToken ct) {
     Parallel.ForEach(Partitioner.Create(0, a.Length), new ParallelOptions { CancellationToken = ct }, range => {
       for (int i = range.Item1; i < range.Item2; i++) a[i] = b[i] + q * c[i];

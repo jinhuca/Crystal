@@ -11,6 +11,21 @@ namespace Crystal.Service.Memory;
 /// All results are returned in GB; a failed call yields null so the UI shows "—".
 /// </summary>
 internal static class KernelMemoryInfo {
+  /// <summary>
+  /// The kernel-memory figures, all in GB and each nullable so an unavailable source maps to
+  /// null (rendered as "—"). Mirrors the corresponding fields on <see cref="MemoryLoadReading"/>.
+  /// </summary>
+  /// <param name="CommittedGB">Current commit charge (RAM + pagefile backed).</param>
+  /// <param name="CommitLimitGB">Maximum commit charge the system can accept.</param>
+  /// <param name="CommitPeakGB">Highest commit charge since boot.</param>
+  /// <param name="CachedGB">System cache size (approximates Task Manager's "Cached").</param>
+  /// <param name="PagedPoolGB">Kernel paged pool size.</param>
+  /// <param name="NonPagedPoolGB">Kernel non-paged pool size.</param>
+  /// <param name="HardwareReservedGB">Installed RAM the OS cannot use (installed minus OS-usable).</param>
+  /// <param name="PhysicalTotalGB">OS-usable physical memory.</param>
+  /// <param name="PageFileUsedGB">Pagefile bytes in use, summed across all pagefiles.</param>
+  /// <param name="PageFileTotalGB">Total configured pagefile size, summed across all pagefiles.</param>
+  /// <param name="PageFilePeakGB">Highest pagefile occupancy since boot.</param>
   public readonly record struct Reading(
       double? CommittedGB,
       double? CommitLimitGB,
@@ -24,6 +39,13 @@ internal static class KernelMemoryInfo {
       double? PageFileTotalGB,
       double? PageFilePeakGB);
 
+  /// <summary>
+  /// Reads all kernel-memory figures in one shot. Calls <c>GetPerformanceInfo</c> for the page-based
+  /// counters (returning an all-null <see cref="Reading"/> if that fails, since the page size it
+  /// yields is needed to convert everything else), then layers on the pagefile totals and the
+  /// hardware-reserved delta. Each supplementary source degrades to null independently.
+  /// </summary>
+  /// <returns>The assembled kernel-memory reading.</returns>
   public static Reading Read() {
     var info = new PERFORMANCE_INFORMATION { cb = (uint)Marshal.SizeOf<PERFORMANCE_INFORMATION>() };
     if (!GetPerformanceInfo(ref info, info.cb))
@@ -64,11 +86,16 @@ internal static class KernelMemoryInfo {
         PageFilePeakGB: pageFilePeakGB);
   }
 
-  // Pagefile size and current usage, summed across every configured pagefile (systems can have one
-  // per volume). GetPerformanceInfo only exposes the combined commit charge, not the pagefile
-  // backing it, so this comes from NtQuerySystemInformation's SystemPageFileInformation — a linked
-  // list of entries, each carrying total/in-use/peak in pages. Returns (null, null) when the query
-  // fails or no pagefile is configured, so the UI falls back to "—".
+  /// <summary>
+  /// Pagefile size and current usage, summed across every configured pagefile (systems can have one
+  /// per volume). GetPerformanceInfo only exposes the combined commit charge, not the pagefile
+  /// backing it, so this comes from NtQuerySystemInformation's SystemPageFileInformation — a linked
+  /// list of entries, each carrying total/in-use/peak in pages. Grows the buffer and retries on
+  /// STATUS_INFO_LENGTH_MISMATCH. Returns (null, null, null) when the query fails or no pagefile is
+  /// configured, so the UI falls back to "—".
+  /// </summary>
+  /// <param name="pageSize">The system page size in bytes, used to convert page counts to GB.</param>
+  /// <returns>Used, total and peak pagefile sizes in GB, or nulls when unavailable.</returns>
   private static (double? UsedGB, double? TotalGB, double? PeakGB) ReadPageFile(double pageSize) {
     uint length = 4096;
     IntPtr buffer = Marshal.AllocHGlobal((int)length);
@@ -106,6 +133,11 @@ internal static class KernelMemoryInfo {
     }
   }
 
+  /// <summary>
+  /// Native <c>PERFORMANCE_INFORMATION</c> struct filled by <c>GetPerformanceInfo</c>. The
+  /// pointer-sized (nuint) counters are page counts, not bytes; <c>cb</c> must be set to the struct
+  /// size before the call. Only a subset of fields is consumed here.
+  /// </summary>
   [StructLayout(LayoutKind.Sequential)]
   private struct PERFORMANCE_INFORMATION {
     public uint cb;
@@ -124,19 +156,36 @@ internal static class KernelMemoryInfo {
     public uint ThreadCount;
   }
 
+  /// <summary>
+  /// psapi <c>GetPerformanceInfo</c>: fills a <see cref="PERFORMANCE_INFORMATION"/> with
+  /// system-wide memory/handle counts. Returns false on failure.
+  /// </summary>
   [DllImport("psapi.dll", SetLastError = true)]
   [return: MarshalAs(UnmanagedType.Bool)]
   private static extern bool GetPerformanceInfo(ref PERFORMANCE_INFORMATION pPerformanceInformation, uint cb);
 
+  /// <summary>
+  /// kernel32 <c>GetPhysicallyInstalledSystemMemory</c>: reports SMBIOS-installed RAM in
+  /// kilobytes (the physical sticks, including any the OS cannot use). Returns false on failure.
+  /// </summary>
   [DllImport("kernel32.dll", SetLastError = true)]
   [return: MarshalAs(UnmanagedType.Bool)]
   private static extern bool GetPhysicallyInstalledSystemMemory(out ulong totalMemoryInKilobytes);
 
+  /// <summary>
+  /// The <c>SystemPageFileInformation</c> class value for <see cref="NtQuerySystemInformation"/>.
+  /// </summary>
   private const int SystemPageFileInformation = 18;
+
+  /// <summary>
+  /// NTSTATUS returned when the supplied buffer is too small; signals a grow-and-retry.
+  /// </summary>
   private const int STATUS_INFO_LENGTH_MISMATCH = unchecked((int)0xC0000004);
 
-  // One node of the SystemPageFileInformation linked list. Sizes are in pages; PageFileName is
-  // present in the native struct but unused here.
+  /// <summary>
+  /// One node of the SystemPageFileInformation linked list. Sizes are in pages; PageFileName
+  /// is present in the native struct but unused here.
+  /// </summary>
   [StructLayout(LayoutKind.Sequential)]
   private struct SYSTEM_PAGEFILE_INFORMATION {
     public uint NextEntryOffset;
@@ -146,6 +195,10 @@ internal static class KernelMemoryInfo {
     public UNICODE_STRING PageFileName;
   }
 
+  /// <summary>
+  /// Native <c>UNICODE_STRING</c> (length-prefixed string) embedded in
+  /// <see cref="SYSTEM_PAGEFILE_INFORMATION"/>; declared for correct struct layout, not read.
+  /// </summary>
   [StructLayout(LayoutKind.Sequential)]
   private struct UNICODE_STRING {
     public ushort Length;
@@ -153,6 +206,11 @@ internal static class KernelMemoryInfo {
     public IntPtr Buffer;
   }
 
+  /// <summary>
+  /// ntdll <c>NtQuerySystemInformation</c>: general system-information query, used here for
+  /// the pagefile list. Returns an NTSTATUS (0 = success); see
+  /// <see cref="STATUS_INFO_LENGTH_MISMATCH"/> for the buffer-too-small case.
+  /// </summary>
   [DllImport("ntdll.dll")]
   private static extern int NtQuerySystemInformation(
       int systemInformationClass, IntPtr systemInformation, uint systemInformationLength, out uint returnLength);
