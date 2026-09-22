@@ -14,12 +14,11 @@ public sealed class BenchmarkRunner {
   /// completes on (a background thread) — the caller marshals to the UI. Returns when every suite
   /// has finished; throws <see cref="OperationCanceledException"/> if cancelled mid-batch.
   /// </summary>
-  public async Task RunAsync(
-      IReadOnlyList<IBenchmark> suites,
-      Action<IBenchmark> onSuiteStarted,
-      Action<IBenchmark, BenchmarkProgress> onSuiteProgress,
-      Action<IBenchmark, BenchmarkResult> onSuiteCompleted,
-      CancellationToken ct) {
+  public async Task RunAsync(IReadOnlyList<IBenchmark> suites,
+                             Action<IBenchmark> onSuiteStarted,
+                             Action<IBenchmark, BenchmarkProgress> onSuiteProgress,
+                             Action<IBenchmark, BenchmarkResult> onSuiteCompleted,
+                             CancellationToken ct) {
     ArgumentNullException.ThrowIfNull(suites);
 
     foreach (var suite in suites) {
@@ -31,25 +30,27 @@ public sealed class BenchmarkRunner {
       BenchmarkResult result;
       try {
         result = await suite.RunAsync(progress, ct).ConfigureAwait(false);
-      } catch (OperationCanceledException) {
+      }
+      catch (OperationCanceledException) {
         // Report the partial suite as cancelled, then stop the whole batch.
-        onSuiteCompleted(suite, BenchmarkResult.Failure(suite.Id, "Cancelled",
-            System.Diagnostics.Stopwatch.GetElapsedTime(start)));
+        onSuiteCompleted(suite, BenchmarkResult.Failure(suite.Id, "Cancelled", System.Diagnostics.Stopwatch.GetElapsedTime(start)));
         throw;
-      } catch (Exception ex) {
-        result = BenchmarkResult.Failure(suite.Id, ex.Message,
-            System.Diagnostics.Stopwatch.GetElapsedTime(start));
+      }
+      catch (Exception ex) {
+        result = BenchmarkResult.Failure(suite.Id, ex.Message, System.Diagnostics.Stopwatch.GetElapsedTime(start));
       }
 
       onSuiteCompleted(suite, result);
     }
   }
 
-  // Invokes the progress handler synchronously on the suite's thread, unlike System.Threading's
-  // Progress<T>, which posts to the captured SynchronizationContext asynchronously. Synchronous
-  // dispatch keeps progress ordered with the started/completed callbacks (all fire directly on the
-  // background thread; the caller marshals to the UI), and avoids dropping a final tick when a suite
-  // reports progress and then completes immediately.
+  /// <summary>
+  /// Invokes the progress handler synchronously on the suite's thread, unlike System.Threading's Progress<T>, 
+  /// which posts to the captured SynchronizationContext asynchronously. Synchronous dispatch keeps progress 
+  /// ordered with the started/completed callbacks (all fire directly on the background thread; the caller 
+  /// marshals to the UI), and avoids dropping a final tick when a suite reports progress and then completes immediately.
+  /// </summary>
+  /// <param name="handler"></param>
   private sealed class SynchronousProgress(Action<BenchmarkProgress> handler) : IProgress<BenchmarkProgress> {
     public void Report(BenchmarkProgress value) => handler(value);
   }

@@ -9,6 +9,9 @@ namespace Crystal.Service.Benchmark;
 /// through the catalog.
 /// </summary>
 public sealed class BenchmarkCatalog : IBenchmarkCatalog {
+  /// <summary>
+  /// Creates a new catalog with one instance of every built-in suite.
+  /// </summary>
   public BenchmarkCatalog() {
     All = [
       new CpuIntegerBenchmark(),
@@ -21,5 +24,8 @@ public sealed class BenchmarkCatalog : IBenchmarkCatalog {
     ];
   }
 
+  /// <summary>
+  /// All built-in benchmark suites, in the order they should appear on the dashboard.
+  /// </summary>
   public IReadOnlyList<IBenchmark> All { get; }
 }

@@ -8,21 +8,34 @@ namespace Crystal.Service.Benchmark;
 /// work chunks) so the UI's Cancel is responsive.
 /// </summary>
 public interface IBenchmark {
-  /// <summary>Stable identifier, unique across the catalog (used to key results back to rows).</summary>
+  /// <summary>
+  /// Stable identifier, unique across the catalog (used to key results back to rows).
+  /// </summary>
   string Id { get; }
 
-  /// <summary>Display name shown on the dashboard row.</summary>
+  /// <summary>
+  /// Display name shown on the dashboard row.
+  /// </summary>
   string Name { get; }
 
+  /// <summary>
+  /// Category of the suite, used to group rows on the dashboard.
+  /// </summary>
   BenchmarkCategory Category { get; }
 
-  /// <summary>One-line description of what the suite measures.</summary>
+  /// <summary>
+  /// One-line description of what the suite measures.
+  /// </summary>
   string Description { get; }
 
-  /// <summary>Unit of the headline <see cref="BenchmarkResult.Score"/> (e.g. "GB/s", "GFLOPS").</summary>
+  /// <summary>
+  /// Unit of the headline <see cref="BenchmarkResult.Score"/> (e.g. "GB/s", "GFLOPS").
+  /// </summary>
   string Unit { get; }
 
-  /// <summary>True when a larger score is better (throughput); false for latency-style metrics.</summary>
+  /// <summary>
+  /// True when a larger score is better (throughput); false for latency-style metrics.
+  /// </summary>
   bool HigherIsBetter { get; }
 
   /// <summary>

@@ -5,6 +5,8 @@ namespace Crystal.Service.Benchmark;
 /// reads <see cref="All"/> to populate its selectable rows.
 /// </summary>
 public interface IBenchmarkCatalog {
-  /// <summary>Every suite, in a stable order grouped by <see cref="BenchmarkCategory"/>.</summary>
+  /// <summary>
+  /// Every suite, in a stable order grouped by <see cref="BenchmarkCategory"/>.
+  /// </summary>
   IReadOnlyList<IBenchmark> All { get; }
 }

@@ -7,6 +7,12 @@ namespace Crystal.Service.Benchmark;
 /// <see cref="IBenchmark.RunAsync"/>.
 /// </summary>
 public readonly record struct BenchmarkProgress(double Fraction, string Status) {
+  /// <summary>
+  /// Creates a new <see cref="BenchmarkProgress"/> with the given fraction and status. The fraction is clamped to 0–1.
+  /// </summary>
+  /// <param name="fraction">The progress fraction, clamped to 0–1.</param>
+  /// <param name="status">The human-readable status label.</param>
+  /// <returns>A new <see cref="BenchmarkProgress"/> instance.</returns>
   public static BenchmarkProgress At(double fraction, string status) =>
-      new(fraction < 0 ? 0 : fraction > 1 ? 1 : fraction, status);
+    new(fraction < 0 ? 0 : fraction > 1 ? 1 : fraction, status);
 }
