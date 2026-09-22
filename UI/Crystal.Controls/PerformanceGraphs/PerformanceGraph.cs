@@ -45,15 +45,18 @@ public class PerformanceGraph : FrameworkElement, ISingleSeriesGraph {
   private const int BandCount = GaugeBandPalette.BandCount;
 
   /// <summary>
-  /// Fraction of each column slot's width the dot occupies, and of each row's height a *full* dot 
-  /// occupies (Dot mode). A fractional dot keeps this same width and starting height, just shortened.
+  /// Horizontal cap (Dot mode): the dot's side may not exceed this fraction of a column slot's width,
+  /// leaving a gap between columns when slots are narrower than rows. Only bites when the row-height
+  /// sizing from <see cref="DotHeightRatio"/> would otherwise make the dot wider than the slot allows.
   /// </summary>
-  private const double ColumnWidthRatio = 0.9;
+  private const double MaxDotWidthRatio = 0.8;
 
   /// <summary>
-  /// Fraction of each column slot's width the dot occupies, and of each row's height a *full* dot
+  /// Primary vertical sizing (Dot mode): a full dot's side is this fraction of a row's height,
+  /// leaving a gap between rows. The result is then clamped by <see cref="MaxDotWidthRatio"/>, so the
+  /// dot side is <c>min(rowHeight * DotHeightRatio, slotWidth * MaxDotWidthRatio)</c>.
   /// </summary>
-  private const double DotSizeRatio = 0.85;
+  private const double DotHeightRatio = 0.8;
 
   /// <summary>
   /// Default green→red gauge ramp (band 0 green … band 8 red) for Dot-mode banding, single-sourced
@@ -704,13 +707,13 @@ public class PerformanceGraph : FrameworkElement, ISingleSeriesGraph {
   /// <summary>
   /// The Height/Width ratio that makes every rendered <see cref="DisplayMode.Dot"/> come out
   /// perfectly square for a graph with the given <paramref name="rows"/>/<paramref name="capacity"/> —
-  /// the actual drawn dot after <see cref="ColumnWidthRatio"/>/<see cref="DotSizeRatio"/> shrink each
+  /// the actual drawn dot after <see cref="MaxDotWidthRatio"/>/<see cref="DotHeightRatio"/> shrink each
   /// cell. Multiply by an actual pixel width to get the height that squares every dot at that width.
   /// </summary>
   public static double SquareDotAspectRatio(int rows, int capacity) {
     if (rows <= 0) throw new ArgumentOutOfRangeException(nameof(rows), "Rows must be positive.");
     if (capacity <= 0) throw new ArgumentOutOfRangeException(nameof(capacity), "Capacity must be positive.");
-    return (ColumnWidthRatio / DotSizeRatio) * (rows / (double)capacity);
+    return (MaxDotWidthRatio / DotHeightRatio) * (rows / (double)capacity);
   }
 
   /// <summary>
@@ -1510,9 +1513,9 @@ public class PerformanceGraph : FrameworkElement, ISingleSeriesGraph {
       rowHeight = bounds.Height / rows;
     }
 
-    double dotColumnWidth = slotWidth * ColumnWidthRatio;
+    double dotColumnWidth = slotWidth * MaxDotWidthRatio;
     double columnInset = (slotWidth - dotColumnWidth) / 2;
-    double dotSize = rowHeight * DotSizeRatio;
+    double dotSize = rowHeight * DotHeightRatio;
     if (dotSize > dotColumnWidth) dotSize = dotColumnWidth;
     double rowPadding = (rowHeight - dotSize) / 2;
 
