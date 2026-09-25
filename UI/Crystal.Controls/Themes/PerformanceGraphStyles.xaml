@@ -45,7 +45,7 @@
     pixel size regardless of the tile's width, height, or Capacity. Bump this single value to scale
     every dashboard graph's dots together.
   -->
-  <sys:Double x:Key="DashboardDotPitch">10</sys:Double>
+	<sys:Double x:Key="DashboardDotPitch">6</sys:Double>
 
   <!-- ============================================================================================
        PerformanceGraphView: the titled chrome wrapper (header title + max value, footer time axis)

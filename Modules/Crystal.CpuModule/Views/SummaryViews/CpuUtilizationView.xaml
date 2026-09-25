@@ -27,7 +27,7 @@
       x:Name="CpuUtilizationGraph"
       Style="{StaticResource SummaryTileGraphStyle}"
       graphs:GraphIdentity.Id="Cpu.Utilization"
-      HistoryLength="180" MinValue="0" MaxValue="100"
+      HistoryLength="300" MinValue="0" MaxValue="100"
       Accent="{StaticResource GraphAccentUtilization}"
       BandedLine="True"
       CellPitch="{StaticResource DashboardDotPitch}"/>

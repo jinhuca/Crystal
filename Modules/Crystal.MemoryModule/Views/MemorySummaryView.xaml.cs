@@ -19,7 +19,7 @@ public partial class MemorySummaryView : UserControl {
   private void OnLoaded(object sender, RoutedEventArgs e) {
     if (DataContext is IMemoryViewModel vm) {
       vm.AttachUsageGraph(MemoryUsageGraph);
-      vm.AttachCommitGraph(CommitChargeGraph);
+      //vm.AttachCommitGraph(CommitChargeGraph);
     }
   }
 

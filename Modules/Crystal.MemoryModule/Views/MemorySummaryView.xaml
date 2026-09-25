@@ -64,146 +64,105 @@
 			<sv:MemoryHeaderView Grid.Row="0" Margin="0,0,0,0"/>
 			<Grid Grid.Row="1" ShowGridLines="False">
 				<Grid.RowDefinitions>
-					<RowDefinition Height="*"/>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="50"/>
+					<RowDefinition Height="50"/>
 					<RowDefinition Height="48"/>
-					<RowDefinition Height="42"/>
-					<RowDefinition Height="22"/>
+					<RowDefinition Height="23"/>
 				</Grid.RowDefinitions>
-				<Grid Grid.Row="0" MinHeight="120">
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="*"/>
-						<ColumnDefinition Width="*"/>
-					</Grid.ColumnDefinitions>
-					<Border Grid.Column="0" Style="{StaticResource SummaryTileBorderStyle}" Margin="2,2,4,2">
-						<Grid Margin="10,4,10,6">
-							<Grid.RowDefinitions>
-								<RowDefinition Height="Auto"/>
-								<RowDefinition Height="Auto"/>
-								<RowDefinition Height="*"/>
-							</Grid.RowDefinitions>
-							<Grid Grid.Row="0">
-								<TextBlock Text="Memory Usage" Style="{StaticResource SummaryTileTitleTextBlockStyle}"
+				<Border Grid.Row="0" Style="{StaticResource SummaryTileBorderStyle}" Margin="2,2,4,2">
+					<Grid Margin="10,4,10,6" ShowGridLines="False">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="*"/>
+						</Grid.RowDefinitions>
+						<Grid Grid.Row="0">
+							<TextBlock Text="Memory Usage" Style="{StaticResource SummaryTileTitleTextBlockStyle}"
                          HorizontalAlignment="Left" VerticalAlignment="Center"/>
-								<TextBlock Style="{StaticResource MetricStatLine}" HorizontalAlignment="Right" VerticalAlignment="Center">
+							<TextBlock Style="{StaticResource MetricStatLine}" HorizontalAlignment="Right" VerticalAlignment="Center">
                 <Run FontFamily="Segoe Fluent Icons" Text="&#xE70D; " Foreground="LightGreen"/>
                 <Run Text="{Binding UsageRow.Min, StringFormat={}{0:0.#}}"/>
                 <Run FontFamily="Segoe Fluent Icons" Text=" &#xE738; " Foreground="{StaticResource AccentBrush}"/>
                 <Run Text="{Binding UsageRow.Avg, StringFormat={}{0:0.#}}"/>
                 <Run FontFamily="Segoe Fluent Icons" Text=" &#xE70E; " Foreground="Crimson"/>
                 <Run Text="{Binding UsageRow.Max, StringFormat={}{0:0.#}}"/>
-								</TextBlock>
-							</Grid>
-							<StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,2,0,4">
-								<TextBlock Text="{Binding UsageLabel}" Style="{StaticResource TileMetricValue}"/>
-								<TextBlock Text="{Binding UsageRow.Trend, Converter={StaticResource TrendToGlyph}}"
+							</TextBlock>
+						</Grid>
+						<StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,5,0,5" HorizontalAlignment="Left">
+							<TextBlock Text="{Binding UsageLabel}" Style="{StaticResource TileMetricValue}"/>
+							<TextBlock Text="{Binding UsageRow.Trend, Converter={StaticResource TrendToGlyph}}"
                          Foreground="{Binding UsageRow.Trend, Converter={StaticResource TrendToBrush}}"
                          Style="{StaticResource MetricUnit}" Margin="4,0,0,0"/>
-							</StackPanel>
-							<graphs:PerformanceGraph Grid.Row="2" x:Name="MemoryUsageGraph"
+						</StackPanel>
+						<graphs:PerformanceGraph
+								Grid.Row="2" x:Name="MemoryUsageGraph"
+								GraphBackground="Transparent" VerticalAlignment="Top"
                 Style="{StaticResource SummaryTileGraphStyle}"
-                HistoryLength="180" MinValue="0" MaxValue="100"
+                HistoryLength="120" MinValue="0" MaxValue="100"
                 Accent="{StaticResource GraphAccentUtilization}"
-                BandedLine="True" MinHeight="40"
+                BandedLine="True" MinHeight="30" Height="45"
                 CellPitch="{StaticResource DashboardDotPitch}"/>
-						</Grid>
-					</Border>
-
-					<Border Grid.Column="1" Style="{StaticResource SummaryTileBorderStyle}" Margin="4,2,2,2">
-						<Grid Margin="10,4,10,6">
-							<Grid.RowDefinitions>
-								<RowDefinition Height="Auto"/>
-								<RowDefinition Height="Auto"/>
-								<RowDefinition Height="*"/>
-							</Grid.RowDefinitions>
-							<Grid Grid.Row="0">
-								<TextBlock Text="Commit charge" Style="{StaticResource SummaryTileTitleTextBlockStyle}"
-                         HorizontalAlignment="Left" VerticalAlignment="Center"/>
-								<TextBlock Style="{StaticResource MetricStatLine}" HorizontalAlignment="Right" VerticalAlignment="Center">
-                <Run FontFamily="Segoe Fluent Icons" Text="&#xE70D; " Foreground="LightGreen"/>
-                <Run Text="{Binding CommitRow.Min, StringFormat={}{0:0.#}}"/>
-                <Run FontFamily="Segoe Fluent Icons" Text=" &#xE738; " Foreground="{StaticResource AccentBrush}"/>
-                <Run Text="{Binding CommitRow.Avg, StringFormat={}{0:0.#}}"/>
-                <Run FontFamily="Segoe Fluent Icons" Text=" &#xE70E; " Foreground="Crimson"/>
-                <Run Text="{Binding CommitRow.Max, StringFormat={}{0:0.#}}"/>
-								</TextBlock>
-							</Grid>
-							<StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,2,0,4">
-								<TextBlock Text="{Binding CommitUsageLabel}" Style="{StaticResource TileMetricValue}"/>
-								<TextBlock Text="{Binding CommitRow.Trend, Converter={StaticResource TrendToGlyph}}"
-                         Foreground="{Binding CommitRow.Trend, Converter={StaticResource TrendToBrush}}"
-                         Style="{StaticResource MetricUnit}" Margin="4,0,0,0"/>
-							</StackPanel>
-							<graphs:PerformanceGraph Grid.Row="2" x:Name="CommitChargeGraph"
-                Style="{StaticResource SummaryTileGraphStyle}"
-                HistoryLength="180" MinValue="0"
-                MaxValue="{Binding CommitLimitGB, FallbackValue=64, TargetNullValue=64}"
-                Accent="{StaticResource GraphAccentUtilization}"
-                BandedLine="True" MinHeight="40"
-                CellPitch="{StaticResource DashboardDotPitch}"/>
-						</Grid>
-					</Border>
-				</Grid>
-
-				<!-- Kernel/pool stats moved below the cards: two 4-column caption-over-value groups, one under
-           each card (physical-memory figures under Usage, commit/pool figures under Commit charge). -->
-				<Grid Grid.Row="1" Margin="2,8,2,8">
+					</Grid>
+				</Border>
+				<Grid Grid.Row="1" Margin="5,0,5,0" ShowGridLines="False">
 					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="*"/>
-						<ColumnDefinition Width="*"/>
+						<ColumnDefinition/>
+						<ColumnDefinition/>
+						<ColumnDefinition/>
+						<ColumnDefinition/>
 					</Grid.ColumnDefinitions>
-
-					<Grid Grid.Column="0" Margin="8,0,4,0">
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="*"/>
-							<ColumnDefinition Width="*"/>
-							<ColumnDefinition Width="*"/>
-							<ColumnDefinition Width="*"/>
-						</Grid.ColumnDefinitions>
-						<Grid.RowDefinitions>
-							<RowDefinition Height="Auto"/>
-							<RowDefinition Height="Auto"/>
-						</Grid.RowDefinitions>
-						<TextBlock Grid.Row="0" Grid.Column="0" Text="In use (Compressed)" Style="{StaticResource TileStatCaption}"/>
-						<TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding InUseLabel}" Style="{StaticResource TileStatValue}"/>
-						<TextBlock Grid.Row="0" Grid.Column="1" Text="Committed" Style="{StaticResource TileStatCaption}"/>
-						<TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding CommittedLabel}" Style="{StaticResource TileStatValue}"/>
-						<TextBlock Grid.Row="0" Grid.Column="2" Text="Available" Style="{StaticResource TileStatCaption}"/>
-						<TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding AvailableLabel}" Style="{StaticResource TileStatValue}"/>
-						<TextBlock Grid.Row="0" Grid.Column="3" Text="Cached" Style="{StaticResource TileStatCaption}"/>
-						<TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding CachedLabel}" Style="{StaticResource TileStatValue}"/>
-					</Grid>
-
-					<Grid Grid.Column="1" Margin="8,0,4,0">
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="*"/>
-							<ColumnDefinition Width="*"/>
-							<ColumnDefinition Width="*"/>
-							<ColumnDefinition Width="*"/>
-						</Grid.ColumnDefinitions>
-						<Grid.RowDefinitions>
-							<RowDefinition Height="Auto"/>
-							<RowDefinition Height="Auto"/>
-						</Grid.RowDefinitions>
-						<TextBlock Grid.Row="0" Grid.Column="0" Text="Commit peak" Style="{StaticResource TileStatCaption}"/>
-						<TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding CommitPeakLabel}" Style="{StaticResource TileStatValue}"/>
-						<TextBlock Grid.Row="0" Grid.Column="1" Text="Paged pool" Style="{StaticResource TileStatCaption}"/>
-						<TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding PagedPoolLabel}" Style="{StaticResource TileStatValue}"/>
-						<TextBlock Grid.Row="0" Grid.Column="2" Text="Non-paged pool" Style="{StaticResource TileStatCaption}"/>
-						<TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding NonPagedPoolLabel}" Style="{StaticResource TileStatValue}"/>
-						<TextBlock Grid.Row="0" Grid.Column="3" Text="Pagefile (used/size)" Style="{StaticResource TileStatCaption}"/>
-						<TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding PageFileLabel}" Style="{StaticResource TileStatValue}"/>
-					</Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition/>
+						<RowDefinition/>
+					</Grid.RowDefinitions>
+					<!-- Memory in Use -->
+					<TextBlock Grid.Row="0" Grid.Column="0" Text="In use (Compressed)" Style="{StaticResource SummaryTileTitleTextBlockStyle}"/>
+					<TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding InUseLabel}" Style="{StaticResource TileMetricValue}"/>
+					<!-- Memory committed -->
+					<TextBlock Grid.Row="0" Grid.Column="1" Text="Committed" Style="{StaticResource SummaryTileTitleTextBlockStyle}"/>
+					<TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding CommittedLabel}" Style="{StaticResource TileMetricValue}"/>
+					<!-- Memory available -->
+					<TextBlock Grid.Row="0" Grid.Column="2" Text="Available" Style="{StaticResource SummaryTileTitleTextBlockStyle}"/>
+					<TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding AvailableLabel}" Style="{StaticResource TileMetricValue}"/>
+					<!-- Memory cached -->
+					<TextBlock Grid.Row="0" Grid.Column="3" Text="Cached" Style="{StaticResource SummaryTileTitleTextBlockStyle}"/>
+					<TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding CachedLabel}" Style="{StaticResource TileMetricValue}"/>
+				</Grid>
+				<Grid Grid.Row="2" Margin="5,0,5,0" ShowGridLines="False">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition/>
+						<ColumnDefinition/>
+						<ColumnDefinition/>
+						<ColumnDefinition/>
+					</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition/>
+						<RowDefinition/>
+					</Grid.RowDefinitions>
+					<!-- Commit peak -->
+					<TextBlock Grid.Row="0" Grid.Column="0" Text="Commit peak" Style="{StaticResource SummaryTileTitleTextBlockStyle}"/>
+					<TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding CommitPeakLabel}" Style="{StaticResource TileMetricValue}"/>
+					<!-- Paged pool -->
+					<TextBlock Grid.Row="0" Grid.Column="1" Text="Paged pool" Style="{StaticResource SummaryTileTitleTextBlockStyle}"/>
+					<TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding PagedPoolLabel}" Style="{StaticResource TileMetricValue}"/>
+					<!-- Non-Page pool-->
+					<TextBlock Grid.Row="0" Grid.Column="2" Text="Non-paged pool" Style="{StaticResource SummaryTileTitleTextBlockStyle}"/>
+					<TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding NonPagedPoolLabel}" Style="{StaticResource TileMetricValue}"/>
+					<!-- Page file (used/size) -->
+					<TextBlock Grid.Row="0" Grid.Column="3" Text="Pagefile (used/size)" Style="{StaticResource SummaryTileTitleTextBlockStyle}"/>
+					<TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding PageFileLabel}" Style="{StaticResource TileMetricValue}"/>
 				</Grid>
 
 				<!-- Memory composition title + the segment legend on one line: title left, legend right. -->
-				<Grid Grid.Row="2" Margin="2,0,0,0">
+				<Grid Grid.Row="3" Margin="2,5,5,0">
 					<Grid.RowDefinitions>
 						<RowDefinition Height="24"/>
 						<RowDefinition Height="Auto"/>
 					</Grid.RowDefinitions>
 					<Grid Grid.Row="0" Margin="0,0,0,4">
 						<TextBlock Text="Memory composition" 
-                     Style="{StaticResource TileSectionLabel}"
+                     Style="{StaticResource SummaryTileTitleTextBlockStyle}"
                      HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
 						<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
 							<StackPanel Orientation="Horizontal" Margin="0,0,16,0">
@@ -248,13 +207,13 @@
 				</Grid>
 
 				<!-- Hardware spec pairs -->
-				<Grid Grid.Row="3" VerticalAlignment="Center" Margin="2,8,0,0">
+				<Grid Grid.Row="4" VerticalAlignment="Center" Margin="2,8,0,0" ShowGridLines="False">
 					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="*"/>
-						<ColumnDefinition Width="*"/>
-						<ColumnDefinition Width="*"/>
-						<ColumnDefinition Width="*"/>
-						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width=".8*"/>
+						<ColumnDefinition Width=".7*"/>
+						<ColumnDefinition Width="1.1*"/>
+						<ColumnDefinition Width="1.1*"/>
+						<ColumnDefinition Width="1*"/>
 					</Grid.ColumnDefinitions>
 					<StackPanel Grid.Column="0" Orientation="Horizontal">
 						<TextBlock Text="Speed:" Style="{StaticResource TileSpecCaption}"/>

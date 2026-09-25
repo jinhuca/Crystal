@@ -93,7 +93,8 @@
       <graphs:PerformanceGraph
         Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="5"
         Style="{StaticResource AdaptiveGraphNoChromeStyle}"
-        Loaded="OnGraphLoaded" graphs:GraphIdentity.Id="Cpu.Clock"
+        Loaded="OnGraphLoaded"
+				graphs:GraphIdentity.Id="Cpu.Clock"
         HorizontalAlignment="Stretch" VerticalAlignment="Top"
         Height="24" Rows="10"
 				HistoryLength="{StaticResource CpuSensorGraphCapacity}"

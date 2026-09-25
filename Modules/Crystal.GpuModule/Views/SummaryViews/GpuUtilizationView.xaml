@@ -29,7 +29,7 @@
       Grid.Column="0"
       x:Name="UtilizationGraph"
       graphs:GraphIdentity.Id="Gpu.Utilization"
-      HistoryLength="{Binding Capacity, RelativeSource={RelativeSource AncestorType=UserControl}}"
+      HistoryLength="240"
       MinValue="0" MaxValue="100"
       Accent="{StaticResource GraphAccentUtilization}"
       BandedLine="True" 
