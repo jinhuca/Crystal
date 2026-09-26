@@ -54,7 +54,7 @@
         HorizontalAlignment="Stretch" VerticalAlignment="Top"
         Height="24" Rows="8" 
 				HistoryLength="{StaticResource GpuSensorGraphCapacity}"
-        MinValue="30" MaxValue="120"
+        MinValue="0" MaxValue="100"
         BandedLine="True" 
 				BandStartColor="{StaticResource GpuTemperatureBandedColor1}" 
 				BandEndColor="{StaticResource GpuTemperatureBandedColor9}"/>

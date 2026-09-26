@@ -46,9 +46,6 @@
                    Foreground="{Binding HotSpotRow.Trend, Converter={StaticResource TrendToBrush}}"
                    Style="{StaticResource MetricUnit}" Margin="4,0,0,2"/>
       </StackPanel>
-
-      <!-- Adaptive (Line/Dot) hot-spot history strip; self-registers under "Gpu.HotSpot". Follows the
-           title-bar Line/Dot toggle; banded whitesmoke→red temperature ramp. -->
       <graphs:PerformanceGraph
         Style="{StaticResource AdaptiveGraphNoChromeStyle}"
         Grid.Row="2"
@@ -56,7 +53,7 @@
         HorizontalAlignment="Stretch" VerticalAlignment="Top"
         Height="24" Rows="8" 
 				HistoryLength="{StaticResource GpuSensorGraphCapacity}"
-        MinValue="30" MaxValue="120"
+        MinValue="0" MaxValue="100"
         BandedLine="True" 
 				BandStartColor="{StaticResource GpuHotspotBandedColor1}" 
 				BandEndColor="{StaticResource GpuHotspotBandedColor9}"/>

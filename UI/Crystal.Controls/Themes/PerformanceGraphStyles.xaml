@@ -128,7 +128,7 @@
     <Setter Property="BandedLine" Value="False"/>
     <Setter Property="MinHeight" Value="40"/>
     <Setter Property="LineThickness" Value="1.0"/>
-    <Setter Property="GraphBackground" Value="#FF000000"/>
+    <Setter Property="GraphBackground" Value="Transparent"/>
     <Setter Property="GridBrush" Value="#FF303030"/>
     <Setter Property="GridThickness" Value="0.6"/>
     <Setter Property="BorderBrush" Value="#FF3E7BC4"/>
