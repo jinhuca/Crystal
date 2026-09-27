@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace Crystal.Infrastructure.Core.Navigation.Regions;
 
 /// <summary>

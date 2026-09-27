@@ -1,4 +1,3 @@
-using Crystal.Provider.CpuId;
 using Xunit;
 
 namespace Crystal.Provider.CpuId.Tests;

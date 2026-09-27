@@ -1,7 +1,6 @@
 using Crystal.Infrastructure.DataStructures.Sensors;
 using Crystal.Service.Bios;
 using Crystal.Service.Sensors;
-using System.Collections.Generic;
 
 namespace Crystal.BiosModule.Models;
 

@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using Crystal.Infrastructure.Core.Events;
 using Xunit;
 

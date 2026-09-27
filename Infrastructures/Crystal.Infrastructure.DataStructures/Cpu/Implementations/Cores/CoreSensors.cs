@@ -1,6 +1,5 @@
 using Crystal.Infrastructure.DataStructures.Cpu.Interfaces.Cores;
 using Crystal.Infrastructure.DataStructures.Sensors;
-using System.Collections.Generic;
 
 namespace Crystal.Infrastructure.DataStructures.Cpu.Implementations.Cores;
 

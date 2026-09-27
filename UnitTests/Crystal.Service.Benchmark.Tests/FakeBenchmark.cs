@@ -1,5 +1,3 @@
-using Crystal.Service.Benchmark;
-
 namespace Crystal.Service.Benchmark.Tests;
 
 /// <summary>A controllable <see cref="IBenchmark"/> for runner tests — no real work.</summary>

@@ -1,7 +1,4 @@
-﻿using Crystal.Infrastructure.DataStructures.Cpu.Definitions;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Crystal.Infrastructure.DataStructures.Cpu.Definitions;
 
 namespace Crystal.Infrastructure.DataStructures.Cpu.Interfaces.Cores;
 

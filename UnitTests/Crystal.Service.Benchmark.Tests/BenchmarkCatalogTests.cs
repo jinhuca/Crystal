@@ -1,4 +1,3 @@
-using Crystal.Service.Benchmark;
 using Xunit;
 
 namespace Crystal.Service.Benchmark.Tests;

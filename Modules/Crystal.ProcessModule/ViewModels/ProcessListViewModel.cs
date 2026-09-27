@@ -3,8 +3,6 @@ using Crystal.Infrastructure.Constants.Navigation;
 using Crystal.ProcessModule.Models;
 using Crystal.Service.Gpu;
 using Crystal.Service.Process;
-using Crystal.Infrastructure.Core.Commands;
-using Crystal.Infrastructure.Core.Events;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Data;

@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using Prism.Ioc;
-
 namespace Crystal.Infrastructure.Core.Navigation.Regions;
 
 /// <summary>

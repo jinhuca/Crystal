@@ -1,9 +1,6 @@
 using Crystal.BenchmarkModule.ViewModels;
 using Crystal.BenchmarkModule.Views;
 using Crystal.Service.Benchmark;
-using Prism.Ioc;
-using Crystal.Infrastructure.Core.Modularity;
-using Crystal.Infrastructure.Core.Mvvm;
 
 namespace Crystal.BenchmarkModule;
 

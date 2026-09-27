@@ -1,6 +1,5 @@
 using Microsoft.Management.Infrastructure;
 using Microsoft.Management.Infrastructure.Generic;
-using Microsoft.Management.Infrastructure.Options;
 using System.Collections.Concurrent;
 using System.Collections.Frozen;
 

@@ -1,5 +1,3 @@
-using System;
-
 namespace Crystal.Provider.Mmi.HardwareFeatures.MappedLogicalDisk;
 
 // Win32_MappedLogicalDisk is derived from CIM_LogicalDisk, like Win32_LogicalDisk, but

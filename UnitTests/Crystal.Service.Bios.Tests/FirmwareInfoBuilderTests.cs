@@ -1,7 +1,6 @@
 using Crystal.Provider.Mmi.HardwareFeatures.FirmwareSecurity;
 using Crystal.Provider.Mmi.MmiEngine;
 using Crystal.Provider.Smbios.HardwareFeatures.Firmware;
-using Crystal.Provider.Smbios.Types;
 using Xunit;
 
 namespace Crystal.Service.Bios.Tests;

@@ -1,4 +1,3 @@
-using Crystal.Provider.Smbios.Structures;
 using Crystal.Provider.Smbios.Types;
 using System.Linq;
 using Xunit;

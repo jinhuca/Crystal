@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Collections.Specialized;
 
 namespace Crystal.Infrastructure.Core.Navigation.Regions;

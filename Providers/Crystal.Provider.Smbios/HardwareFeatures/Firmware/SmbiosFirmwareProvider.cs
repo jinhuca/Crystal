@@ -1,7 +1,5 @@
-using Crystal.Provider.Smbios.Structures;
 using Crystal.Provider.Smbios.Types;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;

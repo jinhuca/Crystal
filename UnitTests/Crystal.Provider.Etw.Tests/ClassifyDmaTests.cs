@@ -1,4 +1,3 @@
-using Crystal.Provider.Etw;
 using Xunit;
 
 namespace Crystal.Provider.Etw.Tests;

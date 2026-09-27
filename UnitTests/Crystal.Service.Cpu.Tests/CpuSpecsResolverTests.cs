@@ -2,7 +2,6 @@ using Crystal.Infrastructure.DataStructures.Cpu.Definitions;
 using Crystal.Provider.CpuId;
 using Crystal.Provider.Mmi.HardwareFeatures.Processor;
 using Crystal.Provider.Smbios.HardwareFeatures.Processor;
-using Crystal.Service.Cpu;
 using Xunit;
 
 namespace Crystal.Service.Cpu.Tests;

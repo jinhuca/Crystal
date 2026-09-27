@@ -1,7 +1,3 @@
-
-
-
-using System;
 using Crystal.Infrastructure.Core.Events;
 
 namespace Crystal.Infrastructure.Core.Tests.Events;

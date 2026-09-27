@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Globalization;
 using Crystal.Infrastructure.Core.Common;
 using Crystal.Infrastructure.Core.Properties;

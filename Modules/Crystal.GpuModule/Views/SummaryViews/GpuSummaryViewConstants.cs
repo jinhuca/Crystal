@@ -1,6 +1,3 @@
-﻿using System.Windows;
-using System.Windows.Markup;
-
 namespace Crystal.GpuModule.Views.SummaryViews;
 
 //internal sealed class GraphWidthExtension : MarkupExtension {

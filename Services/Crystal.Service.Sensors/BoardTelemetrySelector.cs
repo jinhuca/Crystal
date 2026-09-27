@@ -1,7 +1,4 @@
 using Crystal.Infrastructure.DataStructures.Sensors;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Crystal.Service.Sensors;
 

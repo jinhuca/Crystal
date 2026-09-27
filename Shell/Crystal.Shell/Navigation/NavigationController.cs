@@ -1,5 +1,4 @@
 using Crystal.Infrastructure.Constants;
-using Crystal.Infrastructure.Constants.Navigation;
 using Crystal.Shell.Views;
 
 namespace Crystal.Shell.Navigation;

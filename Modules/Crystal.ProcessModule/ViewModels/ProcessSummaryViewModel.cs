@@ -1,9 +1,6 @@
 using Crystal.Controls.Threading;
 using Crystal.Infrastructure.Constants.Navigation;
 using Crystal.Service.Process;
-using Crystal.Infrastructure.Core.Commands;
-using Crystal.Infrastructure.Core.Events;
-using Crystal.Infrastructure.Core.Mvvm;
 using System.Windows.Input;
 
 namespace Crystal.ProcessModule.ViewModels;

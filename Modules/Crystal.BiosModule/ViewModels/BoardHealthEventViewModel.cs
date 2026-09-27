@@ -1,5 +1,3 @@
-using System;
-
 namespace Crystal.BiosModule.ViewModels;
 
 /// <summary>One row in the detail view's board-health event log: a past or ongoing out-of-spec

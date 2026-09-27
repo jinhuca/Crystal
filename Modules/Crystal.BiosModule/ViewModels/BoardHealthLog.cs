@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace Crystal.BiosModule.ViewModels;
 
 /// <summary>One out-of-spec episode for a single board sensor: when it first went out of tolerance,

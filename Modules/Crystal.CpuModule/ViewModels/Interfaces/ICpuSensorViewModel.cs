@@ -1,7 +1,5 @@
 using Crystal.Controls.Metrics;
 using Crystal.Controls.PerformanceGraphs;
-using Crystal.CpuModule.Models;
-using Crystal.CpuModule.ViewModels;
 using Crystal.Infrastructure.DataStructures.Cpu.Interfaces;
 using System.Collections.ObjectModel;
 

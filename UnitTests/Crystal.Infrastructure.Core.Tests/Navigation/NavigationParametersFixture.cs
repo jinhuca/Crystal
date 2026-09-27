@@ -1,4 +1,3 @@
-using System.Linq;
 using Crystal.Infrastructure.Core.Navigation;
 using Xunit;
 

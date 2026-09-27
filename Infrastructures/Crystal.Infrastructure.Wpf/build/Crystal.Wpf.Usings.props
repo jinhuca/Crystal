@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Implicit global usings for WPF consumers of Crystal.Infrastructure.Wpf.
+
+  Imports the Core usings and adds the Wpf halves of the namespaces that were a
+  single merged namespace before the Prism -> Crystal.Infrastructure.* rename
+  (e.g. INavigationAware lives in Crystal.Infrastructure.Wpf.Navigation.Regions
+  while IRegionManager lives in Crystal.Infrastructure.Core.Navigation.Regions).
+  Core.Properties/Wpf.Properties are intentionally omitted (Resources collides).
+-->
+<Project>
+  <Import Project="$(MSBuildThisFileDirectory)..\..\Crystal.Infrastructure.Core\build\Prism.Usings.props" />
+  <ItemGroup Condition=" '$(ImplicitUsings)' == 'true' OR '$(ImplicitUsings)' == 'enable' ">
+    <Using Include="Crystal.Infrastructure.Wpf" />
+    <Using Include="Crystal.Infrastructure.Wpf.Dialogs" />
+    <Using Include="Crystal.Infrastructure.Wpf.Modularity" />
+    <Using Include="Crystal.Infrastructure.Wpf.Mvvm" />
+    <Using Include="Crystal.Infrastructure.Wpf.Navigation.Regions" />
+  </ItemGroup>
+</Project>

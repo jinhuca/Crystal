@@ -1,5 +1,3 @@
-using Prism.Ioc;
-
 namespace Crystal.Infrastructure.Core.Modularity;
 
 /// <summary>

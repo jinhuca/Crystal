@@ -1,5 +1,3 @@
-using Crystal.Infrastructure.Core.Events;
-
 namespace Crystal.Infrastructure.Constants.Navigation;
 
 /// <summary>

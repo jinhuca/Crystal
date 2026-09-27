@@ -1,7 +1,3 @@
-
-
-using System;
-
 namespace Crystal.Infrastructure.Core.Modularity;
 
 /// <summary>

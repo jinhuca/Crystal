@@ -1,6 +1,3 @@
-
-
-using System.ComponentModel;
 using Crystal.Infrastructure.Core.Mvvm;
 
 namespace Crystal.Infrastructure.Core.Tests.Mocks.ViewModels;

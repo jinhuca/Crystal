@@ -1,8 +1,3 @@
-
-
-
-using System;
-
 namespace Crystal.Infrastructure.Core.Events;
 
 /// <summary>

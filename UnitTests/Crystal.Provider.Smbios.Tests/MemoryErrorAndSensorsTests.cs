@@ -1,5 +1,3 @@
-using Crystal.Provider.Smbios.Structures;
-using Crystal.Provider.Smbios.Tests;
 using System.Linq;
 using Xunit;
 using static Crystal.Provider.Smbios.Tests.TestHelpers;

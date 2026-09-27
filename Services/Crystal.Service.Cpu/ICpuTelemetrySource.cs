@@ -1,5 +1,4 @@
 using Crystal.Infrastructure.DataStructures.Cpu.Interfaces;
-using Crystal.Infrastructure.DataStructures.Cpu.Interfaces.Cores;
 using Crystal.Infrastructure.DataStructures.Cpu.Interfaces.Cpus;
 
 namespace Crystal.Service.Cpu;

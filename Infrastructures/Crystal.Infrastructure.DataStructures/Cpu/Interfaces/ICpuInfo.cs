@@ -1,4 +1,3 @@
-﻿using Crystal.Infrastructure.DataStructures.Cpu.Interfaces.Cores;
 using Crystal.Infrastructure.DataStructures.Cpu.Interfaces.Cpus;
 
 namespace Crystal.Infrastructure.DataStructures.Cpu.Interfaces;

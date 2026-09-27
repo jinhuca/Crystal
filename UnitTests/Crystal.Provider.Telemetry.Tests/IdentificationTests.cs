@@ -1,4 +1,3 @@
-using Crystal.Provider.Telemetry.Hardware;
 using Crystal.Provider.Telemetry.Hardware.Motherboard;
 using Xunit;
 

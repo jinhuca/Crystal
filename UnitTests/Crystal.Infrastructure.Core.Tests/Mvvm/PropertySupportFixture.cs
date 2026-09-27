@@ -1,4 +1,3 @@
-using System;
 using Crystal.Infrastructure.Core.Mvvm;
 using Xunit;
 

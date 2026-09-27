@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Crystal.Infrastructure.Core.Modularity;
 
 /// <summary>

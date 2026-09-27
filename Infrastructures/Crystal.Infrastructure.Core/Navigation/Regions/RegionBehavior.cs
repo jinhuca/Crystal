@@ -1,4 +1,3 @@
-using System;
 using Crystal.Infrastructure.Core.Properties;
 
 namespace Crystal.Infrastructure.Core.Navigation.Regions;

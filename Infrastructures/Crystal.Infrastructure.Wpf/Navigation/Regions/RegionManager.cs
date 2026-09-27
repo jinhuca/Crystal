@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Reflection;
 using Crystal.Infrastructure.Wpf.Common;
-using Crystal.Infrastructure.Core.Events;
 using Prism.Ioc.Internals;
 using Crystal.Infrastructure.Wpf.Navigation.Regions.Behaviors;
 using Crystal.Infrastructure.Wpf.Properties;

@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using Crystal.Infrastructure.Core.Properties;
 
 namespace Crystal.Infrastructure.Core.Events;

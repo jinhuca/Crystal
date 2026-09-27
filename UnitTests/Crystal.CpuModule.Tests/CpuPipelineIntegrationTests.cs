@@ -4,16 +4,13 @@ using Crystal.Infrastructure.DataStructures.Cpu.Implementations;
 using Crystal.Infrastructure.DataStructures.Cpu.Implementations.Cores;
 using Crystal.Infrastructure.DataStructures.Cpu.Implementations.Cpus;
 using Crystal.Infrastructure.DataStructures.Cpu.Interfaces;
-using Crystal.Infrastructure.DataStructures.Cpu.Interfaces.Cores;
 using Crystal.Infrastructure.DataStructures.Cpu.Interfaces.Cpus;
 using Crystal.Infrastructure.DataStructures.Sensors;
 using Crystal.Provider.CpuId;
-using Crystal.Provider.Mmi.MmiEngine;
 using Crystal.Provider.Smbios.HardwareFeatures.Processor;
 using Crystal.Service.Cpu;
 using Crystal.Service.Sensors;
 using Microsoft.Reactive.Testing;
-using System.Collections.Frozen;
 using System.Reactive.Linq;
 using Xunit;
 

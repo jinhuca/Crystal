@@ -1,6 +1,4 @@
-using System;
 using System.Globalization;
-using Crystal.Infrastructure.Core.Navigation;
 
 namespace Crystal.Infrastructure.Core.Navigation.Regions;
 

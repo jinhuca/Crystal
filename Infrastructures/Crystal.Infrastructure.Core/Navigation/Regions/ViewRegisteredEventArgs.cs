@@ -1,6 +1,3 @@
-using System;
-using Prism.Ioc;
-
 namespace Crystal.Infrastructure.Core.Navigation.Regions;
 
 /// <summary>

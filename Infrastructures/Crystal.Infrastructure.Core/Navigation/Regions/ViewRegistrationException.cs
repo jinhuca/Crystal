@@ -1,5 +1,3 @@
-using System.Runtime.Serialization;
-
 namespace Crystal.Infrastructure.Core.Navigation.Regions;
 
 /// <summary>

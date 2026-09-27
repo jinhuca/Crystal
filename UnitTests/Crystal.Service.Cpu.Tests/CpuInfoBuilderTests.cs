@@ -1,6 +1,4 @@
 using Crystal.Infrastructure.DataStructures.Cpu.Implementations.Cpus;
-using Crystal.Infrastructure.DataStructures.Cpu.Interfaces;
-using Crystal.Infrastructure.DataStructures.Cpu.Interfaces.Cpus;
 using Crystal.Provider.CpuId;
 using Crystal.Provider.Smbios.HardwareFeatures.Processor;
 using Xunit;

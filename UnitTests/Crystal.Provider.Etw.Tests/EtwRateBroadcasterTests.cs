@@ -1,4 +1,3 @@
-using Crystal.Provider.Etw;
 using Microsoft.Reactive.Testing;
 using System.Reactive.Linq;
 using Xunit;

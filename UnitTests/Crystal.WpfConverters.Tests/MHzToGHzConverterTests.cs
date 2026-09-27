@@ -1,4 +1,3 @@
-using Crystal.WpfConverters;
 using System.Globalization;
 using Xunit;
 

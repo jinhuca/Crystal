@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Crystal.Controls.PerformanceGraphs;
 using Xunit;
 

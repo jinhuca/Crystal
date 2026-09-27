@@ -1,8 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
-using Prism.Ioc;
 using Crystal.Infrastructure.Core.Properties;
 
 namespace Crystal.Infrastructure.Core.Navigation.Regions;

@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Globalization;
-using System.Linq;
 using Crystal.Infrastructure.Core.Properties;
 
 namespace Crystal.Infrastructure.Core.Modularity;

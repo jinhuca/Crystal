@@ -1,5 +1,3 @@
-using System.Threading;
-
 namespace Crystal.ProcessModule.Tests;
 
 // Runs a test body on a dedicated STA thread. The process-list view model builds a WPF

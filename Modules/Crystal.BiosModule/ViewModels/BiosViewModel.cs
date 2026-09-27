@@ -7,9 +7,7 @@ using Crystal.Infrastructure.Constants.Navigation;
 using Crystal.Infrastructure.DataStructures.Sensors;
 using Crystal.Service.Bios;
 using Crystal.Service.Sensors;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows.Input;
 using System.Windows.Media;
 

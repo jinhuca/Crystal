@@ -1,4 +1,3 @@
-using Crystal.Provider.Smbios.Structures;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

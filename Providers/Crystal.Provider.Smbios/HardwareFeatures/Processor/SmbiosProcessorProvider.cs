@@ -1,5 +1,4 @@
 using Crystal.Infrastructure.DataStructures.Cpu.Definitions;
-using Crystal.Provider.Smbios.Structures;
 using Crystal.Provider.Smbios.Types;
 using System.Collections.Generic;
 using System.Linq;

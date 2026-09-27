@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using Crystal.Infrastructure.Core.Common;
-using Crystal.Infrastructure.Core.Navigation;
 
 namespace Crystal.Infrastructure.Core.Navigation.Regions;
 

@@ -1,5 +1,4 @@
 using Crystal.Service.Benchmark;
-using Crystal.Infrastructure.Core.Mvvm;
 
 namespace Crystal.BenchmarkModule.ViewModels;
 

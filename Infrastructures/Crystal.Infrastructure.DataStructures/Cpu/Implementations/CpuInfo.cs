@@ -1,6 +1,5 @@
 using Crystal.Infrastructure.DataStructures.Cpu.Interfaces;
 using Crystal.Infrastructure.DataStructures.Cpu.Interfaces.Cpus;
-using System.Collections.Generic;
 
 namespace Crystal.Infrastructure.DataStructures.Cpu.Implementations;
 

@@ -1,5 +1,3 @@
-using System;
-using System.Threading;
 using Crystal.Infrastructure.Core.Events;
 using Xunit;
 

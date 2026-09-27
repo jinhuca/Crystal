@@ -1,5 +1,3 @@
-using System.Threading;
-
 namespace Crystal.Controls.Tests;
 
 /// <summary>

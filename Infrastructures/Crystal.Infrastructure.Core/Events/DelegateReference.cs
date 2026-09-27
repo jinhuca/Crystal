@@ -1,7 +1,3 @@
-
-
-
-using System;
 using System.Reflection;
 
 namespace Crystal.Infrastructure.Core.Events;

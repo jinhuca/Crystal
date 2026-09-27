@@ -2,7 +2,6 @@ using Crystal.Controls.Metrics;
 using Crystal.Controls.PerformanceGraphs;
 using Crystal.Service.Gpu;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 
 namespace Crystal.GpuModule.ViewModels;
 

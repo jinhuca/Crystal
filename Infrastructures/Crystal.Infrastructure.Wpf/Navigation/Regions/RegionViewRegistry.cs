@@ -1,7 +1,6 @@
 using System.Globalization;
 using System.Reflection;
 using Crystal.Infrastructure.Wpf.Common;
-using Crystal.Infrastructure.Core.Events;
 using Crystal.Infrastructure.Wpf.Properties;
 
 namespace Crystal.Infrastructure.Wpf.Navigation.Regions;

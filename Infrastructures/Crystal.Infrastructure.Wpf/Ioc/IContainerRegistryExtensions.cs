@@ -1,5 +1,4 @@
 using System.Diagnostics.CodeAnalysis;
-using Crystal.Infrastructure.Wpf.Mvvm;
 
 namespace Prism.Ioc;
 

@@ -1,5 +1,3 @@
-﻿using System;
-
 namespace Crystal.Provider.Smbios.Types;
 
 /// <summary>

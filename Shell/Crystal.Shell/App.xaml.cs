@@ -2,7 +2,6 @@ using Crystal.Provider.Etw;
 using Crystal.Service.Sensors;
 using Crystal.Shell.Navigation;
 using Crystal.Shell.Views;
-using System.Threading;
 using System.Windows;
 
 namespace Crystal.Shell;

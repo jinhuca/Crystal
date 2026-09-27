@@ -1,7 +1,4 @@
 namespace Crystal.Provider.Smbios.Types;
-
-using System;
-
 /// <summary>
 /// Type 21 ─ Built-in Pointing Device (DSP0134 §7.11)
 /// Standalone structure describing an integrated pointing device (touchpad, trackpoint, etc.).

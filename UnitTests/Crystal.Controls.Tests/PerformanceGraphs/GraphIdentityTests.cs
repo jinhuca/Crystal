@@ -1,5 +1,4 @@
 using Crystal.Controls.PerformanceGraphs;
-using System.Collections.Generic;
 using Xunit;
 
 namespace Crystal.Controls.Tests.PerformanceGraphs;

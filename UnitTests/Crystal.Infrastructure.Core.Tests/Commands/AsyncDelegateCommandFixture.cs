@@ -1,5 +1,3 @@
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Crystal.Infrastructure.Core.Commands;
 using Xunit;

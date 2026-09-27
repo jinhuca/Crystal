@@ -1,7 +1,5 @@
 using Crystal.Infrastructure.Wpf.Dialogs;
-using Crystal.Infrastructure.Core.Events;
 using Crystal.Infrastructure.Wpf.Modularity;
-using Crystal.Infrastructure.Wpf.Mvvm;
 using Crystal.Infrastructure.Wpf.Navigation.Regions;
 using Crystal.Infrastructure.Wpf.Navigation.Regions.Behaviors;
 

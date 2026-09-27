@@ -1,5 +1,3 @@
-using System.Threading;
-
 namespace Crystal.BiosModule.Tests;
 
 // Runs a test body on a dedicated STA thread. Constructing a WPF FrameworkElement (e.g.

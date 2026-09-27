@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Crystal.Infrastructure.Core.Common;
 
 namespace Crystal.Infrastructure.Core.Navigation;
