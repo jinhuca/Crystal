@@ -22,13 +22,15 @@ public class NetworkViewModelTests {
   }
 
   private static NetworkInterfaceReading Wired(string name = "Ethernet") =>
-      new(name, 10, 2048, 4096);
+      new(name, 10, 2048, 4096, DnsSuffix: "corp.example", IPv4Address: "10.0.0.5",
+          IPv6Address: "fe80::1%3");
 
   private static NetworkInterfaceReading Wifi(string name, string ssid, int signal) =>
       new(name, 10, 2048, 4096, WifiSsid: ssid, WifiSignalPercent: signal,
-          WifiRssiDbm: -60, WifiPhyType: "Wi-Fi 6 (802.11ax)", WifiChannel: 36, WifiBand: "5 GHz",
+          WifiRssiDbm: -60, WifiPhyType: "802.11ac", WifiChannel: 36, WifiBand: "5 GHz",
           WifiRxRateKbps: 866_000, WifiTxRateKbps: 866_000, WifiBssid: "AA:BB:CC:DD:EE:FF",
-          WifiSecurity: "WPA2-Personal / CCMP");
+          WifiSecurity: "WPA2-Personal / CCMP", DnsSuffix: "Home", IPv4Address: "192.168.1.15",
+          IPv6Address: "fe80::e3ec:b8e4:107c:8e44%8");
 
   [Fact]
   public void Adapters_reflect_the_active_interface_count() {
@@ -52,45 +54,48 @@ public class NetworkViewModelTests {
   }
 
   [Fact]
-  public void No_wifi_adapter_hides_the_wifi_row() {
+  public void Wired_only_connection_hides_the_wifi_rows() {
     var vm = CreateVm(out var model);
 
     model.Subject.OnNext(new NetworkSnapshot([Wired()], WifiStatus.None));
 
     Assert.False(vm.HasWifi);
-    Assert.Equal("—", vm.WifiLabel);
+    Assert.True(vm.HasConnection);
+    Assert.Equal("Ethernet", vm.ConnectionAdapterName);
+    Assert.Equal("—", vm.ConnectionSsid);
     Assert.False(vm.HasWifiStatus);
   }
 
   [Fact]
-  public void Disabled_radio_shows_muted_status_row() {
+  public void Disabled_radio_with_no_connection_shows_muted_status_row() {
     var vm = CreateVm(out var model);
 
-    model.Subject.OnNext(new NetworkSnapshot([Wired()], WifiStatus.Disabled));
+    model.Subject.OnNext(new NetworkSnapshot([], WifiStatus.Disabled));
 
-    Assert.False(vm.HasWifi);
+    Assert.False(vm.HasConnection);
     Assert.True(vm.HasWifiStatus);
     Assert.Equal("Wi-Fi disabled", vm.WifiStatusLabel);
   }
 
   [Fact]
-  public void Disconnected_radio_shows_muted_status_row() {
+  public void Disconnected_radio_with_no_connection_shows_muted_status_row() {
     var vm = CreateVm(out var model);
 
-    model.Subject.OnNext(new NetworkSnapshot([Wired()], WifiStatus.Disconnected));
+    model.Subject.OnNext(new NetworkSnapshot([], WifiStatus.Disconnected));
 
-    Assert.False(vm.HasWifi);
+    Assert.False(vm.HasConnection);
     Assert.True(vm.HasWifiStatus);
     Assert.Equal("Wi-Fi disconnected", vm.WifiStatusLabel);
   }
 
   [Fact]
-  public void Connected_radio_suppresses_the_status_row() {
+  public void Connected_wifi_suppresses_the_status_row() {
     var vm = CreateVm(out var model);
 
     model.Subject.OnNext(new NetworkSnapshot([Wifi("Wi-Fi", "HomeNet", 72)], WifiStatus.Connected));
 
     Assert.True(vm.HasWifi);
+    Assert.True(vm.HasConnection);
     Assert.False(vm.HasWifiStatus);
   }
 
@@ -98,7 +103,7 @@ public class NetworkViewModelTests {
   public void Status_row_clears_when_radio_reconnects() {
     var vm = CreateVm(out var model);
 
-    model.Subject.OnNext(new NetworkSnapshot([Wired()], WifiStatus.Disconnected));
+    model.Subject.OnNext(new NetworkSnapshot([], WifiStatus.Disconnected));
     model.Subject.OnNext(new NetworkSnapshot([Wifi("Wi-Fi", "HomeNet", 72)], WifiStatus.Connected));
 
     Assert.False(vm.HasWifiStatus);
@@ -106,64 +111,103 @@ public class NetworkViewModelTests {
   }
 
   [Fact]
-  public void Single_wifi_adapter_shows_ssid_and_signal() {
+  public void Connected_wifi_shows_ssid_and_signal_bars() {
     var vm = CreateVm(out var model);
 
     model.Subject.OnNext(new NetworkSnapshot([Wired(), Wifi("Wi-Fi", "HomeNet", 72)]));
 
     Assert.True(vm.HasWifi);
-    Assert.Equal("HomeNet  72%", vm.WifiLabel);
+    Assert.Equal("Wi-Fi", vm.ConnectionAdapterName);
+    Assert.Equal("HomeNet", vm.ConnectionSsid);
+    // 72% quality lights three of four segments.
+    Assert.Equal("▂▄▆▁", vm.SignalBars);
   }
 
   [Fact]
-  public void Wifi_adapter_populates_link_rate_security_and_bssid() {
+  public void Connected_wifi_populates_the_taskmanager_detail_rows() {
     var vm = CreateVm(out var model);
 
     model.Subject.OnNext(new NetworkSnapshot([Wifi("Wi-Fi", "HomeNet", 72)]));
 
-    Assert.Equal("866 Mbps", vm.WifiLinkRate);
-    Assert.Equal("5 GHz (ch 36)", vm.WifiBandChannel);
-    Assert.Equal("WPA2-Personal / CCMP", vm.WifiSecurity);
-    Assert.Equal("AA:BB:CC:DD:EE:FF", vm.WifiBssid);
+    Assert.Equal("Home", vm.ConnectionDnsName);
+    Assert.Equal("802.11ac", vm.ConnectionType);
+    Assert.Equal("192.168.1.15", vm.ConnectionIPv4);
+    Assert.Equal("fe80::e3ec:b8e4:107c:8e44%8", vm.ConnectionIPv6);
   }
 
   [Fact]
-  public void Wifi_summary_fields_clear_when_adapter_disconnects() {
+  public void Wifi_detail_rows_clear_when_adapter_disconnects() {
     var vm = CreateVm(out var model);
 
     model.Subject.OnNext(new NetworkSnapshot([Wifi("Wi-Fi", "HomeNet", 72)]));
     model.Subject.OnNext(new NetworkSnapshot([Wired()]));
 
-    Assert.Equal("—", vm.WifiLinkRate);
-    Assert.Equal("—", vm.WifiBandChannel);
-    Assert.Equal("—", vm.WifiSecurity);
-    Assert.Equal("—", vm.WifiBssid);
+    Assert.False(vm.HasWifi);
+    Assert.Equal("Ethernet", vm.ConnectionAdapterName);
+    Assert.Equal("—", vm.ConnectionSsid);
+    Assert.Equal("—", vm.ConnectionType);
+    Assert.Equal("—", vm.SignalBars);
   }
 
   [Fact]
-  public void Wifi_disabled_names_the_active_wired_connection() {
+  public void Wifi_disabled_details_the_active_wired_connection() {
     var vm = CreateVm(out var model);
 
-    // Wi-Fi off but a wired interface is moving traffic: the tile names it so the throughput has an
-    // obvious owner instead of only reading "Wi-Fi disabled".
+    // Wi-Fi off but a wired interface is moving traffic: the tile details it (adapter/DNS/addresses)
+    // so the throughput has an obvious owner, with the Wi-Fi-only rows hidden.
     model.Subject.OnNext(new NetworkSnapshot([Wired("Ethernet")], WifiStatus.Disabled));
 
     Assert.False(vm.HasWifi);
-    Assert.True(vm.HasActiveConnection);
-    Assert.Equal("Ethernet", vm.ActiveConnectionLabel);
-    Assert.True(vm.HasWifiStatus);
-    Assert.Equal("Wi-Fi disabled", vm.WifiStatusLabel);
+    Assert.True(vm.HasConnection);
+    Assert.Equal("Ethernet", vm.ConnectionAdapterName);
+    Assert.Equal("10.0.0.5", vm.ConnectionIPv4);
+    Assert.False(vm.HasWifiStatus);
   }
 
   [Fact]
-  public void Active_connection_row_stands_down_when_wifi_is_connected() {
+  public void Connected_wifi_is_the_primary_connection_over_a_busier_wire() {
     var vm = CreateVm(out var model);
 
     model.Subject.OnNext(new NetworkSnapshot([Wifi("Wi-Fi", "HomeNet", 72)], WifiStatus.Connected));
 
     Assert.True(vm.HasWifi);
-    Assert.False(vm.HasActiveConnection);
-    Assert.Equal("—", vm.ActiveConnectionLabel);
+    Assert.Equal("Wi-Fi", vm.ConnectionAdapterName);
+  }
+
+  [Fact]
+  public void Non_wifi_primary_connection_is_sticky_when_the_busiest_nic_flips() {
+    var vm = CreateVm(out var model);
+
+    // Two addressed interfaces; the detail block seeds on the busiest with an IPv4.
+    var eth = new NetworkInterfaceReading("Ethernet", 10, 100, 9000, IPv4Address: "10.0.0.5");
+    var virt = new NetworkInterfaceReading("vEthernet", 10, 100, 100, IPv4Address: "172.16.0.9");
+    model.Subject.OnNext(new NetworkSnapshot([eth, virt], WifiStatus.Disconnected));
+    Assert.Equal("Ethernet", vm.ConnectionAdapterName);
+
+    // Next poll the other NIC is busier, but the primary must not thrash — it stays put.
+    model.Subject.OnNext(new NetworkSnapshot([
+        eth with { DownloadBytesPerSecond = 100 },
+        virt with { DownloadBytesPerSecond = 9000 },
+    ], WifiStatus.Disconnected));
+
+    Assert.Equal("Ethernet", vm.ConnectionAdapterName);
+    Assert.Equal("10.0.0.5", vm.ConnectionIPv4);
+  }
+
+  [Fact]
+  public void Primary_connection_reseeds_when_the_held_interface_drops() {
+    var vm = CreateVm(out var model);
+
+    var eth = new NetworkInterfaceReading("Ethernet", 10, 100, 9000, IPv4Address: "10.0.0.5");
+    var wlanBridge = new NetworkInterfaceReading("Bridge", 10, 100, 100, IPv4Address: "172.16.0.9");
+    model.Subject.OnNext(new NetworkSnapshot([eth, wlanBridge], WifiStatus.Disconnected));
+    Assert.Equal("Ethernet", vm.ConnectionAdapterName);
+
+    // Ethernet disappears: the held choice is gone, so the block reseeds onto what remains.
+    model.Subject.OnNext(new NetworkSnapshot([wlanBridge], WifiStatus.Disconnected));
+
+    Assert.Equal("Bridge", vm.ConnectionAdapterName);
+    Assert.Equal("172.16.0.9", vm.ConnectionIPv4);
   }
 
   [Fact]
@@ -176,18 +220,19 @@ public class NetworkViewModelTests {
     ]));
 
     Assert.True(vm.HasWifi);
-    Assert.Equal("Strong  90%", vm.WifiLabel);
+    Assert.Equal("Wi-Fi 2", vm.ConnectionAdapterName);
+    Assert.Equal("Strong", vm.ConnectionSsid);
   }
 
   [Fact]
-  public void Wifi_row_clears_when_adapter_disconnects() {
+  public void Wifi_rows_hide_when_adapter_disconnects() {
     var vm = CreateVm(out var model);
 
     model.Subject.OnNext(new NetworkSnapshot([Wifi("Wi-Fi", "HomeNet", 72)]));
     model.Subject.OnNext(new NetworkSnapshot([Wired()]));
 
     Assert.False(vm.HasWifi);
-    Assert.Equal("—", vm.WifiLabel);
+    Assert.Equal("—", vm.ConnectionSsid);
   }
 
   // The bound, sorted view over the backing collection — the order the table actually shows.

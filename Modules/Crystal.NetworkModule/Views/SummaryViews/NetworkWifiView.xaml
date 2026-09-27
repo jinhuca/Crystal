@@ -4,54 +4,71 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
-             d:DesignHeight="80" d:DesignWidth="200"
+             d:DesignHeight="120" d:DesignWidth="260"
              Foreground="{StaticResource TextBrush}" FontFamily="{StaticResource UiFontFamily}">
-  <!-- DataContext is the root INetworkViewModel, inherited from the host tile. The connected block
-       and the muted status row are mutually exclusive (driven by HasWifi / HasWifiStatus). -->
+  <!-- DataContext is the root INetworkViewModel, inherited from the host tile. A TaskManager-style
+       detail block names the primary connection (adapter, SSID, DNS, type, addresses, signal); the
+       Wi-Fi-only rows collapse for a wired primary. When nothing is connected the block stands down
+       and a muted radio-state row takes its place. -->
+  <UserControl.Resources>
+    <Style x:Key="ConnLabel" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="{StaticResource LabelBrush}"/>
+      <Setter Property="FontSize" Value="{StaticResource CaptionFontSize}"/>
+      <Setter Property="Width" Value="112"/>
+      <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style x:Key="ConnValue" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="{StaticResource ValueBrush}"/>
+			<Setter Property="FontSize" Value="{StaticResource BodyFontSize}"/>
+      <Setter Property="FontFamily" Value="{StaticResource MonoFontFamily}"/>
+      <Setter Property="VerticalAlignment" Value="Center"/>
+      <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+    </Style>
+  </UserControl.Resources>
   <StackPanel>
-    <!-- Wi-Fi block (only when a wireless adapter is connected): SSID + signal, then the
-         negotiated link rate, security suite, and BSSID as dim spec rows. -->
-    <StackPanel Visibility="{Binding HasWifi, Converter={StaticResource BoolToVisibility}}">
-      <StackPanel Orientation="Horizontal">
-        <TextBlock Text="&#x1F4F6;" Foreground="{StaticResource AccentBrush}" FontSize="{StaticResource SubHeadingFontSize}"
-                   VerticalAlignment="Center" Margin="0,0,8,0"/>
-        <TextBlock Text="{Binding WifiLabel}" Foreground="{StaticResource ValueBrush}" FontSize="{StaticResource SpecFontSize}"
-                   FontFamily="{StaticResource MonoFontFamily}" VerticalAlignment="Center"
-                   TextTrimming="CharacterEllipsis"/>
+    <!-- Connection detail block for the primary interface. -->
+    <StackPanel Visibility="{Binding HasConnection, Converter={StaticResource BoolToVisibility}}">
+      <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
+				<TextBlock Text="Adapter name:" Style="{StaticResource SummaryTileTitleTextBlockStyle}" Width="120"/>
+        <TextBlock Text="{Binding ConnectionAdapterName}" Style="{StaticResource ConnValue}"/>
       </StackPanel>
-      <TextBlock Text="{Binding WifiLinkRate, StringFormat=Link: {0}}" Foreground="{StaticResource LabelBrush}"
-                 FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}" Margin="22,3,0,0"/>
-      <TextBlock Text="{Binding WifiBandChannel, StringFormat=Band: {0}}" Foreground="{StaticResource LabelBrush}"
-                 FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}" Margin="22,1,0,0"
-                 TextTrimming="CharacterEllipsis"/>
-      <TextBlock Text="{Binding WifiSecurity, StringFormat=Security: {0}}" Foreground="{StaticResource LabelBrush}"
-                 FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}" Margin="22,1,0,0"
-                 TextTrimming="CharacterEllipsis"/>
-      <TextBlock Text="{Binding WifiBssid, StringFormat=BSSID: {0}}" Foreground="{StaticResource LabelBrush}"
-                 FontSize="{StaticResource CaptionFontSize}" FontFamily="{StaticResource MonoFontFamily}" Margin="22,1,0,0"
-                 TextTrimming="CharacterEllipsis"/>
+      <StackPanel Orientation="Horizontal" Margin="0,0,0,2"
+                  Visibility="{Binding HasWifi, Converter={StaticResource BoolToVisibility}}">
+				<TextBlock Text="SSID:" Style="{StaticResource SummaryTileTitleTextBlockStyle}" Width="120"/>
+        <TextBlock Text="{Binding ConnectionSsid}" Style="{StaticResource ConnValue}"/>
+      </StackPanel>
+      <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
+				<TextBlock Text="DNS name:" Style="{StaticResource SummaryTileTitleTextBlockStyle}" Width="120"/>
+        <TextBlock Text="{Binding ConnectionDnsName}" Style="{StaticResource ConnValue}"/>
+      </StackPanel>
+      <StackPanel Orientation="Horizontal" Margin="0,0,0,2"
+                  >
+				<TextBlock Text="Connection type:" Style="{StaticResource SummaryTileTitleTextBlockStyle}" Width="120"/>
+        <TextBlock Text="{Binding ConnectionType}" Style="{StaticResource ConnValue}"/>
+      </StackPanel>
+      <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
+				<TextBlock Text="IPv4 address:" Style="{StaticResource SummaryTileTitleTextBlockStyle}" Width="120"/>
+        <TextBlock Text="{Binding ConnectionIPv4}" Style="{StaticResource ConnValue}"/>
+      </StackPanel>
+      <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
+				<TextBlock Text="IPv6 address:" Style="{StaticResource SummaryTileTitleTextBlockStyle}" Width="120"/>
+        <TextBlock Text="{Binding ConnectionIPv6}" Style="{StaticResource ConnValue}"/>
+      </StackPanel>
+      <StackPanel Orientation="Horizontal"
+                  Visibility="{Binding HasWifi, Converter={StaticResource BoolToVisibility}}">
+				<TextBlock Text="Signal strength:" Style="{StaticResource SummaryTileTitleTextBlockStyle}" Width="120"/>
+        <TextBlock Text="{Binding SignalBars}" Style="{StaticResource ConnValue}"
+                   Foreground="{StaticResource AccentBrush}"/>
+      </StackPanel>
     </StackPanel>
 
-    <!-- No connected Wi-Fi block: name the connection actually carrying traffic (e.g. Ethernet) so
-         the throughput readout has a visible owner, with the Wi-Fi radio state as a muted sub-row.
-         Both stand down while a Wi-Fi adapter is connected (the block above takes over). -->
-    <StackPanel>
-      <StackPanel Orientation="Horizontal" Margin="0,0,0,3"
-                  Visibility="{Binding HasActiveConnection, Converter={StaticResource BoolToVisibility}}">
-        <TextBlock Text="&#x1F50C;" Foreground="{StaticResource AccentBrush}" FontSize="{StaticResource SubHeadingFontSize}"
-                   VerticalAlignment="Center" Margin="0,0,8,0"/>
-        <TextBlock Text="{Binding ActiveConnectionLabel}" 
-									 Foreground="{StaticResource ValueBrush}" 
-									 FontSize="{StaticResource SpecFontSize}"
-                   FontFamily="{StaticResource UiFontFamily}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
-      </StackPanel>
-      <StackPanel Orientation="Horizontal" Margin="0,6,0,0"
-                  Visibility="{Binding HasWifiStatus, Converter={StaticResource BoolToVisibility}}">
-        <TextBlock Text="&#x1F4F6;" Foreground="#5A6470" FontSize="{StaticResource SubHeadingFontSize}"
-                   VerticalAlignment="Center" Margin="0,0,8,0"/>
-        <TextBlock Text="{Binding WifiStatusLabel}" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource SpecFontSize}"
-                   FontFamily="{StaticResource UiFontFamily}" VerticalAlignment="Center"/>
-      </StackPanel>
+    <!-- No connection to detail: muted machine-level Wi-Fi radio state. -->
+    <StackPanel Orientation="Horizontal"
+                Visibility="{Binding HasWifiStatus, Converter={StaticResource BoolToVisibility}}">
+      <TextBlock Text="&#x1F4F6;" Foreground="#5A6470" FontSize="{StaticResource SubHeadingFontSize}"
+                 VerticalAlignment="Center" Margin="0,0,8,0"/>
+      <TextBlock Text="{Binding WifiStatusLabel}" Foreground="{StaticResource LabelBrush}" FontSize="{StaticResource SpecFontSize}"
+                 FontFamily="{StaticResource UiFontFamily}" VerticalAlignment="Center"/>
     </StackPanel>
   </StackPanel>
 </UserControl>

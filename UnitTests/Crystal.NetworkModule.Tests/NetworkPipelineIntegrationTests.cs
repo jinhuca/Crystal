@@ -48,9 +48,10 @@ public class NetworkPipelineIntegrationTests {
       double up = 2048, double down = 4096) => new(name, 10, up, down);
 
   private static NetworkInterfaceReading Wifi(string name, string ssid, int signal) =>
-      new(name, 10, 2048, 4096, WifiSsid: ssid, WifiSignalPercent: signal,
+      new(name, 10, 2048, 4096, WifiSsid: ssid, WifiSignalPercent: signal, WifiPhyType: "802.11ac",
           WifiRxRateKbps: 866_000, WifiTxRateKbps: 866_000, WifiBssid: "AA:BB:CC:DD:EE:FF",
-          WifiSecurity: "WPA2-Personal / CCMP");
+          WifiSecurity: "WPA2-Personal / CCMP", DnsSuffix: "Home", IPv4Address: "192.168.1.15",
+          IPv6Address: "fe80::e3ec:b8e4:107c:8e44%8");
 
   private static NetworkViewModel CreateVm(
       INetworkLoadSource loads, IProcessEtwSource etw, TestScheduler scheduler,
@@ -77,7 +78,9 @@ public class NetworkPipelineIntegrationTests {
     Assert.Equal("8.00 KiB/s", vm.DownloadLabel);   // 4096 + 4096
     Assert.Equal("4.00 KiB/s", vm.UploadLabel);     // 2048 + 2048
     Assert.True(vm.HasWifi);
-    Assert.Equal("HomeNet  72%", vm.WifiLabel);
+    Assert.Equal("Wi-Fi", vm.ConnectionAdapterName);
+    Assert.Equal("HomeNet", vm.ConnectionSsid);
+    Assert.Equal("192.168.1.15", vm.ConnectionIPv4);
   }
 
   [Fact]

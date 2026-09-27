@@ -53,7 +53,8 @@
 			</DrawingImage>
 		</ResourceDictionary>
 	</UserControl.Resources>
-	<Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="Transparent" MinHeight="120" ShowGridLines="False">
+	<Grid HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="118"
+				Background="Transparent" ShowGridLines="False">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*"/>
 			<ColumnDefinition Width="*"/>

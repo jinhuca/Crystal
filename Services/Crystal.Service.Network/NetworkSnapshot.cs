@@ -23,6 +23,9 @@ namespace Crystal.Service.Network;
 /// <param name="DataUploadedGb">Cumulative bytes sent since counter start, in GB.</param>
 /// <param name="DataDownloadedGb">Cumulative bytes received since counter start, in GB.</param>
 /// <param name="LinkSpeedBitsPerSecond">OS-reported negotiated link speed in bits/second.</param>
+/// <param name="DnsSuffix">Connection-specific DNS suffix (e.g. "Home"); null when none is assigned.</param>
+/// <param name="IPv4Address">Primary IPv4 unicast address; null when the interface has none.</param>
+/// <param name="IPv6Address">Primary IPv6 unicast address; null when the interface has none.</param>
 public sealed record NetworkInterfaceReading(
     string Name,
     double UtilizationPercent,
@@ -40,7 +43,10 @@ public sealed record NetworkInterfaceReading(
     string? WifiSecurity = null,
     double DataUploadedGb = 0,
     double DataDownloadedGb = 0,
-    long LinkSpeedBitsPerSecond = 0);
+    long LinkSpeedBitsPerSecond = 0,
+    string? DnsSuffix = null,
+    string? IPv4Address = null,
+    string? IPv6Address = null);
 
 /// <summary>
 /// Machine-level Wi-Fi availability, independent of any single interface reading. Lets the

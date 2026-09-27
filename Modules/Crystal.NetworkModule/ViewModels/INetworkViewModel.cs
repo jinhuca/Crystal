@@ -66,39 +66,43 @@ public interface INetworkViewModel {
   /// </summary>
   void AttachGraph(string id, ISingleSeriesGraph graph);
 
-  /// <summary>True when a Wi-Fi adapter is connected; drives the summary tile's Wi-Fi row.</summary>
+  /// <summary>True when the primary connection is a connected Wi-Fi adapter; gates the Wi-Fi-only
+  /// detail rows (SSID, connection type, signal strength) on the summary tile.</summary>
   bool HasWifi { get; }
 
-  /// <summary>True when a wireless radio exists but isn't connected (off or unassociated); drives a
-  /// muted status row shown in place of the connected Wi-Fi block.</summary>
+  /// <summary>True when a wireless radio exists but isn't connected (off or unassociated) and no other
+  /// interface is carrying the connection; drives a muted status row shown in place of the detail block.</summary>
   bool HasWifiStatus { get; }
 
-  /// <summary>True when no Wi-Fi is connected yet a wired/other interface is carrying traffic; drives
-  /// a row naming that connection so the throughput readout has a visible owner.</summary>
-  bool HasActiveConnection { get; }
-
-  /// <summary>Name of the interface currently moving the most traffic when Wi-Fi isn't the
-  /// connection (e.g. "Ethernet"). "—" while Wi-Fi is connected or nothing is active.</summary>
-  string ActiveConnectionLabel { get; }
-
   /// <summary>Muted status text for a present-but-not-connected radio ("Wi-Fi disabled" /
-  /// "Wi-Fi disconnected"). Empty when a radio is connected or none exists.</summary>
+  /// "Wi-Fi disconnected"). Empty when a connection is shown or no radio exists.</summary>
   string WifiStatusLabel { get; }
 
-  /// <summary>SSID + signal of the connected Wi-Fi adapter (strongest, if several), for the tile.</summary>
-  string WifiLabel { get; }
+  /// <summary>True when a primary interface is connected; drives the TaskManager-style detail block
+  /// (adapter name, SSID, DNS, connection type, addresses, signal) on the summary tile.</summary>
+  bool HasConnection { get; }
 
-  /// <summary>Negotiated Rx/Tx link rate of the summary Wi-Fi adapter (e.g. "866 / 866 Mbps").</summary>
-  string WifiLinkRate { get; }
+  /// <summary>Friendly name of the primary connection's adapter (e.g. "Wi-Fi", "Ethernet").</summary>
+  string ConnectionAdapterName { get; }
 
-  /// <summary>Radio band and channel of the summary Wi-Fi adapter (e.g. "5 GHz (ch 44)").</summary>
-  string WifiBandChannel { get; }
+  /// <summary>SSID of the primary connection when it is Wi-Fi; "—" otherwise.</summary>
+  string ConnectionSsid { get; }
 
-  /// <summary>Security suite of the summary Wi-Fi adapter (e.g. "WPA2-Personal / CCMP").</summary>
-  string WifiSecurity { get; }
+  /// <summary>Connection-specific DNS suffix of the primary connection (e.g. "Home"); "—" when none.</summary>
+  string ConnectionDnsName { get; }
 
-  /// <summary>BSSID (AP MAC) of the summary Wi-Fi adapter.</summary>
-  string WifiBssid { get; }
+  /// <summary>802.11 PHY type of the primary connection when it is Wi-Fi (e.g. "802.11ac"); "—" otherwise.</summary>
+  string ConnectionType { get; }
+
+  /// <summary>Primary IPv4 address of the primary connection; "—" when none.</summary>
+  string ConnectionIPv4 { get; }
+
+  /// <summary>Primary IPv6 address of the primary connection; "—" when none.</summary>
+  string ConnectionIPv6 { get; }
+
+  /// <summary>Four-segment bar glyph for the primary Wi-Fi connection's signal strength (e.g. "▂▄▆▁");
+  /// "—" when the primary connection isn't Wi-Fi.</summary>
+  string SignalBars { get; }
 
   /// <summary>Raises <c>ShowDetailEvent</c> so the shell swaps in the network detail view.</summary>
   ICommand ShowDetailCommand { get; }

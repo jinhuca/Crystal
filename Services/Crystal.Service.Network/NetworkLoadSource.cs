@@ -1,6 +1,7 @@
 using Crystal.Provider.Telemetry.Hardware;
 using Crystal.Provider.Telemetry.Hardware.Network;
 using System.Net.NetworkInformation;
+using System.Net.Sockets;
 
 namespace Crystal.Service.Network;
 
@@ -72,8 +73,9 @@ public sealed class NetworkLoadSource : INetworkLoadSource, IDisposable {
   public NetworkSnapshot Read() {
     // The telemetry group enumerates every non-loopback/tunnel adapter — dozens of virtual and
     // disconnected NICs. Restrict to interfaces that are operationally up with a known link speed;
-    // a down/virtual NIC reports Speed 0, so its utilization comes back NaN/Infinity.
-    var linkSpeeds = ConnectedInterfaceSpeeds();
+    // a down/virtual NIC reports Speed 0, so its utilization comes back NaN/Infinity. The same pass
+    // captures each connected NIC's DNS suffix and IPv4/IPv6 addresses for the summary tile.
+    var connected = ConnectedInterfaces();
 
     // One WLAN reading per present radio (connected or not). Keyed by GUID; the rest of the
     // pipeline keys by friendly name, so index the connected ones by name to merge per adapter.
@@ -82,7 +84,7 @@ public sealed class NetworkLoadSource : INetworkLoadSource, IDisposable {
 
     var readings = new List<NetworkInterfaceReading>();
     foreach (var nic in _computer.Hardware.Where(h => h.HardwareType == HardwareType.Network)) {
-      if (!linkSpeeds.TryGetValue(nic.Name, out var linkSpeed)) continue;
+      if (!connected.TryGetValue(nic.Name, out var info)) continue;
       nic.Update();
       wifiByName.TryGetValue(nic.Name, out var wifi);
       readings.Add(new NetworkInterfaceReading(
@@ -107,7 +109,10 @@ public sealed class NetworkLoadSource : INetworkLoadSource, IDisposable {
               NetworkSensorSelector.FindValue(nic.Sensors, SensorType.Data, DataUploadedSensorName)),
           DataDownloadedGb: NetworkSensorSelector.Sanitize(
               NetworkSensorSelector.FindValue(nic.Sensors, SensorType.Data, DataDownloadedSensorName)),
-          LinkSpeedBitsPerSecond: linkSpeed));
+          LinkSpeedBitsPerSecond: info.Speed,
+          DnsSuffix: info.Dns,
+          IPv4Address: info.IPv4,
+          IPv6Address: info.IPv6));
     }
     return new NetworkSnapshot(readings, ComputeWifiStatus(wlan));
   }
@@ -161,18 +166,33 @@ public sealed class NetworkLoadSource : INetworkLoadSource, IDisposable {
     return byName;
   }
 
+  /// <summary>Link speed (bits/sec) plus the DNS suffix and IPv4/IPv6 addresses of one connected NIC.</summary>
+  private readonly record struct InterfaceInfo(long Speed, string? Dns, string? IPv4, string? IPv6);
+
   /// <summary>
-  /// Maps each connected interface's friendly name to its link speed (bits/sec). Doubles as the
-  /// connected-interface filter: a down/virtual NIC reports Speed 0, so its utilization comes back
+  /// Maps each connected interface's friendly name to its link speed and IP configuration. Doubles as
+  /// the connected-interface filter: a down/virtual NIC reports Speed 0, so its utilization comes back
   /// NaN/Infinity — only interfaces present in this map are read.
   /// </summary>
-  private static Dictionary<string, long> ConnectedInterfaceSpeeds() {
-    var speeds = new Dictionary<string, long>(StringComparer.OrdinalIgnoreCase);
+  private static Dictionary<string, InterfaceInfo> ConnectedInterfaces() {
+    var infos = new Dictionary<string, InterfaceInfo>(StringComparer.OrdinalIgnoreCase);
     foreach (var nic in NetworkInterface.GetAllNetworkInterfaces()) {
-      if (nic.OperationalStatus == OperationalStatus.Up && nic.Speed > 0)
-        speeds[nic.Name] = nic.Speed;
+      if (nic.OperationalStatus != OperationalStatus.Up || nic.Speed <= 0) continue;
+      var props = nic.GetIPProperties();
+      string? ipv4 = null, ipv6 = null;
+      foreach (var unicast in props.UnicastAddresses) {
+        if (ipv4 is null && unicast.Address.AddressFamily == AddressFamily.InterNetwork)
+          ipv4 = unicast.Address.ToString();
+        else if (ipv6 is null && unicast.Address.AddressFamily == AddressFamily.InterNetworkV6)
+          ipv6 = unicast.Address.ToString();
+      }
+      infos[nic.Name] = new InterfaceInfo(
+          nic.Speed,
+          string.IsNullOrEmpty(props.DnsSuffix) ? null : props.DnsSuffix,
+          ipv4,
+          ipv6);
     }
-    return speeds;
+    return infos;
   }
 
   /// <summary>

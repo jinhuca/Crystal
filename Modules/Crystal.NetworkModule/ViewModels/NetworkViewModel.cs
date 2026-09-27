@@ -23,15 +23,20 @@ public sealed class NetworkViewModel : BindableBase, INetworkViewModel, IDisposa
   private readonly GraphFeedRegistry _graphs = new();
   private double _throughputMax = ThroughputFloorBytesPerSecond;
   private bool _hasWifi;
-  private string _wifiLabel = "—";
-  private string _wifiLinkRate = "—";
-  private string _wifiBandChannel = "—";
-  private string _wifiSecurity = "—";
-  private string _wifiBssid = "—";
   private bool _hasWifiStatus;
   private string _wifiStatusLabel = "";
-  private bool _hasActiveConnection;
-  private string _activeConnectionLabel = "—";
+  private bool _hasConnection;
+  // Sticky identity of the non-Wi-Fi primary connection. Selecting purely by instantaneous throughput
+  // makes the detail block thrash as the busiest NIC bounces poll-to-poll (virtual/filter adapters);
+  // we hold onto the chosen interface while it stays present so the rows stop flickering to "—".
+  private string? _primaryName;
+  private string _connectionAdapterName = "—";
+  private string _connectionSsid = "—";
+  private string _connectionDnsName = "—";
+  private string _connectionType = "—";
+  private string _connectionIPv4 = "—";
+  private string _connectionIPv6 = "—";
+  private string _signalBars = "—";
   private bool _hasTopTalkersStatus;
   private string _topTalkersStatusLabel = "";
   private string _topTalkersSortProperty = nameof(ProcessNetworkRowViewModel.RateBytesPerSecond);
@@ -83,15 +88,19 @@ public sealed class NetworkViewModel : BindableBase, INetworkViewModel, IDisposa
   /// <summary>Session min/avg/max and trend of the total upload rate (in KiB/s), for the tile's stat line.</summary>
   public MetricRowViewModel UploadRow { get; } = new("Upload");
   public bool HasWifi { get => _hasWifi; private set => SetProperty(ref _hasWifi, value); }
-  public string WifiLabel { get => _wifiLabel; private set => SetProperty(ref _wifiLabel, value); }
-  public string WifiLinkRate { get => _wifiLinkRate; private set => SetProperty(ref _wifiLinkRate, value); }
-  public string WifiBandChannel { get => _wifiBandChannel; private set => SetProperty(ref _wifiBandChannel, value); }
-  public string WifiSecurity { get => _wifiSecurity; private set => SetProperty(ref _wifiSecurity, value); }
-  public string WifiBssid { get => _wifiBssid; private set => SetProperty(ref _wifiBssid, value); }
   public bool HasWifiStatus { get => _hasWifiStatus; private set => SetProperty(ref _hasWifiStatus, value); }
   public string WifiStatusLabel { get => _wifiStatusLabel; private set => SetProperty(ref _wifiStatusLabel, value); }
-  public bool HasActiveConnection { get => _hasActiveConnection; private set => SetProperty(ref _hasActiveConnection, value); }
-  public string ActiveConnectionLabel { get => _activeConnectionLabel; private set => SetProperty(ref _activeConnectionLabel, value); }
+  public bool HasConnection { get => _hasConnection; private set => SetProperty(ref _hasConnection, value); }
+  public string ConnectionAdapterName { get => _connectionAdapterName; private set => SetProperty(ref _connectionAdapterName, value); }
+  public string ConnectionSsid { get => _connectionSsid; private set => SetProperty(ref _connectionSsid, value); }
+  public string ConnectionDnsName { get => _connectionDnsName; private set => SetProperty(ref _connectionDnsName, value); }
+  public string ConnectionType {
+    get => _connectionType;
+    private set => SetProperty(ref _connectionType, value);
+  }
+  public string ConnectionIPv4 { get => _connectionIPv4; private set => SetProperty(ref _connectionIPv4, value); }
+  public string ConnectionIPv6 { get => _connectionIPv6; private set => SetProperty(ref _connectionIPv6, value); }
+  public string SignalBars { get => _signalBars; private set => SetProperty(ref _signalBars, value); }
   public ICommand ShowDetailCommand { get; }
   public ICommand ShowDashboardCommand { get; }
 
@@ -106,7 +115,7 @@ public sealed class NetworkViewModel : BindableBase, INetworkViewModel, IDisposa
 
     var totalDownload = 0.0;
     var totalUpload = 0.0;
-    string? busiestName = null;
+    NetworkInterfaceReading? busiest = null;
     var busiestRate = -1.0;
     foreach (var reading in snapshot.Interfaces) {
       var adapter = Adapters.FirstOrDefault(a =>
@@ -120,7 +129,7 @@ public sealed class NetworkViewModel : BindableBase, INetworkViewModel, IDisposa
       var rate = reading.DownloadBytesPerSecond + reading.UploadBytesPerSecond;
       if (rate > busiestRate) {
         busiestRate = rate;
-        busiestName = reading.Name;
+        busiest = reading;
       }
     }
 
@@ -137,18 +146,7 @@ public sealed class NetworkViewModel : BindableBase, INetworkViewModel, IDisposa
     while (_throughputSamples.Count > ThroughputWindow) _throughputSamples.Dequeue();
     ThroughputMaxBytesPerSecond = NiceCeiling(Math.Max(ThroughputFloorBytesPerSecond, _throughputSamples.Max()));
 
-    ApplyWifiSummary(snapshot.Interfaces, snapshot.WifiStatus);
-    ApplyActiveConnection(busiestName);
-  }
-
-  // When no Wi-Fi is connected, the throughput readout still needs an owner: name the interface
-  // currently moving the most traffic (e.g. "Ethernet") so a user who sees downloads/uploads with
-  // Wi-Fi off can tell which connection is carrying them. Suppressed while Wi-Fi is connected, since
-  // the connected block already identifies the link. Must run after ApplyWifiSummary sets HasWifi.
-  private void ApplyActiveConnection(string? busiestName) {
-    var show = !HasWifi && busiestName is not null;
-    HasActiveConnection = show;
-    ActiveConnectionLabel = show ? busiestName! : "—";
+    ApplyConnectionSummary(snapshot.Interfaces, snapshot.WifiStatus, busiest);
   }
 
   // Reconcile the ranked top-talkers into a PID-keyed collection: update surviving rows in place,
@@ -202,7 +200,8 @@ public sealed class NetworkViewModel : BindableBase, INetworkViewModel, IDisposa
       _topTalkersSortDirection = _topTalkersSortDirection == ListSortDirection.Ascending
           ? ListSortDirection.Descending
           : ListSortDirection.Ascending;
-    } else {
+    }
+    else {
       _topTalkersSortProperty = propertyName;
       _topTalkersSortDirection = propertyName == nameof(ProcessNetworkRowViewModel.Name)
           ? ListSortDirection.Ascending
@@ -220,67 +219,90 @@ public sealed class NetworkViewModel : BindableBase, INetworkViewModel, IDisposa
     }
   }
 
-  // A present-but-not-connected radio shows a muted status line instead of the connected block; a
-  // machine with no radio (WifiStatus.None) shows neither.
-  private void ApplyWifiStatus(WifiStatus status) {
-    HasWifiStatus = status is WifiStatus.Disabled or WifiStatus.Disconnected;
-    WifiStatusLabel = status switch {
-      WifiStatus.Disabled => "Wi-Fi disabled",
-      WifiStatus.Disconnected => "Wi-Fi disconnected",
-      _ => "",
-    };
-  }
-
-  // Pick the strongest connected Wi-Fi adapter for the compact tile (a machine can have several
-  // wireless radios). Absent any connected Wi-Fi, fall back to a muted status row driven by the
-  // machine-level Wi-Fi state.
-  private void ApplyWifiSummary(IReadOnlyList<NetworkInterfaceReading> interfaces, WifiStatus status) {
-    NetworkInterfaceReading? best = null;
+  // Choose the primary connection to detail on the tile and populate the TaskManager-style rows.
+  // Prefer the strongest connected Wi-Fi adapter (a machine can have several radios); otherwise pick a
+  // stable non-Wi-Fi connection so the throughput has a visible owner. With nothing connected at all,
+  // show a muted status row driven by the machine Wi-Fi state.
+  private void ApplyConnectionSummary(
+      IReadOnlyList<NetworkInterfaceReading> interfaces, WifiStatus status, NetworkInterfaceReading? busiest) {
+    NetworkInterfaceReading? bestWifi = null;
     foreach (var reading in interfaces) {
       if (reading.WifiSignalPercent is null && reading.WifiSsid is null) continue;
-      if (best is null || (reading.WifiSignalPercent ?? -1) > (best.WifiSignalPercent ?? -1))
-        best = reading;
+      if (bestWifi is null || (reading.WifiSignalPercent ?? -1) > (bestWifi.WifiSignalPercent ?? -1))
+        bestWifi = reading;
     }
 
-    HasWifi = best is not null;
-    if (best is null) {
-      WifiLabel = "—";
-      WifiLinkRate = "—";
-      WifiBandChannel = "—";
-      WifiSecurity = "—";
-      WifiBssid = "—";
-      ApplyWifiStatus(status);
+    HasWifi = bestWifi is not null;
+    var primary = bestWifi ?? SelectStablePrimary(interfaces, busiest);
+    _primaryName = bestWifi is null ? primary?.Name : null;
+    HasConnection = primary is not null;
+
+    if (primary is null) {
+      ConnectionAdapterName = "—";
+      ConnectionSsid = "—";
+      ConnectionDnsName = "—";
+      ConnectionType = "—";
+      ConnectionIPv4 = "—";
+      ConnectionIPv6 = "—";
+      SignalBars = "—";
+      // No connection to detail: surface the machine-level radio state instead.
+      HasWifiStatus = status is WifiStatus.Disabled or WifiStatus.Disconnected;
+      WifiStatusLabel = status switch {
+        WifiStatus.Disabled => "Wi-Fi disabled",
+        WifiStatus.Disconnected => "Wi-Fi disconnected",
+        _ => "",
+      };
       return;
     }
 
-    // A connected radio shows the full block; the muted status row stands down.
-    ApplyWifiStatus(WifiStatus.Connected);
+    // A connection is shown, so the muted status row stands down.
+    HasWifiStatus = false;
+    WifiStatusLabel = "";
 
-    var ssid = best.WifiSsid ?? "Wi-Fi";
-    WifiLabel = best.WifiSignalPercent is { } pct ? $"{ssid}  {pct}%" : ssid;
-    WifiLinkRate = FormatLinkRate(best.WifiRxRateKbps, best.WifiTxRateKbps);
-    WifiBandChannel = FormatBandChannel(best.WifiBand, best.WifiChannel);
-    WifiSecurity = best.WifiSecurity ?? "—";
-    WifiBssid = best.WifiBssid ?? "—";
+    ConnectionAdapterName = primary.Name;
+    ConnectionDnsName = primary.DnsSuffix ?? "—";
+    ConnectionIPv4 = primary.IPv4Address ?? "—";
+    ConnectionIPv6 = primary.IPv6Address ?? "—";
+    // Wi-Fi-only rows; blank ("—") for a wired primary connection (the view hides them via HasWifi).
+    ConnectionSsid = HasWifi ? (primary.WifiSsid ?? "—") : "—";
+    ConnectionType = HasWifi ? (primary.WifiPhyType ?? "Ethernet") : "Ethernet";
+    SignalBars = HasWifi ? SignalBarsGlyph(primary.WifiSignalPercent) : "—";
   }
 
-  // The radio band and channel as one line, mirroring the detail view's "5 GHz (ch 44)". Collapses
-  // gracefully when only one half is known, and to "—" when the driver reports neither.
-  private static string FormatBandChannel(string? band, int? channel) {
-    var hasBand = !string.IsNullOrWhiteSpace(band);
-    if (!hasBand && channel is null) return "—";
-    if (channel is { } ch) return hasBand ? $"{band} (ch {ch})" : $"ch {ch}";
-    return band!;
+  // Pick a stable non-Wi-Fi primary connection. Keep the previously chosen interface as long as it's
+  // still present (so the detail rows don't churn as throughput bounces between NICs); otherwise seed
+  // with the busiest interface that actually has an IPv4 address, falling back to the busiest overall.
+  private NetworkInterfaceReading? SelectStablePrimary(
+      IReadOnlyList<NetworkInterfaceReading> interfaces, NetworkInterfaceReading? busiest) {
+    if (_primaryName is not null) {
+      var held = interfaces.FirstOrDefault(
+          r => string.Equals(r.Name, _primaryName, StringComparison.OrdinalIgnoreCase));
+      if (held is not null) return held;
+    }
+
+    NetworkInterfaceReading? seed = null;
+    var seedRate = -1.0;
+    foreach (var reading in interfaces) {
+      if (reading.IPv4Address is null) continue;
+      var rate = reading.DownloadBytesPerSecond + reading.UploadBytesPerSecond;
+      if (rate > seedRate) {
+        seedRate = rate;
+        seed = reading;
+      }
+    }
+    return seed ?? busiest;
   }
 
-  // wlanapi reports link rates in Kbps; show whole Mbps as "Rx / Tx". When both sides match (the
-  // common case) collapse to a single value.
-  private static string FormatLinkRate(int? rxKbps, int? txKbps) {
-    string? rx = rxKbps is { } r ? (r / 1000).ToString() : null;
-    string? tx = txKbps is { } t ? (t / 1000).ToString() : null;
-    if (rx is null && tx is null) return "—";
-    if (rx == tx) return $"{rx} Mbps";
-    return $"{rx ?? "—"} / {tx ?? "—"} Mbps";
+  // A four-segment strength meter from ascending block glyphs (mirrors the detail view): a segment
+  // lights once quality passes its lower quartile bound (>0/25/50/75); unlit segments show a low
+  // baseline glyph. Null/zero quality reads as fully empty.
+  private static string SignalBarsGlyph(int? quality) {
+    int pct = quality is { } q ? Math.Clamp(q, 0, 100) : 0;
+    char[] filled = ['▂', '▄', '▆', '█'];
+    var bars = new char[4];
+    for (int i = 0; i < 4; i++)
+      bars[i] = pct > i * 25 ? filled[i] : '▁';
+    return new string(bars);
   }
 
   // Round a peak up to a readable axis top: 1/2/5 × a power of ten, so the shared throughput scale
