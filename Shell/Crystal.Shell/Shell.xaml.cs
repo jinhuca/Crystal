@@ -2,7 +2,7 @@ using Crystal.Infrastructure.Constants.Navigation;
 using Crystal.Shell.Navigation;
 using Crystal.Shell.Settings;
 using Crystal.Shell.Views;
-using Prism.Events;
+using Crystal.Infrastructure.Core.Events;
 using System;
 using System.ComponentModel;
 using System.Windows;

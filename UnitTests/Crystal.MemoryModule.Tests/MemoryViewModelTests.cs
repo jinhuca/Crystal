@@ -1,7 +1,7 @@
 using Crystal.MemoryModule.Models;
 using Crystal.MemoryModule.ViewModels;
 using Crystal.Service.Memory;
-using Prism.Events;
+using Crystal.Infrastructure.Core.Events;
 using System.Reactive.Subjects;
 using Xunit;
 

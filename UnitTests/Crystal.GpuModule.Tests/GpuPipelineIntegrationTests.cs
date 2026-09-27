@@ -3,7 +3,7 @@ using Crystal.GpuModule.ViewModels;
 using Crystal.Provider.Mmi.MmiEngine;
 using Crystal.Service.Gpu;
 using Microsoft.Reactive.Testing;
-using Prism.Events;
+using Crystal.Infrastructure.Core.Events;
 using System.Collections.Frozen;
 using Xunit;
 

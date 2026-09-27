@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <AssemblyName>Crystal.Infrastructure.Wpf</AssemblyName>
+    <RootNamespace>Crystal.Infrastructure.Wpf</RootNamespace>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Using Include="System.Windows" />
+    <Using Include="System.Windows.Controls" />
+    <Using Include="System.Windows.Controls.Primitives" />
+    <Using Include="System.Windows.Data" />
+  </ItemGroup>
+
+  <!-- Core types formerly shared these namespaces with Wpf as a single merged namespace.
+       After the rename the halves live in Crystal.Infrastructure.Core.*; expose them
+       project-wide so Wpf source resolves them without per-file usings.
+       Core.Properties is intentionally excluded (Resources collides with Wpf.Properties). -->
+  <ItemGroup>
+    <Using Include="Crystal.Infrastructure.Core" />
+    <Using Include="Crystal.Infrastructure.Core.Common" />
+    <Using Include="Crystal.Infrastructure.Core.Commands" />
+    <Using Include="Crystal.Infrastructure.Core.Dialogs" />
+    <Using Include="Crystal.Infrastructure.Core.Events" />
+    <Using Include="Crystal.Infrastructure.Core.Modularity" />
+    <Using Include="Crystal.Infrastructure.Core.Mvvm" />
+    <Using Include="Crystal.Infrastructure.Core.Navigation" />
+    <Using Include="Crystal.Infrastructure.Core.Navigation.Regions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Dialogs\DialogWindow.xaml" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('net4')) ">
+    <Compile Remove="**\*.netcore.cs" />
+    <None Include="**\*.netcore.cs" />
+    <Reference Include="System.Configuration" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" !$(TargetFramework.StartsWith('net4')) ">
+    <Compile Remove="Modularity\ModuleTypeLoaderNotFoundException.Desktop.cs" />
+    <None Include="Modularity\ModuleTypeLoaderNotFoundException.Desktop.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" $([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows' ">
+    <Compile Remove="**\*.net45.cs" />
+    <None Include="**\*.net45.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.161" />
+    <PackageReference Include="Prism.Container.Unity" Version="9.0.114" />
+    <PackageReference Include="PolySharp" Version="1.16.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Crystal.Infrastructure.Core\Crystal.Infrastructure.Core.csproj" />
+  </ItemGroup>
+
+</Project>

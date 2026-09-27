@@ -6,8 +6,8 @@ using System.Windows.Data;
 using System.Windows.Input;
 using Crystal.Controls.Threading;
 using Crystal.Service.Benchmark;
-using Prism.Commands;
-using Prism.Mvvm;
+using Crystal.Infrastructure.Core.Commands;
+using Crystal.Infrastructure.Core.Mvvm;
 
 namespace Crystal.BenchmarkModule.ViewModels;
 

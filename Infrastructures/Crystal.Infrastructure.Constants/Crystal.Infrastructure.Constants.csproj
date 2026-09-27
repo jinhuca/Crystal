@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Prism.Core" Version="9.0.537" />
+    <ProjectReference Include="..\Crystal.Infrastructure.Core\Crystal.Infrastructure.Core.csproj" />
   </ItemGroup>
+
+  <Import Project="..\Crystal.Infrastructure.Core\build\Prism.Usings.props" />
 
 </Project>

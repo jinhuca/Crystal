@@ -3,7 +3,7 @@ using Crystal.NetworkModule.ViewModels;
 using Crystal.Provider.Etw;
 using Crystal.Service.Network;
 using Microsoft.Reactive.Testing;
-using Prism.Events;
+using Crystal.Infrastructure.Core.Events;
 using Xunit;
 
 namespace Crystal.NetworkModule.Tests;

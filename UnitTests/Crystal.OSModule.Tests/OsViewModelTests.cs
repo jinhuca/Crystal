@@ -1,6 +1,6 @@
 using Crystal.OSModule.Models;
 using Crystal.OSModule.ViewModels;
-using Prism.Events;
+using Crystal.Infrastructure.Core.Events;
 using System.Reactive.Subjects;
 using Xunit;
 

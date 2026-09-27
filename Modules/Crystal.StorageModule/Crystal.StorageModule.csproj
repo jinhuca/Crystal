@@ -8,9 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Prism.Core" Version="9.0.537" />
-    <PackageReference Include="Prism.Unity" Version="9.0.537" />
-    <PackageReference Include="Prism.Wpf" Version="9.0.537" />
+    <ProjectReference Include="..\..\Infrastructures\Crystal.Infrastructure.Core\Crystal.Infrastructure.Core.csproj" />
+    <ProjectReference Include="..\..\Infrastructures\Crystal.Infrastructure.Wpf\Crystal.Infrastructure.Wpf.csproj" />
     <PackageReference Include="System.Reactive" Version="7.0.0" />
   </ItemGroup>
 
@@ -21,5 +20,7 @@
     <ProjectReference Include="..\..\UI\Crystal.Controls\Crystal.Controls.csproj" />
     <ProjectReference Include="..\..\Infrastructures\Crystal.Infrastructure.Constants\Crystal.Infrastructure.Constants.csproj" />
   </ItemGroup>
+
+  <Import Project="..\..\Infrastructures\Crystal.Infrastructure.Wpf\build\Crystal.Wpf.Usings.props" />
 
 </Project>

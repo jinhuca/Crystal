@@ -1,7 +1,7 @@
 using Crystal.GpuModule.Models;
 using Crystal.GpuModule.ViewModels;
 using Crystal.Service.Gpu;
-using Prism.Events;
+using Crystal.Infrastructure.Core.Events;
 using System.Reactive.Subjects;
 using Xunit;
 

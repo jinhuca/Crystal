@@ -8,7 +8,9 @@
   <Folder Name="/Infrastructures/">
     <Project Path="Infrastructures/Crystal.Infrastructure.Constants/Crystal.Infrastructure.Constants.csproj" />
     <Project Path="Infrastructures/Crystal.Infrastructure.Converters/Crystal.Infrastructure.Converters.csproj" />
+    <Project Path="Infrastructures/Crystal.Infrastructure.Core/Crystal.Infrastructure.Core.csproj" />
     <Project Path="Infrastructures/Crystal.Infrastructure.DataStructures/Crystal.Infrastructure.DataStructures.csproj" />
+    <Project Path="Infrastructures/Crystal.Infrastructure.Wpf/Crystal.Infrastructure.Wpf.csproj" />
   </Folder>
   <Folder Name="/Modules/">
     <Project Path="Modules/Crystal.BiosModule/Crystal.BiosModule.csproj" Id="c1b31da1-27c9-4607-a2fc-582db4f16c78" />
@@ -59,6 +61,11 @@
     <Project Path="UI/RangeBarDemo/RangeBarDemo.csproj" />
   </Folder>
   <Folder Name="/UnitTests/">
+    <Project Path="UnitTests/Crystal.Infrastructure.Core.Tests/Crystal.Infrastructure.Core.Tests.csproj">
+      <Platform Solution="*|Any CPU" Project="x64" />
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
     <Project Path="UnitTests/Crystal.Shell.Tests/Crystal.Shell.Tests.csproj">
       <Platform Project="x64" />
     </Project>

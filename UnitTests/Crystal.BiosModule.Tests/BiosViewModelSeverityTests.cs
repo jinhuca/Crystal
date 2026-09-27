@@ -4,7 +4,7 @@ using Crystal.Controls.PerformanceGraphs;
 using Crystal.Infrastructure.DataStructures.Sensors;
 using Crystal.Service.Bios;
 using Crystal.Service.Sensors;
-using Prism.Events;
+using Crystal.Infrastructure.Core.Events;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Subjects;

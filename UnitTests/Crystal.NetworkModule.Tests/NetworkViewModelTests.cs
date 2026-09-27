@@ -1,7 +1,7 @@
 using Crystal.NetworkModule.Models;
 using Crystal.NetworkModule.ViewModels;
 using Crystal.Service.Network;
-using Prism.Events;
+using Crystal.Infrastructure.Core.Events;
 using System.ComponentModel;
 using System.Reactive.Subjects;
 using Xunit;

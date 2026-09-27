@@ -94,10 +94,7 @@ public sealed class NetworkViewModel : BindableBase, INetworkViewModel, IDisposa
   public string ConnectionAdapterName { get => _connectionAdapterName; private set => SetProperty(ref _connectionAdapterName, value); }
   public string ConnectionSsid { get => _connectionSsid; private set => SetProperty(ref _connectionSsid, value); }
   public string ConnectionDnsName { get => _connectionDnsName; private set => SetProperty(ref _connectionDnsName, value); }
-  public string ConnectionType {
-    get => _connectionType;
-    private set => SetProperty(ref _connectionType, value);
-  }
+  public string ConnectionType { get => _connectionType; private set => SetProperty(ref _connectionType, value); }
   public string ConnectionIPv4 { get => _connectionIPv4; private set => SetProperty(ref _connectionIPv4, value); }
   public string ConnectionIPv6 { get => _connectionIPv6; private set => SetProperty(ref _connectionIPv6, value); }
   public string SignalBars { get => _signalBars; private set => SetProperty(ref _signalBars, value); }
@@ -200,8 +197,7 @@ public sealed class NetworkViewModel : BindableBase, INetworkViewModel, IDisposa
       _topTalkersSortDirection = _topTalkersSortDirection == ListSortDirection.Ascending
           ? ListSortDirection.Descending
           : ListSortDirection.Ascending;
-    }
-    else {
+    } else {
       _topTalkersSortProperty = propertyName;
       _topTalkersSortDirection = propertyName == nameof(ProcessNetworkRowViewModel.Name)
           ? ListSortDirection.Ascending
@@ -265,7 +261,7 @@ public sealed class NetworkViewModel : BindableBase, INetworkViewModel, IDisposa
     ConnectionIPv6 = primary.IPv6Address ?? "—";
     // Wi-Fi-only rows; blank ("—") for a wired primary connection (the view hides them via HasWifi).
     ConnectionSsid = HasWifi ? (primary.WifiSsid ?? "—") : "—";
-    ConnectionType = HasWifi ? (primary.WifiPhyType ?? "Ethernet") : "Ethernet";
+    ConnectionType = HasWifi ? (primary.WifiPhyType ?? "—") : "—";
     SignalBars = HasWifi ? SignalBarsGlyph(primary.WifiSignalPercent) : "—";
   }
 
