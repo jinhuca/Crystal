@@ -11,7 +11,7 @@ namespace Crystal.Shell;
 /// registers the swappable dashboard, and populates the module catalog. Each module injects 
 /// its summary tile into the dashboard and registers a full-scale detail view for navigation.
 /// </summary>
-public partial class App : PrismApplication {
+public partial class App : CrystalApplication {
   // Machine-unique names. The app opens ring-0 MSR/driver sessions (PawnIO, the LHM fork), so a
   // second instance would contend for the same hardware handles and double the polling load —
   // instead, a second launch signals the running instance to surface itself, then exits.

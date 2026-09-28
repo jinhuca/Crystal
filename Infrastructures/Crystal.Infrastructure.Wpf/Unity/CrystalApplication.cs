@@ -5,7 +5,7 @@ namespace Crystal.Infrastructure.Wpf.Unity;
 /// <summary>
 /// Base application class that uses <see cref="UnityContainerExtension"/> as it's container.
 /// </summary>
-public abstract class PrismApplication : PrismApplicationBase {
+public abstract class CrystalApplication : CrystalApplicationBase {
   /// <summary>
   /// Create a new <see cref="UnityContainerExtension"/> used by Prism.
   /// </summary>

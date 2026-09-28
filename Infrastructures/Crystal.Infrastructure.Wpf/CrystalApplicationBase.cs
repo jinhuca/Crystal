@@ -10,7 +10,7 @@ namespace Crystal.Infrastructure.Wpf;
 /// <remarks>
 /// This class must be overridden to provide application specific configuration.
 /// </remarks>
-public abstract class PrismApplicationBase : Application {
+public abstract class CrystalApplicationBase : Application {
   IContainerExtension _containerExtension;
   IModuleCatalog _moduleCatalog;
 

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Implicit global usings for the API surface exposed by Crystal.Infrastructure.Core.
+
+  The upstream Prism NuGet packages injected these into consumers via a
+  buildTransitive targets file. ProjectReferences do not carry that file, so
+  consuming projects import this props explicitly to keep source unchanged.
+
+  Prism.Ioc stays as-is: it is provided by the Prism.Container.Abstractions
+  NuGet package (IContainerRegistry/IContainerProvider), not by this fork.
+-->
+<Project>
+  <ItemGroup Condition=" '$(ImplicitUsings)' == 'true' OR '$(ImplicitUsings)' == 'enable' ">
+    <Using Include="Crystal.Infrastructure.Core" />
+    <Using Include="Crystal.Infrastructure.Core.Commands" />
+    <Using Include="Crystal.Infrastructure.Core.Dialogs" />
+    <Using Include="Crystal.Infrastructure.Core.Events" />
+    <Using Include="Prism.Ioc" />
+    <Using Include="Crystal.Infrastructure.Core.Modularity" />
+    <Using Include="Crystal.Infrastructure.Core.Mvvm" />
+    <Using Include="Crystal.Infrastructure.Core.Navigation" />
+    <Using Include="Crystal.Infrastructure.Core.Navigation.Regions" />
+  </ItemGroup>
+</Project>
