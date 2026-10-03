@@ -5,8 +5,8 @@ namespace Crystal.Architecture.Tests;
 
 /// <summary>
 /// Read-only boundary audit for the intended data flow <c>Provider -> Service -> Module</c>.
-/// Prism modules should subscribe to Services, not reach into Providers. A module referencing a
-/// Provider is only legitimate at its composition root (<c>RegisterTypes</c>, where a Prism module
+/// Crystal modules should subscribe to Services, not reach into Providers. A module referencing a
+/// Provider is only legitimate at its composition root (<c>RegisterTypes</c>, where a Crystal module
 /// IS the DI wiring point); anywhere else it is drift.
 ///
 /// This test does not load module assemblies (they are WPF/x64 and heavy). It scans the module

@@ -10,7 +10,7 @@ using Crystal.Service.Gpu;
 namespace Crystal.GpuModule;
 
 /// <summary>
-/// Prism module for GPU. Registers the provider→builder→monitor→model→view-model chain, injects
+/// Crystal module for GPU. Registers the provider→builder→monitor→model→view-model chain, injects
 /// the compact <see cref="GpuSummaryView"/> into the dashboard's GPU tile region, and registers
 /// the full-scale <see cref="GpuDetailView"/> for navigation.
 /// </summary>

@@ -8,7 +8,7 @@ using Crystal.OSModule.Views;
 namespace Crystal.OSModule;
 
 /// <summary>
-/// Prism module for the operating system. Registers the builder→model→view-model chain, injects the
+/// Crystal module for the operating system. Registers the builder→model→view-model chain, injects the
 /// compact <see cref="OsSummaryView"/> into the dashboard's OS region, and registers the full-scale
 /// <see cref="OsDetailView"/> for navigation. Follows MemoryModule: a one-shot replayed identity
 /// build plus a ref-counted live poll.

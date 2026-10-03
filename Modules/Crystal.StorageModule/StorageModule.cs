@@ -10,7 +10,7 @@ using Crystal.StorageModule.Views;
 namespace Crystal.StorageModule;
 
 /// <summary>
-/// Prism module for Storage. Registers the provider→builder→model→view-model chain (static
+/// Crystal module for Storage. Registers the provider→builder→model→view-model chain (static
 /// inventory plus live disk activity), injects the compact <see cref="StorageSummaryView"/> into
 /// the dashboard's storage tile region, and registers the full-scale <see cref="StorageDetailView"/>
 /// for navigation.

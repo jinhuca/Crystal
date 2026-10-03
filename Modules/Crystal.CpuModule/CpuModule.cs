@@ -14,7 +14,7 @@ using Crystal.Service.Sensors;
 namespace Crystal.CpuModule;
 
 /// <summary>
-/// Prism module for CPU. Registers the provider→service→model→view-model chain, injects the
+/// Crystal module for CPU. Registers the provider→service→model→view-model chain, injects the
 /// compact <see cref="CpuSummaryView"/> into the dashboard's CPU tile region, and registers
 /// the full-scale <see cref="CpuDetailView"/> for navigation.
 /// </summary>

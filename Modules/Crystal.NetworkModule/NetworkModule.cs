@@ -11,7 +11,7 @@ using Crystal.Service.Network;
 namespace Crystal.NetworkModule;
 
 /// <summary>
-/// Prism module for Network (live activity only, no static inventory). Registers the
+/// Crystal module for Network (live activity only, no static inventory). Registers the
 /// source→model→view-model chain, injects the compact <see cref="NetworkSummaryView"/> into the
 /// dashboard's network tile region, and registers the full-scale <see cref="NetworkDetailView"/>
 /// for navigation.

@@ -13,7 +13,7 @@ using Crystal.Service.Sensors;
 namespace Crystal.BiosModule;
 
 /// <summary>
-/// Prism module for BIOS (static identity only). Registers the provider→builder→model→
+/// Crystal module for BIOS (static identity only). Registers the provider→builder→model→
 /// view-model chain, injects the full-width <see cref="BiosSummaryView"/> into the dashboard's
 /// BIOS region, and registers the full-scale <see cref="BiosDetailView"/> for navigation.
 /// </summary>

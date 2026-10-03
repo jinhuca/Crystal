@@ -5,7 +5,7 @@ using Crystal.Service.Benchmark;
 namespace Crystal.BenchmarkModule;
 
 /// <summary>
-/// Prism module for the benchmark suite. Registers the pure-C# benchmark engine
+/// Crystal module for the benchmark suite. Registers the pure-C# benchmark engine
 /// (<see cref="IBenchmarkCatalog"/> + <see cref="BenchmarkRunner"/>) and the dashboard VM, and wires
 /// the <see cref="BenchmarkDetailView"/> to it. Unlike the sensor modules it injects nothing into the
 /// dashboard: the benchmark surface is detail-window only, opened on demand from the shell title bar

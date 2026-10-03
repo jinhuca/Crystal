@@ -10,7 +10,7 @@ using Crystal.Service.Process;
 namespace Crystal.ProcessModule;
 
 /// <summary>
-/// Prism module for the process list. Registers the provider→monitor→model→view-model chain and
+/// Crystal module for the process list. Registers the provider→monitor→model→view-model chain and
 /// injects the compact <see cref="ProcessSummaryView"/> (live process/thread/handle totals) into the
 /// dashboard's Processes region; double-clicking that tile opens the Task Manager-style
 /// <see cref="ProcessDetailView"/> in its own window.
