@@ -1,4 +1,5 @@
 using Crystal.Service.Process;
+using System.Collections.ObjectModel;
 using System.Windows.Media;
 
 namespace Crystal.ProcessModule.ViewModels;
@@ -18,6 +19,7 @@ public sealed class ProcessRowViewModel : BindableBase {
   private string? _executablePath;
   private ImageSource? _iconSource;
   private bool _isSelected;
+  private bool _isExpanded;
 
   public ProcessRowViewModel(uint processId, string name) {
     ProcessId = processId;
@@ -26,6 +28,15 @@ public sealed class ProcessRowViewModel : BindableBase {
 
   public uint ProcessId { get; }
   public string Name { get; }
+
+  /// <summary>Whether this row is expanded to reveal its owned threads (Process Explorer-style). The
+  /// thread list is populated on demand by the list VM when this flips true and reconciled each poll
+  /// while it stays true; flipping false clears <see cref="Threads"/> to release the rows.</summary>
+  public bool IsExpanded { get => _isExpanded; set => SetProperty(ref _isExpanded, value); }
+
+  /// <summary>This process's owned threads, shown beneath the row while <see cref="IsExpanded"/>.
+  /// Empty until the row is first expanded; filled and reconciled in place by the list VM.</summary>
+  public ObservableCollection<ThreadRowViewModel> Threads { get; } = [];
 
   /// <summary>Whether this row is the selected one. Bound two-way to the ListViewItem's IsSelected in
   /// the container style so selection travels with the data item — with UI virtualization in

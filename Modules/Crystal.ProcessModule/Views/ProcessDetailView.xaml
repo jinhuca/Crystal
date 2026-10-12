@@ -264,6 +264,56 @@
         </Setter>
       </Style>
 
+      <!-- Chevron toggle in the Name cell that expands a process row to show its owned threads.
+           Right-pointing when collapsed, rotated down when expanded. Focusable=False and a handled
+           click keep it from stealing row selection. -->
+      <Style x:Key="ThreadExpanderStyle" TargetType="ToggleButton">
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="Width" Value="12"/>
+        <Setter Property="Height" Value="12"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="ToggleButton">
+              <Border Background="{TemplateBinding Background}">
+                <Path x:Name="Arrow" Data="M 0,0 L 4,4 L 0,8 Z" Fill="#8A94A0"
+                      HorizontalAlignment="Center" VerticalAlignment="Center"
+                      RenderTransformOrigin="0.5,0.5" SnapsToDevicePixels="True"/>
+              </Border>
+              <ControlTemplate.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                  <Setter TargetName="Arrow" Property="RenderTransform">
+                    <Setter.Value>
+                      <RotateTransform Angle="90"/>
+                    </Setter.Value>
+                  </Setter>
+                  <Setter TargetName="Arrow" Property="Fill" Value="{StaticResource TextPrimaryBrush}"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                  <Setter TargetName="Arrow" Property="Fill" Value="{StaticResource AccentBrush}"/>
+                </Trigger>
+              </ControlTemplate.Triggers>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style>
+
+      <!-- One thread row's cell text: mono, muted, single-line. Shared by every thread column. -->
+      <Style x:Key="ThreadCellStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource TextMutedBrush}"/>
+        <Setter Property="FontFamily" Value="{StaticResource MonoFontFamily}"/>
+        <Setter Property="FontSize" Value="{StaticResource CaptionFontSize}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+      </Style>
+
+      <!-- Column header cell for the thread sub-list: same as the cell text but dimmer/semibold. -->
+      <Style x:Key="ThreadHeaderCellStyle" TargetType="TextBlock" BasedOn="{StaticResource ThreadCellStyle}">
+        <Setter Property="Foreground" Value="{StaticResource LabelBrush}"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+      </Style>
+
       <!-- Flat, tight rows; hover and selection are flat fills (no rounded highlight). Ordering
            matters: IsMouseOver comes first so the selection fill (below) wins on a hovered
            selected row, and the MultiTrigger gives a slightly brighter blue for selected+hover. -->
@@ -275,24 +325,77 @@
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
         <Setter Property="Padding" Value="0"/>
-        <Setter Property="Height" Value="22"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
-        <!-- Right-click actions on a row. Opening the menu selects the row (WPF selects on
-             right-press), so the VM's SelectedRow is the target by the time End task fires. The
-             menu lives as a keyed resource, not inline here: an event handler on an element inside
+        <!-- Right-click opens the row's context menu but must not change the monitored selection.
+             WPF selects a ListViewItem on right-button-DOWN yet shows the menu on right-button-UP, so
+             handling the down (OnRowPreviewRightButtonDown) cancels the selection while the menu still
+             opens. The menu targets the right-clicked row via its DataContext, not SelectedRow. -->
+        <EventSetter Event="PreviewMouseRightButtonDown" Handler="OnRowPreviewRightButtonDown"/>
+        <!-- The menu lives as a keyed resource, not inline here: an event handler on an element inside
              a Style setter misaligns WPF's connection-id wiring at load. -->
         <Setter Property="ContextMenu" Value="{StaticResource RowContextMenu}"/>
         <Setter Property="Template">
           <Setter.Value>
             <ControlTemplate TargetType="ListViewItem">
-              <Border x:Name="Bd" Background="{TemplateBinding Background}"
-                      BorderBrush="Transparent" BorderThickness="0"
-                      SnapsToDevicePixels="True">
-                <GridViewRowPresenter VerticalAlignment="Center"
-                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
-              </Border>
+              <StackPanel>
+                <!-- The process row itself. Fixed 22px height (moved off the item so the expanded
+                     thread panel below can add its own height). -->
+                <Border x:Name="Bd" Height="22" Background="{TemplateBinding Background}"
+                        BorderBrush="Transparent" BorderThickness="0"
+                        SnapsToDevicePixels="True">
+                  <GridViewRowPresenter VerticalAlignment="Center"
+                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                </Border>
+                <!-- Owned-thread list, shown only while this process row is expanded. Indented so it
+                     reads as nested under the process; it carries its own thread-specific columns
+                     (TID / CPU time / State / priority / start), independent of the process GridView. -->
+                <Border x:Name="ThreadPanel" Background="#0A0A0A"
+                        BorderBrush="{StaticResource DividerBrush}" BorderThickness="0,0,0,1"
+                        Visibility="Collapsed">
+                  <StackPanel Margin="28,3,8,4">
+                    <Grid Margin="0,0,0,2">
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="70"/>
+                        <ColumnDefinition Width="90"/>
+                        <ColumnDefinition Width="170"/>
+                        <ColumnDefinition Width="55"/>
+                        <ColumnDefinition Width="55"/>
+                        <ColumnDefinition Width="80"/>
+                      </Grid.ColumnDefinitions>
+                      <TextBlock Grid.Column="0" Text="TID" Style="{StaticResource ThreadHeaderCellStyle}"/>
+                      <TextBlock Grid.Column="1" Text="CPU time" Style="{StaticResource ThreadHeaderCellStyle}"/>
+                      <TextBlock Grid.Column="2" Text="State" Style="{StaticResource ThreadHeaderCellStyle}"/>
+                      <TextBlock Grid.Column="3" Text="Base" Style="{StaticResource ThreadHeaderCellStyle}" ToolTip="Base priority"/>
+                      <TextBlock Grid.Column="4" Text="Cur" Style="{StaticResource ThreadHeaderCellStyle}" ToolTip="Current priority"/>
+                      <TextBlock Grid.Column="5" Text="Start" Style="{StaticResource ThreadHeaderCellStyle}"/>
+                    </Grid>
+                    <ItemsControl ItemsSource="{Binding Threads}">
+                      <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                          <Grid Height="18">
+                            <Grid.ColumnDefinitions>
+                              <ColumnDefinition Width="70"/>
+                              <ColumnDefinition Width="90"/>
+                              <ColumnDefinition Width="170"/>
+                              <ColumnDefinition Width="55"/>
+                              <ColumnDefinition Width="55"/>
+                              <ColumnDefinition Width="80"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="{Binding ThreadId}" Style="{StaticResource ThreadCellStyle}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding CpuTimeLabel}" Style="{StaticResource ThreadCellStyle}"/>
+                            <TextBlock Grid.Column="2" Text="{Binding StateLabel}" Style="{StaticResource ThreadCellStyle}"/>
+                            <TextBlock Grid.Column="3" Text="{Binding BasePriority}" Style="{StaticResource ThreadCellStyle}"/>
+                            <TextBlock Grid.Column="4" Text="{Binding CurrentPriority}" Style="{StaticResource ThreadCellStyle}"/>
+                            <TextBlock Grid.Column="5" Text="{Binding StartTimeLabel}" Style="{StaticResource ThreadCellStyle}"/>
+                          </Grid>
+                        </DataTemplate>
+                      </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                  </StackPanel>
+                </Border>
+              </StackPanel>
               <ControlTemplate.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                   <Setter TargetName="Bd" Property="Background" Value="#1B2733"/>
@@ -308,6 +411,9 @@
                   </MultiTrigger.Conditions>
                   <Setter TargetName="Bd" Property="Background" Value="#254B69"/>
                 </MultiTrigger>
+                <DataTrigger Binding="{Binding IsExpanded}" Value="True">
+                  <Setter TargetName="ThreadPanel" Property="Visibility" Value="Visible"/>
+                </DataTrigger>
               </ControlTemplate.Triggers>
             </ControlTemplate>
           </Setter.Value>
@@ -568,6 +674,12 @@
               <GridViewColumn.CellTemplate>
                 <DataTemplate>
                   <StackPanel Orientation="Horizontal" Margin="8,2">
+                    <!-- Expander: reveals this process's owned threads beneath the row. Bound to the
+                         row VM's IsExpanded; a handled click keeps it from toggling row selection. -->
+                    <ToggleButton Style="{StaticResource ThreadExpanderStyle}"
+                                  IsChecked="{Binding IsExpanded, Mode=TwoWay}"
+                                  Margin="0,0,5,0" VerticalAlignment="Center"
+                                  ToolTip="Show threads"/>
                     <!-- Per-process shell icon (Task Manager-style). Fixed 16px box so rows stay
                          aligned whether or not the icon has resolved yet; RenderOptions keeps the
                          small bitmap crisp instead of blurred. -->

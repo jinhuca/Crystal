@@ -61,6 +61,10 @@ public class ProcessModule(IRegionManager regionManager) : IModule {
     // recording is active; one recording at a time, so a singleton (one live file) is correct.
     containerRegistry.RegisterSingleton<IProcessRecorder, ProcessRecorder>();
 
+    // Reads a process's live thread list on demand for the expandable thread rows. Stateless, so a
+    // singleton is fine.
+    containerRegistry.RegisterSingleton<IProcessThreadProvider, ProcessThreadProvider>();
+
     // One VM instance per view; the detail window is the only consumer today. Built via a factory
     // because its optional Func<DateTimeOffset>? clock param isn't injected by Unity (it defaults to
     // the system clock for the live export timestamp).
@@ -68,7 +72,8 @@ public class ProcessModule(IRegionManager regionManager) : IModule {
         cp => new ProcessListViewModel(cp.Resolve<IProcessModel>(), cp.Resolve<SystemStatsMonitor>(),
             cp.Resolve<ProcessIconProvider>(), controller: cp.Resolve<IProcessController>(),
             recorder: cp.Resolve<IProcessRecorder>(), gpuMonitor: cp.Resolve<GpuMonitor>(),
-            events: cp.Resolve<IEventAggregator>()));
+            events: cp.Resolve<IEventAggregator>(),
+            threadProvider: cp.Resolve<IProcessThreadProvider>()));
 
     // Lightweight VM for the compact dashboard tile: process/thread/handle totals only, no list.
     containerRegistry.Register<ProcessSummaryViewModel>();

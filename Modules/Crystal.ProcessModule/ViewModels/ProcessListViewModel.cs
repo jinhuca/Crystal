@@ -52,6 +52,10 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
   private readonly IProcessController _controller;
   private string? _actionStatus;
 
+  // Reads a process's live thread list on demand for the expandable thread rows. Defaults to the real
+  // System.Diagnostics-backed provider; tests inject a fake to supply canned thread lists.
+  private readonly IProcessThreadProvider _threadProvider;
+
   // Records the monitored processes' per-poll readings to a CSV. Defaults to the real file-backed
   // recorder; tests inject a fake to assert on the writes without touching disk.
   private readonly IProcessRecorder _recorder;
@@ -70,11 +74,13 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
   public ProcessListViewModel(IProcessModel model, SystemStatsMonitor systemStats,
                               ProcessIconProvider? iconProvider = null, Func<DateTimeOffset>? clock = null,
                               IProcessController? controller = null, IProcessRecorder? recorder = null,
-                              GpuMonitor? gpuMonitor = null, IEventAggregator? events = null) {
+                              GpuMonitor? gpuMonitor = null, IEventAggregator? events = null,
+                              IProcessThreadProvider? threadProvider = null) {
     _clock = clock ?? (() => DateTimeOffset.Now);
     _iconProvider = iconProvider;
     _controller = controller ?? new ProcessController();
     _recorder = recorder ?? new ProcessRecorder();
+    _threadProvider = threadProvider ?? new ProcessThreadProvider();
     _events = events;
     OpenBenchmarkCommand = new DelegateCommand(OpenBenchmark, () => _events is not null);
     MetricsStatusError = model.MetricsStatusError;
@@ -287,13 +293,40 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
     }
   }
 
-  // A row's IsSelected flag changed (bound to each ListViewItem.IsSelected): add or remove it from the
-  // monitored set accordingly.
+  // A row's bound flag changed: IsSelected (the ListViewItem selection) adds/removes it from the
+  // monitored set; IsExpanded (the thread-list toggle) populates its thread rows on demand, or clears
+  // them on collapse so a closed row holds no thread state.
   private void OnRowPropertyChanged(object? sender, PropertyChangedEventArgs e) {
-    if (e.PropertyName != nameof(ProcessRowViewModel.IsSelected) || sender is not ProcessRowViewModel row)
-      return;
-    if (row.IsSelected) Select(row);
-    else Deselect(row);
+    if (sender is not ProcessRowViewModel row) return;
+    if (e.PropertyName == nameof(ProcessRowViewModel.IsSelected)) {
+      if (row.IsSelected) Select(row);
+      else Deselect(row);
+    } else if (e.PropertyName == nameof(ProcessRowViewModel.IsExpanded)) {
+      if (row.IsExpanded) RefreshThreads(row);
+      else row.Threads.Clear();
+    }
+  }
+
+  // Reconcile a row's thread list against a fresh snapshot, keyed by TID: update the rows still
+  // present in place, add newly-seen threads, and drop the ones that have exited. Reconciling (rather
+  // than rebuilding the collection) keeps each row's identity so the UI updates smoothly instead of
+  // flashing a full reset every poll.
+  private void RefreshThreads(ProcessRowViewModel row) {
+    var samples = _threadProvider.GetThreads(row.ProcessId);
+    var live = new HashSet<int>(samples.Count);
+    foreach (var sample in samples) {
+      live.Add(sample.ThreadId);
+      var existing = row.Threads.FirstOrDefault(t => t.ThreadId == sample.ThreadId);
+      if (existing is not null) {
+        existing.Update(sample);
+      } else {
+        var thread = new ThreadRowViewModel(sample.ThreadId, sample.StartTime);
+        thread.Update(sample);
+        row.Threads.Add(thread);
+      }
+    }
+    for (int i = row.Threads.Count - 1; i >= 0; i--)
+      if (!live.Contains(row.Threads[i].ThreadId)) row.Threads.RemoveAt(i);
   }
 
   // Begin monitoring a row. Already-monitored just becomes primary. At the cap, the oldest is dropped
@@ -361,7 +394,13 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
   /// <summary>Terminates the selected process. No-op when nothing is selected. On failure the reason
   /// is surfaced through <see cref="ActionStatus"/>; the exited row drops on the next poll.</summary>
   public void EndSelectedTask() {
-    if (_selectedRow is not { } row) return;
+    if (_selectedRow is { } row) EndTask(row);
+  }
+
+  /// <summary>Terminates a specific process — the row-context-menu target. Right-clicking no longer
+  /// selects the row, so the menu passes the right-clicked row here directly rather than relying on
+  /// <see cref="SelectedRow"/>. On failure the reason is surfaced through <see cref="ActionStatus"/>.</summary>
+  public void EndTask(ProcessRowViewModel row) {
     var result = _controller.EndTask(row.ProcessId);
     ActionStatus = result.Succeeded ? null : result.Message;
   }
@@ -578,6 +617,12 @@ public sealed class ProcessListViewModel : BindableBase, IDisposable {
     }
 
     ResolveIcons();
+
+    // Keep the thread rows of any expanded process current on the same cadence as the list itself.
+    // Only expanded rows do any work here; a collapsed row's list stays empty, so steady state (no
+    // row expanded) costs a single flag check per row.
+    foreach (var row in Rows)
+      if (row.IsExpanded) RefreshThreads(row);
 
     RaisePropertyChanged(nameof(HasVisibleRows));
     RecomputeHogCount();

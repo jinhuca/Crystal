@@ -352,7 +352,11 @@ public partial class ProcessDetailView : UserControl {
       return;
     }
 
-    if (vm.SelectedRow is not { } row) {
+    // From the row context menu the target is the right-clicked row (its DataContext); from the
+    // toolbar button, sender's DataContext is the VM, so MenuRow is null and we fall back to the
+    // current selection. Right-click no longer selects, so the menu can't rely on SelectedRow.
+    var row = MenuRow(sender) ?? vm.SelectedRow;
+    if (row is null) {
       return;
     }
 
@@ -363,7 +367,21 @@ public partial class ProcessDetailView : UserControl {
       return;
     }
 
-    vm.EndSelectedTask();
+    vm.EndTask(row);
+  }
+
+  /// <summary>
+  /// Suppresses the default right-click selection so opening a row's context menu doesn't toggle
+  /// whether the process is monitored. The menu targets the right-clicked row directly (via its
+  /// DataContext — see <see cref="MenuRow"/>), so it needn't be selected. WPF selects a
+  /// ListViewItem on right-button-<em>down</em> but shows the context menu on right-button-<em>up</em>,
+  /// so marking the down handled cancels the selection while leaving the menu to open normally.
+  /// Left-click selection (the monitor toggle) is untouched.
+  /// </summary>
+  /// <param name="sender">The sender of the event.</param>
+  /// <param name="e">The event arguments.</param>
+  private void OnRowPreviewRightButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e) {
+    e.Handled = true;
   }
 
   /// <summary>
